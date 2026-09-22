@@ -6,7 +6,6 @@ start:
     ; Setup segments
     ; -------------------------
     xor ax, ax
-
     mov ds, ax
     mov es, ax
     mov ss, ax
@@ -14,10 +13,7 @@ start:
 
     cld
 
-    ; -------------------------
-    ; Save boot drive
-    ; BIOS gives boot drive in DL
-    ; -------------------------
+    ; BIOS gives us the boot drive in DL
     mov [boot_drive], dl
 
     ; -------------------------
@@ -27,7 +23,7 @@ start:
     call print_string
 
     ; -------------------------
-    ; Prepare destination
+    ; Destination for Stage 2
     ; ES:BX = 0000:8000
     ; -------------------------
     xor ax, ax
@@ -35,43 +31,38 @@ start:
     mov bx, 0x8000
 
     ; -------------------------
+    ; BIOS INT 13h
     ; Read Sector 2
     ; -------------------------
-    mov ah, 0x02        ; BIOS read sectors
-    mov al, 0x01        ; Read 1 sector
+    mov ah, 0x02
+    mov al, 0x01        ; 1 sector
+
     mov ch, 0x00        ; Cylinder 0
     mov cl, 0x02        ; Sector 2
     mov dh, 0x00        ; Head 0
+
     mov dl, [boot_drive]
 
     int 0x13
 
-    ; Check Carry Flag
     jc disk_error
 
     ; -------------------------
-    ; Disk read successful
+    ; Stage 2 loaded
     ; -------------------------
     mov si, success
     call print_string
 
     ; -------------------------
-    ; Print data loaded at
-    ; 0000:8000
+    ; Transfer execution
     ; -------------------------
-    mov si, 0x8000
-    call print_string
-
-.hang:
-    cli
-    hlt
-    jmp .hang
+    jmp 0x0000:0x8000
 
 
 ; ==================================
-; print_string
-; DS:SI -> null-terminated string
+; Print string
 ; ==================================
+
 print_string:
 .next:
     lodsb
@@ -80,7 +71,7 @@ print_string:
     jz .done
 
     mov ah, 0x0e
-    mov bh, 0
+    mov bh, 0x00
     int 0x10
 
     jmp .next
@@ -92,13 +83,15 @@ print_string:
 ; ==================================
 ; Disk error
 ; ==================================
+
 disk_error:
     mov si, error
     call print_string
 
+.hang:
     cli
     hlt
-    jmp $
+    jmp .hang
 
 
 ; ==================================
@@ -107,7 +100,7 @@ disk_error:
 
 message db "MyOS booting...", 13, 10, 0
 
-success db "Disk read successful!", 13, 10, 0
+success db "Stage 2 loaded. Jumping...", 13, 10, 0
 
 error db "Disk read failed!", 13, 10, 0
 
@@ -115,7 +108,7 @@ boot_drive db 0
 
 
 ; ==================================
-; Boot sector padding
+; Boot signature
 ; ==================================
 
 times 510 - ($ - $$) db 0
