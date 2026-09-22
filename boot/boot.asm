@@ -1,9 +1,12 @@
 bits 16
 org 0x7c00
 
+STAGE2_LOAD_ADDR equ 0x8000
+STAGE2_SECTORS   equ 4
+
 start:
     ; -------------------------
-    ; Setup segments
+    ; Setup segments + stack
     ; -------------------------
     xor ax, ax
     mov ds, ax
@@ -13,34 +16,39 @@ start:
 
     cld
 
-    ; BIOS gives us the boot drive in DL
+    ; BIOS tells us which drive booted us
     mov [boot_drive], dl
 
     ; -------------------------
     ; Print boot message
     ; -------------------------
-    mov si, message
+    mov si, boot_message
     call print_string
 
     ; -------------------------
-    ; Destination for Stage 2
+    ; Destination
     ; ES:BX = 0000:8000
     ; -------------------------
     xor ax, ax
     mov es, ax
-    mov bx, 0x8000
+    mov bx, STAGE2_LOAD_ADDR
 
     ; -------------------------
-    ; BIOS INT 13h
-    ; Read Sector 2
+    ; Read Stage 2
+    ;
+    ; AH = 02h : BIOS read
+    ; AL = number of sectors
+    ; CH = cylinder
+    ; CL = starting sector
+    ; DH = head
+    ; DL = drive
     ; -------------------------
     mov ah, 0x02
-    mov al, 0x01        ; 1 sector
+    mov al, STAGE2_SECTORS
 
-    mov ch, 0x00        ; Cylinder 0
-    mov cl, 0x02        ; Sector 2
-    mov dh, 0x00        ; Head 0
-
+    mov ch, 0x00
+    mov cl, 0x02
+    mov dh, 0x00
     mov dl, [boot_drive]
 
     int 0x13
@@ -48,19 +56,20 @@ start:
     jc disk_error
 
     ; -------------------------
-    ; Stage 2 loaded
+    ; Read succeeded
     ; -------------------------
-    mov si, success
+    mov si, success_message
     call print_string
 
     ; -------------------------
-    ; Transfer execution
+    ; Execute Stage 2
     ; -------------------------
-    jmp 0x0000:0x8000
+    jmp 0x0000:STAGE2_LOAD_ADDR
 
 
 ; ==================================
-; Print string
+; Print null-terminated string
+; DS:SI -> string
 ; ==================================
 
 print_string:
@@ -85,7 +94,7 @@ print_string:
 ; ==================================
 
 disk_error:
-    mov si, error
+    mov si, error_message
     call print_string
 
 .hang:
@@ -98,19 +107,22 @@ disk_error:
 ; Data
 ; ==================================
 
-message db "MyOS booting...", 13, 10, 0
+boot_message:
+    db "MyOS booting...", 13, 10, 0
 
-success db "Stage 2 loaded. Jumping...", 13, 10, 0
+success_message:
+    db "Loaded 4 Stage 2 sectors.", 13, 10, 0
 
-error db "Disk read failed!", 13, 10, 0
+error_message:
+    db "Disk read failed!", 13, 10, 0
 
-boot_drive db 0
+boot_drive:
+    db 0
 
 
 ; ==================================
-; Boot signature
+; Boot sector
 ; ==================================
 
 times 510 - ($ - $$) db 0
-
 dw 0xaa55
