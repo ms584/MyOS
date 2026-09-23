@@ -1,4 +1,4 @@
-#include "os.h"
+#include "process.h"
 struct gate {uint16_t low,selector;uint8_t ist,flags;uint16_t mid;uint32_t high,zero;} __attribute__((packed));
 struct descriptor {uint16_t limit;uint64_t base;} __attribute__((packed));
 static struct gate idt[256];
@@ -18,6 +18,8 @@ void interrupts_init(void){
 void timer_init(void){outb(0x43,0x34);outb(0x40,11932&255);outb(0x40,11932>>8);outb(0x21,inb(0x21)&~1u);}
 struct frame *interrupt_dispatch(struct frame *f){
     if(f->vector<32){
+        if ((f->cs & 3) == 3 && f->vector != 2 && f->vector != 8 && f->vector != 18)
+            return process_fault(f);
         print("\nEXCEPTION ");decimal(f->vector);print(" error=");hex(f->error);print(" rip=");hex(f->rip);
         if(f->vector==14){uintptr_t cr2;__asm__ volatile("mov %%cr2,%0":"=r"(cr2));print(" cr2=");hex(cr2);}
         panic(f->vector==6?"Invalid Opcode":f->vector==13?"General Protection Fault":f->vector==14?"Page Fault":"CPU exception");

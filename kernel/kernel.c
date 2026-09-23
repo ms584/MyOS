@@ -1,4 +1,4 @@
-#include "os.h"
+#include "process.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -12,6 +12,7 @@ void kernel_main(void){
     interrupts_init();print("IDT/PIC initialized\n");
     memory_init();memory_test();
     print("Free physical pages: ");decimal(pages_free());print("\n");
+    process_init();print("GDT/TSS and Ring 3 selectors initialized\n");
     keyboard_init();print("PS/2 keyboard initialized\n");
     scheduler_init();check(task_create(worker_a)&&task_create(worker_b)&&task_create(once),"task creation");
     check(!task_create(once),"task capacity");
@@ -24,6 +25,7 @@ void kernel_main(void){
     check(task_counts[0]>a&&task_counts[1]>b,"sustained preemption");
     print("PASS: two CPU-bound tasks preempted; task exit\n");
     print("PASS: context registers and direction flag preserved\n");
+    process_test();
 #if TEST_CASE == 1
     __asm__ volatile(".global fault_site\nfault_site: ud2");
 #elif TEST_CASE == 2
@@ -37,7 +39,7 @@ void kernel_main(void){
 #elif TEST_CASE == 5
     print("PASS: automated boot\n");outb(0xf4,0x10);
 #elif TEST_CASE == 6
-    __asm__ volatile("mov $0x28, %%ax\n.global fault_site\nfault_site: mov %%ax, %%ds":::"rax");
+    __asm__ volatile("mov $0x48, %%ax\n.global fault_site\nfault_site: mov %%ax, %%ds":::"rax");
 #endif
     print("myos> ");
     for(;;){

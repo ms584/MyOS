@@ -15,7 +15,7 @@ covered; they are not evidence that every future extension is implemented.
 | 6 | Keyboard Driver | Complete baseline: PS/2 IRQ1, US modifiers, bounded input buffer, echo |
 | 7 | Memory Management | Complete baseline: E820 PMM, paging APIs, NX/RO mappings, kernel heap |
 | 8 | Timer + Scheduler | Complete baseline: PIT, preemptive round robin, context switch, task exit |
-| 9 | Process / User Mode | Not started |
+| 9 | Process / User Mode | Complete baseline: Ring 3, private address spaces/stacks, fault containment and reap |
 | 10 | System Calls | Not started |
 | 11 | Filesystem | Not started |
 | 12 | Shell | Not started; input echo is not a shell |
@@ -28,7 +28,7 @@ covered; they are not evidence that every future extension is implemented.
 
 “Complete baseline” means the original learning milestone works and has QEMU
 acceptance coverage, not production OS completeness. Phase 8 uses kernel tasks;
-separate user processes belong to Phase 9. See README for resource and security
+Phase 9 now adds separate Ring 3 processes; see PHASE9.md for scope and tests. See README for resource and security
 limits. Never skip these remaining phases merely because the console boots.
 
 ## Phase 8 exit checklist

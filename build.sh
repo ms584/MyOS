@@ -5,9 +5,9 @@ flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
        -fno-asynchronous-unwind-tables -fno-unwind-tables
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
-       -DTEST_CASE="${TEST_CASE:-0}")
+       -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
 objects=()
-for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c; do
+for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c; do
     obj="build/$(basename "${source%.c}").o"
     gcc "${flags[@]}" -c "$source" -o "$obj"
     objects+=("$obj")
@@ -15,7 +15,9 @@ done
 nasm -f elf64 kernel/entry.asm -o build/entry.o
 nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
 nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
-ld -m elf_x86_64 --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o
+nasm -f bin user/demo.asm -o build/user-demo.bin
+nasm -f elf64 user/blob.asm -o build/user-blob.o
+ld -m elf_x86_64 --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
 test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }

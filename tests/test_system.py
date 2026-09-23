@@ -16,7 +16,7 @@ OUT=ROOT/'build/system-tests'
 OUT.mkdir(parents=True,exist_ok=True)
 
 def build(case=0,text=False):
-    env=dict(os.environ,TEST_CASE=str(case),TEXT_ONLY=str(int(text)))
+    env=dict(os.environ,TEST_CASE=str(case),TEXT_ONLY=str(int(text)),PROCESS_TESTS="1")
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
@@ -87,7 +87,10 @@ def boot_test(name,ram=64,keyboard=False,text=False):
         content=vm.wait('myos> ')
         for marker in ('64-bit Long Mode','PASS: PMM, paging, heap, exhaustion/recovery',
                        'PASS: two CPU-bound tasks preempted; task exit',
-                       'PASS: context registers and direction flag preserved'):
+                       'PASS: context registers and direction flag preserved',
+                       'PASS: Ring 3 processes, private CR3/data/stack, timer preemption',
+                       'PASS: 13 user fault cases contained; kernel and peer survived',
+                       'PASS: process kill/reap, capacity, PID and resource reuse'):
             assert marker in content,content
         assert ('VGA text' if text else 'framebuffer 800x600x32') in content
         syms=symbols()
@@ -134,7 +137,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
@@ -142,13 +145,15 @@ def main():
             for ram in (16,256):boot_test(f'ram-{ram}M',ram)
         if args.suite in ('all','exceptions'):
             fault_test(1,'Invalid Opcode',0)
-            fault_test(6,'General Protection Fault',0x28)
+            fault_test(6,'General Protection Fault',0x48)
             fault_test(2,'Page Fault',2)
             fault_test(3,'Page Fault',3)
             fault_test(4,'Page Fault',17)
         if args.suite=='all':
             build(text=True);boot_test('vga-fallback',keyboard=True,text=True)
-    finally:build()
+    finally:
+        env=dict(os.environ,TEST_CASE="0",TEXT_ONLY="0",PROCESS_TESTS="0")
+        subprocess.run(["bash","build.sh"],env=env,check=True)
     print('PASS: selected suite; normal framebuffer image restored',flush=True)
 
 if __name__=='__main__':main()
