@@ -12,6 +12,7 @@ struct descriptor {
 } __attribute__((packed));
 static struct gate idt[256];
 extern void (*isr_table[32])(void);
+extern void (*irq_table[16])(void);
 
 void idt_init(void)
 {
@@ -19,6 +20,10 @@ void idt_init(void)
     for (unsigned int i = 0; i < 32; ++i) {
         unsigned int address = (unsigned int)isr_table[i];
         idt[i] = (struct gate){address & 0xffff, 0x08, 0, 0x8e, address >> 16};
+    }
+    for (unsigned int i = 0; i < 16; ++i) {
+        unsigned int address = (unsigned int)irq_table[i];
+        idt[32 + i] = (struct gate){address & 0xffff, 0x08, 0, 0x8e, address >> 16};
     }
     struct descriptor pointer = {sizeof(idt) - 1, (unsigned int)idt};
     __asm__ volatile ("lidt %0" : : "m"(pointer) : "memory");

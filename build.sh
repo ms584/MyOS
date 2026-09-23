@@ -16,8 +16,10 @@ gcc "${flags[@]}" -c kernel/kernel.c -o build/kernel.o
 gcc "${flags[@]}" -c drivers/vga.c -o build/vga.o
 gcc "${flags[@]}" -c cpu/idt.c -o build/idt.o
 nasm -f elf32 cpu/isr.asm -o build/isr.o
+gcc "${flags[@]}" -c drivers/timer.c -o build/timer.o
+nasm -f elf32 cpu/irq.asm -o build/irq.o
 ld -m elf_i386 --build-id=none -T kernel/linker.ld \
-   -o build/kernel.elf build/entry.o build/kernel.o build/vga.o build/idt.o build/isr.o
+   -o build/kernel.elf build/entry.o build/kernel.o build/vga.o build/idt.o build/isr.o build/timer.o build/irq.o
 objcopy -O binary build/kernel.elf build/kernel.bin
 
 test "$(stat -c %s build/boot.bin)" -eq 512
@@ -30,8 +32,8 @@ test "$(nm -n build/kernel.elf | awk '$3 == "kernel_entry" {print $1}')" = 00010
     echo 'kernel_entry must be at 0x10000 for the existing raw jump.' >&2; exit 1;
 }
 # Write a separate image, preserving the previous working image.
-dd if=/dev/zero of=build/myos-phase23.img bs=512 count=2880 status=none
-dd if=build/boot.bin of=build/myos-phase23.img bs=512 seek=0 conv=notrunc status=none
-dd if=build/stage2.bin of=build/myos-phase23.img bs=512 seek=1 conv=notrunc status=none
-dd if=build/kernel.bin of=build/myos-phase23.img bs=512 seek=5 conv=notrunc status=none
-stat -c '%n: %s bytes' build/kernel.bin build/myos-phase23.img
+dd if=/dev/zero of=build/myos-current.img bs=512 count=2880 status=none
+dd if=build/boot.bin of=build/myos-current.img bs=512 seek=0 conv=notrunc status=none
+dd if=build/stage2.bin of=build/myos-current.img bs=512 seek=1 conv=notrunc status=none
+dd if=build/kernel.bin of=build/myos-current.img bs=512 seek=5 conv=notrunc status=none
+stat -c '%n: %s bytes' build/kernel.bin build/myos-current.img

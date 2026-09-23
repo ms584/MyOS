@@ -1,5 +1,6 @@
 #include "vga.h"
 #include "idt.h"
+#include "timer.h"
 
 void kernel_main(void)
 {
@@ -11,7 +12,10 @@ void kernel_main(void)
     idt_init();
     kprint("IDT initialized\n");
 
+    timer_init();
+    kprint("Timer IRQ initialized: 100 Hz\n");
+
     for (;;) {
-        __asm__ volatile ("cli; hlt");
+        __asm__ volatile ("sti; hlt");
     }
 }

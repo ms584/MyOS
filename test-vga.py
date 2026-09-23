@@ -122,7 +122,7 @@ for name, body in cases.items():
     subprocess.run(['objcopy', '-O', 'binary', str(elf), str(binary)], check=True)
     kernel = binary.read_bytes()
     assert len(kernel) <= 4096, 'Test kernel exceeds loader capacity'
-    disk = bytearray((root / 'build/myos-phase23.img').read_bytes())
+    disk = bytearray((root / 'build/myos-current.img').read_bytes())
     disk[2560:6656] = kernel.ljust(4096, b'\0')
     image.write_bytes(disk)
     result = subprocess.run([
