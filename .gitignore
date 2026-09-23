@@ -4,3 +4,6 @@ build/
 *.iso
 *.img
 *.elf
+
+__pycache__/
+*.pyc

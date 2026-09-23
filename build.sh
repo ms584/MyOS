@@ -1,39 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# Run from the existing MyOS repository root.
-for file in boot/boot.asm boot/stage2.asm kernel/entry.asm kernel/linker.ld; do
-    test -f "$file" || { echo "Missing existing repo file: $file" >&2; exit 1; }
-done
 mkdir -p build
-nasm -f bin boot/boot.asm -o build/boot.bin
-nasm -f bin boot/stage2.asm -o build/stage2.bin
-nasm -f elf32 kernel/entry.asm -o build/entry.o
-flags=(-m32 -std=c11 -Os -ffreestanding -fno-pie -fno-pic
-       -fno-stack-protector -fno-asynchronous-unwind-tables
-       -fno-unwind-tables -Wall -Wextra -Werror -Iinclude)
-gcc "${flags[@]}" -c kernel/kernel.c -o build/kernel.o
-gcc "${flags[@]}" -c drivers/vga.c -o build/vga.o
-gcc "${flags[@]}" -c cpu/idt.c -o build/idt.o
-nasm -f elf32 cpu/isr.asm -o build/isr.o
-gcc "${flags[@]}" -c drivers/timer.c -o build/timer.o
-nasm -f elf32 cpu/irq.asm -o build/irq.o
-ld -m elf_i386 --build-id=none -T kernel/linker.ld \
-   -o build/kernel.elf build/entry.o build/kernel.o build/vga.o build/idt.o build/isr.o build/timer.o build/irq.o
+flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
+       -mno-red-zone -mgeneral-regs-only -fno-stack-protector
+       -fno-asynchronous-unwind-tables -fno-unwind-tables
+       -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
+       -DTEST_CASE="${TEST_CASE:-0}")
+objects=()
+for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c; do
+    obj="build/$(basename "${source%.c}").o"
+    gcc "${flags[@]}" -c "$source" -o "$obj"
+    objects+=("$obj")
+done
+nasm -f elf64 kernel/entry.asm -o build/entry.o
+nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
+nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
+ld -m elf_x86_64 --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o
 objcopy -O binary build/kernel.elf build/kernel.bin
-
+size=$(stat -c %s build/kernel.bin)
+test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }
+sectors=$(((size + 511) / 512))
+nasm -f bin boot/boot.asm -o build/boot.bin
+video=()
+if [[ "${TEXT_ONLY:-0}" == 1 ]]; then video=(-DTEXT_ONLY=1); fi
+nasm -f bin -DKERNEL_SECTORS="$sectors" "${video[@]}" boot/stage2.asm -o build/stage2.bin
 test "$(stat -c %s build/boot.bin)" -eq 512
-test "$(stat -c %s build/stage2.bin)" -eq 2048
-# Existing Stage 2 reads eight sectors beginning at BIOS sector 6.
-test "$(stat -c %s build/kernel.bin)" -le 4096 || {
-    echo 'Kernel exceeds the existing 8-sector loader capacity.' >&2; exit 1;
-}
-test "$(nm -n build/kernel.elf | awk '$3 == "kernel_entry" {print $1}')" = 00010000 || {
-    echo 'kernel_entry must be at 0x10000 for the existing raw jump.' >&2; exit 1;
-}
-# Write a separate image, preserving the previous working image.
+test "$(stat -c %s build/stage2.bin)" -eq 8192
 dd if=/dev/zero of=build/myos-current.img bs=512 count=2880 status=none
 dd if=build/boot.bin of=build/myos-current.img bs=512 seek=0 conv=notrunc status=none
 dd if=build/stage2.bin of=build/myos-current.img bs=512 seek=1 conv=notrunc status=none
-dd if=build/kernel.bin of=build/myos-current.img bs=512 seek=5 conv=notrunc status=none
-stat -c '%n: %s bytes' build/kernel.bin build/myos-current.img
+dd if=build/kernel.bin of=build/myos-current.img bs=512 seek=17 conv=notrunc status=none
+echo "Kernel: $size bytes ($sectors sectors); image: build/myos-current.img"

@@ -1,79 +1,81 @@
-# MyOS — PIC and Timer IRQ
+# MyOS — foundations through Phase 8
 
-A learning OS with a BIOS two-stage bootloader and a 32-bit C kernel.
-Phase 2.2 adds an 80x25 VGA text driver: clear, print, LF/CR, wrapping,
-scrolling, and hardware cursor positioning.
+MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
+console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
+and a timer-driven preemptive kernel-task scheduler.
 
-## Build and run (Linux / WSL Ubuntu)
+## Build, test, run
 
-Dependencies: GCC with 32-bit code generation, GNU binutils, NASM, Python 3,
-and qemu-system-x86_64. No hosted C library is linked.
+On Linux/WSL Ubuntu, install GCC, GNU binutils, NASM, Python 3 and QEMU.
+The kernel is freestanding: no Linux runtime or C library is linked.
 
 ```bash
+cd ~/myos
 bash build.sh
-python3 test-vga.py
-python3 test-exceptions.py
-python3 test-timer.py
-qemu-system-x86_64 -drive format=raw,file=build/myos-current.img,if=floppy -boot order=a
+python3 tests/test_system.py
+qemu-system-x86_64 -m 64M \
+  -drive format=raw,file=build/myos-current.img,if=floppy -boot order=a
 ```
 
-Expected startup:
+QEMU shows the boot checks and a `myos>` input prompt. Click the window and type.
+Shift, Caps Lock, Enter and Backspace work with a US keyboard layout. This is
+an **input/echo console**, not the Phase 12 command shell. Two CPU-bound kernel
+tasks run in the background without voluntarily yielding; the timer preempts
+them. A third task returns and is removed from the runnable set.
 
-```text
-MyOS Kernel
-32-bit Protected Mode
-VGA driver initialized
-IDT initialized
-Timer IRQ initialized: 100 Hz
+The default console is VBE 800x600x32 with the BIOS 8x16 font. If unavailable,
+the loader falls back to VGA text. To force the fallback:
+
+```bash
+TEXT_ONLY=1 bash build.sh
 ```
 
-`test-vga.py` boots separate test images, checks VGA memory and hardware cursor
-registers, and verifies clear, cursor placement, wrapping, scrolling, CR,
-bottom-right behavior, and invalid coordinates. Its test-only entry first poisons
-BSS with 0xA5 to verify startup zeroing. Finally it runs `test-boot.py` against the
-normal image. Tests do not modify kernel source or replace the normal image.
-QEMU termination after the startup test is normal.
+Run `bash build.sh` again to restore the framebuffer build. Builds use
+`build/myos-current.img`; older phase images are not overwritten.
 
-## Layout and limits
+## Validation
 
-- Boot sector: LBA 0, 512 bytes; Stage 2: LBA 1–4, 2048 bytes.
-- Kernel: LBA 5–12, loaded at 0x10000; maximum raw size 4096 bytes.
-- Entry clears the direction flag and BSS before calling C.
-- ELF code/rodata use RX and data/BSS use RW segments. These describe ELF
-  layout; CPU memory protection requires paging, which is not enabled yet.
-- Stage 2 selects BIOS color text mode before entering protected mode.
-- Only timer IRQ0 is enabled. The handler updates a counter and never writes
-  VGA; console output remains single-threaded.
+`python3 tests/test_system.py` builds and boots isolated variants, then restores
+the normal image even if a test fails. It tests:
 
-Build outputs and test images are ignored by Git. The previous `build/myos.img`
-is preserved; use `build/myos-current.img` to run this phase.
+- BIOS loading across CHS track/head boundaries; entry into a 64-bit C kernel.
+- Boot, PMM/heap exhaustion and recovery, and preemption with 16, 64 and 256 MiB RAM.
+- E820-derived page allocation; map/translate/unmap and page-table reclamation;
+  heap alignment, splitting/coalescing, and out-of-memory behavior.
+- Actual QEMU PS/2 key events, modifiers, releases, extended-key filtering,
+  backspace, wrapping/scrolling and output in both framebuffer and VGA modes.
+- Repeated timer preemption of two CPU-bound tasks; general-register and
+  direction-flag preservation; safe task completion; task capacity limits.
+- Invalid opcode and general protection exceptions with the exact fault RIP;
+  page faults for missing pages, read-only writes and NX execution, including
+  the CPU error code and CR2 address.
 
-## Phase 2.3: CPU exceptions
+Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer`.
+The old `test-boot.py`, `test-vga.py`, `test-timer.py`, `test-exceptions.py` and
+`build-phase22.sh` commands are compatibility entry points for the current
+implementation. Earlier 16/32-bit implementations remain in Git history.
 
-The IDT installs interrupt gates for vectors 0–31 using the existing flat GDT.
-Assembly stubs normalize error codes and align the stack before calling C.
-The fatal handler prints the vector, CPU error code and fault EIP, then halts.
-`test-exceptions.py` triggers UD2 (#UD) and an invalid data selector (#GP) in
-separate images and checks the exact fault EIP against ELF symbols.
+## Design and present limits
 
-Exception handlers remain fatal, with no recovery, user-mode support, or
-dedicated double-fault stack. Paging is still off.
-`build-phase22.sh` remains a compatibility wrapper for the current build.
+- BIOS floppy layout: boot at LBA 0, 8 KiB Stage 2 at LBA 1–16, kernel from LBA 17.
+  The build derives the kernel sector count and rejects kernels above 256 KiB.
+- Boot information at 0x7000; E820 at 0x7400; font at 0xA000; VBE data at 0xB200.
+  Kernel at 0x10000; the first 1 MiB is reserved by the physical allocator.
+- Four-level paging initially identity-maps 4 GiB. The PMM manages only usable
+  E820 pages below 256 MiB. The heap maps 1 MiB at virtual address 4 GiB with NX.
+  Dynamically allocated page tables are reclaimed when mappings are removed.
+- `kmalloc`/`kfree` are 16-byte-aligned first-fit allocation with coalescing.
+  The heap is fixed-size; allocation failure returns NULL. Invalid/double frees
+  panic. Bootstrap identity mappings remain writable/executable; this is not
+  user-process isolation or full kernel W^X enforcement.
+- PIC IRQ0 and IRQ1 are unmasked; PIT rate is approximately 100 Hz. IRQ handlers
+  do not write the console. Exceptions print diagnostics and halt.
+- Scheduler: one CPU, round robin, up to four kernel tasks including the boot
+  task, one shared address space, 16 KiB stacks. Completed stacks remain reserved;
+  there is no task-slot recycling, FPU/SIMD state, stack guard or user mode yet.
+- VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB, UEFI, storage
+  filesystem, system calls or shell commands yet. Testing is on QEMU, not hardware.
 
-## PIC and PIT — roadmap Phase 4, timer foundation for Phase 8
-
-The legacy PICs are remapped to vectors 32–47. Only master IRQ0 is unmasked;
-keyboard, cascade and all slave IRQs stay masked. PIT channel 0 uses mode 2
-with divisor 11932 (approximately 100 Hz). After initialization the kernel
-uses STI/HLT to sleep until interrupts arrive.
-
-The IRQ stub preserves general and segment registers, clears DF for C, and
-restores interrupted EFLAGS through IRETD. The handler counts timer ticks and
-sends EOI; spurious IRQ7/15 have special EOI handling. `timer_ticks()` returns
-a 32-bit counter that wraps after approximately 497 days. No scheduler yet.
-
-`python3 test-timer.py` boots an isolated image and waits for 100 real PIT
-interrupts, checking register/DF preservation, counter progress, PIC masks
-and the cleared in-service register. The normal screen is static; it does
-not display live ticks. Build outputs now use `build/myos-current.img` so
-future steps do not require changing phase-numbered paths.
+See [docs/ROADMAP.md](docs/ROADMAP.md) for the original phase mapping.
+The owner pushes to GitHub manually; development never automatically pushes.

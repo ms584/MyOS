@@ -1,26 +1,19 @@
-bits 32
+bits 64
 section .text.entry
 global kernel_entry
-extern kernel_main
-extern __bss_start
-extern __bss_end
-
+extern kernel_main, __bss_start, __bss_end
 kernel_entry:
     cli
     cld
-    mov esp, 0x90000
-
-    ; Flat binary loading does not initialize ELF NOBITS sections.
+    mov rsp, 0x90000
     xor eax, eax
-    mov edi, __bss_start
-    mov ecx, __bss_end
-    sub ecx, edi
+    mov rdi, __bss_start
+    mov rcx, __bss_end
+    sub rcx, rdi
     rep stosb
-
     call kernel_main
 .hang:
     cli
     hlt
     jmp .hang
-
 section .note.GNU-stack noalloc noexec nowrite progbits
