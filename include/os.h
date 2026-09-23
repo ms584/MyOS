@@ -43,5 +43,6 @@ bool task_create(void (*)(void));
 struct frame *schedule(struct frame *);
 extern volatile uint64_t task_counts[2];
 void scheduler_start(void);
+_Noreturn void shell_run(void);
 #define PAGE_SIZE 4096u
 #endif

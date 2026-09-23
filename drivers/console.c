@@ -35,7 +35,7 @@ void putchar(char c){
     uint64_t f=irq_save();serial_put(c);
     if(c=='\n'){col=0;++row;}
     else if(c=='\r')col=0;
-    else if(c=='\b'){if(col){--col;cell(col,row,' ');}}
+    else if(c=='\b'){if(col||row){if(!col){--row;col=width;}--col;cell(col,row,' ');}}
     else {cell(col,row,c);if(++col==width){col=0;++row;}}
     if(row>=height){
         for(unsigned y=1;y<height;++y)for(unsigned x=0;x<width;++x)cell(x,y-1,cells[y*width+x]);

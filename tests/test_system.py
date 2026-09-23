@@ -118,7 +118,7 @@ def boot_test(name,ram=64,keyboard=False,text=False):
         if keyboard:
             vm.key('a');vm.key('shift','b');vm.key('caps_lock');vm.key('c');vm.key('shift','d')
             vm.key('1');vm.key('shift','1');vm.key('backspace');vm.key('ret')
-            vm.wait('aBCd1!\x08\nmyos> ')
+            vm.wait('error: unknown command: aBCd1\nmyos> ')
             vm.key('caps_lock');vm.key('up');vm.key('e')
             vm.wait('\nmyos> e')
             # Extended keys are ignored, releases do not echo and backspace erases.
@@ -152,10 +152,13 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
+        if args.suite in ('all','shell'):
+            from test_shell import exercise
+            exercise()
         if args.suite in ('all','memory'):
             for ram in (16,256):boot_test(f'ram-{ram}M',ram)
         if args.suite in ('all','exceptions'):
@@ -166,6 +169,8 @@ def main():
             fault_test(4,'Page Fault',17)
         if args.suite=='all':
             build(text=True);boot_test('vga-fallback',keyboard=True,text=True)
+            from test_shell import exercise
+            exercise(text=True)
     finally:
         env=dict(os.environ,TEST_CASE="0",TEXT_ONLY="0",PROCESS_TESTS="0")
         subprocess.run(["bash","build.sh"],env=env,check=True)

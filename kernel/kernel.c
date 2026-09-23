@@ -44,10 +44,5 @@ void kernel_main(void){
 #elif TEST_CASE == 6
     __asm__ volatile("mov $0x48, %%ax\n.global fault_site\nfault_site: mov %%ax, %%ds":::"rax");
 #endif
-    print("myos> ");
-    for(;;){
-        uint64_t flags=irq_save();int c=keyboard_get();
-        if(c<0){__asm__ volatile("sti; hlt":::"memory");continue;}
-        irq_restore(flags);putchar((char)c);if(c=='\n')print("myos> ");
-    }
+    shell_run();
 }

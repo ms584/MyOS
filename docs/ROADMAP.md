@@ -18,7 +18,7 @@ covered; they are not evidence that every future extension is implemented.
 | 9 | Process / User Mode | Complete baseline: Ring 3, private address spaces/stacks, fault containment and reap |
 | 10 | System Calls | Complete baseline: INT 0x80 write/getpid/exit/yield, validated user buffers |
 | 11 | Filesystem | Complete RAMFS baseline: directories, binary file I/O, user syscalls; volatile, persistence deferred |
-| 12 | Shell | Not started; input echo is not a shell |
+| 12 | Shell | Complete baseline: kernel command shell, file/directory commands, bounded line editing, QEMU keyboard tests |
 | 13 | Storage Driver | Not started |
 | 14 | BIOS Boot distribution | Initial BIOS path exists; hardware/distribution work remains |
 | 15 | UEFI | Not started |

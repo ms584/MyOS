@@ -2,8 +2,8 @@
 
 The filesystem baseline is a hierarchical RAMFS. It is volatile: reboot resets
 all files. FAT32, disk persistence and block-device drivers remain future work
-(storage is Phase 13). The `myos>` prompt still echoes input; commands such as
-`ls`, `cat`, `mkdir` and `rm` belong to Phase 12.
+(storage is Phase 13). At the Phase 11 milestone the prompt only echoed input. Phase 12 now adds
+`ls`, `cat`, `mkdir` and `rm`; see PHASE12.md.
 
 ## Behavior
 

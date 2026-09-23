@@ -11,7 +11,7 @@ flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
        -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
 objects=()
-for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c; do
+for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c; do
     obj="build/${source//\//-}"
     obj="${obj%.c}.o"
     gcc "${flags[@]}" -c "$source" -o "$obj"

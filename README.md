@@ -1,4 +1,4 @@
-# MyOS — Phase 11: RAM Filesystem
+# MyOS — Phase 12: Interactive Shell
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
@@ -19,7 +19,7 @@ qemu-system-x86_64 -m 64M \
 
 QEMU shows the boot checks and a `myos>` input prompt. Click the window and type.
 Shift, Caps Lock, Enter and Backspace work with a US keyboard layout. This is
-an **input/echo console**, not the Phase 12 command shell. Two CPU-bound kernel
+an **interactive command shell**; type `help` to list commands. Two CPU-bound kernel
 tasks run in the background without voluntarily yielding; the timer preempts
 them. A third task returns and is removed from the runnable set. Two Ring 3 processes
 also run with separate page tables, user stacks and private memory.
@@ -55,7 +55,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -84,7 +84,7 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
   reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
   unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
 - VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB, UEFI, persistent storage
-  or shell commands yet. Testing is on QEMU, not hardware.
+  yet. Testing is on QEMU, not hardware.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the original phase mapping.
 Phase 9 adds supervisor-only kernel mappings to each process; this is not a
@@ -99,7 +99,7 @@ RAMFS supports directories, binary file I/O, metadata and directory iteration.
 Each process owns eight file handles; exit/fault/kill closes them. Files live
 in RAM and disappear on reboot. A Ring 3 demo reads `/etc/motd` at boot.
 See [docs/PHASE11.md](docs/PHASE11.md) for limits, ABI and acceptance tests.
-The `myos>` prompt remains input echo; interactive file commands are Phase 12.
+The `myos>` prompt now accepts interactive file commands; see [Phase 12](docs/PHASE12.md).
 
 To watch development commands/results in your VS Code WSL terminal:
 
@@ -112,3 +112,10 @@ To record your own build or tests, use `python3 tools/run_logged.py -- bash buil
 or `python3 tools/run_logged.py -- python3 tests/test_system.py`.
 Only commands run through this wrapper are recorded; edits are reviewed with
 `git diff`. The log begins with Phase 11 and stays local under ignored `build/`.
+
+## Phase 12 shell
+
+Type `help` in QEMU. Try `ls`, `cat /etc/motd`, `mkdir /home/demo`,
+`cd /home/demo`, `write note Hello MyOS`, `cat note`, `pwd`, `mem`, and `uptime`.
+The shell runs in kernel mode; there is no external executable launcher yet.
+See [docs/PHASE12.md](docs/PHASE12.md) for syntax, limits and test coverage.
