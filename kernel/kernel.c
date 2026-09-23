@@ -1,14 +1,13 @@
+#include "vga.h"
+
 void kernel_main(void)
 {
-    volatile unsigned short* vga = (unsigned short*)0xB8000;
+    vga_clear();
+    kprint("MyOS Kernel\n");
+    kprint("32-bit Protected Mode\n");
+    kprint("VGA driver initialized\n");
 
-    const char* message = "Hello from C Kernel!";
-
-    for (int i = 0; message[i] != '\0'; i++) {
-        vga[i] = (0x0F << 8) | message[i];
-    }
-
-    while (1) {
-        __asm__ volatile ("hlt");
+    for (;;) {
+        __asm__ volatile ("cli; hlt");
     }
 }

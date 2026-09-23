@@ -12,15 +12,8 @@ stage2_start:
 
     mov [boot_drive], dl
 
-    ; DEBUG: ถ้า Stage 2 ทำงาน ต้องเห็นเลข 2
-    mov ah, 0x0e
-    mov al, '2'
-    mov bh, 0x00
-    int 0x10
-
-    mov al, 13
-    int 0x10
-    mov al, 10
+    ; Establish 80x25 color text mode before protected mode.
+    mov ax, 0x0003
     int 0x10
 
     ; -------------------------
@@ -42,17 +35,6 @@ stage2_start:
 
     int 0x13
     jc disk_error
-
-    ; DEBUG: Kernel loaded successfully
-    mov ah, 0x0e
-    mov al, 'K'
-    mov bh, 0x00
-    int 0x10
-
-    mov al, 13
-    int 0x10
-    mov al, 10
-    int 0x10
 
     ; -------------------------
     ; Disable interrupts
@@ -152,9 +134,6 @@ protected_mode:
     mov ss, ax
 
     mov esp, 0x90000
-
-    ; DEBUG: Protected Mode reached
-    mov word [0xb8000], 0x0f50
 
     ; kernel linked at 0x10000
     jmp 0x10000
