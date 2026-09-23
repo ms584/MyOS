@@ -13,7 +13,7 @@ if sockpath.exists():
 process = subprocess.Popen([
     'qemu-system-x86_64', '-display', 'none', '-monitor', 'none',
     '-serial', 'none', '-no-reboot',
-    '-drive', 'format=raw,file=build/myos-phase22.img,if=floppy',
+    '-drive', 'format=raw,file=build/myos-phase23.img,if=floppy',
     '-boot', 'order=a', '-qmp', f'unix:{sockpath},server=on,wait=off'])
 try:
     connection = socket.socket(socket.AF_UNIX)
@@ -41,19 +41,19 @@ try:
                 return response['return']
 
     command('qmp_capabilities')
-    expected = ['MyOS Kernel', '32-bit Protected Mode', 'VGA driver initialized']
+    expected = ['MyOS Kernel', '32-bit Protected Mode', 'VGA driver initialized', 'IDT initialized']
     for _ in range(60):
         command('human-monitor-command', {'command-line': f'pmemsave 0xb8000 4000 "{dump}"'})
         memory = dump.read_bytes()
         lines = [memory[row*160:(row+1)*160:2].decode('ascii', errors='replace')
                  for row in range(25)]
-        if [line.rstrip() for line in lines[:3]] == expected:
+        if [line.rstrip() for line in lines[:4]] == expected:
             break
         time.sleep(0.1)
-    assert [line.rstrip() for line in lines[:3]] == expected, lines[:3]
-    assert all(line == ' ' * 80 for line in lines[3:]), 'Screen not cleared'
+    assert [line.rstrip() for line in lines[:4]] == expected, lines[:4]
+    assert all(line == ' ' * 80 for line in lines[4:]), 'Screen not cleared'
     assert all(attribute == 15 for attribute in memory[1::2]), 'Wrong color'
-    print('PASS: QEMU boot, all three startup lines, cleared remaining screen, VGA attributes')
+    print('PASS: QEMU boot, all four startup lines, cleared remaining screen, VGA attributes')
 finally:
     process.terminate()
     process.wait(timeout=5)

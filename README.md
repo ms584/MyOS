@@ -1,4 +1,4 @@
-# MyOS — Phase 2.2
+# MyOS — Phase 2.3
 
 A learning OS with a BIOS two-stage bootloader and a 32-bit C kernel.
 Phase 2.2 adds an 80x25 VGA text driver: clear, print, LF/CR, wrapping,
@@ -10,9 +10,10 @@ Dependencies: GCC with 32-bit code generation, GNU binutils, NASM, Python 3,
 and qemu-system-x86_64. No hosted C library is linked.
 
 ```bash
-bash build-phase22.sh
+bash build.sh
 python3 test-vga.py
-qemu-system-x86_64 -drive format=raw,file=build/myos-phase22.img,if=floppy -boot order=a
+python3 test-exceptions.py
+qemu-system-x86_64 -drive format=raw,file=build/myos-phase23.img,if=floppy -boot order=a
 ```
 
 Expected startup:
@@ -21,6 +22,7 @@ Expected startup:
 MyOS Kernel
 32-bit Protected Mode
 VGA driver initialized
+IDT initialized
 ```
 
 `test-vga.py` boots separate test images, checks VGA memory and hardware cursor
@@ -42,4 +44,17 @@ QEMU termination after the startup test is normal.
   for single-threaded kernel use, not simultaneous IRQ writers.
 
 Build outputs and test images are ignored by Git. The previous `build/myos.img`
-is preserved; use `build/myos-phase22.img` to run this phase.
+is preserved; use `build/myos-phase23.img` to run this phase.
+
+## Phase 2.3: CPU exceptions
+
+The IDT installs interrupt gates for vectors 0–31 using the existing flat GDT.
+Assembly stubs normalize error codes and align the stack before calling C.
+The fatal handler prints the vector, CPU error code and fault EIP, then halts.
+`test-exceptions.py` triggers UD2 (#UD) and an invalid data selector (#GP) in
+separate images and checks the exact fault EIP against ELF symbols.
+
+IRQs remain disabled; vectors 32–255 are not installed. This phase does not
+support recovery, user-mode exceptions, or a dedicated double-fault stack.
+Paging is still off. Keep interrupts disabled until PIC/IRQ support is ready.
+`build-phase22.sh` remains a compatibility wrapper for the current build.
