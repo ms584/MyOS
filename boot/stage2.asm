@@ -1,102 +1,97 @@
 bits 16
 org 0x8000
 
-KERNEL_LOAD_SEGMENT equ 0x1000
-KERNEL_SECTORS      equ 4
+KERNEL_SEGMENT equ 0x1000
+KERNEL_SECTORS equ 8
 
 stage2_start:
     xor ax, ax
     mov ds, ax
+    mov ss, ax
+    mov sp, 0x7c00
 
-    cld
-
-    ; Save boot drive passed from Stage 1
     mov [boot_drive], dl
 
-    ; -------------------------
-    ; Stage 2 message
-    ; -------------------------
-    mov si, stage2_message
-    call print_string
+    ; DEBUG: ถ้า Stage 2 ทำงาน ต้องเห็นเลข 2
+    mov ah, 0x0e
+    mov al, '2'
+    mov bh, 0x00
+    int 0x10
+
+    mov al, 13
+    int 0x10
+    mov al, 10
+    int 0x10
 
     ; -------------------------
-    ; Kernel destination
-    ;
-    ; ES:BX = 1000:0000
-    ;
-    ; Physical address:
-    ; 0x1000 * 16 = 0x10000
+    ; Load kernel
+    ; BIOS sectors 6-13
     ; -------------------------
 
-    mov ax, KERNEL_LOAD_SEGMENT
+    mov ax, KERNEL_SEGMENT
     mov es, ax
-
     xor bx, bx
-
-    ; -------------------------
-    ; BIOS disk read
-    ;
-    ; Kernel starts at
-    ; BIOS Sector 6
-    ; -------------------------
 
     mov ah, 0x02
     mov al, KERNEL_SECTORS
 
-    mov ch, 0x00
-    mov cl, 0x06
-    mov dh, 0x00
-
+    mov ch, 0
+    mov cl, 6
+    mov dh, 0
     mov dl, [boot_drive]
 
     int 0x13
-
     jc disk_error
 
-    ; -------------------------
-    ; Kernel loaded
-    ; -------------------------
-
-    mov si, kernel_loaded_message
-    call print_string
-
-    ; -------------------------
-    ; Jump to Kernel
-    ;
-    ; 1000:0000 = 0x10000
-    ; -------------------------
-
-    jmp KERNEL_LOAD_SEGMENT:0x0000
-
-
-; ==================================
-; Print string
-; ==================================
-
-print_string:
-.next:
-    lodsb
-
-    test al, al
-    jz .done
-
+    ; DEBUG: Kernel loaded successfully
     mov ah, 0x0e
+    mov al, 'K'
     mov bh, 0x00
     int 0x10
 
-    jmp .next
+    mov al, 13
+    int 0x10
+    mov al, 10
+    int 0x10
 
-.done:
-    ret
+    ; -------------------------
+    ; Disable interrupts
+    ; -------------------------
 
+    cli
 
-; ==================================
-; Disk error
-; ==================================
+    ; -------------------------
+    ; Enable A20
+    ; Fast A20 gate
+    ; -------------------------
+
+    in al, 0x92
+    or al, 0x02
+    out 0x92, al
+
+    ; -------------------------
+    ; Load GDT
+    ; -------------------------
+
+    lgdt [gdt_descriptor]
+
+    ; -------------------------
+    ; Enable Protected Mode
+    ; -------------------------
+
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+
+    ; Far jump reloads CS
+    jmp CODE_SEG:protected_mode
+
 
 disk_error:
-    mov si, disk_error_message
-    call print_string
+    mov ah, 0x0e
+    mov al, 'E'
+    mov bh, 0x00
+    int 0x10
 
 .hang:
     cli
@@ -104,25 +99,70 @@ disk_error:
     jmp .hang
 
 
-; ==================================
-; Data
-; ==================================
+; ============================
+; GDT
+; ============================
 
-stage2_message:
-    db "Stage 2 running...", 13, 10, 0
+gdt_start:
 
-kernel_loaded_message:
-    db "Kernel loaded. Jumping...", 13, 10, 0
+gdt_null:
+    dq 0
 
-disk_error_message:
-    db "Kernel disk read failed!", 13, 10, 0
+gdt_code:
+    dw 0xffff
+    dw 0x0000
+    db 0x00
+    db 10011010b
+    db 11001111b
+    db 0x00
+
+gdt_data:
+    dw 0xffff
+    dw 0x0000
+    db 0x00
+    db 10010010b
+    db 11001111b
+    db 0x00
+
+gdt_end:
+
+
+gdt_descriptor:
+    dw gdt_end - gdt_start - 1
+    dd gdt_start
+
+
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
+
+
+; ============================
+; Protected Mode
+; ============================
+
+bits 32
+
+protected_mode:
+    mov ax, DATA_SEG
+
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
+    mov esp, 0x90000
+
+    ; DEBUG: Protected Mode reached
+    mov word [0xb8000], 0x0f50
+
+    ; kernel linked at 0x10000
+    jmp 0x10000
+
 
 boot_drive:
     db 0
 
 
-; ==================================
-; Stage 2 = 4 sectors
-; ==================================
-
+; Stage 2 remains 4 sectors
 times 2048 - ($ - $$) db 0
