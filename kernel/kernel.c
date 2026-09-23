@@ -12,6 +12,7 @@ void kernel_main(void){
     interrupts_init();print("IDT/PIC initialized\n");
     memory_init();memory_test();
     print("Free physical pages: ");decimal(pages_free());print("\n");
+    fs_init();fs_test();
     process_init();print("GDT/TSS and Ring 3 selectors initialized\n");
     keyboard_init();print("PS/2 keyboard initialized\n");
     scheduler_init();check(task_create(worker_a)&&task_create(worker_b)&&task_create(once),"task creation");
@@ -27,6 +28,7 @@ void kernel_main(void){
     print("PASS: context registers and direction flag preserved\n");
     process_test();
     syscall_test();
+    fs_user_test();
 #if TEST_CASE == 1
     __asm__ volatile(".global fault_site\nfault_site: ud2");
 #elif TEST_CASE == 2

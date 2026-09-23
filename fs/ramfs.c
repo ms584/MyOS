@@ -1,0 +1,189 @@
+#include "fs.h"
+struct node {
+    bool used;
+    unsigned parent, type, references;
+    size_t size;
+    char name[FS_NAME];
+    char *data;
+};
+static struct node nodes[FS_NODES];
+
+static bool equal(const char *a,const char *b)
+{
+    while (*a && *a==*b) { ++a; ++b; }
+    return *a==*b;
+}
+static int child(unsigned parent,const char *name)
+{
+    for (unsigned i=1;i<FS_NODES;++i)
+        if (nodes[i].used && nodes[i].parent==parent && equal(nodes[i].name,name)) return (int)i;
+    return -2;
+}
+
+/* Absolute paths only. Collapse '/', '.', and '..'; '..' at root stays root. */
+static int resolve(const char *path,bool parent,char *leaf)
+{
+    if (!path || path[0]!='/') return -22;
+    size_t length=0;
+    while (length<FS_PATH && path[length]) ++length;
+    if (length==FS_PATH) return -36;
+    unsigned current=0;
+    size_t pos=1;
+    while (pos<length) {
+        while (path[pos]=='/') ++pos;
+        if (!path[pos]) break;
+        if (nodes[current].type!=FS_DIR) return -20;
+        char name[FS_NAME]; size_t size=0;
+        while (path[pos] && path[pos]!='/') {
+            if (size==FS_NAME-1) return -36;
+            unsigned char c=path[pos++];
+            if (!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'||c=='-'||c=='.')) return -22;
+            name[size++]=(char)c;
+        }
+        name[size]=0;
+        size_t next=pos;while(path[next]=='/')++next;
+        if (parent && !path[next]) {
+            if (equal(name,".") || equal(name,"..")) return -22;
+            memcpy(leaf,name,size+1);return (int)current;
+        }
+        if (equal(name,".")) continue;
+        if (equal(name,"..")) { current=nodes[current].parent;continue; }
+        int found=child(current,name);if(found<0)return found;
+        current=(unsigned)found;
+    }
+    if (parent) return -22;
+    if (length && path[length-1]=='/' && nodes[current].type!=FS_DIR) return -20;
+    return (int)current;
+}
+
+static int create(const char *path,unsigned type)
+{
+    char name[FS_NAME]={0};int parent=resolve(path,true,name);
+    if(parent<0)return parent;
+    if(child((unsigned)parent,name)>=0)return -17;
+    unsigned slot;
+    for(slot=1;slot<FS_NODES;++slot)if(!nodes[slot].used)break;
+    if(slot==FS_NODES)return -28;
+    char *data=0;
+    if(type==FS_FILE){data=kmalloc(FS_FILE_MAX);if(!data)return -12;memset(data,0,FS_FILE_MAX);}
+    struct node *node=&nodes[slot];memset(node,0,sizeof(*node));
+    node->used=true;node->parent=(unsigned)parent;node->type=type;node->data=data;
+    memcpy(node->name,name,FS_NAME);
+    return (int)slot;
+}
+
+int fs_mkdir(const char *path)
+{
+    uint64_t flags=irq_save();int result=create(path,FS_DIR);irq_restore(flags);
+    return result<0?result:0;
+}
+
+static struct fs_handle *handle(struct fs_handle *table,int fd)
+{
+    if(fd<3 || fd>=3+FS_HANDLES || !table[fd-3].node)return 0;
+    return &table[fd-3];
+}
+
+int fs_open(struct fs_handle *table,const char *path,unsigned access)
+{
+    if((access&~15u) || !(access&3) || ((access&FS_TRUNC)&&!(access&FS_WRITE)))return -22;
+    uint64_t flags=irq_save();int result=-24;unsigned slot;
+    for(slot=0;slot<FS_HANDLES;++slot)if(!table[slot].node)break;
+    if(slot==FS_HANDLES)goto done;
+    result=resolve(path,false,0);
+    if(result==-2 && (access&FS_CREATE)) {
+        size_t length=0;while(path[length])++length;
+        if(length && path[length-1]=='/'){result=-20;goto done;}
+        result=create(path,FS_FILE);
+    }
+    if(result<0)goto done;
+    struct node *node=&nodes[result];
+    if(node->type!=FS_FILE){result=-21;goto done;}
+    if(access&FS_TRUNC){node->size=0;memset(node->data,0,FS_FILE_MAX);}
+    table[slot]=(struct fs_handle){(unsigned)result+1,access,0};
+    ++node->references;result=(int)slot+3;
+done:
+    irq_restore(flags);return result;
+}
+
+int fs_close(struct fs_handle *table,int fd)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file){irq_restore(flags);return -9;}
+    --nodes[file->node-1].references;memset(file,0,sizeof(*file));irq_restore(flags);return 0;
+}
+void fs_close_all(struct fs_handle *table)
+{
+    for(unsigned i=0;i<FS_HANDLES;++i)if(table[i].node)(void)fs_close(table,(int)i+3);
+}
+int64_t fs_read(struct fs_handle *table,int fd,void *buffer,size_t length)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file || !(file->flags&FS_READ)){irq_restore(flags);return -9;}
+    struct node *node=&nodes[file->node-1];
+    size_t count=file->offset>=node->size?0:node->size-file->offset;
+    if(count>length)count=length;
+    if(count)memcpy(buffer,node->data+file->offset,count);
+    file->offset+=count;irq_restore(flags);return (int64_t)count;
+}
+int64_t fs_write(struct fs_handle *table,int fd,const void *buffer,size_t length)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file || !(file->flags&FS_WRITE)){irq_restore(flags);return -9;}
+    if(length>FS_FILE_MAX-file->offset){irq_restore(flags);return -28;}
+    struct node *node=&nodes[file->node-1];
+    if(length){
+        if(file->offset>node->size)memset(node->data+node->size,0,file->offset-node->size);
+        memcpy(node->data+file->offset,buffer,length);file->offset+=length;
+        if(file->offset>node->size)node->size=file->offset;
+    }
+    irq_restore(flags);return (int64_t)length;
+}
+int fs_unlink(const char *path)
+{
+    uint64_t flags=irq_save();int result=resolve(path,false,0);
+    if(result<0)goto done;
+    if(!result || nodes[result].references){result=-16;goto done;}
+    for(unsigned i=1;i<FS_NODES;++i)
+        if(nodes[i].used && nodes[i].parent==(unsigned)result){result=-39;goto done;}
+    kfree(nodes[result].data);memset(&nodes[result],0,sizeof(nodes[result]));result=0;
+done:
+    irq_restore(flags);return result;
+}
+static void entry(unsigned index,struct fs_entry *result)
+{
+    memset(result,0,sizeof(*result));memcpy(result->name,nodes[index].name,FS_NAME);
+    result->type=nodes[index].type;result->size=nodes[index].size;
+}
+int fs_stat(const char *path,struct fs_entry *result)
+{
+    uint64_t flags=irq_save();int node=resolve(path,false,0);
+    if(node>=0)entry((unsigned)node,result);
+    irq_restore(flags);return node<0?node:0;
+}
+int fs_list(const char *path,unsigned position,struct fs_entry *result)
+{
+    uint64_t flags=irq_save();int node=resolve(path,false,0),ret=0;
+    if(node<0){ret=node;goto done;}
+    if(nodes[node].type!=FS_DIR){ret=-20;goto done;}
+    for(unsigned i=1;i<FS_NODES;++i)if(nodes[i].used&&nodes[i].parent==(unsigned)node){
+        if(!position--){entry(i,result);ret=1;break;}
+    }
+done:
+    irq_restore(flags);return ret;
+}
+unsigned fs_node_count(void)
+{
+    unsigned count=0;for(unsigned i=0;i<FS_NODES;++i)if(nodes[i].used)++count;return count;
+}
+void fs_init(void)
+{
+    nodes[0].used=true;nodes[0].type=FS_DIR;nodes[0].name[0]='/';
+    check(!fs_mkdir("/bin")&&!fs_mkdir("/home")&&!fs_mkdir("/etc")&&!fs_mkdir("/dev"),"RAMFS root directories");
+    struct fs_handle files[FS_HANDLES]={0};
+    int fd=fs_open(files,"/etc/motd",FS_WRITE|FS_CREATE);
+    static const char message[]="Welcome to MyOS RAMFS.\n";
+    check(fd>=3&&fs_write(files,fd,message,sizeof(message)-1)==sizeof(message)-1,"RAMFS seed file");
+    check(!fs_close(files,fd),"RAMFS seed close");
+    print("RAMFS mounted: /bin /home /etc /dev (volatile)\n");
+}

@@ -1,6 +1,7 @@
 #ifndef MYOS_PROCESS_H
 #define MYOS_PROCESS_H
 #include "os.h"
+#include "fs.h"
 
 #define USER_BASE 0x8000000000ull
 #define USER_DATA (USER_BASE + 0x1000)
@@ -23,6 +24,7 @@ struct process {
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
     bool exited;
     int32_t exit_status;
+    struct fs_handle files[FS_HANDLES];
 };
 
 void process_init(void);

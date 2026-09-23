@@ -9,3 +9,7 @@
   changes. Restore the normal image after fault-test variants.
 - Do not claim real-hardware, USB, user-mode or security isolation support
   based solely on successful QEMU kernel tests.
+
+- Run development commands through `python3 tools/run_logged.py -- ...` so the
+  owner can watch `tail -f build/activity.log` in VS Code. Do not log secrets.
+  Review filesystem/ABI behavior in `docs/PHASE11.md` before extending Phase 12.

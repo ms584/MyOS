@@ -14,6 +14,7 @@ struct process *process_find(uint64_t pid)
 
 static void release(struct process *process)
 {
+    fs_close_all(process->files);
     /* Only detached, noncurrent address spaces may reach this function. */
     for (unsigned i = 0; i < process->page_count; ++i) page_free(process->pages[i]);
     kfree(process->kernel_stack);
@@ -89,7 +90,7 @@ bool process_kill(uint64_t pid)
     struct process *process = process_find(pid);
     bool ok = process && process != scheduler_current_process()
               && process->state == PROCESS_RUNNING;
-    if (ok) { scheduler_stop_process(process); process->state = PROCESS_ZOMBIE; }
+    if (ok) { fs_close_all(process->files); scheduler_stop_process(process); process->state = PROCESS_ZOMBIE; }
     irq_restore(flags);
     return ok;
 }
@@ -117,6 +118,7 @@ struct frame *process_fault(struct frame *frame)
     print("USER FAULT pid="); decimal(process->pid);
     print(" vector="); decimal(frame->vector);
     print(" error="); hex(frame->error); print("\n");
+    fs_close_all(process->files);
     scheduler_stop_process(process);
     process->state = PROCESS_ZOMBIE;
     /* Reclamation is deferred: this IRQ frame still occupies its kernel stack. */

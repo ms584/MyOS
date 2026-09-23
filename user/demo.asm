@@ -44,6 +44,14 @@ org 0x8000000000
     je syscall_demo
     cmp rcx,16
     je syscall_negative_exit
+    cmp rcx,17
+    je fs_contract
+    cmp rcx,18
+    je fs_demo
+    cmp rcx,19
+    je fs_fault
+    cmp rcx,20
+    je fs_kill
 .loop:
     inc qword [rbx]
     jmp .loop
@@ -90,3 +98,4 @@ unavailable_fpu:
     ud2
 
 %include "user/syscall-demo.inc"
+%include "user/fs-demo.inc"

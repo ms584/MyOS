@@ -1,8 +1,8 @@
-# MyOS — Phase 10: System Calls
+# MyOS — Phase 11: RAM Filesystem
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
-a timer-driven preemptive scheduler, isolated Ring 3 demo processes, and a bounded system-call API.
+a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded system-call API, and a hierarchical RAM filesystem.
 
 ## Build, test, run
 
@@ -55,7 +55,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -83,12 +83,32 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
   one-page user stacks plus 16 KiB kernel stacks. Process resources/slots are
   reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
   unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
-- VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB, UEFI, storage
-  filesystem or shell commands yet. Testing is on QEMU, not hardware.
+- VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB, UEFI, persistent storage
+  or shell commands yet. Testing is on QEMU, not hardware.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the original phase mapping.
 Phase 9 adds supervisor-only kernel mappings to each process; this is not a
 security-audited sandbox. User-program loading is currently an embedded demo,
-with the initial INT 0x80 ABI (`write`, `getpid`, `exit`, `yield`).
+with INT 0x80 calls for console/process operations and RAM files.
 
 The owner pushes to GitHub manually; development never automatically pushes.
+
+## Phase 11 and visible commands
+
+RAMFS supports directories, binary file I/O, metadata and directory iteration.
+Each process owns eight file handles; exit/fault/kill closes them. Files live
+in RAM and disappear on reboot. A Ring 3 demo reads `/etc/motd` at boot.
+See [docs/PHASE11.md](docs/PHASE11.md) for limits, ABI and acceptance tests.
+The `myos>` prompt remains input echo; interactive file commands are Phase 12.
+
+To watch development commands/results in your VS Code WSL terminal:
+
+```bash
+cd ~/myos
+tail -f build/activity.log
+```
+
+To record your own build or tests, use `python3 tools/run_logged.py -- bash build.sh`
+or `python3 tools/run_logged.py -- python3 tests/test_system.py`.
+Only commands run through this wrapper are recorded; edits are reviewed with
+`git diff`. The log begins with Phase 11 and stays local under ignored `build/`.

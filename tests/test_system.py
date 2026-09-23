@@ -10,6 +10,13 @@ from pathlib import Path
 import socket
 import subprocess
 import time
+import sys
+import shlex
+
+def trace_command(event,args):
+    if event=="subprocess.Popen":
+        print("$ "+shlex.join(args[1]),flush=True)
+if os.environ.get("MYOS_TRACE")=="1":sys.addaudithook(trace_command)
 
 ROOT=Path.cwd()
 OUT=ROOT/'build/system-tests'
@@ -92,7 +99,11 @@ def boot_test(name,ram=64,keyboard=False,text=False):
                        'PASS: 13 user fault cases contained; kernel and peer survived',
                        'PASS: process kill/reap, capacity, PID and resource reuse',
                        'PASS: syscall ABI, 29 user checks, pointer validation, signed exit',
-                       'PASS: user write/getpid/yield/exit; status=42, resources reclaimed'):
+                       'PASS: user write/getpid/yield/exit; status=42, resources reclaimed',
+                       'PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup',
+                       'PASS: file syscalls, safe copyout, exit/fault/kill descriptor cleanup',
+                       'Welcome to MyOS RAMFS.',
+                       'PASS: Ring 3 opened/read/closed /etc/motd'):
             assert marker in content,content
         assert 'LEAK' not in content, 'Invalid write produced partial output'
         assert 'SYS_TEST_RX\nABCDOK\n' in content, content
@@ -141,7 +152,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))

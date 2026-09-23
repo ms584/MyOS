@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
+if [[ "${MYOS_TRACE:-0}" == 1 ]]; then
+    PS4='+ ${BASH_SOURCE}:${LINENO}: '
+    set -x
+fi
 mkdir -p build
 flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
@@ -7,8 +11,9 @@ flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
        -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
 objects=()
-for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c; do
-    obj="build/$(basename "${source%.c}").o"
+for source in kernel/kernel.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c; do
+    obj="build/${source//\//-}"
+    obj="${obj%.c}.o"
     gcc "${flags[@]}" -c "$source" -o "$obj"
     objects+=("$obj")
 done
