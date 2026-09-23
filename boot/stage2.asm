@@ -1,25 +1,72 @@
 bits 16
 org 0x8000
 
+KERNEL_LOAD_SEGMENT equ 0x1000
+KERNEL_SECTORS      equ 4
+
 stage2_start:
     xor ax, ax
     mov ds, ax
 
     cld
 
-    ; Message located in first sector
-    mov si, message
+    ; Save boot drive passed from Stage 1
+    mov [boot_drive], dl
+
+    ; -------------------------
+    ; Stage 2 message
+    ; -------------------------
+    mov si, stage2_message
     call print_string
 
-    ; Message deliberately located later
-    ; in the Stage 2 image
-    mov si, multi_sector_message
+    ; -------------------------
+    ; Kernel destination
+    ;
+    ; ES:BX = 1000:0000
+    ;
+    ; Physical address:
+    ; 0x1000 * 16 = 0x10000
+    ; -------------------------
+
+    mov ax, KERNEL_LOAD_SEGMENT
+    mov es, ax
+
+    xor bx, bx
+
+    ; -------------------------
+    ; BIOS disk read
+    ;
+    ; Kernel starts at
+    ; BIOS Sector 6
+    ; -------------------------
+
+    mov ah, 0x02
+    mov al, KERNEL_SECTORS
+
+    mov ch, 0x00
+    mov cl, 0x06
+    mov dh, 0x00
+
+    mov dl, [boot_drive]
+
+    int 0x13
+
+    jc disk_error
+
+    ; -------------------------
+    ; Kernel loaded
+    ; -------------------------
+
+    mov si, kernel_loaded_message
     call print_string
 
-.hang:
-    cli
-    hlt
-    jmp .hang
+    ; -------------------------
+    ; Jump to Kernel
+    ;
+    ; 1000:0000 = 0x10000
+    ; -------------------------
+
+    jmp KERNEL_LOAD_SEGMENT:0x0000
 
 
 ; ==================================
@@ -43,28 +90,39 @@ print_string:
     ret
 
 
-message:
-    db "Stage 2 running!", 13, 10, 0
+; ==================================
+; Disk error
+; ==================================
+
+disk_error:
+    mov si, disk_error_message
+    call print_string
+
+.hang:
+    cli
+    hlt
+    jmp .hang
 
 
 ; ==================================
-; Pad until offset 1536
-;
-; Stage2 sector 1 = offset    0
-; Stage2 sector 2 = offset  512
-; Stage2 sector 3 = offset 1024
-; Stage2 sector 4 = offset 1536
+; Data
 ; ==================================
 
-times 1536 - ($ - $$) db 0
+stage2_message:
+    db "Stage 2 running...", 13, 10, 0
 
-multi_sector_message:
-    db "Multi-sector loading works!", 13, 10, 0
+kernel_loaded_message:
+    db "Kernel loaded. Jumping...", 13, 10, 0
+
+disk_error_message:
+    db "Kernel disk read failed!", 13, 10, 0
+
+boot_drive:
+    db 0
 
 
 ; ==================================
-; Make Stage 2 exactly 4 sectors
-; 4 * 512 = 2048 bytes
+; Stage 2 = 4 sectors
 ; ==================================
 
 times 2048 - ($ - $$) db 0
