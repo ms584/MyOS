@@ -183,6 +183,11 @@ isr47:
     push qword 0
     push qword 47
     jmp interrupt_common
+global syscall_entry
+syscall_entry:
+    push qword 0
+    push qword 128
+    jmp interrupt_common
 interrupt_common:
     push rax
     push rbx

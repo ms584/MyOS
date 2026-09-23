@@ -1,5 +1,8 @@
 # Phase 9 — Process / User Mode
 
+This records the Phase 9 milestone. The subsequent syscall ABI is documented in
+[PHASE10.md](PHASE10.md).
+
 The kernel can now create and preempt **Ring 3 processes**. Normal boot starts
 two embedded demo programs with different PIDs, address-space roots and physical
 memory, then returns to the existing keyboard echo console.

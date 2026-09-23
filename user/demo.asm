@@ -1,6 +1,7 @@
 bits 64
 default abs
 org 0x8000000000
+%include "user/syscall.inc"
     mov rbx,0x8000001000
     xor eax,eax
     mov ax,cs
@@ -37,6 +38,12 @@ org 0x8000000000
     je execute_kernel
     cmp rcx,13
     je unavailable_fpu
+    cmp rcx,14
+    je syscall_contract
+    cmp rcx,15
+    je syscall_demo
+    cmp rcx,16
+    je syscall_negative_exit
 .loop:
     inc qword [rbx]
     jmp .loop
@@ -81,3 +88,5 @@ execute_kernel:
 unavailable_fpu:
     fnop
     ud2
+
+%include "user/syscall-demo.inc"

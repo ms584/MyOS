@@ -1,4 +1,5 @@
-#include "process.h"
+#include "syscall.h"
+extern void syscall_entry(void);
 struct gate {uint16_t low,selector;uint8_t ist,flags;uint16_t mid;uint32_t high,zero;} __attribute__((packed));
 struct descriptor {uint16_t limit;uint64_t base;} __attribute__((packed));
 static struct gate idt[256];
@@ -7,6 +8,8 @@ volatile uint64_t ticks;
 static void wait_io(void){outb(0x80,0);}
 void interrupts_init(void){
     for(unsigned i=0;i<48;++i){uint64_t a=(uint64_t)isr_table[i];idt[i]=(struct gate){a,0x18,0,0x8e,a>>16,a>>32,0};}
+    uint64_t a = (uint64_t)syscall_entry;
+    idt[128] = (struct gate){a,0x18,0,0xee,a>>16,a>>32,0};
     struct descriptor d={sizeof(idt)-1,(uint64_t)idt};__asm__ volatile("lidt %0"::"m"(d):"memory");
     outb(0x21,0xff);outb(0xa1,0xff);
     outb(0x20,0x11);wait_io();outb(0xa0,0x11);wait_io();
@@ -17,6 +20,7 @@ void interrupts_init(void){
 }
 void timer_init(void){outb(0x43,0x34);outb(0x40,11932&255);outb(0x40,11932>>8);outb(0x21,inb(0x21)&~1u);}
 struct frame *interrupt_dispatch(struct frame *f){
+    if (f->vector == 128) return syscall_dispatch(f);
     if(f->vector<32){
         if ((f->cs & 3) == 3 && f->vector != 2 && f->vector != 8 && f->vector != 18)
             return process_fault(f);

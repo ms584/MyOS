@@ -21,6 +21,8 @@ struct process {
     uintptr_t data_page;
     uint64_t preemptions;
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
+    bool exited;
+    int32_t exit_status;
 };
 
 void process_init(void);

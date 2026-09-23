@@ -53,6 +53,12 @@ uint64_t process_create(uint64_t mode, uint64_t cookie)
     uint64_t *data = (uint64_t *)process->pages[5];
     data[2] = cookie;
     data[3] = mode;
+    if (mode == 14) {
+        /* Test-only buffers: RX -> RW crossing and a partial invalid request. */
+        memcpy((void *)(process->pages[4] + PAGE_SIZE - 2), "AB", 2);
+        memcpy((void *)process->pages[5], "CD", 2);
+        memcpy((void *)(process->pages[5] + PAGE_SIZE - 4), "LEAK", 4);
+    }
     /* RET is used by the NX-stack execution test. */
     *(uint8_t *)process->pages[6] = 0xc3;
     process->data_page = process->pages[5];

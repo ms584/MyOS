@@ -1,4 +1,4 @@
-#include "process.h"
+#include "syscall.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -26,6 +26,7 @@ void kernel_main(void){
     print("PASS: two CPU-bound tasks preempted; task exit\n");
     print("PASS: context registers and direction flag preserved\n");
     process_test();
+    syscall_test();
 #if TEST_CASE == 1
     __asm__ volatile(".global fault_site\nfault_site: ud2");
 #elif TEST_CASE == 2

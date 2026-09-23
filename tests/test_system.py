@@ -90,8 +90,12 @@ def boot_test(name,ram=64,keyboard=False,text=False):
                        'PASS: context registers and direction flag preserved',
                        'PASS: Ring 3 processes, private CR3/data/stack, timer preemption',
                        'PASS: 13 user fault cases contained; kernel and peer survived',
-                       'PASS: process kill/reap, capacity, PID and resource reuse'):
+                       'PASS: process kill/reap, capacity, PID and resource reuse',
+                       'PASS: syscall ABI, 29 user checks, pointer validation, signed exit',
+                       'PASS: user write/getpid/yield/exit; status=42, resources reclaimed'):
             assert marker in content,content
+        assert 'LEAK' not in content, 'Invalid write produced partial output'
+        assert 'SYS_TEST_RX\nABCDOK\n' in content, content
         assert ('VGA text' if text else 'framebuffer 800x600x32') in content
         syms=symbols()
         first=int.from_bytes(vm.memory(syms['ticks'],8),'little')
@@ -137,7 +141,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))

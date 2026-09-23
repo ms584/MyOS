@@ -16,7 +16,7 @@ covered; they are not evidence that every future extension is implemented.
 | 7 | Memory Management | Complete baseline: E820 PMM, paging APIs, NX/RO mappings, kernel heap |
 | 8 | Timer + Scheduler | Complete baseline: PIT, preemptive round robin, context switch, task exit |
 | 9 | Process / User Mode | Complete baseline: Ring 3, private address spaces/stacks, fault containment and reap |
-| 10 | System Calls | Not started |
+| 10 | System Calls | Complete baseline: INT 0x80 write/getpid/exit/yield, validated user buffers |
 | 11 | Filesystem | Not started |
 | 12 | Shell | Not started; input echo is not a shell |
 | 13 | Storage Driver | Not started |

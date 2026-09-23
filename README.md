@@ -1,8 +1,8 @@
-# MyOS — Phase 9: Process / User Mode
+# MyOS — Phase 10: System Calls
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
-a timer-driven preemptive scheduler, and isolated Ring 3 demo processes.
+a timer-driven preemptive scheduler, isolated Ring 3 demo processes, and a bounded system-call API.
 
 ## Build, test, run
 
@@ -23,7 +23,9 @@ an **input/echo console**, not the Phase 12 command shell. Two CPU-bound kernel
 tasks run in the background without voluntarily yielding; the timer preempts
 them. A third task returns and is removed from the runnable set. Two Ring 3 processes
 also run with separate page tables, user stacks and private memory.
-See [docs/PHASE9.md](docs/PHASE9.md) for implementation and test details.
+A third user demo prints through `sys_write`, gets its PID, yields and exits
+with status 42; the kernel reclaims it. See [docs/PHASE10.md](docs/PHASE10.md)
+for the syscall ABI and [docs/PHASE9.md](docs/PHASE9.md) for process foundations.
 
 The default console is VBE 800x600x32 with the BIOS 8x16 font. If unavailable,
 the loader falls back to VGA text. To force the fallback:
@@ -53,9 +55,9 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
-kill/reap, resource reuse and allocation-failure rollback. Normal builds do not
+kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
 The old `test-boot.py`, `test-vga.py`, `test-timer.py`, `test-exceptions.py` and
 `build-phase22.sh` commands are compatibility entry points for the current
@@ -82,11 +84,11 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
   reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
   unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
 - VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB, UEFI, storage
-  filesystem, system calls or shell commands yet. Testing is on QEMU, not hardware.
+  filesystem or shell commands yet. Testing is on QEMU, not hardware.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the original phase mapping.
 Phase 9 adds supervisor-only kernel mappings to each process; this is not a
 security-audited sandbox. User-program loading is currently an embedded demo,
-with no syscall ABI yet (Phase 10).
+with the initial INT 0x80 ABI (`write`, `getpid`, `exit`, `yield`).
 
 The owner pushes to GitHub manually; development never automatically pushes.
