@@ -21,6 +21,8 @@ shell. Existing Ring 3 demos and timer-preempted tasks keep running.
 | `rm PATH` | Remove a closed file or empty directory |
 | `stat PATH` | Show file/directory type and size in bytes |
 | `mem` | Show available physical-page count |
+| `disk` | Show Phase 13 ATA data-disk status |
+| `sync` | Explicitly save RAMFS to the attached MyOS data disk |
 | `uptime` | Approximate seconds from PIT ticks |
 
 Example:
@@ -51,8 +53,9 @@ ignored. `write PATH` writes an empty file. No shutdown/reboot command is added.
 The line holds at most 255 printable characters. Backspace edits the line and
 works across screen wrapping; it cannot erase the prompt. Once a line exceeds
 the limit, the entire command is discarded at Enter, even if Backspace follows.
-Errors return to the prompt without halting the kernel. Files remain volatile:
-reboot loses changes. See PHASE11.md for RAMFS resource limits.
+Errors return to the prompt without halting the kernel. With the Phase 13 marked ATA data image attached, Shell file changes save
+automatically and survive reboot; otherwise they remain volatile. See
+PHASE11.md for RAMFS resource limits and PHASE13.md for storage setup.
 
 ## Validation and watching commands
 

@@ -1,4 +1,5 @@
 #include "fs.h"
+#include "storage.h"
 #define LINE_SIZE 256
 static char cwd[FS_PATH]="/";
 static struct fs_handle files[FS_HANDLES];
@@ -26,6 +27,11 @@ static void canonical(const char *path,char *out){
         if(used>1)out[used++]='/';memcpy(out+used,path+begin,n);used+=n;out[used]=0;
     }
 }
+static void persist(void){
+    if(!storage_ready())return;
+    int result=storage_save();
+    if(result<0){print("error: disk save failed (code ");decimal((uint64_t)(-result));print(")\n");}
+}
 static void execute(char *line){
     char *rest=line,*cmd=word(&rest);if(!cmd)return;
     if(equal(cmd,"echo")){while(*rest==' ')++rest;print(rest);print("\n");return;}
@@ -35,16 +41,18 @@ static void execute(char *line){
         while(*rest==' ')++rest;
         char path[FS_PATH];if(!path_for(arg,path))return;
         int fd=fs_open(files,path,FS_WRITE|FS_CREATE|FS_TRUNC);if(fd<0){error(fd);return;}
-        int64_t result=fs_write(files,fd,rest,length(rest));fs_close(files,fd);if(result<0)error((int)result);return;
+        int64_t result=fs_write(files,fd,rest,length(rest));fs_close(files,fd);if(result<0)error((int)result);else persist();return;
     }
     if(word(&rest)){print("error: too many arguments\n");return;}
-    if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")){
+    if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime\nFiles live in RAM; reboot loses changes.\n");
+        if(equal(cmd,"help"))print("help clear echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}
-        else {print("Uptime (approx seconds): ");decimal(ticks/100);print("\n");}return;
+        else if(equal(cmd,"uptime")){print("Uptime (approx seconds): ");decimal(ticks/100);print("\n");}
+        else if(equal(cmd,"disk")){if(!storage_ready())print("Disk: unavailable (RAM only)\n");else{print("Disk: ATA PIO, ");decimal(storage_sectors());print(" sectors, saved generation ");decimal(storage_generation());print("\n");}}
+        else {int result=storage_save();if(result<0){print("error: sync failed (code ");decimal((uint64_t)(-result));print(")\n");}else{print("Saved generation ");decimal(storage_generation());print("\n");}}return;
     }
     bool cd=equal(cmd,"cd"),ls=equal(cmd,"ls");
     if(!(cd||ls||equal(cmd,"cat")||equal(cmd,"touch")||equal(cmd,"mkdir")||equal(cmd,"rm")||equal(cmd,"stat"))){print("error: unknown command: ");print(cmd);print("\n");return;}
@@ -54,13 +62,13 @@ static void execute(char *line){
     if(cd){result=fs_stat(path,&info);if(!result&&info.type!=FS_DIR)result=-20;if(result<0)error(result);else canonical(path,cwd);}
     else if(ls){
         for(unsigned i=0;;++i){result=fs_list(path,i,&info);if(result<=0){if(result<0)error(result);break;}print(info.name);if(info.type==FS_DIR)putchar('/');print("\n");}
-    }else if(equal(cmd,"mkdir")){result=fs_mkdir(path);if(result<0)error(result);}
+    }else if(equal(cmd,"mkdir")){result=fs_mkdir(path);if(result<0)error(result);else persist();}
     else if(equal(cmd,"rm")){
         result=fs_stat(path,&info);if(result<0){error(result);return;}
         char normal[FS_PATH];canonical(path,normal);size_t n=length(normal);
         bool ancestor=true;for(size_t i=0;i<n;++i)if(cwd[i]!=normal[i]){ancestor=false;break;}
         if(ancestor&&(n==1||cwd[n]==0||cwd[n]=='/')){error(-16);return;}
-        result=fs_unlink(path);if(result<0)error(result);
+        result=fs_unlink(path);if(result<0)error(result);else persist();
     }else if(equal(cmd,"stat")){
         result=fs_stat(path,&info);if(result<0)error(result);else{print(info.type==FS_DIR?"directory ":"file ");decimal(info.size);print(" bytes\n");}
     }else{
@@ -69,7 +77,7 @@ static void execute(char *line){
         if(cat){char data[128];int64_t count;bool any=false;char last=0;
             while((count=fs_read(files,fd,data,sizeof(data)))>0)for(int64_t i=0;i<count;++i){last=data[i];putchar(last=='\n'||(last>=32&&last<=126)?last:'.');any=true;}
             if(count<0)error((int)count);else if(any&&last!='\n')putchar('\n');
-        }fs_close(files,fd);
+        }fs_close(files,fd);if(!cat)persist();
     }
 }
 _Noreturn void shell_run(void){

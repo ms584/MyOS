@@ -19,7 +19,7 @@ covered; they are not evidence that every future extension is implemented.
 | 10 | System Calls | Complete baseline: INT 0x80 write/getpid/exit/yield, validated user buffers |
 | 11 | Filesystem | Complete RAMFS baseline: directories, binary file I/O, user syscalls; volatile, persistence deferred |
 | 12 | Shell | Complete baseline: kernel command shell, file/directory commands, bounded line editing, QEMU keyboard tests |
-| 13 | Storage Driver | Not started |
+| 13 | Storage Driver | Complete QEMU baseline: ATA PIO LBA28, signed data image, dual-bank RAMFS snapshots and reboot recovery |
 | 14 | BIOS Boot distribution | Initial BIOS path exists; hardware/distribution work remains |
 | 15 | UEFI | Not started |
 | 16 | Build System | Reproducible scripts exist; distribution build work remains |

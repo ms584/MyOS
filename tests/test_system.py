@@ -1,7 +1,7 @@
 """End-to-end x86-64 QEMU tests. Run from the MyOS repo root.
 
 Restores the normal framebuffer build even after a failing test. Generated
-images, logs and screenshots live in build/system-tests. No physical disks.
+images, logs and screenshots live in build/system-tests. The normal suite needs no data disk; storage has its own isolated test.
 """
 import argparse
 import json
@@ -16,7 +16,9 @@ import shlex
 def trace_command(event,args):
     if event=="subprocess.Popen":
         print("$ "+shlex.join(args[1]),flush=True)
-if os.environ.get("MYOS_TRACE")=="1":sys.addaudithook(trace_command)
+if os.environ.get("MYOS_TRACE")=="1" and os.environ.get("MYOS_TRACE_HOOK")!="1":
+    sys.addaudithook(trace_command)
+    os.environ["MYOS_TRACE_HOOK"]="1"
 
 ROOT=Path.cwd()
 OUT=ROOT/'build/system-tests'
@@ -27,16 +29,18 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64):
+    def __init__(self,name,ram=64,disk=None):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
         self.log.write_text('')
         self.sock.unlink(missing_ok=True)
-        self.process=subprocess.Popen(['qemu-system-x86_64','-m',str(ram),'-display','none',
+        command=['qemu-system-x86_64','-m',str(ram),'-display','none',
             '-monitor','none','-serial',f'file:{self.log}','-no-reboot','-no-shutdown',
             '-drive',f'format=raw,file={ROOT}/build/myos-current.img,if=floppy',
-            '-boot','order=a','-qmp',f'unix:{self.sock},server=on,wait=off'])
+            '-boot','order=a','-qmp',f'unix:{self.sock},server=on,wait=off']
+        if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index=0'])
+        self.process=subprocess.Popen(command)
         self.connection=socket.socket(socket.AF_UNIX)
         try:
             for _ in range(100):
@@ -152,12 +156,15 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
         if args.suite in ('all','shell'):
             from test_shell import exercise
+            exercise()
+        if args.suite in ('all','storage'):
+            from test_storage import exercise
             exercise()
         if args.suite in ('all','memory'):
             for ram in (16,256):boot_test(f'ram-{ram}M',ram)

@@ -1,4 +1,5 @@
 #include "syscall.h"
+#include "storage.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -44,5 +45,10 @@ void kernel_main(void){
 #elif TEST_CASE == 6
     __asm__ volatile("mov $0x48, %%ax\n.global fault_site\nfault_site: mov %%ax, %%ds":::"rax");
 #endif
+    storage_init();
+    int mount=storage_load();
+    if(!mount){print("Storage: restored RAMFS generation ");decimal(storage_generation());print("\n");}
+    else if(mount==-2 && storage_ready())print("Storage: empty data disk; first change will save\n");
+    else if(mount!=-19){print("Storage: snapshot unavailable (error ");decimal((uint64_t)(-mount));print("); RAM contents retained\n");}
     shell_run();
 }

@@ -1,4 +1,4 @@
-#include "fs.h"
+#include "fs-snapshot.h"
 struct node {
     bool used;
     unsigned parent, type, references;
@@ -185,5 +185,7 @@ void fs_init(void)
     static const char message[]="Welcome to MyOS RAMFS.\n";
     check(fd>=3&&fs_write(files,fd,message,sizeof(message)-1)==sizeof(message)-1,"RAMFS seed file");
     check(!fs_close(files,fd),"RAMFS seed close");
-    print("RAMFS mounted: /bin /home /etc /dev (volatile)\n");
+    print("RAMFS mounted: /bin /home /etc /dev (RAM-backed)\n");
 }
+
+#include "snapshot-impl.inc"

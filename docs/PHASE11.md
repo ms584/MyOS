@@ -1,8 +1,8 @@
 # Phase 11 — RAM filesystem
 
 The filesystem baseline is a hierarchical RAMFS. It is volatile: reboot resets
-all files. FAT32, disk persistence and block-device drivers remain future work
-(storage is Phase 13). At the Phase 11 milestone the prompt only echoed input. Phase 12 now adds
+all files. Phase 13 now adds ATA-backed persistence using a custom dual-snapshot format;
+FAT32 and other storage controllers remain future work. At the Phase 11 milestone the prompt only echoed input. Phase 12 now adds
 `ls`, `cat`, `mkdir` and `rm`; see PHASE12.md.
 
 ## Behavior
@@ -102,4 +102,4 @@ git diff
 git show --stat HEAD
 ```
 
-The owner always pushes manually.
+The owner always pushes manually. See PHASE13.md for persistence setup.
