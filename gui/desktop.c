@@ -1,9 +1,10 @@
 #include "desktop.h"
+#include "calculator.h"
 #include "graphics.h"
 #include "mouse.h"
 #include "settings.h"
 
-#define WINDOW_LIMIT 4
+#define WINDOW_LIMIT 5
 #define WINDOW_WIDTH 320
 #define WINDOW_HEIGHT 210
 #define TITLE_HEIGHT 32
@@ -19,8 +20,8 @@ struct desktop {
     uint8_t buttons;
 };
 
-static const char *titles[WINDOW_LIMIT]={"Demo A","Demo B","Demo C","Settings"};
-static const uint32_t bodies[WINDOW_LIMIT]={0x20324b,0x3a2b43,0x2a3c39,0x20324b};
+static const char *titles[WINDOW_LIMIT]={"Demo A","Demo B","Demo C","Settings","Calculator"};
+static const uint32_t bodies[WINDOW_LIMIT]={0x20324b,0x3a2b43,0x2a3c39,0x20324b,0x20324b};
 
 static void marker(const char *name,int id)
 {
@@ -60,6 +61,7 @@ static bool open_window(struct desktop *d,int id)
     d->order[d->count++]=id;
     d->active=id;
     if(id==3)settings_begin();
+    if(id==4)calculator_begin();
     marker("WINDOW OPEN",id);
     return true;
 }
@@ -90,6 +92,7 @@ static void draw_window(struct desktop *d,const struct window *w)
     gfx_rect(s,x+WINDOW_WIDTH-29,y+5,24,22,0xd65c69);
     gfx_text(s,x+WINDOW_WIDTH-21,y+7,"X",0xffffff);
     if(id==3){settings_draw(s,x,y);return;}
+    if(id==4){calculator_draw(s,x,y);return;}
     gfx_text(s,x+18,y+53,"Phase 16 window placeholder",0xe1ecfa);
     gfx_text(s,x+18,y+82,"Drag the title. Click X to close.",0xb8cee7);
     gfx_rect(s,x+18,y+118,WINDOW_WIDTH-36,54,
@@ -101,7 +104,7 @@ static void redraw(struct desktop *d)
     struct gfx_surface *s=d->scene;
     gfx_clear(s,settings_background_color());
     gfx_rect(s,0,0,(int)s->width,54,settings_bar_color());
-    gfx_text(s,24,18,"MyOS Desktop  |  Phase 17",settings_text_color());
+    gfx_text(s,24,18,"MyOS Desktop  |  Phase 18",settings_text_color());
     gfx_text(s,24,64,"Launcher",settings_text_color());
     for(int id=0;id<WINDOW_LIMIT;++id){
         int y=86+id*56;
@@ -110,7 +113,7 @@ static void redraw(struct desktop *d)
     }
     for(int i=0;i<d->count;++i)draw_window(d,d->windows[d->order[i]]);
     gfx_rect(s,0,(int)s->height-36,(int)s->width,36,0x192842);
-    gfx_text(s,24,(int)s->height-26,"Launcher | Drag | X close | 1-4 open | Q exit",0xffffff);
+    gfx_text(s,24,(int)s->height-26,"Launcher | Drag | X close | 1-5 open | Q exit",0xffffff);
     check(gfx_present(s,0,0),"desktop present");
     gfx_cursor_draw(d->cursor_x,d->cursor_y,d->buttons);
     marker("DESKTOP FRAME",-1);
@@ -135,6 +138,7 @@ static bool click(struct desktop *d,int x,int y)
         if(inside(x,y,w->x,w->y,WINDOW_WIDTH,TITLE_HEIGHT)){
             d->dragging=id;d->drag_x=x-w->x;d->drag_y=y-w->y;
         }else if(id==3)settings_click(x-w->x,y-w->y);
+        else if(id==4)calculator_click(x-w->x,y-w->y);
         return true;
     }
     for(int i=0;i<WINDOW_LIMIT;++i)
@@ -185,7 +189,8 @@ void desktop_run(void)
         if(has_mouse)handle_mouse(&d,event);
         if(d.active==3 && settings_editing() && settings_key(key)){redraw(&d);continue;}
         if(key=='q' || key=='Q' || key==27)break;
-        if(key>='1' && key<='4' && open_window(&d,key-'1'))redraw(&d);
+        if(d.active==4 && calculator_key(key)){redraw(&d);continue;}
+        if(key>='1' && key<='5' && open_window(&d,key-'1'))redraw(&d);
     }
     settings_cancel();
     for(int id=0;id<WINDOW_LIMIT;++id)if(d.windows[id])kfree(d.windows[id]);

@@ -3,7 +3,7 @@
 Revised 2026-09-24 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **33 phases,
-numbered 0–32**. Phase 17 is the latest completed baseline; Phase 18 is next.
+numbered 0–32**. Phase 18 is the latest completed baseline; Phase 19 is next.
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -33,13 +33,13 @@ a delivery date for modern web compatibility.
 These are educational QEMU baselines. The kernel-resident window demo is
 not a general application platform, embedded user demos are not a general
 application loader, and the custom snapshot disk is not FAT32. Current
-limits remain documented in README and PHASE9–PHASE17. Settings works;
-Calculator, Snake and the browser are pending.
+limits remain documented in README and PHASE9–PHASE18. Settings and
+Calculator work; Snake and the browser are pending.
 
 ## Milestone A — MyOS Desktop 1.0
 
-Phases 14–17 below are complete at the QEMU desktop/Settings baseline.
-Phases 18–32 are **planned**.
+Phases 14–18 below are complete at the QEMU desktop/Settings/Calculator baseline.
+Phases 19–32 are **planned**.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
@@ -47,7 +47,7 @@ Phases 18–32 are **planned**.
 | 15 | Mouse and GUI input | **Complete QEMU baseline:** PS/2 IRQ12 movement/buttons, bounded cursor and event queue, keyboard/mouse with timer preemption, real QEMU input and VGA fallback. See PHASE15.md. |
 | 16 | Desktop and windows | **Complete QEMU baseline:** launcher with three placeholder windows, dragging, focus/stacking, close/redraw, resource cleanup and adjacent-window pixel checks. See PHASE16.md. |
 | 17 | Widgets and Settings | **Complete QEMU baseline:** reusable buttons/labels/field, Settings theme/background/RGB accent, strict configuration validation, Phase 13 disk save/reboot restore and RAM-only notice. See PHASE17.md. |
-| 18 | Calculator | GUI numeric entry, decimal arithmetic, clear/backspace and basic operators; keyboard and mouse input; tested division-by-zero and invalid-input behavior. |
+| 18 | Calculator | **Complete QEMU baseline:** keyboard/mouse numeric entry, fixed-point decimal arithmetic, clear/backspace and four operators; tested division by zero, invalid input, overflow, 16 MiB RAM and VGA fallback. See PHASE18.md. |
 | 19 | Snake | GUI game, keyboard direction, timer-based movement, score, collision, pause and restart. Persist high score when storage is available; other windows remain responsive. |
 | 20 | Desktop integration and release | Launch Settings, Calculator and Snake from the desktop; use all three in one session, restore settings/high score after reboot, recover from app errors and retain a usable shell. Package a repeatable QEMU demo and user guide. |
 

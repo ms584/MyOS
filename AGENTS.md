@@ -4,7 +4,7 @@
 - The owner always pushes to GitHub manually. Do not run `git push`.
 - Use actual roadmap coverage in commit names, e.g. `Phase 4+8: ...`.
 - The revised roadmap has phases 0–32. Phases 0–13 retain their history;
-  Phases 14–17 graphics, windowing and Settings baselines are complete; Phase 18 begins Calculator,
+  Phases 14–18 graphics, windowing, Settings and Calculator baselines are complete; Phase 19 begins Snake,
   Phase 20 delivers Desktop 1.0, and Phase 32 targets
   actual YouTube playback. Refer to `docs/ROADMAP.md` for scope and gates.
   Do not treat planned capabilities as implemented.
