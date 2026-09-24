@@ -3,7 +3,7 @@
 Revised 2026-09-24 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **33 phases,
-numbered 0–32**. Phase 20 Desktop 1.0 is the latest completed QEMU baseline; Phase 21 is next.
+numbered 0–32**. Phase 21 BIOS distribution is the latest completed QEMU baseline; Phase 22 is next.
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -39,7 +39,7 @@ Calculator and Snake work; the browser is pending.
 ## Milestone A — MyOS Desktop 1.0
 
 Phases 14–20 below are complete at the QEMU desktop and app baseline.
-Phases 21–32 are **planned**.
+Phases 21–32 cover BIOS/UEFI distribution and later milestones; Phase 21 is complete in QEMU.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
@@ -63,7 +63,7 @@ fallback remains a diagnostic interface, not a graphical desktop.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
-| 21 | BIOS distribution | Boot a documented distributable disk image with the desktop and assets; replace floppy/loader constraints where necessary and verify the actual distributed image. |
+| 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | UEFI loader, framebuffer and memory-map handoff; the same kernel reaches the desktop under UEFI virtual firmware. Secure Boot support is a separate decision. |
 | 23 | Build and release tooling | One documented build/test/package workflow, dependency/version records, artifact checksums and repeatable releases. Preserve user data images across builds. |
 | 24 | USB image and hardware preparation | Create and validate a USB-bootable image; identify the target machine's input/storage needs and implement the required drivers, including USB HID if needed. Any physical-device write needs explicit target selection. |
@@ -108,7 +108,7 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–32 add the online platform. There are **12 planned phases remaining (21–32)**.
+and apps, and phases 26–32 add the online platform. There are **11 planned phases remaining (22–32)**.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules

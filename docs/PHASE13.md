@@ -1,7 +1,8 @@
 # Phase 13 — ATA PIO storage and persistent MyOS RAMFS snapshots
 
-Phase 13 adds a legacy ATA PIO driver for an IDE **primary master** data disk.
-The BIOS floppy boot image remains a separate device. The driver uses IDENTIFY,
+Phase 13 added a legacy ATA PIO driver for an IDE **primary master** data disk.
+The BIOS floppy boot image remained a separate device. Phase 21 also supports
+a marked data disk as primary slave when the BIOS HDD boots as primary master. The driver uses IDENTIFY,
 single-sector LBA28 reads/writes, cache flush and bounded polling. It accepts
 only a dedicated MyOS data image with the `MYOS-DATA-v1` signature. An unknown
 disk remains read-only from MyOS's perspective.
@@ -86,7 +87,7 @@ image and verifies that MyOS leaves it byte-for-byte unchanged. The full suite
 regresses earlier phases at 16/64/256 MiB and both display modes, and restores
 the normal framebuffer boot image. Tests use QEMU only.
 
-The driver supports the legacy IDE primary master with LBA28 only. It does not
+The driver supports legacy primary IDE master or slave with LBA28 only. It does not
 handle SATA/AHCI, NVMe, USB, GPT, MBR, FAT32 or arbitrary disks. Snapshots store
 the existing 64 RAMFS nodes and 4 KiB file limit; the data image size does not
 increase RAMFS capacity. Kernel and Shell are not yet production-hardened.

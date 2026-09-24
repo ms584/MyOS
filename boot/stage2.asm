@@ -52,13 +52,22 @@ start:
 .map_done:
     cmp word [0x7000],0
     je error
-    ; Read one floppy CHS sector at a time, including track/head boundaries.
+    ; The floppy development build uses CHS; the distributable HDD uses EDD LBA.
     mov word [lba],17
     mov word [dest],0x1000
     mov word [remaining],KERNEL_SECTORS
 .sector:
     mov byte [tries],3
 .retry:
+%ifdef BIOS_HDD
+    mov ax,[dest]
+    mov [dap+6],ax
+    mov ax,[lba]
+    mov [dap+8],ax
+    mov si,dap
+    mov ah,0x42
+    mov dl,[drive]
+%else
     mov ax,[lba]
     xor dx,dx
     mov bx,18
@@ -75,6 +84,7 @@ start:
     mov es,ax
     xor bx,bx
     mov ax,0x0201
+%endif
     int 0x13
     jnc .read
     xor ax,ax
@@ -245,4 +255,10 @@ dest: dw 0
 remaining: dw 0
 mode: dw 0
 mode_limit: dw 0
+%ifdef BIOS_HDD
+align 4
+dap: db 16,0
+     dw 1,0,0x1000
+     dq 17
+%endif
 times 8192-($-$$) db 0

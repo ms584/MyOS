@@ -29,17 +29,21 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
         self.log.write_text('')
         self.sock.unlink(missing_ok=True)
+        if boot_bus not in ('floppy','ide'):
+            raise ValueError('boot_bus must be floppy or ide')
+        image=boot_image or ROOT/'build/myos-current.img'
         command=['qemu-system-x86_64','-m',str(ram),'-display','none',
             '-monitor','none','-serial',f'file:{self.log}','-no-reboot','-no-shutdown',
-            '-drive',f'format=raw,file={ROOT}/build/myos-current.img,if=floppy',
-            '-boot','order=a','-qmp',f'unix:{self.sock},server=on,wait=off']
-        if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index=0'])
+            '-drive',f'format=raw,file={image},if={boot_bus},index=0',
+            '-boot','order='+('c' if boot_bus=='ide' else 'a'),
+            '-qmp',f'unix:{self.sock},server=on,wait=off']
+        if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index={disk_index}'])
         self.process=subprocess.Popen(command)
         self.connection=socket.socket(socket.AF_UNIX)
         try:

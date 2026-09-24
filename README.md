@@ -1,4 +1,4 @@
-# MyOS — Phase 20: Desktop 1.0
+# MyOS — Phase 21: BIOS HDD image
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
@@ -11,11 +11,11 @@ Snake, followed by online browsing and actual YouTube playback. Current code
 includes Desktop 1.0 with working Settings, Calculator and Snake; browser work is planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
-- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
+- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. Phase 21 BIOS HDD image is complete in QEMU.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 21 BIOS distribution is next; browser feasibility is a
+the mapping from the old roadmap. Phase 22 UEFI is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -205,3 +205,12 @@ its data image across reboot. Run `python3 tools/desktop_demo.py` from the
 repository, then enter `desktop` at the `myos>` prompt. See
 [docs/PHASE20.md](docs/PHASE20.md) for controls, limits and verification.
 These built-in apps run inside the kernel.
+
+## Phase 21 BIOS HDD image
+
+`python3 tools/package_bios.py` builds `build/myos-bios.img`, a standalone
+16 MiB raw BIOS hard-disk image containing Desktop 1.0. It boots as a QEMU
+IDE primary master; a separate MyOS data disk on the primary slave keeps
+Settings, Snake scores and Shell files across reboot. See
+[docs/PHASE21.md](docs/PHASE21.md) for commands, tests and limits. The older
+floppy image remains the development test target.

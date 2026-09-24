@@ -17,6 +17,8 @@
 
 static bool detected;
 static uint32_t capacity;
+static uint8_t selected_drive; /* 0 = primary master, 1 = primary slave. */
+static const char data_signature[]="MYOS-DATA-v1";
 
 static uint16_t inw(uint16_t port)
 {
@@ -47,7 +49,7 @@ static bool wait_status(bool data)
 }
 static void select_sector(uint32_t lba)
 {
-    outb(ATA_DRIVE,(uint8_t)(0xe0|(lba>>24)));
+    outb(ATA_DRIVE,(uint8_t)(0xe0|(selected_drive<<4)|(lba>>24)));
     delay_400ns();
     outb(ATA_COUNT,1);
     outb(ATA_LBA0,(uint8_t)lba);
@@ -88,29 +90,50 @@ bool ata_flush(void)
 {
     if(!detected)return false;
     uint64_t flags=irq_save();bool ok=wait_status(false);
-    if(ok){outb(ATA_DRIVE,0xe0);outb(ATA_COMMAND,0xe7);ok=wait_status(false);}
+    if(ok){outb(ATA_DRIVE,(uint8_t)(0xe0|(selected_drive<<4)));outb(ATA_COMMAND,0xe7);ok=wait_status(false);}
     irq_restore(flags);return ok;
 }
-void ata_init(void)
+static bool identify(unsigned drive,uint32_t *sectors)
 {
-    /* Legacy QEMU IDE primary master. BIOS floppy uses a separate controller. */
-    outb(ATA_CONTROL,2); /* Disable ATA IRQ; use bounded polling. */
-    outb(ATA_DRIVE,0xa0);delay_400ns();
+    outb(ATA_DRIVE,(uint8_t)(0xa0|(drive<<4)));delay_400ns();
     outb(ATA_COUNT,0);outb(ATA_LBA0,0);outb(ATA_LBA1,0);outb(ATA_LBA2,0);
     outb(ATA_COMMAND,0xec);
     uint8_t status=inb(ATA_STATUS);
-    if(!status || status==0xff){print("ATA: no data disk; RAM-only files\n");return;}
-    if(!wait_status(true) || inb(ATA_LBA1) || inb(ATA_LBA2)){
-        print("ATA: unsupported or unresponsive primary master\n");return;
-    }
+    if(!status || status==0xff || !wait_status(true) ||
+       inb(ATA_LBA1) || inb(ATA_LBA2))return false;
     uint16_t words[256];
     for(unsigned i=0;i<256;++i)words[i]=inw(ATA_DATA);
-    uint32_t sectors=(uint32_t)words[60]|((uint32_t)words[61]<<16);
-    if(!(words[49]&(1u<<9)) || sectors<2048 || sectors>0x0fffffff){
-        print("ATA: LBA28 disk is too small or unsupported\n");return;
+    uint32_t count=(uint32_t)words[60]|((uint32_t)words[61]<<16);
+    if(!(words[49]&(1u<<9)) || count<2048 || count>0x0fffffff)return false;
+    *sectors=count;return true;
+}
+static bool is_data_disk(void)
+{
+    uint8_t sector[512];
+    if(!ata_read(0,sector))return false;
+    for(unsigned i=0;i<sizeof(data_signature);++i)
+        if(sector[i]!=(uint8_t)data_signature[i])return false;
+    return true;
+}
+void ata_init(void)
+{
+    /* Prefer a marked data disk on either primary IDE device. A BIOS HDD
+       occupies the master position; a separate data disk can use the slave. */
+    outb(ATA_CONTROL,2); /* Disable ATA IRQ; use bounded polling. */
+    bool fallback=false;uint32_t fallback_capacity=0;uint8_t fallback_drive=0;
+    for(unsigned drive=0;drive<2;++drive){
+        uint32_t sectors=0;
+        if(!identify(drive,&sectors))continue;
+        if(!fallback){fallback=true;fallback_capacity=sectors;fallback_drive=(uint8_t)drive;}
+        selected_drive=(uint8_t)drive;capacity=sectors;detected=true;
+        if(is_data_disk()){
+            print("ATA PIO disk: ");decimal(sectors);print(" sectors\n");return;
+        }
     }
-    capacity=sectors;detected=true;
-    print("ATA PIO disk: ");decimal(sectors);print(" sectors\n");
+    if(fallback){selected_drive=fallback_drive;capacity=fallback_capacity;detected=true;
+        outb(ATA_DRIVE,(uint8_t)(0xa0|(fallback_drive<<4)));delay_400ns();
+        print("ATA PIO disk: ");decimal(capacity);print(" sectors\n");
+    }else{detected=false;capacity=0;print("ATA: no data disk; RAM-only files\n");}
 }
 bool storage_present(void){return detected;}
 uint32_t storage_sectors(void){return capacity;}
