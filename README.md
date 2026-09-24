@@ -1,4 +1,4 @@
-# MyOS — Phase 16: Desktop and Window Management
+# MyOS — Phase 17: Widgets and Settings
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
@@ -8,14 +8,14 @@ a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded s
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-includes the Phase 16 desktop and window-management baseline; real desktop apps and browser work are planned.
+includes the Phase 17 desktop and Settings baseline; Calculator, Snake and browser work are planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 17 widgets and Settings is next; browser feasibility is a
+the mapping from the old roadmap. Phase 18 Calculator is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -69,7 +69,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop|settings`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -165,6 +165,15 @@ driver limits and QEMU acceptance tests.
 
 At the QEMU Shell, type `desktop` to open the kernel-resident desktop. Click
 Demo A/B/C launcher tiles, drag window title bars, click X to close, or press
-1–3 to open and Q/Esc to exit. These are placeholder windows, not the planned
-Settings, Calculator or Snake apps. See [docs/PHASE16.md](docs/PHASE16.md)
+1–3 to open and Q/Esc to exit. Demo A/B/C remain placeholder windows;
+Settings is a separate working window. See [docs/PHASE16.md](docs/PHASE16.md)
 for controls, architecture, limits and QEMU acceptance tests.
+
+## Phase 17 Settings
+
+In `desktop`, open the Settings tile or press 4. Select dark/light theme,
+blue/green background, and a six-digit RGB accent, then press Save. With the
+recognized Phase 13 data disk attached, these values return after reboot;
+without it, the status says RAM-only. The Shell command `settings` reports
+committed values. See [docs/PHASE17.md](docs/PHASE17.md) for the exact QEMU
+workflow, input rules, data validation and tests.
