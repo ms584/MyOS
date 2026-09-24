@@ -4,6 +4,20 @@ MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
 a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded system-call API, and a hierarchical RAM filesystem.
 
+## Product direction
+
+The revised goal is a MyOS graphical desktop with Settings, Calculator and
+Snake, followed by online browsing and actual YouTube playback. Current code
+is the Phase 13 console/storage baseline; GUI and browser work are planned.
+
+- Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
+- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
+- Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
+
+See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
+the mapping from the old roadmap. Phase 14 is next; browser feasibility is a
+separate long-term milestone, with no promised completion date.
+
 ## Build, test, run
 
 On Linux/WSL Ubuntu, install GCC, GNU binutils, NASM, Python 3 and QEMU.
@@ -86,7 +100,7 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
 - VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB or UEFI yet. The Phase 13 driver supports only a dedicated legacy
   ATA data disk; testing is on QEMU, not hardware.
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for the original phase mapping.
+See [docs/ROADMAP.md](docs/ROADMAP.md) for the revised Desktop/app roadmap and original phase mapping.
 Phase 9 adds supervisor-only kernel mappings to each process; this is not a
 security-audited sandbox. User-program loading is currently an embedded demo,
 with INT 0x80 calls for console/process operations and RAM files.
