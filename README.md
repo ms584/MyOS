@@ -1,4 +1,4 @@
-# MyOS — Phase 14: Graphics Foundation
+# MyOS — Phase 15: PS/2 Mouse and GUI Input
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
@@ -8,14 +8,14 @@ a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded s
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-includes the Phase 14 graphics foundation; desktop apps and browser work are planned.
+includes the Phase 15 graphics and PS/2 mouse input baseline; desktop apps and browser work are planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 15 mouse/GUI input is next; browser feasibility is a
+the mapping from the old roadmap. Phase 16 desktop/windows is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -69,7 +69,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -150,4 +150,13 @@ with another color, or another key to return to the Shell. The code now has
 clipped pixel/rectangle/text drawing and full-screen off-screen surfaces.
 Framebuffer metadata is validated and the VGA text fallback remains usable.
 See [docs/PHASE14.md](docs/PHASE14.md) for APIs, limits and acceptance tests.
-The desktop, mouse and built-in apps remain future phases.
+Desktop windows and built-in apps remain future phases. Phase 15 adds the mouse and cursor.
+
+
+## Phase 15 mouse input
+
+The PS/2 mouse now works through IRQ12. In `gfx`, movement updates a bounded
+cursor, left click changes its color, and mouse and keyboard events work while
+the timer preempts background tasks. At the Shell, `mouse` reports position,
+buttons and queue drops. See [docs/PHASE15.md](docs/PHASE15.md) for controls,
+driver limits and QEMU acceptance tests.

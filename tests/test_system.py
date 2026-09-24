@@ -106,6 +106,7 @@ def boot_test(name,ram=64,keyboard=False,text=False):
                        'PASS: user write/getpid/yield/exit; status=42, resources reclaimed',
                        'PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup',
                        'PASS: graphics surface, clipping, font and redraw',
+                       'PS/2 mouse initialized',
                        'PASS: file syscalls, safe copyout, exit/fault/kill descriptor cleanup',
                        'Welcome to MyOS RAMFS.',
                        'PASS: Ring 3 opened/read/closed /etc/motd'):
@@ -157,7 +158,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
@@ -166,6 +167,9 @@ def main():
             exercise()
         if args.suite in ('all','graphics'):
             from test_graphics import exercise
+            exercise()
+        if args.suite in ('all','mouse'):
+            from test_mouse import exercise
             exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
@@ -178,12 +182,15 @@ def main():
             fault_test(2,'Page Fault',2)
             fault_test(3,'Page Fault',3)
             fault_test(4,'Page Fault',17)
-        if args.suite in ('all','graphics'):
+        if args.suite in ('all','graphics','mouse'):
             build(text=True);boot_test('vga-fallback',keyboard=args.suite=='all',text=True)
             from test_shell import exercise
             exercise(text=True)
             from test_graphics import exercise as graphics_exercise
             graphics_exercise(text=True)
+            if args.suite in ('all','mouse'):
+                from test_mouse import exercise as mouse_exercise
+                mouse_exercise(text=True)
     finally:
         env=dict(os.environ,TEST_CASE="0",TEXT_ONLY="0",PROCESS_TESTS="0")
         subprocess.run(["bash","build.sh"],env=env,check=True)

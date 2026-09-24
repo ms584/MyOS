@@ -1,6 +1,7 @@
 #include "fs.h"
 #include "storage.h"
 #include "graphics.h"
+#include "mouse.h"
 #define LINE_SIZE 256
 static char cwd[FS_PATH]="/";
 static struct fs_handle files[FS_HANDLES];
@@ -38,6 +39,14 @@ static void execute(char *line){
     if(equal(cmd,"echo")){while(*rest==' ')++rest;print(rest);print("\n");return;}
     char *arg=word(&rest);
     if(equal(cmd,"gfx")){if(arg || word(&rest))print("error: unexpected argument\n");else gfx_demo();return;}
+    if(equal(cmd,"mouse")){
+        if(arg || word(&rest)){print("error: unexpected argument\n");return;}
+        if(!mouse_ready()){print("Mouse unavailable\n");return;}
+        int x,y;uint8_t buttons;mouse_position(&x,&y,&buttons);
+        print("Mouse: x=");decimal((uint64_t)x);print(" y=");decimal((uint64_t)y);
+        print(" buttons=");decimal(buttons);print(" dropped=");decimal(mouse_dropped());print("\n");
+        return;
+    }
     if(equal(cmd,"write")){
         if(!arg){print("usage: write PATH TEXT\n");return;}
         while(*rest==' ')++rest;
@@ -48,7 +57,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}

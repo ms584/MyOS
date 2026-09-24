@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "mouse.h"
 
 static struct gfx_mode screen;
 static bool enabled;
@@ -106,6 +107,47 @@ bool gfx_present(const struct gfx_surface *surface,int x,int y)
     }
     irq_restore(flags);return true;
 }
+/* Restore a small changed region from the off-screen scene. */
+static void restore_scene(const struct gfx_surface *scene,int x,int y,int width,int height)
+{
+    if(!enabled || !scene)return;
+    int left=x<0?0:x,top=y<0?0:y;
+    int right=x+width>(int)screen.width?(int)screen.width:x+width;
+    int bottom=y+height>(int)screen.height?(int)screen.height:y+height;
+    if(right>(int)scene->width)right=scene->width;
+    if(bottom>(int)scene->height)bottom=scene->height;
+    if(left>=right || top>=bottom)return;
+    uint64_t flags=irq_save();
+    for(int row=top;row<bottom;++row)
+        for(int col=left;col<right;++col)
+            screen.pixels[(size_t)row*screen.pitch+col]=
+                scene->pixels[(size_t)row*scene->stride+col];
+    irq_restore(flags);
+}
+static void draw_cursor(int x,int y,uint8_t buttons)
+{
+    if(!enabled)return;
+    uint32_t fill=(buttons&1)?0xf5b642:0xffffff;
+    uint64_t flags=irq_save();
+    for(int row=0;row<16;++row){
+        int width=row<9?2+row/2:row<12?5:3;
+        for(int col=0;col<width;++col){
+            int px=x+col,py=y+row;
+            if(px<0 || py<0 || px>=(int)screen.width || py>=(int)screen.height)continue;
+            screen.pixels[(size_t)py*screen.pitch+px]=
+                col==0 || col==width-1 || row==0?0x101010:fill;
+        }
+    }
+    irq_restore(flags);
+}
+static void demo_buttons(struct gfx_surface *scene,uint8_t buttons)
+{
+    gfx_rect(scene,56,392,480,20,0x101a2e);
+    if(buttons&1)gfx_text(scene,56,392,"Left button down",0xf5b642);
+    else if(buttons&2)gfx_text(scene,56,392,"Right button down",0xf5b642);
+    else if(buttons&4)gfx_text(scene,56,392,"Middle button down",0xf5b642);
+    else gfx_text(scene,56,392,"Mouse buttons released",0xbbeeff);
+}
 static void marker(const char *text)
 {
     while(*text)serial_put(*text++);
@@ -136,13 +178,14 @@ static void demo_frame(struct gfx_surface *s,bool alternate)
     gfx_rect(s,0,0,(int)s->width,96,alternate?0x623b72:0x233b62);
     gfx_rect(s,0,0,8,(int)s->height,0x23c4cf);
     gfx_text(s,32,28,"MyOS Graphics Foundation",0xffffff);
-    gfx_text(s,32,58,"Phase 14  |  Off-screen drawing + redraw",0xbbeeff);
+    gfx_text(s,32,58,"Phase 15  |  PS/2 mouse + redraw",0xbbeeff);
     gfx_rect(s,32,132,(int)s->width-64,176,0x1c2b43);
     gfx_text(s,56,154,"Clipped shapes and bitmap font",0xffffff);
     gfx_rect(s,56,196,120,64,0x23c4cf);
     gfx_rect(s,192,196,120,64,0xf5b642);
     gfx_rect(s,-20,340,64,48,0xe85d75);
-    gfx_text(s,56,344,"Press R to redraw. Any other key returns.",0xffffff);
+    gfx_text(s,56,344,"Move/click mouse. R redraws; another key exits.",0xffffff);
+    demo_buttons(s,0);
     gfx_rect(s,(int)s->width-40,(int)s->height-30,90,80,0x23c4cf);
 }
 void gfx_demo(void)
@@ -151,14 +194,38 @@ void gfx_demo(void)
     struct gfx_surface *s=gfx_surface_create(screen.width,screen.height);
     if(!s){print("Graphics surface allocation failed\n");return;}
     bool alternate=false;
+    int cursor_x=0,cursor_y=0;uint8_t buttons=0;
+    mouse_flush();mouse_position(&cursor_x,&cursor_y,&buttons);
+    demo_frame(s,alternate);demo_buttons(s,buttons);
+    check(gfx_present(s,0,0),"graphics present");
+    if(mouse_ready())draw_cursor(cursor_x,cursor_y,buttons);
+    marker("GRAPHICS DEMO READY");
     for(;;){
-        demo_frame(s,alternate);
-        check(gfx_present(s,0,0),"graphics present");
-        marker(alternate?"GRAPHICS REDRAW":"GRAPHICS DEMO READY");
-        int key;
-        for(;;){key=keyboard_get();if(key>=0)break;__asm__ volatile("sti; hlt":::"memory");}
-        if(key!='r' && key!='R')break;
-        alternate=!alternate;
+        struct mouse_event event;
+        uint64_t flags=irq_save();
+        bool moved=mouse_get(&event);
+        int key=keyboard_get();
+        if(!moved && key<0){__asm__ volatile("sti; hlt":::"memory");continue;}
+        irq_restore(flags);
+        if(moved){
+            restore_scene(s,cursor_x,cursor_y,12,16);
+            cursor_x=event.x;cursor_y=event.y;
+            if(event.changed){
+                buttons=event.buttons;demo_buttons(s,buttons);
+                restore_scene(s,56,392,480,20); /* Update only the button legend. */
+                if((event.changed&1) && (buttons&1))marker("MOUSE LEFT DOWN");
+            }
+            draw_cursor(cursor_x,cursor_y,buttons);
+            marker("MOUSE EVENT");
+        }
+        if(key>=0){
+            if(key!='r' && key!='R')break;
+            alternate=!alternate;
+            demo_frame(s,alternate);demo_buttons(s,buttons);
+            check(gfx_present(s,0,0),"graphics present");
+            if(mouse_ready())draw_cursor(cursor_x,cursor_y,buttons);
+            marker("GRAPHICS REDRAW");
+        }
     }
     gfx_surface_destroy(s);
     console_clear();

@@ -1,6 +1,7 @@
 #include "syscall.h"
 #include "storage.h"
 #include "graphics.h"
+#include "mouse.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -17,6 +18,10 @@ void kernel_main(void){
     fs_init();fs_test();
     process_init();print("GDT/TSS and Ring 3 selectors initialized\n");
     keyboard_init();print("PS/2 keyboard initialized\n");
+    struct gfx_mode mouse_mode;bool video=gfx_probe(&mouse_mode);
+    if(mouse_init(video?mouse_mode.width:640,video?mouse_mode.height:400))
+        print("PS/2 mouse initialized\n");
+    else print("PS/2 mouse unavailable\n");
     scheduler_init();check(task_create(worker_a)&&task_create(worker_b)&&task_create(once),"task creation");
     check(!task_create(once),"task capacity");
     timer_init();scheduler_start();print("PIT: 100 Hz; preemptive scheduler started\n");
