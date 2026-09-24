@@ -108,7 +108,7 @@ bool gfx_present(const struct gfx_surface *surface,int x,int y)
     irq_restore(flags);return true;
 }
 /* Restore a small changed region from the off-screen scene. */
-static void restore_scene(const struct gfx_surface *scene,int x,int y,int width,int height)
+void gfx_restore_region(const struct gfx_surface *scene,int x,int y,int width,int height)
 {
     if(!enabled || !scene)return;
     int left=x<0?0:x,top=y<0?0:y;
@@ -124,7 +124,7 @@ static void restore_scene(const struct gfx_surface *scene,int x,int y,int width,
                 scene->pixels[(size_t)row*scene->stride+col];
     irq_restore(flags);
 }
-static void draw_cursor(int x,int y,uint8_t buttons)
+void gfx_cursor_draw(int x,int y,uint8_t buttons)
 {
     if(!enabled)return;
     uint32_t fill=(buttons&1)?0xf5b642:0xffffff;
@@ -198,7 +198,7 @@ void gfx_demo(void)
     mouse_flush();mouse_position(&cursor_x,&cursor_y,&buttons);
     demo_frame(s,alternate);demo_buttons(s,buttons);
     check(gfx_present(s,0,0),"graphics present");
-    if(mouse_ready())draw_cursor(cursor_x,cursor_y,buttons);
+    if(mouse_ready())gfx_cursor_draw(cursor_x,cursor_y,buttons);
     marker("GRAPHICS DEMO READY");
     for(;;){
         struct mouse_event event;
@@ -208,14 +208,14 @@ void gfx_demo(void)
         if(!moved && key<0){__asm__ volatile("sti; hlt":::"memory");continue;}
         irq_restore(flags);
         if(moved){
-            restore_scene(s,cursor_x,cursor_y,12,16);
+            gfx_restore_region(s,cursor_x,cursor_y,12,16);
             cursor_x=event.x;cursor_y=event.y;
             if(event.changed){
                 buttons=event.buttons;demo_buttons(s,buttons);
-                restore_scene(s,56,392,480,20); /* Update only the button legend. */
+                gfx_restore_region(s,56,392,480,20); /* Update only the button legend. */
                 if((event.changed&1) && (buttons&1))marker("MOUSE LEFT DOWN");
             }
-            draw_cursor(cursor_x,cursor_y,buttons);
+            gfx_cursor_draw(cursor_x,cursor_y,buttons);
             marker("MOUSE EVENT");
         }
         if(key>=0){
@@ -223,7 +223,7 @@ void gfx_demo(void)
             alternate=!alternate;
             demo_frame(s,alternate);demo_buttons(s,buttons);
             check(gfx_present(s,0,0),"graphics present");
-            if(mouse_ready())draw_cursor(cursor_x,cursor_y,buttons);
+            if(mouse_ready())gfx_cursor_draw(cursor_x,cursor_y,buttons);
             marker("GRAPHICS REDRAW");
         }
     }

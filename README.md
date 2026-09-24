@@ -1,21 +1,21 @@
-# MyOS — Phase 15: PS/2 Mouse and GUI Input
+# MyOS — Phase 16: Desktop and Window Management
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
-console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
+console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
 a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded system-call API, and a hierarchical RAM filesystem.
 
 ## Product direction
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-includes the Phase 15 graphics and PS/2 mouse input baseline; desktop apps and browser work are planned.
+includes the Phase 16 desktop and window-management baseline; real desktop apps and browser work are planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 16 desktop/windows is next; browser feasibility is a
+the mapping from the old roadmap. Phase 17 widgets and Settings is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -69,7 +69,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -90,14 +90,14 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
   The heap is fixed-size; allocation failure returns NULL. Invalid/double frees
   panic. Bootstrap identity mappings remain writable/executable; this is not
   user-process isolation or full kernel W^X enforcement.
-- PIC IRQ0 and IRQ1 are unmasked; PIT rate is approximately 100 Hz. IRQ handlers
+- PIC IRQ0, IRQ1 and IRQ12 (plus IRQ2 cascade) are unmasked; PIT rate is approximately 100 Hz. IRQ handlers
   do not write the console. Exceptions print diagnostics and halt.
 - Scheduler: one CPU, round robin, four kernel-task slots plus four user-process
   slots. Kernel tasks share an address space; processes own CR3 roots and guarded
   one-page user stacks plus 16 KiB kernel stacks. Process resources/slots are
   reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
   unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
-- VBE framebuffer and VGA fallback, PS/2 keyboard only. No USB or UEFI yet. The Phase 13 driver supports only a dedicated legacy
+- VBE framebuffer and VGA fallback, PS/2 keyboard and mouse. No USB or UEFI yet. The Phase 13 driver supports only a dedicated legacy
   ATA data disk; testing is on QEMU, not hardware.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the revised Desktop/app roadmap and original phase mapping.
@@ -160,3 +160,11 @@ cursor, left click changes its color, and mouse and keyboard events work while
 the timer preempts background tasks. At the Shell, `mouse` reports position,
 buttons and queue drops. See [docs/PHASE15.md](docs/PHASE15.md) for controls,
 driver limits and QEMU acceptance tests.
+
+## Phase 16 desktop
+
+At the QEMU Shell, type `desktop` to open the kernel-resident desktop. Click
+Demo A/B/C launcher tiles, drag window title bars, click X to close, or press
+1–3 to open and Q/Esc to exit. These are placeholder windows, not the planned
+Settings, Calculator or Snake apps. See [docs/PHASE16.md](docs/PHASE16.md)
+for controls, architecture, limits and QEMU acceptance tests.
