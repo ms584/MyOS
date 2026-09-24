@@ -4,8 +4,10 @@
 - The owner always pushes to GitHub manually. Do not run `git push`.
 - Use actual roadmap coverage in commit names, e.g. `Phase 4+8: ...`.
 - The revised roadmap has phases 0–32. Phases 0–13 retain their history;
-  Phases 14–21 through Desktop 1.0 and BIOS HDD distribution are complete
-  QEMU baselines; Phase 22 is next, and Phase 32 targets
+  Phases 14–23 through Desktop 1.0, BIOS/UEFI and release tooling are complete
+  QEMU baselines. Phase 24 has a validated virtual USB image; target-machine
+  driver preparation is pending. Phase 25 is deferred by the owner (no USB).
+  Phase 32 targets
   actual YouTube playback. Refer to `docs/ROADMAP.md` for scope and gates.
   Do not treat planned capabilities as implemented.
 - Build with `bash build.sh`; run `python3 tests/test_system.py` for architectural

@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "graphics.h"
 #include "mouse.h"
 
@@ -6,14 +7,11 @@ static bool enabled;
 
 bool gfx_probe(struct gfx_mode *mode)
 {
-    if(!mode || !*(volatile uint8_t *)0x7004)return false;
-    const uint8_t *info=(const uint8_t *)0xb200;
-    uint32_t width=*(const uint16_t *)(info+18);
-    uint32_t height=*(const uint16_t *)(info+20);
-    uint32_t pitch_bytes=*(const uint16_t *)(info+16);
-    uint32_t physical=*(const uint32_t *)(info+40);
-    uint8_t bpp=info[25];
-    if(bpp!=32 || width<320 || width>1280 || height<200 || height>800 ||
+    if(!mode || !boot_state.framebuffer)return false;
+    uint32_t width=boot_state.width,height=boot_state.height;
+    uint32_t pitch_bytes=boot_state.pitch;
+    uint64_t physical=boot_state.framebuffer;
+    if(width<320 || width>1280 || height<200 || height>800 ||
        width/8>160 || height/16>50 || pitch_bytes%4 ||
        pitch_bytes<width*4 || pitch_bytes>16384 || physical<0x100000)
         return false;
@@ -75,7 +73,7 @@ void gfx_text(struct gfx_surface *surface,int x,int y,const char *text,uint32_t 
     int64_t cursor=x,row=y;color&=0xffffff;
     for(;*text;++text){
         if(*text=='\n'){cursor=x;row+=16;continue;}
-        const uint8_t *glyph=(const uint8_t *)0xa000+(uint8_t)*text*16;
+        const uint8_t *glyph=(const uint8_t *)boot_state.font+(uint8_t)*text*16;
         for(int dy=0;dy<16;++dy){
             int64_t py=row+dy;if(py<0 || py>=surface->height)continue;
             uint8_t bits=glyph[dy];

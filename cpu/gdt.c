@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "process.h"
 
 /* Long-mode TSS: hardware reads RSP0 on a Ring 3 -> Ring 0 transition. */
@@ -32,7 +33,7 @@ void process_init(void)
              | (0x89ull << 40) | ((limit & 0xf0000) << 32)
              | ((base & 0xff000000) << 32);
     gdt[7] = base >> 32;
-    tss.rsp[0] = 0x90000;
+    tss.rsp[0] = boot_state.stack;
     /* An offset beyond the TSS limit denies user-mode port I/O. */
     tss.iomap = sizeof(tss);
     struct gdtr descriptor = { sizeof(gdt) - 1, (uintptr_t)gdt };

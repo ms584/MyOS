@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "process.h"
 #define NX (1ull << 63)
 static struct process processes[PROCESS_LIMIT];
@@ -42,7 +43,7 @@ uint64_t process_create(uint64_t mode, uint64_t cookie)
     uint64_t *pdpt = (uint64_t *)process->pages[1];
     uint64_t *pd = (uint64_t *)process->pages[2];
     uint64_t *pt = (uint64_t *)process->pages[3];
-    root[0] = ((uint64_t *)0x1000)[0] & ~4ull;
+    root[0] = ((uint64_t *)boot_state.root)[0] & ~4ull;
     root[1] = process->pages[1] | 7;
     pdpt[0] = process->pages[2] | 7;
     pd[0] = process->pages[3] | 7;

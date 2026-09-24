@@ -13,12 +13,18 @@ CHANGED='theme=light background=green accent=#11AA33'
 
 def click(vm,addresses,x,y,marker=None):
     move_to(vm,addresses,x,y)
-    frames=vm.log.read_text().count('DESKTOP FRAME')
-    count=vm.log.read_text().count(marker) if marker else 0
+    marker=marker or 'WINDOW FOCUS'
+    count=vm.log.read_text().count(marker)
     button(vm,True)
-    if marker:wait_count(vm,marker,count+1)
+    wait_count(vm,marker,count+1)
+    # Wait for the redraw following this click, not a delayed prior frame.
+    deadline=time.monotonic()+5
+    while time.monotonic()<deadline:
+        log=vm.log.read_text()
+        if 'DESKTOP FRAME' in log[log.rfind(marker):]:break
+        time.sleep(.01)
+    else:raise AssertionError('click redraw did not finish: '+marker)
     button(vm,False)
-    wait_count(vm,'DESKTOP FRAME',frames+1)
 
 def field(vm,addresses,text):
     click(vm,addresses,430,458)

@@ -1,4 +1,4 @@
-# MyOS — Phase 21: BIOS HDD image
+# MyOS — Phases 22–24: UEFI, verified releases and virtual USB
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
@@ -11,11 +11,11 @@ Snake, followed by online browsing and actual YouTube playback. Current code
 includes Desktop 1.0 with working Settings, Calculator and Snake; browser work is planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
-- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. Phase 21 BIOS HDD image is complete in QEMU.
+- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. BIOS/UEFI images and release tooling are complete in QEMU; Phase 24 has a validated virtual USB image. Hardware preparation remains pending and Phase 25 is deferred.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 22 UEFI is next; browser feasibility is a
+the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is partial and Phase 25 is deferred (the owner has no USB). Browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -81,8 +81,10 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
 
 - BIOS floppy layout: boot at LBA 0, 8 KiB Stage 2 at LBA 1–16, kernel from LBA 17.
   The build derives the kernel sector count and rejects kernels above 256 KiB.
-- Boot information at 0x7000; E820 at 0x7400; font at 0xA000; VBE data at 0xB200.
-  Kernel at 0x10000; the first 1 MiB is reserved by the physical allocator.
+- BIOS information at 0x7000; E820 at 0x7400; font at 0xA000; VBE data at 0xB200.
+  UEFI supplies allocated page tables, font, GOP framebuffer and a translated
+  firmware memory map through a shared boot handoff. Kernel at 0x10000; the
+  first 1 MiB is reserved by the physical allocator.
 - Four-level paging initially identity-maps 4 GiB. The PMM manages only usable
   E820 pages below 256 MiB. The heap maps 4 MiB at virtual address 4 GiB with NX.
   Dynamically allocated page tables are reclaimed when mappings are removed.
@@ -97,7 +99,9 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
   one-page user stacks plus 16 KiB kernel stacks. Process resources/slots are
   reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
   unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
-- VBE framebuffer and VGA fallback, PS/2 keyboard and mouse. No USB or UEFI yet. The Phase 13 driver supports only a dedicated legacy
+- BIOS VBE/VGA and native UEFI GOP, with PS/2 keyboard and mouse. Firmware can
+  boot the hybrid image from virtual USB; the kernel has no native USB
+  controller, HID or mass-storage driver. The Phase 13 driver supports only a dedicated legacy
   ATA data disk; testing is on QEMU, not hardware.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the revised Desktop/app roadmap and original phase mapping.
@@ -150,7 +154,7 @@ with another color, or another key to return to the Shell. The code now has
 clipped pixel/rectangle/text drawing and full-screen off-screen surfaces.
 Framebuffer metadata is validated and the VGA text fallback remains usable.
 See [docs/PHASE14.md](docs/PHASE14.md) for APIs, limits and acceptance tests.
-Desktop windows and built-in apps remain future phases. Phase 15 adds the mouse and cursor.
+Later phases add the mouse, desktop and built-in apps described below.
 
 
 ## Phase 15 mouse input
@@ -214,3 +218,26 @@ IDE primary master; a separate MyOS data disk on the primary slave keeps
 Settings, Snake scores and Shell files across reboot. See
 [docs/PHASE21.md](docs/PHASE21.md) for commands, tests and limits. The older
 floppy image remains the development test target.
+
+
+## Phases 22–24: UEFI and distribution
+
+The same kernel now boots through native x86-64 UEFI with an 800x600 GOP
+framebuffer and a firmware memory-map handoff. The release workflow runs the
+complete system suite, BIOS/UEFI desktop and persistence checks, and boots the
+same hybrid USB image under both firmware types in QEMU. It checks independent
+FAT parsing, unchanged user saves and byte-identical rebuilds before packaging.
+
+```bash
+python3 tools/run_logged.py -- python3 tools/release.py
+python3 tools/run_image.py --firmware uefi --media usb
+```
+
+At the Shell enter `desktop`. Add `--data build/myos-data.img` for a separate
+save disk. See [release instructions](docs/RELEASE.md), [UEFI](docs/PHASE22.md),
+[release tooling](docs/PHASE23.md) and [USB scope](docs/PHASE24.md).
+The validated archive is `build/release/myos-desktop.zip`; BIOS/UEFI/USB images
+occupy 16/32/64 MiB uncompressed. UEFI acceptance uses 128 MiB RAM in QEMU.
+Secure Boot, USB HID and real-hardware acceptance are not implemented.
+Phase 24 hardware-specific work remains pending; Phase 25 is deferred because
+the owner has no spare USB device. No physical device is written by these tools.

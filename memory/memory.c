@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "os.h"
 #define HEAP_BYTES (4u*1024u*1024u)
 #define HEAP_PAGES (HEAP_BYTES/PAGE_SIZE)
@@ -25,7 +26,7 @@ void page_free(uintptr_t p){
 static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<(1ull<<39)&&!(v%PAGE_SIZE);}
 bool vm_map(uintptr_t va,uintptr_t pa,uint64_t flags){
     if(!virtual_ok(va)||pa%PAGE_SIZE||pa>=MAX_PAGES*PAGE_SIZE)return false;
-    uint64_t f=irq_save(),*table=(uint64_t *)0x1000,*made[3];unsigned count=0;
+    uint64_t f=irq_save(),*table=(uint64_t *)boot_state.root,*made[3];unsigned count=0;
     for(int shift=39;shift>=21;shift-=9){uint64_t *e=&table[(va>>shift)&511];
         if(!(*e&1)){uintptr_t page=page_alloc();if(!page)goto fail;memset((void *)page,0,PAGE_SIZE);*e=page|3;made[count++]=e;}
         if(*e&128)goto fail;
@@ -38,7 +39,7 @@ fail:
     while(count){uint64_t *e=made[--count];page_free(*e&ADDR);*e=0;}irq_restore(f);return false;
 }
 uintptr_t vm_translate(uintptr_t va){
-    uint64_t *table=(uint64_t *)0x1000;
+    uint64_t *table=(uint64_t *)boot_state.root;
     for(int shift=39;shift>=12;shift-=9){uint64_t e=table[(va>>shift)&511];if(!(e&1))return 0;
         if(shift==21&&(e&128))return (e&0x000fffffffe00000ull)|(va&0x1fffff);
         if(shift==12)return (e&ADDR)|(va&4095);
@@ -47,7 +48,7 @@ uintptr_t vm_translate(uintptr_t va){
 }
 uintptr_t vm_unmap(uintptr_t va){
     if(!virtual_ok(va))return 0;
-    uint64_t f=irq_save(),*table=(uint64_t *)0x1000,*parents[3];unsigned n=0;
+    uint64_t f=irq_save(),*table=(uint64_t *)boot_state.root,*parents[3];unsigned n=0;
     for(int shift=39;shift>=21;shift-=9){uint64_t *e=&table[(va>>shift)&511];if(!(*e&1)||(*e&128)){irq_restore(f);return 0;}parents[n++]=e;table=(uint64_t *)(uintptr_t)(*e&ADDR);}
     uint64_t *leaf=&table[(va>>12)&511];uintptr_t pa=*leaf&ADDR;if(!(*leaf&1)){irq_restore(f);return 0;}*leaf=0;
     __asm__ volatile("invlpg (%0)"::"r"(va):"memory");
@@ -73,8 +74,8 @@ void kfree(void *p){
     irq_restore(f);
 }
 void memory_init(void){
-    uint16_t count=*(volatile uint16_t *)0x7000;check(count>0&&count<64,"E820 count");
-    const struct e820 *map=(const struct e820 *)0x7400;
+    uint32_t count=boot_state.count;check(count>0&&count<=256,"boot memory map count");
+    const struct e820 *map=(const struct e820 *)boot_state.map;
     for(unsigned pass=0;pass<2;++pass)for(unsigned j=0;j<count;++j){
         const struct e820 *e=&map[j];if(!(e->attributes&1)||!e->length)continue;
         bool usable=e->type==1;if(usable!=(pass==0))continue;

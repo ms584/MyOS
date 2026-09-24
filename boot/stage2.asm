@@ -246,6 +246,7 @@ long_mode:
     mov es,ax
     mov ss,ax
     mov rsp,0x90000
+    xor edi,edi ; BIOS handoff uses legacy tables.
     mov rax,0x10000
     jmp rax
 drive: db 0

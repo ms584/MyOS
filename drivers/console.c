@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "os.h"
 #include "graphics.h"
 static unsigned row,col,width,height,pitch,pixels_w,pixels_h;
@@ -8,7 +9,7 @@ void serial_put(char c){for(unsigned n=0;n<100000;++n)if(inb(0x3fd)&32){outb(0x3
 static void cell(unsigned x,unsigned y,char c){
     cells[y*width+x]=c;
     if(!graphics){((volatile uint16_t *)0xb8000)[y*width+x]=0x0f00|(uint8_t)c;return;}
-    const uint8_t *font=(const uint8_t *)0xa000+(uint8_t)c*16;
+    const uint8_t *font=(const uint8_t *)boot_state.font+(uint8_t)c*16;
     for(unsigned dy=0;dy<16;++dy)for(unsigned dx=0;dx<8;++dx)
         fb[(y*16+dy)*pitch+x*8+dx]=(font[dy]&(0x80>>dx))?0xffffff:0;
 }

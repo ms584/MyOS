@@ -1,3 +1,4 @@
+#include "boot.h"
 #include "process.h"
 #define KERNEL_TASKS 4
 #define TASKS (KERNEL_TASKS + PROCESS_LIMIT)
@@ -101,8 +102,8 @@ struct frame *schedule(struct frame *frame)
         if (!tasks[next].alive) continue;
         current = next;
         struct process *process = tasks[next].process;
-        uintptr_t root = process ? process->root : 0x1000;
-        tss_set_stack(process ? process->kernel_top : 0x90000);
+        uintptr_t root = process ? process->root : boot_state.root;
+        tss_set_stack(process ? process->kernel_top : boot_state.stack);
         /* All roots share supervisor-only kernel/heap mappings at PML4[0]. */
         __asm__ volatile ("mov %0,%%cr3" : : "r"(root) : "memory");
         return tasks[next].frame;
