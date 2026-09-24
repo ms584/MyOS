@@ -158,7 +158,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
@@ -183,6 +183,10 @@ def main():
             from test_calculator import exercise,low_memory
             exercise()
             low_memory()
+        if args.suite in ('all','snake'):
+            from test_snake import exercise,low_memory
+            exercise()
+            low_memory()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()
@@ -194,7 +198,7 @@ def main():
             fault_test(2,'Page Fault',2)
             fault_test(3,'Page Fault',3)
             fault_test(4,'Page Fault',17)
-        if args.suite in ('all','graphics','mouse','desktop','settings','calculator'):
+        if args.suite in ('all','graphics','mouse','desktop','settings','calculator','snake'):
             build(text=True);boot_test('vga-fallback',keyboard=args.suite=='all',text=True)
             from test_shell import exercise
             exercise(text=True)
@@ -212,6 +216,9 @@ def main():
             if args.suite in ('all','calculator'):
                 from test_calculator import exercise as calculator_exercise
                 calculator_exercise(text=True)
+            if args.suite in ('all','snake'):
+                from test_snake import exercise as snake_exercise
+                snake_exercise(text=True)
     finally:
         env=dict(os.environ,TEST_CASE="0",TEXT_ONLY="0",PROCESS_TESTS="0")
         subprocess.run(["bash","build.sh"],env=env,check=True)

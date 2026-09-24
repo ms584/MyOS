@@ -27,6 +27,8 @@ void timer_init(void);
 extern volatile uint64_t ticks;
 void keyboard_init(void);
 void keyboard_irq(void);
+/* Extended PS/2 arrow keys are non-printable; the Shell ignores them. */
+enum { KEY_UP=128,KEY_DOWN=129,KEY_LEFT=130,KEY_RIGHT=131 };
 int keyboard_get(void);
 void memory_init(void);
 uintptr_t page_alloc(void);

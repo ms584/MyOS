@@ -1,6 +1,6 @@
 #include "os.h"
 static volatile unsigned head,tail;
-static char buffer[128];
+static uint8_t buffer[128];
 static bool left_shift,right_shift,caps,caps_down,extended;
 static unsigned pause_bytes;
 static const char plain[128]={
@@ -11,6 +11,10 @@ static const char plain[128]={
 static const char shifted[128]={
  [2]='!',[3]='@',[4]='#',[5]='$',[6]='%',[7]='^',[8]='&',[9]='*',[10]='(',[11]=')',[12]='_',[13]='+',
  [26]='{',[27]='}',[39]=':',[40]='"',[41]='~',[43]='|',[51]='<',[52]='>',[53]='?'};
+static void enqueue(uint8_t c){
+    unsigned next=(head+1)%sizeof(buffer);if(next==tail)return;
+    buffer[head]=c;__asm__ volatile("":::"memory");head=next;
+}
 static bool input_ready(void){for(unsigned n=0;n<100000;++n)if(!(inb(0x64)&2))return true;return false;}
 static bool output_ready(void){for(unsigned n=0;n<100000;++n)if(inb(0x64)&1)return true;return false;}
 static void command(uint8_t v){check(input_ready(),"PS/2 controller timeout");outb(0x64,v);}
@@ -29,7 +33,14 @@ void keyboard_irq(void){
     if(pause_bytes){--pause_bytes;return;}
     if(code==0xe1){pause_bytes=5;return;}
     if(code==0xe0){extended=true;return;}
-    if(extended){extended=false;return;}
+    if(extended){
+        extended=false;
+        if(code&0x80)return;
+        int key=code==0x48?KEY_UP:code==0x50?KEY_DOWN:
+                code==0x4b?KEY_LEFT:code==0x4d?KEY_RIGHT:0;
+        if(key)enqueue((uint8_t)key);
+        return;
+    }
     bool release=code&0x80;code&=0x7f;
     if(code==42){left_shift=!release;return;}
     if(code==54){right_shift=!release;return;}
@@ -38,7 +49,6 @@ void keyboard_irq(void){
     char c=plain[code];if(!c)return;
     bool shift=left_shift||right_shift;
     if(c>='a'&&c<='z'){if(shift!=caps)c-=32;}else if(shift&&shifted[code])c=shifted[code];
-    unsigned next=(head+1)%sizeof(buffer);if(next==tail)return;
-    buffer[head]=c;__asm__ volatile("":::"memory");head=next;
+    enqueue((uint8_t)c);
 }
 int keyboard_get(void){uint64_t f=irq_save();int c=-1;if(tail!=head){c=buffer[tail];tail=(tail+1)%sizeof(buffer);}irq_restore(f);return c;}
