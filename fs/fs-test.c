@@ -47,6 +47,7 @@ void fs_test(void)
     check(fs_node_count()==FS_NODES,"node capacity reached");
     for(unsigned i=0;i<created;++i){path[7]='0'+i/10;path[8]='0'+i%10;check(!fs_unlink(path),"node cleanup");}
     void *allocations[256];unsigned allocated=0;
+    while(allocated<256 && (allocations[allocated]=kmalloc(32768)))++allocated;
     while(allocated<256 && (allocations[allocated]=kmalloc(FS_FILE_MAX)))++allocated;
     check(allocated<256,"heap exhaustion reached");
     check(fs_open(files,"/home/oom",FS_WRITE|FS_CREATE)==-12&&fs_node_count()==before,"allocation failure leaves no node");

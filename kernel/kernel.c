@@ -1,5 +1,6 @@
 #include "syscall.h"
 #include "storage.h"
+#include "graphics.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -11,7 +12,7 @@ static void once(void){returned_task=true;}
 void kernel_main(void){
     console_init();print("MyOS Kernel: 64-bit Long Mode\n");
     interrupts_init();print("IDT/PIC initialized\n");
-    memory_init();memory_test();
+    memory_init();memory_test();gfx_test();
     print("Free physical pages: ");decimal(pages_free());print("\n");
     fs_init();fs_test();
     process_init();print("GDT/TSS and Ring 3 selectors initialized\n");

@@ -1,7 +1,8 @@
 #include "os.h"
+#include "graphics.h"
 static unsigned row,col,width,height,pitch,pixels_w,pixels_h;
 static volatile uint32_t *fb;
-static char cells[100*40];
+static char cells[160*50];
 static bool graphics;
 void serial_put(char c){for(unsigned n=0;n<100000;++n)if(inb(0x3fd)&32){outb(0x3f8,(uint8_t)c);break;}}
 static void cell(unsigned x,unsigned y,char c){
@@ -20,16 +21,15 @@ void console_clear(void){
 }
 void console_init(void){
     outb(0x3f9,0);outb(0x3fb,0x80);outb(0x3f8,1);outb(0x3f9,0);outb(0x3fb,3);outb(0x3fa,0xc7);outb(0x3fc,0x0b);
-    graphics=*(volatile uint8_t *)0x7004;
+    gfx_init();graphics=gfx_enabled();
     if(graphics){
-        const uint8_t *m=(const uint8_t *)0xb200;
-        pixels_w=*(const uint16_t *)(m+18);pixels_h=*(const uint16_t *)(m+20);
-        pitch=*(const uint16_t *)(m+16)/4;
-        fb=(volatile uint32_t *)(uintptr_t)*(const uint32_t *)(m+40);
+        struct gfx_mode mode;check(gfx_probe(&mode),"validated framebuffer mode");
+        pixels_w=mode.width;pixels_h=mode.height;pitch=mode.pitch;fb=mode.pixels;
         width=pixels_w/8;height=pixels_h/16;
     }else{width=80;height=25;}
     console_clear();
-    print(graphics?"Console: framebuffer 800x600x32\n":"Console: VGA text 80x25\n");
+    if(graphics){print("Console: framebuffer ");decimal(pixels_w);print("x");decimal(pixels_h);print("x32\n");}
+    else print("Console: VGA text 80x25\n");
 }
 void putchar(char c){
     uint64_t f=irq_save();serial_put(c);

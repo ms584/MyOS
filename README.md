@@ -1,4 +1,4 @@
-# MyOS — Phase 13: ATA Storage and Persistent RAMFS
+# MyOS — Phase 14: Graphics Foundation
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard input, physical/virtual memory allocation, a kernel heap,
@@ -8,14 +8,14 @@ a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded s
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-is the Phase 13 console/storage baseline; GUI and browser work are planned.
+includes the Phase 14 graphics foundation; desktop apps and browser work are planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 14 is next; browser feasibility is a
+the mapping from the old roadmap. Phase 15 mouse/GUI input is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -69,7 +69,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -84,7 +84,7 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
 - Boot information at 0x7000; E820 at 0x7400; font at 0xA000; VBE data at 0xB200.
   Kernel at 0x10000; the first 1 MiB is reserved by the physical allocator.
 - Four-level paging initially identity-maps 4 GiB. The PMM manages only usable
-  E820 pages below 256 MiB. The heap maps 1 MiB at virtual address 4 GiB with NX.
+  E820 pages below 256 MiB. The heap maps 4 MiB at virtual address 4 GiB with NX.
   Dynamically allocated page tables are reclaimed when mappings are removed.
 - `kmalloc`/`kfree` are 16-byte-aligned first-fit allocation with coalescing.
   The heap is fixed-size; allocation failure returns NULL. Invalid/double frees
@@ -142,3 +142,12 @@ then boot QEMU with both `build/myos-current.img` as floppy and
 `disk` shows storage state and `sync` forces a save. Reuse the same data image
 on the next boot. See [docs/PHASE13.md](docs/PHASE13.md) for the exact command,
 disk layout, validation and limits. The format is specific to MyOS, not FAT32.
+
+## Phase 14 graphics
+
+At the QEMU Shell, type `gfx` for the graphics test scene. Press R to redraw
+with another color, or another key to return to the Shell. The code now has
+clipped pixel/rectangle/text drawing and full-screen off-screen surfaces.
+Framebuffer metadata is validated and the VGA text fallback remains usable.
+See [docs/PHASE14.md](docs/PHASE14.md) for APIs, limits and acceptance tests.
+The desktop, mouse and built-in apps remain future phases.

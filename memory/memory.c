@@ -1,4 +1,6 @@
 #include "os.h"
+#define HEAP_BYTES (4u*1024u*1024u)
+#define HEAP_PAGES (HEAP_BYTES/PAGE_SIZE)
 #define MAX_PAGES (256u*1024u*1024u/PAGE_SIZE)
 #define NX (1ull<<63)
 #define ADDR 0x000ffffffffff000ull
@@ -56,7 +58,7 @@ uintptr_t vm_unmap(uintptr_t va){
 struct block {size_t size;struct block *next,*prev;uint64_t free;};
 static struct block *heap;
 void *kmalloc(size_t size){
-    if(!size||size>1024*1024-sizeof(struct block))return 0;
+    if(!size||size>HEAP_BYTES-sizeof(struct block))return 0;
     size=(size+15)&~15ull;uint64_t f=irq_save();
     for(struct block *b=heap;b;b=b->next)if(b->free&&b->size>=size){
         if(b->size>=size+sizeof(*b)+16){struct block *n=(struct block *)((char *)(b+1)+size);*n=(struct block){b->size-size-sizeof(*b),b->next,b,1};if(n->next)n->next->prev=n;b->next=n;b->size=size;}
@@ -82,9 +84,9 @@ void memory_init(void){
         }
     }
     for(unsigned n=0;n<MAX_PAGES;++n)if(bit(available,n))++free_count;
-    check(free_count>512,"insufficient RAM");
-    for(unsigned i=0;i<256;++i){uintptr_t p=page_alloc();check(p&&vm_map(0x100000000ull+i*PAGE_SIZE,p,2|NX),"heap mapping");}
-    heap=(struct block *)0x100000000ull;*heap=(struct block){1024*1024-sizeof(*heap),0,0,1};
+    check(free_count>HEAP_PAGES+512,"insufficient RAM");
+    for(unsigned i=0;i<HEAP_PAGES;++i){uintptr_t p=page_alloc();check(p&&vm_map(0x100000000ull+i*PAGE_SIZE,p,2|NX),"heap mapping");}
+    heap=(struct block *)0x100000000ull;*heap=(struct block){HEAP_BYTES-sizeof(*heap),0,0,1};
 }
 void memory_test(void){
     size_t before=pages_free();uintptr_t a=page_alloc(),b=page_alloc();check(a&&b&&a!=b&&a>=0x100000,"PMM allocation");
@@ -93,7 +95,7 @@ void memory_test(void){
     check(vm_translate(va+17)==a+17,"VM translation");check(vm_unmap(va)==a&&!vm_translate(va),"VM unmap");page_free(a);page_free(b);check(pages_free()==before,"page table reclaim");
     void *x=kmalloc(13),*y=kmalloc(5000);check(x&&y&&x!=y&&!((uintptr_t)x&15),"heap allocation");
     memset(x,0xab,13);memset(y,0xcd,5000);check(((uint8_t *)x)[12]==0xab&&((uint8_t *)y)[4999]==0xcd,"heap boundaries");
-    kfree(x);kfree(y);void *all=kmalloc(1024*1024-sizeof(struct block));check(all==x,"heap coalescing");check(!kmalloc(1),"heap OOM");kfree(all);
+    kfree(x);kfree(y);void *all=kmalloc(HEAP_BYTES-sizeof(struct block));check(all==x,"heap coalescing");check(!kmalloc(1),"heap OOM");kfree(all);
     uintptr_t list=0,p;size_t used=0;while((p=page_alloc())){*(uintptr_t *)p=list;list=p;++used;}
     check(used==before&&!page_alloc(),"PMM exhaustion");while(list){p=*(uintptr_t *)list;page_free(list);list=p;}check(pages_free()==before,"PMM recovery");
     print("PASS: PMM, paging, heap, exhaustion/recovery\n");

@@ -3,7 +3,7 @@
 Revised 2026-09-24 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **33 phases,
-numbered 0–32**. Phase 13 is the latest completed baseline; Phase 14 is next.
+numbered 0–32**. Phase 14 is the latest completed baseline; Phase 15 is next.
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -37,11 +37,12 @@ and PHASE9–PHASE13; no GUI or browser has been implemented by this revision.
 
 ## Milestone A — MyOS Desktop 1.0
 
-All phases in this and subsequent tables are **planned**.
+Phase 14 below is complete at the graphics-foundation baseline. Phases 15–32
+are **planned**.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
-| 14 | Graphics foundation | Clipped pixel/rectangle/text drawing, off-screen surfaces and redraw; validate framebuffer dimensions and memory use; preserve text fallback. Resize heap/loader limits as needed before adding large assets. |
+| 14 | Graphics foundation | **Complete QEMU baseline:** clipped pixels/rectangles/font text, full-size off-screen surface and redraw, validated VBE mode, 4 MiB heap, text fallback and screenshot acceptance. See PHASE14.md. |
 | 15 | Mouse and GUI input | PS/2 mouse movement/buttons, bounded cursor and event queue; keyboard and mouse work together under timer preemption; verify real QEMU input events. |
 | 16 | Desktop and windows | Desktop, app launcher, movable windows, focus, stacking, close and redraw. Opening/closing multiple windows releases their resources and does not corrupt adjacent windows. |
 | 17 | Widgets and Settings | Buttons, labels and input fields; Settings changes theme/background and supported preferences. Validate configuration, save to the Phase 13 data disk, restore after reboot and explain RAM-only mode. |
@@ -106,8 +107,8 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–32 add the online platform. There are **19 planned
-phases remaining (14–32)**, including **7 to Desktop 1.0 (14–20)**.
+and apps, and phases 26–32 add the online platform. There are **18 planned phases remaining (15–32)**, including **6 to
+Desktop 1.0 (15–20)**.
 
 ## Working and validation rules
 
