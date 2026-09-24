@@ -4,6 +4,7 @@
 #include "mouse.h"
 #include "settings.h"
 #include "snake.h"
+#include "widgets.h"
 
 #define WINDOW_LIMIT 6
 #define WINDOW_WIDTH 320
@@ -39,6 +40,14 @@ static int clamp(int value,int low,int high)
 static bool inside(int x,int y,int left,int top,int width,int height)
 {
     return x>=left && y>=top && x<left+width && y<top+height;
+}
+/* The three finished apps stay accessible even when demo windows exist. */
+static struct ui_rect app_button(const struct desktop *d,int id)
+{
+    int left=(int)d->scene->width-298;
+    if(id==3)return (struct ui_rect){left,12,86,30};
+    if(id==4)return (struct ui_rect){left+94,12,100,30};
+    return (struct ui_rect){left+202,12,78,30};
 }
 static void top(struct desktop *d,int id)
 {
@@ -107,7 +116,11 @@ static void redraw(struct desktop *d)
     struct gfx_surface *s=d->scene;
     gfx_clear(s,settings_background_color());
     gfx_rect(s,0,0,(int)s->width,54,settings_bar_color());
-    gfx_text(s,24,18,"MyOS Desktop  |  Phase 19",settings_text_color());
+    gfx_text(s,24,18,"MyOS Desktop 1.0",settings_text_color());
+    gfx_text(s,(int)s->width-342,20,"Apps",settings_text_color());
+    for(int id=3;id<WINDOW_LIMIT;++id)
+        ui_button(s,app_button(d,id),titles[id],
+                  d->windows[id]?0x2c6672:0x2f4768,0xffffff);
     gfx_text(s,24,64,"Launcher",settings_text_color());
     for(int id=0;id<WINDOW_LIMIT;++id){
         int y=86+id*56;
@@ -116,7 +129,7 @@ static void redraw(struct desktop *d)
     }
     for(int i=0;i<d->count;++i)draw_window(d,d->windows[d->order[i]]);
     gfx_rect(s,0,(int)s->height-36,(int)s->width,36,0x192842);
-    gfx_text(s,24,(int)s->height-26,"Launcher | Drag | X close | 1-6 open | Q exit",0xffffff);
+    gfx_text(s,24,(int)s->height-26,"Apps above | 4-6 keys | Drag | X close | Q exit",0xffffff);
     check(gfx_present(s,0,0),"desktop present");
     gfx_cursor_draw(d->cursor_x,d->cursor_y,d->buttons);
     marker("DESKTOP FRAME",-1);
@@ -131,6 +144,8 @@ static int hit_window(const struct desktop *d,int x,int y)
 }
 static bool click(struct desktop *d,int x,int y)
 {
+    for(int app=3;app<WINDOW_LIMIT;++app)
+        if(ui_hit(app_button(d,app),x,y))return open_window(d,app);
     int id=hit_window(d,x,y);
     if(id>=0){
         struct window *w=d->windows[id];

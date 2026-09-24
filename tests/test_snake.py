@@ -65,8 +65,11 @@ def exercise(text=False):
         assert vm.log.read_text().count('SNAKE STEP')>before,'Snake stopped behind Calculator'
         vm.wait('SNAKE GAME OVER',timeout=10)
         # Exposed right edge of Snake is outside the overlapping Calculator.
-        move_to(vm,addresses,760,450);button(vm,True);button(vm,False)
-        vm.key('r');vm.wait('SNAKE RESTART 0')
+        move_to(vm,addresses,760,450)
+        focused=vm.log.read_text().count('WINDOW FOCUS 6')
+        button(vm,True);wait_count(vm,'WINDOW FOCUS 6',focused+1);button(vm,False)
+        restarted=vm.log.read_text().count('SNAKE RESTART 0')
+        vm.key('r');wait_count(vm,'SNAKE RESTART 0',restarted+1)
         click(vm,addresses,550,545,'SNAKE PAUSE 0')
         click(vm,addresses,720,545,'SNAKE RESTART 0')
         leave(vm)

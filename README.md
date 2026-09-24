@@ -1,4 +1,4 @@
-# MyOS — Phase 19: Snake
+# MyOS — Phase 20: Desktop 1.0
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
@@ -8,14 +8,14 @@ a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded s
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-includes the Phase 19 desktop, Settings, Calculator and Snake baselines; browser work is planned.
+includes Desktop 1.0 with working Settings, Calculator and Snake; browser work is planned.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware.
 - Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phase 20 Desktop 1.0 integration is next; browser feasibility is a
+the mapping from the old roadmap. Phase 21 BIOS distribution is next; browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
 ## Build, test, run
@@ -69,7 +69,7 @@ the normal image even if a test fails. It tests:
   the CPU error code and CR2 address.
 
 Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop|settings|calculator|snake`.
+Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop|settings|calculator|snake|release`.
 Test builds additionally verify thirteen user-fault cases, process isolation,
 kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
 run the intentionally faulting user programs.
@@ -194,3 +194,14 @@ button. Food grows the snake and raises the score. Best score survives
 reboot when a recognized Phase 13 data disk is attached; otherwise it is
 RAM-only. See [docs/PHASE19.md](docs/PHASE19.md) for controls, data limits
 and QEMU validation. Snake runs in the kernel, not a user process.
+
+
+## Phase 20 Desktop 1.0
+
+The desktop top bar opens Settings, Calculator and Snake directly. The three
+apps can run together; errors in one do not prevent using the others or the
+Shell. A dedicated QEMU demo preserves Settings and the Snake best score on
+its data image across reboot. Run `python3 tools/desktop_demo.py` from the
+repository, then enter `desktop` at the `myos>` prompt. See
+[docs/PHASE20.md](docs/PHASE20.md) for controls, limits and verification.
+These built-in apps run inside the kernel.
