@@ -1,6 +1,6 @@
 # MyOS roadmap — Desktop, applications and online media
 
-Revised 2026-09-24 at the owner's request. The product goal is a graphical
+Revised 2026-09-25 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **33 phases,
 numbered 0–32**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
@@ -12,6 +12,36 @@ Phases 0–13 retain their existing numbering and history. Earlier commits named
 the acceptance criteria below, not just a screenshot or an updated phase name.
 This is a sequence of milestones, not a promise of equal effort per phase or
 a delivery date for modern web compatibility.
+
+## Approved execution order
+
+The owner approved this order on 2026-09-25:
+
+**26 → 27 → 28 → 29 → 30 → 31 → 32 → remaining Phase 24 → Phase 25**
+
+Phase 26 is next. Develop and validate the application, network and media
+platform in QEMU before returning to physical hardware. Keep existing phase
+numbers and commit history; the milestone sections below group scope, not
+execution order. The completed Phase 24 USB image remains available.
+
+| Order | Phase | Work |
+|---|---|---|
+| Next | 26 | App loading, capacity and a small port to establish browser feasibility |
+| 2 | 27 | Networking and supported virtual NIC |
+| 3 | 28 | HTTPS, certificate validation and supporting services |
+| 4 | 29 | Browser and real web search |
+| 5 | 30 | Audio playback and controls |
+| 6 | 31 | Video decoding and audio/video synchronization |
+| 7 | 32 | Actual online YouTube playback acceptance in QEMU |
+| 8 | 24 (remaining) | Select the physical target and implement required drivers |
+| 9 | 25 | Physical-machine boot, display, input, apps and persistence acceptance |
+
+Keep network, audio, input and storage drivers separate from higher-level
+services so later hardware adaptation can replace device-specific code.
+QEMU success does not establish physical-machine support. Phase 32 still
+requires the actual browser/media acceptance below; this order does not
+promise feasibility or a completion date. If a feasibility gate fails,
+document it and revise the plan with the owner.
 
 ## Completed foundations
 
@@ -68,8 +98,8 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial:** 64 MiB hybrid BIOS/UEFI image validated through QEMU USB mass storage. Target-machine selection and required input/storage drivers (including USB HID if needed) remain pending. Any physical-device write needs explicit target selection. See PHASE24.md. |
-| 25 | Real-hardware acceptance | **Deferred by owner: no USB device.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
+| 24 | USB image and hardware preparation | **Partial:** 64 MiB hybrid BIOS/UEFI image validated through QEMU USB mass storage. Target-machine selection and required input/storage drivers (including USB HID if needed) are scheduled after Phase 32. Any physical-device write needs explicit target selection. See PHASE24.md. |
+| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 32 and remaining Phase 24; no USB device yet.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later

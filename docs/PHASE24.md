@@ -1,6 +1,9 @@
 # Phase 24 — USB image and hardware preparation
 
-The owner has no spare physical USB device and explicitly deferred Phase 25.
+The owner has no spare physical USB device. On 2026-09-25, the owner approved
+developing Phases 26–32 in QEMU first, then completing the remaining Phase 24
+hardware preparation and Phase 25 physical acceptance. Existing phase numbers
+and the already validated USB image are retained. See [ROADMAP.md](ROADMAP.md).
 The **USB-image/QEMU part of Phase 24 is implemented**. Selecting a real target
 and implementing its required device drivers remain pending; the full
 hardware-preparation gate is not claimed complete.

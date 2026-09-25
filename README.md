@@ -18,6 +18,12 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
 the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is partial and Phase 25 is deferred (the owner has no USB). Browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
+The owner-approved execution order (2026-09-25) is **26 → 27 → 28 → 29 →
+30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phase 26 is next. Develop
+and validate in QEMU first, then select the physical target and complete its
+drivers and acceptance tests. Existing phase numbers and the working USB
+image are retained; physical support remains unverified.
+
 ## Build, test, run
 
 On Linux/WSL Ubuntu, install GCC, GNU binutils, NASM, Python 3 and QEMU.
