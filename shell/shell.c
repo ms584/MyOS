@@ -5,6 +5,7 @@
 #include "mouse.h"
 #include "desktop.h"
 #include "settings.h"
+#include "net.h"
 #define LINE_SIZE 256
 static char cwd[FS_PATH]="/";
 static struct fs_handle files[FS_HANDLES];
@@ -52,6 +53,26 @@ static void execute(char *line){
         print(" buttons=");decimal(buttons);print(" dropped=");decimal(mouse_dropped());print("\n");
         return;
     }
+    if(equal(cmd,"net")){
+        if(!arg||equal(arg,"status")){net_status();return;}
+        if(equal(arg,"up")){print(net_up()?"Network: DHCP configured\n":"Network: DHCP failed or timed out\n");net_status();return;}
+        if(equal(arg,"dns")){
+            char *host=word(&rest);uint8_t address[4];
+            if(!host||word(&rest)){print("usage: net dns HOST\n");return;}
+            if(!net_resolve(host,address)){print("DNS failed or timed out\n");return;}
+            print("DNS ");print(host);print(" = ");for(unsigned i=0;i<4;++i){if(i)putchar('.');decimal(address[i]);}print("\n");return;
+        }
+        if(equal(arg,"udp")||equal(arg,"get")){
+            bool get=equal(arg,"get");char *host=word(&rest),*port_text=word(&rest),*extra=word(&rest);
+            if(!host||!port_text||!extra||word(&rest)){print(get?"usage: net get HOST PORT PATH\n":"usage: net udp IP PORT TEXT\n");return;}
+            unsigned port=0;for(char *p=port_text;*p;++p){if(*p<'0'||*p>'9'||port>6553){port=0;break;}port=port*10+(unsigned)(*p-'0');}
+            if(!port||port>65535){print("Invalid port\n");return;}
+            uint8_t address[4];if(!net_resolve(host,address)){print("Address lookup failed\n");return;}
+            bool ok=get?net_http_get(address,(uint16_t)port,host,extra):net_udp_echo(address,(uint16_t)port,extra);
+            if(!ok)print("Network request failed or timed out\n");return;
+        }
+        print("usage: net [status|up|dns HOST|udp IP PORT TEXT|get HOST PORT PATH]\n");return;
+    }
     if(equal(cmd,"run")){
         if(!arg || word(&rest)){print("usage: run PATH\n");return;}
         char path[FS_PATH];if(!path_for(arg,path))return;
@@ -96,7 +117,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}
@@ -135,7 +156,7 @@ _Noreturn void shell_run(void){
     print("MyOS Shell ready. Type help.\nmyos> ");
     for(;;){
         uint64_t flags=irq_save();int c=keyboard_get();
-        if(c<0){__asm__ volatile("sti; hlt":::"memory");continue;}irq_restore(flags);
+        if(c<0){irq_restore(flags);net_poll();__asm__ volatile("sti; hlt":::"memory");continue;}irq_restore(flags);
         if(c=='\n'){
             putchar('\n');line[used]=0;
             if(overflow)print("error: line too long; command discarded\n");else execute(line);

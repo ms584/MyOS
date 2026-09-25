@@ -5,6 +5,7 @@
 #include "mouse.h"
 #include "settings.h"
 #include "snake.h"
+#include "nic.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -59,6 +60,7 @@ void kernel_main(void){
     if(!mount){print("Storage: restored RAMFS generation ");decimal(storage_generation());print("\n");}
     else if(mount==-2 && storage_ready())print("Storage: empty data disk; first change will save\n");
     else if(mount!=-19){print("Storage: snapshot unavailable (error ");decimal((uint64_t)(-mount));print("); RAM contents retained\n");}
+    if(nic_init())print("NIC: RTL8139 initialized\n");
     app_seed();
     settings_init();
     snake_init();

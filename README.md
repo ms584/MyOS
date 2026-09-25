@@ -1,4 +1,4 @@
-# MyOS — Phases 22–24: UEFI, verified releases and virtual USB
+# MyOS — x86-64 desktop and network baseline
 
 MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
 console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
@@ -19,7 +19,7 @@ the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is parti
 separate long-term milestone, with no promised completion date.
 
 The owner-approved execution order (2026-09-25) is **26 → 27 → 28 → 29 →
-30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phase 26 is next. Develop
+30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–27 have QEMU baselines; Phase 28 is next. Develop
 and validate in QEMU first, then select the physical target and complete its
 drivers and acceptance tests. Existing phase numbers and the working USB
 image are retained; physical support remains unverified.
@@ -257,4 +257,15 @@ host-built app can be installed on a **new** MyOS data image using
 `python3 tools/make_app_disk.py build/my-port-data.img build/port.app port`;
 then run `run /bin/port` with that disk attached. See
 [docs/PHASE26.md](docs/PHASE26.md) for controls, format, tests and limits.
-Phase 26 remains in progress; browser-scale runtime and feasibility are open.
+Phase 26 has a QEMU feasibility baseline; the full browser remains open.
+
+## Phase 27 network baseline
+
+QEMU's RTL8139 virtual NIC now supports DHCP, ARP, IPv4, DNS, UDP and a
+serialized TCP/HTTP client. Build and boot with `-nic user,model=rtl8139`,
+then type `net up`, `net status`, `net dns localhost` or
+`net get 10.0.2.2 8000 /`. See [docs/PHASE27.md](docs/PHASE27.md) for a
+host-server example, limitations and failure/reconnect tests. Packaged UEFI and BIOS
+images can be started with `python3 tools/run_image.py --nic rtl8139` after a
+release build. This is a QEMU
+network baseline, not a browser or HTTPS implementation.

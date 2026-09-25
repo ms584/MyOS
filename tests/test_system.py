@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -54,6 +54,7 @@ class VM:
             shutil.copyfile(template,variables)
             command.extend(['-drive',f'if=pflash,format=raw,readonly=on,file={code}',
                             '-drive',f'if=pflash,format=raw,file={variables}'])
+        if nic:command.extend(['-nic','user,model=rtl8139'])
         if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index={disk_index}'])
         self.process=subprocess.Popen(command)
         self.connection=socket.socket(socket.AF_UNIX)

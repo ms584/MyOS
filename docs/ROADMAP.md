@@ -19,16 +19,16 @@ The owner approved this order on 2026-09-25:
 
 **26 → 27 → 28 → 29 → 30 → 31 → 32 → remaining Phase 24 → Phase 25**
 
-Phase 26 is next. Develop and validate the application, network and media
+Phases 26–27 are complete at their documented QEMU baselines. Develop and validate the application, network and media
 platform in QEMU before returning to physical hardware. Keep existing phase
 numbers and commit history; the milestone sections below group scope, not
 execution order. The completed Phase 24 USB image remains available.
 
 | Order | Phase | Work |
 |---|---|---|
-| Next | 26 | App loading, capacity and a small port to establish browser feasibility |
-| 2 | 27 | Networking and supported virtual NIC |
-| 3 | 28 | HTTPS, certificate validation and supporting services |
+| Done | 26 | **Complete QEMU baseline:** app loading, capacity and browser-component feasibility |
+| Done | 27 | **Complete QEMU baseline:** networking and supported virtual NIC |
+| Next | 28 | HTTPS, certificate validation and supporting services |
 | 4 | 29 | Browser and real web search |
 | 5 | 30 | Audio playback and controls |
 | 6 | 31 | Video decoding and audio/video synchronization |
@@ -110,7 +110,7 @@ QEMU development can continue without claiming this milestone is complete.
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
 | 26 | Application runtime and capacity | **Complete QEMU runtime/feasibility baseline:** file-based multi-page Ring 3 C apps, private heap/BSS, v2 64 KiB files with v1 compatibility, 100 Hz ticks and a tested NetSurf `libwapcaplet` component. This validates one browser dependency, not a complete engine or YouTube. The full browser will need larger limits and later network/HTTPS/GUI/media work. See PHASE26.md. |
-| 27 | Networking | A supported NIC driver, bounded packet buffers and IPv4/ARP/DHCP/DNS/TCP/UDP functionality sufficient for the target browser; tests include failure, timeout and reconnect behavior. |
+| 27 | Networking | **Complete QEMU baseline:** RTL8139 driver, bounded buffers, IPv4/ARP/DHCP/DNS/UDP/TCP and streaming HTTP response API; live QEMU tests cover failure, timeout and reconnect. Only one active request is supported; HTTPS and browser integration are later phases. See PHASE27.md. |
 | 28 | HTTPS platform | Reliable time, entropy, certificate store and TLS through a maintained library; fetch HTTPS resources and reject invalid certificates. Do not disable certificate verification to pass a demo. |
 | 29 | Browser and web search | GUI address/search bar, navigation and rendering of documented target sites; choose or port an engine based on Phase 26 feasibility. Open actual search results through a search provider; record HTML/CSS/JavaScript support and unsupported sites. |
 | 30 | Audio | Supported audio device, buffered PCM playback, volume/mute and synchronization timing; validate playback and underrun recovery. Add Settings controls only when they work. |

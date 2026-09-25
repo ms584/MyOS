@@ -19,6 +19,18 @@ uintptr_t page_alloc(void){
         if(bit(available,n)&&!bit(owned,n)){set(owned,n,true);--free_count;hint=(n+1)%MAX_PAGES;irq_restore(f);return (uintptr_t)n*PAGE_SIZE;}}
     panic("PMM count mismatch");
 }
+uintptr_t pages_alloc_contiguous(unsigned count){
+    if(!count||count>16)return 0;
+    uint64_t flags=irq_save();
+    for(unsigned start=256;start+count<=MAX_PAGES;++start){
+        bool free=true;
+        for(unsigned i=0;i<count;++i)if(!bit(available,start+i)||bit(owned,start+i)){free=false;break;}
+        if(!free)continue;
+        for(unsigned i=0;i<count;++i)set(owned,start+i,true);
+        free_count-=count;irq_restore(flags);return (uintptr_t)start*PAGE_SIZE;
+    }
+    irq_restore(flags);return 0;
+}
 void page_free(uintptr_t p){
     uint64_t f=irq_save();unsigned n=p/PAGE_SIZE;
     check(p<(uintptr_t)MAX_PAGES*PAGE_SIZE&&!(p%PAGE_SIZE)&&n<MAX_PAGES&&bit(available,n)&&bit(owned,n),"invalid/double page free");

@@ -18,7 +18,8 @@
 static bool detected;
 static uint32_t capacity;
 static uint8_t selected_drive; /* 0 = primary master, 1 = primary slave. */
-static const char data_signature[]="MYOS-DATA-v1";
+static const char data_signature_v1[]="MYOS-DATA-v1";
+static const char data_signature_v2[]="MYOS-DATA-v2";
 
 static uint16_t inw(uint16_t port)
 {
@@ -111,9 +112,12 @@ static bool is_data_disk(void)
 {
     uint8_t sector[512];
     if(!ata_read(0,sector))return false;
-    for(unsigned i=0;i<sizeof(data_signature);++i)
-        if(sector[i]!=(uint8_t)data_signature[i])return false;
-    return true;
+    bool v1=true,v2=true;
+    for(unsigned i=0;i<sizeof(data_signature_v1);++i){
+        if(sector[i]!=(uint8_t)data_signature_v1[i])v1=false;
+        if(sector[i]!=(uint8_t)data_signature_v2[i])v2=false;
+    }
+    return v1||v2;
 }
 void ata_init(void)
 {

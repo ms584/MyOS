@@ -32,6 +32,7 @@ enum { KEY_UP=128,KEY_DOWN=129,KEY_LEFT=130,KEY_RIGHT=131 };
 int keyboard_get(void);
 void memory_init(void);
 uintptr_t page_alloc(void);
+uintptr_t pages_alloc_contiguous(unsigned);
 void page_free(uintptr_t);
 size_t pages_free(void);
 bool vm_map(uintptr_t,uintptr_t,uint64_t);

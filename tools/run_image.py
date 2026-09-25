@@ -11,6 +11,7 @@ def main():
     p.add_argument('--firmware',choices=['bios','uefi'],default='uefi')
     p.add_argument('--media',choices=['disk','usb'],default='disk')
     p.add_argument('--data',help='optional separate persistent MyOS data image')
+    p.add_argument('--nic',choices=['rtl8139'],help='enable supported QEMU network card')
     args=p.parse_args()
     image=ROOT/'build'/('myos-usb.img' if args.media=='usb' else f'myos-{args.firmware}.img')
     if not image.is_file():raise SystemExit('Build images first: python3 tools/release.py build')
@@ -28,6 +29,7 @@ def main():
         disk=(ROOT/args.data).absolute();data_disk(disk)
         index=0 if args.media=='usb' else 1
         cmd+=['-drive',f'format=raw,file={disk},if=ide,index={index}']
+    if args.nic:cmd+=['-nic',f'user,model={args.nic}']
     cmd+=['-serial',f'file:{ROOT}/build/run-image-serial.log']
     subprocess.run([sys.executable,str(ROOT/'tools/run_logged.py'),'--',*cmd],cwd=ROOT,check=True)
 if __name__=='__main__':main()
