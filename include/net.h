@@ -12,4 +12,9 @@ bool net_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const cha
 bool net_http_get(const uint8_t ip[4],uint16_t port,const char *host,const char *path);
 bool net_parse_ip(const char *text,uint8_t out[4]);
 void net_poll(void);
+/* One serialized TCP stream for the native TLS client. */
+bool net_tcp_open(const uint8_t ip[4],uint16_t port);
+int net_tcp_write(const uint8_t *data,size_t size);
+int net_tcp_read(uint8_t *data,size_t capacity);
+void net_tcp_close(void);
 #endif

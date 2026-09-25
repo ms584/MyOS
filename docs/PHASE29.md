@@ -2,10 +2,11 @@
 
 The MyOS desktop now has a **kernel-resident HTTP browser preview**. It is a
 working integration of the Phase 27 network client and the graphical desktop,
-but **Phase 29 is not complete**. Phase 28's native TLS, trusted time,
-entropy and certificate validation do not exist yet, so the browser cannot
-open HTTPS search results. Do not describe this preview as a full browser,
-a NetSurf port, or evidence that YouTube works.
+but **Phase 29 is not complete**. Phase 28 now provides a native,
+certificate-verified HTTPS API in the Shell. The Browser window has not yet
+connected its URL, redirect or search handling to that API. Do not
+describe this preview as a full browser, a NetSurf port, or evidence that
+YouTube works.
 
 ## Try the current preview
 
@@ -37,8 +38,8 @@ headings, paragraphs, line breaks, lists, entities and clickable links.
 Absolute and relative HTTP links work. A 32 KiB response buffer and 160
 laid-out lines bound memory use. Oversized responses fail visibly, and another
 page can be loaded afterward. Unsupported HTTPS URLs, HTTPS redirects and
-search queries display an explicit Phase 28 message. A missing NIC also
-produces a visible error. CSS, images, forms, JavaScript, cookies, HTTP
+search queries display an explicit integration-pending message. A missing
+NIC also produces a visible error. CSS, images, forms, JavaScript, cookies, HTTP
 redirect following, multi-tab browsing and user-process isolation are absent.
 Text rendering currently uses the built-in ASCII font; non-ASCII page text
 is replaced with `?`. This preview is unsuitable for Thai-language pages.

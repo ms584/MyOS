@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -54,6 +54,8 @@ class VM:
             shutil.copyfile(template,variables)
             command.extend(['-drive',f'if=pflash,format=raw,readonly=on,file={code}',
                             '-drive',f'if=pflash,format=raw,file={variables}'])
+        if cpu:command.extend(['-cpu',cpu])
+        if rtc:command.extend(['-rtc',f'base={rtc}'])
         if nic:command.extend(['-nic','user,model=rtl8139'])
         if audio is not None:command.extend(['-audiodev',f'wav,id=myos-audio,path={audio}',
                                              '-device','sb16,audiodev=myos-audio'])

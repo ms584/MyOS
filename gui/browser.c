@@ -124,15 +124,15 @@ static bool collect(void *ctx,const uint8_t *data,size_t n){
     memcpy(buffer->bytes+buffer->used,data,n);buffer->used+=n;return true;
 }
 static bool parse_url(const char *url,char host[URL_CAP],uint16_t *port,char path[URL_CAP]){
-    if(begins(url,"https://")){set_status("HTTPS requires Phase 28");return false;}
+    if(begins(url,"https://")){set_status("HTTPS browser integration pending");return false;}
     const char *p=begins(url,"http://")?url+7:url;
     if(!*p){set_status("Enter a URL");return false;}
     for(const char *q=p;*q;++q)if(*q==' '||*q=='\t'||*q=='\r'||*q=='\n'){
-        set_status("Online search requires HTTPS (Phase 28)");return false;
+        set_status("Online search integration pending");return false;
     }
     if(!begins(url,"http://") && !begins(p,"localhost")){
         bool dot=false,digit=true;for(const char *q=p;*q&&*q!='/'&&*q!=':';++q){if(*q=='.')dot=true;if(*q<'0'||*q>'9')digit=false;}
-        if(!dot&&!digit){set_status("Online search requires HTTPS (Phase 28)");return false;}
+        if(!dot&&!digit){set_status("Online search integration pending");return false;}
     }
     size_t h=0;while(p[h]&&p[h]!=':'&&p[h]!='/'&&h+1<URL_CAP){host[h]=p[h];++h;}
     host[h]=0;if(!h||h+1==URL_CAP){set_status("Invalid host");return false;}
@@ -171,7 +171,7 @@ static void loaded(const uint8_t *data,size_t n){
                data[j+4]=='s'&&data[j+5]==':'&&data[j+6]=='/'&&data[j+7]=='/')secure=true;
             break;
         }
-        set_status(secure?"Redirect requires HTTPS (Phase 28)":"HTTP redirect not followed");
+        set_status(secure?"HTTPS redirect integration pending":"HTTP redirect not followed");
     }else if(code>=400)set_status("HTTP error response");
     else set_status(truncated?"Page truncated (line limit)":"Page loaded (HTTP, no CSS/JS)");
     report(title);
@@ -230,7 +230,7 @@ static void follow(const char *href){
     }
     navigate(url,true);
 }
-void browser_begin(void){memset(lines,0,sizeof(lines));input[0]=current[0]=0;input_length=history_count=scroll=0;line_count=1;editing=true;copy(title,sizeof(title),"MyOS Browser preview");set_status("Enter HTTP URL; HTTPS needs Phase 28");}
+void browser_begin(void){memset(lines,0,sizeof(lines));input[0]=current[0]=0;input_length=history_count=scroll=0;line_count=1;editing=true;copy(title,sizeof(title),"MyOS Browser preview");set_status("Enter HTTP URL; HTTPS GUI pending");}
 void browser_close(void){input[0]=0;editing=false;}
 void browser_draw(struct gfx_surface *scene,int x,int y){
     ui_button(scene,(struct ui_rect){x+12,y+42,30,28},"<",0x304b6d,0xffffff);

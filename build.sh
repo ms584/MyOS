@@ -8,7 +8,7 @@ mkdir -p build
 flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
        -fno-asynchronous-unwind-tables -fno-unwind-tables
-       -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
+       -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -Ivendor/mbedtls/include
        -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
 for app in hello port loop capacity; do
     gcc -m64 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic -mno-red-zone \
@@ -32,19 +32,31 @@ ld -m elf_x86_64 --build-id=none -T user/app.ld -o build/wapcaplet.elf \
 objcopy -O binary build/wapcaplet.elf build/wapcaplet.bin
 python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
-for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c drivers/sb16.c audio/audio.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c; do
+for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c drivers/sb16.c audio/audio.c security/security.c security/tls_port.c security/tls.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c; do
     obj="build/${source//\//-}"
     obj="${obj%.c}.o"
     gcc "${flags[@]}" -c "$source" -o "$obj"
     objects+=("$obj")
 done
+# Vendored Mbed TLS 3.6.7, built without host libc or system TLS.
+tls_objects=()
+for source in vendor/mbedtls/library/*.c; do
+    obj="build/mbedtls-$(basename "${source%.c}").o"
+    gcc -m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic \
+        -mno-red-zone -mgeneral-regs-only -fno-stack-protector \
+        -fno-asynchronous-unwind-tables -fno-unwind-tables \
+        -ffunction-sections -fdata-sections -U_FORTIFY_SOURCE -Ivendor/mbedtls/include \
+        -Ivendor/mbedtls/library -c "$source" -o "$obj"
+    tls_objects+=("$obj")
+done
+ar rcs build/libmbedtls-myos.a "${tls_objects[@]}"
 nasm -f elf64 user/app-blob.asm -o build/app-blob.o
 nasm -f elf64 kernel/entry.asm -o build/entry.o
 nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
 nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
 nasm -f bin user/demo.asm -o build/user-demo.bin
 nasm -f elf64 user/blob.asm -o build/user-blob.o
-ld -m elf_x86_64 --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o
+ld -m elf_x86_64 --gc-sections --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
 test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }

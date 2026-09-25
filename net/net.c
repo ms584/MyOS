@@ -20,6 +20,9 @@ static uint32_t tcp_ack,tcp_seq;
 static uint8_t tcp_data[1460];
 static size_t tcp_length;
 static bool tcp_event;
+static bool stream_mode,stream_closed,stream_error;
+static uint8_t stream_bytes[8192];
+static size_t stream_head,stream_tail,stream_used;
 
 static uint16_t rd16(const uint8_t *p){return ((uint16_t)p[0]<<8)|p[1];}
 static uint32_t rd32(const uint8_t *p){return ((uint32_t)rd16(p)<<16)|rd16(p+2);}
@@ -31,6 +34,7 @@ static uint16_t finish(uint32_t value){while(value>>16)value=(value&0xffff)+(val
 static uint16_t checksum(const uint8_t *data,size_t n){return finish(sum(data,n,0));}
 static uint16_t transport_sum(const uint8_t *,const uint8_t *,uint8_t,const uint8_t *,size_t);
 static bool frame(const uint8_t *,uint16_t,size_t);
+static bool tcp_packet(const uint8_t target[4],uint16_t,uint8_t,const uint8_t *,size_t);
 static void show_ip(const uint8_t *a){for(unsigned i=0;i<4;++i){if(i)putchar('.');decimal(a[i]);}}
 bool net_parse_ip(const char *s,uint8_t out[4]){
     if(!s)return false;
@@ -77,6 +81,23 @@ static void receive(const uint8_t *f,size_t n){
         tcp_flags=payload[13];tcp_ack=rd32(payload+8);tcp_seq=rd32(payload+4);
         tcp_length=plen-thl;if(tcp_length>sizeof(tcp_data))tcp_length=sizeof(tcp_data);
         memcpy(tcp_data,payload+thl,tcp_length);tcp_event=true;
+        if(stream_mode){
+            if(tcp_flags&4)stream_error=true;
+            if(tcp_length){
+                if(tcp_seq==acknowledge&&tcp_length<=sizeof(stream_bytes)-stream_used){
+                    for(size_t j=0;j<tcp_length;++j){
+                        stream_bytes[stream_head]=tcp_data[j];
+                        stream_head=(stream_head+1)%sizeof(stream_bytes);
+                    }
+                    stream_used+=tcp_length;acknowledge+=(uint32_t)tcp_length;
+                }
+                (void)tcp_packet(tcp_peer,tcp_port,0x10,0,0);
+            }
+            if((tcp_flags&1)&&tcp_seq+tcp_length==acknowledge){
+                ++acknowledge;stream_closed=true;
+                (void)tcp_packet(tcp_peer,tcp_port,0x10,0,0);
+            }
+        }
     }
 }
 void net_poll(void){(void)nic_poll(receive,1);}
@@ -209,10 +230,85 @@ bool net_udp_echo(const uint8_t target[4],uint16_t port,const char *message){
 static bool tcp_packet(const uint8_t target[4],uint16_t port,uint8_t flags,const uint8_t *data,size_t n){
     if(n>IP_PAYLOAD-20)return false;
     uint8_t *t=tx+34;memset(t,0,20);wr16(t,source_port);wr16(t+2,port);wr32(t+4,sequence);wr32(t+8,acknowledge);
-    t[12]=0x50;t[13]=flags;wr16(t+14,4096);memcpy(t+20,data,n);
+    t[12]=0x50;t[13]=flags;
+    size_t window=stream_mode?sizeof(stream_bytes)-stream_used:4096;
+    if(window>4096)window=4096;
+    wr16(t+14,(uint16_t)window);memcpy(t+20,data,n);
     wr16(t+16,transport_sum(ip,target,6,t,20+n));return ipv4(target,peer_mac,6,20+n,ip);
 }
 static bool wait_tcp(uint64_t deadline){while(!timeout(deadline)){net_poll();if(tcp_event)return true;idle();}return false;}
+bool net_tcp_open(const uint8_t target[4],uint16_t port){
+    if(tcp_active||!configured||!port||!route(target))return false;
+    tcp_active=true;stream_mode=false;stream_closed=stream_error=false;
+    stream_head=stream_tail=stream_used=0;tcp_port=port;
+    memcpy(tcp_peer,target,4);
+    source_port++;if(source_port<49155)source_port=49155;
+    sequence+=1009;acknowledge=0;tcp_event=false;
+    for(unsigned attempt=0;attempt<3;++attempt){
+        if(!tcp_packet(target,port,2,0,0))break;
+        uint64_t end=ticks+150;
+        while(wait_tcp(end)){
+            tcp_event=false;
+            if(tcp_flags&4)goto fail;
+            if((tcp_flags&0x12)==0x12&&tcp_ack==sequence+1){
+                acknowledge=tcp_seq+1;++sequence;
+                stream_mode=true;
+                if(tcp_packet(target,port,0x10,0,0))return true;
+                goto fail;
+            }
+        }
+    }
+fail:
+    stream_mode=tcp_active=false;return false;
+}
+int net_tcp_write(const uint8_t *data,size_t size){
+    if(!stream_mode||!data||stream_closed||stream_error)return -1;
+    size_t sent=0;
+    while(sent<size){
+        size_t n=size-sent;if(n>1460)n=1460;
+        bool acknowledged=false;
+        for(unsigned attempt=0;attempt<3&&!acknowledged;++attempt){
+            tcp_event=false;
+            if(!tcp_packet(tcp_peer,tcp_port,0x18,data+sent,n))return -1;
+            uint64_t end=ticks+150;
+            while(!timeout(end)){
+                net_poll();
+                if(stream_error)return -1;
+                if(tcp_event){
+                    tcp_event=false;
+                    if(tcp_ack==sequence+n){acknowledged=true;break;}
+                }
+                idle();
+            }
+        }
+        if(!acknowledged)return -1;
+        sequence+=(uint32_t)n;sent+=n;
+    }
+    return (int)sent;
+}
+int net_tcp_read(uint8_t *data,size_t capacity){
+    if(!stream_mode||!data||!capacity)return -1;
+    uint64_t end=ticks+500;
+    while(!stream_used&&!stream_closed&&!stream_error&&!timeout(end)){
+        net_poll();if(!stream_used&&!stream_closed&&!stream_error)idle();
+    }
+    if(stream_error)return -1;
+    if(!stream_used)return stream_closed?0:-1;
+    size_t n=capacity;if(n>stream_used)n=stream_used;
+    for(size_t i=0;i<n;++i){
+        data[i]=stream_bytes[stream_tail];
+        stream_tail=(stream_tail+1)%sizeof(stream_bytes);
+    }
+    stream_used-=n;
+    (void)tcp_packet(tcp_peer,tcp_port,0x10,0,0);
+    return (int)n;
+}
+void net_tcp_close(void){
+    if(stream_mode&&!stream_closed&&!stream_error)
+        (void)tcp_packet(tcp_peer,tcp_port,0x11,0,0);
+    stream_mode=tcp_active=false;tcp_event=false;
+    stream_head=stream_tail=stream_used=0;
+}
 static bool http_fetch_inner(const uint8_t target[4],uint16_t port,const char *host,const char *path,
                              net_http_sink sink,void *context){
     if(!configured||!route(target)||!host||!path||!sink)return false;

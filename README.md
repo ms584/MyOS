@@ -8,7 +8,7 @@ a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded s
 
 The revised goal is a MyOS graphical desktop with Settings, Calculator and
 Snake, followed by online browsing and actual YouTube playback. Current code
-includes Desktop 1.0 with working Settings, Calculator and Snake; browser work is planned.
+includes Desktop 1.0 with working Settings, Calculator and Snake; browser work is in progress.
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. BIOS/UEFI images and release tooling are complete in QEMU; Phase 24 has a validated virtual USB image. Hardware preparation remains pending and Phase 25 is deferred.
@@ -19,7 +19,7 @@ the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is parti
 separate long-term milestone, with no promised completion date.
 
 The owner-approved execution order (2026-09-25) is **26 → 27 → 28 → 29 →
-30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–27 have QEMU baselines; Phase 28 is next. Develop
+30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–28 have QEMU baselines; Phase 29 browser integration is in progress. Develop
 and validate in QEMU first, then select the physical target and complete its
 drivers and acceptance tests. Existing phase numbers and the working USB
 image are retained; physical support remains unverified.
@@ -270,12 +270,19 @@ images can be started with `python3 tools/run_image.py --nic rtl8139` after a
 release build. This is a QEMU
 network baseline, not a browser or HTTPS implementation.
 
+## Phase 28 HTTPS platform (QEMU baseline)
+
+With `-cpu max -nic user,model=rtl8139`, run `security`, `net up` and
+`net https HOST 443 /PATH` in the Shell. MyOS verifies the server certificate
+and hostname against its small trust store. See [docs/PHASE28.md](docs/PHASE28.md)
+for supported TLS algorithms, limits and QEMU acceptance tests.
+
 ## Phase 29 browser preview (in progress)
 
 Open `desktop` and press `7` to try the new Browser window. With QEMU
 `-nic user,model=rtl8139` and a local HTTP server on WSL port 8000, enter
-`http://10.0.2.2:8000/`. Text, links and Back work; HTTPS and real web
-search are blocked until Phase 28. This is a bounded, kernel-resident HTML
+`http://10.0.2.2:8000/`. Text, links and Back work; the Phase 28 HTTPS Shell API is ready, but
+Browser GUI integration and real web search are still pending. This is a bounded, kernel-resident HTML
 preview, not a complete browser. See [docs/PHASE29.md](docs/PHASE29.md).
 
 ## Phase 30 audio (QEMU baseline)
