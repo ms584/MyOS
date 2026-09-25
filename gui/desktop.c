@@ -5,8 +5,9 @@
 #include "settings.h"
 #include "snake.h"
 #include "widgets.h"
+#include "browser.h"
 
-#define WINDOW_LIMIT 6
+#define WINDOW_LIMIT 7
 #define WINDOW_WIDTH 320
 #define WINDOW_HEIGHT 210
 #define TITLE_HEIGHT 32
@@ -22,9 +23,11 @@ struct desktop {
     uint8_t buttons;
 };
 
-static const char *titles[WINDOW_LIMIT]={"Demo A","Demo B","Demo C","Settings","Calculator","Snake"};
-static const uint32_t bodies[WINDOW_LIMIT]={0x20324b,0x3a2b43,0x2a3c39,0x20324b,0x20324b,0x20324b};
+static const char *titles[WINDOW_LIMIT]={"Demo A","Demo B","Demo C","Settings","Calculator","Snake","Browser"};
+static const uint32_t bodies[WINDOW_LIMIT]={0x20324b,0x3a2b43,0x2a3c39,0x20324b,0x20324b,0x20324b,0x20324b};
 
+static int window_width(int id){return id==6?BROWSER_WIDTH:WINDOW_WIDTH;}
+static int window_height(int id){return id==6?BROWSER_HEIGHT:WINDOW_HEIGHT;}
 static void marker(const char *name,int id)
 {
     while(*name)serial_put(*name++);
@@ -45,6 +48,7 @@ static bool inside(int x,int y,int left,int top,int width,int height)
 static struct ui_rect app_button(const struct desktop *d,int id)
 {
     int left=(int)d->scene->width-298;
+    if(id==6)return (struct ui_rect){230,12,110,30};
     if(id==3)return (struct ui_rect){left,12,86,30};
     if(id==4)return (struct ui_rect){left+94,12,100,30};
     return (struct ui_rect){left+202,12,78,30};
@@ -65,14 +69,15 @@ static bool open_window(struct desktop *d,int id)
     struct window *w=kmalloc(sizeof(*w));
     if(!w){marker("WINDOW OOM",id);return false;}
     int width=d->scene->width,height=d->scene->height;
-    *w=(struct window){clamp(230+id*50,0,width-WINDOW_WIDTH),
-                       clamp(130+id*50,54,height-WINDOW_HEIGHT-36),id};
+    *w=(struct window){clamp(230+id*50,0,width-window_width(id)),
+                       clamp(130+id*50,54,height-window_height(id)-36),id};
     d->windows[id]=w;
     d->order[d->count++]=id;
     d->active=id;
     if(id==3)settings_begin();
     if(id==4)calculator_begin();
     if(id==5)snake_begin();
+    if(id==6)browser_begin();
     marker("WINDOW OPEN",id);
     return true;
 }
@@ -80,6 +85,7 @@ static void close_window(struct desktop *d,int id)
 {
     if(id<0 || id>=WINDOW_LIMIT || !d->windows[id])return;
     if(id==3)settings_cancel();
+    if(id==6)browser_close();
     kfree(d->windows[id]);d->windows[id]=0;
     int place=-1;
     for(int i=0;i<d->count;++i)if(d->order[i]==id){place=i;break;}
@@ -93,18 +99,19 @@ static void close_window(struct desktop *d,int id)
 static void draw_window(struct desktop *d,const struct window *w)
 {
     struct gfx_surface *s=d->scene;
-    int x=w->x,y=w->y,id=w->id;
-    gfx_rect(s,x+5,y+6,WINDOW_WIDTH,WINDOW_HEIGHT,0x0a101d);
-    gfx_rect(s,x,y,WINDOW_WIDTH,WINDOW_HEIGHT,0x92aac4);
-    gfx_rect(s,x+2,y+2,WINDOW_WIDTH-4,WINDOW_HEIGHT-4,bodies[id]);
-    gfx_rect(s,x+2,y+2,WINDOW_WIDTH-4,TITLE_HEIGHT-2,
+    int x=w->x,y=w->y,id=w->id,width=window_width(id),height=window_height(id);
+    gfx_rect(s,x+5,y+6,width,height,0x0a101d);
+    gfx_rect(s,x,y,width,height,0x92aac4);
+    gfx_rect(s,x+2,y+2,width-4,height-4,bodies[id]);
+    gfx_rect(s,x+2,y+2,width-4,TITLE_HEIGHT-2,
              d->active==id?settings_accent_color():0x39475d);
     gfx_text(s,x+12,y+8,titles[id],0xffffff);
-    gfx_rect(s,x+WINDOW_WIDTH-29,y+5,24,22,0xd65c69);
-    gfx_text(s,x+WINDOW_WIDTH-21,y+7,"X",0xffffff);
+    gfx_rect(s,x+width-29,y+5,24,22,0xd65c69);
+    gfx_text(s,x+width-21,y+7,"X",0xffffff);
     if(id==3){settings_draw(s,x,y);return;}
     if(id==4){calculator_draw(s,x,y);return;}
     if(id==5){snake_draw(s,x,y);return;}
+    if(id==6){browser_draw(s,x,y);return;}
     gfx_text(s,x+18,y+53,"Phase 16 window placeholder",0xe1ecfa);
     gfx_text(s,x+18,y+82,"Drag the title. Click X to close.",0xb8cee7);
     gfx_rect(s,x+18,y+118,WINDOW_WIDTH-36,54,
@@ -123,13 +130,13 @@ static void redraw(struct desktop *d)
                   d->windows[id]?0x2c6672:0x2f4768,0xffffff);
     gfx_text(s,24,64,"Launcher",settings_text_color());
     for(int id=0;id<WINDOW_LIMIT;++id){
-        int y=86+id*56;
+        int y=86+id*56;if(y+44>(int)s->height-36)continue;
         gfx_rect(s,24,y,160,44,d->windows[id]?0x2c6672:0x2f4768);
         gfx_text(s,42,y+13,titles[id],0xffffff);
     }
     for(int i=0;i<d->count;++i)draw_window(d,d->windows[d->order[i]]);
     gfx_rect(s,0,(int)s->height-36,(int)s->width,36,0x192842);
-    gfx_text(s,24,(int)s->height-26,"Apps above | 4-6 keys | Drag | X close | Q exit",0xffffff);
+    gfx_text(s,24,(int)s->height-26,"Apps above | 4-7 keys | Drag | X close | Esc exit",0xffffff);
     check(gfx_present(s,0,0),"desktop present");
     gfx_cursor_draw(d->cursor_x,d->cursor_y,d->buttons);
     marker("DESKTOP FRAME",-1);
@@ -138,7 +145,7 @@ static int hit_window(const struct desktop *d,int x,int y)
 {
     for(int i=d->count-1;i>=0;--i){
         int id=d->order[i];const struct window *w=d->windows[id];
-        if(inside(x,y,w->x,w->y,WINDOW_WIDTH,WINDOW_HEIGHT))return id;
+        if(inside(x,y,w->x,w->y,window_width(id),window_height(id)))return id;
     }
     return -1;
 }
@@ -149,19 +156,20 @@ static bool click(struct desktop *d,int x,int y)
     int id=hit_window(d,x,y);
     if(id>=0){
         struct window *w=d->windows[id];
-        if(inside(x,y,w->x+WINDOW_WIDTH-29,w->y+5,24,22)){
+        if(inside(x,y,w->x+window_width(id)-29,w->y+5,24,22)){
             close_window(d,id);return true;
         }
         top(d,id);marker("WINDOW FOCUS",id);
-        if(inside(x,y,w->x,w->y,WINDOW_WIDTH,TITLE_HEIGHT)){
+        if(inside(x,y,w->x,w->y,window_width(id),TITLE_HEIGHT)){
             d->dragging=id;d->drag_x=x-w->x;d->drag_y=y-w->y;
         }else if(id==3)settings_click(x-w->x,y-w->y);
         else if(id==4)calculator_click(x-w->x,y-w->y);
         else if(id==5)snake_click(x-w->x,y-w->y);
+        else if(id==6)browser_click(x-w->x,y-w->y);
         return true;
     }
     for(int i=0;i<WINDOW_LIMIT;++i)
-        if(inside(x,y,24,86+i*56,160,44))return open_window(d,i);
+        if(inside(x,y,24,86+i*56,160,44) && 86+i*56+44<(int)d->scene->height-35)return open_window(d,i);
     d->active=-1;return true;
 }
 static bool handle_mouse(struct desktop *d,struct mouse_event event)
@@ -174,8 +182,8 @@ static bool handle_mouse(struct desktop *d,struct mouse_event event)
     if((event.buttons&1) && d->dragging>=0){
         int id=d->dragging;struct window *w=d->windows[id];
         if(w){
-            int x=clamp(event.x-d->drag_x,0,(int)d->scene->width-WINDOW_WIDTH);
-            int y=clamp(event.y-d->drag_y,54,(int)d->scene->height-WINDOW_HEIGHT-36);
+            int x=clamp(event.x-d->drag_x,0,(int)d->scene->width-window_width(id));
+            int y=clamp(event.y-d->drag_y,54,(int)d->scene->height-window_height(id)-36);
             if(x!=w->x || y!=w->y){w->x=x;w->y=y;dirty=true;marker("WINDOW DRAG",id);}
         }
     }
@@ -209,10 +217,11 @@ void desktop_run(void)
         irq_restore(flags);
         if(has_mouse)handle_mouse(&d,event);
         if(d.active==3 && settings_editing() && settings_key(key)){redraw(&d);continue;}
+        if(d.active==6 && browser_key(key)){redraw(&d);continue;}
         if(key=='q' || key=='Q' || key==27)break;
         if(d.active==4 && calculator_key(key)){redraw(&d);continue;}
         if(d.active==5 && snake_key(key)){redraw(&d);continue;}
-        if(key>='1' && key<='6' && open_window(&d,key-'1'))redraw(&d);
+        if(key>='1' && key<='7' && open_window(&d,key-'1'))redraw(&d);
     }
     settings_cancel();
     for(int id=0;id<WINDOW_LIMIT;++id)if(d.windows[id])kfree(d.windows[id]);

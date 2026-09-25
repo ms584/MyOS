@@ -2,6 +2,7 @@
 #define MYOS_NET_H
 #include "os.h"
 bool net_up(void);
+bool net_configured(void);
 void net_status(void);
 bool net_resolve(const char *name,uint8_t out[4]);
 bool net_udp_echo(const uint8_t ip[4],uint16_t port,const char *message);

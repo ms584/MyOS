@@ -11,7 +11,8 @@
   remaining Phase 24 hardware preparation, and Phase 25 acceptance. Preserve
   phase numbering; keep device drivers separate from higher-level services.
   Phases 26–27 have QEMU app-runtime/network baselines;
-  a complete browser and YouTube remain open for Phases 28–32. Phase 32 targets actual YouTube playback in QEMU before physical testing. Refer to `docs/ROADMAP.md` for scope and gates.
+  Phase 29 has only a kernel-resident local-HTTP browser preview; verified HTTPS,
+  real search, a selected/ported engine and YouTube remain open in Phases 28–32. Phase 32 targets actual YouTube playback in QEMU before physical testing. Refer to `docs/ROADMAP.md` for scope and gates.
   Do not treat planned capabilities as implemented.
 - Build with `bash build.sh`; run `python3 tests/test_system.py` for architectural
   changes. Restore the normal image after fault-test variants.

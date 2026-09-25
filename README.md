@@ -269,3 +269,11 @@ host-server example, limitations and failure/reconnect tests. Packaged UEFI and 
 images can be started with `python3 tools/run_image.py --nic rtl8139` after a
 release build. This is a QEMU
 network baseline, not a browser or HTTPS implementation.
+
+## Phase 29 browser preview (in progress)
+
+Open `desktop` and press `7` to try the new Browser window. With QEMU
+`-nic user,model=rtl8139` and a local HTTP server on WSL port 8000, enter
+`http://10.0.2.2:8000/`. Text, links and Back work; HTTPS and real web
+search are blocked until Phase 28. This is a bounded, kernel-resident HTML
+preview, not a complete browser. See [docs/PHASE29.md](docs/PHASE29.md).

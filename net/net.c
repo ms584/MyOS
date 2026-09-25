@@ -146,6 +146,7 @@ static uint8_t dhcp_options(uint8_t address[4]){
     }
     return type;
 }
+bool net_configured(void){return configured&&nic_ready();}
 bool net_up(void){
     configured=false;have_peer=false;if(!nic_ready())return false;
     uint8_t offered[4],assigned[4];
