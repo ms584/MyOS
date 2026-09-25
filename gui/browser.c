@@ -1,21 +1,29 @@
 #include "browser.h"
 #include "mouse.h"
 #include "net.h"
+#include "tls.h"
 #include "widgets.h"
 
-/* Phase 29 preview: bounded HTML text and links over plain HTTP. This is not
- * a browser engine, a CSS renderer, or a replacement for verified TLS. */
+/* Bounded text browser: HTTP/verified HTTPS, searchable Lite HTML and links.
+ * CSS, scripting and media remain outside this rendering profile. */
 #define URL_CAP 192
-#define BODY_CAP 32768
+#define BODY_CAP 65536
 #define LINE_CAP 160
 #define TEXT_CAP 67
 #define HISTORY_CAP 8
 #define VISIBLE_LINES 14
 
 struct browser_line {char text[TEXT_CAP+1],href[URL_CAP];uint8_t kind;};
+struct browser_history {
+    struct browser_line *rendered;
+    unsigned count,scroll;
+    bool truncated;
+    char url[URL_CAP],title[TEXT_CAP+1],status[72];
+};
 static struct browser_line lines[LINE_CAP];
+static struct browser_history history[HISTORY_CAP];
 static unsigned line_count,scroll,history_count,input_length;
-static char input[URL_CAP],current[URL_CAP],history[HISTORY_CAP][URL_CAP];
+static char input[URL_CAP],current[URL_CAP];
 static char title[TEXT_CAP+1],status[72],active_link[URL_CAP];
 static bool editing,truncated;
 
@@ -59,7 +67,36 @@ static void href_from_tag(const char *tag,char *out){
                 if((quote&&tag[i]==quote)||(!quote&&(tag[i]==' '||tag[i]=='\t'||tag[i]=='>')))break;
                 out[used++]=tag[i++];
             }
-            out[used]=0;return;
+            out[used]=0;
+            const char *redirect=0;
+            if(begins(out,"//duckduckgo.com/l/?uddg="))redirect=out+25;
+            else if(begins(out,"https://duckduckgo.com/l/?uddg="))redirect=out+31;
+            if(redirect){
+                char decoded[URL_CAP];size_t n=0;
+                bool complete=false;
+                while(*redirect&&*redirect!='&'){
+                    char value=*redirect++;
+                    if(value=='%'&&redirect[0]&&redirect[1]){
+                        char a=redirect[0],b=redirect[1];
+                        unsigned hi=(a>='0'&&a<='9')?(unsigned)(a-'0'):
+                                    (a>='A'&&a<='F')?(unsigned)(a-'A'+10):
+                                    (a>='a'&&a<='f')?(unsigned)(a-'a'+10):16;
+                        unsigned lo=(b>='0'&&b<='9')?(unsigned)(b-'0'):
+                                    (b>='A'&&b<='F')?(unsigned)(b-'A'+10):
+                                    (b>='a'&&b<='f')?(unsigned)(b-'a'+10):16;
+                        if(hi<16&&lo<16){value=(char)(hi*16+lo);redirect+=2;}
+                    }
+                    if(!value||n+1>=sizeof(decoded)){out[0]=0;return;}
+                    decoded[n++]=value;
+                }
+                if(*redirect=='&')complete=true;
+                decoded[n]=0;
+                if(!complete||(!begins(decoded,"https://")&&!begins(decoded,"http://"))){
+                    out[0]=0;return;
+                }
+                copy(out,URL_CAP,decoded);
+            }else if(tag[i]&&used+1>=URL_CAP){out[0]=0;}
+            return;
         }
     }
 }
@@ -82,8 +119,8 @@ static void parse_html(const uint8_t *data,size_t n){
             }
             size_t start=++i;char quote=0;
             while(i<n){char c=(char)data[i];if(quote){if(c==quote)quote=0;}else if(c=='\''||c=='"')quote=c;else if(c=='>')break;++i;}
-            size_t span=i-start;if(i<n)++i;if(span>=256)continue;
-            char tag[256];memcpy(tag,data+start,span);tag[span]=0;
+            size_t span=i-start;if(i<n)++i;if(span>=512)continue;
+            char tag[512];memcpy(tag,data+start,span);tag[span]=0;
             bool closing=tag[0]=='/';const char *name=tag+closing;
             if(tag_name(name,"head")){head=!closing;continue;}
             if(tag_name(name,"title")){in_title=!closing;continue;}
@@ -123,20 +160,52 @@ static bool collect(void *ctx,const uint8_t *data,size_t n){
     if(n>BODY_CAP-buffer->used)return false;
     memcpy(buffer->bytes+buffer->used,data,n);buffer->used+=n;return true;
 }
-static bool parse_url(const char *url,char host[URL_CAP],uint16_t *port,char path[URL_CAP]){
-    if(begins(url,"https://")){set_status("HTTPS browser integration pending");return false;}
-    const char *p=begins(url,"http://")?url+7:url;
+static bool prepare_address(const char *typed,char out[URL_CAP]){
+    if(!typed||!*typed){set_status("Enter a URL or search query");return false;}
+    if(begins(typed,"http://")||begins(typed,"https://")){
+        if(length(typed)>=URL_CAP){set_status("URL too long");return false;}
+        copy(out,URL_CAP,typed);return true;
+    }
+    bool whitespace=false,dot=false;
+    for(const char *p=typed;*p;++p){
+        if(*p==' '||*p=='\t')whitespace=true;
+        if(*p=='.')dot=true;
+    }
+    if(whitespace||(!dot&&!begins(typed,"localhost"))){
+        const char *prefix="https://lite.duckduckgo.com/lite/?q=";
+        size_t n=0;while(prefix[n]){out[n]=prefix[n];++n;}
+        static const char digits[]="0123456789ABCDEF";
+        for(const unsigned char *p=(const unsigned char *)typed;*p;++p){
+            unsigned char c=*p;
+            bool plain=(c>='a'&&c<='z')||(c>='A'&&c<='Z')||
+                       (c>='0'&&c<='9')||c=='-'||c=='_'||c=='.'||c=='~';
+            if(n+(plain?1u:3u)>=URL_CAP){set_status("Search query too long");return false;}
+            if(plain)out[n++]=(char)c;
+            else{out[n++]='%';out[n++]=digits[c>>4];out[n++]=digits[c&15];}
+        }
+        out[n]=0;return true;
+    }
+    const char *prefix=begins(typed,"localhost")?"http://":"https://";
+    size_t n=length(prefix),tail=length(typed);
+    if(n+tail>=URL_CAP){set_status("URL too long");return false;}
+    memcpy(out,prefix,n);memcpy(out+n,typed,tail+1);return true;
+}
+static bool parse_url(const char *url,char host[URL_CAP],uint16_t *port,
+                      char path[URL_CAP],bool *secure){
+    const char *p;
+    if(begins(url,"https://")){*secure=true;p=url+8;}
+    else if(begins(url,"http://")){*secure=false;p=url+7;}
+    else{set_status("Invalid URL scheme");return false;}
     if(!*p){set_status("Enter a URL");return false;}
     for(const char *q=p;*q;++q)if(*q==' '||*q=='\t'||*q=='\r'||*q=='\n'){
-        set_status("Online search integration pending");return false;
+        set_status("Invalid URL");return false;
     }
-    if(!begins(url,"http://") && !begins(p,"localhost")){
-        bool dot=false,digit=true;for(const char *q=p;*q&&*q!='/'&&*q!=':';++q){if(*q=='.')dot=true;if(*q<'0'||*q>'9')digit=false;}
-        if(!dot&&!digit){set_status("Online search integration pending");return false;}
+    size_t h=0;while(p[h]&&p[h]!=':'&&p[h]!='/'&&h+1<URL_CAP){
+        if(p[h]=='@'||p[h]=='#'||p[h]=='?'){set_status("Invalid host");return false;}
+        host[h]=p[h];++h;
     }
-    size_t h=0;while(p[h]&&p[h]!=':'&&p[h]!='/'&&h+1<URL_CAP){host[h]=p[h];++h;}
     host[h]=0;if(!h||h+1==URL_CAP){set_status("Invalid host");return false;}
-    p+=h;*port=80;
+    p+=h;*port=*secure?443:80;
     if(*p==':'){
         ++p;unsigned value=0,digits=0;
         while(*p>='0'&&*p<='9'&&digits<5){value=value*10+(unsigned)(*p-'0');++p;++digits;}
@@ -173,41 +242,68 @@ static void loaded(const uint8_t *data,size_t n){
         }
         set_status(secure?"HTTPS redirect integration pending":"HTTP redirect not followed");
     }else if(code>=400)set_status("HTTP error response");
-    else set_status(truncated?"Page truncated (line limit)":"Page loaded (HTTP, no CSS/JS)");
+    else if(truncated)set_status("Page truncated (line limit)");
+    else if(begins(current,"https://lite.duckduckgo.com/lite/?q="))
+        set_status("Search results (verified HTTPS)");
+    else set_status(begins(current,"https://")?"Page loaded (verified HTTPS)":"Page loaded (HTTP)");
     report(title);
 }
 static void navigate(const char *url,bool remember){
-    char address[URL_CAP],host[URL_CAP],path[URL_CAP];uint16_t port;
-    copy(address,sizeof(address),url);
-    if(!parse_url(address,host,&port,path))return;
-    if(!begins(address,"http://")){
-        char normalized[URL_CAP];size_t n=length(address);
-        if(n+7>=sizeof(normalized)){set_status("URL too long");return;}
-        copy(normalized,sizeof(normalized),"http://");copy(normalized+7,sizeof(normalized)-7,address);
-        copy(address,sizeof(address),normalized);
-    }
+    char address[URL_CAP],host[URL_CAP],path[URL_CAP];uint16_t port;bool secure;
+    if(!prepare_address(url,address)||!parse_url(address,host,&port,path,&secure))return;
     if(!net_configured()&&!net_up()){set_status("Network unavailable; run net up");return;}
     uint8_t target[4];if(!net_resolve(host,target)){set_status("DNS failed");return;}
     uint8_t *bytes=kmalloc(BODY_CAP);if(!bytes){set_status("Out of memory");return;}
     struct {uint8_t *bytes;size_t used;} buffer={bytes,0};
     char host_header[URL_CAP];copy(host_header,sizeof(host_header),host);
-    if(port!=80){
+    if(!secure&&port!=80){
         size_t used=length(host_header);unsigned value=port;char reversed[5];unsigned count=0;
         do{reversed[count++]=(char)('0'+value%10);value/=10;}while(value);
         if(used+count+2>=sizeof(host_header)){kfree(bytes);set_status("Host name too long");return;}
         host_header[used++]=':';while(count)host_header[used++]=reversed[--count];host_header[used]=0;
     }
-    set_status("Loading HTTP page...");
-    bool ok=net_http_fetch(target,port,host_header,path,collect,&buffer);
-    if(!ok){kfree(bytes);set_status("HTTP failed, timed out or too large");return;}
+    char previous_status[sizeof(status)];copy(previous_status,sizeof(previous_status),status);
+    set_status(secure?"Loading verified HTTPS...":"Loading HTTP page...");
+    bool ok=secure?tls_http_fetch(target,port,host,path,collect,&buffer):
+                   net_http_fetch(target,port,host_header,path,collect,&buffer);
+    if(!ok){kfree(bytes);set_status(secure?"HTTPS failed, cert rejected or too large":
+                                      "HTTP failed, timed out or too large");return;}
     if(remember&&current[0]){
-        if(history_count==HISTORY_CAP){for(unsigned i=1;i<HISTORY_CAP;++i)copy(history[i-1],URL_CAP,history[i]);--history_count;}
-        copy(history[history_count++],URL_CAP,current);
+        size_t bytes=line_count*sizeof(lines[0]);
+        struct browser_line *saved=kmalloc(bytes);
+        if(saved){
+            memcpy(saved,lines,bytes);
+            if(history_count==HISTORY_CAP){
+                kfree(history[0].rendered);
+                for(unsigned i=1;i<HISTORY_CAP;++i)history[i-1]=history[i];
+                --history_count;
+            }
+            struct browser_history *entry=&history[history_count++];
+            entry->rendered=saved;entry->count=line_count;entry->scroll=scroll;
+            entry->truncated=truncated;
+            copy(entry->url,sizeof(entry->url),current);
+            copy(entry->title,sizeof(entry->title),title);
+            copy(entry->status,sizeof(entry->status),previous_status);
+        }
     }
     copy(current,sizeof(current),address);copy(input,sizeof(input),address);input_length=(unsigned)length(input);editing=false;
     loaded(bytes,buffer.used);kfree(bytes);
 }
-static void back(void){if(!history_count){set_status("No previous page");return;}char url[URL_CAP];copy(url,sizeof(url),history[--history_count]);navigate(url,false);}
+static void back(void){
+    if(!history_count){set_status("No previous page");return;}
+    struct browser_history *entry=&history[--history_count];
+    line_count=entry->count;scroll=entry->scroll;truncated=entry->truncated;
+    memcpy(lines,entry->rendered,line_count*sizeof(lines[0]));
+    kfree(entry->rendered);entry->rendered=0;
+    copy(current,sizeof(current),entry->url);
+    copy(input,sizeof(input),current);input_length=(unsigned)length(input);editing=false;
+    copy(title,sizeof(title),entry->title);copy(status,sizeof(status),entry->status);
+    report(status);report(title);
+}
+static void clear_history(void){
+    for(unsigned i=0;i<history_count;++i){kfree(history[i].rendered);history[i].rendered=0;}
+    history_count=0;
+}
 static void follow(const char *href){
     char url[URL_CAP];
     if(!href[0]||href[0]=='#'){set_status("Unsupported link");return;}
@@ -215,9 +311,14 @@ static void follow(const char *href){
         set_status("Unsupported link");return;
     }
     if(begins(href,"http://")||begins(href,"https://"))copy(url,sizeof(url),href);
-    else{
+    else if(begins(href,"//")){
+        const char *scheme=begins(current,"https://")?"https:":"http:";
+        size_t n=length(scheme),tail=length(href);
+        if(n+tail>=sizeof(url)){set_status("Link too long");return;}
+        memcpy(url,scheme,n);memcpy(url+n,href,tail+1);
+    }else{
         if(!current[0])return;
-        const char *base=begins(current,"http://")?current+7:current;
+        const char *base=begins(current,"https://")?current+8:current+7;
         size_t prefix=0;while(base[prefix]&&base[prefix]!='/')++prefix;
         size_t head=(size_t)(base-current)+prefix;
         if(href[0]!='/'){
@@ -230,8 +331,8 @@ static void follow(const char *href){
     }
     navigate(url,true);
 }
-void browser_begin(void){memset(lines,0,sizeof(lines));input[0]=current[0]=0;input_length=history_count=scroll=0;line_count=1;editing=true;copy(title,sizeof(title),"MyOS Browser preview");set_status("Enter HTTP URL; HTTPS GUI pending");}
-void browser_close(void){input[0]=0;editing=false;}
+void browser_begin(void){clear_history();memset(lines,0,sizeof(lines));input[0]=current[0]=0;input_length=scroll=0;line_count=1;editing=true;copy(title,sizeof(title),"MyOS Text Browser");set_status("Enter URL or search query");}
+void browser_close(void){clear_history();input[0]=0;editing=false;}
 void browser_draw(struct gfx_surface *scene,int x,int y){
     ui_button(scene,(struct ui_rect){x+12,y+42,30,28},"<",0x304b6d,0xffffff);
     const char *shown=input;size_t n=length(input);if(n>60)shown=input+n-60;

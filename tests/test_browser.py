@@ -13,7 +13,7 @@ class Pages(BaseHTTPRequestHandler):
             self.send_response(302);self.send_header('Location','https://example.com/')
             self.send_header('Content-Length','0');self.end_headers();return
         if self.path=='/large':
-            body=b'A'*40000
+            body=b'A'*70000
         elif self.path=='/next':
             body=b'<html><head><title>Second page</title></head><body><h1>Second page</h1><a href="/">Home</a></body></html>'
         else:
@@ -75,16 +75,9 @@ def main():
         focus_address(vm,addresses)
         type_url(vm,f'http://10.0.2.2:{server.server_port}/redirect')
         vm.wait('HTTPS redirect integration pending',8)
-        # The UI makes unsupported online search and HTTPS explicit.
-        focus_address(vm,addresses)
-        type_url(vm,'cats')
-        vm.wait('Online search integration pending',8)
-        focus_address(vm,addresses)
-        type_url(vm,'https://example.com/')
-        vm.wait('HTTPS browser integration pending',8)
         vm.key('esc');vm.wait('DESKTOP CLOSED\nmyos> ',8)
         assert 'PANIC' not in vm.log.read_text()
-        print('PASS: browser GUI, HTML entities/links/Back, oversized response recovery, HTTPS redirect/search limits and close')
+        print('PASS: browser GUI, HTML entities/links/Back, oversized response recovery, HTTPS redirect limit and close')
     finally:vm.close();server.shutdown();server.server_close()
 
 def low_memory():

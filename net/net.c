@@ -304,8 +304,10 @@ int net_tcp_read(uint8_t *data,size_t capacity){
     return (int)n;
 }
 void net_tcp_close(void){
-    if(stream_mode&&!stream_closed&&!stream_error)
+    if(stream_mode&&!stream_error){
         (void)tcp_packet(tcp_peer,tcp_port,0x11,0,0);
+        ++sequence;
+    }
     stream_mode=tcp_active=false;tcp_event=false;
     stream_head=stream_tail=stream_used=0;
 }

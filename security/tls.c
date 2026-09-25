@@ -63,8 +63,14 @@ bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const cha
     if(!append(request,sizeof(request),&n,"GET ")||
        !append(request,sizeof(request),&n,path)||
        !append(request,sizeof(request),&n," HTTP/1.0\r\nHost: ")||
-       !append(request,sizeof(request),&n,host)||
-       !append(request,sizeof(request),&n,"\r\nConnection: close\r\n\r\n"))goto done;
+       !append(request,sizeof(request),&n,host))goto done;
+    if(port!=443){
+        char decimal_port[6];unsigned value=port,count=0;
+        do{decimal_port[count++]=(char)('0'+value%10);value/=10;}while(value);
+        if(!append(request,sizeof(request),&n,":"))goto done;
+        while(count){if(n+1>=sizeof(request))goto done;request[n++]=decimal_port[--count];}
+    }
+    if(!append(request,sizeof(request),&n,"\r\nConnection: close\r\n\r\n"))goto done;
     for(size_t i=0;i<n;){result=mbedtls_ssl_write(&ssl,(unsigned char *)request+i,n-i);
         if(result<=0)goto done;i+=(size_t)result;}
     size_t total=0;unsigned char buffer[2048];

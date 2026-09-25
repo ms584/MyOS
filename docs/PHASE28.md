@@ -64,6 +64,6 @@ It retains the upstream dual Apache-2.0/GPL-2.0-or-later license in
 `vendor/mbedtls/LICENSE`. MyOS changes its configuration and supplies
 freestanding memory, time, entropy and network callbacks.
 
-The Phase 29 Browser window still accepts only HTTP until its GUI URL handling
-is connected to this verified HTTPS API. HTTPS support here does not imply
-JavaScript, full web search or YouTube playback.
+The Phase 29 Browser window now uses this verified HTTPS API for text pages
+and non-JavaScript search. HTTPS support does not imply JavaScript, modern
+web compatibility or YouTube playback.

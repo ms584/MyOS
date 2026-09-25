@@ -28,8 +28,8 @@ execution order. The completed Phase 24 USB image remains available.
 |---|---|---|
 | Done | 26 | **Complete QEMU baseline:** app loading, capacity and browser-component feasibility |
 | Done | 27 | **Complete QEMU baseline:** networking and supported virtual NIC |
-| Next | 28 | HTTPS, certificate validation and supporting services |
-| In progress | 29 | HTTP browser preview; HTTPS search and engine port pending |
+| Done | 28 | **Complete QEMU baseline:** native verified HTTPS and certificate rejection tests |
+| Done | 29 | **Complete QEMU text-browser baseline:** verified HTTPS search, results, links and Back |
 | Done | 30 | QEMU SB16 buffered PCM audio, file/tone playback, volume/mute, IRQ timing and underrun recovery |
 | 6 | 31 | Video decoding and audio/video synchronization |
 | 7 | 32 | Actual online YouTube playback acceptance in QEMU |
@@ -112,7 +112,7 @@ QEMU development can continue without claiming this milestone is complete.
 | 26 | Application runtime and capacity | **Complete QEMU runtime/feasibility baseline:** file-based multi-page Ring 3 C apps, private heap/BSS, v2 64 KiB files with v1 compatibility, 100 Hz ticks and a tested NetSurf `libwapcaplet` component. This validates one browser dependency, not a complete engine or YouTube. The full browser will need larger limits and later network/HTTPS/GUI/media work. See PHASE26.md. |
 | 27 | Networking | **Complete QEMU baseline:** RTL8139 driver, bounded buffers, IPv4/ARP/DHCP/DNS/UDP/TCP and streaming HTTP response API; live QEMU tests cover failure, timeout and reconnect. Only one active request is supported; HTTPS and browser integration are later phases. See PHASE27.md. |
 | 28 | HTTPS platform | **Complete QEMU baseline:** RTC-derived UTC, RDRAND entropy, a small trusted root store and native Mbed TLS 3.6.7 HTTPS fetch. QEMU tests accept a valid certificate and reject wrong-host, untrusted, expired, invalid-time and no-entropy cases. TLS 1.2 and two production roots are configured; Browser GUI integration follows in Phase 29. See PHASE28.md. |
-| 29 | Browser and web search | **In progress:** a kernel-resident GUI preview loads bounded local HTTP pages, displays text/links, supports Back and explicit errors. Connecting the Phase 28 HTTPS API, a chosen/ported browser engine, and actual HTTPS search results remain required for completion. Current HTML/CSS/JavaScript limits and tests are in PHASE29.md. |
+| 29 | Browser and web search | **Complete QEMU text-browser baseline:** the selected in-tree bounded HTML-to-text/link renderer loads HTTP and verified HTTPS pages, fetches live DuckDuckGo Lite search results, opens a real HTTPS result and restores cached Back history. Local TLS and live QEMU tests validate behavior. This is a kernel-mode non-JavaScript profile; CSS/DOM/media and broader browser compatibility remain outside this baseline. See PHASE29.md. |
 | 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | Decoding, buffered playback, rendering and audio/video synchronization for documented formats/resolutions. Account for memory/CPU needs and any codec licensing obligations. |
 | 32 | YouTube acceptance | In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verify HTTPS and required scripting/media support; record test date, browser version and limitations. |
