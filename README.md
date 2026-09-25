@@ -277,3 +277,13 @@ Open `desktop` and press `7` to try the new Browser window. With QEMU
 `http://10.0.2.2:8000/`. Text, links and Back work; HTTPS and real web
 search are blocked until Phase 28. This is a bounded, kernel-resident HTML
 preview, not a complete browser. See [docs/PHASE29.md](docs/PHASE29.md).
+
+## Phase 30 audio (QEMU baseline)
+
+Start QEMU with an SB16 device and sound backend, then use `audio status`,
+`audio tone 440 500`, `audio volume 25`, `audio mute on|off`,
+`audio play /home/sample.wav`, and `audio stop` in the Shell. The driver
+plays 11025 Hz unsigned 8-bit mono PCM using ISA DMA and IRQ 5. Details,
+input-file constraints, capture commands and tests are in
+[docs/PHASE30.md](docs/PHASE30.md). This is a QEMU audio baseline, not
+physical-hardware acceptance or browser/video playback.

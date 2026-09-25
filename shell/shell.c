@@ -6,6 +6,7 @@
 #include "desktop.h"
 #include "settings.h"
 #include "net.h"
+#include "audio.h"
 #define LINE_SIZE 256
 static char cwd[FS_PATH]="/";
 static struct fs_handle files[FS_HANDLES];
@@ -73,6 +74,36 @@ static void execute(char *line){
         }
         print("usage: net [status|up|dns HOST|udp IP PORT TEXT|get HOST PORT PATH]\n");return;
     }
+    if(equal(cmd,"audio")){
+        if(!arg||equal(arg,"status")){audio_print_status();return;}
+        if(equal(arg,"stop")){audio_stop();print("Audio stopped\n");return;}
+        if(equal(arg,"mute")){
+            char *value=word(&rest);
+            if(!value||word(&rest)||(!equal(value,"on")&&!equal(value,"off"))){print("usage: audio mute on|off\n");return;}
+            audio_set_mute(equal(value,"on"));audio_print_status();return;
+        }
+        if(equal(arg,"volume")){
+            char *value=word(&rest);unsigned percent=0;
+            if(!value||word(&rest)){print("usage: audio volume 0..100\n");return;}
+            for(char *p=value;*p;++p){if(*p<'0'||*p>'9'||percent>100){print("Invalid volume\n");return;}percent=percent*10+(unsigned)(*p-'0');}
+            if(percent>100){print("Invalid volume\n");return;}
+            audio_set_volume(percent);audio_print_status();return;
+        }
+        if(equal(arg,"tone")){
+            char *frequency=word(&rest),*length=word(&rest);unsigned hz=0,ms=0;
+            if(!frequency||!length||word(&rest)){print("usage: audio tone HZ MS\n");return;}
+            for(char *p=frequency;*p;++p){if(*p<'0'||*p>'9'||hz>2000){print("Invalid tone\n");return;}hz=hz*10+(unsigned)(*p-'0');}
+            for(char *p=length;*p;++p){if(*p<'0'||*p>'9'||ms>4000){print("Invalid tone\n");return;}ms=ms*10+(unsigned)(*p-'0');}
+            print(audio_tone(hz,ms)?"Audio tone queued\n":"Audio unavailable, invalid tone or queue full\n");return;
+        }
+        if(equal(arg,"play")){
+            char *name=word(&rest);char path[FS_PATH];
+            if(!name||word(&rest)){print("usage: audio play PATH\n");return;}
+            if(!path_for(name,path))return;
+            print(audio_play_wav(path)?"Audio WAV queued\n":"Audio unavailable, invalid WAV or queue full\n");return;
+        }
+        print("usage: audio [status|tone HZ MS|play PATH|volume 0..100|mute on|mute off|stop]\n");return;
+    }
     if(equal(cmd,"run")){
         if(!arg || word(&rest)){print("usage: run PATH\n");return;}
         char path[FS_PATH];if(!path_for(arg,path))return;
@@ -117,7 +148,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}

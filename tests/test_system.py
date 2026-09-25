@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -55,6 +55,8 @@ class VM:
             command.extend(['-drive',f'if=pflash,format=raw,readonly=on,file={code}',
                             '-drive',f'if=pflash,format=raw,file={variables}'])
         if nic:command.extend(['-nic','user,model=rtl8139'])
+        if audio is not None:command.extend(['-audiodev',f'wav,id=myos-audio,path={audio}',
+                                             '-device','sb16,audiodev=myos-audio'])
         if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index={disk_index}'])
         self.process=subprocess.Popen(command)
         self.connection=socket.socket(socket.AF_UNIX)
@@ -174,7 +176,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake','browser','release','apps'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake','browser','audio','release','apps'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
@@ -203,6 +205,9 @@ def main():
             from test_snake import exercise,low_memory
             exercise()
             low_memory()
+        if args.suite in ('all','audio'):
+            from test_audio import main as audio_exercise
+            audio_exercise()
         if args.suite in ('all','browser'):
             from test_browser import main as browser_exercise,low_memory as browser_low_memory
             browser_exercise()

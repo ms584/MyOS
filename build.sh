@@ -32,7 +32,7 @@ ld -m elf_x86_64 --build-id=none -T user/app.ld -o build/wapcaplet.elf \
 objcopy -O binary build/wapcaplet.elf build/wapcaplet.bin
 python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
-for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c; do
+for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c drivers/sb16.c audio/audio.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c; do
     obj="build/${source//\//-}"
     obj="${obj%.c}.o"
     gcc "${flags[@]}" -c "$source" -o "$obj"

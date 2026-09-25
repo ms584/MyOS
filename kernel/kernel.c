@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "snake.h"
 #include "nic.h"
+#include "audio.h"
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
@@ -61,6 +62,7 @@ void kernel_main(void){
     else if(mount==-2 && storage_ready())print("Storage: empty data disk; first change will save\n");
     else if(mount!=-19){print("Storage: snapshot unavailable (error ");decimal((uint64_t)(-mount));print("); RAM contents retained\n");}
     if(nic_init())print("NIC: RTL8139 initialized\n");
+    if(audio_init())print("Audio: SB16 initialized\n");
     app_seed();
     settings_init();
     snake_init();

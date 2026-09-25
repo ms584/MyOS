@@ -30,7 +30,7 @@ execution order. The completed Phase 24 USB image remains available.
 | Done | 27 | **Complete QEMU baseline:** networking and supported virtual NIC |
 | Next | 28 | HTTPS, certificate validation and supporting services |
 | In progress | 29 | HTTP browser preview; HTTPS search and engine port pending |
-| 5 | 30 | Audio playback and controls |
+| Done | 30 | QEMU SB16 buffered PCM audio, file/tone playback, volume/mute, IRQ timing and underrun recovery |
 | 6 | 31 | Video decoding and audio/video synchronization |
 | 7 | 32 | Actual online YouTube playback acceptance in QEMU |
 | 8 | 24 (remaining) | Select the physical target and implement required drivers |
@@ -113,7 +113,7 @@ QEMU development can continue without claiming this milestone is complete.
 | 27 | Networking | **Complete QEMU baseline:** RTL8139 driver, bounded buffers, IPv4/ARP/DHCP/DNS/UDP/TCP and streaming HTTP response API; live QEMU tests cover failure, timeout and reconnect. Only one active request is supported; HTTPS and browser integration are later phases. See PHASE27.md. |
 | 28 | HTTPS platform | Reliable time, entropy, certificate store and TLS through a maintained library; fetch HTTPS resources and reject invalid certificates. Do not disable certificate verification to pass a demo. |
 | 29 | Browser and web search | **In progress:** a kernel-resident GUI preview loads bounded local HTTP pages, displays text/links, supports Back and explicit errors. Phase 28 TLS, a chosen/ported browser engine, and actual HTTPS search results remain required for completion. Current HTML/CSS/JavaScript limits and tests are in PHASE29.md. |
-| 30 | Audio | Supported audio device, buffered PCM playback, volume/mute and synchronization timing; validate playback and underrun recovery. Add Settings controls only when they work. |
+| 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | Decoding, buffered playback, rendering and audio/video synchronization for documented formats/resolutions. Account for memory/CPU needs and any codec licensing obligations. |
 | 32 | YouTube acceptance | In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verify HTTPS and required scripting/media support; record test date, browser version and limitations. |
 
