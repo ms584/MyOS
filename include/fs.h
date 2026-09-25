@@ -5,7 +5,7 @@
 #define FS_HANDLES 8
 #define FS_PATH 128
 #define FS_NAME 32
-#define FS_FILE_MAX 4096
+#define FS_FILE_MAX 65536
 enum { FS_READ=1, FS_WRITE=2, FS_CREATE=4, FS_TRUNC=8 };
 enum { FS_FILE=1, FS_DIR=2 };
 struct fs_handle { unsigned node, flags; size_t offset; };

@@ -10,7 +10,7 @@ flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -fno-asynchronous-unwind-tables -fno-unwind-tables
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude
        -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
-for app in hello port loop; do
+for app in hello port loop capacity; do
     gcc -m64 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic -mno-red-zone \
         -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
         -fno-unwind-tables -Wall -Wextra -Werror -c "user/$app.c" -o "build/$app.o"
@@ -18,6 +18,19 @@ for app in hello port loop; do
     objcopy -O binary "build/$app.elf" "build/$app.bin"
     python3 tools/pack_app.py "build/$app.bin" "build/$app.app"
 done
+gcc -m64 -std=c11 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic \
+    -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
+    -fno-unwind-tables -DNDEBUG -Ivendor/libwapcaplet/include -c vendor/libwapcaplet/src/libwapcaplet.c -o build/wapcaplet-lib.o
+for source in user/app-runtime.c user/wapcaplet.c; do
+    gcc -m64 -std=c11 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic \
+        -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
+        -fno-unwind-tables -DNDEBUG -Wall -Wextra -Werror -Iuser -Ivendor/libwapcaplet/include \
+        -c "$source" -o "build/$(basename "$source" .c).o"
+done
+ld -m elf_x86_64 --build-id=none -T user/app.ld -o build/wapcaplet.elf \
+    build/wapcaplet.o build/app-runtime.o build/wapcaplet-lib.o
+objcopy -O binary build/wapcaplet.elf build/wapcaplet.bin
+python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
 for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c; do
     obj="build/${source//\//-}"

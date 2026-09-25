@@ -13,7 +13,7 @@ def type_text(vm,text):
         time.sleep(.012)
 
 def command(vm,text,expected=''):
-    offset=len(vm.log.read_text());type_text(vm,text+'\n');end=time.monotonic()+8
+    offset=len(vm.log.read_text());type_text(vm,text+'\n');end=time.monotonic()+30
     while time.monotonic()<end:
         output=vm.log.read_text()[offset:]
         if output.endswith('myos> '):

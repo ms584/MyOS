@@ -12,6 +12,8 @@ static inline int64_t myos_call(uint64_t number,uint64_t first,uint64_t second)
 }
 static inline int64_t myos_write(const char *s,uint64_t size){return myos_call(1,(uint64_t)s,size);}
 static inline uint64_t myos_ticks(void){return (uint64_t)myos_call(13,0,0);}
+#define MYOS_HEAP_BASE 0x8000020000ull
+#define MYOS_HEAP_BYTES (128u*1024u)
 static inline __attribute__((noreturn)) void myos_exit(uint64_t code)
 {
     myos_call(3,code,0);

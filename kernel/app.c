@@ -16,7 +16,7 @@ static bool valid(const uint8_t *file,size_t size)
     const struct app_header *h=(const void *)file;
     static const char magic[8]={'M','Y','O','S','A','P','P','1'};
     for(unsigned i=0;i<8;++i)if(h->magic[i]!=magic[i])return false;
-    return h->size>0 && h->size<=PAGE_SIZE && h->size<=FS_FILE_MAX-sizeof(*h) &&
+    return h->size>0 && h->size<=PROCESS_CODE_PAGES*PAGE_SIZE && h->size<=FS_FILE_MAX-sizeof(*h) &&
            size==sizeof(*h)+h->size && checksum(file+sizeof(*h),h->size)==h->checksum;
 }
 void app_seed(void)

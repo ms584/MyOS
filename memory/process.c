@@ -22,15 +22,17 @@ static void release(struct process *process)
     memset(process, 0, sizeof(*process));
 }
 
-static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,uint64_t cookie)
+static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,uint64_t cookie,bool loaded)
 {
     uint64_t flags = irq_save();
     struct process *process = 0;
     for (unsigned i = 0; i < PROCESS_LIMIT; ++i)
         if (processes[i].state == PROCESS_UNUSED) { process = &processes[i]; break; }
     if (!process) { irq_restore(flags); return 0; }
-    if(!image || !image_size || image_size>PAGE_SIZE){irq_restore(flags);return 0;}
-    for (unsigned i = 0; i < PROCESS_PAGES; ++i) {
+    if(!image || !image_size || image_size>PROCESS_CODE_PAGES*PAGE_SIZE){irq_restore(flags);return 0;}
+    unsigned code_pages=loaded?(unsigned)((image_size+PAGE_SIZE-1)/PAGE_SIZE):1u;
+    unsigned required=4+code_pages+2+(loaded?PROCESS_HEAP_PAGES:0);
+    for (unsigned i = 0; i < required; ++i) {
         uintptr_t page = page_alloc();
         if (!page) goto failed;
         process->pages[process->page_count++] = page;
@@ -46,23 +48,29 @@ static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,u
     root[1] = process->pages[1] | 7;
     pdpt[0] = process->pages[2] | 7;
     pd[0] = process->pages[3] | 7;
-    pt[0] = process->pages[4] | 5;       /* User code: RX. */
-    pt[1] = process->pages[5] | 7 | NX;  /* User private data: RW, NX. */
-    /* pt[2] is the unmapped guard immediately below the stack. */
-    pt[3] = process->pages[6] | 7 | NX;  /* User stack: RW, NX. */
-    memcpy((void *)process->pages[4], image, image_size);
-    uint64_t *data = (uint64_t *)process->pages[5];
-    data[2] = cookie;
-    data[3] = mode;
+    for(unsigned i=0;i<code_pages;++i){
+        pt[i]=process->pages[4+i]|5; /* RX code/rodata. */
+        size_t n=image_size-(size_t)i*PAGE_SIZE;
+        if(n>PAGE_SIZE)n=PAGE_SIZE;
+        memcpy((void *)process->pages[4+i],(const uint8_t *)image+(size_t)i*PAGE_SIZE,n);
+    }
+    unsigned data_index=4+code_pages, data_virt=loaded?PROCESS_CODE_PAGES:1u;
+    pt[data_virt]=process->pages[data_index]|7|NX;
+    /* Unmapped guard immediately below the stack. */
+    pt[data_virt+2]=process->pages[data_index+1]|7|NX;
+    if(loaded)for(unsigned i=0;i<PROCESS_HEAP_PAGES;++i)
+        pt[32+i]=process->pages[data_index+2+i]|7|NX; /* 128 KiB user heap. */
+    uint64_t *data = (uint64_t *)process->pages[data_index];
+    if(!loaded){data[2]=cookie;data[3]=mode;}
     if (mode == 14) {
         /* Test-only buffers: RX -> RW crossing and a partial invalid request. */
         memcpy((void *)(process->pages[4] + PAGE_SIZE - 2), "AB", 2);
-        memcpy((void *)process->pages[5], "CD", 2);
+        memcpy((void *)process->pages[data_index], "CD", 2);
         memcpy((void *)(process->pages[5] + PAGE_SIZE - 4), "LEAK", 4);
     }
     /* RET is used by the NX-stack execution test. */
-    *(uint8_t *)process->pages[6] = 0xc3;
-    process->data_page = process->pages[5];
+    *(uint8_t *)process->pages[data_index+1] = 0xc3;
+    process->data_page = process->pages[data_index];
     process->root = process->pages[0];
     process->kernel_top = ((uintptr_t)process->kernel_stack + 16384) & ~15ull;
     process->frame = (struct frame *)(process->kernel_top - sizeof(struct frame));
@@ -70,7 +78,7 @@ static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,u
     process->frame->rip = USER_BASE;
     process->frame->cs = 0x2b;
     process->frame->ss = 0x23;
-    process->frame->rsp = USER_STACK + PAGE_SIZE - 8;
+    process->frame->rsp = USER_BASE + (loaded?(PROCESS_CODE_PAGES+2ull):3ull)*PAGE_SIZE + PAGE_SIZE - 8;
     process->frame->flags = 0x202;       /* IF=1, IOPL=0. */
     process->pid = next_pid++;
     process->state = PROCESS_RUNNING;
@@ -86,11 +94,11 @@ failed:
 
 uint64_t process_create(uint64_t mode,uint64_t cookie)
 {
-    return create_image(user_blob_start,(size_t)(user_blob_end-user_blob_start),mode,cookie);
+    return create_image(user_blob_start,(size_t)(user_blob_end-user_blob_start),mode,cookie,false);
 }
 uint64_t process_create_image(const void *code,size_t size)
 {
-    return create_image(code,size,0,0);
+    return create_image(code,size,0,0,true);
 }
 
 bool process_kill(uint64_t pid)

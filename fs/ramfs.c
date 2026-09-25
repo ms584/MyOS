@@ -2,7 +2,7 @@
 struct node {
     bool used;
     unsigned parent, type, references;
-    size_t size;
+    size_t size, capacity;
     char name[FS_NAME];
     char *data;
 };
@@ -65,9 +65,9 @@ static int create(const char *path,unsigned type)
     for(slot=1;slot<FS_NODES;++slot)if(!nodes[slot].used)break;
     if(slot==FS_NODES)return -28;
     char *data=0;
-    if(type==FS_FILE){data=kmalloc(FS_FILE_MAX);if(!data)return -12;memset(data,0,FS_FILE_MAX);}
+    if(type==FS_FILE){data=kmalloc(PAGE_SIZE);if(!data)return -12;memset(data,0,PAGE_SIZE);}
     struct node *node=&nodes[slot];memset(node,0,sizeof(*node));
-    node->used=true;node->parent=(unsigned)parent;node->type=type;node->data=data;
+    node->used=true;node->parent=(unsigned)parent;node->type=type;node->data=data;node->capacity=data?PAGE_SIZE:0;
     memcpy(node->name,name,FS_NAME);
     return (int)slot;
 }
@@ -99,7 +99,7 @@ int fs_open(struct fs_handle *table,const char *path,unsigned access)
     if(result<0)goto done;
     struct node *node=&nodes[result];
     if(node->type!=FS_FILE){result=-21;goto done;}
-    if(access&FS_TRUNC){node->size=0;memset(node->data,0,FS_FILE_MAX);}
+    if(access&FS_TRUNC){node->size=0;memset(node->data,0,node->capacity);}
     table[slot]=(struct fs_handle){(unsigned)result+1,access,0};
     ++node->references;result=(int)slot+3;
 done:
@@ -133,6 +133,16 @@ int64_t fs_write(struct fs_handle *table,int fd,const void *buffer,size_t length
     if(length>FS_FILE_MAX-file->offset){irq_restore(flags);return -28;}
     struct node *node=&nodes[file->node-1];
     if(length){
+        size_t needed=file->offset+length;
+        if(needed>node->capacity){
+            size_t capacity=node->capacity;
+            while(capacity<needed)capacity*=2;
+            char *grown=kmalloc(capacity);
+            if(!grown){irq_restore(flags);return -12;}
+            memset(grown,0,capacity);
+            memcpy(grown,node->data,node->size);
+            kfree(node->data);node->data=grown;node->capacity=capacity;
+        }
         if(file->offset>node->size)memset(node->data+node->size,0,file->offset-node->size);
         memcpy(node->data+file->offset,buffer,length);file->offset+=length;
         if(file->offset>node->size)node->size=file->offset;

@@ -109,7 +109,7 @@ QEMU development can continue without claiming this milestone is complete.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
-| 26 | Application runtime and capacity | **In progress:** bounded file-based Ring 3 app loader, C console/tick ABI and QEMU acceptance; browser capacity and feasibility remain open. See PHASE26.md. Remaining gate: expand address spaces, heap/filesystem/file sizes and APIs required by a candidate browser; extend ABI/library and time services, handle FPU/SIMD state where required, and demonstrate feasibility with a candidate browser component before selecting the engine. |
+| 26 | Application runtime and capacity | **Complete QEMU runtime/feasibility baseline:** file-based multi-page Ring 3 C apps, private heap/BSS, v2 64 KiB files with v1 compatibility, 100 Hz ticks and a tested NetSurf `libwapcaplet` component. This validates one browser dependency, not a complete engine or YouTube. The full browser will need larger limits and later network/HTTPS/GUI/media work. See PHASE26.md. |
 | 27 | Networking | A supported NIC driver, bounded packet buffers and IPv4/ARP/DHCP/DNS/TCP/UDP functionality sufficient for the target browser; tests include failure, timeout and reconnect behavior. |
 | 28 | HTTPS platform | Reliable time, entropy, certificate store and TLS through a maintained library; fetch HTTPS resources and reject invalid certificates. Do not disable certificate verification to pass a demo. |
 | 29 | Browser and web search | GUI address/search bar, navigation and rendering of documented target sites; choose or port an engine based on Phase 26 feasibility. Open actual search results through a search provider; record HTML/CSS/JavaScript support and unsupported sites. |
@@ -140,7 +140,7 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–32 add the online platform. There are **9 phases not yet fully complete (24–32)**: Phase 24 is partial, Phase 25 is deferred, and Phases 26–32 are planned.
+and apps, and phases 26–32 add the online platform. There are **8 phases not yet fully complete (24–25, 27–32)**: Phase 24 is partial, Phase 25 is deferred, and Phases 27–32 are planned.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules

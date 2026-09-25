@@ -1,4 +1,4 @@
-#include "fs.h"
+#include "fs-snapshot.h"
 #ifndef PROCESS_TESTS
 #define PROCESS_TESTS 0
 #endif
@@ -38,7 +38,10 @@ void fs_test(void)
     a=fs_open(files,"/home/full",FS_WRITE|FS_CREATE);
     char *block=kmalloc(FS_FILE_MAX);check(block!=0,"test buffer");memset(block,0xa5,FS_FILE_MAX);
     check(fs_write(files,a,block,FS_FILE_MAX)==FS_FILE_MAX&&fs_write(files,a,"!",1)==-28,"file size capacity");
-    check(!fs_stat("/home/full",&info)&&info.size==FS_FILE_MAX,"oversized write atomic");kfree(block);
+    check(!fs_stat("/home/full",&info)&&info.size==FS_FILE_MAX,"oversized write atomic");
+    void *old_slots=kmalloc((size_t)FS_V1_SLOT_BYTES*FS_NODES);
+    check(old_slots&&!fs_snapshot_export(old_slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"v1 save rejects large file without truncation");
+    kfree(old_slots);kfree(block);
     for(unsigned i=1;i<FS_HANDLES;++i)check(fs_open(files,"/home/full",FS_READ)==(int)i+3,"descriptor capacity");
     check(fs_open(files,"/home/absent",FS_CREATE|FS_WRITE)==-24&&fs_stat("/home/absent",&info)==-2,"descriptor exhaustion no side effects");
     fs_close_all(files);check(!fs_unlink("/home/full"),"descriptor cleanup");
@@ -46,10 +49,10 @@ void fs_test(void)
     for(unsigned i=0;i<FS_NODES;++i){path[7]='0'+i/10;path[8]='0'+i%10;int r=fs_mkdir(path);if(r==-28)break;check(r==0,"node capacity create");++created;}
     check(fs_node_count()==FS_NODES,"node capacity reached");
     for(unsigned i=0;i<created;++i){path[7]='0'+i/10;path[8]='0'+i%10;check(!fs_unlink(path),"node cleanup");}
-    void *allocations[256];unsigned allocated=0;
-    while(allocated<256 && (allocations[allocated]=kmalloc(32768)))++allocated;
-    while(allocated<256 && (allocations[allocated]=kmalloc(FS_FILE_MAX)))++allocated;
-    check(allocated<256,"heap exhaustion reached");
+    void *allocations[512];unsigned allocated=0;
+    while(allocated<512 && (allocations[allocated]=kmalloc(65536)))++allocated;
+    while(allocated<512 && (allocations[allocated]=kmalloc(PAGE_SIZE)))++allocated;
+    check(allocated<512,"heap exhaustion reached");
     check(fs_open(files,"/home/oom",FS_WRITE|FS_CREATE)==-12&&fs_node_count()==before,"allocation failure leaves no node");
     while(allocated)kfree(allocations[--allocated]);
     a=fs_open(files,"/home/oom",FS_WRITE|FS_CREATE);check(a==3,"allocation recovery");

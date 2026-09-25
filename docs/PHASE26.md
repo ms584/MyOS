@@ -1,71 +1,105 @@
-# Phase 26 — File-based Ring 3 app runtime (first baseline)
+# Phase 26 — File-based Ring 3 application runtime and browser-component feasibility
 
-Phase 26 is **in progress**. The current milestone loads a bounded native
-x86-64 executable from the MyOS filesystem into a private Ring 3 process.
-It establishes a small freestanding C port and a real file import workflow.
-It does not yet satisfy the browser-capacity or browser-feasibility gate in
-the roadmap.
+**QEMU acceptance baseline complete.** This phase supplies a freestanding C app
+format, bounded user memory, file import, a v2 large-file data disk, monotonic
+time ticks, and a port of one actual NetSurf browser dependency. This is an
+application-runtime feasibility result, **not** a browser or a YouTube port.
+Networking, HTTPS, browser UI, audio and video belong to Phases 27–32.
 
 ## Try it
-
-From the WSL repo:
 
 ```bash
 cd ~/myos
 python3 tools/run_logged.py -- bash build.sh
-python3 tools/run_image.py --firmware uefi
+python3 tools/create_data_disk.py --large build/my-apps.img
+python3 tools/run_image.py --firmware uefi --data build/my-apps.img
 ```
 
-At `myos>` type:
-
-```text
-run /bin/hello
-cp /bin/hello /home/hello
-run /home/hello
-```
-
-The C app writes `Hello from /bin/hello (C, Ring 3)` and exits with status 42.
-`cp` copies binary files without changing their bytes; the copy survives reboot
-when a separate MyOS data disk is attached. To import a separately compiled
-C app, create a **new** dedicated data image (the command refuses to replace
-an existing file):
+At `myos>`: `run /bin/hello`. To put a host-built app into a **new** data image,
+use the exclusive-create importer, then boot with that image:
 
 ```bash
-python3 tools/make_app_disk.py build/my-port-data.img build/port.app port
-python3 tools/run_image.py --firmware uefi --data build/my-port-data.img
+python3 tools/make_app_disk.py --large build/imported-apps.img build/wapcaplet.app wapcaplet
+python3 tools/run_image.py --firmware uefi --data build/imported-apps.img
 ```
 
-Then run `run /bin/port`. It uses the console and 100 Hz tick services and
-exits with status 7. The host tool uses the existing dual-snapshot data-disk
-format. Never use a save disk you wish to preserve as its output path.
+At `myos>`: `run /bin/wapcaplet`. It prints `NetSurf libwapcaplet Ring 3:
+string interning PASS` and exits with status 26. The importer rejects an
+existing target file; do not pass a save disk you want to preserve. To test a
+multi-page C executable, import `build/capacity.app` as `capacity`, then run
+`run /bin/capacity`; the test suite also copies it to `/home` and confirms it
+still runs after a reboot. The Shell runs in kernel mode; imported apps run in
+separate Ring 3 processes. Built-in desktop apps remain kernel-mode modules.
 
-## Format and limits
+## App ABI and bounds
 
-App v1 is a 16-byte `MYOSAPP1` header (8-byte magic, little-endian 32-bit
-code length and FNV-1a checksum) followed by one flat x86-64 code/rodata
-image linked at `0x8000000000`. `tools/pack_app.py` produces the package.
-The checksum detects accidental corruption; it does not authenticate code.
-Each app has one 4 KiB RX code page, one private 4 KiB RW/NX data page, a
-4 KiB RW/NX stack with an unmapped guard, and a 16 KiB kernel stack. Two
-existing demo processes leave two process slots for launched apps. The Shell
-waits up to five seconds for an app, then kills/reaps it and returns an error.
-Faults stop only the app. INT 0x80 service 13 returns the current PIT tick
-count; a small `user/app-lib.h` provides C wrappers for console, time and exit.
-The apps use integer registers only. x87/SIMD/FPU state is still unsupported.
-Built-in desktop apps and the Shell still execute in kernel mode.
+`MYOSAPP1` remains an 8-byte magic, little-endian 32-bit code length, and
+FNV-1a checksum followed by a flat x86-64 code/rodata image. It is linked at
+`0x8000000000`; `_start` must be at the first byte. Code can occupy up to 16
+RX pages (64 KiB), but the 16-byte header makes maximum packaged code 65,520
+bytes. The private data/BSS page is at `0x8000010000` (4 KiB, zeroed); the
+guard and stack follow it, and the private 128 KiB RW/NX heap starts at
+`0x8000020000`. The loader validates image size/checksum and maps noncontiguous
+physical pages. The checksum detects accidental corruption, not malicious code.
+`user/app-runtime.c` provides a small free-list allocator plus the C memory
+and string primitives needed by the NetSurf component. `user/app-lib.h` exposes
+console, 100 Hz monotonic ticks, exit, and user-heap constants; existing file
+syscalls are available to apps. Scheduling, timeout (5 seconds), fault
+containment and reaping continue to apply. The runtime uses integer registers;
+FPU/SIMD remains deliberately unavailable and is not needed by the tested
+`libwapcaplet` port. Future components that require FPU/SIMD must add safe
+per-process state management before use.
 
-This is not ELF loading, dynamic linking, a general C runtime or a browser
-port. The RAMFS file limit is still 4 KiB and the kernel heap is 4 MiB; neither
-is adequate for a modern browser. Phase 26 still requires a capacity plan,
-larger executable/address-space support, safe FPU/SIMD context management if
-the chosen port needs it, and a documented browser-engine feasibility result.
-No browser engine has been selected yet.
+This is a static flat format. There is no ELF loader, relocations, dynamic
+linking, POSIX libc, threads, shared memory, or user-facing GUI API. Two
+existing demo processes leave two process slots for launched apps. The
+private heap is 128 KiB per loaded app. Time is monotonic tick count rather
+than wall-clock time; Phase 28 must supply a reliable clock for TLS.
+
+## Files and persistence
+
+RAMFS files now grow from 4 KiB to at most 64 KiB, with buffers allocated
+as needed. Existing 2 MiB `MYOS-DATA-v1` images retain their original 4 KiB
+**persistent** file limit and exact dual-bank layout. Saving a RAMFS with a
+larger file to a v1 disk fails explicitly with error 28; it does not truncate
+the snapshot. `--large` creates a separate 16 MiB `MYOS-DATA-v2` image with
+64 KiB per-file slots. The version is selected by the disk signature; an
+unrecognized disk stays RAM-only. Both versions validate checksums and node
+relationships and recover the previous valid bank. A v2 bank is 8,257 sectors,
+starting at LBA 16 and 8,273. Each save rewrites the inactive bank and may
+take several seconds in QEMU. Use at least 64 MiB QEMU RAM for v2: the kernel
+heap expands from 4 MiB to 16 MiB when enough physical pages are present,
+allowing the 4.2 MiB snapshot buffer. The 16 MiB boot baseline remains on a
+4 MiB heap and v1 storage.
+
+## Browser-component result and limits
+
+The vendored MIT-licensed `libwapcaplet` source comes from the
+[NetSurf project](https://www.netsurf-browser.org/projects/libwapcaplet/) at
+Git commit `c7c128d3eb3223b216c974471f82e9337fbcf4ba`. NetSurf lists it as
+one of its [browser dependencies](https://github.com/netsurf-browser/netsurf/blob/master/docs/building-Framebuffer.md).
+MyOS compiles it as freestanding x86-64 C, links against the small runtime,
+and exercises string interning, equality, case-insensitive comparison and
+cleanup from Ring 3 in QEMU. Source and license are under `vendor/libwapcaplet/`.
+This demonstrates a real browser component using app BSS, private heap and
+console/exit ABI. It does **not** establish that the whole NetSurf browser
+fits, or that NetSurf can play YouTube; no final browser engine is selected.
+Phase 29 must evaluate a candidate against current JavaScript/DOM/media needs.
+The 64 KiB file and 128 KiB app-heap ceilings will need further expansion for
+a full engine, along with Phase 27 network and Phase 28 HTTPS APIs. These
+limits are explicit capacity findings from this phase, not claims of browser
+readiness.
 
 ## Validation
 
-`python3 tools/run_logged.py -- python3 tests/test_system.py --suite apps`
-and the full system suite boot QEMU with real PS/2 input. Acceptance checks
-load by path, C syscalls and exit, binary copy, corruption rejection, copied
-file persistence, host-imported app, and timeout/reaping of a CPU-bound app.
-The tests also verify another app still runs after timeout. QEMU success does
-not establish real-hardware or security-audited support.
+```bash
+python3 tools/run_logged.py -- python3 tests/test_system.py --suite apps
+python3 tools/run_logged.py -- python3 tests/test_system.py
+```
+
+Acceptance boots QEMU with real PS/2 input, checks code spanning pages,
+large-file copy, persistence after reboot and corrupt-bank recovery, runs the imported NetSurf
+component, and regresses small v1 disks, corrupted files, app timeout and
+other system phases. QEMU success is not real-hardware or security-audit
+evidence. Watch the commands with `tail -f build/activity.log` in VS Code.
+The owner pushes GitHub changes manually.
