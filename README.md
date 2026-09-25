@@ -247,3 +247,14 @@ occupy 16/32/64 MiB uncompressed. UEFI acceptance uses 128 MiB RAM in QEMU.
 Secure Boot, USB HID and real-hardware acceptance are not implemented.
 Phase 24 hardware-specific work remains pending; Phase 25 is deferred because
 the owner has no spare USB device. No physical device is written by these tools.
+
+## Phase 26 app runtime — first baseline
+
+`run /bin/hello` loads a small freestanding C program from RAMFS into a
+private Ring 3 process, prints a message and reports exit status 42. Use
+`cp /bin/hello /home/hello` to copy the executable as binary data. A separate
+host-built app can be installed on a **new** MyOS data image using
+`python3 tools/make_app_disk.py build/my-port-data.img build/port.app port`;
+then run `run /bin/port` with that disk attached. See
+[docs/PHASE26.md](docs/PHASE26.md) for controls, format, tests and limits.
+Phase 26 remains in progress; browser-scale runtime and feasibility are open.

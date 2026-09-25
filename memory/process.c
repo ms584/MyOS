@@ -22,15 +22,14 @@ static void release(struct process *process)
     memset(process, 0, sizeof(*process));
 }
 
-uint64_t process_create(uint64_t mode, uint64_t cookie)
+static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,uint64_t cookie)
 {
     uint64_t flags = irq_save();
     struct process *process = 0;
     for (unsigned i = 0; i < PROCESS_LIMIT; ++i)
         if (processes[i].state == PROCESS_UNUSED) { process = &processes[i]; break; }
     if (!process) { irq_restore(flags); return 0; }
-    size_t image_size = (size_t)(user_blob_end - user_blob_start);
-    check(image_size <= PAGE_SIZE, "user image exceeds code page");
+    if(!image || !image_size || image_size>PAGE_SIZE){irq_restore(flags);return 0;}
     for (unsigned i = 0; i < PROCESS_PAGES; ++i) {
         uintptr_t page = page_alloc();
         if (!page) goto failed;
@@ -51,7 +50,7 @@ uint64_t process_create(uint64_t mode, uint64_t cookie)
     pt[1] = process->pages[5] | 7 | NX;  /* User private data: RW, NX. */
     /* pt[2] is the unmapped guard immediately below the stack. */
     pt[3] = process->pages[6] | 7 | NX;  /* User stack: RW, NX. */
-    memcpy((void *)process->pages[4], user_blob_start, image_size);
+    memcpy((void *)process->pages[4], image, image_size);
     uint64_t *data = (uint64_t *)process->pages[5];
     data[2] = cookie;
     data[3] = mode;
@@ -83,6 +82,15 @@ failed:
     release(process);
     irq_restore(flags);
     return 0;
+}
+
+uint64_t process_create(uint64_t mode,uint64_t cookie)
+{
+    return create_image(user_blob_start,(size_t)(user_blob_end-user_blob_start),mode,cookie);
+}
+uint64_t process_create_image(const void *code,size_t size)
+{
+    return create_image(code,size,0,0);
 }
 
 bool process_kill(uint64_t pid)

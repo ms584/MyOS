@@ -13,3 +13,4 @@
 %define SYS_UNLINK 10
 %define SYS_READDIR 11
 %define SYS_STAT 12
+%define SYS_TICKS 13

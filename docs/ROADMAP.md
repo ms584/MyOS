@@ -109,7 +109,7 @@ QEMU development can continue without claiming this milestone is complete.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
-| 26 | Application runtime and capacity | Load executable apps from storage; expand address spaces, heap/filesystem/file sizes and APIs required by the chosen browser; add ABI/library support, time services and safe FPU/SIMD context handling where required. Prove feasibility with a small port before selecting the browser engine. |
+| 26 | Application runtime and capacity | **In progress:** bounded file-based Ring 3 app loader, C console/tick ABI and QEMU acceptance; browser capacity and feasibility remain open. See PHASE26.md. Remaining gate: expand address spaces, heap/filesystem/file sizes and APIs required by a candidate browser; extend ABI/library and time services, handle FPU/SIMD state where required, and demonstrate feasibility with a candidate browser component before selecting the engine. |
 | 27 | Networking | A supported NIC driver, bounded packet buffers and IPv4/ARP/DHCP/DNS/TCP/UDP functionality sufficient for the target browser; tests include failure, timeout and reconnect behavior. |
 | 28 | HTTPS platform | Reliable time, entropy, certificate store and TLS through a maintained library; fetch HTTPS resources and reject invalid certificates. Do not disable certificate verification to pass a demo. |
 | 29 | Browser and web search | GUI address/search bar, navigation and rendering of documented target sites; choose or port an engine based on Phase 26 feasibility. Open actual search results through a search provider; record HTML/CSS/JavaScript support and unsupported sites. |

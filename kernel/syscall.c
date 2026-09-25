@@ -127,6 +127,9 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_GETPID:
         frame->rax = process->pid;
         break;
+    case SYS_TICKS:
+        frame->rax = ticks;
+        break;
     case SYS_EXIT:
         fs_close_all(process->files);
         process->exit_status = (int32_t)frame->rdi;

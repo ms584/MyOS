@@ -1,3 +1,4 @@
+#include "app.h"
 #include "fs.h"
 #include "storage.h"
 #include "graphics.h"
@@ -12,7 +13,7 @@ static size_t length(const char *s){size_t n=0;while(s[n])++n;return n;}
 static char *word(char **rest){char *p=*rest;while(*p==' ')++p;if(!*p){*rest=p;return 0;}char *start=p;while(*p&&*p!=' ')++p;if(*p)*p++=0;*rest=p;return start;}
 static void error(int code){
     const char *s="operation failed";
-    switch(code){case -2:s="not found";break;case -9:s="bad file handle";break;case -12:s="out of memory";break;case -16:s="busy";break;case -17:s="already exists";break;case -20:s="not a directory";break;case -21:s="is a directory";break;case -22:s="invalid path or argument";break;case -24:s="too many open files";break;case -28:s="filesystem full";break;case -36:s="path or name too long";break;case -39:s="directory not empty";break;}
+    switch(code){case -2:s="not found";break;case -8:s="invalid executable";break;case -110:s="app timed out";break;case -9:s="bad file handle";break;case -12:s="out of memory";break;case -16:s="busy";break;case -17:s="already exists";break;case -20:s="not a directory";break;case -21:s="is a directory";break;case -22:s="invalid path or argument";break;case -24:s="too many open files";break;case -28:s="filesystem full";break;case -36:s="path or name too long";break;case -39:s="directory not empty";break;}
     print("error: ");print(s);print("\n");
 }
 static bool path_for(const char *arg,char *out){
@@ -51,6 +52,40 @@ static void execute(char *line){
         print(" buttons=");decimal(buttons);print(" dropped=");decimal(mouse_dropped());print("\n");
         return;
     }
+    if(equal(cmd,"run")){
+        if(!arg || word(&rest)){print("usage: run PATH\n");return;}
+        char path[FS_PATH];if(!path_for(arg,path))return;
+        int32_t status=0;int result=app_run(path,&status);
+        if(result<0)error(result);
+        else{print("App exited with status ");decimal((uint32_t)status);print("\n");}
+        return;
+    }
+    if(equal(cmd,"cp")){
+        char *destination=word(&rest);
+        if(!arg||!destination||word(&rest)){print("usage: cp SOURCE DEST\n");return;}
+        char source_path[FS_PATH],destination_path[FS_PATH];
+        if(!path_for(arg,source_path)||!path_for(destination,destination_path))return;
+        struct fs_entry info;int result=fs_stat(source_path,&info);
+        if(result<0){error(result);return;}
+        if(info.type!=FS_FILE){error(-21);return;}
+        result=fs_stat(destination_path,&info);
+        if(result!=-2){error(result<0?result:-17);return;}
+        char *buffer=kmalloc(FS_FILE_MAX);
+        if(!buffer){error(-12);return;}
+        int from=fs_open(files,source_path,FS_READ),to=-1;
+        if(from>=3){
+            int64_t length=fs_read(files,from,buffer,FS_FILE_MAX);
+            if(length>=0){
+                to=fs_open(files,destination_path,FS_WRITE|FS_CREATE);
+                result=to<0?to:(fs_write(files,to,buffer,(size_t)length)==length?0:-28);
+            }else result=(int)length;
+            (void)fs_close(files,from);
+        }else result=from;
+        if(to>=3)(void)fs_close(files,to);
+        kfree(buffer);
+        if(result<0)error(result);else persist();
+        return;
+    }
     if(equal(cmd,"write")){
         if(!arg){print("usage: write PATH TEXT\n");return;}
         while(*rest==' ')++rest;
@@ -61,7 +96,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}

@@ -1,3 +1,4 @@
+#include "app.h"
 #include "syscall.h"
 #include "storage.h"
 #include "graphics.h"
@@ -58,6 +59,7 @@ void kernel_main(void){
     if(!mount){print("Storage: restored RAMFS generation ");decimal(storage_generation());print("\n");}
     else if(mount==-2 && storage_ready())print("Storage: empty data disk; first change will save\n");
     else if(mount!=-19){print("Storage: snapshot unavailable (error ");decimal((uint64_t)(-mount));print("); RAM contents retained\n");}
+    app_seed();
     settings_init();
     snake_init();
     shell_run();

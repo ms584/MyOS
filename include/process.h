@@ -29,6 +29,7 @@ struct process {
 
 void process_init(void);
 uint64_t process_create(uint64_t mode, uint64_t cookie);
+uint64_t process_create_image(const void *code,size_t size);
 struct process *process_find(uint64_t pid);
 bool process_kill(uint64_t pid);
 bool process_reap(uint64_t pid);
