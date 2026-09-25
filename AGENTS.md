@@ -1,6 +1,7 @@
 # MyOS project working agreement
 
 - Repository: `/home/xytron404/myos` in WSL Ubuntu.
+- Read docs/HANDOFF.md for the current phase status and next task.
 - The owner always pushes to GitHub manually. Do not run `git push`.
 - Use actual roadmap coverage in commit names, e.g. `Phase 4+8: ...`.
 - The revised roadmap has phases 0–32. Phases 0–13 retain their history;
