@@ -1,4 +1,4 @@
-# MyOS handoff — 2026-09-26
+# MyOS handoff — 2026-09-27
 
 Read root AGENTS.md and docs/ROADMAP.md before starting. The owner asked to
 continue the approved phase sequence and **always pushes to GitHub personally**.
@@ -15,15 +15,23 @@ tail -f build/activity.log in VS Code.
   Phase 30 has QEMU SB16 PCM output and WAV capture.
 - Phase 29 is not a modern CSS/JavaScript browser. YouTube playback has **not**
   been implemented. Physical hardware support has not been proven.
-- The branch was synchronized with origin/main before this note was added.
-  Relevant commits: 6689afb (Phase 30), ac43b74 (Phase 28),
-  fa52adc (Phase 29).
-- Next planned work: **Phase 31 video decoding, buffered playback, rendering
-  and audio/video synchronization at a documented format and resolution**.
-  Phase 32 separately requires actual online YouTube playback with sound and
-  transport controls in MyOS. Remaining Phase 24 hardware preparation and
-  Phase 25 physical-machine acceptance follow; Phase 25 is deferred because
-  the owner has no USB device.
+- The owner keeps the Git push step. Check local commits and origin/main before
+  starting the next phase; do not assume this handoff is already pushed.
+  Earlier commits: 6689afb (Phase 30), ac43b74 (Phase 28), fa52adc (Phase 29).
+- Phase 31 now adds a native MYV1 local video player (80x60, 10 fps palette/RLE,
+  11025 Hz unsigned PCM) on the framebuffer and SB16 with PIT-based sync.
+  See docs/PHASE31.md for the QEMU tests, demo disk and limitations.
+- Next planned work: **Phase 32 actual online YouTube playback with sound,
+  pause/resume and seek in MyOS**. This remains separate from local MYV1.
+  Remaining Phase 24 hardware preparation and Phase 25 physical-machine
+  acceptance follow; Phase 25 is deferred because the owner has no USB device.
+
+Phase 31 full tests/test_system.py passed, including 30 native video frames,
+measured 435/655 Hz QEMU SB16 WAV output, pause/resume/stop and malformed
+file recovery. BIOS and UEFI packaged images both passed video/audio smoke
+tests. The sample data disk mounted and played at 32 MiB RAM; 16 MiB rejected
+it gracefully. Two existing GUI screenshot tests were made deterministic by
+waiting for their matching desktop frame before reading QEMU pixels.
 
 ## Recent validation and unresolved observation
 
@@ -49,12 +57,11 @@ shell command should queue the 500 ms tone and return promptly; QEMU itself
 stays in the foreground until its window is closed or Ctrl+C is sent to the
 host terminal. Avoid opening the WAV capture in VS Code while QEMU writes it.
 
-## Work rules for Phase 31
+## Work rules for Phase 32
 
-Start from docs/PHASE30.md, docs/PHASE29.md, and the Phase 31/32 rows in
-docs/ROADMAP.md. State the actual codec, container, test-media source, memory
-budget and achieved A/V timing; do not count a host-side player or static
-frames as native MyOS playback. Preserve boot, GUI, shell, storage, network
+Start from docs/PHASE31.md, docs/PHASE29.md, and the Phase 32 row in
+docs/ROADMAP.md. Do not count local MYV1, a host-side player or static
+frames as online YouTube playback. Preserve boot, GUI, shell, storage, network
 and audio baselines. Run focused QEMU tests, the required
 python3 tests/test_system.py for architectural changes, and bash build.sh to
 restore the normal image after test variants. Document limits plainly.

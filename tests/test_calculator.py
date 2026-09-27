@@ -12,9 +12,10 @@ def key(vm,character):
 
 def press(vm,character,expected=None):
     marker='CALC: '+expected+'\n' if expected is not None else None
-    count=vm.log.read_text().count(marker) if marker else 0
+    rendered=marker+'DESKTOP FRAME\n' if marker else None
+    count=vm.log.read_text().count(rendered) if rendered else 0
     key(vm,character)
-    if marker:wait_count(vm,marker,count+1)
+    if rendered:wait_count(vm,rendered,count+1)
 
 def click(vm,addresses,x,y,expected):
     move_to(vm,addresses,x,y)

@@ -85,7 +85,7 @@ def exercise(text=False):
         move_to(vm,addresses,305,175)
         wait_count(vm,'WINDOW DRAG 1',1)
         button(vm,False)
-        time.sleep(.1)
+        wait_count(vm,'WINDOW DRAG 1\nDESKTOP FRAME\n',1)
         pixel=shot(vm,'desktop-dragged.ppm')
         assert pixel(232,132)==(0x11,0x1a,0x2c),pixel(232,132)
         assert pixel(300,180)==(0x27,0x6b,0x8a),pixel(300,180)

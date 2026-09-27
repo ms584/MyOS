@@ -178,7 +178,7 @@ def fault_test(case,marker,error):
     finally:vm.close()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake','browser','audio','release','apps'],default='all');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake','browser','audio','video','release','apps'],default='all');args=parser.parse_args()
     try:
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
@@ -210,6 +210,9 @@ def main():
         if args.suite in ('all','audio'):
             from test_audio import main as audio_exercise
             audio_exercise()
+        if args.suite in ('all','video'):
+            from test_video import main as video_exercise
+            video_exercise()
         if args.suite in ('all','browser'):
             from test_browser import main as browser_exercise,low_memory as browser_low_memory
             browser_exercise()

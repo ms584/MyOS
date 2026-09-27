@@ -19,8 +19,9 @@ the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is parti
 separate long-term milestone, with no promised completion date.
 
 The owner-approved execution order (2026-09-25) is **26 → 27 → 28 → 29 →
-30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–30 have documented QEMU baselines, including Phase 29 HTTPS text search. Develop
-and validate in QEMU first, then select the physical target and complete its
+30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–31 have
+QEMU baselines, including HTTPS text search and local MYV1 video playback.
+Develop and validate in QEMU first, then select the physical target and complete its
 drivers and acceptance tests. Existing phase numbers and the working USB
 image are retained; physical support remains unverified.
 
@@ -82,6 +83,8 @@ run the intentionally faulting user programs.
 The old `test-boot.py`, `test-vga.py`, `test-timer.py`, `test-exceptions.py` and
 `build-phase22.sh` commands are compatibility entry points for the current
 implementation. Earlier 16/32-bit implementations remain in Git history.
+
+For Phase 31 local video playback, see [docs/PHASE31.md](docs/PHASE31.md).
 
 ## Design and present limits
 

@@ -12,7 +12,8 @@
   remaining Phase 24 hardware preparation, and Phase 25 acceptance. Preserve
   phase numbering; keep device drivers separate from higher-level services.
   Phases 26–27 have QEMU app-runtime/network baselines;
-  Phase 30 has a tested QEMU SB16 PCM audio baseline.
+  Phase 30 has a tested QEMU SB16 PCM audio baseline; Phase 31 has a
+  tested local MYV1 video/PCM playback baseline in QEMU.
   Phase 28 has native verified HTTPS; Phase 29 has a QEMU kernel-resident
   HTTPS text-browser/search baseline using an in-tree bounded renderer. Modern
   CSS/JavaScript browser behavior and YouTube remain open for later phases.

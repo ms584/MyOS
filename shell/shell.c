@@ -7,6 +7,7 @@
 #include "settings.h"
 #include "net.h"
 #include "audio.h"
+#include "video.h"
 #include "security.h"
 #include "tls.h"
 #define LINE_SIZE 256
@@ -99,6 +100,13 @@ static void execute(char *line){
         }
         print("usage: net [status|up|dns HOST|udp IP PORT TEXT|get HOST PORT PATH|https HOST PORT PATH]\n");return;
     }
+    if(equal(cmd,"video")){
+        if(!arg||!equal(arg,"play")){print("usage: video play PATH\n");return;}
+        char *name=word(&rest);char path[FS_PATH];
+        if(!name||word(&rest)){print("usage: video play PATH\n");return;}
+        if(path_for(name,path))video_play(path);
+        return;
+    }
     if(equal(cmd,"security")){security_status();return;}
     if(equal(cmd,"audio")){
         if(!arg||equal(arg,"status")){audio_print_status();return;}
@@ -174,7 +182,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nvideo play PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}
