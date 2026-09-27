@@ -21,8 +21,11 @@ tail -f build/activity.log in VS Code.
 - Phase 31 now adds a native MYV1 local video player (80x60, 10 fps palette/RLE,
   11025 Hz unsigned PCM) on the framebuffer and SB16 with PIT-based sync.
   See docs/PHASE31.md for the QEMU tests, demo disk and limitations.
-- Next planned work: **Phase 32 actual online YouTube playback with sound,
-  pause/resume and seek in MyOS**. This remains separate from local MYV1.
+- Phase 32 is in progress, not accepted: MyOS now verifies the live YouTube
+  HTTPS connection with SHA-384 and a GTS Root R1 certificate scoped to the
+  exact www.youtube.com hostname. The Browser reports its current 64 KiB
+  page-size gate; it still lacks JavaScript and online media decoding.
+  See docs/PHASE32.md. Next work is the full YouTube player acceptance.
   Remaining Phase 24 hardware preparation and Phase 25 physical-machine
   acceptance follow; Phase 25 is deferred because the owner has no USB device.
 

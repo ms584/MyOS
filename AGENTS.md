@@ -17,7 +17,8 @@
   Phase 28 has native verified HTTPS; Phase 29 has a QEMU kernel-resident
   HTTPS text-browser/search baseline using an in-tree bounded renderer. Modern
   CSS/JavaScript browser behavior and YouTube remain open for later phases.
-  Phase 32 targets actual YouTube playback in QEMU before physical testing.
+  Phase 32 targets actual YouTube playback in QEMU before physical testing;
+  the current HTTPS YouTube page-size probe is only partial progress.
   Refer to docs/ROADMAP.md for scope and gates.
   Do not treat planned capabilities as implemented.
 - Build with `bash build.sh`; run `python3 tests/test_system.py` for architectural

@@ -29,11 +29,13 @@ def server(cert,connections):
                         path=request.split(b' ')[1]
                         if path==b'/next':
                             body=b'<html><head><title>Secure Next</title></head><body>Verified next page</body></html>'
+                        elif path==b'/large':
+                            body=b'A'*70000
                         else:
                             body=b'<html><head><title>Secure Start</title></head><body><a href="/next">Secure Next</a></body></html>'
                         conn.sendall(b'HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nContent-Length: '+
                                      str(len(body)).encode()+b'\r\n\r\n'+body)
-                except ssl.SSLError as error:errors.append(error)
+                except (ssl.SSLError,OSError) as error:errors.append(error)
         finally:listener.close()
     thread=threading.Thread(target=worker,daemon=True);thread.start()
     return port,thread,seen,errors
@@ -64,8 +66,13 @@ def main():
             vm.wait('HTTPS failed, cert rejected or too large',20)
             assert vm.log.read_text().count('BROWSER: Secure Start')>=2
             assert b'Secure Next' in vm.memory(addr['lines'],160*(68+192+1))
+            large_port,large_thread,_,_=server('test-server.pem',1)
+            focus_address(vm,addr)
+            type_url(vm,f'https://10.0.2.2:{large_port}/large')
+            vm.wait('HTTPS page exceeds 64 KiB',20)
+            assert b'Secure Next' in vm.memory(addr['lines'],160*(68+192+1))
             vm.key('esc');vm.wait('DESKTOP CLOSED\nmyos> ',8)
-            print('PASS: 16 MiB HTTPS GUI navigation, link, Back and wrong-host rejection',flush=True)
+            print('PASS: 16 MiB HTTPS GUI navigation, wrong-host rejection and oversized response recovery',flush=True)
         finally:vm.close()
     finally:build()
 

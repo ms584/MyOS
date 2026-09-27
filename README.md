@@ -85,6 +85,8 @@ The old `test-boot.py`, `test-vga.py`, `test-timer.py`, `test-exceptions.py` and
 implementation. Earlier 16/32-bit implementations remain in Git history.
 
 For Phase 31 local video playback, see [docs/PHASE31.md](docs/PHASE31.md).
+Phase 32 YouTube playback is not yet implemented; see [docs/PHASE32.md](docs/PHASE32.md)
+for the measured HTTPS/browser gate.
 
 ## Design and present limits
 

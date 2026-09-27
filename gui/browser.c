@@ -266,8 +266,13 @@ static void navigate(const char *url,bool remember){
     set_status(secure?"Loading verified HTTPS...":"Loading HTTP page...");
     bool ok=secure?tls_http_fetch(target,port,host,path,collect,&buffer):
                    net_http_fetch(target,port,host_header,path,collect,&buffer);
-    if(!ok){kfree(bytes);set_status(secure?"HTTPS failed, cert rejected or too large":
-                                      "HTTP failed, timed out or too large");return;}
+    if(!ok){
+        kfree(bytes);
+        set_status(secure?(tls_response_too_large()?"HTTPS page exceeds 64 KiB":
+                           "HTTPS failed, cert rejected or too large"):
+                          "HTTP failed, timed out or too large");
+        return;
+    }
     if(remember&&current[0]){
         size_t bytes=line_count*sizeof(lines[0]);
         struct browser_line *saved=kmalloc(bytes);

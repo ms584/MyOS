@@ -7,9 +7,17 @@
 #include "mbedtls/x509_crt.h"
 #include "mbedtls/platform.h"
 #include "certs/trust_anchors.h"
+#include "certs/gts_root_r1.h"
 
+static bool youtube_host(const char *host){
+    const char *name="www.youtube.com";
+    while(*name&&*host==*name){++host;++name;}
+    return !*host&&!*name;
+}
 void tls_port_init(void);
 static bool ready;
+static bool response_too_large;
+bool tls_response_too_large(void){return response_too_large;}
 static mbedtls_time_t current_time(mbedtls_time_t *out){
     mbedtls_time_t now=(mbedtls_time_t)security_unix_time();
     if(out)*out=now;return now;
@@ -26,6 +34,7 @@ static bool append(char *dst,size_t cap,size_t *length,const char *source){
 }
 bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const char *path,
                     net_http_sink sink,void *context){
+    response_too_large=false;
     if(!ip||!port||!host||!path||!sink||!security_time_ready()||
        !security_entropy_ready()||!net_configured())return false;
     if(!ready){
@@ -42,6 +51,9 @@ bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const cha
     bool opened=false,success=false;
     if(mbedtls_x509_crt_parse_der(&ca,isrg_root_x1,sizeof(isrg_root_x1))!=0||
        mbedtls_x509_crt_parse_der(&ca,digicert_global_root_g2,sizeof(digicert_global_root_g2))!=0)goto done;
+    /* Scope the Google root to the explicit YouTube hostname only. */
+    if(youtube_host(host) &&
+       mbedtls_x509_crt_parse_der(&ca,gts_root_r1,sizeof(gts_root_r1))!=0)goto done;
 #if TEST_CASE == 28
     if(mbedtls_x509_crt_parse_der(&ca,test_ca,sizeof(test_ca))!=0)goto done;
 #endif
@@ -79,7 +91,9 @@ bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const cha
         if(result==0||result==MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY){success=total>0;break;}
         if(result<0)break;
         total+=(size_t)result;
-        if(total>65536||!sink(context,buffer,(size_t)result))break;
+        if(total>65536||!sink(context,buffer,(size_t)result)){
+            response_too_large=true;break;
+        }
     }
 done:
     if(opened)net_tcp_close();

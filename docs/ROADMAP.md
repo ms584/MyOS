@@ -32,7 +32,7 @@ execution order. The completed Phase 24 USB image remains available.
 | Done | 29 | **Complete QEMU text-browser baseline:** verified HTTPS search, results, links and Back |
 | Done | 30 | QEMU SB16 buffered PCM audio, file/tone playback, volume/mute, IRQ timing and underrun recovery |
 | Done | 31 | MYV1 RLE video with synchronized PCM in QEMU |
-| 7 | 32 | Actual online YouTube playback acceptance in QEMU |
+| In progress | 32 | Actual online YouTube playback acceptance in QEMU; HTTPS page-size/runtime gate remains |
 | 8 | 24 (remaining) | Select the physical target and implement required drivers |
 | 9 | 25 | Physical-machine boot, display, input, apps and persistence acceptance |
 
@@ -115,7 +115,7 @@ QEMU development can continue without claiming this milestone is complete.
 | 29 | Browser and web search | **Complete QEMU text-browser baseline:** the selected in-tree bounded HTML-to-text/link renderer loads HTTP and verified HTTPS pages, fetches live DuckDuckGo Lite search results, opens a real HTTPS result and restores cached Back history. Local TLS and live QEMU tests validate behavior. This is a kernel-mode non-JavaScript profile; CSS/DOM/media and broader browser compatibility remain outside this baseline. See PHASE29.md. |
 | 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | **Complete QEMU baseline:** native MYV1 palette/RLE video decode at 80x60, 10 fps, framebuffer scaling and PIT-synchronized 11025 Hz PCM via SB16. Pause/resume and stop are tested; malformed clips are rejected. The format is custom and unencumbered; MP4/WebM/YouTube remain unsupported. See PHASE31.md. |
-| 32 | YouTube acceptance | In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verify HTTPS and required scripting/media support; record test date, browser version and limitations. |
+| 32 | YouTube acceptance | **In progress; not accepted.** In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verified HTTPS now reaches the live YouTube response, but its size exceeds the 64 KiB browser limit and scripting/media support is absent. See PHASE32.md. |
 
 Phase 29's initial browser is not evidence that YouTube works. Phase 32 depends
 on the browser runtime, JavaScript/DOM, required media interfaces and codecs,
@@ -140,7 +140,7 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–32 add the online platform. There are **8 phases not yet fully complete (24–25, 27–32)**: Phase 24 is partial, Phase 25 is deferred, and Phases 27–32 are planned.
+and apps, and phases 26–32 add the online platform. There are **3 phases not yet fully complete (24, 25 and 32)**: Phase 24 is partial, Phase 25 is deferred, and Phase 32 is in progress.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules
