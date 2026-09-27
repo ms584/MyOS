@@ -25,6 +25,12 @@ tail -f build/activity.log in VS Code.
   HTTPS connection with SHA-384 and a GTS Root R1 certificate scoped to the
   exact www.youtube.com hostname. The Browser reports its current 64 KiB
   page-size gate; it still lacks JavaScript and online media decoding.
+  The owner requires native MyOS playback at every step; WSL may build and
+  test but must not fetch/decode/play YouTube media for MyOS. Native TLS
+  streaming past 64 KiB has a 256 KiB QEMU integrity test; the GUI still
+  uses its 64 KiB/160-line bounded text renderer. A live QEMU native TLS
+  probe streamed 902,111 bytes from www.youtube.com on 2026-09-27, but
+  no YouTube audio/video playback has been implemented.
   See docs/PHASE32.md. Next work is the full YouTube player acceptance.
   Remaining Phase 24 hardware preparation and Phase 25 physical-machine
   acceptance follow; Phase 25 is deferred because the owner has no USB device.

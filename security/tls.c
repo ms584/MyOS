@@ -34,8 +34,12 @@ static bool append(char *dst,size_t cap,size_t *length,const char *source){
 }
 bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const char *path,
                     net_http_sink sink,void *context){
+    return tls_http_fetch_limit(ip,port,host,path,65536,sink,context);
+}
+bool tls_http_fetch_limit(const uint8_t ip[4],uint16_t port,const char *host,const char *path,
+                          size_t max_bytes,net_http_sink sink,void *context){
     response_too_large=false;
-    if(!ip||!port||!host||!path||!sink||!security_time_ready()||
+    if(!ip||!port||!host||!path||!sink||!max_bytes||!security_time_ready()||
        !security_entropy_ready()||!net_configured())return false;
     if(!ready){
         if(mbedtls_platform_set_calloc_free(calloc,free)!=0||
@@ -90,10 +94,9 @@ bool tls_http_fetch(const uint8_t ip[4],uint16_t port,const char *host,const cha
         result=mbedtls_ssl_read(&ssl,buffer,sizeof(buffer));
         if(result==0||result==MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY){success=total>0;break;}
         if(result<0)break;
+        if((size_t)result>max_bytes-total){response_too_large=true;break;}
         total+=(size_t)result;
-        if(total>65536||!sink(context,buffer,(size_t)result)){
-            response_too_large=true;break;
-        }
+        if(!sink(context,buffer,(size_t)result))break;
     }
 done:
     if(opened)net_tcp_close();

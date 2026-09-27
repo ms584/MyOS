@@ -43,18 +43,44 @@ python3 tools/run_logged.py -- python3 tests/test_https.py
 python3 tools/run_logged.py -- python3 tests/test_browser_https.py
 python3 tools/run_logged.py -- python3 tests/test_system.py
 python3 tools/run_logged.py -- python3 tests/test_youtube_probe.py
+python3 tools/run_logged.py -- python3 tests/test_phase32_stream.py
+python3 tools/run_logged.py -- python3 tests/test_youtube_stream.py
 ```
 
-The last test is live and optional: external site behavior can change. It
-passes only when the verified YouTube response reaches the known 64 KiB
-browser gate. It is **not** a Phase 32 acceptance test.
+The YouTube probe is live and optional: external site behavior can change.
+It passes only when verified YouTube HTTPS reaches the known 64 KiB Browser
+gate. The streaming test uses a local QEMU-accessible TLS server and checks
+response length and checksum. The second live probe streams the YouTube
+homepage using native MyOS TLS; on 2026-09-27 it received 902,111 bytes
+with FNV64 `D42844EF8FCB3D14`. Live results can change. None of these
+tests is Phase 32 playback acceptance.
+
+## Native-only scope and transport progress
+
+The owner requires every playback component to run inside MyOS. WSL is only
+the development/build host and must not fetch, decode, transcode or play
+YouTube media on behalf of MyOS. There is no host-media bridge fallback.
+
+MyOS now has a bounded, callback-based TLS receive path independent of the
+Browser's 64 KiB page buffer. `net https-count HOST PORT PATH` streams and
+counts up to 8 MiB of a verified HTTPS response with a diagnostic FNV64
+checksum. A QEMU test transferred a 256 KiB binary response and verified
+the exact count and checksum. This command is a transport diagnostic, not
+a media downloader or YouTube player. The Browser itself still has its
+64 KiB response and 160-line limits.
+
+Google's [Cobalt Starboard porting guide](https://cobalt.googlesource.com/cobalt/+/refs/heads/24.lts.stable/cobalt/site/docs/starboard/porting.md)
+describes a native YouTube-capable browser runtime, but MyOS lacks its
+required OS, graphics and media platform implementation. This is an
+architecture candidate, not a completed or selected port. The official
+[IFrame Player API](https://developers.google.com/youtube/iframe_api_reference)
+requires JavaScript and HTML5 postMessage, also absent from MyOS.
 
 ## Remaining acceptance work
 
-1. Select a browser/player architecture that can run the official YouTube
-   player or another explicitly agreed approach; document the dependencies
-   and supported sites. The owner has been asked whether a WSL assist is
-   acceptable; until answered, retain the approved in-MyOS scope.
+1. Port or implement a compatible in-MyOS browser/player runtime with the
+   official YouTube player interface; document dependencies and supported
+   sites. Do not substitute a host-side player.
 2. Support responses larger than 64 KiB and the required page/runtime APIs.
 3. Add actual online media decoding and buffered network delivery to the
    MyOS framebuffer and audio device, with pause/resume and seeking.

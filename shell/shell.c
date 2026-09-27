@@ -26,6 +26,11 @@ static bool tls_console_sink(void *unused,const uint8_t *bytes,size_t count){
     for(size_t i=0;i<count;++i)putchar((char)bytes[i]);
     return true;
 }
+static bool tls_count_sink(void *context,const uint8_t *bytes,size_t count){
+    uint64_t *result=context;
+    for(size_t i=0;i<count;++i){result[0]++;result[1]=(result[1]^(uint64_t)bytes[i])*1099511628211ull;}
+    return true;
+}
 static bool path_for(const char *arg,char *out){
     size_t a=length(arg),base=arg[0]=='/'?0:length(cwd);
     bool slash=base&&cwd[base-1]!='/';
@@ -71,10 +76,12 @@ static void execute(char *line){
             if(!net_resolve(host,address)){print("DNS failed or timed out\n");return;}
             print("DNS ");print(host);print(" = ");for(unsigned i=0;i<4;++i){if(i)putchar('.');decimal(address[i]);}print("\n");return;
         }
-        if(equal(arg,"https")){
+        if(equal(arg,"https")||equal(arg,"https-count")){
+            bool count_only=equal(arg,"https-count");
             char *host=word(&rest),*port_text=word(&rest),*path=word(&rest);
             if(!host||!port_text||!path||word(&rest)){
-                print("usage: net https HOST PORT PATH\n");return;
+                print(count_only?"usage: net https-count HOST PORT PATH\n":
+                                 "usage: net https HOST PORT PATH\n");return;
             }
             unsigned port=0;
             for(char *p=port_text;*p;++p){
@@ -84,8 +91,15 @@ static void execute(char *line){
             if(!port||port>65535){print("Invalid port\n");return;}
             uint8_t address[4];
             if(!net_resolve(host,address)){print("Address lookup failed\n");return;}
-            if(!tls_http_fetch(address,(uint16_t)port,host,path,tls_console_sink,0))
-                print("HTTPS request failed or certificate rejected\n");
+            uint64_t digest[2]={0,14695981039346656037ull};
+            bool ok=count_only?
+                tls_http_fetch_limit(address,(uint16_t)port,host,path,8u*1024u*1024u,
+                                     tls_count_sink,digest):
+                tls_http_fetch(address,(uint16_t)port,host,path,tls_console_sink,0);
+            if(!ok)print(tls_response_too_large()?"HTTPS response exceeds limit\n":
+                         "HTTPS request failed or certificate rejected\n");
+            else if(count_only){print("HTTPS verified; bytes=");decimal(digest[0]);
+                print("; FNV64=");hex(digest[1]);print("\n");}
             else print("\nHTTPS verified\n");
             return;
         }
