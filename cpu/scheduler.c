@@ -1,7 +1,7 @@
 #include "boot.h"
 #include "process.h"
 #define KERNEL_TASKS 4
-#define TASKS (KERNEL_TASKS + PROCESS_LIMIT)
+#define TASKS (KERNEL_TASKS + PROCESS_LIMIT * (1 + PROCESS_THREAD_LIMIT))
 
 struct task {
     struct frame *frame;
@@ -9,6 +9,10 @@ struct task {
     void *stack;
     bool alive;
     struct process *process;
+    struct process_thread *thread;
+    bool blocked;
+    uint64_t wait_address,wait_deadline;
+    uint64_t fs_base;
 };
 static struct task tasks[TASKS];
 /* Kernel/IRQ code must remain -mgeneral-regs-only. */
@@ -74,7 +78,7 @@ bool task_create(void (*entry)(void))
         frame->rsp = top;
         frame->flags = 0x202;
         fp_reset(i);
-        tasks[i] = (struct task){frame, entry, stack, true, 0};
+        tasks[i] = (struct task){.frame=frame,.entry=entry,.stack=stack,.alive=true};
         irq_restore(flags);
         return true;
     }
@@ -88,33 +92,90 @@ bool scheduler_attach_process(struct process *process)
     for (unsigned i = KERNEL_TASKS; i < TASKS; ++i) {
         if (tasks[i].process) continue;
         fp_reset(i);
-        tasks[i] = (struct task){process->frame, 0, process->kernel_stack, true, process};
+        tasks[i] = (struct task){.frame=process->frame,.stack=process->kernel_stack,
+            .alive=true,.process=process};
         return true;
     }
     return false;
 }
 
 struct process *scheduler_current_process(void) { return tasks[current].process; }
+struct process_thread *scheduler_current_thread(void){return tasks[current].thread;}
 
-bool scheduler_stop_process(struct process *process)
+bool scheduler_attach_thread(struct process *process,struct process_thread *thread)
 {
-    for (unsigned i = KERNEL_TASKS; i < TASKS; ++i) {
-        if (tasks[i].process != process) continue;
-        tasks[i].alive = false;
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i){
+        if(tasks[i].process)continue;
+        fp_reset(i);
+        tasks[i]=(struct task){.frame=thread->frame,.stack=thread->kernel_stack,
+            .alive=true,.process=process,.thread=thread,.fs_base=thread->fs_base};
         return true;
     }
     return false;
 }
 
-bool scheduler_detach_process(struct process *process)
+bool scheduler_stop_thread(struct process *process,struct process_thread *thread)
 {
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i)
+        if(tasks[i].process==process&&tasks[i].thread==thread){
+            tasks[i].alive=false;tasks[i].blocked=false;return true;
+        }
+    return false;
+}
+
+bool scheduler_stop_process(struct process *process)
+{
+    bool found=false;
     for (unsigned i = KERNEL_TASKS; i < TASKS; ++i) {
         if (tasks[i].process != process) continue;
-        if (i == current) return false;
-        memset(&tasks[i], 0, sizeof(tasks[i]));
-        return true;
+        found=true;tasks[i].alive=false;tasks[i].blocked=false;
     }
+    return found;
+}
+
+bool scheduler_detach_process(struct process *process)
+{
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i)
+        if(tasks[i].process==process&&i==current)return false;
+    bool found=false;
+    for (unsigned i = KERNEL_TASKS; i < TASKS; ++i) {
+        if (tasks[i].process != process) continue;
+        found=true;
+        memset(&tasks[i], 0, sizeof(tasks[i]));
+    }
+    return found;
+}
+
+bool scheduler_detach_thread(struct process *process,struct process_thread *thread)
+{
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i)
+        if(tasks[i].process==process&&tasks[i].thread==thread){
+            if(i==current)return false;
+            memset(&tasks[i],0,sizeof(tasks[i]));return true;
+        }
     return false;
+}
+
+struct frame *scheduler_wait(struct frame *frame,struct process *process,
+                             uint64_t address,uint64_t deadline)
+{
+    struct task *task=&tasks[current];
+    check(task->process==process&&!task->blocked,"invalid wait task");
+    task->frame=frame;task->alive=false;task->blocked=true;
+    task->wait_address=address;task->wait_deadline=deadline;
+    return schedule(frame);
+}
+
+unsigned scheduler_wake(struct process *process,uint64_t address,unsigned count)
+{
+    unsigned woke=0;
+    if(!count)return 0;
+    for(unsigned i=KERNEL_TASKS;i<TASKS&&woke<count;++i){
+        struct task *task=&tasks[i];
+        if(task->process!=process||!task->blocked||task->wait_address!=address)continue;
+        task->blocked=false;task->alive=true;task->frame->rax=0;++woke;
+    }
+    return woke;
 }
 
 void scheduler_start(void) { enabled = true; }
@@ -125,6 +186,12 @@ struct frame *schedule(struct frame *frame)
     tasks[current].frame = frame;
     if (tasks[current].process && (frame->cs & 3) == 3 && frame->vector == 32)
         ++tasks[current].process->preemptions;
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i){
+        struct task *task=&tasks[i];
+        if(task->blocked&&task->wait_deadline&&ticks>=task->wait_deadline){
+            task->blocked=false;task->alive=true;task->frame->rax=(uint64_t)-110;
+        }
+    }
     for (unsigned step = 1; step <= TASKS; ++step) {
         unsigned next = (current + step) % TASKS;
         if (!tasks[next].alive) continue;
@@ -135,7 +202,11 @@ struct frame *schedule(struct frame *frame)
         current = next;
         struct process *process = tasks[next].process;
         uintptr_t root = process ? process->root : boot_state.root;
-        tss_set_stack(process ? process->kernel_top : boot_state.stack);
+        tss_set_stack(process ? (tasks[next].thread?tasks[next].thread->kernel_top:
+                      process->kernel_top) : boot_state.stack);
+        uint64_t fs=tasks[next].fs_base;
+        __asm__ volatile("wrmsr"::"c"(0xc0000100u),"a"((uint32_t)fs),
+                         "d"((uint32_t)(fs>>32)):"memory");
         /* All roots share supervisor-only kernel/heap mappings at PML4[0]. */
         __asm__ volatile ("mov %0,%%cr3" : : "r"(root) : "memory");
         return tasks[next].frame;

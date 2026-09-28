@@ -1,5 +1,10 @@
 # Phase 33.1 — native runtime groundwork (in progress)
 
+The next runtime continuation now supplies tested anonymous VM, Ring 3
+threads, FS-base TLS and atomic wait/wake primitives. See
+[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). These are custom MyOS primitives;
+the Cobalt POSIX/Starboard bindings and native engine smoke remain open.
+
 **NOT COMPLETE.** The first implementation slice provides read-only large
 assets, restricted static ELF64 execution in Ring 3, and native inspection of
 the pinned Cobalt binary. Cobalt itself has not been linked or started. The

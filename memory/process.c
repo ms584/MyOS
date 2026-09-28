@@ -18,8 +18,11 @@ static void release(struct process *process)
 {
     fs_close_all(process->files);
     /* Only detached, noncurrent address spaces may reach this function. */
-    for (unsigned i = 0; i < process->page_count; ++i) page_free(process->image_pages?process->image_pages[i]:process->pages[i]);
+    for (unsigned i = 0; i < process->page_count; ++i) if(process->image_pages?process->image_pages[i]:process->pages[i])page_free(process->image_pages?process->image_pages[i]:process->pages[i]);
+    for(unsigned i=0;i<process->vm_page_count;++i)if(process->vm_pages[i])page_free(process->vm_pages[i]);
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)kfree(process->threads[i].kernel_stack);
     kfree(process->image_pages);
+    kfree(process->vm_pages);
     kfree(process->kernel_stack);
     memset(process, 0, sizeof(*process));
 }
@@ -136,7 +139,10 @@ struct frame *process_fault(struct frame *frame)
         __asm__ volatile ("mov %%cr2,%0" : "=r"(process->fault_address));
     print("USER FAULT pid="); decimal(process->pid);
     print(" vector="); decimal(frame->vector);
-    print(" error="); hex(frame->error); print("\n");
+    print(" error="); hex(frame->error);
+    print(" rip=");hex(frame->rip);
+    if(frame->vector==14){print(" address=");hex(process->fault_address);}
+    print("\n");
     fs_close_all(process->files);
     scheduler_stop_process(process);
     process->state = PROCESS_ZOMBIE;
@@ -224,6 +230,186 @@ bool process_image_readonly(struct process *p,uint64_t address,uint64_t size)
     if(address>UINT64_MAX-size)return false;
     for(uint64_t a=address&~4095ull;a<address+size;a+=PAGE_SIZE){uint64_t *e=image_leaf(p,a);if(!e)return false;*e&=~2ull;}
     return true; /* This staged CR3 has never been active: no stale TLB entries. */
+}
+
+static bool vm_range(uint64_t address,size_t length)
+{
+    return length&&!(address&(PAGE_SIZE-1))&&!(length&(PAGE_SIZE-1))&&
+           address>=PROCESS_VM_BASE&&address<=PROCESS_VM_END-length;
+}
+static bool vm_track(struct process *p,uintptr_t page)
+{
+    if(p->vm_page_count==p->vm_page_capacity){
+        unsigned capacity=p->vm_page_capacity?p->vm_page_capacity*2:32;
+        uintptr_t *pages=kmalloc((size_t)capacity*sizeof(*pages));
+        if(!pages)return false;
+        if(p->vm_pages)memcpy(pages,p->vm_pages,(size_t)p->vm_page_count*sizeof(*pages));
+        kfree(p->vm_pages);p->vm_pages=pages;p->vm_page_capacity=capacity;
+    }
+    p->vm_pages[p->vm_page_count++]=page;return true;
+}
+static uintptr_t vm_new_page(struct process *p)
+{
+    uintptr_t page=page_alloc();
+    if(!page)return 0;
+    if(!vm_track(p,page)){page_free(page);return 0;}
+    memset((void *)page,0,PAGE_SIZE);return page;
+}
+static void vm_forget(struct process *p,uintptr_t page)
+{
+    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page){p->vm_pages[i]=0;return;}
+    panic("untracked process VM page");
+}
+static uint64_t *vm_leaf(struct process *p,uint64_t address,bool create)
+{
+    uint64_t *table=(void *)p->root;
+    for(int shift=39;shift>=21;shift-=9){
+        uint64_t *entry=&table[(address>>shift)&511];
+        if(!(*entry&1)){
+            if(!create)return 0;
+            uintptr_t page=vm_new_page(p);if(!page)return 0;
+            *entry=page|7;
+        }
+        if((*entry&5)!=5||(*entry&128))return 0;
+        table=(void *)(uintptr_t)(*entry&0x000ffffffffff000ull);
+    }
+    return &table[(address>>12)&511];
+}
+static bool vm_free_at(struct process *p,uint64_t address)
+{
+    uint64_t *entry=vm_leaf(p,address,false);return !entry||!(*entry&1);
+}
+static void vm_flush(uint64_t address){__asm__ volatile("invlpg (%0)"::"r"(address):"memory");}
+
+int process_vm_unmap(struct process *p,uint64_t address,size_t length)
+{
+    if(!vm_range(address,length))return -22;
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||(*e&5)!=5)return -22;}
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
+        uint64_t *e=vm_leaf(p,a,false);uintptr_t page=(uintptr_t)(*e&0x000ffffffffff000ull);
+        *e=0;vm_flush(a);vm_forget(p,page);page_free(page);
+    }
+    return 0;
+}
+
+int process_vm_protect(struct process *p,uint64_t address,size_t length,unsigned prot)
+{
+    if(!vm_range(address,length)||!(prot&PROCESS_PROT_READ)||(prot&~7u)||
+       ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||(*e&5)!=5)return -22;}
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
+        uint64_t *e=vm_leaf(p,a,false),page=*e&0x000ffffffffff000ull;
+        *e=page|5|((prot&PROCESS_PROT_WRITE)?2:0)|((prot&PROCESS_PROT_EXEC)?0:NX);vm_flush(a);
+    }
+    return 0;
+}
+
+int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned prot)
+{
+    if(!length||length>PROCESS_VM_END-PROCESS_VM_BASE||length>SIZE_MAX-(PAGE_SIZE-1) ||
+       !(prot&PROCESS_PROT_READ)||(prot&~7u)||
+       ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
+    length=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
+    uint64_t address=hint;
+    if(hint){if(!vm_range(hint,length))return -22;
+        for(uint64_t a=hint;a<hint+length;a+=PAGE_SIZE)if(!vm_free_at(p,a))return -17;
+    }else{
+        size_t run=0;address=PROCESS_VM_BASE;
+        for(uint64_t a=PROCESS_VM_BASE;a<PROCESS_VM_END;a+=PAGE_SIZE){
+            if(vm_free_at(p,a)){run+=PAGE_SIZE;if(run==length){address=a+PAGE_SIZE-length;break;}}
+            else run=0;
+        }
+        if(run!=length)return -12;
+    }
+    size_t mapped=0;
+    for(;mapped<length;mapped+=PAGE_SIZE){
+        uint64_t *e=vm_leaf(p,address+mapped,true);if(!e||(*e&1))break;
+        uintptr_t page=vm_new_page(p);if(!page)break;
+        *e=page|5|((prot&PROCESS_PROT_WRITE)?2:0)|((prot&PROCESS_PROT_EXEC)?0:NX);
+    }
+    if(mapped!=length){if(mapped)check(!process_vm_unmap(p,address,mapped),"VM rollback");return -12;}
+    return (int64_t)address;
+}
+
+bool process_user_access(struct process *p,uint64_t address,size_t length,unsigned prot)
+{
+    if(!length||address>UINT64_MAX-(length-1)||address>=(1ull<<47))return false;
+    while(length){
+        uint64_t *entry=vm_leaf(p,address,false);
+        if(!entry||(*entry&5)!=5)return false;
+        if((prot&PROCESS_PROT_WRITE)&&!(*entry&2))return false;
+        if((prot&PROCESS_PROT_EXEC)&&(*entry&NX))return false;
+        size_t count=PAGE_SIZE-(address&(PAGE_SIZE-1));
+        if(count>length)count=length;
+        address+=count;length-=count;
+    }
+    return true;
+}
+
+int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
+                              uint64_t stack,uint64_t tls)
+{
+    if(!process_user_access(p,entry,1,PROCESS_PROT_EXEC)||stack<8||
+       !process_user_access(p,stack-8,8,PROCESS_PROT_WRITE)||
+       (tls&&!process_user_access(p,tls,8,PROCESS_PROT_READ)))return -14;
+    struct process_thread *thread=0;
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
+        if(p->threads[i].state==PROCESS_THREAD_UNUSED){thread=&p->threads[i];break;}
+    if(!thread)return -11;
+    thread->kernel_stack=kmalloc(16384);
+    if(!thread->kernel_stack)return -12;
+    thread->kernel_top=((uintptr_t)thread->kernel_stack+16384)&~15ull;
+    thread->frame=(struct frame *)(thread->kernel_top-sizeof(struct frame));
+    memset(thread->frame,0,sizeof(*thread->frame));
+    thread->frame->rip=entry;thread->frame->cs=0x2b;thread->frame->ss=0x23;
+    thread->frame->rsp=(stack&~15ull)-8;thread->frame->rdi=arg;thread->frame->flags=0x202;
+    thread->fs_base=tls;thread->tid=(p->pid<<32)|++p->next_tid;
+    thread->state=PROCESS_THREAD_RUNNING;
+    if(!scheduler_attach_thread(p,thread)){
+        kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));return -11;
+    }
+    return (int64_t)thread->tid;
+}
+
+struct frame *process_thread_exit(struct process *p,struct frame *frame,int32_t status)
+{
+    struct process_thread *thread=scheduler_current_thread();
+    if(!thread){frame->rax=(uint64_t)-1;return frame;}
+    thread->exit_status=status;thread->state=PROCESS_THREAD_ZOMBIE;
+    check(scheduler_stop_thread(p,thread),"stop current user thread");
+    return schedule(frame);
+}
+
+int process_thread_reap(struct process *p,uint64_t tid,int32_t *status)
+{
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i){
+        struct process_thread *thread=&p->threads[i];
+        if(thread->state==PROCESS_THREAD_UNUSED||thread->tid!=tid)continue;
+        if(thread->state!=PROCESS_THREAD_ZOMBIE)return -11;
+        if(!scheduler_detach_thread(p,thread))return -16;
+        *status=thread->exit_status;
+        kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));return 0;
+    }
+    return -3;
+}
+
+struct frame *process_wait(struct process *p,struct frame *frame,
+                           uint64_t address,uint64_t deadline)
+{
+    uint64_t value,*entry=vm_leaf(p,address,false);
+    if((address&7)||!process_user_access(p,address,8,PROCESS_PROT_READ)||!entry){
+        frame->rax=(uint64_t)-14;return frame;
+    }
+    memcpy(&value,(void *)(uintptr_t)((*entry&0x000ffffffffff000ull)+
+           (address&(PAGE_SIZE-1))),8);
+    if(value!=frame->rsi){frame->rax=(uint64_t)-11;return frame;}
+    frame->rax=0;return scheduler_wait(frame,p,address,deadline);
+}
+
+unsigned process_wake(struct process *p,uint64_t address,unsigned count)
+{
+    if((address&7)||!process_user_access(p,address,8,PROCESS_PROT_READ))return 0;
+    return scheduler_wake(p,address,count);
 }
 void process_discard_elf(struct process *p)
 {

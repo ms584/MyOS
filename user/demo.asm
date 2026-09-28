@@ -52,6 +52,14 @@ org 0x8000000000
     je fs_fault
     cmp rcx,20
     je fs_kill
+    cmp rcx,22
+    je vm_contract
+    cmp rcx,23
+    je vm_readonly_fault
+    cmp rcx,24
+    je vm_execute
+    cmp rcx,25
+    je thread_contract
     cmp rcx,21
     je fp_probe
 .loop:
@@ -168,6 +176,196 @@ fp_probe:
     jmp .loop
 .bad:
     mov qword [rbx+48],1
+    ud2
+
+vm_contract:
+    mov eax,SYS_VM_MAP
+    xor edi,edi
+    mov esi,8192
+    mov edx,3
+    int 0x80
+    test rax,rax
+    js syscall_failed
+    test eax,4095
+    jnz syscall_failed
+    mov r12,rax
+    cmp qword [r12],0
+    jne syscall_failed
+    cmp qword [r12+4096],0
+    jne syscall_failed
+    mov qword [r12],0x11223344
+    mov qword [r12+4096],0x55667788
+    mov eax,SYS_VM_PROTECT
+    mov rdi,r12
+    mov esi,8192
+    mov edx,1
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    mov eax,SYS_VM_UNMAP
+    lea rdi,[r12+4096]
+    mov esi,4096
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    mov eax,SYS_VM_UNMAP
+    mov rdi,r12
+    mov esi,4096
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    mov eax,SYS_EXIT
+    mov edi,34
+    int 0x80
+    ud2
+
+vm_readonly_fault:
+    mov eax,SYS_VM_MAP
+    xor edi,edi
+    mov esi,4096
+    mov edx,3
+    int 0x80
+    test rax,rax
+    js syscall_failed
+    mov r12,rax
+    mov eax,SYS_VM_PROTECT
+    mov rdi,r12
+    mov esi,4096
+    mov edx,1
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    mov qword [r12],1
+    ud2
+
+vm_execute:
+    mov eax,SYS_VM_MAP
+    xor edi,edi
+    mov esi,4096
+    mov edx,3
+    int 0x80
+    test rax,rax
+    js syscall_failed
+    mov r12,rax
+    mov byte [r12],0xc3
+    mov eax,SYS_VM_PROTECT
+    mov rdi,r12
+    mov esi,4096
+    mov edx,5
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    call r12
+    mov eax,SYS_EXIT
+    mov edi,35
+    int 0x80
+    ud2
+
+thread_contract:
+    mov eax,SYS_VM_MAP
+    xor edi,edi
+    mov esi,12288
+    mov edx,3
+    int 0x80
+    test rax,rax
+    js syscall_failed
+    mov r12,rax
+    lea rax,[r12+4096]
+    mov [rax],rax
+    lea rdi,[r12+64]
+    mov [rdi],r12
+    lea rax,[r12+4096]
+    mov [rdi+8],rax
+    mov qword [rdi+16],0x1111
+    mov eax,SYS_THREAD_CREATE
+    mov rsi,rdi
+    mov rdi,thread_worker
+    lea rdx,[r12+12288]
+    lea r10,[r12+4096]
+    int 0x80
+    test rax,rax
+    js syscall_failed
+    mov r13,rax
+.wait:
+    cmp qword [r12],1
+    je .reap
+    mov eax,SYS_TICKS
+    int 0x80
+    add rax,200
+    mov rdx,rax
+    xor esi,esi
+    mov rdi,r12
+    mov eax,SYS_WAIT
+    int 0x80
+    test rax,rax
+    jz .wait
+    cmp rax,-11
+    je .wait
+    jmp syscall_failed
+.reap:
+    lea r15,[r12+48]
+.retry:
+    mov eax,SYS_THREAD_REAP
+    mov rdi,r13
+    mov rsi,r15
+    int 0x80
+    cmp rax,-11
+    jne .check
+    mov eax,SYS_YIELD
+    int 0x80
+    jmp .retry
+.check:
+    test rax,rax
+    jnz syscall_failed
+    cmp dword [r15],0x1111
+    jne syscall_failed
+    cmp qword [r12+88],20
+    jne syscall_failed
+    mov eax,SYS_TICKS
+    int 0x80
+    lea rdx,[rax+2]
+    mov esi,1
+    mov rdi,r12
+    mov eax,SYS_WAIT
+    int 0x80
+    cmp rax,-110
+    jne syscall_failed
+    mov eax,SYS_VM_UNMAP
+    mov rdi,r12
+    mov esi,12288
+    int 0x80
+    test rax,rax
+    jnz syscall_failed
+    mov eax,SYS_EXIT
+    mov edi,36
+    int 0x80
+    ud2
+
+thread_worker:
+    mov r11,[fs:0]
+    cmp r11,[rdi+8]
+    jne .bad
+    mov rbx,[rdi]
+    mov r9,[rdi+16]
+    mov ecx,20
+.loop:
+    inc qword [rdi+24]
+    mov eax,SYS_YIELD
+    int 0x80
+    loop .loop
+    mov [rdi+16],r9
+    inc qword [rbx]
+    mov eax,SYS_WAKE
+    mov rdi,rbx
+    mov esi,1
+    int 0x80
+    mov eax,SYS_THREAD_EXIT
+    mov rdi,r9
+    int 0x80
+.bad:
+    mov eax,SYS_THREAD_EXIT
+    mov edi,-1
+    int 0x80
     ud2
 
 %include "user/syscall-demo.inc"

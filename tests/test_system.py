@@ -125,6 +125,8 @@ def boot_test(name,ram=64,keyboard=False,text=False):
                        'PASS: 13 user fault cases contained; kernel and peer survived',
                        'PASS: process kill/reap, capacity, PID and resource reuse',
                        'PASS: syscall ABI, 29 user checks, pointer validation, signed exit',
+                       'PASS: user VM map/unmap/protect, W^X, faults and cleanup',
+                       'PASS: Ring 3 threads, FS-base TLS, wait/wake and reap',
                        'PASS: user write/getpid/yield/exit; status=42, resources reclaimed',
                        'PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup',
                        'PASS: graphics surface, clipping, font and redraw',

@@ -140,6 +140,35 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_YIELD:
         frame->rax = 0;
         return schedule(frame);
+    case SYS_VM_MAP:
+        frame->rax=(uint64_t)process_vm_map(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
+        break;
+    case SYS_VM_UNMAP:
+        frame->rax=(uint64_t)process_vm_unmap(process,frame->rdi,(size_t)frame->rsi);
+        break;
+    case SYS_VM_PROTECT:
+        frame->rax=(uint64_t)process_vm_protect(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
+        break;
+    case SYS_THREAD_CREATE:
+        frame->rax=(uint64_t)process_thread_create(process,frame->rdi,frame->rsi,
+                                                   frame->rdx,frame->r10);
+        break;
+    case SYS_THREAD_EXIT:
+        return process_thread_exit(process,frame,(int32_t)frame->rdi);
+    case SYS_THREAD_REAP: {
+        int32_t status=0;
+        if(!writable_range(process,frame->rsi,sizeof(status))){
+            frame->rax=(uint64_t)-14;break;
+        }
+        int rc=process_thread_reap(process,frame->rdi,&status);
+        if(!rc)copy_to_user(process,frame->rsi,&status,sizeof(status));
+        frame->rax=(uint64_t)rc;break;
+    }
+    case SYS_WAIT:
+        return process_wait(process,frame,frame->rdi,frame->rdx);
+    case SYS_WAKE:
+        frame->rax=process_wake(process,frame->rdi,(unsigned)frame->rsi);
+        break;
     case SYS_FOPEN: case SYS_FREAD: case SYS_FWRITE: case SYS_FCLOSE:
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:
         frame->rax = (uint64_t)file_call(process,frame);

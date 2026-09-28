@@ -33,6 +33,24 @@ void syscall_test(void)
     check(process->exit_status == -7, "signed exit status");
     check(process_reap(pid) && pages_free() == before, "negative exit reclaimed");
     print("PASS: syscall ABI, 29 user checks, pointer validation, signed exit\n");
+    pid=process_create(22,0);process=wait_exit(pid);
+    check(process->exit_status==34,"VM syscall contract");
+    check(process_reap(pid)&&pages_free()==before,"VM mapping pages reclaimed");
+    pid=process_create(23,0);process=process_find(pid);
+    check(process!=0,"VM readonly fault process");
+    uint64_t deadline=ticks+200;
+    while(process->state==PROCESS_RUNNING&&ticks<deadline)__asm__ volatile("hlt":::"memory");
+    check(process->state==PROCESS_ZOMBIE&&!process->exited&&process->fault_vector==14&&
+          process->fault_error==7&&process->fault_address==PROCESS_VM_BASE,"VM readonly fault");
+    check(process_reap(pid)&&pages_free()==before,"VM fault pages reclaimed");
+    pid=process_create(24,0);process=wait_exit(pid);
+    check(process->exit_status==35,"VM executable transition");
+    check(process_reap(pid)&&pages_free()==before,"VM executable pages reclaimed");
+    print("PASS: user VM map/unmap/protect, W^X, faults and cleanup\n");
+    pid=process_create(25,0);process=wait_exit(pid);
+    check(process->exit_status==36,"thread/TLS/wait contract");
+    check(process_reap(pid)&&pages_free()==before,"thread resources reclaimed");
+    print("PASS: Ring 3 threads, FS-base TLS, wait/wake and reap\n");
 #endif
     uint64_t demo_pid = process_create(15, 0);
     struct process *demo = wait_exit(demo_pid);

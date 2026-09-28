@@ -1,5 +1,9 @@
 # Phase 33.2 — staged dynamic ELF loader
 
+The process runtime now has the VM/thread/TLS/wait foundation described in
+[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker still has no
+external Starboard resolver, so this does not change the Cobalt execution gate.
+
 Scope: the next native loader milestone after the first Phase 33.1 slice.
 This does **not** close Phase 33.1's engine/HTML/JavaScript gate, Phase 32, or
 Phase 33's real online Rickroll gate. Cobalt is still **not executable** with

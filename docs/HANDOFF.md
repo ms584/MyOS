@@ -1,5 +1,11 @@
 # MyOS handoff — 2026-09-28
 
+The latest Phase 33.1 continuation adds tested anonymous user VM, extra Ring 3
+threads, FS-base TLS and atomic wait/wake/timeout primitives. See
+`docs/PHASE331_RUNTIME.md`. These are custom kernel primitives and do not yet
+resolve any of Cobalt's 242 strong imports. Native Cobalt HTML/JavaScript/input
+smoke remains the required gate before Phase 33.3.
+
 Read root AGENTS.md and docs/ROADMAP.md before starting. The owner asked to
 continue the approved phase sequence and **always pushes to GitHub personally**.
 Make local commits when work is verified; never run git push. Log development
