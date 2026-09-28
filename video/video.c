@@ -110,9 +110,15 @@ static void paint(const struct clip *video,const uint8_t *pixels,
     gfx_rect(scene,left,top+(int)(video->height*scale)+40,
              (int)(video->width*scale),20,0x101a2e);
     gfx_text(scene,left,top+(int)(video->height*scale)+40,
-             paused?"Paused | Space resume | Esc exit":
-                    "Space pause | Esc exit",0xffffff);
+             paused?"Paused | Left/Right seek | Space resume | Esc exit":
+                    "Space pause | Left/Right seek | Esc exit",0xffffff);
     (void)gfx_present(scene,0,0);
+}
+static bool queue_at(const struct clip *video,uint64_t elapsed){
+    uint64_t offset=elapsed*11025/100;
+    if(offset>=video->samples)return false;
+    audio_stop();
+    return audio_queue(video->sound+offset,video->samples-(size_t)offset);
 }
 static bool play_loaded(struct clip *video){
     struct gfx_mode mode;
@@ -163,13 +169,22 @@ static bool play_loaded(struct clip *video){
                 if(elapsed>=duration)break;
                 audio_stop();paused=true;trace("VIDEO PAUSED\n");
             }else{
-                uint64_t offset=elapsed*11025/100;
-                if(offset>=video->samples||
-                   !audio_queue(video->sound+offset,video->samples-(unsigned)offset)){
-                    aborted=true;break;
-                }
+                if(!queue_at(video,elapsed)){aborted=true;break;}
                 start=ticks-elapsed;paused=false;trace("VIDEO RESUMED\n");
             }
+        }
+        if(key==KEY_LEFT||key==KEY_RIGHT){
+            uint64_t position=paused?elapsed:ticks-start;
+            uint64_t last=duration-interval;
+            if(key==KEY_LEFT)elapsed=position>100?position-100:0;
+            else elapsed=position>=last||last-position<=100?last:position+100;
+            if(!paused){
+                if(!queue_at(video,elapsed)){aborted=true;break;}
+                start=ticks-elapsed;
+            }
+            previous=-1;
+            trace("VIDEO SEEK frame ");trace_number(elapsed/interval);
+            trace(paused?" paused\n":" playing\n");
         }
         if(!paused)elapsed=ticks-start;
         if(elapsed>=duration)break;

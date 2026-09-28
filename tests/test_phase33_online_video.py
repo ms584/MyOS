@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, "tests")
 from test_system import VM, OUT, build
-from test_network import send
+from test_network import send, wait_count
 from test_video import shot
 
 CERTS = Path("security/certs")
@@ -73,6 +73,28 @@ def main():
             vm.wait("myos> ", 5)
             thread.join(5)
             assert not errors, errors
+
+            control_port, control_thread, control_errors = server(body)
+            send(vm, f"video net 10.0.2.2 {control_port} /clip.myv")
+            wait_count(vm, "VIDEO FRAME 0 tick", 2, 25)
+            vm.key("spc")
+            vm.wait("VIDEO PAUSED", 5)
+            vm.key("right")
+            vm.wait("VIDEO SEEK frame ", 5)
+            seeked = shot(vm, "phase33-online-seek-right.ppm")
+            assert seeked(280, 260) == (0x10, 0x20, 0x38)
+            vm.key("left")
+            wait_count(vm, "VIDEO SEEK frame ", 2, 5)
+            rewound = shot(vm, "phase33-online-seek-left.ppm")
+            assert rewound(280, 260) == (0xf5, 0xb6, 0x42)
+            vm.key("spc")
+            vm.wait("VIDEO RESUMED", 5)
+            vm.key("esc")
+            vm.wait("VIDEO STOPPED", 5)
+            vm.wait("myos> ", 5)
+            control_thread.join(5)
+            assert not control_errors, control_errors
+            print("PASS: online MYV1 pause, seek both directions, resume and stop", flush=True)
 
             bad_port, bad_thread, bad_errors = server(body, declared=len(body)+1)
             send(vm, f"video net 10.0.2.2 {bad_port} /clip.myv")

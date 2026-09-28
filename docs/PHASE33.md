@@ -31,7 +31,7 @@ occur in MyOS. Do not use a Linux desktop as a substitute for MyOS.
 The `video net HOST PORT PATH` shell command downloads one bounded MYV1 clip
 over certificate-verified HTTPS directly inside MyOS, checks HTTP 200 and the
 declared response length, then plays moving frames on the MyOS framebuffer
-with PCM sound through SB16. The existing Space pause/resume and Esc stop
+with PCM sound through SB16. Space pause/resume, Left/Right one-second seek, and Esc stop
 controls work on this fetched clip. QEMU tests verify changed framebuffer
 pixels and captured audio, and reject a wrong-host certificate or malformed
 response length. The test server and synthetic clip are development fixtures;
@@ -39,7 +39,8 @@ the network fetch, parse, decode and playback execute in MyOS.
 
 This is a **whole-clip download capped at 64 KiB**, not buffered continuous
 media streaming. It supports only the custom MYV1 format; it does not parse
-the YouTube watch page, select a YouTube stream, decode MP4/WebM, or seek.
+the YouTube watch page, select a YouTube stream, decode MP4/WebM, or seek
+within YouTube media. MYV1 seek works only within the loaded clip.
 It does not satisfy the Rickroll gate.
 
 Run the focused QEMU test with:

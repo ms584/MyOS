@@ -22,8 +22,8 @@ qemu-system-x86_64 -m 64M \
 ```
 
 At `myos>`, type `video play /home/demo.myv`. The player shows a moving
-colored block for three seconds. Press Space to pause/resume and Esc or q to
-stop early. It returns to the Shell at the end. Close QEMU before opening the
+colored block for three seconds. Press Space to pause/resume, Left/Right to seek one second backward/
+forward, and Esc or q to stop early. It returns to the Shell at the end. Close QEMU before opening the
 captured `build/phase31-playback.wav`; the WAV backend finalizes it on exit.
 A live host audio backend may be substituted for QEMU's WAV backend where
 configured.
@@ -72,8 +72,10 @@ PIT ticks at 100 Hz are the shared clock. The player queues the clip's PCM
 once, starts the clock, renders the matching frame, skips a late frame rather
 than slowing audio, and stops SB16 when playback ends. Pause stops SB16 and
 holds the elapsed tick count; resume queues the remaining PCM from that
-position. Starting a clip discards any earlier tone/WAV queue, since this
-prototype has only one audio client.
+position. Left/Right seeks one second, clamps to the final frame, redraws
+immediately, and requeues PCM from the new position when playing. Seeking
+while paused keeps both picture and sound paused. Starting a clip discards
+any earlier tone/WAV queue, since this prototype has only one audio client.
 
 The player scales frames by an integer factor up to 4 on an off-screen
 surface and presents to an 800×600×32 framebuffer. It needs that
@@ -82,7 +84,7 @@ or SB16 gives an explicit error. The sample's v2 data disk and playback
 worked at 32 MiB RAM; 64 MiB is recommended. At 16 MiB the large v2 data
 disk does not mount, and the Shell rejects playback without crashing.
 Clip and software audio queue limits are 64 KiB. This is not a general
-streaming pipeline and has no seeking.
+streaming pipeline; seek is limited to the loaded MYV1 clip.
 
 ## Verified tests
 

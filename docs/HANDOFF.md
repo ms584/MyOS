@@ -39,7 +39,8 @@ tail -f build/activity.log in VS Code.
   command fetches a <=64 KiB MYV1 clip over verified HTTPS inside MyOS,
   validates HTTP status/length and plays framebuffer motion plus SB16 audio.
   The focused QEMU test rejects bad length and wrong-host TLS. This is a
-  whole-clip synthetic format test, not YouTube media, and has no seek.
+  whole-clip synthetic format test, not YouTube media. Left/Right seek
+  works only inside the loaded MYV1 clip.
   Phase 33 still requires actual online Rickroll video plus sound and
   controls in MyOS/QEMU;
   it cannot pass on an HTTPS fetch, search result, static frame, local
