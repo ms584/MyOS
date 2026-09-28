@@ -87,8 +87,9 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
 For Phase 31 local video playback, see [docs/PHASE31.md](docs/PHASE31.md).
 Phase 32 YouTube playback is not yet implemented; see [docs/PHASE32.md](docs/PHASE32.md)
 for the measured HTTPS/browser gate. Phase 33 requires actual online Rickroll
-video and audio inside MyOS; it is not started and cannot pass without
-playback. See [docs/PHASE33.md](docs/PHASE33.md).
+video and audio inside MyOS. Work has begun on bounded online MYV1
+playback, but actual YouTube/Rickroll playback is still not implemented and
+Phase 33 has not passed. See [docs/PHASE33.md](docs/PHASE33.md).
 
 ## Design and present limits
 

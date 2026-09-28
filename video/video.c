@@ -2,6 +2,8 @@
 #include "audio.h"
 #include "fs.h"
 #include "graphics.h"
+#include "net.h"
+#include "tls.h"
 
 #define VIDEO_HEADER 24u
 #define VIDEO_FRAMES 60u
@@ -30,18 +32,8 @@ static void trace_number(uint64_t n){
 static void trace_frame(unsigned index,uint64_t now){
     trace("VIDEO FRAME ");trace_number(index);trace(" tick ");trace_number(now);serial_put('\n');
 }
-static bool load(struct clip *video,const char *path){
-    struct fs_entry info;
-    if(fs_stat(path,&info)<0||info.type!=FS_FILE||
-       info.size<VIDEO_HEADER||info.size>FS_FILE_MAX)return false;
-    video->size=(size_t)info.size;
-    video->data=kmalloc(video->size);
-    if(!video->data)return false;
-    int fd=fs_open(handles,path,FS_READ);
-    if(fd<0)return false;
-    int64_t got=fs_read(handles,fd,video->data,video->size);
-    (void)fs_close(handles,fd);
-    if(got!=(int64_t)video->size)return false;
+static bool parse(struct clip *video){
+    if(video->size<VIDEO_HEADER)return false;
     const uint8_t *data=video->data;
     if(!magic(data))return false;
     video->width=u16(data+4);video->height=u16(data+6);
@@ -79,6 +71,20 @@ static bool load(struct clip *video,const char *path){
     video->sound=data+offset;
     return true;
 }
+static bool load(struct clip *video,const char *path){
+    struct fs_entry info;
+    if(fs_stat(path,&info)<0||info.type!=FS_FILE||
+       info.size<VIDEO_HEADER||info.size>FS_FILE_MAX)return false;
+    video->size=(size_t)info.size;
+    video->data=kmalloc(video->size);
+    if(!video->data)return false;
+    int fd=fs_open(handles,path,FS_READ);
+    if(fd<0)return false;
+    int64_t got=fs_read(handles,fd,video->data,video->size);
+    (void)fs_close(handles,fd);
+    if(got!=(int64_t)video->size)return false;
+    return parse(video);
+}
 static void decode(const struct clip *video,unsigned index,uint8_t *pixels){
     const uint8_t *src=video->data+video->offsets[index];
     size_t at=0;
@@ -108,46 +114,42 @@ static void paint(const struct clip *video,const uint8_t *pixels,
                     "Space pause | Esc exit",0xffffff);
     (void)gfx_present(scene,0,0);
 }
-bool video_play(const char *path){
+static bool play_loaded(struct clip *video){
     struct gfx_mode mode;
     if(!gfx_enabled()||!gfx_probe(&mode)||mode.width<640||mode.height<480){
         print("Video requires framebuffer >= 640x480\n");return false;
     }
     if(!audio_ready()){print("Video requires SB16 audio\n");return false;}
-    struct clip video={0};
-    if(!load(&video,path)){
-        kfree(video.data);print("Video: invalid or unavailable MYV1 clip\n");return false;
-    }
-    size_t count=(size_t)video.width*video.height;
+    size_t count=(size_t)video->width*video->height;
     uint8_t *pixels=kmalloc(count);
     struct gfx_surface *scene=gfx_surface_create(mode.width,mode.height);
     if(!pixels||!scene){
-        kfree(pixels);gfx_surface_destroy(scene);kfree(video.data);
+        kfree(pixels);gfx_surface_destroy(scene);
         print("Video: out of memory\n");return false;
     }
-    unsigned scale=(mode.width-80)/video.width;
-    unsigned height_scale=(mode.height-160)/video.height;
+    unsigned scale=(mode.width-80)/video->width;
+    unsigned height_scale=(mode.height-160)/video->height;
     if(scale>height_scale)scale=height_scale;
     if(scale>4)scale=4;
     if(!scale){
-        kfree(pixels);gfx_surface_destroy(scene);kfree(video.data);
+        kfree(pixels);gfx_surface_destroy(scene);
         print("Video: display too small\n");return false;
     }
-    int left=((int)mode.width-(int)(video.width*scale))/2;
-    int top=((int)mode.height-(int)(video.height*scale))/2-20;
+    int left=((int)mode.width-(int)(video->width*scale))/2;
+    int top=((int)mode.height-(int)(video->height*scale))/2-20;
     gfx_clear(scene,0x101a2e);
     gfx_text(scene,left,top-35,"MyOS Video | MYV1 RLE + PCM 11025 Hz",0xffffff);
-    print("Video: MYV1 ");decimal(video.width);print("x");decimal(video.height);
-    print(" ");decimal(video.fps);print(" fps, ");decimal(video.frames);
+    print("Video: MYV1 ");decimal(video->width);print("x");decimal(video->height);
+    print(" ");decimal(video->fps);print(" fps, ");decimal(video->frames);
     print(" frames, PCM 11025 Hz\n");
     /* The clip owns SB16 playback: discard any earlier tone/WAV queue. */
     audio_stop();
-    if(!audio_queue(video.sound,video.samples)){
-        kfree(pixels);gfx_surface_destroy(scene);kfree(video.data);
+    if(!audio_queue(video->sound,video->samples)){
+        kfree(pixels);gfx_surface_destroy(scene);
         print("Video: audio queue unavailable\n");return false;
     }
     uint64_t start=ticks,elapsed=0;
-    unsigned interval=100/video.fps,duration=video.frames*interval;
+    unsigned interval=100/video->fps,duration=video->frames*interval;
     unsigned shown=0,dropped=0;
     int previous=-1;
     bool paused=false,aborted=false;
@@ -162,8 +164,8 @@ bool video_play(const char *path){
                 audio_stop();paused=true;trace("VIDEO PAUSED\n");
             }else{
                 uint64_t offset=elapsed*11025/100;
-                if(offset>=video.samples||
-                   !audio_queue(video.sound+offset,video.samples-(unsigned)offset)){
+                if(offset>=video->samples||
+                   !audio_queue(video->sound+offset,video->samples-(unsigned)offset)){
                     aborted=true;break;
                 }
                 start=ticks-elapsed;paused=false;trace("VIDEO RESUMED\n");
@@ -174,20 +176,114 @@ bool video_play(const char *path){
         unsigned frame=(unsigned)(elapsed/interval);
         if((int)frame!=previous){
             if(previous>=0&&frame>(unsigned)previous+1)dropped+=frame-(unsigned)previous-1;
-            decode(&video,frame,pixels);
-            paint(&video,pixels,scene,scale,left,top,frame,paused);
+            decode(video,frame,pixels);
+            paint(video,pixels,scene,scale,left,top,frame,paused);
             previous=(int)frame;++shown;
             trace_frame(frame,ticks);
         }else if(key==' '&&paused){
-            paint(&video,pixels,scene,scale,left,top,frame,true);
+            paint(video,pixels,scene,scale,left,top,frame,true);
         }
         __asm__ volatile("sti; hlt":::"memory");
     }
     audio_stop();
-    gfx_surface_destroy(scene);kfree(pixels);kfree(video.data);
+    gfx_surface_destroy(scene);kfree(pixels);
     console_clear();
     print(aborted?"Video stopped: ":"Video complete: ");
     print("displayed ");decimal(shown);print(" frames, dropped ");decimal(dropped);print("\n");
     trace(aborted?"VIDEO STOPPED\n":"VIDEO COMPLETE\n");
     return !aborted;
+}
+
+bool video_play(const char *path){
+    struct clip video={0};
+    if(!load(&video,path)){
+        kfree(video.data);print("Video: invalid or unavailable MYV1 clip\n");
+        return false;
+    }
+    bool ok=play_loaded(&video);
+    kfree(video.data);
+    return ok;
+}
+
+#define NET_CLIP_CAP (FS_FILE_MAX+2048u)
+struct net_clip {uint8_t *data;size_t used;};
+static bool net_clip_sink(void *context,const uint8_t *data,size_t size){
+    struct net_clip *clip=context;
+    if(size>NET_CLIP_CAP-clip->used)return false;
+    memcpy(clip->data+clip->used,data,size);
+    clip->used+=size;return true;
+}
+static char lower(char c){return c>='A'&&c<='Z'?(char)(c+32):c;}
+static bool header_is(const uint8_t *line,size_t length,const char *name){
+    size_t i=0;
+    while(name[i]){
+        if(i>=length||lower((char)line[i])!=lower(name[i]))return false;
+        ++i;
+    }
+    return true;
+}
+static bool net_clip_body(struct net_clip *reply,size_t *body,size_t *length){
+    const uint8_t *data=reply->data;
+    if(reply->used<12||data[0]!='H'||data[1]!='T'||data[2]!='T'||data[3]!='P'||data[4]!='/'||data[5]!='1'||data[6]!='.'||
+       data[8]!=' '||data[9]!='2'||data[10]!='0'||data[11]!='0')return false;
+    size_t at=0;
+    while(at+3<reply->used){
+        if(data[at]=='\r'&&data[at+1]=='\n'&&
+           data[at+2]=='\r'&&data[at+3]=='\n')break;
+        ++at;
+    }
+    if(at+3>=reply->used||at+4>2048)return false;
+    *body=at+4;
+    bool found=false;size_t declared=0;
+    for(size_t line=0;line<at;){
+        size_t end=line;
+        while(end<at&&data[end]!='\r')++end;
+        if(header_is(data+line,end-line,"Content-Length:")){
+            if(found)return false;
+            found=true;size_t digit=line+15;
+            while(digit<end&&data[digit]==' ')++digit;
+            if(digit==end)return false;
+            for(;digit<end;++digit){
+                if(data[digit]<'0'||data[digit]>'9'||declared>FS_FILE_MAX/10)return false;
+                declared=declared*10u+(unsigned)(data[digit]-'0');
+            }
+        }
+        line=end+2;
+    }
+    if(!found||declared<VIDEO_HEADER||declared>FS_FILE_MAX||
+       declared!=reply->used-*body)return false;
+    *length=declared;return true;
+}
+bool video_play_net(const char *host,uint16_t port,const char *path){
+    if(!host||!*host||!port||!path||*path!='/'){
+        print("Video: invalid HTTPS address\n");return false;
+    }
+    if(!net_configured()&&!net_up()){
+        print("Video: network unavailable\n");return false;
+    }
+    uint8_t target[4];
+    if(!net_resolve(host,target)){print("Video: DNS failed\n");return false;}
+    struct net_clip reply={0};
+    reply.data=kmalloc(NET_CLIP_CAP);
+    if(!reply.data){print("Video: out of memory\n");return false;}
+    if(!tls_http_fetch_limit(target,port,host,path,NET_CLIP_CAP,
+                             net_clip_sink,&reply)){
+        kfree(reply.data);print("Video: verified HTTPS fetch failed\n");
+        return false;
+    }
+    size_t body,length;
+    if(!net_clip_body(&reply,&body,&length)){
+        kfree(reply.data);print("Video: invalid HTTPS clip response\n");
+        return false;
+    }
+    struct clip video={0};
+    video.data=reply.data+body;video.size=length;
+    if(!parse(&video)){
+        kfree(reply.data);print("Video: invalid online MYV1 clip\n");
+        return false;
+    }
+    print("Video: verified HTTPS MYV1 clip\n");
+    bool ok=play_loaded(&video);
+    kfree(reply.data);
+    return ok;
 }

@@ -35,8 +35,13 @@ tail -f build/activity.log in VS Code.
   this is transport evidence only. Tor/search do not supply the missing
   JavaScript, HTML5 and codecs.
   See docs/PHASE32.md. Next work is the full YouTube player acceptance.
-- Phase 33 was added on 2026-09-28 and has not started. It requires
-  actual online Rickroll video plus sound and controls in MyOS/QEMU;
+- Phase 33 is in progress but not passed. A new `video net HOST PORT PATH`
+  command fetches a <=64 KiB MYV1 clip over verified HTTPS inside MyOS,
+  validates HTTP status/length and plays framebuffer motion plus SB16 audio.
+  The focused QEMU test rejects bad length and wrong-host TLS. This is a
+  whole-clip synthetic format test, not YouTube media, and has no seek.
+  Phase 33 still requires actual online Rickroll video plus sound and
+  controls in MyOS/QEMU;
   it cannot pass on an HTTPS fetch, search result, static frame, local
   MYV1 clip, Tor route, or host playback. See docs/PHASE33.md.
 - Remaining Phase 24 hardware preparation and Phase 25 physical-machine

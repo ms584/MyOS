@@ -115,7 +115,20 @@ static void execute(char *line){
         print("usage: net [status|up|dns HOST|udp IP PORT TEXT|get HOST PORT PATH|https HOST PORT PATH]\n");return;
     }
     if(equal(cmd,"video")){
-        if(!arg||!equal(arg,"play")){print("usage: video play PATH\n");return;}
+        if(arg&&equal(arg,"net")){
+            char *host=word(&rest),*port_text=word(&rest),*path=word(&rest);
+            if(!host||!port_text||!path||word(&rest)){
+                print("usage: video net HOST PORT PATH\n");return;
+            }
+            unsigned port=0;
+            for(char *p=port_text;*p;++p){
+                if(*p<'0'||*p>'9'||port>6553){port=0;break;}
+                port=port*10+(unsigned)(*p-'0');
+            }
+            if(!port||port>65535){print("Video: invalid port\n");return;}
+            video_play_net(host,(uint16_t)port,path);return;
+        }
+        if(!arg||!equal(arg,"play")){print("usage: video play PATH | video net HOST PORT PATH\n");return;}
         char *name=word(&rest);char path[FS_PATH];
         if(!name||word(&rest)){print("usage: video play PATH\n");return;}
         if(path_for(name,path))video_play(path);
@@ -196,7 +209,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | net https-count HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nvideo play PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | net https-count HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nvideo play PATH | video net HOST PORT PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}

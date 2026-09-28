@@ -118,7 +118,7 @@ QEMU development can continue without claiming this milestone is complete.
 | 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | **Complete QEMU baseline:** native MYV1 palette/RLE video decode at 80x60, 10 fps, framebuffer scaling and PIT-synchronized 11025 Hz PCM via SB16. Pause/resume and stop are tested; malformed clips are rejected. The format is custom and unencumbered; MP4/WebM/YouTube remain unsupported. See PHASE31.md. |
 | 32 | YouTube acceptance | **In progress; not accepted.** In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verified HTTPS reaches the live YouTube response, but the Browser remains limited to 64 KiB and scripting/media support is absent. See PHASE32.md. |
-| 33 | Rickroll end-to-end acceptance | **Not started; hard fail until playback is demonstrated.** In MyOS running in QEMU, open the actual YouTube Rickroll video `dQw4w9WgXcQ` by search or direct URL; show moving frames and audible music from the online source, then pause, resume and seek. A fetched page, link, thumbnail, local clip, host browser or Tor connection alone never passes. Record QEMU screen/audio and control evidence. See PHASE33.md. |
+| 33 | Rickroll end-to-end acceptance | **In progress; not passed.** Verified HTTPS delivery and playback of a bounded synthetic MYV1 clip now work inside MyOS/QEMU, but this is not YouTube playback. Hard fail until the actual Rickroll demonstration. In MyOS running in QEMU, open the actual YouTube Rickroll video `dQw4w9WgXcQ` by search or direct URL; show moving frames and audible music from the online source, then pause, resume and seek. A fetched page, link, thumbnail, local clip, host browser or Tor connection alone never passes. Record QEMU screen/audio and control evidence. See PHASE33.md. |
 
 Phase 29's initial browser is not evidence that YouTube works. Phases 32–33 depend
 on the browser runtime, JavaScript/DOM, required media interfaces and codecs,
@@ -143,7 +143,7 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–33 add the online platform. There are **4 phases not yet fully complete (24, 25, 32 and 33)**: Phase 24 is partial, Phase 25 is deferred, Phase 32 is in progress, and Phase 33 is not started.
+and apps, and phases 26–33 add the online platform. There are **4 phases not yet fully complete (24, 25, 32 and 33)**: Phase 24 is partial, Phase 25 is deferred, Phases 32 and 33 are in progress but not accepted.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules
