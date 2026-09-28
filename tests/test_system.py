@@ -120,6 +120,7 @@ def boot_test(name,ram=64,keyboard=False,text=False):
         for marker in ('64-bit Long Mode','PASS: PMM, paging, heap, exhaustion/recovery',
                        'PASS: two CPU-bound tasks preempted; task exit',
                        'PASS: context registers and direction flag preserved',
+                       'PASS: Ring 3 x87/XMM/MXCSR isolation, preemption and slot reset',
                        'PASS: Ring 3 processes, private CR3/data/stack, timer preemption',
                        'PASS: 13 user fault cases contained; kernel and peer survived',
                        'PASS: process kill/reap, capacity, PID and resource reuse',

@@ -149,3 +149,11 @@ by the selected real runtime, with tests before enabling execution.
 Phase 33.1 still requires native Cobalt HTML/JavaScript/input smoke. Actual
 online Rickroll with sound for 30 seconds plus pause/resume/seek remains the
 unchanged Phase 33 gate. The owner pushes manually.
+
+## Runtime continuation — 2026-09-28
+
+Per-task x87/MMX/SSE context support has been added; see
+[implementation and test status](PHASE331_FP.md). This supersedes the earlier
+FP/SIMD limitation only. The owner requires completion of 33.1 and 33.2
+before starting 33.3. Cobalt startup remains unimplemented; neither parent
+gate is being marked complete.

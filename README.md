@@ -111,8 +111,9 @@ Phase 33 has not passed. See [docs/PHASE33.md](docs/PHASE33.md).
 - Scheduler: one CPU, round robin, four kernel-task slots plus four user-process
   slots. Kernel tasks share an address space; processes own CR3 roots and guarded
   one-page user stacks plus 16 KiB kernel stacks. Process resources/slots are
-  reclaimed on reap; completed kernel-task stacks remain reserved. FPU/SIMD is
-  unsupported, with x87 blocked using CR0.TS. Kernel stacks have no guard yet.
+  reclaimed on reap; completed kernel-task stacks remain reserved. x87/MMX/SSE state is
+  eagerly saved per task (including all 16 XMM registers and MXCSR).
+  AVX/XSAVE and user TLS remain unsupported. Kernel stacks have no guard yet.
 - BIOS VBE/VGA and native UEFI GOP, with PS/2 keyboard and mouse. Firmware can
   boot the hybrid image from virtual USB; the kernel has no native USB
   controller, HID or mass-storage driver. The Phase 13 driver supports only a dedicated legacy

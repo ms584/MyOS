@@ -15,6 +15,31 @@ static void wait_ticks(uint64_t count)
 }
 
 #if PROCESS_TESTS
+static void fp_context_test(void)
+{
+    size_t before=pages_free();
+    for(unsigned round=0;round<3;++round){
+        uint64_t f=irq_save();
+        uint64_t x=process_create(21,1),y=process_create(21,2);
+        struct process *a=process_find(x),*b=process_find(y);
+        check(a&&b,"FP peer creation");
+        irq_restore(f);
+        wait_ticks(40);
+        check(a->state==PROCESS_RUNNING&&b->state==PROCESS_RUNNING,"FP peers survived");
+        check(progress(a)>10&&progress(b)>10&&a->preemptions>=2&&b->preemptions>=2,
+              "FP peers actually preempted");
+        *(volatile uint64_t *)(a->data_page+64)=1;
+        *(volatile uint64_t *)(b->data_page+64)=1;
+        wait_ticks(20);
+        check(a->state==PROCESS_RUNNING&&b->state==PROCESS_RUNNING,"FP yield peers survived");
+        check(((uint64_t *)a->data_page)[7]&&((uint64_t *)b->data_page)[7],"FP voluntary yield exercised");
+        check(!((uint64_t *)a->data_page)[6]&&!((uint64_t *)b->data_page)[6],
+              "FP registers and rounding preserved");
+        check(process_kill(x)&&process_reap(x)&&process_kill(y)&&process_reap(y),"FP cleanup");
+        check(pages_free()==before,"FP resource recovery");
+    }
+    print("PASS: Ring 3 x87/XMM/MXCSR isolation, preemption and slot reset\n");
+}
 static void allocation_failure_test(void)
 {
     uint64_t flags = irq_save();
@@ -46,6 +71,9 @@ static void allocation_failure_test(void)
 
 void process_test(void)
 {
+#if PROCESS_TESTS
+    fp_context_test();
+#endif
     size_t initial_pages = pages_free();
     uint64_t flags = irq_save();
     uint64_t first = process_create(0, 0x1111222233334444ull);
@@ -77,7 +105,7 @@ void process_test(void)
     check(process_kill(fourth) && process_reap(fourth), "fourth process cleanup");
     check(!process_find(third) && !process_reap(third), "stale process ID rejected");
     allocation_failure_test();
-    const unsigned vectors[] = {0,14,14,13,13,14,14,14,6,13,14,13,14,7};
+    const unsigned vectors[] = {0,14,14,13,13,14,14,14,6,13,14,13,14,6};
     const unsigned errors[]  = {0, 5, 7, 0, 0, 7,21, 4,0,0x102,5,0,21,0};
     const uintptr_t addresses[] = {0,0x10000,0x10000,0,0,USER_BASE,USER_STACK,
                                    USER_BASE+0x2000,0,0,0x100000000ull,0,0x10000,0};

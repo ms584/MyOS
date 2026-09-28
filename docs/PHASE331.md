@@ -138,3 +138,11 @@ normal `build/activity.log`. Tests modify only disposable images in build/.
 
 The actual online Rickroll video/audio/control demonstration remains the
 unchanged Phase 33 gate. The owner always pushes manually.
+
+## Runtime continuation — 2026-09-28
+
+Per-task x87/MMX/SSE context support has been added; see
+[implementation and test status](PHASE331_FP.md). This supersedes the earlier
+FP/SIMD limitation only. The owner requires completion of 33.1 and 33.2
+before starting 33.3. Cobalt startup remains unimplemented; neither parent
+gate is being marked complete.

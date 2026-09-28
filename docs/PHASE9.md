@@ -82,3 +82,9 @@ all process probes, and the existing fatal kernel-exception tests. The kernel
 The restored normal boot also reached `myos>` with two live Ring 3 processes.
 
 ![Normal Phase 9 boot](phase9-ready.png)
+
+## Phase 33.1 continuation (2026-09-28)
+
+The historical x87 limitation above is superseded by per-task FXSAVE64 /
+FXRSTOR64 context switching. The 13th live fault probe now checks disabled
+AVX (#UD), not x87 (#NM). TLS remains unsupported. See PHASE331_FP.md.

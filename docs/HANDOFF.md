@@ -113,3 +113,11 @@ and the original Phase 33.1 gate remain open; this does not close Phase 32/33.
 Phase 33.2 loader baseline: focused tests and the full system regression passed
 on 2026-09-28; normal framebuffer image restored. See PHASE332.md for the
 restricted loader scope and the still-open native-engine gate.
+
+## Runtime continuation — 2026-09-28
+
+Per-task x87/MMX/SSE context support has been added; see
+[implementation and test status](PHASE331_FP.md). This supersedes the earlier
+FP/SIMD limitation only. The owner requires completion of 33.1 and 33.2
+before starting 33.3. Cobalt startup remains unimplemented; neither parent
+gate is being marked complete.

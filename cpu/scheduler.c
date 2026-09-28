@@ -11,6 +11,31 @@ struct task {
     struct process *process;
 };
 static struct task tasks[TASKS];
+/* Kernel/IRQ code must remain -mgeneral-regs-only. */
+static unsigned char fp[TASKS][512] __attribute__((aligned(16)));
+static void fp_reset(unsigned slot)
+{
+    memset(fp[slot],0,512);
+    fp[slot][0]=0x7f; fp[slot][1]=3;
+    fp[slot][24]=0x80; fp[slot][25]=0x1f;
+}
+static void fp_init(void)
+{
+    unsigned a=1,b,c,d;
+    __asm__ volatile("cpuid":"+a"(a),"=b"(b),"=c"(c),"=d"(d));
+    check((d&((1u<<0)|(1u<<24)|(1u<<25)|(1u<<26)))==
+          ((1u<<0)|(1u<<24)|(1u<<25)|(1u<<26)), "CPU requires x87/FXSR/SSE2");
+    uintptr_t cr0,cr4;
+    __asm__ volatile("mov %%cr0,%0":"=r"(cr0));
+    cr0=(cr0&~((1ul<<2)|(1ul<<3)))|(1ul<<1)|(1ul<<5);
+    __asm__ volatile("mov %0,%%cr0"::"r"(cr0):"memory");
+    __asm__ volatile("mov %%cr4,%0":"=r"(cr4));
+    /* AVX/XSAVE state is not supported yet. */
+    cr4=(cr4&~(1ul<<18))|(1ul<<9)|(1ul<<10);
+    __asm__ volatile("mov %0,%%cr4"::"r"(cr4):"memory");
+    for(unsigned i=0;i<TASKS;++i)fp_reset(i);
+    __asm__ volatile("fxrstor64 %0"::"m"(fp[0]):"memory");
+}
 static unsigned current;
 static bool enabled;
 volatile uint64_t task_counts[2];
@@ -25,6 +50,7 @@ static _Noreturn void task_entry(void)
 
 void scheduler_init(void)
 {
+    fp_init();
     tasks[0].alive = true;
     current = 0;
     enabled = false;
@@ -47,6 +73,7 @@ bool task_create(void (*entry)(void))
         frame->ss = 0x10;
         frame->rsp = top;
         frame->flags = 0x202;
+        fp_reset(i);
         tasks[i] = (struct task){frame, entry, stack, true, 0};
         irq_restore(flags);
         return true;
@@ -60,6 +87,7 @@ bool scheduler_attach_process(struct process *process)
     /* Caller holds interrupts disabled until all process state is published. */
     for (unsigned i = KERNEL_TASKS; i < TASKS; ++i) {
         if (tasks[i].process) continue;
+        fp_reset(i);
         tasks[i] = (struct task){process->frame, 0, process->kernel_stack, true, process};
         return true;
     }
@@ -100,6 +128,10 @@ struct frame *schedule(struct frame *frame)
     for (unsigned step = 1; step <= TASKS; ++step) {
         unsigned next = (current + step) % TASKS;
         if (!tasks[next].alive) continue;
+        if(next!=current){
+            __asm__ volatile("fxsave64 %0":"=m"(fp[current])::"memory");
+            __asm__ volatile("fxrstor64 %0"::"m"(fp[next]):"memory");
+        }
         current = next;
         struct process *process = tasks[next].process;
         uintptr_t root = process ? process->root : boot_state.root;
