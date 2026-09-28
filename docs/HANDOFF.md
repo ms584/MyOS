@@ -88,3 +88,12 @@ and audio baselines. Run focused QEMU tests, the required
 python3 tests/test_system.py for architectural changes, and bash build.sh to
 restore the normal image after test variants. Document limits plainly.
 The owner wants a local commit ready for their manual push.
+
+## Engine assessment, 2026-09-28
+
+Static comparison and the official Cobalt x64 ELF audit are recorded in
+[PHASE33_ENGINE_EVALUATION.md](PHASE33_ENGINE_EVALUATION.md). Cobalt 27 LTS /
+Starboard 18 is the conditional native-port target. Phase 33.1 starts with
+the per-symbol ABI contract, then the loader/storage slice; it is not yet
+implemented. Native engine startup and actual YouTube playback remain unproven.
+Phase 32/33 remain **NOT PASSED**.

@@ -160,3 +160,12 @@ Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
   kernel apps and isolated user processes are different acceptance scopes.
 - Record development commands through `tools/run_logged.py`. The owner always
   pushes to GitHub manually.
+
+## Engine assessment, 2026-09-28
+
+Static comparison and the official Cobalt x64 ELF audit are recorded in
+[PHASE33_ENGINE_EVALUATION.md](PHASE33_ENGINE_EVALUATION.md). Cobalt 27 LTS /
+Starboard 18 is the conditional native-port target. Phase 33.1 starts with
+the per-symbol ABI contract, then the loader/storage slice; it is not yet
+implemented. Native engine startup and actual YouTube playback remain unproven.
+Phase 32/33 remain **NOT PASSED**.
