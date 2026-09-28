@@ -1,5 +1,6 @@
 #include "boot.h"
 #include "process.h"
+#include "elf.h"
 #define NX (1ull << 63)
 static struct process processes[PROCESS_LIMIT];
 static uint64_t next_pid = 1;
@@ -17,7 +18,8 @@ static void release(struct process *process)
 {
     fs_close_all(process->files);
     /* Only detached, noncurrent address spaces may reach this function. */
-    for (unsigned i = 0; i < process->page_count; ++i) page_free(process->pages[i]);
+    for (unsigned i = 0; i < process->page_count; ++i) page_free(process->image_pages?process->image_pages[i]:process->pages[i]);
+    kfree(process->image_pages);
     kfree(process->kernel_stack);
     memset(process, 0, sizeof(*process));
 }
@@ -140,4 +142,60 @@ struct frame *process_fault(struct frame *frame)
     process->state = PROCESS_ZOMBIE;
     /* Reclamation is deferred: this IRQ frame still occupies its kernel stack. */
     return schedule(frame);
+}
+
+/* Separate ELF64 path: page ownership is dynamic, legacy demos keep their ABI. */
+static uintptr_t elf_page(struct process *p,unsigned capacity)
+{
+    if(p->page_count>=capacity)return 0;
+    uintptr_t page=page_alloc();if(!page)return 0;
+    p->image_pages[p->page_count++]=page;memset((void *)page,0,PAGE_SIZE);return page;
+}
+static uintptr_t elf_map_page(struct process *p,unsigned capacity,uint64_t address,uint32_t flags)
+{
+    uint64_t *table=(void *)p->root;
+    for(int shift=39;shift>=21;shift-=9){
+        uint64_t *e=&table[(address>>shift)&511];
+        if(!(*e&1)){uintptr_t page=elf_page(p,capacity);if(!page)return 0;*e=page|7;}
+        table=(void *)(uintptr_t)(*e&0x000ffffffffff000ull);
+    }
+    uint64_t *e=&table[(address>>12)&511];if(*e&1)return 0;
+    uintptr_t page=elf_page(p,capacity);if(!page)return 0;
+    *e=page|5|((flags&2)?2:0)|((flags&1)?0:NX);return page;
+}
+uint64_t process_create_elf(const struct elf_source *source,const struct elf_plan *plan)
+{
+    uint64_t flags=irq_save();struct process *p=0;
+    for(unsigned i=0;i<PROCESS_LIMIT;++i)if(processes[i].state==PROCESS_UNUSED){p=&processes[i];break;}
+    if(!p){irq_restore(flags);return 0;}
+    unsigned capacity=128;
+    for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
+        capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
+    }
+    p->image_pages=kmalloc((size_t)capacity*sizeof(uintptr_t));
+    if(!p->image_pages)goto failed;
+    p->root=elf_page(p,capacity);if(!p->root)goto failed;
+    ((uint64_t *)p->root)[0]=((uint64_t *)boot_state.root)[0]&~4ull;
+    for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
+        uint64_t end=s->address+s->memsz;
+        for(uint64_t va=s->address&~4095ull;va<end;va+=PAGE_SIZE){
+            uintptr_t page=elf_map_page(p,capacity,va,s->flags);if(!page)goto failed;
+            uint64_t begin=va>s->address?va:s->address,file_end=s->address+s->filesz;
+            uint64_t stop=va+PAGE_SIZE<file_end?va+PAGE_SIZE:file_end;
+            if(begin<stop&&!source->read(source->context,s->offset+begin-s->address,
+               (void *)(page+begin-va),(size_t)(stop-begin)))goto failed;
+        }
+    }
+    /* Four NX stack pages with a guard beneath them; no executable stack. */
+    for(unsigned i=0;i<4;++i)if(!elf_map_page(p,capacity,USER_BASE+ELF_STACK_OFFSET+i*PAGE_SIZE,6))goto failed;
+    p->kernel_stack=kmalloc(16384);if(!p->kernel_stack)goto failed;
+    p->kernel_top=((uintptr_t)p->kernel_stack+16384)&~15ull;
+    p->frame=(struct frame *)(p->kernel_top-sizeof(struct frame));memset(p->frame,0,sizeof(*p->frame));
+    p->frame->rip=plan->entry;p->frame->cs=0x2b;p->frame->ss=0x23;
+    p->frame->rsp=USER_BASE+ELF_STACK_OFFSET+4*PAGE_SIZE-8;p->frame->flags=0x202;
+    p->pid=next_pid++;p->state=PROCESS_RUNNING;
+    if(!scheduler_attach_process(p))goto failed;
+    uint64_t pid=p->pid;irq_restore(flags);return pid;
+failed:
+    release(p);irq_restore(flags);return 0;
 }

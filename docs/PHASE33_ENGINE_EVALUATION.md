@@ -3,7 +3,9 @@
 Assessed 2026-09-28 against MyOS commit
 `8f5dd85e9d8b982802dfe9dbb026b971faa956c4`.
 Status: static engine assessment complete; native engine feasibility unproven.
-Phase 33.1 is planned, not implemented. Phase 32/33 remain **NOT PASSED**.
+Phase 33.1 is in progress: the first asset/static-ELF slice and import register
+are recorded in [PHASE331.md](PHASE331.md). Engine smoke is not implemented.
+Phase 32/33 remain **NOT PASSED**.
 
 ## Decision
 
@@ -120,8 +122,8 @@ actual exports take precedence when implementing this release.
    must fail according to their documented contract.
 
 Phase 33.1 passes only after this native engine smoke and relevant regressions;
-an ELF fixture alone passes only step 2's fixture subtest. The next implementation
-task is step 1's per-symbol contract, followed by the loader/storage slice.
+an ELF fixture alone passes only step 2's fixture subtest. The per-symbol register and first static ELF/storage slice are now available;
+the remaining dynamic loader and native-runtime work is tracked in PHASE331.md.
 Do not expand networking/media/kernel memory limits indiscriminately first.
 For architectural code changes run `python3 tests/test_system.py`, plus new
 focused checks, and restore the normal image. No regression run is claimed for

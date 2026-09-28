@@ -74,7 +74,10 @@ roadmap marked **not passed**.
 
 Static comparison and the official Cobalt x64 ELF audit are recorded in
 [PHASE33_ENGINE_EVALUATION.md](PHASE33_ENGINE_EVALUATION.md). Cobalt 27 LTS /
-Starboard 18 is the conditional native-port target. Phase 33.1 starts with
-the per-symbol ABI contract, then the loader/storage slice; it is not yet
-implemented. Native engine startup and actual YouTube playback remain unproven.
+Starboard 18 is the conditional native-port target. The first Phase 33.1 slice
+now has an exact import-contract register, read-only large assets, restricted
+Ring 3 ELF execution and native Cobalt import inspection. See [PHASE331.md](PHASE331.md)
+for tests and limits. Phase 33.1 remains incomplete: dynamic linking, the native
+Starboard runtime and HTML/JavaScript smoke are still open. Native engine
+startup and actual YouTube playback remain unproven.
 Phase 32/33 remain **NOT PASSED**.

@@ -17,6 +17,8 @@
 
 static bool detected;
 static uint32_t capacity;
+static uint32_t asset_capacity;
+static uint8_t asset_drive;
 static uint8_t selected_drive; /* 0 = primary master, 1 = primary slave. */
 static const char data_signature_v1[]="MYOS-DATA-v1";
 static const char data_signature_v2[]="MYOS-DATA-v2";
@@ -74,7 +76,7 @@ bool ata_read(uint32_t lba,void *buffer)
 }
 bool ata_write(uint32_t lba,const void *buffer)
 {
-    if(!detected || lba>=capacity || !buffer)return false;
+    if(!detected || lba>=capacity || !buffer || (asset_capacity&&selected_drive==asset_drive))return false;
     uint64_t flags=irq_save();
     bool ok=wait_status(false);
     if(ok){
@@ -124,6 +126,16 @@ void ata_init(void)
     /* Prefer a marked data disk on either primary IDE device. A BIOS HDD
        occupies the master position; a separate data disk can use the slave. */
     outb(ATA_CONTROL,2); /* Disable ATA IRQ; use bounded polling. */
+    /* Discover the separate asset volume first, without authorizing writes. */
+    asset_capacity=0;
+    for(unsigned drive=0;drive<2;++drive){
+        uint32_t sectors=0;if(!identify(drive,&sectors))continue;
+        selected_drive=(uint8_t)drive;capacity=sectors;detected=true;
+        uint8_t sector[512];static const char magic[16]="MYOS-ASSET-v1";
+        if(!ata_read(0,sector))continue;
+        bool match=true;for(unsigned i=0;i<16;++i)if(sector[i]!=(uint8_t)magic[i])match=false;
+        if(match&&!asset_capacity){asset_drive=(uint8_t)drive;asset_capacity=sectors;}
+    }
     bool fallback=false;uint32_t fallback_capacity=0;uint8_t fallback_drive=0;
     for(unsigned drive=0;drive<2;++drive){
         uint32_t sectors=0;
@@ -141,3 +153,17 @@ void ata_init(void)
 }
 bool storage_present(void){return detected;}
 uint32_t storage_sectors(void){return capacity;}
+
+uint32_t ata_asset_sectors(void){return asset_capacity;}
+bool ata_asset_read(uint32_t sector,void *buffer)
+{
+    if(!asset_capacity||sector>=asset_capacity)return false;
+    uint64_t flags=irq_save();
+    bool saved_detected=detected;uint32_t saved_capacity=capacity;uint8_t saved_drive=selected_drive;
+    detected=true;capacity=asset_capacity;selected_drive=asset_drive;
+    outb(ATA_DRIVE,(uint8_t)(0xe0|(asset_drive<<4)));delay_400ns();
+    bool ok=ata_read(sector,buffer);
+    detected=saved_detected;capacity=saved_capacity;selected_drive=saved_drive;
+    outb(ATA_DRIVE,(uint8_t)(0xe0|(saved_drive<<4)));delay_400ns();
+    irq_restore(flags);return ok;
+}

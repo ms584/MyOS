@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None,asset_disk=None):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -60,6 +60,7 @@ class VM:
         if audio is not None:command.extend(['-audiodev',f'wav,id=myos-audio,path={audio}',
                                              '-device','sb16,audiodev=myos-audio'])
         if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index={disk_index}'])
+        if asset_disk is not None:command.extend(['-drive',f'format=raw,file={asset_disk},if=ide,index=1'])
         self.process=subprocess.Popen(command)
         self.connection=socket.socket(socket.AF_UNIX)
         try:
@@ -224,6 +225,8 @@ def main():
         if args.suite in ('all','apps'):
             from test_app_runtime import exercise as app_exercise
             app_exercise()
+            from test_elf_runtime import exercise as elf_exercise
+            elf_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

@@ -17,6 +17,7 @@ struct process {
     enum process_state state;
     uintptr_t root;
     uintptr_t pages[PROCESS_PAGES];
+    uintptr_t *image_pages; /* ELF-owned pages; NULL for legacy images. */
     unsigned page_count;
     void *kernel_stack;
     uintptr_t kernel_top;
@@ -29,6 +30,9 @@ struct process {
     struct fs_handle files[FS_HANDLES];
 };
 
+struct elf_source;
+struct elf_plan;
+uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 void process_init(void);
 uint64_t process_create(uint64_t mode, uint64_t cookie);
 uint64_t process_create_image(const void *code,size_t size);

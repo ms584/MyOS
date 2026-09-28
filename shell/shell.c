@@ -1,4 +1,6 @@
 #include "app.h"
+#include "asset.h"
+#include "elf.h"
 #include "fs.h"
 #include "storage.h"
 #include "graphics.h"
@@ -56,6 +58,21 @@ static void execute(char *line){
     char *rest=line,*cmd=word(&rest);if(!cmd)return;
     if(equal(cmd,"echo")){while(*rest==' ')++rest;print(rest);print("\n");return;}
     char *arg=word(&rest);
+    if(equal(cmd,"assets")){if(arg)print("usage: assets\n");else asset_list();return;}
+    if(equal(cmd,"elf")){
+        char *name=word(&rest);
+        if(!arg||!name||word(&rest)||(!equal(arg,"inspect")&&!equal(arg,"run"))){print("usage: elf inspect|run ASSET\n");return;}
+        struct asset_file file;int result=asset_open(name,&file);
+        if(!result){struct elf_source source={&file,file.size,asset_read};
+            if(equal(arg,"inspect"))result=elf_inspect(&source);
+            else{int32_t status=0;result=elf_run(&source,&status);
+                if(!result){print("ELF exited with status ");if(status<0){putchar('-');decimal(-(int64_t)status);}else decimal(status);print("\n");}}
+        }
+        if(result==-95)print("ELF: unsupported runtime feature; not executed\n");
+        else if(result==-19)print("Assets: no read-only volume\n");
+        else if(result)error(result);
+        return;
+    }
     if(equal(cmd,"gfx")){if(arg || word(&rest))print("error: unexpected argument\n");else gfx_demo();return;}
     if(equal(cmd,"desktop")){if(arg || word(&rest))print("error: unexpected argument\n");else desktop_run();return;}
     if(equal(cmd,"settings")){if(arg || word(&rest))print("error: unexpected argument\n");else settings_print();return;}
@@ -209,7 +226,7 @@ static void execute(char *line){
     if(word(&rest)){print("error: too many arguments\n");return;}
     if(equal(cmd,"help")||equal(cmd,"clear")||equal(cmd,"pwd")||equal(cmd,"mem")||equal(cmd,"uptime")||equal(cmd,"disk")||equal(cmd,"sync")){
         if(arg){print("error: unexpected argument\n");return;}
-        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | net https-count HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nvideo play PATH | video net HOST PORT PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
+        if(equal(cmd,"help"))print("help clear gfx desktop settings mouse echo TEXT pwd cd [PATH] ls [PATH]\ncat PATH touch PATH write PATH TEXT mkdir PATH rm PATH stat PATH\nmem uptime disk sync run PATH cp SOURCE DEST\nassets | elf inspect NAME | elf run NAME\nnet up | net status | net dns HOST | net udp IP PORT TEXT | net get HOST PORT PATH\nnet https HOST PORT PATH | net https-count HOST PORT PATH | security\naudio status | audio tone HZ MS | audio play PATH | audio volume 0..100 | audio mute on|off | audio stop\nvideo play PATH | video net HOST PORT PATH\nAttach an ATA data disk to keep file changes across reboot.\n");
         else if(equal(cmd,"clear"))console_clear();
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}
