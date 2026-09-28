@@ -12,14 +12,14 @@ includes Desktop 1.0 with working Settings, Calculator and Snake, plus a bounded
 
 - Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
 - Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. BIOS/UEFI images and release tooling are complete in QEMU; Phase 24 has a validated virtual USB image. Hardware preparation remains pending and Phase 25 is deferred.
-- Phases 26–32: app runtime, networking, HTTPS, browser/search, audio, video and YouTube.
+- Phases 26–33: app runtime, networking, HTTPS, browser/search, audio, video, YouTube and Rickroll playback acceptance.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
 the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is partial and Phase 25 is deferred (the owner has no USB). Browser feasibility is a
 separate long-term milestone, with no promised completion date.
 
-The owner-approved execution order (2026-09-25) is **26 → 27 → 28 → 29 →
-30 → 31 → 32 → remaining Phase 24 → Phase 25**. Phases 26–31 have
+The owner-approved sequence, extended with Phase 33 on 2026-09-28, is
+**26 → 27 → 28 → 29 → 30 → 31 → 32 → 33 → remaining Phase 24 → Phase 25**. Phases 26–31 have
 QEMU baselines, including HTTPS text search and local MYV1 video playback.
 Develop and validate in QEMU first, then select the physical target and complete its
 drivers and acceptance tests. Existing phase numbers and the working USB
@@ -86,7 +86,9 @@ implementation. Earlier 16/32-bit implementations remain in Git history.
 
 For Phase 31 local video playback, see [docs/PHASE31.md](docs/PHASE31.md).
 Phase 32 YouTube playback is not yet implemented; see [docs/PHASE32.md](docs/PHASE32.md)
-for the measured HTTPS/browser gate.
+for the measured HTTPS/browser gate. Phase 33 requires actual online Rickroll
+video and audio inside MyOS; it is not started and cannot pass without
+playback. See [docs/PHASE33.md](docs/PHASE33.md).
 
 ## Design and present limits
 

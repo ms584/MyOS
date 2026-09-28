@@ -1,4 +1,4 @@
-# MyOS handoff — 2026-09-27
+# MyOS handoff — 2026-09-28
 
 Read root AGENTS.md and docs/ROADMAP.md before starting. The owner asked to
 continue the approved phase sequence and **always pushes to GitHub personally**.
@@ -35,7 +35,11 @@ tail -f build/activity.log in VS Code.
   this is transport evidence only. Tor/search do not supply the missing
   JavaScript, HTML5 and codecs.
   See docs/PHASE32.md. Next work is the full YouTube player acceptance.
-  Remaining Phase 24 hardware preparation and Phase 25 physical-machine
+- Phase 33 was added on 2026-09-28 and has not started. It requires
+  actual online Rickroll video plus sound and controls in MyOS/QEMU;
+  it cannot pass on an HTTPS fetch, search result, static frame, local
+  MYV1 clip, Tor route, or host playback. See docs/PHASE33.md.
+- Remaining Phase 24 hardware preparation and Phase 25 physical-machine
   acceptance follow; Phase 25 is deferred because the owner has no USB device.
 
 Phase 31 full tests/test_system.py passed, including 30 native video frames,
@@ -69,10 +73,10 @@ shell command should queue the 500 ms tone and return promptly; QEMU itself
 stays in the foreground until its window is closed or Ctrl+C is sent to the
 host terminal. Avoid opening the WAV capture in VS Code while QEMU writes it.
 
-## Work rules for Phase 32
+## Work rules for Phases 32–33
 
-Start from docs/PHASE31.md, docs/PHASE29.md, and the Phase 32 row in
-docs/ROADMAP.md. Do not count local MYV1, a host-side player or static
+Start from docs/PHASE31.md, docs/PHASE29.md, docs/PHASE32.md and
+docs/PHASE33.md. Do not count local MYV1, a host-side player or static
 frames as online YouTube playback. Preserve boot, GUI, shell, storage, network
 and audio baselines. Run focused QEMU tests, the required
 python3 tests/test_system.py for architectural changes, and bash build.sh to

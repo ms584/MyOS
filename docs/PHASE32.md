@@ -96,3 +96,6 @@ requires JavaScript and HTML5 postMessage, also absent from MyOS.
    Record the date, video URL, resolution, evidence and limitations.
 
 Do not complete this phase merely because HTTPS or local MYV1 playback works.
+
+Phase 33 adds a separate hard gate for the actual Rickroll watch URL. See
+[PHASE33.md](PHASE33.md); the existing HTTPS transport probes do not pass it.

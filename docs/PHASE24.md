@@ -1,7 +1,8 @@
 # Phase 24 — USB image and hardware preparation
 
 The owner has no spare physical USB device. On 2026-09-25, the owner approved
-developing Phases 26–32 in QEMU first, then completing the remaining Phase 24
+developing Phases 26–32 in QEMU first. The owner added Phase 33 on
+2026-09-28 as a strict Rickroll playback gate before the remaining Phase 24
 hardware preparation and Phase 25 physical acceptance. Existing phase numbers
 and the already validated USB image are retained. See [ROADMAP.md](ROADMAP.md).
 The **USB-image/QEMU part of Phase 24 is implemented**. Selecting a real target

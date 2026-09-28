@@ -1,9 +1,9 @@
 # MyOS roadmap — Desktop, applications and online media
 
-Revised 2026-09-25 at the owner's request. The product goal is a graphical
+Revised 2026-09-28 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
-can search the web and play YouTube. The revised roadmap has **33 phases,
-numbered 0–32**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
+can search the web and play YouTube. The revised roadmap has **34 phases,
+numbered 0–33**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
 Phase 24 has a validated virtual USB image but hardware preparation is pending;
 Phase 25 is deferred at the owner's request (no USB device).
 
@@ -15,9 +15,10 @@ a delivery date for modern web compatibility.
 
 ## Approved execution order
 
-The owner approved this order on 2026-09-25:
+The owner approved Phases 26–32 before the deferred hardware work on
+2026-09-25 and added the strict Rickroll gate on 2026-09-28:
 
-**26 → 27 → 28 → 29 → 30 → 31 → 32 → remaining Phase 24 → Phase 25**
+**26 → 27 → 28 → 29 → 30 → 31 → 32 → 33 → remaining Phase 24 → Phase 25**
 
 Phases 26–31 are complete at their documented QEMU baselines. Develop and validate the application, network and media
 platform in QEMU before returning to physical hardware. Keep existing phase
@@ -33,13 +34,14 @@ execution order. The completed Phase 24 USB image remains available.
 | Done | 30 | QEMU SB16 buffered PCM audio, file/tone playback, volume/mute, IRQ timing and underrun recovery |
 | Done | 31 | MYV1 RLE video with synchronized PCM in QEMU |
 | In progress | 32 | Actual online YouTube playback acceptance in QEMU; HTTPS page-size/runtime gate remains |
-| 8 | 24 (remaining) | Select the physical target and implement required drivers |
-| 9 | 25 | Physical-machine boot, display, input, apps and persistence acceptance |
+| Not started | 33 | Rickroll playback in MyOS with visible moving video, audible sound and controls; no playback means no pass |
+| 9 | 24 (remaining) | Select the physical target and implement required drivers |
+| 10 | 25 | Physical-machine boot, display, input, apps and persistence acceptance |
 
 Keep network, audio, input and storage drivers separate from higher-level
 services so later hardware adaptation can replace device-specific code.
-QEMU success does not establish physical-machine support. Phase 32 still
-requires the actual browser/media acceptance below; this order does not
+QEMU success does not establish physical-machine support. Phases 32 and 33
+still require actual browser/media playback acceptance; this order does not
 promise feasibility or a completion date. If a feasibility gate fails,
 document it and revise the plan with the owner.
 
@@ -71,7 +73,7 @@ Calculator and Snake work; the browser is pending.
 ## Milestone A — MyOS Desktop 1.0
 
 Phases 14–20 below are complete at the QEMU desktop and app baseline.
-Phases 21–32 cover distribution and later milestones; Phases 21–23 are complete in QEMU.
+Phases 21–33 cover distribution and later milestones; Phases 21–23 are complete in QEMU.
 
 | Phase | Scope | Acceptance criteria |
 |---|---|---|
@@ -98,8 +100,8 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial:** 64 MiB hybrid BIOS/UEFI image validated through QEMU USB mass storage. Target-machine selection and required input/storage drivers (including USB HID if needed) are scheduled after Phase 32. Any physical-device write needs explicit target selection. See PHASE24.md. |
-| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 32 and remaining Phase 24; no USB device yet.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
+| 24 | USB image and hardware preparation | **Partial:** 64 MiB hybrid BIOS/UEFI image validated through QEMU USB mass storage. Target-machine selection and required input/storage drivers (including USB HID if needed) are scheduled after Phase 33. Any physical-device write needs explicit target selection. See PHASE24.md. |
+| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 33 and remaining Phase 24; no USB device yet.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later
@@ -115,9 +117,10 @@ QEMU development can continue without claiming this milestone is complete.
 | 29 | Browser and web search | **Complete QEMU text-browser baseline:** the selected in-tree bounded HTML-to-text/link renderer loads HTTP and verified HTTPS pages, fetches live DuckDuckGo Lite search results, opens a real HTTPS result and restores cached Back history. Local TLS and live QEMU tests validate behavior. This is a kernel-mode non-JavaScript profile; CSS/DOM/media and broader browser compatibility remain outside this baseline. See PHASE29.md. |
 | 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | **Complete QEMU baseline:** native MYV1 palette/RLE video decode at 80x60, 10 fps, framebuffer scaling and PIT-synchronized 11025 Hz PCM via SB16. Pause/resume and stop are tested; malformed clips are rejected. The format is custom and unencumbered; MP4/WebM/YouTube remain unsupported. See PHASE31.md. |
-| 32 | YouTube acceptance | **In progress; not accepted.** In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verified HTTPS now reaches the live YouTube response, but its size exceeds the 64 KiB browser limit and scripting/media support is absent. See PHASE32.md. |
+| 32 | YouTube acceptance | **In progress; not accepted.** In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verified HTTPS reaches the live YouTube response, but the Browser remains limited to 64 KiB and scripting/media support is absent. See PHASE32.md. |
+| 33 | Rickroll end-to-end acceptance | **Not started; hard fail until playback is demonstrated.** In MyOS running in QEMU, open the actual YouTube Rickroll video `dQw4w9WgXcQ` by search or direct URL; show moving frames and audible music from the online source, then pause, resume and seek. A fetched page, link, thumbnail, local clip, host browser or Tor connection alone never passes. Record QEMU screen/audio and control evidence. See PHASE33.md. |
 
-Phase 29's initial browser is not evidence that YouTube works. Phase 32 depends
+Phase 29's initial browser is not evidence that YouTube works. Phases 32–33 depend
 on the browser runtime, JavaScript/DOM, required media interfaces and codecs,
 networking, TLS, audio and video all working together. A local video player,
 link handed off to the host browser, or a picture of YouTube does not satisfy
@@ -140,7 +143,7 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–32 add the online platform. There are **3 phases not yet fully complete (24, 25 and 32)**: Phase 24 is partial, Phase 25 is deferred, and Phase 32 is in progress.
+and apps, and phases 26–33 add the online platform. There are **4 phases not yet fully complete (24, 25, 32 and 33)**: Phase 24 is partial, Phase 25 is deferred, Phase 32 is in progress, and Phase 33 is not started.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules
