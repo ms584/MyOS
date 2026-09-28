@@ -31,8 +31,9 @@ Do not treat a group summary as a substitute for a function's prototype.
   pthread error-number returns, allocator failures and Starboard invalid-handle
   results differ. Do not leak negative MyOS syscall results through every API.
 - Current ELF fixtures use MyOS's existing syscalls and a small custom entry
-  convention. They do not establish this Cobalt ABI. The new loader does not
-  call dynamic constructors, bind imports or provide ELF TLS.
+  convention. They do not establish this Cobalt ABI. Phase 33.2 adds in-image relocation binding and Ring 3 constructors for
+  self-contained ELF fixtures. It still has no external platform bindings
+  or ELF TLS implementation.
 
 ## Required groups and acceptance checks
 

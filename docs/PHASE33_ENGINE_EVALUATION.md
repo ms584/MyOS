@@ -145,3 +145,6 @@ least 30 seconds with audible music, pause/resume/seek and responsive close.
 Follow [PHASE33.md](PHASE33.md) for evidence. Do not count a host player,
 transcoded fixture, YouTube HTML download or successful Cobalt link as passing.
 The existing roadmap numbers and deferred Phase 24/25 remain unchanged.
+
+The restricted dynamic-loader continuation is now tracked in [PHASE332.md](PHASE332.md).
+Native engine startup remains unproven; the assessment decision is unchanged.

@@ -11,7 +11,7 @@
 #define PROCESS_HEAP_PAGES 32
 #define PROCESS_PAGES (4 + PROCESS_CODE_PAGES + 2 + PROCESS_HEAP_PAGES)
 
-enum process_state { PROCESS_UNUSED, PROCESS_RUNNING, PROCESS_ZOMBIE };
+enum process_state { PROCESS_UNUSED, PROCESS_RUNNING, PROCESS_ZOMBIE, PROCESS_LOADING };
 struct process {
     uint64_t pid;
     enum process_state state;
@@ -32,6 +32,11 @@ struct process {
 
 struct elf_source;
 struct elf_plan;
+struct process *process_stage_elf(const struct elf_source *,const struct elf_plan *);
+void process_discard_elf(struct process *);
+bool process_start_elf(struct process *,uint64_t,uint64_t,unsigned);
+bool process_image_copy(struct process *,uint64_t,void *,size_t,bool);
+bool process_image_readonly(struct process *,uint64_t,uint64_t);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 void process_init(void);
 uint64_t process_create(uint64_t mode, uint64_t cookie);

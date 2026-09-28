@@ -77,7 +77,20 @@ Static comparison and the official Cobalt x64 ELF audit are recorded in
 Starboard 18 is the conditional native-port target. The first Phase 33.1 slice
 now has an exact import-contract register, read-only large assets, restricted
 Ring 3 ELF execution and native Cobalt import inspection. See [PHASE331.md](PHASE331.md)
-for tests and limits. Phase 33.1 remains incomplete: dynamic linking, the native
+for tests and limits. Phase 33.1 remains incomplete: external platform bindings, the native
 Starboard runtime and HTML/JavaScript smoke are still open. Native engine
 startup and actual YouTube playback remain unproven.
 Phase 32/33 remain **NOT PASSED**.
+
+## Phase 33.2 — dynamic loader continuation
+
+The next loader milestone is documented in [PHASE332.md](PHASE332.md): staged
+ET_DYN mapping, four relocation types, in-image/weak resolution, RELRO and
+Ring 3 constructor startup for self-contained fixtures. Actual Cobalt maps
+and processes relocations but its 242 strong imports remain unresolved, so
+it is released without execution. Full native-engine/HTML/JavaScript support
+and the original Phase 33.1 gate remain open; this does not close Phase 32/33.
+
+Phase 33.2 loader baseline: focused tests and the full system regression passed
+on 2026-09-28; normal framebuffer image restored. See PHASE332.md for the
+restricted loader scope and the still-open native-engine gate.

@@ -6,6 +6,10 @@ the pinned Cobalt binary. Cobalt itself has not been linked or started. The
 HTML/JavaScript smoke required by [the engine assessment](PHASE33_ENGINE_EVALUATION.md)
 remains open. YouTube is still not playable.
 
+The original first-slice limits below are retained as a historical baseline.
+[Phase 33.2](PHASE332.md) now adds a restricted dynamic linker and Ring 3
+constructors for self-contained fixtures; it still cannot start Cobalt.
+
 ## Delivered in this slice
 
 - [Per-import register](PHASE331_IMPORTS.csv): 243 exact imports categorized

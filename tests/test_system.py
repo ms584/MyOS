@@ -227,6 +227,8 @@ def main():
             app_exercise()
             from test_elf_runtime import exercise as elf_exercise
             elf_exercise()
+            from test_elf_dynamic import exercise as dynamic_exercise
+            dynamic_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

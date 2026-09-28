@@ -163,7 +163,7 @@ static uintptr_t elf_map_page(struct process *p,unsigned capacity,uint64_t addre
     uintptr_t page=elf_page(p,capacity);if(!page)return 0;
     *e=page|5|((flags&2)?2:0)|((flags&1)?0:NX);return page;
 }
-uint64_t process_create_elf(const struct elf_source *source,const struct elf_plan *plan)
+struct process *process_stage_elf(const struct elf_source *source,const struct elf_plan *plan)
 {
     uint64_t flags=irq_save();struct process *p=0;
     for(unsigned i=0;i<PROCESS_LIMIT;++i)if(processes[i].state==PROCESS_UNUSED){p=&processes[i];break;}
@@ -188,14 +188,62 @@ uint64_t process_create_elf(const struct elf_source *source,const struct elf_pla
     }
     /* Four NX stack pages with a guard beneath them; no executable stack. */
     for(unsigned i=0;i<4;++i)if(!elf_map_page(p,capacity,USER_BASE+ELF_STACK_OFFSET+i*PAGE_SIZE,6))goto failed;
+    if(!elf_map_page(p,capacity,USER_BASE+ELF_BOOT_OFFSET,5))goto failed;
     p->kernel_stack=kmalloc(16384);if(!p->kernel_stack)goto failed;
     p->kernel_top=((uintptr_t)p->kernel_stack+16384)&~15ull;
     p->frame=(struct frame *)(p->kernel_top-sizeof(struct frame));memset(p->frame,0,sizeof(*p->frame));
     p->frame->rip=plan->entry;p->frame->cs=0x2b;p->frame->ss=0x23;
     p->frame->rsp=USER_BASE+ELF_STACK_OFFSET+4*PAGE_SIZE-8;p->frame->flags=0x202;
-    p->pid=next_pid++;p->state=PROCESS_RUNNING;
-    if(!scheduler_attach_process(p))goto failed;
-    uint64_t pid=p->pid;irq_restore(flags);return pid;
+    p->pid=next_pid++;p->state=PROCESS_LOADING;
+    irq_restore(flags);return p;
 failed:
     release(p);irq_restore(flags);return 0;
+}
+
+static uint64_t *image_leaf(struct process *p,uint64_t address)
+{
+    if(!p||p->state!=PROCESS_LOADING||address<USER_BASE||address>=USER_BASE+(1ull<<30))return 0;
+    uint64_t *t=(void *)p->root;
+    for(int shift=39;shift>=21;shift-=9){uint64_t e=t[(address>>shift)&511];
+        if((e&5)!=5||(e&128))return 0;t=(void *)(uintptr_t)(e&0x000ffffffffff000ull);}
+    uint64_t *e=&t[(address>>12)&511];return (*e&5)==5?e:0;
+}
+bool process_image_copy(struct process *p,uint64_t address,void *buffer,size_t size,bool write)
+{
+    if(address>UINT64_MAX-size)return false;
+    uint8_t *bytes=buffer;
+    while(size){uint64_t *e=image_leaf(p,address);if(!e||(write&&!(*e&2)))return false;
+        size_t n=PAGE_SIZE-address%PAGE_SIZE;if(n>size)n=size;
+        void *physical=(void *)(uintptr_t)((*e&0x000ffffffffff000ull)+address%PAGE_SIZE);
+        if(write)memcpy(physical,bytes,n);else memcpy(bytes,physical,n);
+        bytes+=n;address+=n;size-=n;
+    }return true;
+}
+bool process_image_readonly(struct process *p,uint64_t address,uint64_t size)
+{
+    if(address>UINT64_MAX-size)return false;
+    for(uint64_t a=address&~4095ull;a<address+size;a+=PAGE_SIZE){uint64_t *e=image_leaf(p,a);if(!e)return false;*e&=~2ull;}
+    return true; /* This staged CR3 has never been active: no stale TLB entries. */
+}
+void process_discard_elf(struct process *p)
+{
+    uint64_t f=irq_save();check(p&&p->state==PROCESS_LOADING,"discard staged ELF");release(p);irq_restore(f);
+}
+bool process_start_elf(struct process *p,uint64_t init,uint64_t array,unsigned count)
+{
+    extern const unsigned char elf_start_code[],elf_start_end[];
+    uint64_t f=irq_save();
+    if(!p||p->state!=PROCESS_LOADING){irq_restore(f);return false;}
+    uint64_t *e=image_leaf(p,USER_BASE+ELF_BOOT_OFFSET);check(e!=0,"ELF bootstrap map");
+    size_t size=(size_t)(elf_start_end-elf_start_code);check(size<=PAGE_SIZE,"ELF bootstrap size");
+    memcpy((void *)(uintptr_t)(*e&0x000ffffffffff000ull),elf_start_code,size);
+    p->frame->r12=array;p->frame->r13=count;p->frame->r14=p->frame->rip;p->frame->r15=init;
+    p->frame->rip=USER_BASE+ELF_BOOT_OFFSET;
+    if(!scheduler_attach_process(p)){irq_restore(f);return false;}
+    p->state=PROCESS_RUNNING;irq_restore(f);return true;
+}
+uint64_t process_create_elf(const struct elf_source *source,const struct elf_plan *plan)
+{
+    struct process *p=process_stage_elf(source,plan);if(!p)return 0;
+    if(!process_start_elf(p,0,0,0)){process_discard_elf(p);return 0;}return p->pid;
 }

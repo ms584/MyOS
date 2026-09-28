@@ -29,6 +29,12 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
         if(p.type==3||p.type==7)return -95;
         if(p.type==2&&!plan->dynamic)return -95;
         if(p.type==0x6474e551&&(p.flags&1))return -8; /* executable stack */
+        if(p.type==2||(p.type==0x6474e552&&plan->dynamic)){
+            if(p.vaddr>ELF_SPAN||p.memsz>ELF_SPAN-p.vaddr||!plan->dynamic)return -8;
+            if(p.type==2){if(plan->dynamic_size||!p.filesz||p.filesz>65536||p.filesz%16||p.filesz>p.memsz)return -8;
+                plan->dynamic_address=p.vaddr+bias;plan->dynamic_size=p.filesz;}
+            else{if(plan->relro_size)return -8;plan->relro_address=p.vaddr+bias;plan->relro_size=p.memsz;}
+        }
         if(p.type!=1)continue;
         if(p.filesz>p.memsz||p.offset>s->size||p.filesz>s->size-p.offset||
            p.vaddr>UINT64_MAX-bias||(p.flags&~7u)||!(p.flags&4)||((p.flags&3)==3))return -8;
@@ -77,17 +83,26 @@ int elf_inspect(const struct elf_source *s)
         }
     }
     print("ELF imports: strong=");decimal(strong);print(" weak=");decimal(weak);print("\n");
-    if(plan.dynamic)print("ELF: inspection only; dynamic linking unavailable; not executed\n");
+    if(plan.dynamic)print("ELF: inspection only; not executed\n");
     return 0;
 }
-int elf_run(const struct elf_source *s,int32_t *status)
+static int load_image(const struct elf_source *s,int32_t *status,bool run)
 {
     struct elf_plan plan;int result=elf_plan_read(s,&plan);if(result)return result;
-    if(plan.dynamic)return -95; /* Never run unresolved code or constructors. */
+    /* A shared library with no executable entry can be linked/inspected only. */
+    if(run&&!elf_executable(&plan,plan.entry))return -95;
     size_t before=pages_free();
-    uint64_t pid=process_create_elf(s,&plan);
-    if(!pid){check(pages_free()==before,"ELF failed-load page reclamation");return -12;}
-    struct process *p=process_find(pid);uint64_t deadline=ticks+500;
+    struct process *p=process_stage_elf(s,&plan);
+    if(!p){check(pages_free()==before,"ELF failed-load page reclamation");return -12;}
+    print("ELF staged pages: ");decimal(p->page_count);print("\n");
+    struct elf_start start;result=elf_prepare(p,&plan,&start);
+    if(result||!run){process_discard_elf(p);
+        check(pages_free()==before,"ELF staged page reclamation");
+        print("ELF staged image released; not executed\n");return result;}
+    uint64_t pid=p->pid;
+    if(!process_start_elf(p,start.init,start.array,start.count)){
+        process_discard_elf(p);check(pages_free()==before,"ELF attach cleanup");return -12;}
+    uint64_t deadline=ticks+500;
     while(p->state==PROCESS_RUNNING&&ticks<deadline)__asm__ volatile("sti; hlt":::"memory");
     if(p->state==PROCESS_RUNNING){(void)process_kill(pid);result=-110;}
     else if(p->exited){*status=p->exit_status;result=0;}
@@ -96,3 +111,5 @@ int elf_run(const struct elf_source *s,int32_t *status)
     check(pages_free()==before,"ELF page reclamation");
     return result;
 }
+int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true);}
+int elf_link(const struct elf_source *s){return load_image(s,0,false);}
