@@ -30,7 +30,10 @@ tail -f build/activity.log in VS Code.
   streaming past 64 KiB has a 256 KiB QEMU integrity test; the GUI still
   uses its 64 KiB/160-line bounded text renderer. A live QEMU native TLS
   probe streamed 902,111 bytes from www.youtube.com on 2026-09-27, but
-  no YouTube audio/video playback has been implemented.
+  no YouTube audio/video playback has been implemented. A 2026-09-28 native
+  QEMU probe also received 1,344,776 bytes from the Rickroll watch URL;
+  this is transport evidence only. Tor/search do not supply the missing
+  JavaScript, HTML5 and codecs.
   See docs/PHASE32.md. Next work is the full YouTube player acceptance.
   Remaining Phase 24 hardware preparation and Phase 25 physical-machine
   acceptance follow; Phase 25 is deferred because the owner has no USB device.

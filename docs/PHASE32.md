@@ -45,6 +45,7 @@ python3 tools/run_logged.py -- python3 tests/test_system.py
 python3 tools/run_logged.py -- python3 tests/test_youtube_probe.py
 python3 tools/run_logged.py -- python3 tests/test_phase32_stream.py
 python3 tools/run_logged.py -- python3 tests/test_youtube_stream.py
+python3 tools/run_logged.py -- python3 tests/test_rickroll_probe.py
 ```
 
 The YouTube probe is live and optional: external site behavior can change.
@@ -53,7 +54,10 @@ gate. The streaming test uses a local QEMU-accessible TLS server and checks
 response length and checksum. The second live probe streams the YouTube
 homepage using native MyOS TLS; on 2026-09-27 it received 902,111 bytes
 with FNV64 `D42844EF8FCB3D14`. Live results can change. None of these
-tests is Phase 32 playback acceptance.
+tests is Phase 32 playback acceptance. On 2026-09-28, a separate native
+QEMU probe fetched the exact Rickroll watch URL
+`https://www.youtube.com/watch?v=dQw4w9WgXcQ` and received 1,344,776
+bytes over certificate-verified HTTPS. The page was not rendered or played.
 
 ## Native-only scope and transport progress
 
@@ -68,6 +72,9 @@ checksum. A QEMU test transferred a 256 KiB binary response and verified
 the exact count and checksum. This command is a transport diagnostic, not
 a media downloader or YouTube player. The Browser itself still has its
 64 KiB response and 160-line limits.
+Tor changes the network route but does not supply the missing web/media
+runtime; Tor Browser itself is Firefox-based. Search can locate a video
+link, but cannot decode it in the existing MyOS Browser.
 
 Google's [Cobalt Starboard porting guide](https://cobalt.googlesource.com/cobalt/+/refs/heads/24.lts.stable/cobalt/site/docs/starboard/porting.md)
 describes a native YouTube-capable browser runtime, but MyOS lacks its
