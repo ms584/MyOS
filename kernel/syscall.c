@@ -169,6 +169,32 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_WAKE:
         frame->rax=process_wake(process,frame->rdi,(unsigned)frame->rsi);
         break;
+    case SYS_VM_QUERY: {
+        size_t length=(size_t)frame->rsi;
+        if(!length||length>SIZE_MAX-(PAGE_SIZE-1)){frame->rax=(uint64_t)-22;break;}
+        length=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
+        size_t pages=length/PAGE_SIZE;
+        if(!writable_range(process,frame->rdx,pages)){
+            frame->rax=(uint64_t)-14;break;
+        }
+        if(!process_vm_mapped(process,frame->rdi,length)){
+            frame->rax=(uint64_t)-12;break;
+        }
+        unsigned char resident=1;
+        for(size_t i=0;i<pages;++i)copy_to_user(process,frame->rdx+i,&resident,1);
+        frame->rax=0;break;
+    }
+    case SYS_VM_ADVISE:
+        frame->rax=(uint64_t)process_vm_advise(process,frame->rdi,(size_t)frame->rsi,
+                                               (unsigned)frame->rdx);
+        break;
+    case SYS_ERRNO_LOCATION:
+        frame->rax=process_errno_location(process);
+        break;
+    case SYS_VM_MAP_FIXED:
+        frame->rax=(uint64_t)process_vm_map_fixed(process,frame->rdi,(size_t)frame->rsi,
+                                                  (unsigned)frame->rdx);
+        break;
     case SYS_FOPEN: case SYS_FREAD: case SYS_FWRITE: case SYS_FCLOSE:
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:
         frame->rax = (uint64_t)file_call(process,frame);

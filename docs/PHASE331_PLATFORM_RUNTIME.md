@@ -3,7 +3,7 @@
 Status: **in progress; Phase 33.1 and Phase 33.2 are not closed.**
 
 This slice introduces the first executable external platform bindings for staged
-ET_DYN programs. MyOS maps a 544-byte read/execute runtime into every staged
+ET_DYN programs. MyOS maps a 1,539-byte read/execute runtime into every staged
 Ring 3 ELF address space at address 0x803f000000. The runtime uses the existing
 anonymous VM syscalls; it is not a kernel-address trampoline and it does not
 grant user access to supervisor pages.
@@ -23,7 +23,7 @@ realloc preserves the common prefix and keeps the old allocation on failure.
 The external resolver remains allowlisted. Missing strong symbols still abort
 startup before constructors or entry, and weak unresolved symbols remain zero.
 The pinned Cobalt 27 LTS image now resolves these seven imports and stops at
-235 missing strong imports (previously 242), then releases all staged pages.
+228 missing strong imports (previously 242; seven allocator plus seven VM/errno bindings now resolve), then releases all staged pages.
 
 The dynamic loader also accepts an ELF containing only PLT relocations without
 requiring the unused DT_RELAENT tag. Existing malformed-relocation,

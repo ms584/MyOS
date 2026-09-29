@@ -13,6 +13,7 @@
 #define PROCESS_VM_BASE (USER_BASE + 0x20000000ull)
 #define PROCESS_VM_END  (USER_BASE + 0x3f000000ull)
 #define PROCESS_RUNTIME_BASE PROCESS_VM_END
+#define PROCESS_RUNTIME_TLS_BASE (PROCESS_RUNTIME_BASE + 0x10000ull)
 #define PROCESS_PROT_READ 1u
 #define PROCESS_PROT_WRITE 2u
 #define PROCESS_PROT_EXEC 4u
@@ -61,8 +62,12 @@ bool process_image_readonly(struct process *,uint64_t,uint64_t);
 bool process_map_runtime(struct process *);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 int64_t process_vm_map(struct process *,uint64_t,size_t,unsigned);
+int64_t process_vm_map_fixed(struct process *,uint64_t,size_t,unsigned);
 int process_vm_unmap(struct process *,uint64_t,size_t);
 int process_vm_protect(struct process *,uint64_t,size_t,unsigned);
+bool process_vm_mapped(struct process *,uint64_t,size_t);
+int process_vm_advise(struct process *,uint64_t,size_t,unsigned);
+uint64_t process_errno_location(struct process *);
 bool process_user_access(struct process *,uint64_t,size_t,unsigned);
 int64_t process_thread_create(struct process *,uint64_t,uint64_t,uint64_t,uint64_t);
 struct frame *process_thread_exit(struct process *,struct frame *,int32_t);

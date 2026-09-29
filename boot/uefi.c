@@ -49,7 +49,7 @@ EFI_STATUS efi_main(EFI_HANDLE image,EFI_SYSTEM_TABLE *system)
     UINT64 pitch=(UINT64)gop->Mode->Info->PixelsPerScanLine*4;
     if(pitch<3200 || pitch>16384 || fb<0x100000 || fb+pitch*600>0x100000000ull ||
        gop->Mode->FrameBufferSize<pitch*600)return fail(L"unsupported framebuffer range",EFI_UNSUPPORTED);
-    /* Reserve the fixed kernel+BSS and 64 KiB stack. Never overwrite unowned
+    /* Reserve the fixed kernel+BSS and initial stack. Never overwrite unowned
        firmware memory. Platforms unable to reserve this region stop here. */
     EFI_PHYSICAL_ADDRESS kernel=0x10000;
     status=uefi_call_wrapper(bs->AllocatePages,4,AllocateAddress,EfiLoaderData,0x70,&kernel);

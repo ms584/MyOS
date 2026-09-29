@@ -4,7 +4,9 @@ import subprocess
 import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
-wanted={'aligned_alloc','calloc','free','malloc','malloc_usable_size','posix_memalign','realloc'}
+wanted={'__errno_location','aligned_alloc','calloc','free','madvise','malloc',
+        'malloc_usable_size','mincore','mmap','mprotect','msync','munmap',
+        'posix_memalign','realloc'}
 symbols={}
 for line in subprocess.check_output(['nm','-g','--defined-only',str(elf)],text=True).splitlines():
     fields=line.split()

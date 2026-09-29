@@ -90,7 +90,9 @@ class VM:
             if text in content:return content
             if 'PANIC' in content and 'PANIC' not in text:raise AssertionError(content)
             time.sleep(.05)
-        raise AssertionError(f'{self.name}: missing {text!r}\n{self.log.read_text()}')
+        content=self.log.read_text()
+        if text in content:return content
+        raise AssertionError(f'{self.name}: missing {text!r}\n{content}')
     def memory(self,address,size):
         dump=OUT/(self.name+'.memory')
         result=self.command('human-monitor-command',{'command-line':f'pmemsave {address:#x} {size} "{dump}"'})

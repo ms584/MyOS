@@ -13,15 +13,21 @@ struct linker {
 struct platform_export { const char *name;uint64_t address; };
 #define PLATFORM_NAME(symbol) static char platform_name_##symbol[] \
     __attribute__((section(".platform_runtime_names")))=#symbol
-PLATFORM_NAME(aligned_alloc);PLATFORM_NAME(calloc);PLATFORM_NAME(free);
-PLATFORM_NAME(malloc);PLATFORM_NAME(malloc_usable_size);
+PLATFORM_NAME(__errno_location);PLATFORM_NAME(aligned_alloc);PLATFORM_NAME(calloc);
+PLATFORM_NAME(free);PLATFORM_NAME(madvise);PLATFORM_NAME(malloc);
+PLATFORM_NAME(malloc_usable_size);PLATFORM_NAME(mincore);PLATFORM_NAME(mmap);
+PLATFORM_NAME(mprotect);PLATFORM_NAME(msync);PLATFORM_NAME(munmap);
 PLATFORM_NAME(posix_memalign);PLATFORM_NAME(realloc);
 static struct platform_export platform_exports[]
     __attribute__((section(".platform_runtime_names")))={
+    {platform_name___errno_location,PLATFORM___ERRNO_LOCATION},
     {platform_name_aligned_alloc,PLATFORM_ALIGNED_ALLOC},
     {platform_name_calloc,PLATFORM_CALLOC},{platform_name_free,PLATFORM_FREE},
-    {platform_name_malloc,PLATFORM_MALLOC},
+    {platform_name_madvise,PLATFORM_MADVISE},{platform_name_malloc,PLATFORM_MALLOC},
     {platform_name_malloc_usable_size,PLATFORM_MALLOC_USABLE_SIZE},
+    {platform_name_mincore,PLATFORM_MINCORE},{platform_name_mmap,PLATFORM_MMAP},
+    {platform_name_mprotect,PLATFORM_MPROTECT},{platform_name_msync,PLATFORM_MSYNC},
+    {platform_name_munmap,PLATFORM_MUNMAP},
     {platform_name_posix_memalign,PLATFORM_POSIX_MEMALIGN},
     {platform_name_realloc,PLATFORM_REALLOC}
 };

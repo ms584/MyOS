@@ -1,6 +1,6 @@
 bits 64
 global _start
-extern aligned_alloc,calloc,free,malloc,malloc_usable_size,posix_memalign,realloc
+extern __errno_location,aligned_alloc,calloc,free,malloc,malloc_usable_size,posix_memalign,realloc
 section .text
 _start:
     sub rsp,24
@@ -50,6 +50,9 @@ _start:
     call aligned_alloc wrt ..plt
     test rax,rax
     jnz bad
+    call __errno_location wrt ..plt
+    cmp dword [rax],22
+    jne bad
     mov qword [rel aligned],0
     lea rdi,[rel aligned]
     mov esi,128
@@ -76,6 +79,9 @@ _start:
     call calloc wrt ..plt
     test rax,rax
     jnz bad
+    call __errno_location wrt ..plt
+    cmp dword [rax],12
+    jne bad
     mov rdi,[rsp]
     call free wrt ..plt
     mov rdi,[rsp+8]

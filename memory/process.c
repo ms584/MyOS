@@ -221,6 +221,10 @@ bool process_map_runtime(struct process *p)
         size_t count=size-offset;if(count>PAGE_SIZE)count=PAGE_SIZE;
         memcpy((void *)page,platform_runtime_start+offset,count);
     }
+    /* One private errno page for the main task and every possible worker. */
+    for(unsigned i=0;i<=PROCESS_THREAD_LIMIT;++i)
+        if(!elf_map_page(p,capacity,PROCESS_RUNTIME_TLS_BASE+(uint64_t)i*PAGE_SIZE,6))
+            return false;
     return true;
 }
 
@@ -302,7 +306,7 @@ static void vm_flush(uint64_t address){__asm__ volatile("invlpg (%0)"::"r"(addre
 int process_vm_unmap(struct process *p,uint64_t address,size_t length)
 {
     if(!vm_range(address,length))return -22;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||(*e&5)!=5)return -22;}
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||!(*e&1))return -22;}
     for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
         uint64_t *e=vm_leaf(p,a,false);uintptr_t page=(uintptr_t)(*e&0x000ffffffffff000ull);
         *e=0;vm_flush(a);vm_forget(p,page);page_free(page);
@@ -312,12 +316,13 @@ int process_vm_unmap(struct process *p,uint64_t address,size_t length)
 
 int process_vm_protect(struct process *p,uint64_t address,size_t length,unsigned prot)
 {
-    if(!vm_range(address,length)||!(prot&PROCESS_PROT_READ)||(prot&~7u)||
+    if(!vm_range(address,length)||(prot&~7u)||
        ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||(*e&5)!=5)return -22;}
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||!(*e&1))return -22;}
     for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
         uint64_t *e=vm_leaf(p,a,false),page=*e&0x000ffffffffff000ull;
-        *e=page|5|((prot&PROCESS_PROT_WRITE)?2:0)|((prot&PROCESS_PROT_EXEC)?0:NX);vm_flush(a);
+        *e=page|1|((prot&PROCESS_PROT_READ)?4:0)|((prot&PROCESS_PROT_WRITE)?2:0)|
+           ((prot&PROCESS_PROT_EXEC)?0:NX);vm_flush(a);
     }
     return 0;
 }
@@ -325,8 +330,7 @@ int process_vm_protect(struct process *p,uint64_t address,size_t length,unsigned
 int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned prot)
 {
     if(!length||length>PROCESS_VM_END-PROCESS_VM_BASE||length>SIZE_MAX-(PAGE_SIZE-1) ||
-       !(prot&PROCESS_PROT_READ)||(prot&~7u)||
-       ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
+       (prot&~7u)||((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
     length=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
     uint64_t address=hint;
     if(hint){if(!vm_range(hint,length))return -22;
@@ -343,10 +347,54 @@ int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned pr
     for(;mapped<length;mapped+=PAGE_SIZE){
         uint64_t *e=vm_leaf(p,address+mapped,true);if(!e||(*e&1))break;
         uintptr_t page=vm_new_page(p);if(!page)break;
-        *e=page|5|((prot&PROCESS_PROT_WRITE)?2:0)|((prot&PROCESS_PROT_EXEC)?0:NX);
+        *e=page|1|((prot&PROCESS_PROT_READ)?4:0)|((prot&PROCESS_PROT_WRITE)?2:0)|
+           ((prot&PROCESS_PROT_EXEC)?0:NX);
     }
     if(mapped!=length){if(mapped)check(!process_vm_unmap(p,address,mapped),"VM rollback");return -12;}
     return (int64_t)address;
+}
+
+int64_t process_vm_map_fixed(struct process *p,uint64_t address,size_t length,unsigned prot)
+{
+    if(!vm_range(address,length)||(prot&~7u)||
+       ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
+        uint64_t *entry=vm_leaf(p,a,false);
+        if(entry&&(*entry&1)&&process_vm_unmap(p,a,PAGE_SIZE))return -22;
+    }
+    return process_vm_map(p,address,length,prot);
+}
+
+bool process_vm_mapped(struct process *p,uint64_t address,size_t length)
+{
+    if(!vm_range(address,length))return false;
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
+        uint64_t *entry=vm_leaf(p,a,false);
+        if(!entry||!(*entry&1))return false;
+    }
+    return true;
+}
+
+int process_vm_advise(struct process *p,uint64_t address,size_t length,unsigned advice)
+{
+    if(!process_vm_mapped(p,address,length))return -12;
+    if(advice!=0&&advice!=1&&advice!=2&&advice!=3&&advice!=4&&
+       advice!=8&&advice!=16&&advice!=17)return -22;
+    if(advice==4||advice==8)for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
+        uint64_t *entry=vm_leaf(p,a,false);
+        memset((void *)(uintptr_t)(*entry&0x000ffffffffff000ull),0,PAGE_SIZE);
+    }
+    return 0;
+}
+
+uint64_t process_errno_location(struct process *p)
+{
+    if(!p)return 0;
+    struct process_thread *thread=scheduler_current_thread();
+    if(!thread)return PROCESS_RUNTIME_TLS_BASE;
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
+        if(&p->threads[i]==thread)return PROCESS_RUNTIME_TLS_BASE+(uint64_t)(i+1)*PAGE_SIZE;
+    return 0;
 }
 
 bool process_user_access(struct process *p,uint64_t address,size_t length,unsigned prot)
