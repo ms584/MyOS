@@ -3,7 +3,7 @@
 Status: **in progress; Phase 33.1 and Phase 33.2 are not closed.**
 
 This slice introduces the first executable external platform bindings for staged
-ET_DYN programs. MyOS maps a 1,539-byte read/execute runtime into every staged
+ET_DYN programs. MyOS maps a 4,960-byte read/execute runtime into every staged
 Ring 3 ELF address space at address 0x803f000000. The runtime uses the existing
 anonymous VM syscalls; it is not a kernel-address trampoline and it does not
 grant user access to supervisor pages.

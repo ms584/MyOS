@@ -3,9 +3,52 @@
 The latest Phase 33.1 continuation adds tested anonymous user VM, extra Ring 3
 threads, FS-base TLS and atomic wait/wake/timeout primitives. See
 `docs/PHASE331_RUNTIME.md`. These custom kernel primitives now back a fixed-address Ring 3 platform runtime.
-Fourteen tested allocator/VM/errno imports resolve through an exact allowlist;
-228 strong Cobalt imports remain. Native Cobalt HTML/JavaScript/input
+Sixty-two tested allocator/VM/errno/pthread imports resolve through an exact allowlist;
+180 strong Cobalt imports remain. Native Cobalt HTML/JavaScript/input
 smoke remains the required gate before Phase 33.3.
+
+## Phase 33.1/33.2 pthread checkpoint - 2026-09-29
+
+Local work after commit 290f1dc adds a 4,960-byte Ring 3 platform runtime
+covering all 48 pthread/semaphore imports required by the pinned Cobalt image.
+Together with allocator and POSIX VM/errno support, 62 of 242 strong imports now
+resolve and 180 remain. The acceptance fixture proves joinable and detached
+thread lifecycles, detached slot/stack reuse, mutex/condition/semaphore/rwlock/
+once behavior, timed waits, thread-specific keys with destructors, names, stack
+attributes and scheduler compatibility. Detached kernel stacks and user mappings
+are reclaimed. The exact implementation and limits are in
+docs/PHASE331_PTHREAD.md.
+
+python3 tests/test_elf_dynamic.py passed after the final stack-attribute fix.
+The optional pinned Cobalt staging test passed during this slice with 62 resolved
+imports, 180 missing imports and full staged-page reclamation. The full
+tests/test_system.py run was started and passed boot, shell, graphics, mouse,
+desktop, Settings, Calculator, Snake, audio, video, browser, release integration
+and the Phase 26 app cases shown in build/activity.log; it was stopped at the
+owner's request before completion. Run the complete suite next. A normal
+bash build.sh image was restored after stopping it.
+
+Neither Phase 33.1 nor Phase 33.2 is closed. Continue these twelve gates in
+order, preserving real acceptance tests rather than no-op symbol stubs:
+
+1. Finish the exact ABI register and keep every implemented import fixture-tested.
+2. Preserve allocator, anonymous VM, errno and process cleanup coverage.
+3. Preserve pthread synchronization, thread lifecycle and TLS-key coverage.
+4. Add ELF PT_TLS/TLS relocations, destructors, needed dependency/finalizer support.
+5. Add cancellation and waitable descriptors: poll, epoll, eventfd and pipes.
+6. Add required file, storage, clock and system contracts.
+7. Add the remaining POSIX socket/network contracts on the existing NIC/TCP/TLS stack.
+8. Implement the real Evergreen SABI launcher, SbEventHandle and event loop.
+9. Implement Starboard window, EGL/GLES bridge and keyboard/mouse input delivery.
+10. Implement Starboard audio, decode-target and media/player contracts.
+11. Run native Cobalt HTML/JavaScript with real input for at least 60 seconds and prove cleanup.
+12. Only then start Phase 33.3 and prove the online Rickroll video/audio plus pause, resume and seek.
+
+Suggested immediate next slice: complete gate 5, then the clock/system subset of
+gate 6. The contract CSV currently groups the still-unimplemented entries as
+41 file, 23 media, 23 network, 23 platform, 16 optional, 13 system, 10 graphics,
+8 wait, 5 audio, 5 storage, 4 constants, 4 signals, 2 clock, 2 event,
+1 certification and 1 weak-TLS symbol. The owner always pushes manually.
 
 Read root AGENTS.md and docs/ROADMAP.md before starting. The owner asked to
 continue the approved phase sequence and **always pushes to GitHub personally**.
@@ -113,8 +156,8 @@ Phase 32/33 remain **NOT PASSED**.
 The next loader milestone is documented in [PHASE332.md](PHASE332.md): staged
 ET_DYN mapping, four relocation types, in-image/weak resolution, RELRO and
 Ring 3 constructor startup for self-contained fixtures. Actual Cobalt maps
-and processes relocations, resolves 14 tested allocator/VM/errno imports, and stops on
-228 remaining strong imports, so it is released without execution. Full native-engine/HTML/JavaScript support
+and processes relocations, resolves 62 tested allocator/VM/errno/pthread imports, and stops on
+180 remaining strong imports, so it is released without execution. Full native-engine/HTML/JavaScript support
 and the original Phase 33.1 gate remain open; this does not close Phase 32/33.
 
 Phase 33.2 loader baseline: focused tests and the full system regression passed

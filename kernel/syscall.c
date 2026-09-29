@@ -155,6 +155,10 @@ struct frame *syscall_dispatch(struct frame *frame)
         break;
     case SYS_THREAD_EXIT:
         return process_thread_exit(process,frame,(int32_t)frame->rdi);
+    case SYS_THREAD_DETACH:
+        frame->rax=(uint64_t)process_thread_detach(process,frame->rdi,frame->rsi,
+                                                  (size_t)frame->rdx);
+        break;
     case SYS_THREAD_REAP: {
         int32_t status=0;
         if(!writable_range(process,frame->rsi,sizeof(status))){

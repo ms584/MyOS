@@ -29,6 +29,9 @@ struct process_thread {
     struct frame *frame;
     uint64_t fs_base;
     int32_t exit_status;
+    bool detached;
+    uint64_t user_stack;
+    size_t user_stack_length;
 };
 struct process {
     uint64_t pid;
@@ -72,6 +75,7 @@ bool process_user_access(struct process *,uint64_t,size_t,unsigned);
 int64_t process_thread_create(struct process *,uint64_t,uint64_t,uint64_t,uint64_t);
 struct frame *process_thread_exit(struct process *,struct frame *,int32_t);
 int process_thread_reap(struct process *,uint64_t,int32_t *);
+int process_thread_detach(struct process *,uint64_t,uint64_t,size_t);
 struct frame *process_wait(struct process *,struct frame *,uint64_t,uint64_t);
 unsigned process_wake(struct process *,uint64_t,unsigned);
 void process_init(void);

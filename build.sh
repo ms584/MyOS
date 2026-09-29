@@ -7,7 +7,7 @@ fi
 mkdir -p build
 gcc -m64 -std=c11 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic \
     -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
-    -fno-unwind-tables -Wall -Wextra -Werror -c user/platform-runtime.c -o build/platform-runtime.o
+    -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -c user/platform-runtime.c -o build/platform-runtime.o
 ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h

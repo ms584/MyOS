@@ -1,8 +1,8 @@
 # Phase 33.2 — staged dynamic ELF loader
 
 The process runtime now has the VM/thread/TLS/wait foundation described in
-[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker now has an exact allowlisted resolver for fourteen tested
-allocator, VM and errno bindings. The other platform/Starboard imports remain unresolved, so
+[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker now has an exact allowlisted resolver for sixty-two tested
+allocator, VM, errno, pthread and semaphore bindings. The other platform/Starboard imports remain unresolved, so
 this does not change the Cobalt execution gate.
 
 Scope: the next native loader milestone after the first Phase 33.1 slice.
@@ -143,9 +143,9 @@ Logs: `build/phase332-focused.log`, `build/phase332-fixtures.log`,
 
 ## Remaining work
 
-The 243-entry contract register now marks fourteen allocator/VM/errno imports as tested.
+The 243-entry contract register now marks sixty-two allocator/VM/errno/pthread imports as tested.
 The loader resolves those fixed-address Ring 3 runtime functions, in-image
-symbols and ELF weak defaults. The remaining 228 strong imports still block
+symbols and ELF weak defaults. The remaining 180 strong imports still block
 Cobalt.
 The weak initializer's actual engine call path has not been exercised. Next: a native Starboard launcher/SABI boundary,
 process VM and thread/TLS/FP state, cancellation and waits, then networking,
@@ -166,9 +166,9 @@ gate is being marked complete.
 
 ## Allocator platform continuation - 2026-09-29
 
-MyOS now maps a 544-byte read/execute platform runtime only when an ELF imports
-one of seven allowlisted allocator symbols. A Ring 3 fixture verifies allocation,
-zero fill, alignment, overflow handling, realloc preservation and release. The
-pinned Cobalt image resolves those fourteen imports and reports 228 missing strong
+MyOS now maps a 4,960-byte read/execute platform runtime when an ELF imports
+an allowlisted runtime symbol. Ring 3 fixtures verify allocation, POSIX VM,
+per-thread errno, pthread lifecycle, synchronization and TLS-key behavior. The
+pinned Cobalt image resolves sixty-two imports and reports 180 missing strong
 imports; it is still not executed. See
 [PHASE331_PLATFORM_RUNTIME.md](PHASE331_PLATFORM_RUNTIME.md).

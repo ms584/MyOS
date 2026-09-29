@@ -412,9 +412,21 @@ bool process_user_access(struct process *p,uint64_t address,size_t length,unsign
     return true;
 }
 
+static void thread_release(struct process *p,struct process_thread *thread)
+{
+    uint64_t user_stack=thread->user_stack;size_t user_length=thread->user_stack_length;
+    check(thread->state==PROCESS_THREAD_ZOMBIE,"release live thread");
+    check(scheduler_detach_thread(p,thread),"detach user thread");
+    kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));
+    if(user_stack)check(!process_vm_unmap(p,user_stack,user_length),"detached stack release");
+}
+
 int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
                               uint64_t stack,uint64_t tls)
 {
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
+        if(p->threads[i].state==PROCESS_THREAD_ZOMBIE&&p->threads[i].detached)
+            thread_release(p,&p->threads[i]);
     if(!process_user_access(p,entry,1,PROCESS_PROT_EXEC)||stack<8||
        !process_user_access(p,stack-8,8,PROCESS_PROT_WRITE)||
        (tls&&!process_user_access(p,tls,8,PROCESS_PROT_READ)))return -14;
@@ -451,10 +463,23 @@ int process_thread_reap(struct process *p,uint64_t tid,int32_t *status)
     for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i){
         struct process_thread *thread=&p->threads[i];
         if(thread->state==PROCESS_THREAD_UNUSED||thread->tid!=tid)continue;
+        if(thread->detached)return -22;
         if(thread->state!=PROCESS_THREAD_ZOMBIE)return -11;
-        if(!scheduler_detach_thread(p,thread))return -16;
-        *status=thread->exit_status;
-        kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));return 0;
+        *status=thread->exit_status;thread_release(p,thread);return 0;
+    }
+    return -3;
+}
+
+int process_thread_detach(struct process *p,uint64_t tid,uint64_t stack,size_t length)
+{
+    if(!vm_range(stack,length)||!process_vm_mapped(p,stack,length))return -22;
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i){
+        struct process_thread *thread=&p->threads[i];
+        if(thread->state==PROCESS_THREAD_UNUSED||thread->tid!=tid)continue;
+        if(thread->detached)return -22;
+        thread->detached=true;thread->user_stack=stack;thread->user_stack_length=length;
+        if(thread->state==PROCESS_THREAD_ZOMBIE)thread_release(p,thread);
+        return 0;
     }
     return -3;
 }

@@ -1,5 +1,6 @@
 """QEMU single-object dynamic ELF acceptance, including fail-closed startup."""
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -11,6 +12,11 @@ from test_system import VM,OUT,ROOT
 from test_shell import command,type_text
 sys.path.insert(0,str(ROOT/'tools'))
 from make_asset_disk import create
+
+def implemented_exports():
+    with (ROOT/'docs/PHASE331_IMPORTS.csv').open(newline='') as source:
+        return {row['symbol'] for row in csv.DictReader(source)
+                if row['status']=='implemented-tested'}
 
 def digest(path):
     with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
@@ -90,6 +96,14 @@ def fixtures():
         subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                         '-o',str(image),str(obj)],check=True)
         platform_specs.append(f'{name}={image}')
+    pthread_obj=out/'elf-platform-pthread.o';pthread_image=out/'pthread.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-pthread.c',
+                    '-o',str(pthread_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(pthread_image),str(pthread_obj)],check=True)
+    platform_specs.append(f'pthread={pthread_image}')
     specs=[f'dynamic={library}',*platform_specs]
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
@@ -121,6 +135,8 @@ def exercise(cobalt=None):
         assert 'ELF POSIX VM and per-thread errno PASS' in output,output
         assert all(f'ELF platform: {name}' in output for name in
                    ('__errno_location','madvise','mincore','mmap','mprotect','msync','munmap')),output
+        output=command(vm,'elf run pthread','ELF exited with status 35')
+        assert 'ELF pthread lifecycle, sync and TLS PASS' in output,output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')
@@ -140,15 +156,16 @@ def exercise(cobalt=None):
             vm.wait('myos> ')
             output=long_command(vm,'elf link cobalt')
             assert 'relative=117653 absolute=20 global=17 jump=626' in output,output[-4000:]
-            assert 'missing=228 weak-zero=1' in output,output[-4000:]
+            exports=implemented_exports()
+            expected=[name for name in audit['undefined_symbols']
+                      if not name.startswith('_ZTH') and name not in exports]
+            assert f'missing={len(expected)} weak-zero=1' in output,output[-4000:]
             assert 'ELF RELRO: protected' in output,output[-4000:]
             assert 'staged image released; not executed' in output,output[-4000:]
             imports=[line.split(': ',1)[1] for line in output.splitlines() if line.startswith('ELF missing: ')]
-            assert sorted(imports)==[name for name in audit['undefined_symbols'] if not name.startswith('_ZTH') and name not in {'__errno_location','aligned_alloc','calloc','free','madvise','malloc',
-                                'malloc_usable_size','mincore','mmap','mprotect','msync','munmap',
-                                'posix_memalign','realloc'}]
+            assert sorted(imports)==sorted(expected)
             command(vm,'run /bin/hello','App exited with status 42')
-            print('PASS: actual Cobalt mapped and relocations processed in MyOS; 14 allocator/VM/errno imports resolved, 228 missing imports block execution; all staged pages reclaimed',flush=True)
+            print(f'PASS: actual Cobalt mapped and relocations processed in MyOS; {len(exports)} tested runtime imports resolved, {len(expected)} missing imports block execution; all staged pages reclaimed',flush=True)
         finally:vm.close()
         assert digest(disk)==before
         vm=VM('elf-dynamic-cobalt-oom',disk=disk,ram=64)
