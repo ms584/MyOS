@@ -19,7 +19,6 @@ struct clip {
     const uint8_t *sound;
     unsigned samples;
 };
-static struct fs_handle handles[FS_HANDLES];
 static unsigned u16(const uint8_t *p){return (unsigned)p[0]|((unsigned)p[1]<<8);}
 static uint32_t u32(const uint8_t *p){return (uint32_t)u16(p)|((uint32_t)u16(p+2)<<16);}
 static bool magic(const uint8_t *p){return p[0]=='M'&&p[1]=='Y'&&p[2]=='V'&&p[3]=='1';}
@@ -73,6 +72,7 @@ static bool parse(struct clip *video){
 }
 static bool load(struct clip *video,const char *path){
     struct fs_entry info;
+    struct fs_handle handles[FS_HANDLES]={0};
     if(fs_stat(path,&info)<0||info.type!=FS_FILE||
        info.size<VIDEO_HEADER||info.size>FS_FILE_MAX)return false;
     video->size=(size_t)info.size;

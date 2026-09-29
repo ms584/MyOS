@@ -5,6 +5,7 @@
 static struct process processes[PROCESS_LIMIT];
 static uint64_t next_pid = 1;
 extern const unsigned char user_blob_start[], user_blob_end[];
+extern const unsigned char platform_runtime_start[],platform_runtime_end[];
 
 struct process *process_find(uint64_t pid)
 {
@@ -180,6 +181,7 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
     }
     p->image_pages=kmalloc((size_t)capacity*sizeof(uintptr_t));
     if(!p->image_pages)goto failed;
+    p->image_capacity=capacity;
     p->root=elf_page(p,capacity);if(!p->root)goto failed;
     ((uint64_t *)p->root)[0]=((uint64_t *)boot_state.root)[0]&~4ull;
     for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
@@ -204,6 +206,22 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
     irq_restore(flags);return p;
 failed:
     release(p);irq_restore(flags);return 0;
+}
+
+bool process_map_runtime(struct process *p)
+{
+    if(!p||p->state!=PROCESS_LOADING)return false;
+    size_t size=(size_t)(platform_runtime_end-platform_runtime_start);
+    if(!size||size>64*PAGE_SIZE)return false;
+    unsigned capacity=p->image_capacity;
+    if(!capacity)return false;
+    for(size_t offset=0;offset<size;offset+=PAGE_SIZE){
+        uintptr_t page=elf_map_page(p,capacity,PROCESS_RUNTIME_BASE+offset,5);
+        if(!page)return false;
+        size_t count=size-offset;if(count>PAGE_SIZE)count=PAGE_SIZE;
+        memcpy((void *)page,platform_runtime_start+offset,count);
+    }
+    return true;
 }
 
 static uint64_t *image_leaf(struct process *p,uint64_t address)

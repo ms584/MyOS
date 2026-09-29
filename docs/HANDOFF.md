@@ -1,9 +1,10 @@
-# MyOS handoff — 2026-09-28
+# MyOS handoff — 2026-09-29
 
 The latest Phase 33.1 continuation adds tested anonymous user VM, extra Ring 3
 threads, FS-base TLS and atomic wait/wake/timeout primitives. See
-`docs/PHASE331_RUNTIME.md`. These are custom kernel primitives and do not yet
-resolve any of Cobalt's 242 strong imports. Native Cobalt HTML/JavaScript/input
+`docs/PHASE331_RUNTIME.md`. These custom kernel primitives now back a fixed-address Ring 3 platform runtime.
+Seven tested allocator imports resolve through an exact allowlist; 235 strong
+Cobalt imports remain. Native Cobalt HTML/JavaScript/input
 smoke remains the required gate before Phase 33.3.
 
 Read root AGENTS.md and docs/ROADMAP.md before starting. The owner asked to
@@ -112,8 +113,8 @@ Phase 32/33 remain **NOT PASSED**.
 The next loader milestone is documented in [PHASE332.md](PHASE332.md): staged
 ET_DYN mapping, four relocation types, in-image/weak resolution, RELRO and
 Ring 3 constructor startup for self-contained fixtures. Actual Cobalt maps
-and processes relocations but its 242 strong imports remain unresolved, so
-it is released without execution. Full native-engine/HTML/JavaScript support
+and processes relocations, resolves seven tested allocator imports, and stops on
+235 remaining strong imports, so it is released without execution. Full native-engine/HTML/JavaScript support
 and the original Phase 33.1 gate remain open; this does not close Phase 32/33.
 
 Phase 33.2 loader baseline: focused tests and the full system regression passed

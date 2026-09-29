@@ -5,8 +5,8 @@ SECTIONS {
  .text : { KEEP(*(.text.entry)) *(.text*) } :code
  .rodata : { *(.rodata*) } :code
  . = ALIGN(4096);
- .data : { *(.data*) } :data
+ .data : { *(.platform_runtime*) *(.data*) } :data
  .bss (NOLOAD) : { __bss_start = .; *(COMMON) *(.bss*) __bss_end = .; } :data
  ASSERT(kernel_entry == 0x10000,"entry address mismatch")
- ASSERT(__bss_end < 0x70000,"kernel exceeds low-memory reservation")
+ ASSERT(__bss_end < 0x71000,"kernel exceeds low-memory reservation")
 }

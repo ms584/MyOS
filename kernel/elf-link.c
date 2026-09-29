@@ -1,14 +1,37 @@
 #include "elf.h"
 #include "process.h"
-/* Single-object eager linker, no host resolver and no fabricated imports. */
+#include "platform-runtime-exports.h"
+/* Single-object eager linker with an exact allowlist of tested platform exports. */
 struct dyn { int64_t tag;uint64_t value; };
 struct symbol { uint32_t name;uint8_t info,other;uint16_t section;uint64_t value,size; };
 struct rela { uint64_t offset,info;int64_t addend; };
 struct linker {
     struct process *process;const struct elf_plan *plan;
     uint64_t dt[34],seen,gnu_hash,gnu_bytes,hash_bytes,flags1,relacount;
-    unsigned symbols,missing,weak,relative,absolute,global,jump,skipped;
+    unsigned symbols,missing,weak,platform,relative,absolute,global,jump,skipped;
 };
+struct platform_export { const char *name;uint64_t address; };
+#define PLATFORM_NAME(symbol) static char platform_name_##symbol[] \
+    __attribute__((section(".platform_runtime_names")))=#symbol
+PLATFORM_NAME(aligned_alloc);PLATFORM_NAME(calloc);PLATFORM_NAME(free);
+PLATFORM_NAME(malloc);PLATFORM_NAME(malloc_usable_size);
+PLATFORM_NAME(posix_memalign);PLATFORM_NAME(realloc);
+static struct platform_export platform_exports[]
+    __attribute__((section(".platform_runtime_names")))={
+    {platform_name_aligned_alloc,PLATFORM_ALIGNED_ALLOC},
+    {platform_name_calloc,PLATFORM_CALLOC},{platform_name_free,PLATFORM_FREE},
+    {platform_name_malloc,PLATFORM_MALLOC},
+    {platform_name_malloc_usable_size,PLATFORM_MALLOC_USABLE_SIZE},
+    {platform_name_posix_memalign,PLATFORM_POSIX_MEMALIGN},
+    {platform_name_realloc,PLATFORM_REALLOC}
+};
+static bool name_equal(const char *a,const char *b){while(*a&&*a==*b){++a;++b;}return *a==*b;}
+static bool platform_resolve(const char *name,uint64_t *address)
+{
+    for(unsigned i=0;i<sizeof(platform_exports)/sizeof(platform_exports[0]);++i)
+        if(name_equal(name,platform_exports[i].name)){*address=platform_exports[i].address;return true;}
+    return false;
+}
 static bool span(const struct elf_plan *plan,uint64_t offset,uint64_t size,unsigned flags)
 {
     if(offset>=ELF_SPAN||size>ELF_SPAN-offset)return false;
@@ -52,7 +75,7 @@ static int parse(struct linker *l)
         default:break;
         }
     }
-    if(!end||l->dt[9]!=24||l->dt[11]!=24||!l->dt[5]||!l->dt[6]||!l->dt[10]||
+    if(!end||(l->dt[8]&&l->dt[9]!=24)||l->dt[11]!=24||!l->dt[5]||!l->dt[6]||!l->dt[10]||
        l->dt[8]%24||l->dt[2]%24||l->dt[8]/24>200000||l->dt[2]/24>65536||
        (l->dt[2]&&l->dt[20]!=7)||l->relacount>l->dt[8]/24)return -8;
     if(!span(l->plan,l->dt[5],l->dt[10],4)||
@@ -87,15 +110,21 @@ static int get_symbol(struct linker *l,unsigned index,struct symbol *s)
     if(s->name>=l->dt[10])return -8;
     return 0;
 }
+static int symbol_name(struct linker *l,const struct symbol *s,char name[256])
+{
+    if(!s->name||s->name>=l->dt[10])return -8;
+    unsigned n=0;do{
+        if(n==255||s->name+n>=l->dt[10]||!read_image(l,l->dt[5]+s->name+n,name+n,1))return -8;
+        unsigned char c=(unsigned char)name[n];if(c&&(c<33||c>126))return -8;
+    }while(name[n++]);return 0;
+}
 static int imports(struct linker *l)
 {
     for(unsigned i=1;i<l->symbols;++i){struct symbol s;int rc=get_symbol(l,i,&s);if(rc)return rc;
         if(s.section)continue;
         if(!s.name||!(s.info>>4))return -8;
-        char name[256];unsigned n=0;
-        do{if(n==255||s.name+n>=l->dt[10]||!read_image(l,l->dt[5]+s.name+n,name+n,1))return -8;
-            unsigned char c=(unsigned char)name[n];if(c&&(c<33||c>126))return -8;
-        }while(name[n++]);
+        char name[256];if(symbol_name(l,&s,name))return -8;uint64_t address;
+        if(platform_resolve(name,&address)){++l->platform;print("ELF platform: ");print(name);print("\n");continue;}
         if((s.info>>4)==2){++l->weak;print("ELF weak zero: ");}
         else{++l->missing;print("ELF missing: ");}
         print(name);print("\n");
@@ -104,7 +133,11 @@ static int imports(struct linker *l)
 static int value(struct linker *l,unsigned index,uint64_t *out,bool *missing)
 {
     struct symbol s;int rc=get_symbol(l,index,&s);if(rc)return rc;*missing=false;
-    if(!s.section){*out=0;*missing=index&&(s.info>>4)!=2;return 0;}
+    if(!s.section){
+        char name[256];if(index&&symbol_name(l,&s,name))return -8;
+        if(index&&platform_resolve(name,out))return 0;
+        *out=0;*missing=index&&(s.info>>4)!=2;return 0;
+    }
     if(s.section==0xfff1){*out=s.value;return 0;}
     if(s.section>=0xff00||!span(l->plan,s.value,s.size,4))return -8;
     *out=USER_BASE+s.value;return 0;
@@ -141,6 +174,7 @@ int elf_prepare(struct process *process,const struct elf_plan *plan,struct elf_s
     memset(start,0,sizeof(*start));if(!plan->dynamic)return 0;
     struct linker l={.process=process,.plan=plan};int rc=parse(&l);if(rc)return rc;
     if((rc=imports(&l)))return rc;
+    if(l.platform&&!process_map_runtime(process))return -12;
     if((rc=relocate(&l,l.dt[7],l.dt[8]))||(rc=relocate(&l,l.dt[23],l.dt[2])))return rc;
     print("ELF relocations: relative=");decimal(l.relative);print(" absolute=");decimal(l.absolute);
     print(" global=");decimal(l.global);print(" jump=");decimal(l.jump);print(" skipped=");decimal(l.skipped);print("\n");

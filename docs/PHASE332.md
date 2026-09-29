@@ -1,8 +1,9 @@
 # Phase 33.2 — staged dynamic ELF loader
 
 The process runtime now has the VM/thread/TLS/wait foundation described in
-[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker still has no
-external Starboard resolver, so this does not change the Cobalt execution gate.
+[PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker now has an exact allowlisted resolver for seven tested
+allocator bindings. The other platform/Starboard imports remain unresolved, so
+this does not change the Cobalt execution gate.
 
 Scope: the next native loader milestone after the first Phase 33.1 slice.
 This does **not** close Phase 33.1's engine/HTML/JavaScript gate, Phase 32, or
@@ -53,7 +54,7 @@ Reference contracts:
 [pinned Cobalt relocation implementation](https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/relocations.cc).
 The implementation is intentionally narrower than the full ABI.
 
-## Actual Cobalt observation
+## Initial Cobalt loader observation
 
 Using the exact library hash from [PHASE33_COBALT_AUDIT.json](PHASE33_COBALT_AUDIT.json),
 the native QEMU test at **256 MiB** observed:
@@ -132,7 +133,7 @@ SysV/GNU tables, sectionless loading, constructors, RELRO write fault,
 missing symbols, bad destinations/symbol indices/metadata/constructors,
 unsupported features, constructor fault/timeout, repeated cleanup and legacy
 app reuse. The real engine staging and low-memory rollback checks passed.
-Full system regression status: **passed on 2026-09-28; normal framebuffer image restored**. Its `apps` group includes
+Full system regression status: **passed on 2026-09-29; normal framebuffer image restored**. Its `apps` group includes
 the new fixture suite; downloading Cobalt is not required for ordinary tests.
 The optional engine test checks the pinned binary hash and asset immutability.
 
@@ -142,9 +143,10 @@ Logs: `build/phase332-focused.log`, `build/phase332-fixtures.log`,
 
 ## Remaining work
 
-The 243-entry contract register is unchanged: no platform implementation was
-added. This loader resolves in-image symbols and ELF weak defaults, including
-the one weak import; the 242 strong platform imports still block Cobalt.
+The 243-entry contract register now marks seven allocator imports as tested.
+The loader resolves those fixed-address Ring 3 runtime functions, in-image
+symbols and ELF weak defaults. The remaining 235 strong imports still block
+Cobalt.
 The weak initializer's actual engine call path has not been exercised. Next: a native Starboard launcher/SABI boundary,
 process VM and thread/TLS/FP state, cancellation and waits, then networking,
 graphics and compressed media. Add dependency/finalizer support when required
@@ -161,3 +163,12 @@ Per-task x87/MMX/SSE context support has been added; see
 FP/SIMD limitation only. The owner requires completion of 33.1 and 33.2
 before starting 33.3. Cobalt startup remains unimplemented; neither parent
 gate is being marked complete.
+
+## Allocator platform continuation - 2026-09-29
+
+MyOS now maps a 544-byte read/execute platform runtime only when an ELF imports
+one of seven allowlisted allocator symbols. A Ring 3 fixture verifies allocation,
+zero fill, alignment, overflow handling, realloc preservation and release. The
+pinned Cobalt image resolves those seven imports and reports 235 missing strong
+imports; it is still not executed. See
+[PHASE331_PLATFORM_RUNTIME.md](PHASE331_PLATFORM_RUNTIME.md).

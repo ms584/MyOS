@@ -12,6 +12,7 @@
 #define PROCESS_PAGES (4 + PROCESS_CODE_PAGES + 2 + PROCESS_HEAP_PAGES)
 #define PROCESS_VM_BASE (USER_BASE + 0x20000000ull)
 #define PROCESS_VM_END  (USER_BASE + 0x3f000000ull)
+#define PROCESS_RUNTIME_BASE PROCESS_VM_END
 #define PROCESS_PROT_READ 1u
 #define PROCESS_PROT_WRITE 2u
 #define PROCESS_PROT_EXEC 4u
@@ -34,7 +35,7 @@ struct process {
     uintptr_t root;
     uintptr_t pages[PROCESS_PAGES];
     uintptr_t *image_pages; /* ELF-owned pages; NULL for legacy images. */
-    unsigned page_count;
+    unsigned page_count,image_capacity;
     uintptr_t *vm_pages; /* Pages and page tables created by anonymous VM. */
     unsigned vm_page_count,vm_page_capacity;
     void *kernel_stack;
@@ -57,6 +58,7 @@ void process_discard_elf(struct process *);
 bool process_start_elf(struct process *,uint64_t,uint64_t,unsigned);
 bool process_image_copy(struct process *,uint64_t,void *,size_t,bool);
 bool process_image_readonly(struct process *,uint64_t,uint64_t);
+bool process_map_runtime(struct process *);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 int64_t process_vm_map(struct process *,uint64_t,size_t,unsigned);
 int process_vm_unmap(struct process *,uint64_t,size_t);

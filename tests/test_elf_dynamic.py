@@ -83,7 +83,12 @@ def fixtures():
     data[fileoff(entry):fileoff(entry)+len(code)]=code;variants['relro-fault']=data
     for name,code in [('constructor-fault',b'\x0f\x0b'),('constructor-loop',b'\xeb\xfe')]:
         data=bytearray(original);off=fileoff(tags[12]);data[off:off+len(code)]=code;variants[name]=data
-    specs=[f'dynamic={library}']
+    allocator_obj=out/'elf-platform-allocator.o'
+    allocator=out/'allocator.so'
+    subprocess.run(['nasm','-f','elf64','user/elf-platform-allocator.asm','-o',str(allocator_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(allocator),str(allocator_obj)],check=True)
+    specs=[f'dynamic={library}',f'allocator={allocator}']
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
     disk=out/'assets.img';disk.unlink(missing_ok=True);create(disk,specs)
@@ -106,6 +111,10 @@ def exercise(cobalt=None):
         for name in ('missing','needed','unknown-reloc','finalizer'):
             output=command(vm,'elf run '+name,'unsupported runtime feature; not executed')
             assert 'constructor executed' not in output,output
+        output=command(vm,'elf run allocator','ELF exited with status 33')
+        assert 'ELF platform allocator semantics PASS' in output,output
+        assert all(f'ELF platform: {name}' in output for name in
+                   ('aligned_alloc','calloc','free','malloc','malloc_usable_size','posix_memalign','realloc')),output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')
@@ -125,13 +134,13 @@ def exercise(cobalt=None):
             vm.wait('myos> ')
             output=long_command(vm,'elf link cobalt')
             assert 'relative=117653 absolute=20 global=17 jump=626' in output,output[-4000:]
-            assert 'missing=242 weak-zero=1' in output,output[-4000:]
+            assert 'missing=235 weak-zero=1' in output,output[-4000:]
             assert 'ELF RELRO: protected' in output,output[-4000:]
             assert 'staged image released; not executed' in output,output[-4000:]
             imports=[line.split(': ',1)[1] for line in output.splitlines() if line.startswith('ELF missing: ')]
-            assert sorted(imports)==[name for name in audit['undefined_symbols'] if not name.startswith('_ZTH')]
+            assert sorted(imports)==[name for name in audit['undefined_symbols'] if not name.startswith('_ZTH') and name not in {'aligned_alloc','calloc','free','malloc','malloc_usable_size','posix_memalign','realloc'}]
             command(vm,'run /bin/hello','App exited with status 42')
-            print('PASS: actual Cobalt mapped and relocations processed in MyOS; 242 missing imports block execution; all staged pages reclaimed',flush=True)
+            print('PASS: actual Cobalt mapped and relocations processed in MyOS; 7 allocator imports resolved, 235 missing imports block execution; all staged pages reclaimed',flush=True)
         finally:vm.close()
         assert digest(disk)==before
         vm=VM('elf-dynamic-cobalt-oom',disk=disk,ram=64)

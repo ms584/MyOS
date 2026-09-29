@@ -5,10 +5,16 @@ if [[ "${MYOS_TRACE:-0}" == 1 ]]; then
     set -x
 fi
 mkdir -p build
+gcc -m64 -std=c11 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic \
+    -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
+    -fno-unwind-tables -Wall -Wextra -Werror -c user/platform-runtime.c -o build/platform-runtime.o
+ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o
+objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
+python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h
 flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
        -fno-asynchronous-unwind-tables -fno-unwind-tables
-       -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -Ivendor/mbedtls/include
+       -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -Ibuild -Ivendor/mbedtls/include
        -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
 for app in hello port loop capacity; do
     gcc -m64 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic -mno-red-zone \
@@ -51,13 +57,14 @@ for source in vendor/mbedtls/library/*.c; do
 done
 ar rcs build/libmbedtls-myos.a "${tls_objects[@]}"
 nasm -f elf64 user/app-blob.asm -o build/app-blob.o
+nasm -f elf64 user/platform-runtime-blob.asm -o build/platform-runtime-blob.o
 nasm -f elf64 user/elf-start.asm -o build/elf-start.o
 nasm -f elf64 kernel/entry.asm -o build/entry.o
 nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
 nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
 nasm -f bin user/demo.asm -o build/user-demo.bin
 nasm -f elf64 user/blob.asm -o build/user-blob.o
-ld -m elf_x86_64 --gc-sections --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/elf-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
+ld -m elf_x86_64 --gc-sections --build-id=none -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
 test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }
