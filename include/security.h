@@ -5,6 +5,7 @@ void security_init(void);
 bool security_time_ready(void);
 bool security_entropy_ready(void);
 uint64_t security_unix_time(void);
+uint64_t security_unix_time_ns(void);
 bool security_random(void *out,size_t size);
 void security_status(void);
 #endif

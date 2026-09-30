@@ -196,6 +196,7 @@ int msync(void *address,size_t length,int flags)
 #define SYS_WAIT 20u
 #define SYS_WAKE 21u
 #define SYS_THREAD_DETACH 26u
+#define SYS_CLOCK_NANOS 27u
 #define RUNTIME_TLS_BASE 0x803f010000ull
 #define THREAD_STACK_SIZE (1024u*1024u)
 #define MAIN_STACK_BASE 0x8010001000ull
@@ -214,10 +215,12 @@ struct thread_control {
     uint64_t magic,tid,base,length;
     void *(*start)(void *);
     void *argument,*result;
-    uint64_t detached,done;
+    uint64_t detached,joined,done;
+    uint64_t signal_mask[2];
     char name[16];
 };
 struct thread_attr { uint64_t magic,stack_size,detached,stack_base; };
+struct condition_layout { volatile uint64_t sequence;uint32_t clock,waiters; };
 
 static int64_t call4(uint64_t number,uint64_t first,uint64_t second,uint64_t third,uint64_t fourth)
 {
@@ -237,17 +240,69 @@ static int wait64(volatile uint64_t *word,uint64_t value,uint64_t deadline)
 {return (int)call3(SYS_WAIT,(uintptr_t)word,value,deadline);}
 static void wake64(volatile uint64_t *word,unsigned count)
 {(void)call3(SYS_WAKE,(uintptr_t)word,count,0);}
-static uint64_t deadline_ticks(const struct timespec *time)
+static int clock_nanos(int clock,uint64_t *value)
 {
-    if(!time||time->tv_sec<0||time->tv_nsec<0||time->tv_nsec>=1000000000)return UINT64_MAX;
-    if((uint64_t)time->tv_sec>UINT64_MAX/100)return UINT64_MAX-1;
-    return (uint64_t)time->tv_sec*100+(uint64_t)time->tv_nsec/10000000;
+    int64_t result=call3(SYS_CLOCK_NANOS,(unsigned)clock,0,0);
+    if(result<0)return (int)-result;*value=(uint64_t)result;return 0;
+}
+static int deadline_ticks(int clock,const struct timespec *time,uint64_t *deadline)
+{
+    if(!time||!deadline||(clock!=0&&clock!=1)||time->tv_sec<0||
+       time->tv_nsec<0||time->tv_nsec>=1000000000)return EINVAL;
+    if((uint64_t)time->tv_sec>UINT64_MAX/1000000000ull)return EINVAL;
+    uint64_t target=(uint64_t)time->tv_sec*1000000000ull+(uint64_t)time->tv_nsec;
+    uint64_t now_ns=0;int rc=clock_nanos(clock,&now_ns);if(rc)return rc;
+    uint64_t now_ticks=(uint64_t)call3(SYS_TICKS,0,0,0);
+    if(target<=now_ns){*deadline=now_ticks;return 0;}
+    uint64_t delta=target-now_ns,add=delta/10000000ull+(delta%10000000ull!=0);
+    *deadline=add>UINT64_MAX-1-now_ticks?UINT64_MAX-1:now_ticks+add;return 0;
+}
+int clock_gettime(int clock,struct timespec *time)
+{
+    if(!time){*__errno_location()=14;return -1;}
+    uint64_t value=0;int rc=clock_nanos(clock,&value);
+    if(rc){*__errno_location()=rc;return -1;}
+    time->tv_sec=(int64_t)(value/1000000000ull);
+    time->tv_nsec=(int64_t)(value%1000000000ull);return 0;
+}
+int clock_nanosleep(int clock,int flags,const struct timespec *request,struct timespec *remaining)
+{
+    if(!request||(clock!=0&&clock!=1)||(flags!=0&&flags!=1)||request->tv_sec<0||
+       request->tv_nsec<0||request->tv_nsec>=1000000000)return EINVAL;
+    uint64_t deadline;
+    if(flags){int rc=deadline_ticks(clock,request,&deadline);if(rc)return rc;}
+    else {
+        if((uint64_t)request->tv_sec>UINT64_MAX/1000000000ull)return EINVAL;
+        uint64_t duration=(uint64_t)request->tv_sec*1000000000ull+(uint64_t)request->tv_nsec;
+        uint64_t add=duration/10000000ull+(duration%10000000ull!=0);
+        uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0);
+        deadline=add>UINT64_MAX-1-now?UINT64_MAX-1:now+add;
+    }
+    if(deadline<=(uint64_t)call3(SYS_TICKS,0,0,0))return 0;
+    volatile uint64_t *scratch=(uint64_t *)(uintptr_t)(self_page()+32);
+    uint64_t value=__atomic_load_n(scratch,__ATOMIC_ACQUIRE);
+    for(;;){int rc=wait64(scratch,value,deadline);
+        if(rc==-ETIMEDOUT)break;if(rc!=-EAGAIN)return -rc;
+        if(deadline<=(uint64_t)call3(SYS_TICKS,0,0,0))break;
+    }
+    if(remaining)*remaining=(struct timespec){0,0};return 0;
 }
 
-static uint32_t *key_bits(void){return (uint32_t *)(uintptr_t)(RUNTIME_TLS_BASE+256);}
+static uint32_t *key_bits(void){return (uint32_t *)(uintptr_t)(RUNTIME_TLS_BASE+1024);}
 static void (**key_destructors(void))(void *)
-{return (void (**)(void *))(uintptr_t)(RUNTIME_TLS_BASE+512);}
+{return (void (**)(void *))(uintptr_t)(RUNTIME_TLS_BASE+1152);}
 static void **key_values(void){return (void **)(uintptr_t)(self_page()+64);}
+static uint64_t *signal_mask(void){return (uint64_t *)(uintptr_t)(self_page()+384);}
+static void clear_key_values(unsigned key)
+{for(unsigned i=0;i<=8;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
+static struct thread_control *thread_control(uint64_t thread)
+{
+    if(!thread||(thread&4095)||thread<0x8020000000ull||thread>=0x803f000000ull)return 0;
+    unsigned char resident;
+    if(call3(SYS_VM_QUERY,thread,PAGE_SIZE,(uintptr_t)&resident)<0)return 0;
+    struct thread_control *control=(void *)(uintptr_t)thread;
+    return control->magic==THREAD_MAGIC?control:0;
+}
 static void run_destructors(void)
 {
     for(unsigned pass=0;pass<4;++pass){int any=0;
@@ -263,6 +318,8 @@ static void thread_entry(void *raw)
     struct thread_control *control=raw;
     *(struct thread_control **)(uintptr_t)(self_page()+8)=control;
     for(unsigned i=0;i<THREAD_KEYS;++i)key_values()[i]=0;
+    signal_mask()[0]=control->signal_mask[0];
+    signal_mask()[1]=control->signal_mask[1];
     control->result=control->start(control->argument);
     run_destructors();
     __atomic_store_n(&control->done,1,__ATOMIC_RELEASE);wake64(&control->done,~0u);
@@ -295,7 +352,8 @@ int pthread_create(uint64_t *thread,const void *raw,void *(*start)(void *),void 
     void *mapping=mmap(0,length,POSIX_PROT_READ|POSIX_PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
     if(mapping==(void *)(uintptr_t)-1)return EAGAIN;
     struct thread_control *control=mapping;
-    *control=(struct thread_control){THREAD_MAGIC,0,(uint64_t)(uintptr_t)mapping,length,start,argument,0,0,0,{0}};
+    *control=(struct thread_control){THREAD_MAGIC,0,(uint64_t)(uintptr_t)mapping,length,
+        start,argument,0,0,0,0,{signal_mask()[0],signal_mask()[1]},{0}};
     int64_t tid=call4(SYS_THREAD_CREATE,(uintptr_t)thread_entry,(uintptr_t)control,
                       (uintptr_t)mapping+length,0);
     if(tid<0){munmap(mapping,length);return (int)-tid;}
@@ -312,10 +370,12 @@ uint64_t pthread_self(void)
 }
 int pthread_join(uint64_t thread,void **result)
 {
-    struct thread_control *control=(void *)(uintptr_t)thread;
-    if(!control||control->magic!=THREAD_MAGIC)return ESRCH;
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     if(thread==pthread_self())return EDEADLK;
     if(__atomic_load_n(&control->detached,__ATOMIC_ACQUIRE))return EINVAL;
+    uint64_t zero=0;
+    if(!__atomic_compare_exchange_n(&control->joined,&zero,1,0,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE))
+        return EINVAL;
     int32_t status;
     for(;;){int rc=(int)call3(SYS_THREAD_REAP,control->tid,(uintptr_t)&status,0);
         if(!rc)break;if(rc!=-EAGAIN)return -rc;
@@ -328,8 +388,8 @@ int pthread_join(uint64_t thread,void **result)
 }
 int pthread_detach(uint64_t thread)
 {
-    struct thread_control *control=(void *)(uintptr_t)thread;
-    if(!control||control->magic!=THREAD_MAGIC)return ESRCH;
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
+    if(__atomic_load_n(&control->joined,__ATOMIC_ACQUIRE))return EINVAL;
     uint64_t expected=0;
     if(!__atomic_compare_exchange_n(&control->detached,&expected,1,0,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE))
         return EINVAL;
@@ -339,11 +399,10 @@ int pthread_detach(uint64_t thread)
 }
 int pthread_getattr_np(uint64_t thread,void *raw)
 {
-    struct thread_control *control=(void *)(uintptr_t)thread;
     if(!raw)return EINVAL;
     struct thread_attr *a=raw;*a=(struct thread_attr){0x41545452,THREAD_STACK_SIZE,0,0};
     if(thread==RUNTIME_TLS_BASE){a->stack_base=MAIN_STACK_BASE;a->stack_size=MAIN_STACK_SIZE;return 0;}
-    if(!control||control->magic!=THREAD_MAGIC)return ESRCH;
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     a->stack_base=control->base;a->stack_size=control->length;
     a->detached=control->detached;return 0;
 }
@@ -355,9 +414,9 @@ int pthread_attr_getstack(const void *raw,void **stack,size_t *size)
 }
 int pthread_setname_np(uint64_t thread,const char *name)
 {
-    struct thread_control *control=(void *)(uintptr_t)thread;
+    if(!name)return EINVAL;
     if(thread==RUNTIME_TLS_BASE)return 0;
-    if(!control||control->magic!=THREAD_MAGIC||!name)return ESRCH;
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     unsigned i=0;for(;i<15&&name[i];++i)control->name[i]=name[i];
     if(name[i])return 34;control->name[i]=0;return 0;
 }
@@ -366,21 +425,32 @@ int pthread_getname_np(uint64_t thread,char *name,size_t size)
     if(!name||!size)return EINVAL;
     if(thread==RUNTIME_TLS_BASE){const char main_name[]="main";size_t i=0;
         for(;i+1<size&&main_name[i];++i)name[i]=main_name[i];name[i]=0;return 0;}
-    struct thread_control *control=(void *)(uintptr_t)thread;
-    if(!control||control->magic!=THREAD_MAGIC)return ESRCH;
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     size_t i=0;for(;i+1<size&&control->name[i];++i)name[i]=control->name[i];name[i]=0;return 0;
 }
 int pthread_getschedparam(uint64_t thread,int *policy,void *parameter)
 {
-    if(!thread||!policy||!parameter)return EINVAL;*policy=0;*(int *)parameter=0;return 0;
+    if(!policy||!parameter)return EINVAL;
+    if(thread!=RUNTIME_TLS_BASE&&!thread_control(thread))return ESRCH;
+    *policy=0;*(int *)parameter=0;return 0;
 }
 int pthread_kill(uint64_t thread,int signal)
 {
-    if(!thread)return ESRCH;if(signal)return EINVAL;return 0;
+    if(thread!=RUNTIME_TLS_BASE&&!thread_control(thread))return ESRCH;
+    if(signal)return EINVAL;return 0;
 }
 int pthread_sigmask(int how,const void *set,void *old)
 {
-    (void)how;(void)set;if(old)for(unsigned i=0;i<16;++i)((unsigned char *)old)[i]=0;return 0;
+    uint64_t *current=signal_mask();
+    if(set&&(how<0||how>2))return EINVAL;
+    if(old){((uint64_t *)old)[0]=current[0];((uint64_t *)old)[1]=current[1];}
+    if(set){uint64_t first=((const uint64_t *)set)[0],second=((const uint64_t *)set)[1];
+        if(how==0){current[0]|=first;current[1]|=second;}
+        else if(how==1){current[0]&=~first;current[1]&=~second;}
+        else {current[0]=first;current[1]=second;}
+        current[0]&=~((1ull<<8)|(1ull<<18));
+    }
+    return 0;
 }
 
 struct mutex_layout { volatile uint64_t state;uint64_t owner;uint32_t recursion,type; };
@@ -421,24 +491,33 @@ int pthread_condattr_destroy(void *a){return a?0:EINVAL;}
 int pthread_condattr_setclock(void *a,int clock)
 {if(!a||(clock!=0&&clock!=1))return EINVAL;*(uint32_t *)a=(uint32_t)clock;return 0;}
 int pthread_cond_init(void *raw,const void *attr)
-{if(!raw)return EINVAL;(void)attr;*(uint64_t *)raw=0;return 0;}
-int pthread_cond_destroy(void *raw){return raw?0:EINVAL;}
+{if(!raw)return EINVAL;struct condition_layout *c=raw;
+ *c=(struct condition_layout){0,attr?*(const uint32_t *)attr:0,0};return 0;}
+int pthread_cond_destroy(void *raw)
+{if(!raw)return EINVAL;return __atomic_load_n(&((struct condition_layout *)raw)->waiters,__ATOMIC_ACQUIRE)?EBUSY:0;}
 int pthread_cond_signal(void *raw)
-{if(!raw)return EINVAL;__atomic_add_fetch((uint64_t *)raw,1,__ATOMIC_RELEASE);wake64(raw,1);return 0;}
+{if(!raw)return EINVAL;struct condition_layout *c=raw;
+ __atomic_add_fetch(&c->sequence,1,__ATOMIC_RELEASE);wake64(&c->sequence,1);return 0;}
 int pthread_cond_broadcast(void *raw)
-{if(!raw)return EINVAL;__atomic_add_fetch((uint64_t *)raw,1,__ATOMIC_RELEASE);wake64(raw,~0u);return 0;}
+{if(!raw)return EINVAL;struct condition_layout *c=raw;
+ __atomic_add_fetch(&c->sequence,1,__ATOMIC_RELEASE);wake64(&c->sequence,~0u);return 0;}
 static int cond_wait(void *raw,void *mutex,uint64_t deadline)
 {
-    if(!raw||!mutex)return EINVAL;uint64_t value=__atomic_load_n((uint64_t *)raw,__ATOMIC_ACQUIRE);
-    int rc=pthread_mutex_unlock(mutex);if(rc)return rc;
-    rc=wait64(raw,value,deadline);int lock=pthread_mutex_lock(mutex);
+    if(!raw||!mutex)return EINVAL;struct condition_layout *c=raw;
+    uint64_t value=__atomic_load_n(&c->sequence,__ATOMIC_ACQUIRE);
+    __atomic_add_fetch(&c->waiters,1,__ATOMIC_ACQ_REL);
+    int rc=pthread_mutex_unlock(mutex);
+    if(rc){__atomic_sub_fetch(&c->waiters,1,__ATOMIC_ACQ_REL);return rc;}
+    rc=wait64(&c->sequence,value,deadline);
+    __atomic_sub_fetch(&c->waiters,1,__ATOMIC_ACQ_REL);int lock=pthread_mutex_lock(mutex);
     if(lock)return lock;return rc==-ETIMEDOUT?ETIMEDOUT:0;
 }
 int pthread_cond_wait(void *raw,void *mutex){return cond_wait(raw,mutex,0);}
 int pthread_cond_timedwait(void *raw,void *mutex,const struct timespec *time)
 {
-    uint64_t d=deadline_ticks(time);if(d==UINT64_MAX)return EINVAL;
-    if(d<=(uint64_t)call3(SYS_TICKS,0,0,0)){
+    if(!raw)return EINVAL;uint64_t d;
+    int converted=deadline_ticks(((struct condition_layout *)raw)->clock,time,&d);
+    if(converted)return converted;if(d<=(uint64_t)call3(SYS_TICKS,0,0,0)){
         int rc=pthread_mutex_unlock(mutex);if(rc)return rc;
         rc=pthread_mutex_lock(mutex);return rc?rc:ETIMEDOUT;
     }
@@ -463,9 +542,8 @@ static int sem_take(void *raw,uint64_t deadline)
 int sem_wait(void *raw){return sem_take(raw,0);}
 int sem_timedwait(void *raw,const struct timespec *time)
 {
-    uint64_t d=deadline_ticks(time);
-    if(d==UINT64_MAX){*__errno_location()=EINVAL;return -1;}
-    if(d<=(uint64_t)call3(SYS_TICKS,0,0,0)){*__errno_location()=ETIMEDOUT;return -1;}
+    uint64_t d;int rc=deadline_ticks(0,time,&d);
+    if(rc){*__errno_location()=rc;return -1;}
     return sem_take(raw,d);
 }
 
@@ -508,14 +586,14 @@ int pthread_key_create(unsigned *key,void (*destructor)(void *))
 {
     if(!key)return EINVAL;
     for(unsigned i=0;i<THREAD_KEYS;++i){uint32_t bit=1u<<i,old=__atomic_fetch_or(key_bits(),bit,__ATOMIC_ACQ_REL);
-        if(!(old&bit)){key_destructors()[i]=destructor;*key=i;return 0;}}
+        if(!(old&bit)){clear_key_values(i);key_destructors()[i]=destructor;*key=i;return 0;}}
     return EAGAIN;
 }
 int pthread_key_delete(unsigned key)
 {
     if(key>=THREAD_KEYS)return EINVAL;uint32_t bit=1u<<key;
     if(!(__atomic_fetch_and(key_bits(),~bit,__ATOMIC_ACQ_REL)&bit))return EINVAL;
-    key_destructors()[key]=0;return 0;
+    key_destructors()[key]=0;clear_key_values(key);return 0;
 }
 int pthread_setspecific(unsigned key,const void *value)
 {
@@ -526,4 +604,392 @@ void *pthread_getspecific(unsigned key)
 {
     if(key>=THREAD_KEYS||!(__atomic_load_n(key_bits(),__ATOMIC_ACQUIRE)&(1u<<key)))return 0;
     return key_values()[key];
+}
+
+
+/* Process-wide descriptor objects.  Operations take an object reference before
+ * dropping the table lock; close removes the generation and wakes every wait.
+ * This is also the lifetime model intended for file and socket backends. */
+#define SYS_WRITE 1u
+#define SYS_FREAD 6u
+#define SYS_FWRITE 7u
+#define SYS_FCLOSE 8u
+#define FD_BASE 64
+#define FD_SLOTS 32u
+#define PIPE_CAPACITY 4096u
+#define EPOLL_REGS 32u
+#define O_NONBLOCK 04000
+#define O_CLOEXEC 02000000
+#define POLLIN 0x0001u
+#define POLLOUT 0x0004u
+#define POLLERR 0x0008u
+#define POLLHUP 0x0010u
+#define POLLNVAL 0x0020u
+#define EPOLL_CTL_ADD 1
+#define EPOLL_CTL_DEL 2
+#define EPOLL_CTL_MOD 3
+#define EBADF 9
+#define EFAULT 14
+#define ENOMEM 12
+#define EEXIST 17
+#define ENOENT 2
+#define ENOSPC 28
+#define EPIPE 32
+
+enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3 };
+struct epoll_event { uint32_t events;uint64_t data __attribute__((packed)); } __attribute__((packed));
+struct pollfd { int32_t fd;uint16_t events,revents; };
+struct descriptor_object;
+struct epoll_registration {
+    struct descriptor_object *object;
+    uint32_t slot,generation,events,used,access;
+    uint64_t data;
+};
+struct descriptor_object {
+    volatile uint64_t lock,sequence;
+    volatile uint32_t references;
+    uint32_t type;
+    union {
+        struct { uint64_t counter;uint32_t semaphore,opens; } event;
+        struct {
+            unsigned char data[PIPE_CAPACITY];
+            uint32_t head,count,readers,writers;
+        } pipe;
+        struct { struct epoll_registration registrations[EPOLL_REGS]; } epoll;
+    } value;
+};
+struct descriptor_slot {
+    struct descriptor_object *object;
+    uint32_t generation,access,flags;
+};
+struct descriptor_state {
+    volatile uint64_t lock,sequence;
+    struct descriptor_slot slots[FD_SLOTS];
+};
+struct descriptor_ref {
+    struct descriptor_object *object;
+    uint32_t slot,generation,access,flags;
+};
+
+static struct descriptor_state **descriptor_state_slot(void)
+{return (struct descriptor_state **)(uintptr_t)(RUNTIME_TLS_BASE+1536);}
+static void spin_lock(volatile uint64_t *lock)
+{while(__atomic_exchange_n(lock,1,__ATOMIC_ACQUIRE))yield_cpu();}
+static void spin_unlock(volatile uint64_t *lock)
+{__atomic_store_n(lock,0,__ATOMIC_RELEASE);}
+static struct descriptor_state *descriptor_state(void)
+{
+    struct descriptor_state *state=__atomic_load_n(descriptor_state_slot(),__ATOMIC_ACQUIRE);
+    if(state)return state;
+    struct descriptor_state *created=malloc(sizeof(*created));
+    if(!created)return 0;
+    struct descriptor_state *empty=0;
+    if(!__atomic_compare_exchange_n(descriptor_state_slot(),&empty,created,0,
+                                    __ATOMIC_RELEASE,__ATOMIC_ACQUIRE)){
+        free(created);return empty;
+    }
+    return created;
+}
+static struct descriptor_object *descriptor_object(unsigned type)
+{
+    struct descriptor_object *object=malloc(sizeof(*object));
+    if(!object)return 0;object->type=type;return object;
+}
+static void object_release(struct descriptor_object *object);
+static void object_release(struct descriptor_object *object)
+{
+    if(__atomic_sub_fetch(&object->references,1,__ATOMIC_ACQ_REL))return;
+    if(object->type==DESCRIPTOR_EPOLL)
+        for(unsigned i=0;i<EPOLL_REGS;++i)
+            if(object->value.epoll.registrations[i].used)
+                object_release(object->value.epoll.registrations[i].object);
+    free(object);
+}
+static int descriptor_install_locked(struct descriptor_state *state,
+                                     struct descriptor_object *object,
+                                     unsigned access,unsigned flags)
+{
+    for(unsigned i=0;i<FD_SLOTS;++i)if(!state->slots[i].object){
+        struct descriptor_slot *slot=&state->slots[i];
+        if(!slot->generation)slot->generation=1;
+        slot->object=object;slot->access=access;slot->flags=flags;
+        __atomic_add_fetch(&object->references,1,__ATOMIC_RELAXED);
+        return FD_BASE+(int)i;
+    }
+    return -1;
+}
+static int descriptor_acquire(int fd,struct descriptor_ref *reference)
+{
+    struct descriptor_state *state=descriptor_state();
+    if(!state||fd<FD_BASE||fd>=FD_BASE+(int)FD_SLOTS)return 0;
+    unsigned index=(unsigned)(fd-FD_BASE);spin_lock(&state->lock);
+    struct descriptor_slot *slot=&state->slots[index];
+    if(!slot->object){spin_unlock(&state->lock);return 0;}
+    __atomic_add_fetch(&slot->object->references,1,__ATOMIC_RELAXED);
+    *reference=(struct descriptor_ref){slot->object,index,slot->generation,slot->access,slot->flags};
+    spin_unlock(&state->lock);return 1;
+}
+static int descriptor_current(const struct descriptor_ref *reference)
+{
+    struct descriptor_state *state=descriptor_state();if(!state)return 0;
+    int current;spin_lock(&state->lock);
+    struct descriptor_slot *slot=&state->slots[reference->slot];
+    current=slot->object==reference->object&&slot->generation==reference->generation;
+    spin_unlock(&state->lock);return current;
+}
+static void descriptor_changed(struct descriptor_object *target)
+{
+    __atomic_add_fetch(&target->sequence,1,__ATOMIC_RELEASE);
+    wake64(&target->sequence,~0u);
+    struct descriptor_state *state=descriptor_state();if(!state)return;
+    __atomic_add_fetch(&state->sequence,1,__ATOMIC_RELEASE);wake64(&state->sequence,~0u);
+    spin_lock(&state->lock);
+    for(unsigned i=0;i<FD_SLOTS;++i){
+        struct descriptor_object *epoll=state->slots[i].object;
+        if(!epoll||epoll->type!=DESCRIPTOR_EPOLL)continue;
+        spin_lock(&epoll->lock);
+        for(unsigned j=0;j<EPOLL_REGS;++j)
+            if(epoll->value.epoll.registrations[j].used&&
+               epoll->value.epoll.registrations[j].object==target){
+                __atomic_add_fetch(&epoll->sequence,1,__ATOMIC_RELEASE);
+                wake64(&epoll->sequence,~0u);break;
+            }
+        spin_unlock(&epoll->lock);
+    }
+    spin_unlock(&state->lock);
+}
+static uint32_t object_ready(struct descriptor_object *object,unsigned access)
+{
+    uint32_t ready=0;spin_lock(&object->lock);
+    if(object->type==DESCRIPTOR_EVENT){
+        if(object->value.event.counter)ready|=POLLIN;
+        if(object->value.event.counter<UINT64_MAX-1)ready|=POLLOUT;
+    } else if(object->type==DESCRIPTOR_PIPE){
+        if((access&1)&&object->value.pipe.count)ready|=POLLIN;
+        if((access&1)&&!object->value.pipe.writers)ready|=POLLHUP;
+        if((access&2)&&object->value.pipe.readers&&object->value.pipe.count<PIPE_CAPACITY)ready|=POLLOUT;
+        if((access&2)&&!object->value.pipe.readers)ready|=POLLERR|POLLHUP;
+    }
+    spin_unlock(&object->lock);return ready;
+}
+static int set_error(int error){*__errno_location()=error;return -1;}
+
+int close(int fd)
+{
+    if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FCLOSE,(unsigned)fd,0,0);return rc<0?fail(rc):0;}
+    struct descriptor_state *state=descriptor_state();
+    if(!state||fd<FD_BASE||fd>=FD_BASE+(int)FD_SLOTS)return set_error(EBADF);
+    unsigned index=(unsigned)(fd-FD_BASE);struct descriptor_slot closed;
+    spin_lock(&state->lock);struct descriptor_slot *slot=&state->slots[index];
+    if(!slot->object){spin_unlock(&state->lock);return set_error(EBADF);}
+    closed=*slot;slot->object=0;slot->access=slot->flags=0;++slot->generation;
+    for(unsigned i=0;i<FD_SLOTS;++i){
+        struct descriptor_object *epoll=state->slots[i].object;
+        if(!epoll||epoll->type!=DESCRIPTOR_EPOLL)continue;
+        spin_lock(&epoll->lock);
+        for(unsigned j=0;j<EPOLL_REGS;++j){struct epoll_registration *r=&epoll->value.epoll.registrations[j];
+            if(r->used&&r->slot==index&&r->generation==closed.generation){
+                r->used=0;object_release(r->object);__atomic_add_fetch(&epoll->sequence,1,__ATOMIC_RELEASE);
+                wake64(&epoll->sequence,~0u);
+            }
+        }
+        spin_unlock(&epoll->lock);
+    }
+    __atomic_add_fetch(&state->sequence,1,__ATOMIC_RELEASE);wake64(&state->sequence,~0u);
+    spin_unlock(&state->lock);
+    spin_lock(&closed.object->lock);
+    if(closed.object->type==DESCRIPTOR_EVENT&&closed.object->value.event.opens)
+        --closed.object->value.event.opens;
+    if(closed.object->type==DESCRIPTOR_PIPE){
+        if((closed.access&1)&&closed.object->value.pipe.readers)--closed.object->value.pipe.readers;
+        if((closed.access&2)&&closed.object->value.pipe.writers)--closed.object->value.pipe.writers;
+    }
+    spin_unlock(&closed.object->lock);descriptor_changed(closed.object);object_release(closed.object);return 0;
+}
+int64_t read(int fd,void *buffer,size_t length)
+{
+    if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FREAD,(unsigned)fd,(uintptr_t)buffer,length);
+        if(rc<0){fail(rc);return -1;}return rc;}
+    if(!buffer&&length){set_error(EFAULT);return -1;}
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&1)){
+        if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
+    struct descriptor_object *object=reference.object;int64_t result=-1;
+    if(object->type==DESCRIPTOR_EVENT){
+        if(length!=8){set_error(EINVAL);goto done;}
+        for(;;){spin_lock(&object->lock);uint64_t value=object->value.event.counter;
+            if(value){uint64_t take=object->value.event.semaphore?1:value;
+                object->value.event.counter-=take;*(uint64_t *)buffer=take;spin_unlock(&object->lock);
+                descriptor_changed(object);result=8;break;}
+            uint64_t sequence=object->sequence;spin_unlock(&object->lock);
+            if(!descriptor_current(&reference)){set_error(EBADF);break;}
+            if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
+            (void)wait64(&object->sequence,sequence,0);
+        }
+    } else if(object->type==DESCRIPTOR_PIPE){
+        if(!length){result=0;goto done;}
+        for(;;){spin_lock(&object->lock);uint32_t count=object->value.pipe.count;
+            if(count){if(count>length)count=(uint32_t)length;
+                for(uint32_t i=0;i<count;++i){((unsigned char *)buffer)[i]=object->value.pipe.data[object->value.pipe.head];
+                    object->value.pipe.head=(object->value.pipe.head+1)%PIPE_CAPACITY;}
+                object->value.pipe.count-=count;spin_unlock(&object->lock);
+                descriptor_changed(object);result=count;break;}
+            uint32_t writers=object->value.pipe.writers;uint64_t sequence=object->sequence;spin_unlock(&object->lock);
+            if(!descriptor_current(&reference)){set_error(EBADF);break;}
+            if(!writers){result=0;break;}
+            if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
+            (void)wait64(&object->sequence,sequence,0);
+        }
+    } else set_error(EBADF);
+done:object_release(object);return result;
+}
+int64_t write(int fd,const void *buffer,size_t length)
+{
+    if(fd==1||fd==2){int64_t rc=call3(SYS_WRITE,(uintptr_t)buffer,length,0);
+        if(rc<0){fail(rc);return -1;}return rc;}
+    if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FWRITE,(unsigned)fd,(uintptr_t)buffer,length);
+        if(rc<0){fail(rc);return -1;}return rc;}
+    if(!buffer&&length){set_error(EFAULT);return -1;}
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&2)){
+        if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
+    struct descriptor_object *object=reference.object;int64_t result=-1;
+    if(object->type==DESCRIPTOR_EVENT){
+        if(length!=8){set_error(EINVAL);goto done;}
+        uint64_t add=*(const uint64_t *)buffer;if(add==UINT64_MAX){set_error(EINVAL);goto done;}
+        for(;;){spin_lock(&object->lock);uint64_t value=object->value.event.counter;
+            if(add<=UINT64_MAX-1-value){object->value.event.counter=value+add;spin_unlock(&object->lock);
+                descriptor_changed(object);result=8;break;}
+            uint64_t sequence=object->sequence;spin_unlock(&object->lock);
+            if(!descriptor_current(&reference)){set_error(EBADF);break;}
+            if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
+            (void)wait64(&object->sequence,sequence,0);
+        }
+    } else if(object->type==DESCRIPTOR_PIPE){
+        if(!length){result=0;goto done;}
+        for(;;){spin_lock(&object->lock);if(!object->value.pipe.readers){spin_unlock(&object->lock);set_error(EPIPE);break;}
+            uint32_t space=PIPE_CAPACITY-object->value.pipe.count;
+            if(space){uint32_t count=space<length?space:(uint32_t)length;
+                uint32_t tail=(object->value.pipe.head+object->value.pipe.count)%PIPE_CAPACITY;
+                for(uint32_t i=0;i<count;++i){object->value.pipe.data[tail]=((const unsigned char *)buffer)[i];
+                    tail=(tail+1)%PIPE_CAPACITY;}
+                object->value.pipe.count+=count;spin_unlock(&object->lock);
+                descriptor_changed(object);result=count;break;}
+            uint64_t sequence=object->sequence;spin_unlock(&object->lock);
+            if(!descriptor_current(&reference)){set_error(EBADF);break;}
+            if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
+            (void)wait64(&object->sequence,sequence,0);
+        }
+    } else set_error(EBADF);
+done:object_release(object);return result;
+}
+int eventfd(unsigned initval,int flags)
+{
+    if(flags&~(1|O_NONBLOCK|O_CLOEXEC))return set_error(EINVAL);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_EVENT);if(!object)return set_error(ENOMEM);
+    object->value.event.counter=initval;object->value.event.semaphore=!!(flags&1);object->value.event.opens=1;
+    spin_lock(&state->lock);int fd=descriptor_install_locked(state,object,3,(unsigned)flags);
+    spin_unlock(&state->lock);if(fd<0){free(object);return set_error(ENOSPC);}return fd;
+}
+int pipe2(int fildes[2],int flags)
+{
+    if(!fildes)return set_error(EFAULT);
+    if(flags&~(O_NONBLOCK|O_CLOEXEC))return set_error(EINVAL);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_PIPE);if(!object)return set_error(ENOMEM);
+    object->value.pipe.readers=object->value.pipe.writers=1;
+    spin_lock(&state->lock);int first=descriptor_install_locked(state,object,1,(unsigned)flags);
+    int second=first<0?-1:descriptor_install_locked(state,object,2,(unsigned)flags);
+    if(second<0&&first>=0){struct descriptor_slot *slot=&state->slots[first-FD_BASE];
+        slot->object=0;++slot->generation;object->references=0;}
+    spin_unlock(&state->lock);
+    if(first<0||second<0){free(object);return set_error(ENOSPC);}
+    fildes[0]=first;fildes[1]=second;return 0;
+}
+int pipe(int fildes[2]){return pipe2(fildes,0);}
+
+static int poll_deadline(int timeout,uint64_t *deadline)
+{
+    if(timeout< -1)return 0;if(timeout<0){*deadline=0;return 1;}
+    uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0),add=((uint64_t)timeout+9)/10;
+    *deadline=add>UINT64_MAX-1-now?UINT64_MAX-1:now+add;return 1;
+}
+int poll(struct pollfd *fds,uint64_t count,int32_t timeout)
+{
+    if((!fds&&count)||count>1024)return set_error(EFAULT);
+    uint64_t deadline;if(!poll_deadline(timeout,&deadline))return set_error(EINVAL);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    for(;;){int ready=0;uint64_t sequence=__atomic_load_n(&state->sequence,__ATOMIC_ACQUIRE);
+        for(uint64_t i=0;i<count;++i){fds[i].revents=0;if(fds[i].fd<0)continue;
+            struct descriptor_ref r={0};if(!descriptor_acquire(fds[i].fd,&r)){fds[i].revents=POLLNVAL;++ready;continue;}
+            uint32_t events=object_ready(r.object,r.access),always=events&(POLLERR|POLLHUP);
+            fds[i].revents=(uint16_t)((events&fds[i].events)|always);if(fds[i].revents)++ready;
+            object_release(r.object);
+        }
+        if(ready||timeout==0)return ready;
+        int rc=wait64(&state->sequence,sequence,deadline);if(rc==-ETIMEDOUT)return 0;
+    }
+}
+int epoll_create1(int flags)
+{
+    if(flags&~O_CLOEXEC)return set_error(EINVAL);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_EPOLL);if(!object)return set_error(ENOMEM);
+    spin_lock(&state->lock);int fd=descriptor_install_locked(state,object,3,(unsigned)flags);spin_unlock(&state->lock);
+    if(fd<0){free(object);return set_error(ENOSPC);}return fd;
+}
+int epoll_ctl(int epfd,int operation,int fd,struct epoll_event *event)
+{
+    struct descriptor_ref epoll={0},target={0};
+    if(!descriptor_acquire(epfd,&epoll)||epoll.object->type!=DESCRIPTOR_EPOLL){
+        if(epoll.object)object_release(epoll.object);return set_error(EBADF);}
+    if(!descriptor_acquire(fd,&target)||target.object->type==DESCRIPTOR_EPOLL){
+        if(target.object)object_release(target.object);object_release(epoll.object);return set_error(EBADF);}
+    if(operation!=EPOLL_CTL_DEL&&!event){object_release(target.object);object_release(epoll.object);return set_error(EFAULT);}
+    int found=-1,empty=-1,result=0;spin_lock(&epoll.object->lock);
+    for(unsigned i=0;i<EPOLL_REGS;++i){struct epoll_registration *r=&epoll.object->value.epoll.registrations[i];
+        if(r->used&&r->slot==target.slot&&r->generation==target.generation)found=(int)i;
+        if(!r->used&&empty<0)empty=(int)i;}
+    if(operation==EPOLL_CTL_ADD){
+        if(found>=0)result=EEXIST;else if(empty<0)result=ENOSPC;else {struct epoll_registration *r=&epoll.object->value.epoll.registrations[empty];
+            *r=(struct epoll_registration){target.object,target.slot,target.generation,event->events,1,target.access,event->data};
+            __atomic_add_fetch(&target.object->references,1,__ATOMIC_RELAXED);}
+    } else if(operation==EPOLL_CTL_MOD){
+        if(found<0)result=ENOENT;else {struct epoll_registration *r=&epoll.object->value.epoll.registrations[found];r->events=event->events;r->data=event->data;}
+    } else if(operation==EPOLL_CTL_DEL){
+        if(found<0)result=ENOENT;else {struct epoll_registration *r=&epoll.object->value.epoll.registrations[found];r->used=0;object_release(r->object);}
+    } else result=EINVAL;
+    __atomic_add_fetch(&epoll.object->sequence,1,__ATOMIC_RELEASE);wake64(&epoll.object->sequence,~0u);
+    spin_unlock(&epoll.object->lock);object_release(target.object);object_release(epoll.object);
+    return result?set_error(result):0;
+}
+int epoll_wait(int epfd,struct epoll_event *events,int maximum,int timeout)
+{
+    if(!events||maximum<=0)return set_error(EINVAL);uint64_t deadline;
+    if(!poll_deadline(timeout,&deadline))return set_error(EINVAL);
+    struct descriptor_ref epoll={0};if(!descriptor_acquire(epfd,&epoll)||epoll.object->type!=DESCRIPTOR_EPOLL){
+        if(epoll.object)object_release(epoll.object);return set_error(EBADF);}
+    for(;;){int count=0;uint64_t sequence=__atomic_load_n(&epoll.object->sequence,__ATOMIC_ACQUIRE);
+        spin_lock(&epoll.object->lock);
+        for(unsigned i=0;i<EPOLL_REGS&&(count<maximum);++i){struct epoll_registration *r=&epoll.object->value.epoll.registrations[i];
+            if(!r->used)continue;uint32_t ready=object_ready(r->object,r->access);
+            ready=(ready&r->events)|(ready&(POLLERR|POLLHUP));
+            if(ready)events[count++]=(struct epoll_event){ready,r->data};
+        }
+        spin_unlock(&epoll.object->lock);
+        if(count||timeout==0){object_release(epoll.object);return count;}
+        int rc=wait64(&epoll.object->sequence,sequence,deadline);
+        if(rc==-ETIMEDOUT){object_release(epoll.object);return 0;}
+        if(!descriptor_current(&epoll)){object_release(epoll.object);return set_error(EBADF);}
+    }
+}
+int ioctl_FIONREAD(int fd,int *available)
+{
+    if(!available)return set_error(EFAULT);struct descriptor_ref reference={0};
+    if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+    int result=0;spin_lock(&reference.object->lock);
+    if(reference.object->type==DESCRIPTOR_PIPE)*available=(int)reference.object->value.pipe.count;
+    else if(reference.object->type==DESCRIPTOR_EVENT)*available=reference.object->value.event.counter?8:0;
+    else result=EINVAL;
+    spin_unlock(&reference.object->lock);object_release(reference.object);
+    return result?set_error(result):0;
 }

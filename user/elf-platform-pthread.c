@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 struct timespec { int64_t tv_sec,tv_nsec; };
+extern int clock_gettime(int,struct timespec *),clock_nanosleep(int,int,const struct timespec *,struct timespec *);
 extern int pthread_attr_init(void *),pthread_attr_destroy(void *),pthread_attr_setstacksize(void *,size_t);
 extern int pthread_attr_getstacksize(const void *,size_t *),pthread_attr_getstack(const void *,void **,size_t *);
 extern int pthread_attr_setdetachstate(void *,int);
@@ -64,6 +65,8 @@ uint64_t _start(void)
 {
     uint64_t attr[7]={0},probe_attr[7]={0},threads[2],thread;void *results[2],*stack=0;size_t stack_size=0,probe_size=0;
     uint32_t mutex_attr[2]={0},cond_attr[2]={0};char name[16];int policy=-1,parameter=-1;
+    struct timespec realtime,monotonic,before,after,pause={0,20000000};
+    uint64_t mask[2]={5,9},old[2],check[2];
     if(pthread_attr_init(attr)||pthread_attr_setstacksize(attr,65536)||
        pthread_attr_getstacksize(attr,&stack_size)||stack_size!=65536)return 1;
     if(pthread_mutexattr_init(mutex_attr)||pthread_mutexattr_settype(mutex_attr,1)||
@@ -95,6 +98,22 @@ uint64_t _start(void)
     if(pthread_attr_setdetachstate(attr,0))return 23;
     struct timespec expired_sem={0,0};
     if(sem_timedwait(semaphore_words,&expired_sem)!=-1)return 24;
+    if(sem_post(semaphore_words)||sem_timedwait(semaphore_words,&expired_sem))return 25;
+    if(clock_gettime(0,&realtime)||clock_gettime(1,&monotonic)||
+       realtime.tv_sec<1700000000||monotonic.tv_sec<1)return 26;
+    if(clock_gettime(1,&before)||clock_nanosleep(1,0,&pause,0)||clock_gettime(1,&after)||
+       after.tv_sec<before.tv_sec||
+       (after.tv_sec==before.tv_sec&&after.tv_nsec<=before.tv_nsec))return 27;
+    if(pthread_sigmask(2,mask,old)||old[0]||old[1]||pthread_sigmask(0,0,check)||
+       check[0]!=5||check[1]!=9)return 28;
+    if(pthread_sigmask(1,mask,0)||pthread_sigmask(0,0,check)||check[0]||check[1])return 29;
+    if(pthread_getschedparam(0x1234,&policy,&parameter)!=3||
+       pthread_kill(0x1234,0)!=3||pthread_detach(0x1234)!=3)return 30;
+    if(pthread_mutex_lock(mutex_words))return 31;
+    struct timespec future=monotonic;future.tv_nsec+=30000000;
+    if(future.tv_nsec>=1000000000){++future.tv_sec;future.tv_nsec-=1000000000;}
+    if(pthread_cond_timedwait(condition_words,mutex_words,&future)!=110||
+       pthread_mutex_unlock(mutex_words))return 32;
     if(pthread_mutex_lock(mutex_words))return 10;
     struct timespec expired={0,0};
     if(pthread_cond_timedwait(condition_words,mutex_words,&expired)!=110||
@@ -109,6 +128,6 @@ uint64_t _start(void)
        pthread_mutex_destroy(mutex_words)||pthread_condattr_destroy(cond_attr)||
        pthread_mutexattr_destroy(mutex_attr)||pthread_attr_destroy(attr))return 15;
     if(pthread_mutex_trylock(mutex_words)||pthread_mutex_unlock(mutex_words))return 16;
-    print("ELF pthread lifecycle, sync and TLS PASS\n");
+    print("ELF pthread ABI, clocks, masks, lifecycle and TLS PASS\n");
     return 35;
 }

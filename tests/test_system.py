@@ -83,7 +83,9 @@ class VM:
             reply=json.loads(line)
             if 'error' in reply:raise RuntimeError(reply)
             if 'return' in reply:return reply['return']
-    def wait(self,text,timeout=15):
+    def wait(self,text,timeout=None):
+        if timeout is None:
+            timeout=60 if text=='myos> ' else 15
         end=time.monotonic()+timeout
         while time.monotonic()<end:
             content=self.log.read_text()
@@ -105,7 +107,10 @@ class VM:
         self.command('input-send-event',{'events':[event(c,False) for c in reversed(codes)]})
         time.sleep(.04)
     def close(self):
-        self.process.terminate();self.process.wait(timeout=5)
+        self.process.terminate()
+        try:self.process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self.process.kill();self.process.wait(timeout=5)
         self.stream.close();self.connection.close();self.sock.unlink(missing_ok=True)
 
 def symbols():

@@ -3,6 +3,43 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 runtime clocks and waits — 2026-09-30
+
+This local slice starts from b6c74b5 and remains inside Phase 33.1/33.2. It
+adds realtime/monotonic clock services and corrects the pthread ABI around
+condition clock attributes, absolute timed waits, per-thread signal-mask
+inheritance, handle validation, single-consumer joins, detached reclamation and
+TLS-key reuse. The focused Ring 3 fixture covers these contracts directly.
+
+A shared runtime descriptor registry now owns refcounted open objects with
+generation validation and close-driven wake/cancellation. Eventfd, pipe/pipe2,
+poll, epoll and FIONREAD are implemented on it, with ordinary MyOS file
+descriptors forwarded through the same read/write/close entry points. The model
+is intended for the still-missing sockets; socket APIs were not implemented in
+this slice. See [PHASE331_WAIT.md](PHASE331_WAIT.md). The focused descriptor fixture covers readiness, epoll data/add/del,
+nonblocking/semaphore eventfd, pipe EOF/HUP/FIONREAD, timeout, blocked-reader
+close cancellation and descriptor recycling.
+
+The self-test image crossed the old 0x73000 linker reservation. BIOS stage 2
+and the UEFI loader were audited; the memory guard now uses the actually
+reserved 0x10000..0x7ffff region while retaining the independent 256 KiB kernel
+file limit. Host-load-sensitive boot waits were raised and stuck QEMU teardown
+now falls back to kill. Focused ELF dynamic, pinned-Cobalt staging, focused
+audio and full system regressions pass; the full run restores the normal
+framebuffer image.
+
+The pinned Cobalt audit now resolves 75 tested strong imports and reports 167
+missing strong imports (plus the separately tracked weak TLS symbol). This is
+staging evidence only. Cobalt still does not execute, so Phase 33.1 and 33.2
+remain OPEN. Do not start Phase 33.3 until Cobalt itself opens HTML, runs
+JavaScript/DOM, accepts real input and uses HTTPS inside MyOS for the required
+endurance gate.
+
+`build/activity.log` was truncated after accidental recursive amplification.
+Never inspect that file through `tools/run_logged.py`, because the wrapper
+appends the command's output to the same log; inspect only bounded excerpts
+outside the wrapper. The owner pushes manually; do not push this local commit.
+
 The latest Phase 33.1 continuation adds tested anonymous user VM, extra Ring 3
 threads, FS-base TLS and atomic wait/wake/timeout primitives. See
 `docs/PHASE331_RUNTIME.md`. These custom kernel primitives now back a fixed-address Ring 3 platform runtime.

@@ -1,4 +1,5 @@
 #include "syscall.h"
+#include "security.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -198,6 +199,12 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_VM_MAP_FIXED:
         frame->rax=(uint64_t)process_vm_map_fixed(process,frame->rdi,(size_t)frame->rsi,
                                                   (unsigned)frame->rdx);
+        break;
+    case SYS_CLOCK_NANOS:
+        if(frame->rdi==1)frame->rax=ticks*10000000ull;
+        else if(frame->rdi==0)
+            frame->rax=security_time_ready()?security_unix_time_ns():(uint64_t)-61;
+        else frame->rax=(uint64_t)-22;
         break;
     case SYS_FOPEN: case SYS_FREAD: case SYS_FWRITE: case SYS_FCLOSE:
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:

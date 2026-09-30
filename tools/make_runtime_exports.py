@@ -4,9 +4,10 @@ import subprocess
 import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
-wanted={'__errno_location','aligned_alloc','calloc','free','madvise','malloc',
+wanted={'__errno_location','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close',
+        'epoll_create1','epoll_ctl','epoll_wait','eventfd','free','ioctl_FIONREAD','madvise','malloc',
         'malloc_usable_size','mincore','mmap','mprotect','msync','munmap',
-        'posix_memalign','realloc',
+        'pipe','pipe2','poll','posix_memalign','read','realloc','write',
         'pthread_attr_destroy','pthread_attr_getstack','pthread_attr_getstacksize',
         'pthread_attr_init','pthread_attr_setdetachstate','pthread_attr_setstacksize',
         'pthread_cond_broadcast','pthread_cond_destroy','pthread_cond_init',

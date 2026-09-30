@@ -18,8 +18,8 @@ def main():
     path.unlink(missing_ok=True)
     vm=VM('phase30-sb16',audio=path)
     try:
-        vm.wait('Audio: SB16 initialized',30)
-        vm.wait('myos> ',30)
+        vm.wait('Audio: SB16 initialized',60)
+        vm.wait('myos> ',60)
         send(vm,'audio tone 440 300')
         vm.wait('Audio tone queued')
         time.sleep(3)

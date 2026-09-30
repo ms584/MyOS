@@ -77,6 +77,11 @@ void security_init(void){
 bool security_time_ready(void){return clock_ok;}
 bool security_entropy_ready(void){return rng_ok;}
 uint64_t security_unix_time(void){return clock_ok?epoch_at_boot+(ticks-tick_at_boot)/100u:0;}
+uint64_t security_unix_time_ns(void){
+    if(!clock_ok)return 0;
+    uint64_t elapsed=ticks-tick_at_boot;
+    return epoch_at_boot*1000000000ull+elapsed*10000000ull;
+}
 void security_status(void){
     print("Security: UTC ");
     if(clock_ok)decimal(security_unix_time());else print("unavailable");

@@ -104,6 +104,14 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(pthread_image),str(pthread_obj)],check=True)
     platform_specs.append(f'pthread={pthread_image}')
+    wait_obj=out/'elf-platform-wait.o';wait_image=out/'wait.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-wait.c',
+                    '-o',str(wait_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(wait_image),str(wait_obj)],check=True)
+    platform_specs.append(f'wait={wait_image}')
     specs=[f'dynamic={library}',*platform_specs]
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
@@ -136,7 +144,9 @@ def exercise(cobalt=None):
         assert all(f'ELF platform: {name}' in output for name in
                    ('__errno_location','madvise','mincore','mmap','mprotect','msync','munmap')),output
         output=command(vm,'elf run pthread','ELF exited with status 35')
-        assert 'ELF pthread lifecycle, sync and TLS PASS' in output,output
+        assert 'ELF pthread ABI, clocks, masks, lifecycle and TLS PASS' in output,output
+        output=command(vm,'elf run wait','ELF exited with status 36')
+        assert 'ELF descriptor lifetime, eventfd, pipe, poll, epoll and FIONREAD PASS' in output,output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')
