@@ -1,7 +1,8 @@
 # MyOS project working agreement
 
 - Repository: `/home/xytron404/myos` in WSL Ubuntu.
-- Read docs/HANDOFF.md for the current phase status and next task.
+- Read docs/PROJECT_STATE.md first for current status and next task.
+  Consult docs/HANDOFF.md only when additional background is needed.
 - The owner always pushes to GitHub manually. Do not run `git push`.
 - Use actual roadmap coverage in commit names, e.g. `Phase 4+8: ...`.
 - The revised roadmap has phases 0–33. Phases 0–13 retain their history;
@@ -34,3 +35,30 @@
   Review `docs/PHASE11.md` through `docs/PHASE13.md` before extending file
   operations or persistence. GUI apps must state whether they run in kernel
   mode or isolated user processes.
+
+## Token-efficient development mode
+
+- One major phase or explicitly scoped subphase per chat. Finish at a tested
+  checkpoint; do not automatically start the next phase or create new chats.
+- Use the current working tree, Git and test evidence as source of truth.
+  Read docs/PROJECT_STATE.md once at chat start, then check Git status/HEAD.
+  Resolve stale documentation against code and evidence; do not assume PASS.
+- Read only task-related files and dependencies. Use targeted searches/line
+  ranges; expand scope only for a concrete reason. No whole-repository scan
+  or rereading unchanged files without a reason.
+- Make the smallest correct diff. No unrelated refactoring or extra features.
+- Do not re-audit completed phases without an impact or evidence reason.
+  Still run affected regression and mandatory architectural checks above.
+- Choose necessary builds/tests from the change impact. Reuse valid results
+  for unchanged code/configuration. After required checks and acceptance pass,
+  stop rechecking unless changes, failures or unresolved concerns justify it.
+- Diagnose errors from evidence before changing code; avoid speculative fixes.
+- Save full logs to files. Read summaries and relevant error excerpts, not
+  entire successful build logs. Do not paste full files unless necessary.
+- Do not explain unrequested basics. Keep progress concise; final response:
+  changed / test result / next step, including material limits or pending tests.
+- Update docs/PROJECT_STATE.md at each checkpoint and before pausing/ending,
+  even if the phase is incomplete. Keep it short (about 60 lines or fewer):
+  baseline commit/branch, scope, evidence, blockers, relevant files, next step.
+  Link detailed docs/logs rather than copying history. HANDOFF.md is background;
+  PROJECT_STATE.md is the current entry point. Never mark pending tests passed.

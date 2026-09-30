@@ -1,11 +1,21 @@
 # MyOS handoff — 2026-09-29
 
+Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
+this document retains historical context and may describe earlier checkpoints.
+
 The latest Phase 33.1 continuation adds tested anonymous user VM, extra Ring 3
 threads, FS-base TLS and atomic wait/wake/timeout primitives. See
 `docs/PHASE331_RUNTIME.md`. These custom kernel primitives now back a fixed-address Ring 3 platform runtime.
 Sixty-two tested allocator/VM/errno/pthread imports resolve through an exact allowlist;
 180 strong Cobalt imports remain. Native Cobalt HTML/JavaScript/input
 smoke remains the required gate before Phase 33.3.
+
+## Next-session plan
+
+The owner requested detailed planning only after pausing implementation. Read
+[PHASE33_EXECUTION_PLAN.md](PHASE33_EXECUTION_PLAN.md). Resolved imports are
+not proof of full contract semantics; clock attributes and signal masks need
+audit before further API expansion. No tests were run for this docs-only plan.
 
 ## Phase 33.1/33.2 pthread checkpoint - 2026-09-29
 
@@ -42,10 +52,11 @@ order, preserving real acceptance tests rather than no-op symbol stubs:
 9. Implement Starboard window, EGL/GLES bridge and keyboard/mouse input delivery.
 10. Implement Starboard audio, decode-target and media/player contracts.
 11. Run native Cobalt HTML/JavaScript with real input for at least 60 seconds and prove cleanup.
-12. Only then start Phase 33.3 and prove the online Rickroll video/audio plus pause, resume and seek.
+12. After combined runtime/engine closure: 33.3 standard media, 33.4 actual YouTube, then 33.5 Rickroll acceptance.
 
-Suggested immediate next slice: complete gate 5, then the clock/system subset of
-gate 6. The contract CSV currently groups the still-unimplemented entries as
+Next session: finish the outstanding full regression, audit existing pthread
+clock/mask/ABI behavior, then design shared descriptors and implement clock/wait
+slices. See PHASE33_EXECUTION_PLAN.md for the detailed updated sequence. The contract CSV currently groups the still-unimplemented entries as
 41 file, 23 media, 23 network, 23 platform, 16 optional, 13 system, 10 graphics,
 8 wait, 5 audio, 5 storage, 4 constants, 4 signals, 2 clock, 2 event,
 1 certification and 1 weak-TLS symbol. The owner always pushes manually.
