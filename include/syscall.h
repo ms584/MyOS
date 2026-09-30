@@ -16,7 +16,9 @@ enum { SYS_WRITE = 1, SYS_GETPID = 2, SYS_EXIT = 3, SYS_YIELD = 4, SYS_FOPEN = 5
        SYS_FWRITE_LARGE = 33, SYS_FSYNC = 34,
        SYS_TCP_CREATE = 35, SYS_TCP_CONNECT = 36, SYS_TCP_STATUS = 37,
        SYS_TCP_SEND = 38, SYS_TCP_RECV = 39, SYS_TCP_SHUTDOWN = 40,
-       SYS_TCP_CLOSE = 41 };
+       SYS_TCP_CLOSE = 41,
+       SYS_UI_QUERY = 42, SYS_UI_ACQUIRE = 43, SYS_UI_PRESENT = 44,
+       SYS_UI_RELEASE = 45, SYS_UI_EVENT = 46 };
 #define SYS_WRITE_MAX 256
 struct frame *syscall_dispatch(struct frame *frame);
 void syscall_test(void);

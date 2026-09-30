@@ -27,6 +27,17 @@ void gfx_init(void)
 }
 bool gfx_enabled(void){return enabled;}
 
+bool gfx_capture(struct gfx_surface *surface)
+{
+    if(!enabled||!surface||!surface->pixels||surface->width!=screen.width||
+       surface->height!=screen.height||surface->stride<surface->width)return false;
+    uint64_t flags=irq_save();
+    for(uint32_t y=0;y<screen.height;++y)
+        for(uint32_t x=0;x<screen.width;++x)
+            surface->pixels[(size_t)y*surface->stride+x]=screen.pixels[(size_t)y*screen.pitch+x]&0xffffff;
+    irq_restore(flags);return true;
+}
+
 struct gfx_surface *gfx_surface_create(uint32_t width,uint32_t height)
 {
     if(!width || !height || width>1280 || height>800)return 0;

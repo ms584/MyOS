@@ -249,6 +249,8 @@ def main():
             tcp_exercise()
             from test_socket_options import main as socket_options_exercise
             socket_options_exercise()
+            from test_native_ui import main as native_ui_exercise
+            native_ui_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()
@@ -266,6 +268,9 @@ def main():
             exercise(text=True)
             from test_graphics import exercise as graphics_exercise
             graphics_exercise(text=True)
+            if args.suite=='all':
+                from test_native_ui import main as native_ui_exercise
+                native_ui_exercise(text=True)
             if args.suite in ('all','mouse'):
                 from test_mouse import exercise as mouse_exercise
                 mouse_exercise(text=True)

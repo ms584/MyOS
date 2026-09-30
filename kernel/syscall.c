@@ -2,6 +2,8 @@
 #include "security.h"
 #include "storage.h"
 #include "tcp.h"
+#include "native-ui.h"
+#include "graphics.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -48,6 +50,16 @@ static bool writable_range(struct process *p,uintptr_t address,size_t length)
     if(length && address>UINT64_MAX-(length-1))return false;
     while(length){
         if(!readable_user_page(p,address,true))return false;
+        size_t count=PAGE_SIZE-(address&(PAGE_SIZE-1));if(count>length)count=length;
+        address+=count;length-=count;
+    }
+    return true;
+}
+static bool readable_range(struct process *p,uintptr_t address,size_t length)
+{
+    if(length&&address>UINT64_MAX-(length-1))return false;
+    while(length){
+        if(!readable_user_page(p,address,false))return false;
         size_t count=PAGE_SIZE-(address&(PAGE_SIZE-1));if(count>length)count=length;
         address+=count;length-=count;
     }
@@ -170,6 +182,63 @@ static int64_t tcp_call(struct process *p,struct frame *f)
     if(rc>0)copy_to_user(p,f->rsi,buffer,(size_t)rc);return rc;
 }
 
+/* Bounded stripe scratch keeps self-test BSS below the unchanged BIOS stack
+ * reservation. All source rows are validated before the first stripe. */
+static uint32_t ui_row[64];
+static int64_t ui_call(struct process *p,struct frame *f)
+{
+    if(f->rax==SYS_UI_RELEASE)
+        return f->rsi||f->rdx?-22:native_ui_release(p,f->rdi);
+    if(f->rax==SYS_UI_EVENT){struct native_ui_event event;
+        if(f->rdx!=sizeof(event))return -22;
+        if(!writable_range(p,f->rsi,sizeof(event)))return -14;
+        int rc=native_ui_poll(p,f->rdi,&event);
+        if(rc==1)copy_to_user(p,f->rsi,&event,sizeof(event));return rc;
+    }
+    struct native_ui_info info;
+    if(f->rax==SYS_UI_QUERY||f->rax==SYS_UI_ACQUIRE){
+        if(f->rdx)return -22;
+        if(!writable_range(p,f->rsi,sizeof(info)))return -14;
+        int64_t rc;
+        if(f->rax==SYS_UI_ACQUIRE){
+            if(!f->rdi||(f->rdi&7))return -22;
+            if(!writable_range(p,f->rdi,8))return -14;
+            if(f->rdi<f->rsi+sizeof(info)&&f->rsi<f->rdi+8)return -22;
+            rc=native_ui_acquire(p,f->rdi,&info);
+        }else rc=native_ui_query(p,f->rdi,&info);
+        if(rc>=0)copy_to_user(p,f->rsi,&info,sizeof(info));return rc;
+    }
+    if(!f->rdi)return -9;
+    int rc=native_ui_query(p,f->rdi,&info);if(rc)return rc;
+    struct native_ui_present request;
+    if(f->rdx!=sizeof(request))return -22;
+    if(!copy_from_user(p,(char *)&request,f->rsi,sizeof(request)))return -14;
+    if(!request.width||!request.height||request.width>info.width||request.height>info.height||
+       request.stride<request.width*4||request.stride>16384||request.x<0||request.y<0||
+       (uint64_t)request.x+request.width>info.width||(uint64_t)request.y+request.height>info.height||
+       (request.format!=NATIVE_UI_RGBA8&&request.format!=NATIVE_UI_XRGB8888))return -22;
+    uint64_t last=(uint64_t)(request.height-1)*request.stride;
+    if(request.pixels>UINT64_MAX-last)return -14;
+    /* Validate EVERY accessed row before changing ANY framebuffer pixel.
+     * No user mappings can change while this single-CPU syscall keeps IF=0. */
+    for(uint32_t y=0;y<request.height;++y)
+        if(!readable_range(p,request.pixels+(uint64_t)y*request.stride,request.width*4))return -14;
+    struct gfx_surface row={0,1,0,ui_row};
+    for(uint32_t y=0;y<request.height;++y){
+        for(uint32_t x=0;x<request.width;){
+            uint32_t count=request.width-x;if(count>64)count=64;
+            if(!copy_from_user(p,(char *)ui_row,request.pixels+(uint64_t)y*request.stride+x*4,count*4))return -14;
+            if(request.format==NATIVE_UI_RGBA8)
+                for(uint32_t i=0;i<count;++i){uint32_t pixel=ui_row[i];
+                    ui_row[i]=((pixel&255)<<16)|(pixel&0xff00)|((pixel>>16)&255);}
+            row.width=row.stride=count;
+            if(!gfx_present(&row,request.x+(int)x,request.y+(int)y))return -95;
+            x+=count;
+        }
+    }
+    return 0;
+}
+
 struct frame *syscall_dispatch(struct frame *frame)
 {
     struct process *process = scheduler_current_process();
@@ -187,7 +256,8 @@ struct frame *syscall_dispatch(struct frame *frame)
             break;
         }
         /* Validate and copy the entire request BEFORE producing any output. */
-        for (size_t i = 0; i < length; ++i) putchar(buffer[i]);
+        for (size_t i = 0; i < length; ++i)
+            if(native_ui_owns(process))serial_put(buffer[i]);else putchar(buffer[i]);
         frame->rax = length;
         break;
     }
@@ -286,6 +356,9 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_TCP_CREATE: case SYS_TCP_CONNECT: case SYS_TCP_STATUS:
     case SYS_TCP_SEND: case SYS_TCP_RECV: case SYS_TCP_SHUTDOWN: case SYS_TCP_CLOSE:
         frame->rax=(uint64_t)tcp_call(process,frame);break;
+    case SYS_UI_QUERY: case SYS_UI_ACQUIRE: case SYS_UI_PRESENT:
+    case SYS_UI_RELEASE: case SYS_UI_EVENT:
+        frame->rax=(uint64_t)ui_call(process,frame);break;
     default:
         frame->rax = (uint64_t)-38;
         break;

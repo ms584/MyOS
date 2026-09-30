@@ -1,4 +1,5 @@
 #include "mouse.h"
+#include "native-ui.h"
 
 #define MOUSE_QUEUE 64u
 static struct mouse_event events[MOUSE_QUEUE];
@@ -73,7 +74,12 @@ void mouse_irq(void)
     uint8_t current=packet[0]&7u,changed=current^buttons;
     struct mouse_event event={nx,ny,nx-x_position,ny-y_position,current,changed};
     x_position=nx;y_position=ny;buttons=current;
-    if(event.dx || event.dy || changed)enqueue(event);
+    if(event.dx || event.dy || changed){
+        enqueue(event);
+        struct native_ui_event native={NATIVE_UI_POINTER,0,0,native_ui_modifiers(),
+            event.x,event.y,event.dx,event.dy,event.buttons,event.changed,0};
+        native_ui_emit(&native);
+    }
 }
 bool mouse_get(struct mouse_event *event)
 {

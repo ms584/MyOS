@@ -3,6 +3,33 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native window/input continuation — 2026-10-01
+
+Continuation from local 2f4425f. Six pinned SbWindow imports plus private
+MyOS present/poll helpers now have an isolated Ring 3 implementation, exclusive
+process/generation ownership, real framebuffer copying, independent PS/2 raw
+events and close/fault/kill reclamation. Native VRAM/screen/input/wait/reuse and
+supplementary kernel ASan/UBSan tests passed at 04:00 +07, then again with the
+self-test build at 04:06. See PHASE332_NATIVE_UI.md for exact ABI, bounds and
+the still-missing EGL/GLES and SbInputData/event-loop integration.
+
+The first full attempt stopped at self-test link because BSS reached 0x809c0,
+past the unchanged BIOS 0x80000 stack boundary. The present path now uses
+64-pixel stripes, saving 4864 scratch bytes without losing whole-request source
+validation. Self-test BSS ends at 0x7f6c0; kernel file is 256280 bytes. The
+replacement full suite PASSED at 04:35 +07 including native UI, lifecycle,
+network/storage/fault/low-memory and VGA ENOTSUP fallback. Normal framebuffer
+image restored: kernel 248088 bytes, image 1474560, BSS end 0x7d6c0. Cobalt
+staging/relocation/RELRO/reclamation and 64 MiB OOM rollback PASSED 04:37, but
+the engine was NOT executed. Packaged UEFI DMA/stack/real frames/PCM (435/655 Hz)
+and network passed 04:37; native UI/input/close/fault/cancel/relaunch and exact
+page/heap/sample restoration passed on UEFI at 04:38. Six window exports make
+156 fixture-covered strong imports; 86 strong imports and weak TLS remain.
+These supported subsets do not prove renderer or Cobalt compatibility. Fixed
+800x600/no mode switching, raw overflow loss, no wheel/IME, and reserved Escape
+force-cancel remain limitations. Cobalt HTML/JS/DOM/input/verified HTTPS >=60s
+acceptance is absent. Phase 33.1/33.2 stay OPEN; no Phase 33.3 and no push.
+
 ## Phase 33.2 renderer feasibility continuation — 2026-10-01
 
 Runtime baseline is local 8003d20; its full/UEFI regression is green and normal

@@ -22,6 +22,7 @@ void gfx_pixel(struct gfx_surface *surface,int x,int y,uint32_t color);
 void gfx_rect(struct gfx_surface *surface,int x,int y,int width,int height,uint32_t color);
 void gfx_text(struct gfx_surface *surface,int x,int y,const char *text,uint32_t color);
 bool gfx_present(const struct gfx_surface *surface,int x,int y);
+bool gfx_capture(struct gfx_surface *surface);
 void gfx_restore_region(const struct gfx_surface *scene,int x,int y,int width,int height);
 void gfx_cursor_draw(int x,int y,uint8_t buttons);
 void gfx_test(void);

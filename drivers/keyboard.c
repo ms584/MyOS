@@ -1,7 +1,9 @@
 #include "os.h"
+#include "native-ui.h"
 static volatile unsigned head,tail;
 static uint8_t buffer[128];
 static bool left_shift,right_shift,caps,caps_down,extended;
+static bool left_control,right_control,left_alt,right_alt,left_meta,right_meta;
 static unsigned pause_bytes;
 static const char plain[128]={
  [1]=27,[2]='1',[3]='2',[4]='3',[5]='4',[6]='5',[7]='6',[8]='7',[9]='8',[10]='9',[11]='0',[12]='-',[13]='=',[14]='\b',
@@ -33,22 +35,31 @@ void keyboard_irq(void){
     if(pause_bytes){--pause_bytes;return;}
     if(code==0xe1){pause_bytes=5;return;}
     if(code==0xe0){extended=true;return;}
-    if(extended){
-        extended=false;
-        if(code&0x80)return;
-        int key=code==0x48?KEY_UP:code==0x50?KEY_DOWN:
-                code==0x4b?KEY_LEFT:code==0x4d?KEY_RIGHT:0;
-        if(key)enqueue((uint8_t)key);
-        return;
-    }
+    bool was_extended=extended;extended=false;
     bool release=code&0x80;code&=0x7f;
-    if(code==42){left_shift=!release;return;}
-    if(code==54){right_shift=!release;return;}
-    if(code==58){if(!release&&!caps_down)caps=!caps;caps_down=!release;return;}
-    if(release)return;
-    char c=plain[code];if(!c)return;
+    if(!was_extended&&code==42)left_shift=!release;
+    if(!was_extended&&code==54)right_shift=!release;
+    if(code==29){if(was_extended)right_control=!release;else left_control=!release;}
+    if(code==56){if(was_extended)right_alt=!release;else left_alt=!release;}
+    if(was_extended&&code==91)left_meta=!release;
+    if(was_extended&&code==92)right_meta=!release;
+    if(!was_extended&&code==58){if(!release&&!caps_down)caps=!caps;caps_down=!release;}
+    uint32_t modifiers=(left_shift||right_shift?NATIVE_UI_SHIFT:0)|
+        (left_control||right_control?NATIVE_UI_CONTROL:0)|(left_alt||right_alt?NATIVE_UI_ALT:0)|
+        (left_meta||right_meta?NATIVE_UI_META:0)|(caps?NATIVE_UI_CAPS:0);
+    native_ui_set_modifiers(modifiers);
+    char c=was_extended?0:plain[code];
     bool shift=left_shift||right_shift;
     if(c>='a'&&c<='z'){if(shift!=caps)c-=32;}else if(shift&&shifted[code])c=shifted[code];
-    enqueue((uint8_t)c);
+    struct native_ui_event event={release?NATIVE_UI_KEY_UP:NATIVE_UI_KEY_DOWN,
+        code|(was_extended?0x100u:0),release?0:(uint8_t)c,modifiers,0,0,0,0,0,0,0};
+    native_ui_emit(&event);
+    if(release)return;
+    if(was_extended){
+        int key=code==0x48?KEY_UP:code==0x50?KEY_DOWN:
+                code==0x4b?KEY_LEFT:code==0x4d?KEY_RIGHT:0;
+        if(key)enqueue((uint8_t)key);return;
+    }
+    if(c)enqueue((uint8_t)c);
 }
 int keyboard_get(void){uint64_t f=irq_save();int c=-1;if(tail!=head){c=buffer[tail];tail=(tail+1)%sizeof(buffer);}irq_restore(f);return c;}
