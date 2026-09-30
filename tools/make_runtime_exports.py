@@ -4,17 +4,19 @@ import subprocess
 import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
-wanted={'__errno_location','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close',
+wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close','closedir',
         'SbDrmCloseSession','SbDrmCreateSystem','SbDrmDestroySystem',
         'SbDrmGenerateSessionUpdateRequest','SbDrmGetMetrics','SbDrmIsServerCertificateUpdatable',
         'SbDrmUpdateServerCertificate','SbDrmUpdateSession','SbMicrophoneCreate',
         'SbMicrophoneDestroy','SbMicrophoneGetAvailable','SbMicrophoneOpen','SbMicrophoneRead',
         'SbSpeechSynthesisCancel','SbSpeechSynthesisIsSupported','SbSpeechSynthesisSpeak',
-        'epoll_create1','epoll_ctl','epoll_wait','eventfd','free','ioctl_FIONREAD','madvise','malloc',
+        'dup','epoll_create1','epoll_ctl','epoll_wait','eventfd','fcntl','fdatasync','fdopendir','free',
+        'fstat','fstatat','fsync','ftruncate','getcwd','ioctl_FIONREAD','isatty','lseek','madvise','malloc','mkdir','mkdtemp','mkstemp',
         'getauxval','geteuid','getpid','getrlimit','gettid','getuid',
         'kSbFileMaxName','kSbFileMaxPath','kSbFileSepString','kSbMaxThreads',
         'malloc_usable_size','mincore','mmap','mprotect','msync','munmap','prctl',
-        'pipe','pipe2','poll','posix_memalign','read','realloc','write',
+        'openat','opendir','pathconf','pipe','pipe2','poll','posix_memalign','pread','pwrite','read','readdir','readdir_r',
+        'readv','realloc','realpath','unlinkat','write','writev',
         'sched_getaffinity','sched_setscheduler','sched_yield','setpriority','sysconf','uname',
         'pthread_attr_destroy','pthread_attr_getstack','pthread_attr_getstacksize',
         'pthread_attr_init','pthread_attr_setdetachstate','pthread_attr_setstacksize',

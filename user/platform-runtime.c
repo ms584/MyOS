@@ -619,14 +619,24 @@ void *pthread_getspecific(unsigned key)
  * dropping the table lock; close removes the generation and wakes every wait.
  * This is also the lifetime model intended for file and socket backends. */
 #define SYS_WRITE 1u
-#define SYS_FREAD 6u
-#define SYS_FWRITE 7u
+#define SYS_FOPEN 5u
+#define SYS_FREAD 32u
+#define SYS_FWRITE 33u
 #define SYS_FCLOSE 8u
+#define SYS_MKDIR 9u
+#define SYS_UNLINK 10u
+#define SYS_READDIR 11u
+#define SYS_STAT 12u
+#define SYS_FSEEK 29u
+#define SYS_FSTAT 30u
+#define SYS_FTRUNCATE 31u
+#define SYS_FSYNC 34u
 #define FD_BASE 64
 #define FD_SLOTS 32u
 #define PIPE_CAPACITY 4096u
 #define EPOLL_REGS 32u
 #define O_NONBLOCK 04000
+#define O_APPEND 02000
 #define O_CLOEXEC 02000000
 #define POLLIN 0x0001u
 #define POLLOUT 0x0004u
@@ -643,8 +653,9 @@ void *pthread_getspecific(unsigned key)
 #define ENOENT 2
 #define ENOSPC 28
 #define EPIPE 32
+#define ENOTSUP 95
 
-enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3 };
+enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5 };
 struct epoll_event { uint32_t events;uint64_t data __attribute__((packed)); } __attribute__((packed));
 struct pollfd { int32_t fd;uint16_t events,revents; };
 struct descriptor_object;
@@ -656,7 +667,7 @@ struct epoll_registration {
 struct descriptor_object {
     volatile uint64_t lock,sequence;
     volatile uint32_t references;
-    uint32_t type;
+    uint32_t type,status_flags;
     union {
         struct { uint64_t counter;uint32_t semaphore,opens; } event;
         struct {
@@ -664,6 +675,8 @@ struct descriptor_object {
             uint32_t head,count,readers,writers;
         } pipe;
         struct { struct epoll_registration registrations[EPOLL_REGS]; } epoll;
+        struct { int32_t kernel_fd; } file;
+        struct { char path[128]; } directory;
     } value;
 };
 struct descriptor_slot {
@@ -711,14 +724,18 @@ static void object_release(struct descriptor_object *object)
         for(unsigned i=0;i<EPOLL_REGS;++i)
             if(object->value.epoll.registrations[i].used)
                 object_release(object->value.epoll.registrations[i].object);
+    if(object->type==DESCRIPTOR_FILE)
+        (void)call3(SYS_FCLOSE,(unsigned)object->value.file.kernel_fd,0,0);
     free(object);
 }
-static int descriptor_install_locked(struct descriptor_state *state,
-                                     struct descriptor_object *object,
-                                     unsigned access,unsigned flags)
+static int descriptor_install_from_locked(struct descriptor_state *state,
+                                          struct descriptor_object *object,
+                                          unsigned access,unsigned flags,
+                                          unsigned first)
 {
-    for(unsigned i=0;i<FD_SLOTS;++i)if(!state->slots[i].object){
+    for(unsigned i=first;i<FD_SLOTS;++i)if(!state->slots[i].object){
         struct descriptor_slot *slot=&state->slots[i];
+        if(!object->references)object->status_flags=flags&(O_APPEND|O_NONBLOCK);
         if(!slot->generation)slot->generation=1;
         slot->object=object;slot->access=access;slot->flags=flags;
         __atomic_add_fetch(&object->references,1,__ATOMIC_RELAXED);
@@ -726,6 +743,10 @@ static int descriptor_install_locked(struct descriptor_state *state,
     }
     return -1;
 }
+static int descriptor_install_locked(struct descriptor_state *state,
+                                     struct descriptor_object *object,
+                                     unsigned access,unsigned flags)
+{return descriptor_install_from_locked(state,object,access,flags,0);}
 static int descriptor_acquire(int fd,struct descriptor_ref *reference)
 {
     struct descriptor_state *state=descriptor_state();
@@ -734,7 +755,9 @@ static int descriptor_acquire(int fd,struct descriptor_ref *reference)
     struct descriptor_slot *slot=&state->slots[index];
     if(!slot->object){spin_unlock(&state->lock);return 0;}
     __atomic_add_fetch(&slot->object->references,1,__ATOMIC_RELAXED);
-    *reference=(struct descriptor_ref){slot->object,index,slot->generation,slot->access,slot->flags};
+    unsigned flags=(slot->flags&~(O_APPEND|O_NONBLOCK))|
+        __atomic_load_n(&slot->object->status_flags,__ATOMIC_ACQUIRE);
+    *reference=(struct descriptor_ref){slot->object,index,slot->generation,slot->access,flags};
     spin_unlock(&state->lock);return 1;
 }
 static int descriptor_current(const struct descriptor_ref *reference)
@@ -777,7 +800,7 @@ static uint32_t object_ready(struct descriptor_object *object,unsigned access)
         if((access&1)&&!object->value.pipe.writers)ready|=POLLHUP;
         if((access&2)&&object->value.pipe.readers&&object->value.pipe.count<PIPE_CAPACITY)ready|=POLLOUT;
         if((access&2)&&!object->value.pipe.readers)ready|=POLLERR|POLLHUP;
-    }
+    } else if(object->type==DESCRIPTOR_FILE||object->type==DESCRIPTOR_DIRECTORY){if(access&1)ready|=POLLIN;if(access&2)ready|=POLLOUT;}
     spin_unlock(&object->lock);return ready;
 }
 static int set_error(int error){*__errno_location()=error;return -1;}
@@ -847,7 +870,11 @@ int64_t read(int fd,void *buffer,size_t length)
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
             (void)wait64(&object->sequence,sequence,0);
         }
-    } else set_error(EBADF);
+    } else if(object->type==DESCRIPTOR_FILE){spin_lock(&object->lock);
+        result=call3(SYS_FREAD,(unsigned)object->value.file.kernel_fd,(uintptr_t)buffer,length);
+        spin_unlock(&object->lock);if(result<0){fail(result);result=-1;}
+    } else if(object->type==DESCRIPTOR_DIRECTORY)set_error(21);
+    else set_error(EBADF);
 done:object_release(object);return result;
 }
 int64_t write(int fd,const void *buffer,size_t length)
@@ -886,7 +913,12 @@ int64_t write(int fd,const void *buffer,size_t length)
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
             (void)wait64(&object->sequence,sequence,0);
         }
-    } else set_error(EBADF);
+    } else if(object->type==DESCRIPTOR_FILE){spin_lock(&object->lock);
+        result=call4(SYS_FWRITE,(unsigned)object->value.file.kernel_fd,(uintptr_t)buffer,length,
+                     __atomic_load_n(&object->status_flags,__ATOMIC_ACQUIRE)&O_APPEND);
+        spin_unlock(&object->lock);if(result<0){fail(result);result=-1;}
+    } else if(object->type==DESCRIPTOR_DIRECTORY)set_error(21);
+    else set_error(EBADF);
 done:object_release(object);return result;
 }
 int eventfd(unsigned initval,int flags)
@@ -1000,6 +1032,292 @@ int ioctl_FIONREAD(int fd,int *available)
     else result=EINVAL;
     spin_unlock(&reference.object->lock);object_release(reference.object);
     return result?set_error(result):0;
+}
+
+#define MUSL_AT_FDCWD (-100)
+#define MUSL_O_CREAT 0100
+#define MUSL_O_EXCL 0200
+#define MUSL_O_TRUNC 01000
+#define MUSL_O_ACCMODE 010000003
+#define MUSL_O_PATH 010000000
+#define MUSL_O_DIRECTORY 0200000
+#define MUSL_F_DUPFD 0
+#define MUSL_F_GETFD 1
+#define MUSL_F_SETFD 2
+#define MUSL_F_GETFL 3
+#define MUSL_F_SETFL 4
+#define MUSL_F_DUPFD_CLOEXEC 1030
+#define MUSL_FD_CLOEXEC 1
+#define MUSL_S_IFDIR 0040000
+#define MUSL_S_IFREG 0100000
+#define ENOTTY 25
+#define MUSL_AT_REMOVEDIR 0x200
+
+struct fs_entry_abi { char name[32];uint32_t type,reserved;uint64_t size; };
+struct musl_stat_abi {
+    int64_t dev,ino,nlink;uint32_t mode,uid,gid,pad;int64_t rdev,size,blksize,blocks;
+    struct timespec atime,mtime,ctime;int64_t unused[3];
+};
+struct iovec_abi { void *base;size_t length; };
+struct musl_dirent_abi { uint64_t ino;int64_t offset;uint16_t record_length;unsigned char type;char name[256]; };
+struct runtime_directory {
+    void *native;struct musl_dirent_abi *entry;
+    char path[128];unsigned position;int descriptor;struct musl_dirent_abi storage;
+};
+
+static int runtime_path(const char *path,char result[128])
+{
+    if(!path)return set_error(EFAULT);if(!path[0])return set_error(ENOENT);
+    size_t out=0,in=0;if(path[0]!='/')result[out++]='/';
+    while(path[in]){if(out==127)return set_error(36);result[out++]=path[in++];}
+    result[out]=0;return 0;
+}
+static int canonical_path(const char *path,char result[128])
+{
+    size_t out=1,in=path[0]=='/';result[0]='/';
+    while(path[in]){
+        while(path[in]=='/')++in;if(!path[in])break;
+        size_t begin=in;while(path[in]&&path[in]!='/')++in;size_t length=in-begin;
+        if(length==1&&path[begin]=='.')continue;
+        if(length==2&&path[begin]=='.'&&path[begin+1]=='.'){
+            if(out>1){while(out>1&&result[out-1]!='/')--out;if(out>1)--out;}continue;
+        }
+        if(out>1){if(out==127)return set_error(36);result[out++]='/';}
+        if(length>127-out)return set_error(36);
+        for(size_t i=0;i<length;++i)result[out++]=path[begin+i];
+    }
+    result[out]=0;return 0;
+}
+static void stat_convert(const struct fs_entry_abi *source,struct musl_stat_abi *target)
+{
+    for(size_t i=0;i<sizeof(*target);++i)((unsigned char *)target)[i]=0;
+    target->dev=1;target->ino=1;target->nlink=1;
+    target->mode=(source->type==2?MUSL_S_IFDIR|0777:MUSL_S_IFREG|(source->reserved&1?0444:0666));
+    target->size=(int64_t)source->size;target->blksize=4096;
+    target->blocks=(int64_t)((source->size+511)/512);
+}
+int openat(int directory,const char *path,int flags,...)
+{
+    if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);
+    int access_mode=flags&MUSL_O_ACCMODE;if(access_mode==MUSL_O_PATH)return set_error(ENOTSUP);
+    unsigned access=access_mode==0?1:access_mode==1?2:access_mode==2?3:0;
+    int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY;
+    if(!access||(flags&~allowed)||((flags&MUSL_O_TRUNC)&&!(access&2)))return set_error(EINVAL);
+    char normalized[128];if(runtime_path(path,normalized))return -1;
+    struct fs_entry_abi entry;int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
+    if(!status&&entry.type==2){
+        if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
+        if((access&2)||(flags&MUSL_O_TRUNC))return set_error(21);
+        struct descriptor_state *state=descriptor_state();struct descriptor_object *object=descriptor_object(DESCRIPTOR_DIRECTORY);
+        if(!state||!object){if(object)free(object);return set_error(ENOMEM);}
+        size_t i=0;for(;normalized[i]&&i<127;++i)object->value.directory.path[i]=normalized[i];
+        object->value.directory.path[i]=0;spin_lock(&state->lock);
+        int fd=descriptor_install_locked(state,object,1,(unsigned)flags);spin_unlock(&state->lock);
+        if(fd<0){free(object);return set_error(ENOSPC);}return fd;
+    }
+    if(!status&&(flags&MUSL_O_DIRECTORY))return set_error(20);
+    if(status<0&&status!=-ENOENT)return fail(status);
+    if((flags&MUSL_O_DIRECTORY)&&status==-ENOENT)return fail(status);
+    unsigned myos=access;if(flags&MUSL_O_CREAT)myos|=4;if(flags&MUSL_O_TRUNC)myos|=8;if(flags&MUSL_O_EXCL)myos|=16;
+    int64_t kernel=call3(SYS_FOPEN,(uintptr_t)normalized,myos,0);if(kernel<0)return fail(kernel);
+    struct descriptor_state *state=descriptor_state();struct descriptor_object *object=descriptor_object(DESCRIPTOR_FILE);
+    if(!state||!object){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);if(object)free(object);return set_error(ENOMEM);}
+    object->value.file.kernel_fd=(int32_t)kernel;spin_lock(&state->lock);
+    int fd=descriptor_install_locked(state,object,access,(unsigned)flags);spin_unlock(&state->lock);
+    if(fd<0){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(ENOSPC);}return fd;
+}
+int dup(int fd)
+{
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+    struct descriptor_state *state=descriptor_state();spin_lock(&state->lock);
+    int result=descriptor_install_locked(state,reference.object,reference.access,reference.flags&~O_CLOEXEC);
+    if(result>=0){spin_lock(&reference.object->lock);
+        if(reference.object->type==DESCRIPTOR_EVENT)++reference.object->value.event.opens;
+        if(reference.object->type==DESCRIPTOR_PIPE){
+            if(reference.access&1)++reference.object->value.pipe.readers;
+            if(reference.access&2)++reference.object->value.pipe.writers;
+        }
+        spin_unlock(&reference.object->lock);
+    }
+    spin_unlock(&state->lock);object_release(reference.object);return result<0?set_error(ENOSPC):result;
+}
+int fcntl(int fd,int command,...)
+{
+    long argument=0;if(command==MUSL_F_DUPFD||command==MUSL_F_DUPFD_CLOEXEC||
+       command==MUSL_F_SETFD||command==MUSL_F_SETFL){va_list arguments;
+        va_start(arguments,command);argument=va_arg(arguments,long);va_end(arguments);}
+    if(command==MUSL_F_DUPFD||command==MUSL_F_DUPFD_CLOEXEC){
+        if(argument<0||argument>=FD_BASE+(int)FD_SLOTS)return set_error(EINVAL);
+        unsigned first=argument<=FD_BASE?0:(unsigned)(argument-FD_BASE);
+        struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+        struct descriptor_state *state=descriptor_state();spin_lock(&state->lock);
+        unsigned flags=reference.flags&~O_CLOEXEC;
+        if(command==MUSL_F_DUPFD_CLOEXEC)flags|=O_CLOEXEC;
+        int copy=descriptor_install_from_locked(state,reference.object,reference.access,flags,first);
+        if(copy>=0){spin_lock(&reference.object->lock);
+            if(reference.object->type==DESCRIPTOR_EVENT)++reference.object->value.event.opens;
+            if(reference.object->type==DESCRIPTOR_PIPE){
+                if(reference.access&1)++reference.object->value.pipe.readers;
+                if(reference.access&2)++reference.object->value.pipe.writers;
+            }
+            spin_unlock(&reference.object->lock);
+        }
+        spin_unlock(&state->lock);object_release(reference.object);
+        return copy<0?set_error(ENOSPC):copy;
+    }
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+    int result=0;
+    if(command==MUSL_F_GETFD)result=(reference.flags&O_CLOEXEC)?MUSL_FD_CLOEXEC:0;
+    else if(command==MUSL_F_GETFL)result=(reference.access==1?0:reference.access==2?1:2)|(reference.flags&(O_APPEND|O_NONBLOCK));
+    else if(command==MUSL_F_SETFD||command==MUSL_F_SETFL){struct descriptor_state *s=descriptor_state();spin_lock(&s->lock);
+        struct descriptor_slot *slot=&s->slots[reference.slot];if(slot->object!=reference.object||slot->generation!=reference.generation)result=-EBADF;
+        else if(command==MUSL_F_SETFD){if(argument&~MUSL_FD_CLOEXEC)result=-EINVAL;else slot->flags=(slot->flags&~O_CLOEXEC)|(argument?O_CLOEXEC:0);}
+        else {if(argument&~(3|O_APPEND|O_NONBLOCK))result=-EINVAL;
+            else __atomic_store_n(&reference.object->status_flags,(unsigned)argument&(O_APPEND|O_NONBLOCK),__ATOMIC_RELEASE);}
+        spin_unlock(&s->lock);
+    } else result=-EINVAL;
+    object_release(reference.object);return result<0?set_error(-result):result;
+}
+int64_t lseek(int fd,int64_t offset,int whence)
+{
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||reference.object->type!=DESCRIPTOR_FILE){if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
+    spin_lock(&reference.object->lock);int64_t result=call3(SYS_FSEEK,(unsigned)reference.object->value.file.kernel_fd,(uint64_t)offset,(unsigned)whence);spin_unlock(&reference.object->lock);
+    object_release(reference.object);if(result<0){fail(result);return -1;}return result;
+}
+static int64_t positioned_io(int fd,void *buffer,size_t length,int64_t offset,int writing)
+{
+    if(offset<0){set_error(EINVAL);return -1;}struct descriptor_ref reference={0};
+    if(!descriptor_acquire(fd,&reference)||reference.object->type!=DESCRIPTOR_FILE||!(reference.access&(writing?2:1))){if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
+    spin_lock(&reference.object->lock);int kernel=reference.object->value.file.kernel_fd;
+    int64_t saved=call3(SYS_FSEEK,(unsigned)kernel,0,1),result=saved;
+    if(saved>=0){result=call3(SYS_FSEEK,(unsigned)kernel,(uint64_t)offset,0);
+        if(result>=0)result=call4(writing?SYS_FWRITE:SYS_FREAD,(unsigned)kernel,(uintptr_t)buffer,length,0);}
+    if(saved>=0)(void)call3(SYS_FSEEK,(unsigned)kernel,(uint64_t)saved,0);
+    spin_unlock(&reference.object->lock);object_release(reference.object);if(result<0){fail(result);return -1;}return result;
+}
+int64_t pread(int fd,void *buffer,size_t length,int64_t offset){return positioned_io(fd,buffer,length,offset,0);}
+int64_t pwrite(int fd,const void *buffer,size_t length,int64_t offset){return positioned_io(fd,(void *)buffer,length,offset,1);}
+int64_t readv(int fd,const struct iovec_abi *vectors,int count)
+{if((!vectors&&count)||count<0||count>1024){set_error(EINVAL);return -1;}int64_t total=0;
+ for(int i=0;i<count;++i){if(vectors[i].length>(size_t)(INT64_MAX-total)){set_error(EINVAL);return total?total:-1;}
+  int64_t got=read(fd,vectors[i].base,vectors[i].length);if(got<0)return total?total:-1;total+=got;if((size_t)got<vectors[i].length)break;}return total;}
+int64_t writev(int fd,const struct iovec_abi *vectors,int count)
+{if((!vectors&&count)||count<0||count>1024){set_error(EINVAL);return -1;}int64_t total=0;
+ for(int i=0;i<count;++i){if(vectors[i].length>(size_t)(INT64_MAX-total)){set_error(EINVAL);return total?total:-1;}
+  int64_t put=write(fd,vectors[i].base,vectors[i].length);if(put<0)return total?total:-1;total+=put;if((size_t)put<vectors[i].length)break;}return total;}
+int ftruncate(int fd,int64_t length)
+{if(length<0)return set_error(EINVAL);struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)||r.object->type!=DESCRIPTOR_FILE){if(r.object)object_release(r.object);return set_error(EBADF);}
+ spin_lock(&r.object->lock);int64_t rc=call3(SYS_FTRUNCATE,(unsigned)r.object->value.file.kernel_fd,(uint64_t)length,0);spin_unlock(&r.object->lock);object_release(r.object);return rc<0?fail(rc):0;}
+int fsync(int fd){struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)||r.object->type!=DESCRIPTOR_FILE){if(r.object)object_release(r.object);return set_error(EBADF);}
+ int64_t rc=call3(SYS_FSYNC,(unsigned)r.object->value.file.kernel_fd,0,0);object_release(r.object);return rc<0?fail(rc):0;}
+int fdatasync(int fd){return fsync(fd);}
+int fstat(int fd,struct musl_stat_abi *information)
+{if(!information)return set_error(EFAULT);struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)){return set_error(EBADF);}
+ struct fs_entry_abi entry;int64_t rc;
+ if(r.object->type==DESCRIPTOR_FILE)rc=call3(SYS_FSTAT,(unsigned)r.object->value.file.kernel_fd,(uintptr_t)&entry,0);
+ else if(r.object->type==DESCRIPTOR_DIRECTORY)rc=call3(SYS_STAT,(uintptr_t)r.object->value.directory.path,(uintptr_t)&entry,0);
+ else {object_release(r.object);return set_error(EBADF);}
+ object_release(r.object);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
+int fstatat(int directory,const char *path,struct musl_stat_abi *information,int flags)
+{if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);char normalized[128];if(runtime_path(path,normalized))return -1;
+ struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
+int access(const char *path,int mode)
+{if(mode&~7)return set_error(EINVAL);struct musl_stat_abi info;if(fstatat(MUSL_AT_FDCWD,path,&info,0))return -1;
+ if((mode&2)&&!(info.mode&0222))return set_error(30);
+ if((mode&1)&&!(info.mode&0111))return set_error(13);return 0;}
+char *getcwd(char *buffer,size_t size)
+{if(!buffer){set_error(EFAULT);return 0;}if(size<2){set_error(34);return 0;}buffer[0]='/';buffer[1]=0;return buffer;}
+int mkdir(const char *path,uint32_t mode)
+{(void)mode;char normalized[128];if(runtime_path(path,normalized))return -1;int64_t rc=call3(SYS_MKDIR,(uintptr_t)normalized,0,0);return rc<0?fail(rc):0;}
+int isatty(int fd){if(fd==1||fd==2)return 1;struct descriptor_ref r={0};
+ if(!descriptor_acquire(fd,&r)){set_error(EBADF);return 0;}object_release(r.object);set_error(ENOTTY);return 0;}
+long pathconf(const char *path,int name)
+{struct musl_stat_abi info;if(fstatat(MUSL_AT_FDCWD,path,&info,0))return -1;
+ if(name==3)return 31;if(name==4)return 127;if(name==5)return 4096;return set_error(EINVAL);}
+void *fdopendir(int fd)
+{
+    struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)||r.object->type!=DESCRIPTOR_DIRECTORY){
+        int error=r.object?20:EBADF;if(r.object)object_release(r.object);set_error(error);return 0;}
+    struct runtime_directory *directory=malloc(sizeof(*directory));
+    if(!directory){object_release(r.object);set_error(ENOMEM);return 0;}
+    *directory=(struct runtime_directory){directory,&directory->storage,{0},0,fd,{0}};
+    size_t i=0;for(;i<127&&r.object->value.directory.path[i];++i)
+        directory->path[i]=r.object->value.directory.path[i];
+    directory->path[i]=0;object_release(r.object);
+    return directory;
+}
+void *opendir(const char *path)
+{int fd=openat(MUSL_AT_FDCWD,path,MUSL_O_DIRECTORY|O_CLOEXEC,0);if(fd<0)return 0;
+ void *directory=fdopendir(fd);if(!directory)(void)close(fd);return directory;}
+struct musl_dirent_abi *readdir(void *raw)
+{
+    struct runtime_directory *directory=raw;
+    if(!directory||directory->native!=directory){set_error(EINVAL);return 0;}
+    struct fs_entry_abi source;int64_t rc=call3(SYS_READDIR,(uintptr_t)directory->path,
+                                                (uintptr_t)&source,directory->position);
+    if(rc<0){fail(rc);return 0;}if(!rc)return 0;
+    struct musl_dirent_abi *entry=&directory->storage;
+    for(size_t i=0;i<sizeof(*entry);++i)((unsigned char *)entry)[i]=0;
+    entry->ino=directory->position+1;entry->offset=(int64_t)directory->position+1;
+    entry->record_length=sizeof(*entry);entry->type=source.type==2?4:8;
+    size_t i=0;for(;i<31&&source.name[i];++i)entry->name[i]=source.name[i];
+    entry->name[i]=0;++directory->position;return entry;
+}
+int readdir_r(void *raw,struct musl_dirent_abi *entry,struct musl_dirent_abi **result)
+{
+    if(!raw||!entry||!result)return EINVAL;*result=0;*__errno_location()=0;
+    struct musl_dirent_abi *found=readdir(raw);if(!found)return *__errno_location();
+    *entry=*found;*result=entry;return 0;
+}
+int closedir(void *raw)
+{struct runtime_directory *directory=raw;if(!directory||directory->native!=directory)return set_error(EINVAL);
+ int rc=close(directory->descriptor);directory->native=0;free(directory);return rc;}
+int unlinkat(int directory,const char *path,int flags)
+{
+    if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);
+    if(flags&~MUSL_AT_REMOVEDIR)return set_error(EINVAL);
+    char normalized[128];if(runtime_path(path,normalized))return -1;
+    struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
+    if(rc<0)return fail(rc);
+    if((flags&MUSL_AT_REMOVEDIR)&&entry.type!=2)return set_error(20);
+    if(!(flags&MUSL_AT_REMOVEDIR)&&entry.type==2)return set_error(21);
+    rc=call3(SYS_UNLINK,(uintptr_t)normalized,0,0);return rc<0?fail(rc):0;
+}
+char *realpath(const char *path,char *resolved)
+{
+    char normalized[128];if(runtime_path(path,normalized))return 0;
+    struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
+    if(rc<0){fail(rc);return 0;}char canonical[128];if(canonical_path(normalized,canonical))return 0;
+    char *output=resolved?resolved:malloc(128);
+    if(!output){set_error(ENOMEM);return 0;}size_t i=0;do{output[i]=canonical[i];}while(canonical[i++]);return output;
+}
+static volatile uint64_t *temporary_counter(void)
+{return (volatile uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+1544);}
+static int temporary_name(char *template)
+{
+    if(!template)return set_error(EFAULT);size_t length=0;while(template[length])++length;
+    if(length<6)return set_error(EINVAL);for(size_t i=length-6;i<length;++i)if(template[i]!='X')return set_error(EINVAL);
+    static const char alphabet[]="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    uint64_t value=__atomic_add_fetch(temporary_counter(),1,__ATOMIC_RELAXED)^
+                   ((uint64_t)call3(2,0,0,0)<<32)^(uint64_t)call3(SYS_TICKS,0,0,0);
+    for(unsigned i=0;i<6;++i){template[length-1-i]=alphabet[value%62];value/=62;}return 0;
+}
+int mkstemp(char *template)
+{
+    for(unsigned attempt=0;attempt<100;++attempt){if(temporary_name(template))return -1;
+        int fd=openat(MUSL_AT_FDCWD,template,MUSL_O_CREAT|MUSL_O_EXCL|2,0600);
+        if(fd>=0)return fd;if(*__errno_location()!=EEXIST)return -1;
+        size_t length=0;while(template[length])++length;for(size_t i=length-6;i<length;++i)template[i]='X';
+    }
+    return set_error(EEXIST);
+}
+char *mkdtemp(char *template)
+{
+    for(unsigned attempt=0;attempt<100;++attempt){if(temporary_name(template))return 0;
+        if(!mkdir(template,0700))return template;if(*__errno_location()!=EEXIST)return 0;
+        size_t length=0;while(template[length])++length;for(size_t i=length-6;i<length;++i)template[i]='X';
+    }
+    set_error(EEXIST);return 0;
 }
 
 /* Pinned Cobalt musl system ABI.  Report only capabilities MyOS actually owns. */

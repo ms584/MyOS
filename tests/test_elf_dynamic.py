@@ -12,6 +12,7 @@ from test_system import VM,OUT,ROOT
 from test_shell import command,type_text
 sys.path.insert(0,str(ROOT/'tools'))
 from make_asset_disk import create
+from create_data_disk import create_image
 
 def implemented_exports():
     with (ROOT/'docs/PHASE331_IMPORTS.csv').open(newline='') as source:
@@ -120,7 +121,24 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(system_image),str(system_obj)],check=True)
     platform_specs.append(f'system={system_image}')
-    specs=[f'dynamic={library}',*platform_specs]
+    file_obj=out/'elf-platform-file.o';file_image=out/'file.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-file.c',
+                    '-o',str(file_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(file_image),str(file_obj)],check=True)
+    platform_specs.append(f'file={file_image}')
+    sync_obj=out/'elf-platform-file-sync.o';sync_image=out/'file-sync.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-file-sync.c',
+                    '-o',str(sync_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(sync_image),str(sync_obj)],check=True)
+    platform_specs.append(f'file-sync={sync_image}')
+    large=out/'large.bin';large.write_bytes(bytes(index%251 for index in range(131072)))
+    specs=[f'dynamic={library}',*platform_specs,f'large={large}']
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
     disk=out/'assets.img';disk.unlink(missing_ok=True);create(disk,specs)
@@ -157,6 +175,8 @@ def exercise(cobalt=None):
         assert 'ELF descriptor lifetime, eventfd, pipe, poll, epoll and FIONREAD PASS' in output,output
         output=command(vm,'elf run system','ELF exited with status 37')
         assert 'ELF system, constants and honest optional-feature contracts PASS' in output,output
+        output=command(vm,'elf run file','ELF exited with status 38')
+        assert 'ELF regular-file descriptor ABI and shared lifetime PASS' in output,output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')
@@ -167,6 +187,17 @@ def exercise(cobalt=None):
         print('PASS: four dynamic relocation types; SysV/GNU hash; sectionless startup; Ring 3 constructors; RELRO fault; invalid/missing-symbol rollback',flush=True)
     finally:vm.close()
     assert digest(disk)==before
+    data=out/'file-sync-data.img';data.unlink(missing_ok=True);create_image(data,large=True)
+    for name,marker in (('file-sync-commit','ELF file fsync committed binary data PASS'),
+                        ('file-sync-reboot','ELF file fsync reboot persistence PASS')):
+        vm=VM(name,disk=data,asset_disk=disk)
+        try:
+            vm.wait('myos> ')
+            output=command(vm,'elf run file-sync','ELF exited with status 39')
+            assert marker in output,output
+        finally:vm.close()
+    assert digest(disk)==before
+    print('PASS: native file fsync/fdatasync binary data survives reboot on disposable v2 disk',flush=True)
     if cobalt:
         audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
         assert digest(cobalt)==audit['library_sha256'],'wrong Cobalt build'

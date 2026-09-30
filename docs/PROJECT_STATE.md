@@ -2,46 +2,39 @@
 
 Updated: 2026-09-30. Read this first; open detailed docs only as needed.
 Repo: /home/xytron404/myos (WSL Ubuntu).
-Implementation checkpoint before this slice: b6c74b5, branch main.
-Local main matched origin/main after `git fetch origin` at the start of this slice.
+Prior baseline: 4be9c3b, branch main; file slice is the current local checkpoint.
+After git fetch origin, origin/main has no new changes; commits remain local.
 Check current Git status/HEAD each new chat.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
-- 108/242 strong imports resolve; 134 remain plus a separate weak TLS symbol.
+- 135/242 strong imports have fixture coverage; 107 remain plus a weak TLS symbol.
   Symbol counts and fixture passes do not prove full ABI compatibility.
 - Phase 32 and Phase 33 are NOT PASSED; actual YouTube playback is unproven.
 - Sequence: finish 33.1/33.2 -> 33.3 standard media -> 33.4 YouTube ->
   33.5 Rickroll. Check Phase 32 search/select/play separately.
-- Default: the owner pushes manually. Push only on explicit user instruction.
+- The owner pushes manually. Do not push.
 
 ## Current implementation slice
-- Added real realtime and monotonic nanosecond clocks, absolute/relative sleep,
-  pthread condition clock attributes, timed waits and per-thread signal-mask
-  state/inheritance. Invalid handles, TLS-key reuse, join ownership and detached
-  thread resource reclamation now have adversarial fixture coverage.
-- Added a shared refcounted runtime descriptor/open-object model with generation
-  validation and wake-on-close cancellation. Eventfd, pipe/pipe2, poll, epoll
-  and FIONREAD use it; ordinary MyOS file descriptors are forwarded through
-  the same read/write/close entry points. Sockets remain future consumers.
-- The self-test kernel outgrew the old 0x73000 linker guard. BIOS and UEFI
-  reservations were audited and the in-memory guard now ends at 0x80000; the
-  independent 256 KiB kernel-file cap is unchanged.
-- The next tested slice adds real PID/TID identity, uid/euid, auxv, resource
-  limits, single-CPU affinity, scheduler-policy validation, prctl thread names,
-  sysconf and uname. Four Starboard data constants reflect the actual MyOS
-  filesystem/thread limits. DRM, microphone and speech imports now report
-  documented unavailable behavior rather than fake successful devices.
+- Baselines 54ef570/4be9c3b cover pthread clocks/masks/lifecycle, shared
+  descriptors/waits and tested system ABI. See PHASE331_WAIT.md and
+  PHASE331_SYSTEM.md; the independent 256 KiB kernel-file cap remains.
+- File descriptors now use refcounted objects with shared offsets/status flags,
+  exclusive create, positional/vectored I/O, metadata, seek and truncate.
+- /assets/NAME exposes large read-only random reads. Directories, temporary
+  files, realpath and unlinkat have native fixtures. fsync/fdatasync commit
+  the real ATA snapshot; volatile RAMFS reports ENOTSUP.
+- Detailed supported subsets and remaining semantic gaps: PHASE331_FILES.md.
+- Command logging is bounded: 16 MiB per log, two rotations (48 MiB total),
+  feedback rejection; logger regression passes. Watch with unwrapped tail -F.
 
 ## Validation at checkpoint
-- Focused `tests/test_elf_dynamic.py` passed, including the new pthread/clock
-  and descriptor fixtures.
-- The optional pinned Cobalt staging test passed: 108 tested imports resolved,
-  134 strong imports remain, and normal plus 64 MiB-OOM staged pages reclaim.
-- The full `tests/test_system.py` regression passed and restored the normal
-  framebuffer image.
-- The focused audio regression also passed after making boot waits tolerant of
-  loaded hosts; VM teardown now escalates from terminate to kill if necessary.
+- Focused dynamic fixtures passed, including 128 KiB asset random reads and
+  8 KiB binary fsync/fdatasync persistence across reboot on a disposable v2 disk.
+- Pinned Cobalt binary/header hashes and the 243-row contract register pass.
+- Full system regression passed at 19:02 +07; normal framebuffer image restored.
+- Pinned Cobalt staging passed at 256 MiB (135 bound, 107 missing), with all
+  staged pages reclaimed; 64 MiB OOM rollback passed. This does not run Cobalt.
 
 ## Known gaps and next scoped chat
 1. Continue Phase 33.1/33.2 only: implement the remaining loader TLS/finalizer,

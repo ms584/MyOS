@@ -5,6 +5,19 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Phase 33.1 system ABI continuation — 2026-09-30
 
+The following file slice is the tested local checkpoint after 4be9c3b. See
+[PHASE331_FILES.md](PHASE331_FILES.md). Regular files now use the shared
+descriptor registry, with shared offsets/status flags, exclusive create,
+large read-only asset access, directories/temp files and real fsync/fdatasync
+snapshot commits. Focused Ring 3 tests and an 8 KiB binary reboot-persistence
+test pass. The register has 135 tested strong imports, with 107 still missing.
+Full system regression passed at 19:02 +07 and restored the normal framebuffer
+image. Pinned Cobalt staging passed: 135 bound/107 missing at 256 MiB with
+complete reclamation, and OOM rollback at 64 MiB. Bounded logger tests pass;
+the current plus two rotated logs are capped at 16 MiB each, and feedback
+commands are refused. Watch using unwrapped tail -F. Phase 33.1/33.2 remain
+OPEN; Cobalt still does not execute. Phase 33.3 is not started.
+
 After the clock/wait commit, the tested Cobalt allowlist advances from 75 to
 108 strong imports. A new Ring 3 fixture validates actual MyOS PID versus TID,
 uid/euid, auxv, resource limits, CPU affinity, scheduler-policy rejection,

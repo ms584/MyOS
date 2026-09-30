@@ -56,6 +56,19 @@ bool asset_read(void *context,uint64_t off,void *buffer,size_t n)
     if(!f||off>f->size||n>f->size-off||f->offset>UINT64_MAX-off)return false;
     return raw(f->offset+off,buffer,n);
 }
+int asset_stat(const char *name,uint64_t *size)
+{
+    struct asset_file file;int rc=asset_open(name,&file);
+    if(!rc&&size)*size=file.size;
+    return rc;
+}
+int asset_entry(unsigned position,char name[48],uint64_t *size)
+{
+    struct entry entries[ASSET_LIMIT];unsigned count;
+    if(!table(entries,&count))return ata_asset_sectors()?-8:-19;
+    if(position>=count)return 0;
+    memcpy(name,entries[position].name,48);if(size)*size=entries[position].size;return 1;
+}
 void asset_list(void)
 {
     struct entry entries[ASSET_LIMIT];unsigned count;

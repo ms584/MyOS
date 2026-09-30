@@ -3,8 +3,9 @@
 This is an implementation contract, **not an implemented POSIX or Starboard
 layer**. [PHASE331_IMPORTS.csv](PHASE331_IMPORTS.csv) contains every one of the
 243 pinned imports exactly once, its binding strength, owning layer, contract
-group and pinned source. All entries remain `unimplemented`: existing kernel
-functions do not automatically satisfy these user-space ABIs.
+group and pinned source. The register was initially all `unimplemented`;
+current per-function fixture status is recorded in that CSV and PROJECT_STATE.md.
+Existing kernel functions do not automatically satisfy these user-space ABIs.
 
 The [header manifest](PHASE331_ABI_SOURCES.json) records 42 inspected upstream
 header hashes at source commit `3befd332486952f6603ae3baf2a8713878d6e200`.
@@ -32,8 +33,8 @@ Do not treat a group summary as a substitute for a function's prototype.
   results differ. Do not leak negative MyOS syscall results through every API.
 - Current ELF fixtures use MyOS's existing syscalls and a small custom entry
   convention. They do not establish this Cobalt ABI. Phase 33.2 adds in-image relocation binding and Ring 3 constructors for
-  self-contained ELF fixtures. It still has no external platform bindings
-  or ELF TLS implementation.
+  self-contained ELF fixtures. The tested fixed-address platform runtime now
+  supplies explicit imports; ELF PT_TLS/dependency integration remains open.
 
 ## Required groups and acceptance checks
 
@@ -60,10 +61,11 @@ Do not treat a group summary as a substitute for a function's prototype.
 | certification | 1 | SbSystemSignWithCertificationSecretKey: unresolved platform/frontend dependency. | Determine whether selected YouTube deployment requires credentials; do not invent keys or successful signatures. |
 | weak-tls | 1 | V8 weak TLS-initializer symbol: unresolved call-site and loader semantics. | Establish null weak-binding behavior from pinned source before execution; not a dummy callable address. |
 
-The read-only asset volume added in this slice supplies an internal loader
-reader; it does **not** implement the 41 POSIX file imports or expose new user
-file syscalls. Likewise the restricted ELF fixture runner does not implement
-the VM/thread groups above.
+The original read-only asset volume supplied only an internal loader reader.
+The subsequent file slice exposes /assets random reads and new user file
+syscalls; see PHASE331_FILES.md for supported subsets and semantic limits.
+Allocator/VM/thread/wait contracts have separate native fixture coverage.
+Neither those fixtures nor the restricted runner prove full Cobalt execution.
 
 ## Renderer and codec feasibility decisions
 

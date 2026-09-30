@@ -1,5 +1,6 @@
 #include "syscall.h"
 #include "security.h"
+#include "storage.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -72,24 +73,61 @@ static int user_path(struct process *p,char *path,uintptr_t address)
 static int64_t file_call(struct process *p,struct frame *f)
 {
     char path[FS_PATH],buffer[SYS_WRITE_MAX];struct fs_entry info;
-    if(f->rax==SYS_FREAD || f->rax==SYS_FWRITE || f->rax==SYS_FCLOSE){
+    if(f->rax==SYS_FREAD || f->rax==SYS_FWRITE || f->rax==SYS_FCLOSE ||
+       f->rax==SYS_FSEEK || f->rax==SYS_FSTAT || f->rax==SYS_FTRUNCATE ||
+       f->rax==SYS_FREAD_LARGE || f->rax==SYS_FWRITE_LARGE || f->rax==SYS_FSYNC){
         if(f->rdi<3 || f->rdi>=3+FS_HANDLES)return -9;
         int fd=(int)f->rdi;
         if(f->rax==SYS_FCLOSE)return fs_close(p->files,fd);
-        if(f->rdx>sizeof(buffer))return -22;
-        if(f->rax==SYS_FWRITE){
-            if(!copy_from_user(p,buffer,f->rsi,f->rdx))return -14;
-            return fs_write(p->files,fd,buffer,f->rdx);
+        if(f->rax==SYS_FSEEK)return fs_seek(p->files,fd,(int64_t)f->rsi,(int)f->rdx);
+        if(f->rax==SYS_FTRUNCATE)return fs_truncate(p->files,fd,(size_t)f->rsi);
+        if(f->rax==SYS_FSTAT){if(!writable_range(p,f->rsi,sizeof(info)))return -14;
+            int rc=fs_fstat(p->files,fd,&info);if(!rc)copy_to_user(p,f->rsi,&info,sizeof(info));return rc;}
+        if(f->rax==SYS_FSYNC){
+            int rc=fs_fstat(p->files,fd,&info);if(rc)return rc;
+            if(info.reserved&1)return 0; /* Immutable asset disk already committed. */
+            return storage_ready()?storage_save():-95;
         }
+        if((f->rax==SYS_FREAD||f->rax==SYS_FWRITE)&&f->rdx>sizeof(buffer))return -22;
+        if(f->rax==SYS_FWRITE||f->rax==SYS_FWRITE_LARGE){
+            size_t total=0,length=(size_t)f->rdx;
+            if(length>INT64_MAX|| (length&&f->rsi>UINT64_MAX-(length-1)))return -22;
+            /* Validate every page before changing the file or its offset. */
+            size_t checked=0;
+            while(checked<length){
+                if(!readable_user_page(p,f->rsi+checked,false))return -14;
+                size_t step=PAGE_SIZE-((f->rsi+checked)&(PAGE_SIZE-1));
+                if(step>length-checked)step=length-checked;
+                checked+=step;
+            }
+            if(!length)return fs_write(p->files,fd,buffer,0);
+            if(f->rax==SYS_FWRITE_LARGE&&f->r10){
+                int64_t end=fs_seek(p->files,fd,0,2);if(end<0)return end;
+            }
+            while(total<length){size_t count=length-total;if(count>sizeof(buffer))count=sizeof(buffer);
+                if(!copy_from_user(p,buffer,f->rsi+total,count))return total?(int64_t)total:-14;
+                int64_t written=fs_write(p->files,fd,buffer,count);
+                if(written<0)return total?(int64_t)total:written;
+                total+=(size_t)written;if((size_t)written<count)break;
+            }
+            return (int64_t)total;
+        }
+        if(f->rdx>INT64_MAX)return -22;
         if(!writable_range(p,f->rsi,f->rdx))return -14;
-        int64_t count=fs_read(p->files,fd,buffer,f->rdx);
-        if(count>0)copy_to_user(p,f->rsi,buffer,(size_t)count);
-        return count;
+        if(!f->rdx)return fs_read(p->files,fd,buffer,0);
+        size_t total=0,length=(size_t)f->rdx;
+        while(total<length){size_t request=length-total;if(request>sizeof(buffer))request=sizeof(buffer);
+            int64_t count=fs_read(p->files,fd,buffer,request);
+            if(count<0)return total?(int64_t)total:count;
+            if(count)copy_to_user(p,f->rsi+total,buffer,(size_t)count);
+            total+=(size_t)count;if((size_t)count<request)break;
+        }
+        return (int64_t)total;
     }
     int ret=user_path(p,path,f->rdi);if(ret)return ret;
     switch(f->rax){
     case SYS_FOPEN:
-        if(f->rsi>15)return -22;
+        if(f->rsi>31)return -22;
         return fs_open(p->files,path,(unsigned)f->rsi);
     case SYS_MKDIR:return fs_mkdir(path);
     case SYS_UNLINK:return fs_unlink(path);
@@ -212,6 +250,8 @@ struct frame *syscall_dispatch(struct frame *frame)
         else frame->rax=(uint64_t)-22;
         break;
     case SYS_FOPEN: case SYS_FREAD: case SYS_FWRITE: case SYS_FCLOSE:
+    case SYS_FSEEK: case SYS_FSTAT: case SYS_FTRUNCATE:
+    case SYS_FREAD_LARGE: case SYS_FWRITE_LARGE: case SYS_FSYNC:
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:
         frame->rax = (uint64_t)file_call(process,frame);
         break;

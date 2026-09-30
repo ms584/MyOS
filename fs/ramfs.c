@@ -1,4 +1,5 @@
 #include "fs-snapshot.h"
+#define FS_ASSET_NODE UINT32_MAX
 struct node {
     bool used;
     unsigned parent, type, references;
@@ -83,14 +84,30 @@ static struct fs_handle *handle(struct fs_handle *table,int fd)
     if(fd<3 || fd>=3+FS_HANDLES || !table[fd-3].node)return 0;
     return &table[fd-3];
 }
+static void entry(unsigned index,struct fs_entry *result);
+static const char *asset_name(const char *path)
+{
+    static const char prefix[]="/assets/";
+    unsigned i=0;for(;prefix[i];++i)if(path[i]!=prefix[i])return 0;
+    return path[i]&&path[i]!='/'?path+i:0;
+}
 
 int fs_open(struct fs_handle *table,const char *path,unsigned access)
 {
-    if((access&~15u) || !(access&3) || ((access&FS_TRUNC)&&!(access&FS_WRITE)))return -22;
+    if((access&~31u) || !(access&3) || ((access&FS_TRUNC)&&!(access&FS_WRITE)) ||
+       ((access&FS_EXCL)&&!(access&FS_CREATE)))return -22;
     uint64_t flags=irq_save();int result=-24;unsigned slot;
     for(slot=0;slot<FS_HANDLES;++slot)if(!table[slot].node)break;
     if(slot==FS_HANDLES)goto done;
+    const char *asset=asset_name(path);
+    if(asset){
+        if(access&(FS_WRITE|FS_CREATE|FS_TRUNC)){result=-30;goto done;}
+        struct asset_file file;result=asset_open(asset,&file);if(result<0)goto done;
+        table[slot]=(struct fs_handle){FS_ASSET_NODE,access,0,file};
+        result=(int)slot+3;goto done;
+    }
     result=resolve(path,false,0);
+    if(result>=0&&(access&(FS_CREATE|FS_EXCL))==(FS_CREATE|FS_EXCL)){result=-17;goto done;}
     if(result==-2 && (access&FS_CREATE)) {
         size_t length=0;while(path[length])++length;
         if(length && path[length-1]=='/'){result=-20;goto done;}
@@ -100,7 +117,7 @@ int fs_open(struct fs_handle *table,const char *path,unsigned access)
     struct node *node=&nodes[result];
     if(node->type!=FS_FILE){result=-21;goto done;}
     if(access&FS_TRUNC){node->size=0;memset(node->data,0,node->capacity);}
-    table[slot]=(struct fs_handle){(unsigned)result+1,access,0};
+    table[slot]=(struct fs_handle){(unsigned)result+1,access,0,{0,0}};
     ++node->references;result=(int)slot+3;
 done:
     irq_restore(flags);return result;
@@ -110,7 +127,8 @@ int fs_close(struct fs_handle *table,int fd)
 {
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file){irq_restore(flags);return -9;}
-    --nodes[file->node-1].references;memset(file,0,sizeof(*file));irq_restore(flags);return 0;
+    if(file->node!=FS_ASSET_NODE)--nodes[file->node-1].references;
+    memset(file,0,sizeof(*file));irq_restore(flags);return 0;
 }
 void fs_close_all(struct fs_handle *table)
 {
@@ -120,6 +138,12 @@ int64_t fs_read(struct fs_handle *table,int fd,void *buffer,size_t length)
 {
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file || !(file->flags&FS_READ)){irq_restore(flags);return -9;}
+    if(file->node==FS_ASSET_NODE){
+        size_t count=file->offset>=file->asset.size?0:(size_t)(file->asset.size-file->offset);
+        if(count>length)count=length;
+        if(count&&!asset_read(&file->asset,file->offset,buffer,count)){irq_restore(flags);return -5;}
+        file->offset+=count;irq_restore(flags);return (int64_t)count;
+    }
     struct node *node=&nodes[file->node-1];
     size_t count=file->offset>=node->size?0:node->size-file->offset;
     if(count>length)count=length;
@@ -130,6 +154,7 @@ int64_t fs_write(struct fs_handle *table,int fd,const void *buffer,size_t length
 {
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file || !(file->flags&FS_WRITE)){irq_restore(flags);return -9;}
+    if(file->node==FS_ASSET_NODE){irq_restore(flags);return -30;}
     if(length>FS_FILE_MAX-file->offset){irq_restore(flags);return -28;}
     struct node *node=&nodes[file->node-1];
     if(length){
@@ -149,6 +174,52 @@ int64_t fs_write(struct fs_handle *table,int fd,const void *buffer,size_t length
     }
     irq_restore(flags);return (int64_t)length;
 }
+int64_t fs_seek(struct fs_handle *table,int fd,int64_t offset,int whence)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file){irq_restore(flags);return -9;}
+    uint64_t base;
+    if(whence==0)base=0;
+    else if(whence==1)base=file->offset;
+    else if(whence==2)base=file->node==FS_ASSET_NODE?file->asset.size:nodes[file->node-1].size;
+    else {irq_restore(flags);return -22;}
+    uint64_t position;
+    if(offset<0){
+        uint64_t amount=0-(uint64_t)offset;
+        if(amount>base){irq_restore(flags);return -22;}
+        position=base-amount;
+    } else {
+        uint64_t amount=(uint64_t)offset;
+        uint64_t maximum=file->node==FS_ASSET_NODE?file->asset.size:FS_FILE_MAX;
+        if(base>maximum||amount>maximum-base){irq_restore(flags);return -22;}
+        position=base+amount;
+    }
+    file->offset=(size_t)position;irq_restore(flags);return (int64_t)position;
+}
+int fs_fstat(struct fs_handle *table,int fd,struct fs_entry *result)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file){irq_restore(flags);return -9;}
+    if(file->node==FS_ASSET_NODE){memset(result,0,sizeof(*result));result->type=FS_FILE;result->size=file->asset.size;result->reserved=1;}
+    else entry(file->node-1,result);
+    irq_restore(flags);return 0;
+}
+int fs_truncate(struct fs_handle *table,int fd,size_t length)
+{
+    if(length>FS_FILE_MAX)return -27;
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
+    if(!file||!(file->flags&FS_WRITE)){irq_restore(flags);return -9;}
+    if(file->node==FS_ASSET_NODE){irq_restore(flags);return -30;}
+    struct node *node=&nodes[file->node-1];
+    if(length>node->capacity){size_t capacity=node->capacity;while(capacity<length)capacity*=2;
+        char *grown=kmalloc(capacity);if(!grown){irq_restore(flags);return -12;}
+        memset(grown,0,capacity);memcpy(grown,node->data,node->size);kfree(node->data);
+        node->data=grown;node->capacity=capacity;
+    }
+    if(length>node->size)memset(node->data+node->size,0,length-node->size);
+    else if(length<node->size)memset(node->data+length,0,node->size-length);
+    node->size=length;irq_restore(flags);return 0;
+}
 int fs_unlink(const char *path)
 {
     uint64_t flags=irq_save();int result=resolve(path,false,0);
@@ -167,12 +238,25 @@ static void entry(unsigned index,struct fs_entry *result)
 }
 int fs_stat(const char *path,struct fs_entry *result)
 {
+    if(equal(path,"/assets")||equal(path,"/assets/")){
+        memset(result,0,sizeof(*result));result->type=FS_DIR;memcpy(result->name,"assets",7);return 0;
+    }
+    const char *asset=asset_name(path);if(asset){uint64_t size;int rc=asset_stat(asset,&size);
+        if(!rc){memset(result,0,sizeof(*result));result->type=FS_FILE;result->size=size;result->reserved=1;
+            size_t i=0;while(i<FS_NAME-1&&asset[i]){result->name[i]=asset[i];++i;}}
+        return rc;}
     uint64_t flags=irq_save();int node=resolve(path,false,0);
     if(node>=0)entry((unsigned)node,result);
     irq_restore(flags);return node<0?node:0;
 }
 int fs_list(const char *path,unsigned position,struct fs_entry *result)
 {
+    if(equal(path,"/assets")||equal(path,"/assets/")){
+        char name[48];uint64_t size;int rc=asset_entry(position,name,&size);if(rc==1){
+            memset(result,0,sizeof(*result));result->type=FS_FILE;result->size=size;
+            size_t i=0;while(i<FS_NAME-1&&name[i]){result->name[i]=name[i];++i;}}
+        return rc;
+    }
     uint64_t flags=irq_save();int node=resolve(path,false,0),ret=0;
     if(node<0){ret=node;goto done;}
     if(nodes[node].type!=FS_DIR){ret=-20;goto done;}
