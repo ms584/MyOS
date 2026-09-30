@@ -141,11 +141,12 @@ int tcp_stream_connect(struct process *owner,uint32_t handle,const struct tcp_ad
     s->peer=*peer;s->state=TCP_ROUTE;s->deadline=ticks;drive(s);
     return s->state==TCP_FAILED?-(int)s->error:-115;
 }
-int tcp_stream_status(struct process *owner,uint32_t handle,struct tcp_status *status,bool clear_error)
+int tcp_stream_status(struct process *owner,uint32_t handle,struct tcp_status *status,unsigned error_mode)
 {
     struct stream *s=lookup(owner,handle);if(!s)return -9;
+    if(error_mode>2)return -22;
     memset(status,0,sizeof(*status));status->state=s->state;status->available=s->rx_count;
-    status->error=s->reported_error;status->peer=s->peer;
+    status->error=error_mode==2?s->error:s->reported_error;status->peer=s->peer;
     if(s->state!=TCP_NEW){status->local.port=s->port;net_stream_address(status->local.ip);}
     if(s->rx_count||s->read_shutdown||s->peer_fin)status->ready|=IN;
     if(s->peer_fin)status->ready|=RDHUP;
@@ -153,7 +154,7 @@ int tcp_stream_status(struct process *owner,uint32_t handle,struct tcp_status *s
     if(s->state==TCP_FAILED)status->ready|=IN|OUT|ERR|HUP;
     if(s->state==TCP_NEW)status->ready|=OUT|HUP;
     if(s->peer_fin&&s->fin_ack)status->ready|=HUP;
-    if(clear_error)s->reported_error=0;
+    if(error_mode==1)s->reported_error=0;
     return 0;
 }
 int tcp_stream_send(struct process *owner,uint32_t handle,const uint8_t *data,size_t length)

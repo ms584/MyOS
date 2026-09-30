@@ -83,6 +83,9 @@ int main(void)
     inject(&b,b.remote_sequence,0,4,0,0,0);
     assert(!tcp_stream_status(&owner,b.handle,&status,true)&&status.error==104);
     assert(!tcp_stream_status(&owner,b.handle,&status,false)&&!status.error);
+    assert(!tcp_stream_status(&owner,b.handle,&status,2)&&status.error==104);
+    assert(!tcp_stream_status(&owner,b.handle,&status,false)&&!status.error);
+    assert(tcp_stream_status(&owner,b.handle,&status,3)==-22&&!status.error);
     assert(tcp_stream_send(&owner,b.handle,bytes,1)==-104);
     assert(!tcp_stream_close(&owner,b.handle));uint32_t old=b.handle;connect_new(&owner,&b,0);
     assert(b.handle!=old&&tcp_stream_status(&owner,old,&status,false)==-9);

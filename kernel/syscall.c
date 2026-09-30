@@ -152,9 +152,9 @@ static int64_t tcp_call(struct process *p,struct frame *f)
         if(!copy_from_user(p,(char *)&address,f->rsi,sizeof(address)))return -14;
         return tcp_stream_connect(p,handle,&address);}
     if(f->rax==SYS_TCP_STATUS){struct tcp_status status;
-        if(f->rdx>1)return -22;
+        if(f->rdx>2)return -22;
         if(!writable_range(p,f->rsi,sizeof(status)))return -14;
-        int rc=tcp_stream_status(p,handle,&status,f->rdx!=0);
+        int rc=tcp_stream_status(p,handle,&status,(unsigned)f->rdx);
         if(!rc)copy_to_user(p,f->rsi,&status,sizeof(status));return rc;}
     if(f->rax==SYS_TCP_SHUTDOWN)return f->rsi>2?-22:tcp_stream_shutdown(p,handle,(unsigned)f->rsi);
     if(f->rax==SYS_TCP_CLOSE)return tcp_stream_close(p,handle);

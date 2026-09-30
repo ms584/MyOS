@@ -247,6 +247,8 @@ def main():
             dynamic_exercise()
             from test_elf_tcp import main as tcp_exercise
             tcp_exercise()
+            from test_socket_options import main as socket_options_exercise
+            socket_options_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

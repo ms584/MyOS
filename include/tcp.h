@@ -14,7 +14,8 @@ struct tcp_status {
 };
 int64_t tcp_stream_create(struct process *,uint64_t,uint64_t);
 int tcp_stream_connect(struct process *,uint32_t,const struct tcp_address *);
-int tcp_stream_status(struct process *,uint32_t,struct tcp_status *,bool);
+/* 0: reported error; 1: consume reported error; 2: persistent failure. */
+int tcp_stream_status(struct process *,uint32_t,struct tcp_status *,unsigned);
 int tcp_stream_send(struct process *,uint32_t,const uint8_t *,size_t);
 int tcp_stream_recv(struct process *,uint32_t,uint8_t *,size_t,bool);
 int tcp_stream_shutdown(struct process *,uint32_t,unsigned);

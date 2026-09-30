@@ -699,6 +699,9 @@ struct descriptor_object {
     volatile uint64_t lock,sequence;
     volatile uint32_t references;
     uint32_t type,status_flags;
+    /* Open-description options; socketpair endpoints remain independent.
+     * Zero means infinite, UINT64_MAX means immediate (negative timeval). */
+    uint64_t receive_timeout[2],send_timeout[2];
     union {
         struct { uint64_t counter;uint32_t semaphore,opens; } event;
         struct {
@@ -863,12 +866,27 @@ static int set_error(int error){*__errno_location()=error;return -1;}
 #define MSG_DONTWAIT 0x40
 #define MSG_NOSIGNAL 0x4000
 #define ENOTSOCK 88
+struct socket_timeval { int64_t seconds,microseconds; };
+_Static_assert(sizeof(struct socket_timeval)==16,"x64 socket timeval ABI");
+static uint64_t socket_timeout(struct descriptor_object *object,unsigned side,int writing)
+{
+    spin_lock(&object->lock);
+    uint64_t timeout=writing?object->send_timeout[side]:object->receive_timeout[side];
+    spin_unlock(&object->lock);return timeout;
+}
+static uint64_t socket_deadline(uint64_t timeout)
+{
+    if(!timeout)return 0;uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0);
+    if(timeout==UINT64_MAX)return now;
+    return timeout>UINT64_MAX-1-now?UINT64_MAX-1:now+timeout;
+}
 static int64_t tcp_io_ref(const struct descriptor_ref *reference,void *buffer,size_t length,int flags,int writing)
 {
     struct descriptor_object *object=reference->object;int64_t result=-1;
     if(length>INT64_MAX){set_error(EINVAL);goto done;}
     if(!buffer&&length){set_error(EFAULT);goto done;}
     if(flags&~(MSG_DONTWAIT|(writing?MSG_NOSIGNAL:MSG_PEEK))){set_error(ENOTSUP);goto done;}
+    uint64_t timeout=socket_timeout(object,0,writing),deadline=socket_deadline(timeout);
     for(;;){
         if(!descriptor_current(reference)){set_error(EBADF);break;}
         spin_lock(&object->lock);uint64_t sequence=__atomic_load_n(&object->sequence,__ATOMIC_ACQUIRE);
@@ -877,7 +895,9 @@ static int64_t tcp_io_ref(const struct descriptor_ref *reference,void *buffer,si
         unsigned status=__atomic_load_n(&object->status_flags,__ATOMIC_ACQUIRE);spin_unlock(&object->lock);
         if(rc>=0){result=rc;break;}
         if(rc!=-EAGAIN||(flags&MSG_DONTWAIT)||(status&O_NONBLOCK)){fail(rc);break;}
-        (void)wait64(&object->sequence,sequence,0);
+        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){set_error(EAGAIN);break;}
+        int waited=wait64(&object->sequence,sequence,deadline);
+        if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){fail(waited);break;}
     }
 done:object_release(object);return result;
 }
@@ -892,6 +912,7 @@ static int64_t socketpair_io_ref(const struct descriptor_ref *reference,void *bu
     if(object->type!=DESCRIPTOR_SOCKETPAIR){object_release(object);return set_error(ENOTSOCK);}
     unsigned side=(r.access>>2)&1,peer=side^1;int64_t result=-1;
     if(!length){result=0;goto done;}
+    uint64_t timeout=socket_timeout(object,side,writing),deadline=socket_deadline(timeout);
     for(;;){
         if(!descriptor_current(&r)){set_error(EBADF);break;}
         spin_lock(&object->lock);
@@ -921,7 +942,9 @@ static int64_t socketpair_io_ref(const struct descriptor_ref *reference,void *bu
         }
         spin_unlock(&object->lock);
         if((flags&MSG_DONTWAIT)||(__atomic_load_n(&object->value.socketpair.status_flags[side],__ATOMIC_ACQUIRE)&O_NONBLOCK)){set_error(EAGAIN);break;}
-        (void)wait64(&object->sequence,sequence,0);
+        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){set_error(EAGAIN);break;}
+        int waited=wait64(&object->sequence,sequence,deadline);
+        if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){fail(waited);break;}
     }
 done:object_release(object);return result;
 }
@@ -953,16 +976,20 @@ int connect(int fd,const void *raw,uint32_t length)
     for(unsigned i=0;i<4;++i)peer.ip[i]=address->ip[i];
     struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
     if(r.object->type!=DESCRIPTOR_TCP){object_release(r.object);return set_error(ENOTSOCK);}
+    uint64_t timeout=socket_timeout(r.object,0,1),deadline=socket_deadline(timeout);
     spin_lock(&r.object->lock);int64_t rc=call3(SYS_TCP_CONNECT,r.object->value.tcp.handle,(uintptr_t)&peer,0);
     unsigned flags=r.object->status_flags;spin_unlock(&r.object->lock);
     if(rc==-115&&!(flags&O_NONBLOCK))for(;;){
         if(!descriptor_current(&r)){rc=-EBADF;break;}
         spin_lock(&r.object->lock);uint64_t sequence=__atomic_load_n(&r.object->sequence,__ATOMIC_ACQUIRE);
-        struct tcp_status_abi status;rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,0);
+        /* SO_ERROR consumption by another thread must not hide handshake failure. */
+        struct tcp_status_abi status;rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,2);
         spin_unlock(&r.object->lock);if(rc<0)break;
         if(status.error){rc=-(int64_t)status.error;break;}
         if(status.state==4){rc=0;break;}
-        (void)wait64(&r.object->sequence,sequence,0);
+        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){rc=-115;break;}
+        int waited=wait64(&r.object->sequence,sequence,deadline);
+        if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){rc=waited;break;}
     }
     object_release(r.object);return rc<0?fail(rc):0;
 }
@@ -987,19 +1014,49 @@ int getsockopt(int fd,int level,int option,void *value,uint32_t *length)
     if(!length||(!value&&*length))return set_error(EFAULT);
     if(*length>INT32_MAX)return set_error(EINVAL);
     struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
-    if(r.object->type!=DESCRIPTOR_TCP){object_release(r.object);return set_error(ENOTSOCK);}
-    int output=0;int64_t rc=0;spin_lock(&r.object->lock);
+    struct descriptor_object *object=r.object;
+    if(object->type!=DESCRIPTOR_TCP&&object->type!=DESCRIPTOR_SOCKETPAIR){object_release(object);return set_error(ENOTSOCK);}
+    union { int number;struct socket_timeval time; } output={0};
+    unsigned size=sizeof(output.number),side=object->type==DESCRIPTOR_SOCKETPAIR?(r.access>>2)&1:0;
+    int64_t rc=0;spin_lock(&object->lock);
     if(level!=1)rc=-92;
-    else if(option==4){struct tcp_status_abi status;
-        rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,1);if(!rc)output=(int)status.error;}
-    else if(option==3)output=1;
-    else if(option==7)output=4096;
-    else if(option==8)output=8192;
+    else if(option==20||option==21){
+        uint64_t timeout=option==20?object->receive_timeout[side]:object->send_timeout[side];
+        if(timeout==UINT64_MAX)timeout=0;
+        output.time=(struct socket_timeval){(int64_t)(timeout/100),(int64_t)(timeout%100)*10000};size=sizeof(output.time);
+    } else if(option==4&&object->type==DESCRIPTOR_TCP){struct tcp_status_abi status;
+        rc=call3(SYS_TCP_STATUS,object->value.tcp.handle,(uintptr_t)&status,1);if(!rc)output.number=(int)status.error;}
+    else if(option==4)output.number=0;
+    else if(option==3)output.number=1;
+    else if(option==7)output.number=4096;
+    else if(option==8)output.number=object->type==DESCRIPTOR_TCP?8192:PIPE_CAPACITY;
     else rc=-92;
-    spin_unlock(&r.object->lock);object_release(r.object);if(rc<0)return fail(rc);
-    unsigned count=*length;if(count>sizeof(output))count=sizeof(output);
+    spin_unlock(&object->lock);object_release(object);if(rc<0)return fail(rc);
+    unsigned count=*length;if(count>size)count=size;
     for(unsigned i=0;i<count;++i)((unsigned char *)value)[i]=((unsigned char *)&output)[i];
     *length=count;return 0;
+}
+int setsockopt(int fd,int level,int option,const void *value,uint32_t length)
+{
+    struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    struct descriptor_object *object=r.object;int error=0;
+    if(object->type!=DESCRIPTOR_TCP&&object->type!=DESCRIPTOR_SOCKETPAIR)error=ENOTSOCK;
+    else if(level!=1||(option!=20&&option!=21))error=92;
+    else if(length<sizeof(struct socket_timeval)||length>INT32_MAX)error=EINVAL;
+    else if(!value)error=EFAULT;
+    if(error){object_release(object);return set_error(error);}
+    /* Copy first; failed validation must not partially change the option. */
+    struct socket_timeval time;
+    for(unsigned i=0;i<sizeof(time);++i)((unsigned char *)&time)[i]=((const unsigned char *)value)[i];
+    if(time.microseconds<0||time.microseconds>=1000000){object_release(object);return set_error(33);}
+    uint64_t timeout=0;
+    if(time.seconds<0)timeout=UINT64_MAX;
+    else if(time.seconds<(INT64_MAX/100-1))
+        timeout=(uint64_t)time.seconds*100+((uint64_t)time.microseconds+9999)/10000;
+    unsigned side=object->type==DESCRIPTOR_SOCKETPAIR?(r.access>>2)&1:0;
+    spin_lock(&object->lock);
+    if(option==20)object->receive_timeout[side]=timeout;else object->send_timeout[side]=timeout;
+    spin_unlock(&object->lock);object_release(object);return 0;
 }
 int socketpair(int domain,int type,int protocol,int descriptors[2])
 {

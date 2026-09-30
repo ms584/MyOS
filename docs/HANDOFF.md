@@ -3,6 +3,38 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 socket timeout continuation — 2026-10-01
+
+Continuation from a6e2899. SOL_SOCKET receive/send timeout options use the
+pinned x64 timeval boundary and share ownership with duplicated descriptors;
+socketpair endpoints remain independent. Read/write/send/recv snapshot one
+monotonic deadline, preserve partial I/O/EOF/nonblocking behavior, and expire
+with EAGAIN without renewing on spurious wakes or later option changes.
+Blocking connect expires with EINPROGRESS without deleting its handshake.
+Internal status now reads persistent failure independently of the consumed
+SO_ERROR value, preventing another thread's getter from hiding connect failure.
+Unsupported options still return ENOPROTOOPT. See PHASE331_SOCKET_OPTIONS.md.
+
+Native Ring 3 fixture and TCP ASan/UBSan + concurrent-stream regressions passed
+at 02:18 +07. The new fixture runs twice, verifies timeval validation/rounding/
+overflow, endpoint/dup sharing, fixed deadlines, nonblocking and partial I/O,
+close/reuse and cleanup. QEMU packet buffering genuinely stalls SYN and data;
+native connect/send time out, then the same connection resumes and delivers
+all accepted bytes and EOF. No guest-memory or syscall-result substitution.
+The persistent/consumed-error distinction is checked through the actual
+Ring 3 syscall boundary as well as the host state-machine test.
+
+The first new full run was stopped intentionally at 02:12 for the error race
+fix and restored the normal image; it is not a PASS. Replacement full regression
+passed at 02:49 +07, including the native socket fixture, lifecycle, persistence,
+memory/fault recovery and VGA fallback. Normal kernel: 242808 bytes; image:
+1474560 bytes. Cobalt-only staging passed at 02:50: 150 strong imports resolved,
+92 missing, weak TLS zero, relocation/RELRO/reclamation and 64 MiB OOM rollback.
+Packaged UEFI DMA/framebuffer/captured PCM and network checks passed at 02:50.
+The pinned contract check passed at 02:05. Cobalt has not executed: staging and
+supported-subset fixtures do not prove HTML/JS/DOM/input/HTTPS acceptance.
+Phase 33.1/33.2 remain OPEN; no Phase 33.3, no push.
+
 ## Phase 33.1 concurrent TCP continuation — 2026-10-01
 
 Continuation from local c835cfe on main (owner pushes manually; never push).
