@@ -51,7 +51,7 @@ def cancel_live(vm,name,marker,timeout=90,minimum_elapsed=0):
         if output.endswith('myos> '):
             assert 'ELF cancelled; all threads stopped' in output,output
             assert_live_resources(output)
-            return
+            return output
         time.sleep(.05)
     raise AssertionError(('live cancellation unresponsive',vm.log.read_text()[-4000:]))
 
@@ -121,7 +121,60 @@ def fixtures():
     data[fileoff(entry):fileoff(entry)+len(code)]=code;variants['relro-fault']=data
     for name,code in [('constructor-fault',b'\x0f\x0b'),('constructor-loop',b'\xeb\xfe')]:
         data=bytearray(original);off=fileoff(tags[12]);data[off:off+len(code)]=code;variants[name]=data
-    platform_specs=[]
+    platform_specs=[];fini_specs=[]
+    # Test the native finalizer lifecycle, independently of Cobalt imports.
+    for mode,name in ((1,'fini'),(2,'fini-only'),(3,'fini-array')):
+        obj=out/(name+'.o');image=out/(name+'.so')
+        subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                        '-Wall','-Wextra','-Werror','-Wno-unused-function',f'-DFINI_MODE={mode}',
+                        '-c','user/elf-finalizer.c','-o',str(obj)],check=True)
+        fini_args=['-fini','fini_last'] if mode!=3 else []
+        subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro',
+                        '-e','_start','-init','init_first',*fini_args,'-o',str(image),str(obj)],check=True)
+        fini_specs.append(f'{name}={image}')
+        if mode!=1:continue
+        fini_original=image.read_bytes()
+        fini_phoff=struct.unpack_from('<Q',fini_original,32)[0]
+        fini_phnum=struct.unpack_from('<H',fini_original,56)[0]
+        fini_ph=[struct.unpack_from('<IIQQQQQQ',fini_original,fini_phoff+i*56) for i in range(fini_phnum)]
+        def fini_fileoff(va):
+            for segment in fini_ph:
+                if segment[0]==1 and segment[3]<=va<segment[3]+segment[5]:return segment[2]+va-segment[3]
+            raise ValueError(hex(va))
+        fini_dyn=next(segment for segment in fini_ph if segment[0]==2)
+        fini_tags={};fini_positions={}
+        for offset in range(fini_dyn[2],fini_dyn[2]+fini_dyn[5],16):
+            tag,val=struct.unpack_from('<qQ',fini_original,offset)
+            if not tag:break
+            fini_tags[tag]=val;fini_positions[tag]=offset
+        assert fini_tags[28]==16 and 13 in fini_tags
+        fini_bad_data=next(segment[3] for segment in fini_ph if segment[0]==1 and segment[1]&2)
+        fini_variants={}
+        for bad_name,tag,val in (('bad-fini',13,fini_bad_data),('bad-fini-array',26,2**64-1),
+                                 ('wrapped-fini',13,2**64-0x8000000000+fini_tags[13]),
+                                 ('wrapped-init',12,2**64-0x8000000000+fini_tags[12]),
+                                 ('bad-fini-size',28,7),('huge-fini-size',28,129*8)):
+            bad=bytearray(fini_original);struct.pack_into('<Q',bad,fini_positions[tag]+8,val)
+            fini_variants[bad_name]=bad
+        bad=bytearray(fini_original)
+        for offset in range(fini_fileoff(fini_tags[7]),fini_fileoff(fini_tags[7])+fini_tags[8],24):
+            target,info,_=struct.unpack_from('<QQq',bad,offset)
+            if target==fini_tags[26]:
+                assert info&0xffffffff==8
+                struct.pack_into('<q',bad,offset+16,fini_bad_data);break
+        else:raise AssertionError('missing fini array relocation')
+        fini_variants['bad-fini-target']=bad
+        for bad_name,va,code in (
+                ('fini-fault',fini_tags[13],b'\x0f\x0b'),('fini-loop',fini_tags[13],b'\xeb\xfe'),
+                ('fini-ctor-loop',fini_tags[12],b'\xeb\xfe'),
+                ('fini-entry-loop',struct.unpack_from('<Q',fini_original,24)[0],b'\xeb\xfe'),
+                ('fini-early-exit',struct.unpack_from('<Q',fini_original,24)[0],
+                 b'\xb8\x03\x00\x00\x00\xbf\x2a\x00\x00\x00\xcd\x80\x0f\x0b')):
+            bad=bytearray(fini_original);offset=fini_fileoff(va);bad[offset:offset+len(code)]=code
+            fini_variants[bad_name]=bad
+        for variant,bad in fini_variants.items():
+            path=out/(variant+'.so');path.write_bytes(bad);fini_specs.append(f'{variant}={path}')
     for source,name in (('elf-platform-allocator','allocator'),('elf-platform-vm','vm')):
         obj=out/(source+'.o');image=out/(name+'.so')
         subprocess.run(['nasm','-f','elf64',f'user/{source}.asm','-o',str(obj)],check=True)
@@ -189,23 +242,53 @@ def fixtures():
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
     disk=out/'assets.img';disk.unlink(missing_ok=True);create(disk,specs)
-    return out,disk
+    fini_disk=out/'finalizer-assets.img';fini_disk.unlink(missing_ok=True);create(fini_disk,fini_specs)
+    return out,disk,fini_disk
+
+def exercise_finalizers(disk):
+    before=digest(disk);vm=VM('elf-finalizers',disk=disk,ram=16)
+    try:
+        vm.wait('myos> ')
+        for name in ('fini','fini-only','fini-array'):
+            for _ in range(2):
+                output=command(vm,'elf live '+name,'ELF exited with status 41')
+                assert output.count('ELF finalizer entry returned')==1,output
+                assert output.count('ELF Ring 3 init/fini order and status PASS')==1,output
+                assert_live_resources(output)
+        for name in ('bad-fini','bad-fini-array','bad-fini-size','huge-fini-size','bad-fini-target','wrapped-fini','wrapped-init'):
+            output=command(vm,'elf live '+name,'error: invalid executable')
+            assert 'ELF live: started' not in output and 'finalizer entry returned' not in output,output
+        output=command(vm,'elf live fini-fault','error: invalid executable')
+        assert 'USER FAULT' in output and 'finalizer entry returned' in output,output
+        assert_live_resources(output)
+        for name,marker in (('fini-loop','ELF finalizer entry returned'),('fini-ctor-loop','ELF live: started'),
+                            ('fini-entry-loop','ELF live: started')):
+            output=cancel_live(vm,name,marker,timeout=15)
+            assert 'ELF Ring 3 init/fini order and status PASS' not in output,output
+        output=command(vm,'elf run fini-loop','error: app timed out')
+        assert 'ELF finalizer entry returned' in output,output
+        output=command(vm,'elf live fini-early-exit','ELF exited with status 42')
+        assert 'ELF Ring 3 init/fini order and status PASS' not in output,output
+        assert_live_resources(output)
+        print('PASS: Ring 3 DT_FINI/reverse FINI_ARRAY, exactly-once order/status, validation, fault/kill/timeout/relaunch cleanup',flush=True)
+    finally:vm.close()
+    assert digest(disk)==before
 
 def exercise(cobalt=None):
-    out,disk=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
+    out,disk,fini_disk=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
     try:
         vm.wait('myos> ')
         output=command(vm,'elf link dynamic','staged image released; not executed')
         assert 'relative=2 absolute=1 global=2 jump=1 skipped=0' in output,output
         assert 'constructor executed' not in output,output
-        for name in ('dynamic','sectionless','gnu-only','sysv-only','zero-symbol'):
+        for name in ('dynamic','sectionless','gnu-only','sysv-only','zero-symbol','finalizer'):
             output=command(vm,'elf run '+name,'ELF exited with status 32')
             assert 'constructor executed in Ring 3' in output,output
             assert 'ELF dynamic: four relocations' in output,output
         for name in ('bad-rela-size','duplicate-tag','bad-target','text-target','metadata-target','bad-symbol','bad-constructor'):
             output=command(vm,'elf run '+name,'error: invalid executable')
             assert 'constructor executed' not in output,output
-        for name in ('missing','needed','unknown-reloc','finalizer'):
+        for name in ('missing','needed','unknown-reloc'):
             output=command(vm,'elf run '+name,'unsupported runtime feature; not executed')
             assert 'constructor executed' not in output,output
         output=command(vm,'elf run allocator','ELF exited with status 33')
@@ -251,6 +334,7 @@ def exercise(cobalt=None):
         print('PASS: four dynamic relocation types; SysV/GNU hash; sectionless startup; Ring 3 constructors; RELRO fault; invalid/missing-symbol rollback',flush=True)
     finally:vm.close()
     assert digest(disk)==before
+    exercise_finalizers(fini_disk)
     data=out/'file-sync-data.img';data.unlink(missing_ok=True);create_image(data,large=True)
     for name,marker in (('file-sync-commit','ELF file fsync committed binary data PASS'),
                         ('file-sync-reboot','ELF file fsync reboot persistence PASS')):

@@ -11,7 +11,7 @@ struct elf_plan { struct elf_segment segments[ELF_SEGMENTS]; unsigned count; uin
 int elf_plan_read(const struct elf_source *,struct elf_plan *);
 int elf_inspect(const struct elf_source *);
 struct process;
-struct elf_start { uint64_t init,array;unsigned count; };
+struct elf_start { uint64_t init,array,fini,fini_array;unsigned count,fini_count; };
 bool elf_executable(const struct elf_plan *,uint64_t);
 int elf_prepare(struct process *,const struct elf_plan *,struct elf_start *);
 int elf_link(const struct elf_source *);

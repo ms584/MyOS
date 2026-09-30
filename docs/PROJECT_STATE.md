@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-09-30. Repo: /home/xytron404/myos (WSL Ubuntu).
-Prior baseline: 57e2b97, branch main; lifecycle/pthread is the tested local checkpoint.
+Baseline: 74cdf9a, branch main; tested finalizer continuation ready for commit.
 After git fetch origin, origin/main has no new changes; commits remain local.
 
 ## Scope and status
@@ -27,31 +27,32 @@ After git fetch origin, origin/main has no new changes; commits remain local.
   See PHASE331_LIFECYCLE.md: force cancellation is not a Cobalt event/input bridge.
 - Pthread masks now initialize the pinned 128-BYTE ABI; semaphore errno and
   concurrent overflow, and pthread name bounds are tested. No signal delivery.
+- DT_FINI/reverse FINI_ARRAY, exit-status preservation, malformed/wrapped targets,
+  fault/timeout/cancel and repeat-launch cleanup pass native fixtures.
+  See PHASE332_FINALIZERS.md. This is not the Cobalt event-loop launcher.
 
 ## Validation at checkpoint
-- Focused fixtures pass 128 KiB asset reads and 8 KiB binary reboot persistence.
-- Pinned Cobalt binary/header hashes and the 243-row contract register pass.
-- File/socketpair full regressions passed at 19:02/19:38 +07; normal image restored.
 - Pinned Cobalt staging passed at 256 MiB (139 bound, 103 missing), with all
   staged pages reclaimed; 64 MiB OOM rollback passed. This does not run Cobalt.
-- Latest focused lifecycle/pthread/persistence/staging passed at 19:51 +07.
 - Lifecycle/pthread full regression passed at 20:17 +07; normal image restored.
+- Finalizer focused/pinned staging passed at 20:24 +07; full regression passed
+  at 20:53 +07. Normal framebuffer image restored (kernel 232368 bytes).
+- Weak TLS static checker passes all 160 direct calls; native emulated TLS pending.
 
 ## Known gaps and next dependency
-1. Add tested single-image DT_FINI/FINI_ARRAY lifecycle needed by the pinned
-   binary; continue required TLS/storage/Starboard contracts with semantic tests.
+1. Commit the tested finalizers; correct pointer-sized pthread TLS key ABI
+   (current output/arguments use 32 bits), test emulated TLS, then Starboard.
 2. Replace legacy single-stream TCP with independent cancellable connections;
    test concurrent requests, partial I/O, readiness, resolver/options and TLS.
 3. Build the real Evergreen launcher, event loop, graphics/input bridge and run
    native Cobalt HTML/JavaScript/DOM/input plus HTTPS acceptance in MyOS.
 - Renderer/backend and native acceptance remain open. Do not start Phase 33.3.
 
-## Read only what the task needs
-- Rules/gates: AGENTS.md and docs/PHASE33_EXECUTION_PLAN.md.
-- Runtime audit: user/platform-runtime.c, tests/test_elf_dynamic.py.
-- Full regression: tests/test_system.py; evidence in build/system-tests/.
-  Never inspect activity.log through run_logged.py: output feeds the same log.
-- Import contracts: docs/PHASE331_ABI.md, docs/PHASE331_IMPORTS.csv.
+## Evidence locations
+- AGENTS.md, PHASE33_EXECUTION_PLAN.md; runtime: user/platform-runtime.c.
+- Tests: tests/test_elf_dynamic.py, tests/test_system.py; build/system-tests/.
+- Import contracts: PHASE331_ABI.md, PHASE331_IMPORTS.csv.
+- Never inspect activity.log through run_logged.py: output feeds the same log.
 
 ## Completion rule
 - Do not close Phase 33.1 or 33.2 until Cobalt itself opens HTML, executes

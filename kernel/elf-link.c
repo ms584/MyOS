@@ -182,8 +182,18 @@ int elf_prepare(struct process *process,const struct elf_plan *plan,struct elf_s
         print("ELF RELRO: protected\n");
     }
     if(l.missing)return -95; /* Never call constructors/entry against stubs. */
-    if(l.dt[13]||l.dt[26]||l.dt[28])return -95; /* Finalizer lifecycle is not implemented. */
-    if(l.dt[12]){start->init=USER_BASE+l.dt[12];if(!elf_executable(plan,start->init))return -8;}
+    if(l.dt[13]){if(l.dt[13]>=ELF_SPAN)return -8;
+        start->fini=USER_BASE+l.dt[13];if(!elf_executable(plan,start->fini))return -8;}
+    if(l.dt[28]%8||l.dt[28]>128*8)return -8;
+    if(l.dt[28]){
+        if(!span(plan,l.dt[26],l.dt[28],4))return -8;
+        start->fini_array=USER_BASE+l.dt[26];start->fini_count=(unsigned)(l.dt[28]/8);
+        for(unsigned i=0;i<start->fini_count;++i){uint64_t address;
+            if(!read_image(&l,l.dt[26]+8ull*i,&address,8)||!elf_executable(plan,address))return -8;
+        }
+    }
+    if(l.dt[12]){if(l.dt[12]>=ELF_SPAN)return -8;
+        start->init=USER_BASE+l.dt[12];if(!elf_executable(plan,start->init))return -8;}
     if(l.dt[27]%8||l.dt[27]>128*8)return -8;
     if(l.dt[27]){
         if(!span(plan,l.dt[25],l.dt[27],4))return -8;

@@ -3,6 +3,32 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 finalizer continuation — 2026-09-30
+
+Local baseline 74cdf9a passed full lifecycle/pthread regression at 20:17 +07.
+Tested finalizer slice now supports in-image DT_FINI and bounded reverse
+FINI_ARRAY on normal entry return, preserving status. Wrapped init/fini offsets
+and malformed array addresses/sizes/targets reject before any constructor.
+The Ring 3 fixtures pass fini-only/array-only/combined order, exactly-once markers,
+fault/timeout/Escape/direct-exit behavior, repeat launch and page/heap recovery.
+Focused dynamic/persistence/pinned Cobalt staging passed at 20:24 +07; full
+tests/test_system.py passed at 20:53 +07 and restored the normal framebuffer
+image (kernel 232368 bytes). The checkpoint is local only; no push.
+See PHASE332_FINALIZERS.md. Import counts remain 139 tested/103 missing; Cobalt
+does not execute. Neither Phase 33.1 nor 33.2 closes, and no Phase 33.3 work.
+
+Pinned source and binary inspection show emulated TLS inside libcobalt.so and
+NULL guards around the weak V8 TLS initializer. The static call-site checker
+tools/check_cobalt_tls.py and adversarial tests/test_cobalt_tls_audit.py do not
+execute TLS/engine code. The verifier passed at 20:31 +07: all 160 direct calls
+have audited NULL/skip guards, including one two-call shared guard checked with
+its exact reviewed instruction pattern. Native emulated TLS allocation/destructor/errno/
+preemption and real engine execution remain required before claiming compatibility.
+The next audit found a real ABI mismatch: pinned musl_pthread_key_t is a 64-bit
+pointer, while current create output and key arguments use unsigned (32 bits).
+The prepared full-width correction and canary/high-bit tests are not yet native
+validated; this checkpoint does not claim that correction is complete.
+
 ## Phase 33.1 live lifecycle and pthread ABI audit — 2026-09-30
 
 Tested local continuation from 57e2b97: explicit `elf live` runs beyond the demo

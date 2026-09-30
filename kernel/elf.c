@@ -102,7 +102,7 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
         if(live)check(heap_allocated()==heap_before,"ELF live staged heap reclamation");
         print("ELF staged image released; not executed\n");return result;}
     uint64_t pid=p->pid;
-    if(!process_start_elf(p,start.init,start.array,start.count)){
+    if(!process_start_elf(p,&start)){
         process_discard_elf(p);check(pages_free()==before,"ELF attach cleanup");
         if(live)check(heap_allocated()==heap_before,"ELF live attach heap reclamation");return -12;}
     /* Explicit foreground lifecycle opt-in; fixture run retains its 5s limit.

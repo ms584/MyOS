@@ -506,15 +506,17 @@ void process_discard_elf(struct process *p)
 {
     uint64_t f=irq_save();check(p&&p->state==PROCESS_LOADING,"discard staged ELF");release(p);irq_restore(f);
 }
-bool process_start_elf(struct process *p,uint64_t init,uint64_t array,unsigned count)
+bool process_start_elf(struct process *p,const struct elf_start *start)
 {
     extern const unsigned char elf_start_code[],elf_start_end[];
     uint64_t f=irq_save();
-    if(!p||p->state!=PROCESS_LOADING){irq_restore(f);return false;}
+    if(!p||!start||p->state!=PROCESS_LOADING){irq_restore(f);return false;}
     uint64_t *e=image_leaf(p,USER_BASE+ELF_BOOT_OFFSET);check(e!=0,"ELF bootstrap map");
     size_t size=(size_t)(elf_start_end-elf_start_code);check(size<=PAGE_SIZE,"ELF bootstrap size");
     memcpy((void *)(uintptr_t)(*e&0x000ffffffffff000ull),elf_start_code,size);
-    p->frame->r12=array;p->frame->r13=count;p->frame->r14=p->frame->rip;p->frame->r15=init;
+    p->frame->r12=start->array;p->frame->r13=start->count;
+    p->frame->r14=p->frame->rip;p->frame->r15=start->init;
+    p->frame->rbx=start->fini;p->frame->rbp=start->fini_array;p->frame->rdx=start->fini_count;
     p->frame->rip=USER_BASE+ELF_BOOT_OFFSET;
     if(!scheduler_attach_process(p)){irq_restore(f);return false;}
     p->state=PROCESS_RUNNING;irq_restore(f);return true;
@@ -522,5 +524,6 @@ bool process_start_elf(struct process *p,uint64_t init,uint64_t array,unsigned c
 uint64_t process_create_elf(const struct elf_source *source,const struct elf_plan *plan)
 {
     struct process *p=process_stage_elf(source,plan);if(!p)return 0;
-    if(!process_start_elf(p,0,0,0)){process_discard_elf(p);return 0;}return p->pid;
+    struct elf_start start={0};
+    if(!process_start_elf(p,&start)){process_discard_elf(p);return 0;}return p->pid;
 }
