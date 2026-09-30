@@ -187,6 +187,10 @@ static int64_t tcp_call(struct process *p,struct frame *f)
 static uint32_t ui_row[64];
 static int64_t ui_call(struct process *p,struct frame *f)
 {
+    if(f->rax==SYS_UI_VISIBLE){
+        if(f->rsi>1||f->rdx)return -22;
+        return native_ui_visible(p,f->rdi,f->rsi!=0);
+    }
     if(f->rax==SYS_UI_RELEASE)
         return f->rsi||f->rdx?-22:native_ui_release(p,f->rdi);
     if(f->rax==SYS_UI_EVENT){struct native_ui_event event;
@@ -232,7 +236,8 @@ static int64_t ui_call(struct process *p,struct frame *f)
                 for(uint32_t i=0;i<count;++i){uint32_t pixel=ui_row[i];
                     ui_row[i]=((pixel&255)<<16)|(pixel&0xff00)|((pixel>>16)&255);}
             row.width=row.stride=count;
-            if(!gfx_present(&row,request.x+(int)x,request.y+(int)y))return -95;
+            int result=native_ui_draw(p,f->rdi,&row,request.x+(int)x,request.y+(int)y);
+            if(result)return result;
             x+=count;
         }
     }
@@ -357,7 +362,7 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_TCP_SEND: case SYS_TCP_RECV: case SYS_TCP_SHUTDOWN: case SYS_TCP_CLOSE:
         frame->rax=(uint64_t)tcp_call(process,frame);break;
     case SYS_UI_QUERY: case SYS_UI_ACQUIRE: case SYS_UI_PRESENT:
-    case SYS_UI_RELEASE: case SYS_UI_EVENT:
+    case SYS_UI_RELEASE: case SYS_UI_EVENT: case SYS_UI_VISIBLE:
         frame->rax=(uint64_t)ui_call(process,frame);break;
     default:
         frame->rax = (uint64_t)-38;

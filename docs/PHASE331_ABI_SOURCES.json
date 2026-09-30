@@ -166,6 +166,14 @@
       "sha256": "58618b210466e6b1fad676914cbc2825142425ae28d01c339dcc5452735d5df8"
     },
     {
+      "path": "starboard/input.h",
+      "sha256": "d4c3fae8e8131601a212a46f36973dfb3716c4fc4ab251f2f53252927efa156d"
+    },
+    {
+      "path": "starboard/key.h",
+      "sha256": "c27879b63b866d949ee09b0ef92e78928c1392185c7df4a83028e789346784c0"
+    },
+    {
       "path": "starboard/window.h",
       "sha256": "d54ccf81eb61ffb636fa1d16f7a340af9d4fc96d291097d627cdce3b85535369"
     }

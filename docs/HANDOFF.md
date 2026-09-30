@@ -3,6 +3,41 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 event/lifecycle continuation — 2026-10-01
+
+Continuation from 2831cfe. The Ring 3 event pump now implements
+bounded monotonic scheduled work/cancellation, main-thread callbacks, native
+SbInputData mapping, actual conceal/hidden presentation/reveal, preload and
+ordered graceful stop. Reveal returns to BLURRED; Focus is separate. Concurrent
+Conceal/Reveal requests are not discarded. Pinned upstream X11 source confirms
+Mouse2=middle and Mouse3=right, unlike PS/2 bit order. See PHASE332_EVENTS.md.
+
+New infinite-wait/teardown stress exposed a genuine wake bug: SYS_WAKE count=0
+wakes nobody. MyOSUiWake now passes UINT32_MAX. Native event fixture passed
+05:29:13 +07, including real PS/2 input, framebuffer/PPM visibility, callback
+fairness, worker scheduling/cancellation, teardown/fault/cancel/relaunch and
+exact page/heap/sample restoration. Native UI + ASan/UBSan passed 05:29:23;
+44 pinned header/binary hashes and contract register passed 05:29:52.
+Four imported event APIs now have supported-subset coverage (160 strong imports;
+82 strong plus weak TLS remain). This is NOT an engine or complete-ABI pass.
+
+The new foreground snapshot initially grew self-test BSS beyond 0x80000. Moving
+the 6144-byte input queue to owned heap preserves the unchanged layout limits.
+Normal kernel 253624 bytes; self-test 261816 bytes, BSS end 0x7f460. Full
+tests/test_system.py PASSED 06:00:21 and restored the normal 1474560-byte image.
+Cobalt staging/relocation/RELRO/reclamation and 64 MiB OOM PASS 06:04:49 (160
+resolved, 82 missing, weak TLS zero; engine NOT executed). New UEFI package,
+DMA/real frames/captured 435/655 Hz PCM and DHCP/DNS PASS 06:05; native events
+PASS 06:06:05 and native UI PASS 06:06:18 on UEFI.
+Additional invalid-main-argument/explicit-Blur fixture cases passed BIOS
+06:10:29 and UEFI 06:11:03 without changing production code after the full run.
+Isolated small-PIC codegen
+measurement saves 5238 runtime bytes but is NOT natively validated/adopted.
+Origin/main remains 54ef570 after fetch 06:04; only local commits, owner pushes.
+Real SbEventHandle loader entry,
+native renderer/dependency closure and Cobalt HTML/JS/DOM/input/verified HTTPS
+>=60s still required. Phase 33.1/33.2 OPEN; no Phase 33.3, no push.
+
 ## Phase 33.2 native window/input continuation — 2026-10-01
 
 Continuation from local 2f4425f. Six pinned SbWindow imports plus private

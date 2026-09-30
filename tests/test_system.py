@@ -251,6 +251,8 @@ def main():
             socket_options_exercise()
             from test_native_ui import main as native_ui_exercise
             native_ui_exercise()
+            from test_platform_events import main as platform_events_exercise
+            platform_events_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

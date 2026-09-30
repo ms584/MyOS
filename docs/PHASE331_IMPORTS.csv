@@ -14,8 +14,8 @@ SbDrmGetMetrics,GLOBAL,optional unsupported feature,optional,implemented-tested,
 SbDrmIsServerCertificateUpdatable,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbDrmUpdateServerCertificate,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbDrmUpdateSession,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbEventCancel,GLOBAL,platform callback,event,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbEventSchedule,GLOBAL,platform callback,event,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbEventCancel,GLOBAL,platform callback,event,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbEventSchedule,GLOBAL,platform callback,event,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbGetEglInterface,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbGetGlesInterface,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbLog,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -73,8 +73,8 @@ SbSystemHideSplashScreen,GLOBAL,platform callback,platform,unimplemented,https:/
 SbSystemIsDebuggerAttached,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbSystemNetworkIsDisconnected,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbSystemRaisePlatformError,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbSystemRequestConceal,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbSystemRequestStop,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbSystemRequestConceal,GLOBAL,platform callback,platform,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbSystemRequestStop,GLOBAL,platform callback,platform,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbSystemSignWithCertificationSecretKey,GLOBAL,unresolved,certification,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbSystemSymbolize,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbTimeZoneGetName,GLOBAL,platform callback,platform,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc

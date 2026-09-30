@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "native-ui.h"
 
-#define UI_STATE_BASE 0x803f010690ull /* main shared TLS page, bytes 1680..1695 */
+#define UI_STATE_BASE 0x803f010690ull /* main shared TLS page, bytes 1680..1711 */
 #define SYS_TICKS 13u
 #define SYS_YIELD 4u
 #define SYS_WAIT 20u
@@ -14,12 +14,13 @@
 #define SYS_UI_PRESENT 44u
 #define SYS_UI_RELEASE 45u
 #define SYS_UI_EVENT 46u
+#define SYS_UI_VISIBLE 47u
 struct SbWindowSize { int width,height;float video_pixel_ratio; };
 struct SbWindowOptions { struct SbWindowSize size;bool windowed;const char *name; };
 _Static_assert(sizeof(struct SbWindowSize)==12,"pinned window size ABI");
 _Static_assert(sizeof(struct SbWindowOptions)==24&&offsetof(struct SbWindowOptions,name)==16,
                "pinned window options ABI");
-struct window_state { volatile uint64_t lock,sequence; };
+struct window_state { volatile uint64_t lock,sequence;uint64_t window,concealed; };
 int *__errno_location(void);
 static struct window_state *state(void){return (struct window_state *)(uintptr_t)UI_STATE_BASE;}
 static int64_t syscall3(uint64_t number,uint64_t first,uint64_t second,uint64_t third)
@@ -55,13 +56,18 @@ void *SbWindowCreate(const struct SbWindowOptions *options)
      * cannot be silently advertised as successful. */
     if(options&&(options->windowed||options->size.width!=(int)info.width||
                 options->size.height!=(int)info.height))return 0;
-    lock();int64_t handle=syscall3(SYS_UI_ACQUIRE,(uintptr_t)&state()->sequence,(uintptr_t)&info,0);unlock();
+    lock();int64_t handle=syscall3(SYS_UI_ACQUIRE,(uintptr_t)&state()->sequence,(uintptr_t)&info,0);
+    if(handle>=0&&state()->concealed&&syscall3(SYS_UI_VISIBLE,(uint64_t)handle,0,0)<0){
+        syscall3(SYS_UI_RELEASE,(uint64_t)handle,0,0);handle=-95;
+    }
+    if(handle>=0)state()->window=(uint64_t)handle;unlock();
     return handle<0?0:(void *)(uintptr_t)handle;
 }
 bool SbWindowDestroy(void *window)
 {
     if(!window)return false;
-    lock();int64_t result=syscall3(SYS_UI_RELEASE,(uintptr_t)window,0,0);unlock();return result==0;
+    lock();int64_t result=syscall3(SYS_UI_RELEASE,(uintptr_t)window,0,0);
+    if(!result)state()->window=0;unlock();return result==0;
 }
 bool SbWindowGetSize(void *window,struct SbWindowSize *size)
 {
@@ -92,4 +98,22 @@ int MyOSUiPoll(void *window,struct native_ui_event *event,int timeout_ms)
         rc=syscall3(SYS_WAIT,(uintptr_t)&state()->sequence,sequence,deadline);
         if(rc<0&&rc!=-11&&rc!=-110)return error(rc);
     }
+}
+/* Private event-pump integration; one sequence combines IRQ input and
+ * scheduled work. Read sequence before checking BOTH queues, then wait. */
+volatile uint64_t *MyOSUiSequence(void){return &state()->sequence;}
+void MyOSUiWake(void)
+{
+    __atomic_add_fetch(&state()->sequence,1,__ATOMIC_RELEASE);
+    /* SYS_WAKE count zero wakes nobody; UINT32_MAX broadcasts to waiters. */
+    syscall3(21,(uintptr_t)&state()->sequence,UINT32_MAX,0);
+}
+void *MyOSUiWindow(void)
+{
+    lock();void *window=(void *)(uintptr_t)state()->window;unlock();return window;
+}
+int MyOSUiSetVisible(bool visible)
+{
+    lock();int64_t result=state()->window?syscall3(SYS_UI_VISIBLE,state()->window,visible,0):0;
+    if(!result)state()->concealed=!visible;unlock();MyOSUiWake();return error(result);
 }
