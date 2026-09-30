@@ -194,6 +194,9 @@ def main():
         if args.suite=='all':
             from test_run_logged import main as logging_exercise
             logging_exercise()
+        if args.suite in ('all','apps'):
+            from test_tcp_state import main as tcp_state_exercise
+            tcp_state_exercise()
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
         if args.suite in ('all','shell'):
@@ -242,6 +245,8 @@ def main():
             elf_exercise()
             from test_elf_dynamic import exercise as dynamic_exercise
             dynamic_exercise()
+            from test_elf_tcp import main as tcp_exercise
+            tcp_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

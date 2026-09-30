@@ -17,4 +17,8 @@ bool net_tcp_open(const uint8_t ip[4],uint16_t port);
 int net_tcp_write(const uint8_t *data,size_t size);
 int net_tcp_read(uint8_t *data,size_t capacity);
 void net_tcp_close(void);
+/* Nonblocking primitives used by the independently owned TCP stream pool. */
+int net_stream_route(const uint8_t ip[4],uint8_t mac[6]);
+bool net_stream_packet(const uint8_t ip[4],const uint8_t mac[6],uint8_t *tcp,size_t length);
+void net_stream_address(uint8_t ip[4]);
 #endif

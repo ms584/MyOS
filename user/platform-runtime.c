@@ -652,6 +652,13 @@ void *pthread_getspecific(void *raw_key)
 #define SYS_FSTAT 30u
 #define SYS_FTRUNCATE 31u
 #define SYS_FSYNC 34u
+#define SYS_TCP_CREATE 35u
+#define SYS_TCP_CONNECT 36u
+#define SYS_TCP_STATUS 37u
+#define SYS_TCP_SEND 38u
+#define SYS_TCP_RECV 39u
+#define SYS_TCP_SHUTDOWN 40u
+#define SYS_TCP_CLOSE 41u
 #define FD_BASE 64
 #define FD_SLOTS 32u
 #define PIPE_CAPACITY 4096u
@@ -676,7 +683,10 @@ void *pthread_getspecific(void *raw_key)
 #define EPIPE 32
 #define ENOTSUP 95
 
-enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5,DESCRIPTOR_SOCKETPAIR=6 };
+enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5,DESCRIPTOR_SOCKETPAIR=6,DESCRIPTOR_TCP=7 };
+struct tcp_address_abi { unsigned char ip[4];uint16_t port,reserved; };
+struct tcp_status_abi { uint32_t ready,available,error,state;struct tcp_address_abi local,peer; };
+struct sockaddr_in_abi { uint16_t family;unsigned char port[2],ip[4],padding[8]; };
 struct epoll_event { uint32_t events;uint64_t data __attribute__((packed)); } __attribute__((packed));
 struct pollfd { int32_t fd;uint16_t events,revents; };
 struct descriptor_object;
@@ -697,6 +707,7 @@ struct descriptor_object {
         } pipe;
         struct { struct epoll_registration registrations[EPOLL_REGS]; } epoll;
         struct { int32_t kernel_fd; } file;
+        struct { uint32_t handle,opens; } tcp;
         struct { char path[128]; } directory;
         struct {
             unsigned char bytes[2][PIPE_CAPACITY];
@@ -751,6 +762,8 @@ static void object_release(struct descriptor_object *object)
                 object_release(object->value.epoll.registrations[i].object);
     if(object->type==DESCRIPTOR_FILE)
         (void)call3(SYS_FCLOSE,(unsigned)object->value.file.kernel_fd,0,0);
+    if(object->type==DESCRIPTOR_TCP&&object->value.tcp.handle)
+        (void)call3(SYS_TCP_CLOSE,object->value.tcp.handle,0,0);
     free(object);
 }
 static int descriptor_install_from_locked(struct descriptor_state *state,
@@ -839,6 +852,9 @@ static uint32_t object_ready(struct descriptor_object *object,unsigned access)
            (object->value.socketpair.read_shutdown[peer]&&object->value.socketpair.write_shutdown[peer])||
            (object->value.socketpair.read_shutdown[side]&&object->value.socketpair.write_shutdown[side]))ready|=POLLHUP;
     } else if(object->type==DESCRIPTOR_FILE||object->type==DESCRIPTOR_DIRECTORY){if(access&1)ready|=POLLIN;if(access&2)ready|=POLLOUT;}
+    else if(object->type==DESCRIPTOR_TCP){struct tcp_status_abi status;
+        int64_t rc=call3(SYS_TCP_STATUS,object->value.tcp.handle,(uintptr_t)&status,0);
+        ready=rc<0?POLLERR|POLLHUP:status.ready;}
     spin_unlock(&object->lock);return ready;
 }
 static int set_error(int error){*__errno_location()=error;return -1;}
@@ -847,10 +863,29 @@ static int set_error(int error){*__errno_location()=error;return -1;}
 #define MSG_DONTWAIT 0x40
 #define MSG_NOSIGNAL 0x4000
 #define ENOTSOCK 88
+static int64_t tcp_io_ref(const struct descriptor_ref *reference,void *buffer,size_t length,int flags,int writing)
+{
+    struct descriptor_object *object=reference->object;int64_t result=-1;
+    if(length>INT64_MAX){set_error(EINVAL);goto done;}
+    if(!buffer&&length){set_error(EFAULT);goto done;}
+    if(flags&~(MSG_DONTWAIT|(writing?MSG_NOSIGNAL:MSG_PEEK))){set_error(ENOTSUP);goto done;}
+    for(;;){
+        if(!descriptor_current(reference)){set_error(EBADF);break;}
+        spin_lock(&object->lock);uint64_t sequence=__atomic_load_n(&object->sequence,__ATOMIC_ACQUIRE);
+        int64_t rc=call4(writing?SYS_TCP_SEND:SYS_TCP_RECV,object->value.tcp.handle,
+                        (uintptr_t)buffer,length,writing?0:!!(flags&MSG_PEEK));
+        unsigned status=__atomic_load_n(&object->status_flags,__ATOMIC_ACQUIRE);spin_unlock(&object->lock);
+        if(rc>=0){result=rc;break;}
+        if(rc!=-EAGAIN||(flags&MSG_DONTWAIT)||(status&O_NONBLOCK)){fail(rc);break;}
+        (void)wait64(&object->sequence,sequence,0);
+    }
+done:object_release(object);return result;
+}
 static int64_t socketpair_io_ref(const struct descriptor_ref *reference,void *buffer,size_t length,int flags,int writing)
 {
     struct descriptor_ref r=*reference;
     struct descriptor_object *object=r.object;
+    if(object->type==DESCRIPTOR_TCP)return tcp_io_ref(reference,buffer,length,flags,writing);
     if(length>INT64_MAX){object_release(object);return set_error(EINVAL);}
     if(!buffer&&length){object_release(object);return set_error(EFAULT);}
     if(flags&~(MSG_DONTWAIT|(writing?MSG_NOSIGNAL:MSG_PEEK))){object_release(object);return set_error(ENOTSUP);}
@@ -897,6 +932,75 @@ int64_t send(int fd,const void *buffer,size_t length,int flags)
 {return socketpair_io(fd,(void *)buffer,length,flags,1);}
 int64_t recv(int fd,void *buffer,size_t length,int flags)
 {return socketpair_io(fd,buffer,length,flags,0);}
+int socket(int domain,int type,int protocol)
+{
+    if(domain!=2)return set_error(97);
+    if((type&~(O_NONBLOCK|O_CLOEXEC))!=1||(protocol&&protocol!=6))return set_error(93);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_TCP);if(!object)return set_error(ENOMEM);
+    int64_t handle=call3(SYS_TCP_CREATE,(uintptr_t)&object->sequence,(uintptr_t)&state->sequence,0);
+    if(handle<0){free(object);return fail(handle);}
+    object->value.tcp.handle=(uint32_t)handle;object->value.tcp.opens=1;
+    spin_lock(&state->lock);int fd=descriptor_install_locked(state,object,3,(unsigned)type&(O_NONBLOCK|O_CLOEXEC));
+    spin_unlock(&state->lock);
+    if(fd<0){(void)call3(SYS_TCP_CLOSE,(uint32_t)handle,0,0);free(object);return set_error(24);}return fd;
+}
+int connect(int fd,const void *raw,uint32_t length)
+{
+    if(!raw)return set_error(EFAULT);if(length<sizeof(struct sockaddr_in_abi))return set_error(EINVAL);
+    const struct sockaddr_in_abi *address=raw;if(address->family!=2)return set_error(97);
+    struct tcp_address_abi peer={{0},(uint16_t)(((unsigned)address->port[0]<<8)|address->port[1]),0};
+    for(unsigned i=0;i<4;++i)peer.ip[i]=address->ip[i];
+    struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    if(r.object->type!=DESCRIPTOR_TCP){object_release(r.object);return set_error(ENOTSOCK);}
+    spin_lock(&r.object->lock);int64_t rc=call3(SYS_TCP_CONNECT,r.object->value.tcp.handle,(uintptr_t)&peer,0);
+    unsigned flags=r.object->status_flags;spin_unlock(&r.object->lock);
+    if(rc==-115&&!(flags&O_NONBLOCK))for(;;){
+        if(!descriptor_current(&r)){rc=-EBADF;break;}
+        spin_lock(&r.object->lock);uint64_t sequence=__atomic_load_n(&r.object->sequence,__ATOMIC_ACQUIRE);
+        struct tcp_status_abi status;rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,0);
+        spin_unlock(&r.object->lock);if(rc<0)break;
+        if(status.error){rc=-(int64_t)status.error;break;}
+        if(status.state==4){rc=0;break;}
+        (void)wait64(&r.object->sequence,sequence,0);
+    }
+    object_release(r.object);return rc<0?fail(rc):0;
+}
+static int tcp_name(int fd,void *raw,uint32_t *length,int peer)
+{
+    if(!raw||!length)return set_error(EFAULT);struct descriptor_ref r={0};
+    if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    if(r.object->type!=DESCRIPTOR_TCP){object_release(r.object);return set_error(ENOTSOCK);}
+    struct tcp_status_abi status;spin_lock(&r.object->lock);
+    int64_t rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,0);spin_unlock(&r.object->lock);
+    object_release(r.object);if(rc<0)return fail(rc);if(peer&&status.state!=4)return set_error(107);
+    struct tcp_address_abi *address=peer?&status.peer:&status.local;
+    struct sockaddr_in_abi output={2,{(unsigned char)(address->port>>8),(unsigned char)address->port},{0},{0}};
+    for(unsigned i=0;i<4;++i)output.ip[i]=address->ip[i];
+    unsigned count=*length;if(count>sizeof(output))count=sizeof(output);
+    for(unsigned i=0;i<count;++i)((unsigned char *)raw)[i]=((unsigned char *)&output)[i];*length=sizeof(output);return 0;
+}
+int getsockname(int fd,void *address,uint32_t *length){return tcp_name(fd,address,length,0);}
+int getpeername(int fd,void *address,uint32_t *length){return tcp_name(fd,address,length,1);}
+int getsockopt(int fd,int level,int option,void *value,uint32_t *length)
+{
+    if(!length||(!value&&*length))return set_error(EFAULT);
+    if(*length>INT32_MAX)return set_error(EINVAL);
+    struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    if(r.object->type!=DESCRIPTOR_TCP){object_release(r.object);return set_error(ENOTSOCK);}
+    int output=0;int64_t rc=0;spin_lock(&r.object->lock);
+    if(level!=1)rc=-92;
+    else if(option==4){struct tcp_status_abi status;
+        rc=call3(SYS_TCP_STATUS,r.object->value.tcp.handle,(uintptr_t)&status,1);if(!rc)output=(int)status.error;}
+    else if(option==3)output=1;
+    else if(option==7)output=4096;
+    else if(option==8)output=8192;
+    else rc=-92;
+    spin_unlock(&r.object->lock);object_release(r.object);if(rc<0)return fail(rc);
+    unsigned count=*length;if(count>sizeof(output))count=sizeof(output);
+    for(unsigned i=0;i<count;++i)((unsigned char *)value)[i]=((unsigned char *)&output)[i];
+    *length=count;return 0;
+}
 int socketpair(int domain,int type,int protocol,int descriptors[2])
 {
     if(!descriptors)return set_error(EFAULT);
@@ -922,6 +1026,9 @@ int shutdown(int fd,int how)
 {
     if(how<0||how>2)return set_error(EINVAL);struct descriptor_ref r={0};
     if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    if(r.object->type==DESCRIPTOR_TCP){spin_lock(&r.object->lock);
+        int64_t rc=call3(SYS_TCP_SHUTDOWN,r.object->value.tcp.handle,(unsigned)how,0);
+        spin_unlock(&r.object->lock);object_release(r.object);return rc<0?fail(rc):0;}
     if(r.object->type!=DESCRIPTOR_SOCKETPAIR){object_release(r.object);return set_error(ENOTSOCK);}
     unsigned side=(r.access>>2)&1;spin_lock(&r.object->lock);
     if(how==0||how==2){r.object->value.socketpair.read_shutdown[side]=1;r.object->value.socketpair.count[side]=0;}
@@ -961,6 +1068,8 @@ int close(int fd)
     }
     if(closed.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(closed.access>>2)&1;
         --closed.object->value.socketpair.readers[side];--closed.object->value.socketpair.writers[side];}
+    if(closed.object->type==DESCRIPTOR_TCP&&!--closed.object->value.tcp.opens){
+        (void)call3(SYS_TCP_CLOSE,closed.object->value.tcp.handle,0,0);closed.object->value.tcp.handle=0;}
     spin_unlock(&closed.object->lock);descriptor_changed(closed.object);object_release(closed.object);return 0;
 }
 int64_t read(int fd,void *buffer,size_t length)
@@ -972,6 +1081,7 @@ int64_t read(int fd,void *buffer,size_t length)
         if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
     struct descriptor_object *object=reference.object;int64_t result=-1;
     if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,buffer,length,0,0);
+    if(object->type==DESCRIPTOR_TCP)return tcp_io_ref(&reference,buffer,length,0,0);
     if(object->type==DESCRIPTOR_EVENT){
         if(length!=8){set_error(EINVAL);goto done;}
         for(;;){spin_lock(&object->lock);uint64_t value=object->value.event.counter;
@@ -1015,6 +1125,7 @@ int64_t write(int fd,const void *buffer,size_t length)
         if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
     struct descriptor_object *object=reference.object;int64_t result=-1;
     if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,(void *)buffer,length,MSG_NOSIGNAL,1);
+    if(object->type==DESCRIPTOR_TCP)return tcp_io_ref(&reference,(void *)buffer,length,MSG_NOSIGNAL,1);
     if(object->type==DESCRIPTOR_EVENT){
         if(length!=8){set_error(EINVAL);goto done;}
         uint64_t add=*(const uint64_t *)buffer;if(add==UINT64_MAX){set_error(EINVAL);goto done;}
@@ -1127,7 +1238,9 @@ int epoll_ctl(int epfd,int operation,int fd,struct epoll_event *event)
         if(found<0)result=ENOENT;else {struct epoll_registration *r=&epoll.object->value.epoll.registrations[found];r->used=0;object_release(r->object);}
     } else result=EINVAL;
     __atomic_add_fetch(&epoll.object->sequence,1,__ATOMIC_RELEASE);wake64(&epoll.object->sequence,~0u);
-    spin_unlock(&epoll.object->lock);object_release(target.object);object_release(epoll.object);
+    spin_unlock(&epoll.object->lock);
+    struct descriptor_state *state=descriptor_state();__atomic_add_fetch(&state->sequence,1,__ATOMIC_RELEASE);wake64(&state->sequence,~0u);
+    object_release(target.object);object_release(epoll.object);
     return result?set_error(result):0;
 }
 int epoll_wait(int epfd,struct epoll_event *events,int maximum,int timeout)
@@ -1136,7 +1249,8 @@ int epoll_wait(int epfd,struct epoll_event *events,int maximum,int timeout)
     if(!poll_deadline(timeout,&deadline))return set_error(EINVAL);
     struct descriptor_ref epoll={0};if(!descriptor_acquire(epfd,&epoll)||epoll.object->type!=DESCRIPTOR_EPOLL){
         if(epoll.object)object_release(epoll.object);return set_error(EBADF);}
-    for(;;){int count=0;uint64_t sequence=__atomic_load_n(&epoll.object->sequence,__ATOMIC_ACQUIRE);
+    struct descriptor_state *state=descriptor_state();
+    for(;;){int count=0;uint64_t sequence=__atomic_load_n(&state->sequence,__ATOMIC_ACQUIRE);
         spin_lock(&epoll.object->lock);
         for(unsigned i=0;i<EPOLL_REGS&&(count<maximum);++i){struct epoll_registration *r=&epoll.object->value.epoll.registrations[i];
             if(!r->used)continue;uint32_t ready=object_ready(r->object,r->access);
@@ -1145,7 +1259,7 @@ int epoll_wait(int epfd,struct epoll_event *events,int maximum,int timeout)
         }
         spin_unlock(&epoll.object->lock);
         if(count||timeout==0){object_release(epoll.object);return count;}
-        int rc=wait64(&epoll.object->sequence,sequence,deadline);
+        int rc=wait64(&state->sequence,sequence,deadline);
         if(rc==-ETIMEDOUT){object_release(epoll.object);return 0;}
         if(!descriptor_current(&epoll)){object_release(epoll.object);return set_error(EBADF);}
     }
@@ -1158,6 +1272,9 @@ int ioctl_FIONREAD(int fd,int *available)
     if(reference.object->type==DESCRIPTOR_PIPE)*available=(int)reference.object->value.pipe.count;
     else if(reference.object->type==DESCRIPTOR_SOCKETPAIR)*available=(int)reference.object->value.socketpair.count[(reference.access>>2)&1];
     else if(reference.object->type==DESCRIPTOR_EVENT)*available=reference.object->value.event.counter?8:0;
+    else if(reference.object->type==DESCRIPTOR_TCP){struct tcp_status_abi status;
+        int64_t rc=call3(SYS_TCP_STATUS,reference.object->value.tcp.handle,(uintptr_t)&status,0);
+        if(rc<0)result=(int)-rc;else *available=(int)status.available;}
     else result=EINVAL;
     spin_unlock(&reference.object->lock);object_release(reference.object);
     return result?set_error(result):0;
@@ -1268,6 +1385,7 @@ int dup(int fd)
         }
         if(reference.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(reference.access>>2)&1;
             ++reference.object->value.socketpair.readers[side];++reference.object->value.socketpair.writers[side];}
+        if(reference.object->type==DESCRIPTOR_TCP)++reference.object->value.tcp.opens;
         spin_unlock(&reference.object->lock);
     }
     spin_unlock(&state->lock);object_release(reference.object);return result<0?set_error(ENOSPC):result;
@@ -1293,6 +1411,7 @@ int fcntl(int fd,int command,...)
             }
             if(reference.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(reference.access>>2)&1;
                 ++reference.object->value.socketpair.readers[side];++reference.object->value.socketpair.writers[side];}
+            if(reference.object->type==DESCRIPTOR_TCP)++reference.object->value.tcp.opens;
             spin_unlock(&reference.object->lock);
         }
         spin_unlock(&state->lock);object_release(reference.object);
@@ -1309,7 +1428,8 @@ int fcntl(int fd,int command,...)
             else if(reference.object->type==DESCRIPTOR_SOCKETPAIR){
                 if(argument&O_APPEND)result=-EINVAL;
                 else __atomic_store_n(&reference.object->value.socketpair.status_flags[(reference.access>>2)&1],(unsigned)argument&O_NONBLOCK,__ATOMIC_RELEASE);
-            } else __atomic_store_n(&reference.object->status_flags,(unsigned)argument&(O_APPEND|O_NONBLOCK),__ATOMIC_RELEASE);}
+            } else if(reference.object->type==DESCRIPTOR_TCP&&(argument&O_APPEND))result=-EINVAL;
+            else __atomic_store_n(&reference.object->status_flags,(unsigned)argument&(O_APPEND|O_NONBLOCK),__ATOMIC_RELEASE);}
         spin_unlock(&s->lock);
     } else result=-EINVAL;
     object_release(reference.object);return result<0?set_error(-result):result;

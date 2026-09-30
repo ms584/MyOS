@@ -2,7 +2,7 @@
 import array,subprocess,sys,time,wave
 from pathlib import Path
 sys.path.insert(0,'tests')
-from test_system import VM,OUT
+from test_system import VM,OUT,symbols
 from test_network import send,wait_count
 
 def main():
@@ -20,9 +20,13 @@ def main():
     try:
         vm.wait('Audio: SB16 initialized',60)
         vm.wait('myos> ',60)
+        addresses=symbols();graphics_before=vm.memory(addresses['screen'],24)
+        assert addresses['__bss_end']<=0x80000
+        assert int.from_bytes(vm.memory(addresses['boot_state']+16,8),'little')==0x90000
         send(vm,'audio tone 440 300')
         vm.wait('Audio tone queued')
         time.sleep(3)
+        assert vm.memory(addresses['screen'],24)==graphics_before,'SB16 DMA overwrote graphics state'
         send(vm,'audio status')
         vm.wait('underruns=')
         assert 'underruns=0\n' not in vm.log.read_text().split('myos> audio status')[-1]

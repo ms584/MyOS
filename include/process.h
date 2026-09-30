@@ -79,6 +79,7 @@ int process_thread_reap(struct process *,uint64_t,int32_t *);
 int process_thread_detach(struct process *,uint64_t,uint64_t,size_t);
 struct frame *process_wait(struct process *,struct frame *,uint64_t,uint64_t);
 unsigned process_wake(struct process *,uint64_t,unsigned);
+bool process_notify(struct process *,uint64_t);
 void process_init(void);
 uint64_t process_create(uint64_t mode, uint64_t cookie);
 uint64_t process_create_image(const void *code,size_t size);

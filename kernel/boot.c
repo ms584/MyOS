@@ -8,7 +8,8 @@ void boot_init(const struct boot_info *info)
         boot_state=*info;
     }else{
         boot_state=(struct boot_info){0};
-        boot_state.root=0x1000;boot_state.stack=0x90000;
+        boot_state.root=0x1000;boot_state.stack=MYOS_INITIAL_STACK_TOP;
+        boot_state.dma=MYOS_SB16_DMA_BASE;
         boot_state.font=0xa000;boot_state.map=0x7400;
         boot_state.count=*(volatile uint16_t *)0x7000;
         if(*(volatile uint8_t *)0x7004){

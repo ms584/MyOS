@@ -1,9 +1,10 @@
 #include "audio.h"
+#include "boot.h"
 
-/* ISA DMA channel 1, IRQ 5, I/O 0x220. The bootloader reserves 0x70000-0x80000
- * on both BIOS and UEFI; this 16 KiB buffer stays below the 64 KiB DMA boundary. */
-#define DMA_BUFFER ((uint8_t *)0x70000u)
-#define DMA_BYTES 16384u
+/* ISA DMA channel 1, IRQ 5, I/O 0x220. Never place DMA inside kernel/BSS:
+ * the old 0x70000 buffer overwrote graphics state as the runtime grew. */
+#define DMA_BUFFER ((uint8_t *)(uintptr_t)boot_state.dma)
+#define DMA_BYTES MYOS_SB16_DMA_BYTES
 #define HALF 8192u
 #define QUEUE_BYTES 65536u
 #define DSP 0x220u
@@ -31,15 +32,22 @@ static void refill(unsigned half){
     if(gap)++underrun_count;
 }
 static void dma_start(void){
+    uintptr_t address=(uintptr_t)boot_state.dma;
     outb(0x0a,5);           /* mask channel 1 */
     outb(0x0c,0);           /* reset address/count flip-flop */
-    outb(0x02,0);outb(0x02,0); /* 0x70000 address low 16 bits */
-    outb(0x03,0xff);outb(0x03,0x3f); /* 16 KiB - 1 */
-    outb(0x83,7);           /* address page */
+    outb(0x02,address&255);outb(0x02,(address>>8)&255);
+    outb(0x03,(DMA_BYTES-1)&255);outb(0x03,(DMA_BYTES-1)>>8);
+    outb(0x83,address>>16); /* address page */
     outb(0x0b,0x59);        /* single, auto-init, memory-to-device, channel 1 */
     outb(0x0a,1);           /* unmask */
 }
 bool audio_init(void){
+    uint64_t address=boot_state.dma,stack=boot_state.stack;
+    /* Validate before programming hardware or touching DMA, including a loader
+       ABI mismatch. Firmware allocation owns this range on UEFI. */
+    if(address<MYOS_KERNEL_LIMIT||address>0x1000000u-DMA_BYTES||
+       (address&0xffffu)+DMA_BYTES>0x10000u||stack<MYOS_INITIAL_STACK_BYTES||
+       (address<stack&&address+DMA_BYTES>stack-MYOS_INITIAL_STACK_BYTES))return false;
     outb(DSP+6,1);
     for(volatile unsigned i=0;i<10000;++i)__asm__ volatile("pause");
     outb(DSP+6,0);

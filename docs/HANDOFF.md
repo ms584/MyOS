@@ -3,6 +3,62 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 concurrent TCP continuation — 2026-10-01
+
+Continuation from local c835cfe on main (owner pushes manually; never push).
+Added actual independently owned IPv4 TCP streams, not aliases of the legacy
+single-stream client. The bounded 32-stream pool has process-private generation
+handles, separate peer/port/sequence/window/rings/retry/EOF state, nonblocking
+kernel syscalls and timer-driven NIC progress. Runtime descriptors reuse the
+existing object/ref/dup/generation cancellation model and poll/epoll/FIONREAD.
+See PHASE331_TCP.md for supported getters/flags, resource bounds, compatibility
+and the still-missing resolver/options/TLS integration. Both dup paths count
+open descriptors separately from borrowed references; close of a waited-on
+descriptor cancels that operation without breaking its surviving duplicate.
+Process stop releases connections and linger states before page reclamation.
+
+Native QEMU tests passed at 00:17 +07: two Ring 3 pthreads transfer different
+32768-byte patterns concurrently, each receives 20000 bytes and EOF after
+write shutdown; nonblocking connect, SO_ERROR, readiness and epoll timeout,
+peek/FIONREAD, distinct tuples, address/option short-buffer canaries, no NIC,
+pool exhaustion, refusal, dup/close/slot reuse, repeat launch and blocked-worker
+forced cancellation all pass. Pages/heap return to baseline each time.
+The actual TCP state machine passes ASan/UBSan packet-boundary tests including
+partial ACK/retransmit, sequence wrap, duplicates/out-of-order, bounded/zero
+window, FIN/RST, timeout and allocation/owner/generation isolation. The five
+new fixture-covered exports make 149/242 strong imports (93 missing), with
+the weak TLS initializer tracked separately; these are supported subsets,
+not proof of complete ABI or engine compatibility. Pinned hash/contract
+inventory passed at 00:08 +07.
+
+Two full system attempts stopped at the initial legacy-video frame and restored
+the normal image. A stronger image test confirmed black pixels in actual guest
+VRAM, not just QEMU display refresh. Root cause: the fixed SB16 DMA buffer
+0x70000..0x73fff overlapped grown BSS, including graphics state in self-test
+images. BIOS DMA now uses 0x90000..0x93fff, outside kernel/BSS (<0x80000) and
+the initial stack (0x80000..0x8ffff). Extending UEFI's fixed low-memory
+reservation failed in OVMF. UEFI now allocates its own 64 KiB initial stack
+and DMA allocation below 16 MiB; boot ABI v2 passes the aligned 16 KiB DMA
+subrange to SB16. The firmware memory map reserves both allocations from PMM.
+The driver validates the ISA DMA boundary and non-overlap with the stack.
+Shared C constants/static assertions and an audio graphics-state integrity
+check guard the layout. Previously failing self-test-image video/audio passed
+at 00:46/00:47; packaged UEFI DMA/framebuffer and network checks passed at
+00:54/00:55 +07. No media feature or Phase 33.3 work was added. Legacy HTTPS/HTTP
+passed at 00:22/00:23. Full tests/test_system.py passed at 01:28 +07 and restored
+the normal framebuffer image, including native TCP, lifecycle/teardown, storage,
+memory/fault and VGA fallback. Final packaged UEFI DMA/graphics test at 01:29
+also verifies captured PCM (435/655 Hz). Cobalt-only staging passed at 01:30:
+149 strong imports resolved, 93 missing, weak TLS zero binding, staged pages
+reclaimed and 64 MiB OOM rollback. Cobalt was not executed.
+Normal image after final edge fixes: 1474560 bytes; kernel 241752 bytes.
+
+Still OPEN: signal delivery, resolver/interfaces/required socket options and
+I/O deadlines, real native Cobalt TLS integration, renderer feasibility and
+Evergreen lifecycle/window/input adapters. Cobalt has not executed in MyOS;
+HTML/JavaScript/DOM/input/verified-HTTPS >=60s acceptance remains unproven.
+Do not close 33.1/33.2 or start 33.3 on import counts or fixture PASS.
+
 ## Phase 33.1 Starboard storage continuation — 2026-09-30
 
 Starting from local commit 18191dd, the storage slice is committed locally on

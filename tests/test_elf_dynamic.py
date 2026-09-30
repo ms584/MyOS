@@ -395,41 +395,48 @@ def exercise(cobalt=None):
     assert digest(disk)==before
     print('PASS: native file fsync/fdatasync binary data survives reboot on disposable v2 disk',flush=True)
     exercise_storage(out,storage_assets)
-    if cobalt:
-        audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
-        assert digest(cobalt)==audit['library_sha256'],'wrong Cobalt build'
-        disk=out/'cobalt.img';disk.unlink(missing_ok=True);create(disk,[f'cobalt={cobalt}']);before=digest(disk)
-        vm=VM('elf-dynamic-cobalt',disk=disk,ram=256)
-        try:
-            vm.wait('myos> ')
-            output=long_command(vm,'elf link cobalt')
-            assert 'relative=117653 absolute=20 global=17 jump=626' in output,output[-4000:]
-            exports=implemented_exports()
-            expected=[name for name in audit['undefined_symbols']
-                      if not name.startswith('_ZTH') and name not in exports]
-            assert f'missing={len(expected)} weak-zero=1' in output,output[-4000:]
-            assert 'ELF RELRO: protected' in output,output[-4000:]
-            assert 'staged image released; not executed' in output,output[-4000:]
-            imports=[line.split(': ',1)[1] for line in output.splitlines() if line.startswith('ELF missing: ')]
-            assert sorted(imports)==sorted(expected)
-            command(vm,'run /bin/hello','App exited with status 42')
-            print(f'PASS: actual Cobalt mapped and relocations processed in MyOS; {len(exports)} tested runtime imports resolved, {len(expected)} missing imports block execution; all staged pages reclaimed',flush=True)
-        finally:vm.close()
-        assert digest(disk)==before
-        vm=VM('elf-dynamic-cobalt-oom',disk=disk,ram=64)
-        try:
-            vm.wait('myos> ')
-            output=long_command(vm,'elf link cobalt')
-            assert 'error: out of memory' in output,output
-            command(vm,'run /bin/hello','App exited with status 42')
-            print('PASS: actual large image OOM at 64 MiB rolls back and leaves shell/apps usable',flush=True)
-        finally:vm.close()
+    if cobalt:exercise_cobalt(cobalt,out)
+
+def exercise_cobalt(cobalt,out=None):
+    if out is None:out=OUT/'elf-dynamic'
+    out.mkdir(parents=True,exist_ok=True)
+    audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
+    assert digest(cobalt)==audit['library_sha256'],'wrong Cobalt build'
+    disk=out/'cobalt.img';disk.unlink(missing_ok=True);create(disk,[f'cobalt={cobalt}']);before=digest(disk)
+    vm=VM('elf-dynamic-cobalt',disk=disk,ram=256)
+    try:
+        vm.wait('myos> ')
+        output=long_command(vm,'elf link cobalt')
+        assert 'relative=117653 absolute=20 global=17 jump=626' in output,output[-4000:]
+        exports=implemented_exports()
+        expected=[name for name in audit['undefined_symbols']
+                  if not name.startswith('_ZTH') and name not in exports]
+        assert f'missing={len(expected)} weak-zero=1' in output,output[-4000:]
+        assert 'ELF RELRO: protected' in output,output[-4000:]
+        assert 'staged image released; not executed' in output,output[-4000:]
+        imports=[line.split(': ',1)[1] for line in output.splitlines() if line.startswith('ELF missing: ')]
+        assert sorted(imports)==sorted(expected)
+        command(vm,'run /bin/hello','App exited with status 42')
+        print(f'PASS: actual Cobalt mapped and relocations processed in MyOS; {len(exports)} tested runtime imports resolved, {len(expected)} missing imports block execution; all staged pages reclaimed',flush=True)
+    finally:vm.close()
+    assert digest(disk)==before
+    vm=VM('elf-dynamic-cobalt-oom',disk=disk,ram=64)
+    try:
+        vm.wait('myos> ')
+        output=long_command(vm,'elf link cobalt')
+        assert 'error: out of memory' in output,output
+        command(vm,'run /bin/hello','App exited with status 42')
+        print('PASS: actual large image OOM at 64 MiB rolls back and leaves shell/apps usable',flush=True)
+    finally:vm.close()
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--cobalt',type=Path);p.add_argument('--emutls-only',action='store_true')
-    p.add_argument('--storage-only',action='store_true')
+    p.add_argument('--storage-only',action='store_true');p.add_argument('--cobalt-only',action='store_true')
     args=p.parse_args()
-    if args.emutls_only:
+    if args.cobalt_only:
+        if not args.cobalt:p.error('--cobalt-only requires --cobalt')
+        exercise_cobalt(args.cobalt)
+    elif args.emutls_only:
         _,_,_,disk,_=fixtures();exercise_emutls(disk)
     elif args.storage_only:
         out,_,_,_,assets=fixtures();exercise_storage(out,assets)

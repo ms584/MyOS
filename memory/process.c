@@ -502,6 +502,16 @@ unsigned process_wake(struct process *p,uint64_t address,unsigned count)
     if((address&7)||!process_user_access(p,address,8,PROCESS_PROT_READ))return 0;
     return scheduler_wake(p,address,count);
 }
+bool process_notify(struct process *p,uint64_t address)
+{
+    /* IRQ/syscall context: mappings cannot change during validation + update.
+     * Never dereference a VA in whichever unrelated CR3 currently runs. */
+    if(!p||p->state!=PROCESS_RUNNING||(address&7)||
+       !process_user_access(p,address,8,PROCESS_PROT_WRITE))return false;
+    uint64_t *entry=vm_leaf(p,address,false);
+    uint64_t *value=(void *)(uintptr_t)((*entry&0x000ffffffffff000ull)+(address&(PAGE_SIZE-1)));
+    ++*value;scheduler_wake(p,address,~0u);return true;
+}
 void process_discard_elf(struct process *p)
 {
     uint64_t f=irq_save();check(p&&p->state==PROCESS_LOADING,"discard staged ELF");release(p);irq_restore(f);

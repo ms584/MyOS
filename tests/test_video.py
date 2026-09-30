@@ -1,8 +1,8 @@
 """Phase 31 native MYV1 video decode, framebuffer timing and PCM sync acceptance."""
-import array,re,subprocess,sys,time,wave
+import array,re,struct,subprocess,sys,time,wave
 from pathlib import Path
 sys.path.insert(0,'tests')
-from test_system import VM,OUT
+from test_system import VM,OUT,symbols
 from test_network import send,wait_count
 from test_graphics import pixels
 
@@ -13,6 +13,27 @@ def shot(vm,name):
     width,height,pixel=pixels(path)
     assert (width,height)==(800,600)
     return pixel
+
+def frame_shot(vm,name,expected):
+    # A serial present marker and QEMU's display surface update are different
+    # events. Freeze the guest so a display refresh cannot be mistaken for a
+    # later video frame; first prove the actual guest framebuffer is correct.
+    vm.command('stop')
+    try:
+        info=vm.memory(symbols()['boot_state'],64)
+        width,height,pitch,framebuffer=struct.unpack_from('<IIIQ',info,44)
+        assert (width,height)==(800,600)
+        for x,y,color in expected:
+            value=int.from_bytes(vm.memory(framebuffer+y*pitch+x*4,4),'little')
+            actual=((value>>16)&255,(value>>8)&255,value&255)
+            assert actual==color,('guest framebuffer',x,y,actual,color)
+        end=time.monotonic()+.5
+        while True:
+            pixel=shot(vm,name)
+            if all(pixel(x,y)==color for x,y,color in expected):return pixel
+            assert time.monotonic()<end,('QEMU display refresh',[(x,y,pixel(x,y),color) for x,y,color in expected])
+            time.sleep(.01)
+    finally:vm.command('cont')
 
 def main():
     DISK.unlink(missing_ok=True)
@@ -32,10 +53,10 @@ def main():
         vm.wait('Video: invalid or unavailable MYV1 clip',8)
         send(vm,'video play /home/demo.myv')
         vm.wait('VIDEO FRAME 0 tick',12)
-        initial=shot(vm,'phase31-initial.ppm')
+        initial=frame_shot(vm,'phase31-initial.ppm',[(280,260,(0xf5,0xb6,0x42))])
         assert initial(280,260)==(0xf5,0xb6,0x42),initial(280,260)
         vm.wait('VIDEO FRAME 15 tick',8)
-        moved=shot(vm,'phase31-moved.ppm')
+        moved=frame_shot(vm,'phase31-moved.ppm',[(280,260,(0x10,0x20,0x38)),(388,260,(0xf5,0xb6,0x42))])
         assert moved(280,260)==(0x10,0x20,0x38),moved(280,260)
         assert moved(388,260)==(0xf5,0xb6,0x42),moved(388,260)
         vm.wait('VIDEO COMPLETE',8)

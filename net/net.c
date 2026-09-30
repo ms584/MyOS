@@ -1,5 +1,6 @@
 #include "net.h"
 #include "nic.h"
+#include "tcp.h"
 
 /* Deliberately one outstanding request. Each receive buffer is bounded and
  * copied out of the DMA ring before the device can reuse it. */
@@ -76,8 +77,10 @@ static void receive(const uint8_t *f,size_t n){
     }else if(h[9]==6 && plen>=20){
         unsigned thl=(payload[12]>>4)*4;if(thl<20||thl>plen)return;
         uint16_t dst=rd16(payload+2);
+        if(transport_sum(h+12,h+16,6,payload,plen))return;
+        if(tcp_stream_receive(h+12,payload,plen))return;
         if(!tcp_active||dst!=source_port||rd16(payload)!=tcp_port||!same(h+12,tcp_peer,4)||
-           transport_sum(h+12,h+16,6,payload,plen))return;
+           !configured)return;
         tcp_flags=payload[13];tcp_ack=rd32(payload+8);tcp_seq=rd32(payload+4);
         tcp_length=plen-thl;if(tcp_length>sizeof(tcp_data))tcp_length=sizeof(tcp_data);
         memcpy(tcp_data,payload+thl,tcp_length);tcp_event=true;
@@ -100,7 +103,7 @@ static void receive(const uint8_t *f,size_t n){
         }
     }
 }
-void net_poll(void){(void)nic_poll(receive,1);}
+void net_poll(void){uint64_t f=irq_save();(void)nic_poll(receive,1);irq_restore(f);}
 static bool frame(const uint8_t *mac,uint16_t type,size_t payload){
     if(payload+14>FRAME)return false;
     memcpy(tx,mac,6);memcpy(tx+6,nic_mac(),6);wr16(tx+12,type);
@@ -113,10 +116,11 @@ static bool route(const uint8_t target[4]){
     if(have_peer&&same(peer_ip,next,4))return true;
     have_peer=false;
     for(unsigned attempt=0;attempt<3;++attempt){
+        uint64_t flags=irq_save();
         memset(tx+14,0,28);wr16(tx+14,1);wr16(tx+16,0x0800);tx[18]=6;tx[19]=4;wr16(tx+20,1);
         memcpy(tx+22,nic_mac(),6);memcpy(tx+28,ip,4);memcpy(tx+38,next,4);
         static const uint8_t broadcast[6]={255,255,255,255,255,255};
-        if(!frame(broadcast,0x0806,28))return false;
+        bool sent=frame(broadcast,0x0806,28);irq_restore(flags);if(!sent)return false;
         uint64_t end=ticks+100;while(!timeout(end)){net_poll();if(have_peer&&same(peer_ip,next,4))return true;idle();}
     }
     return false;
@@ -132,9 +136,32 @@ static uint16_t transport_sum(const uint8_t *src,const uint8_t *dst,uint8_t prot
 }
 static bool udp(const uint8_t source[4],const uint8_t target[4],const uint8_t mac[6],uint16_t src,uint16_t dst,const uint8_t *data,size_t length){
     if(length>IP_PAYLOAD-8)return false;
+    uint64_t flags=irq_save();
     uint8_t *u=tx+34;wr16(u,src);wr16(u+2,dst);wr16(u+4,(uint16_t)(8+length));wr16(u+6,0);
     memcpy(u+8,data,length);uint16_t c=transport_sum(source,target,17,u,8+length);wr16(u+6,c?c:0xffff);
-    return ipv4(target,mac,17,8+length,source);
+    bool sent=ipv4(target,mac,17,8+length,source);irq_restore(flags);return sent;
+}
+void net_stream_address(uint8_t address[4]){memcpy(address,ip,4);}
+int net_stream_route(const uint8_t target[4],uint8_t mac[6]){
+    if(!net_configured())return -1;
+    uint64_t flags=irq_save();uint8_t next[4];bool local=true;
+    for(unsigned i=0;i<4;++i)if((ip[i]&mask[i])!=(target[i]&mask[i]))local=false;
+    memcpy(next,local?target:gateway,4);
+    if(have_peer&&same(peer_ip,next,4)){memcpy(mac,peer_mac,6);irq_restore(flags);return 1;}
+    uint8_t packet[42]={0};static const uint8_t broadcast[6]={255,255,255,255,255,255};
+    memcpy(packet,broadcast,6);memcpy(packet+6,nic_mac(),6);wr16(packet+12,0x0806);
+    wr16(packet+14,1);wr16(packet+16,0x0800);packet[18]=6;packet[19]=4;wr16(packet+20,1);
+    memcpy(packet+22,nic_mac(),6);memcpy(packet+28,ip,4);memcpy(packet+38,next,4);
+    bool sent=nic_send(packet,sizeof(packet));irq_restore(flags);return sent?0:-1;
+}
+bool net_stream_packet(const uint8_t target[4],const uint8_t mac[6],uint8_t *tcp,size_t length){
+    if(!net_configured()||length<20||length>1480)return false;
+    uint64_t flags=irq_save();uint8_t packet[FRAME];uint8_t *h=packet+14;
+    memcpy(packet,mac,6);memcpy(packet+6,nic_mac(),6);wr16(packet+12,0x0800);
+    memset(h,0,20);h[0]=0x45;wr16(h+2,(uint16_t)(20+length));wr16(h+4,ip_ident++);
+    wr16(h+6,0x4000);h[8]=64;h[9]=6;memcpy(h+12,ip,4);memcpy(h+16,target,4);wr16(h+10,checksum(h,20));
+    wr16(tcp+16,0);wr16(tcp+16,transport_sum(ip,target,6,tcp,length));memcpy(packet+34,tcp,length);
+    bool sent=nic_send(packet,length+34);irq_restore(flags);return sent;
 }
 static bool wait_udp(uint16_t port,uint64_t deadline){
     while(!timeout(deadline)){net_poll();if(!waiting&&rx_type==17&&rx_source==port)return true;idle();}waiting=false;return false;
@@ -169,6 +196,7 @@ static uint8_t dhcp_options(uint8_t address[4]){
 }
 bool net_configured(void){return configured&&nic_ready();}
 bool net_up(void){
+    if(tcp_stream_busy())return false; /* Do not invalidate live stream tuples. */
     configured=false;have_peer=false;if(!nic_ready())return false;
     uint8_t offered[4],assigned[4];
     for(unsigned attempt=0;attempt<3;++attempt){
@@ -229,12 +257,14 @@ bool net_udp_echo(const uint8_t target[4],uint16_t port,const char *message){
 }
 static bool tcp_packet(const uint8_t target[4],uint16_t port,uint8_t flags,const uint8_t *data,size_t n){
     if(n>IP_PAYLOAD-20)return false;
+    uint64_t saved=irq_save();
     uint8_t *t=tx+34;memset(t,0,20);wr16(t,source_port);wr16(t+2,port);wr32(t+4,sequence);wr32(t+8,acknowledge);
     t[12]=0x50;t[13]=flags;
     size_t window=stream_mode?sizeof(stream_bytes)-stream_used:4096;
     if(window>4096)window=4096;
     wr16(t+14,(uint16_t)window);memcpy(t+20,data,n);
-    wr16(t+16,transport_sum(ip,target,6,t,20+n));return ipv4(target,peer_mac,6,20+n,ip);
+    wr16(t+16,transport_sum(ip,target,6,t,20+n));bool sent=ipv4(target,peer_mac,6,20+n,ip);
+    irq_restore(saved);return sent;
 }
 static bool wait_tcp(uint64_t deadline){while(!timeout(deadline)){net_poll();if(tcp_event)return true;idle();}return false;}
 bool net_tcp_open(const uint8_t target[4],uint16_t port){
@@ -243,6 +273,7 @@ bool net_tcp_open(const uint8_t target[4],uint16_t port){
     stream_head=stream_tail=stream_used=0;tcp_port=port;
     memcpy(tcp_peer,target,4);
     source_port++;if(source_port<49155)source_port=49155;
+    if(source_port>=56000&&source_port<=60999)source_port=61000;
     sequence+=1009;acknowledge=0;tcp_event=false;
     for(unsigned attempt=0;attempt<3;++attempt){
         if(!tcp_packet(target,port,2,0,0))break;
@@ -316,6 +347,7 @@ static bool http_fetch_inner(const uint8_t target[4],uint16_t port,const char *h
     if(!configured||!route(target)||!host||!path||!sink)return false;
     tcp_active=true;tcp_port=port;memcpy(tcp_peer,target,4);
     source_port++;if(source_port<49155)source_port=49155;
+    if(source_port>=56000&&source_port<=60999)source_port=61000;
     sequence+=1009;acknowledge=0;tcp_event=false;
     bool connected=false;
     for(unsigned attempt=0;attempt<3&&!connected;++attempt){

@@ -1,76 +1,60 @@
 # MyOS project state
 
-Updated: 2026-09-30. Repo: /home/xytron404/myos (WSL Ubuntu).
-Base checkpoint 18191dd, branch main; TLS follow-up passed; Starboard storage
-slice is committed locally and verified by focused plus full dynamic regression.
-Fetched origin: no new origin/main commits. Owner pushes manually.
+Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
+Baseline before this TCP/DMA checkpoint: c835cfe (main). Local-only work.
+Origin/main remains 54ef570 after the latest fetch. Owner pushes manually.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
-- 144/242 strong imports have fixture coverage; 98 remain plus a weak TLS symbol.
-  Counts and fixtures do not prove full ABI compatibility.
-- Phase 32 and Phase 33 are NOT PASSED; actual YouTube playback is unproven.
-- Sequence: finish 33.1/33.2 -> 33.3 media -> 33.4 YouTube -> 33.5 Rickroll.
-  Check Phase 32 search/select/play separately.
+- 149/242 strong imports have supported-subset fixture coverage; 93 remain
+  plus the weak TLS symbol. Counts do not prove full ABI compatibility.
+- Phase 32/33 are NOT PASSED; actual YouTube playback is unproven.
+- Do not start Phase 33.3 before native Cobalt HTML/JS/DOM/input/HTTPS acceptance.
 
-## Current implementation slice
-- Clocks/pthreads, shared descriptors, eventfd/pipe/poll/epoll/FIONREAD and
-  system ABI: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
-- Files/dirs use refcounted shared offsets; large immutable asset random reads,
-  positional/vectored I/O and real fsync/reboot persistence: PHASE331_FILES.md.
-- Duplex socketpair with shutdown/readiness/cancellation: PHASE331_SOCKETPAIR.md.
-  Network TCP sockets remain absent; the 256 KiB kernel-file cap remains.
-- Command logging is bounded: 16 MiB per log, two rotations (48 MiB total),
-  feedback rejection; logger regression passes. Watch with unwrapped tail -F.
-- New elf live mode runs beyond 60 seconds; Escape stops/reaps blocked workers.
-  Repeat launch, page/heap/file cleanup, normal exit, fault and OOM are tested.
-  See PHASE331_LIFECYCLE.md: force cancellation is not a Cobalt event/input bridge.
-- Pthread masks now initialize the pinned 128-BYTE ABI; semaphore errno and
-  concurrent overflow, and pthread name bounds are tested. No signal delivery.
-- DT_FINI/reverse FINI_ARRAY, exit-status preservation, malformed/wrapped targets,
-  fault/timeout/cancel and repeat-launch cleanup pass native fixtures.
-  See PHASE332_FINALIZERS.md. This is not the Cobalt event-loop launcher.
-- `pthread_key_t` now uses the pinned pointer ABI (`void *`); full-width bounds,
-  canaries, all 32 slots and destructor passes are tested. Upstream compiler-rt
-  emutls runs as a Ring 3 fixture; this does not execute Cobalt itself.
-- Starboard storage now uses validated two-generation record files and v2-disk
-  fsync commits, with tombstones for durable deletion. Ring 3 reboot tests cover
-  immediate read-back, name/one-open validation, persistence and deletion; see
-  PHASE331_STORAGE.md. This is not a Cobalt browser acceptance test.
+## Current implementation
+- Clocks/pthreads/keys/emutls and shared descriptors, eventfd/pipe/poll/epoll/
+  FIONREAD: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
+- Refcounted files/dirs, large/positional/vectored reads and real v2-disk fsync:
+  PHASE331_FILES.md. Durable Starboard records: PHASE331_STORAGE.md.
+- NEW: independently owned IPv4 TCP streams (32 machine-wide, 8 KiB RX/4 KiB
+  TX each), process-private generation handles, nonblocking kernel syscalls,
+  per-connection retry/sequence/EOF, descriptor cancellation and timer-driven
+  network wakeups. Runtime socket/connect/send/recv/shutdown, address getters,
+  selected SO getters, dup/fcntl, poll/epoll and FIONREAD have native fixtures.
+  Bounds/gaps: PHASE331_TCP.md; AF_UNIX duplex: PHASE331_SOCKETPAIR.md.
+- Long-running elf live lifecycle, cancellation/fault/OOM/relaunch reclamation:
+  PHASE331_LIFECYCLE.md. Init/fini teardown: PHASE332_FINALIZERS.md.
+- Pthread masks are the pinned 128-byte ABI; actual signal delivery is absent.
+- Logging cap: 16 MiB per file, two rotations, 48 MiB total; feedback rejected.
+  Never inspect activity.log through run_logged.py; use unwrapped tail -F.
 
-## Validation at checkpoint
-- Pinned actual Cobalt staging passed at 256 MiB (144 strong imports resolved,
-  98 missing), with all staged pages reclaimed; 64 MiB OOM rollback passed at
-  23:13 +07. The image was not executed; this does not run Cobalt.
-- Lifecycle/pthread regression passed at 20:17; finalizer focus at 20:24 and
-  full regression at 20:53 +07 (normal kernel 232368 bytes).
-- TLS key/emutls ELF regression passed at 21:27; weak-TLS audit and full
-  tests/test_system.py passed at 21:54 +07 (normal kernel 232368 bytes).
-- Full tests/test_system.py passed at 22:54 +07 (normal framebuffer image
-  restored; kernel 234864 bytes). After the final storage tombstone semantic
-  correction, the focused storage and full tests/test_elf_dynamic.py passed at
-  23:01 +07; normal image is 1474560 bytes with kernel 234896 bytes.
-- The final `tests/test_elf_dynamic.py --cobalt build/engine-evaluation/libcobalt.so`
-  run passed at 23:13 +07: 144 resolved/98 missing and 64 MiB OOM rollback.
-  Actual Cobalt execution and web acceptance remain unproven.
+## Evidence at current checkpoint
+- Concurrent Ring 3 TCP tests passed at 00:17 +07 on 2026-10-01: two native
+  workers, independent patterned transfers, shutdown/EOF, readiness, dup/close,
+  refused port, no NIC, exhausted pool, repeat launch and worker cancellation.
+  Each measured page/heap cleanup returns to baseline.
+- TCP state-machine ASan/UBSan tests passed at 23:55 and in the full suite:
+  partial ACK/retry, wraparound, invalid/reset/FIN/duplicate/out-of-order,
+  window bounds, timeout, handle ownership/reuse and pool teardown.
+- Pinned Cobalt/header hashes and 243-row contract register passed at 01:10 +07.
+- Two full runs exposed SB16 DMA at 0x70000 overlapping grown kernel BSS.
+  BIOS DMA moved to 0x90000; UEFI allocates owned stack/DMA via boot ABI v2.
+  Self-test-image video/audio passed at 00:46/00:47; UEFI network at 00:55.
+  Final UEFI DMA/graphics/real PCM (435/655 Hz) passed at 01:29 +07.
+- Native legacy HTTPS and network regression passed at 00:22/00:23 +07.
+- Full tests/test_system.py passed at 01:28 +07 after the DMA/layout fix:
+  native TCP, runtime/lifecycle, persistence, memory/fault and VGA fallback.
+  Normal framebuffer image restored; kernel 241752, image 1474560 bytes.
+- Cobalt-only staging passed at 01:30: 149 resolved/93 missing, weak TLS zero,
+  relocation/RELRO/reclamation and 64 MiB OOM rollback. Engine NOT executed.
 
-## Known gaps and next dependency
-1. Continue missing required pthread/signal, networking and renderer
-   interfaces. The TLS fixture is not the real Cobalt weak initializer
-   executing.
-2. Replace legacy single-stream TCP with independent cancellable connections;
-   test concurrent requests, partial I/O, readiness, resolver/options and TLS.
-3. Build the real Evergreen launcher, event loop, graphics/input bridge and run
-   native Cobalt HTML/JavaScript/DOM/input plus HTTPS acceptance in MyOS.
-- Renderer/backend and native acceptance remain open. Do not start Phase 33.3.
+## Required next work
+1. Implement resolver/interface/required socket options and real bounded I/O
+   deadlines; audit/integrate native Cobalt TLS rather than substituting fetches.
+2. Resolve remaining required signals/platform contracts and native renderer
+   feasibility. Build the actual Evergreen/event/window/input adapters.
+3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
+   verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.
 
-## Evidence locations
-- AGENTS.md, PHASE33_EXECUTION_PLAN.md; runtime: user/platform-runtime.c.
-- Tests: tests/test_elf_dynamic.py, tests/test_system.py; build/system-tests/.
-- Import contracts: PHASE331_ABI.md, PHASE331_IMPORTS.csv.
-- Never inspect activity.log through run_logged.py: output feeds the same log.
-
-## Completion rule
-- Do not close Phase 33.1 or 33.2 until Cobalt itself opens HTML, executes
-  JavaScript/DOM, receives real keyboard/mouse input, and uses HTTPS in MyOS for
-  the documented endurance gate. Phase 33.3 has not started.
+Details: HANDOFF.md, PHASE331_TCP.md; test evidence: build/system-tests/.
+Never close 33.1/33.2 on symbol counts or fixture success. Never push.

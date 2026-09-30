@@ -8,7 +8,8 @@ SECTIONS {
  .data : { *(.platform_runtime*) *(.data*) } :data
  .bss (NOLOAD) : { __bss_start = .; *(COMMON) *(.bss*) __bss_end = .; } :data
  ASSERT(kernel_entry == 0x10000,"entry address mismatch")
- /* UEFI reserves 0x10000..0x7ffff for kernel+BSS; BIOS enters with its
-    stack at 0x90000.  Keep the image itself under the separate 256 KiB cap. */
+ /* Kernel+BSS ends before the BIOS 0x80000..0x8ffff initial stack.
+    BIOS DMA owns 0x90000..0x93fff; UEFI allocates owned stack/DMA separately.
+    Keep the image itself under the separate 256 KiB cap. */
  ASSERT(__bss_end < 0x80000,"kernel exceeds low-memory reservation")
 }

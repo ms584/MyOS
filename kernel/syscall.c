@@ -1,6 +1,7 @@
 #include "syscall.h"
 #include "security.h"
 #include "storage.h"
+#include "tcp.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -142,6 +143,33 @@ static int64_t file_call(struct process *p,struct frame *f)
     }
 }
 
+static int64_t tcp_call(struct process *p,struct frame *f)
+{
+    if(f->rax==SYS_TCP_CREATE)return tcp_stream_create(p,f->rdi,f->rsi);
+    if(f->rdi>UINT32_MAX)return -9;
+    uint32_t handle=(uint32_t)f->rdi;
+    if(f->rax==SYS_TCP_CONNECT){struct tcp_address address;
+        if(!copy_from_user(p,(char *)&address,f->rsi,sizeof(address)))return -14;
+        return tcp_stream_connect(p,handle,&address);}
+    if(f->rax==SYS_TCP_STATUS){struct tcp_status status;
+        if(f->rdx>1)return -22;
+        if(!writable_range(p,f->rsi,sizeof(status)))return -14;
+        int rc=tcp_stream_status(p,handle,&status,f->rdx!=0);
+        if(!rc)copy_to_user(p,f->rsi,&status,sizeof(status));return rc;}
+    if(f->rax==SYS_TCP_SHUTDOWN)return f->rsi>2?-22:tcp_stream_shutdown(p,handle,(unsigned)f->rsi);
+    if(f->rax==SYS_TCP_CLOSE)return tcp_stream_close(p,handle);
+    uint8_t buffer[1024];size_t count=f->rdx;if(count>sizeof(buffer))count=sizeof(buffer);
+    if(f->rdx>INT64_MAX)return -22;
+    if(f->rax==SYS_TCP_SEND){
+        if(f->r10)return -22;
+        if(!copy_from_user(p,(char *)buffer,f->rsi,count))return -14;
+        return tcp_stream_send(p,handle,buffer,count);}
+    if(f->r10>1)return -22;
+    if(!writable_range(p,f->rsi,count))return -14;
+    int rc=tcp_stream_recv(p,handle,buffer,count,f->r10!=0);
+    if(rc>0)copy_to_user(p,f->rsi,buffer,(size_t)rc);return rc;
+}
+
 struct frame *syscall_dispatch(struct frame *frame)
 {
     struct process *process = scheduler_current_process();
@@ -255,6 +283,9 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:
         frame->rax = (uint64_t)file_call(process,frame);
         break;
+    case SYS_TCP_CREATE: case SYS_TCP_CONNECT: case SYS_TCP_STATUS:
+    case SYS_TCP_SEND: case SYS_TCP_RECV: case SYS_TCP_SHUTDOWN: case SYS_TCP_CLOSE:
+        frame->rax=(uint64_t)tcp_call(process,frame);break;
     default:
         frame->rax = (uint64_t)-38;
         break;

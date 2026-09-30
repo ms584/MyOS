@@ -49,21 +49,32 @@ EFI_STATUS efi_main(EFI_HANDLE image,EFI_SYSTEM_TABLE *system)
     UINT64 pitch=(UINT64)gop->Mode->Info->PixelsPerScanLine*4;
     if(pitch<3200 || pitch>16384 || fb<0x100000 || fb+pitch*600>0x100000000ull ||
        gop->Mode->FrameBufferSize<pitch*600)return fail(L"unsupported framebuffer range",EFI_UNSUPPORTED);
-    /* Reserve the fixed kernel+BSS and initial stack. Never overwrite unowned
+    /* Reserve kernel+BSS. Stack and ISA DMA receive separately owned pages;
+       low firmware memory beyond the kernel reservation may be unavailable.
+       Never overwrite unowned
        firmware memory. Platforms unable to reserve this region stop here. */
     EFI_PHYSICAL_ADDRESS kernel=0x10000;
     status=uefi_call_wrapper(bs->AllocatePages,4,AllocateAddress,EfiLoaderData,0x70,&kernel);
     if(EFI_ERROR(status))return fail(L"kernel low-memory reservation",status);
-    EFI_PHYSICAL_ADDRESS tables,info_address,map_address;
+    EFI_PHYSICAL_ADDRESS tables,info_address,map_address,stack_address,dma_allocation;
     if(EFI_ERROR((status=alloc(bs,6,&tables))) || EFI_ERROR((status=alloc(bs,4,&info_address))) ||
-       EFI_ERROR((status=alloc(bs,16,&map_address))))return fail(L"loader allocation",status);
+       EFI_ERROR((status=alloc(bs,16,&map_address))) ||
+       EFI_ERROR((status=alloc(bs,MYOS_INITIAL_STACK_BYTES/4096u,&stack_address))))
+        return fail(L"loader allocation",status);
+    /* Allocate 64 KiB below the ISA 24-bit limit, then select an aligned 16 KiB
+       subrange. It is entirely owned and cannot cross a 64 KiB DMA boundary. */
+    dma_allocation=0xffffffu;
+    status=uefi_call_wrapper(bs->AllocatePages,4,AllocateMaxAddress,EfiLoaderData,16,&dma_allocation);
+    if(EFI_ERROR(status))return fail(L"ISA DMA allocation",status);
+    UINT64 dma=(dma_allocation+MYOS_SB16_DMA_BYTES-1)&~((UINT64)MYOS_SB16_DMA_BYTES-1);
     struct boot_info *info=(void *)(UINTN)info_address;
     SetMem(info,4*4096,0);
     struct memory_region *regions=(void *)(UINTN)(info_address+4096);
     UINT8 *font=(void *)(UINTN)(info_address+3*4096);
     CopyMem((void *)(UINTN)kernel,(void *)kernel_blob,sizeof(kernel_blob));
     CopyMem(font,(void *)font_blob,sizeof(font_blob));
-    *info=(struct boot_info){MYOS_BOOT_MAGIC,tables,0x80000,(UINT64)font,(UINT64)regions,0,800,600,(UINT32)pitch,fb};
+    *info=(struct boot_info){MYOS_BOOT_MAGIC,tables,stack_address+MYOS_INITIAL_STACK_BYTES,
+        (UINT64)font,(UINT64)regions,0,800,600,(UINT32)pitch,fb,dma};
     UINT64 *pt=(void *)(UINTN)tables;SetMem(pt,6*4096,0);
     pt[0]=(tables+4096)|3;
     for(unsigned i=0;i<4;++i)pt[512+i]=(tables+(2+i)*4096)|3;
