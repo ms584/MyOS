@@ -244,6 +244,16 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(sync_image),str(sync_obj)],check=True)
     platform_specs.append(f'file-sync={sync_image}')
+    storage_specs=[]
+    for mode,name in ((1,'storage-write'),(2,'storage-read'),(3,'storage-delete'),(4,'storage-empty')):
+        obj=out/f'elf-platform-{name}.o';image=out/f'{name}.so'
+        subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                        '-Wall','-Wextra','-Werror',f'-DSTORAGE_MODE={mode}','-c',
+                        'user/elf-platform-storage.c','-o',str(obj)],check=True)
+        subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                        '-o',str(image),str(obj)],check=True)
+        storage_specs.append(f'{name}={image}')
     large=out/'large.bin';large.write_bytes(bytes(index%251 for index in range(131072)))
     specs=[f'dynamic={library}',*platform_specs,f'large={large}']
     for name,data in variants.items():
@@ -252,7 +262,9 @@ def fixtures():
     fini_disk=out/'finalizer-assets.img';fini_disk.unlink(missing_ok=True);create(fini_disk,fini_specs)
     emutls_disk=out/'emutls-assets.img';emutls_disk.unlink(missing_ok=True)
     create(emutls_disk,[f'emutls={emutls_image}'])
-    return out,disk,fini_disk,emutls_disk
+    storage_disk=out/'storage-assets.img';storage_disk.unlink(missing_ok=True)
+    create(storage_disk,storage_specs)
+    return out,disk,fini_disk,emutls_disk,storage_disk
 
 def exercise_finalizers(disk):
     before=digest(disk);vm=VM('elf-finalizers',disk=disk,ram=16)
@@ -294,8 +306,23 @@ def exercise_emutls(disk):
     assert digest(disk)==before
     print('PASS: upstream compiler-rt emutls growth, weak TLS zero binding, isolation and worker reclamation',flush=True)
 
+def exercise_storage(out,assets):
+    storage=out/'starboard-storage-data.img';storage.unlink(missing_ok=True);create_image(storage,large=True)
+    for name,marker,status in (
+        ('storage-write','ELF Starboard storage write and immediate read state PASS',43),
+        ('storage-read','ELF Starboard storage reboot persistence PASS',44),
+        ('storage-delete','ELF Starboard storage delete committed PASS',45),
+        ('storage-empty','ELF Starboard storage tombstone survives reboot PASS',46)):
+        vm=VM(name,disk=storage,asset_disk=assets)
+        try:
+            vm.wait('myos> ')
+            output=command(vm,'elf run '+name,f'ELF exited with status {status}')
+            assert marker in output,output
+        finally:vm.close()
+    print('PASS: Starboard storage immediate read, generation commit, reboot persistence, delete tombstone and reboot absence',flush=True)
+
 def exercise(cobalt=None):
-    out,disk,fini_disk,emutls_disk=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
+    out,disk,fini_disk,emutls_disk,storage_assets=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
     try:
         vm.wait('myos> ')
         output=command(vm,'elf link dynamic','staged image released; not executed')
@@ -367,6 +394,7 @@ def exercise(cobalt=None):
         finally:vm.close()
     assert digest(disk)==before
     print('PASS: native file fsync/fdatasync binary data survives reboot on disposable v2 disk',flush=True)
+    exercise_storage(out,storage_assets)
     if cobalt:
         audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
         assert digest(cobalt)==audit['library_sha256'],'wrong Cobalt build'
@@ -399,7 +427,10 @@ def exercise(cobalt=None):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--cobalt',type=Path);p.add_argument('--emutls-only',action='store_true')
+    p.add_argument('--storage-only',action='store_true')
     args=p.parse_args()
     if args.emutls_only:
-        _,_,_,disk=fixtures();exercise_emutls(disk)
+        _,_,_,disk,_=fixtures();exercise_emutls(disk)
+    elif args.storage_only:
+        out,_,_,_,assets=fixtures();exercise_storage(out,assets)
     else:exercise(args.cobalt)

@@ -1419,6 +1419,159 @@ int unlinkat(int directory,const char *path,int flags)
     if(!(flags&MUSL_AT_REMOVEDIR)&&entry.type==2)return set_error(21);
     rc=call3(SYS_UNLINK,(uintptr_t)normalized,0,0);return rc<0?fail(rc):0;
 }
+
+/* Starboard storage records use two independently validated file generations.
+ * fsync commits the RAMFS snapshot atomically on the persistent v2 disk. */
+#define SB_STORAGE_MAGIC UINT64_C(0x4d594f5353544f52)
+#define SB_STORAGE_MAX 65504
+struct sb_storage_header { uint64_t magic,generation,size;uint32_t checksum,flags; };
+struct SbStorageRecordPrivate {
+    int fd;
+    unsigned slot,tombstone;
+    uint64_t generation;
+    int64_t size;
+    char name[32];
+};
+static struct SbStorageRecordPrivate **sb_storage_open_location(void)
+{return (struct SbStorageRecordPrivate **)(uintptr_t)(RUNTIME_TLS_BASE+1600);}
+
+static uint32_t sb_storage_hash(const unsigned char *data,size_t size)
+{
+    uint32_t hash=2166136261u;
+    for(size_t i=0;i<size;++i)hash=(hash^data[i])*16777619u;
+    return hash;
+}
+static int sb_storage_name(const char *input,char output[32])
+{
+    if(!input)input="default";
+    size_t n=0;
+    while(input[n]){
+        unsigned char c=(unsigned char)input[n];
+        if(n>=31||!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||
+                    (c>='0'&&c<='9')||c=='_'||c=='-'||c=='.'))return 0;
+        output[n]=(char)c;++n;
+    }
+    if(!n)return 0;output[n]=0;return 1;
+}
+static int sb_storage_path(const char *name,unsigned slot,char path[128])
+{
+    static const char prefix[]="/home/.sb_";
+    size_t i=0;for(;prefix[i];++i)path[i]=prefix[i];
+    for(size_t j=0;name[j];++j)path[i++]=name[j];
+    path[i++]='_';path[i++]=(char)('0'+slot);path[i]=0;return 1;
+}
+static int sb_storage_read_header(const char *name,unsigned slot,
+                                  struct sb_storage_header *header,int *fd_out)
+{
+    char path[128];sb_storage_path(name,slot,path);
+    struct musl_stat_abi info;
+    if(fstatat(MUSL_AT_FDCWD,path,&info,0))return 0;
+    if(info.size<(int64_t)sizeof(*header)||info.size>(int64_t)(sizeof(*header)+SB_STORAGE_MAX))return 0;
+    int fd=openat(MUSL_AT_FDCWD,path,2|O_CLOEXEC,0);
+    if(fd<0)return 0;
+    if(pread(fd,header,sizeof(*header),0)!=(int64_t)sizeof(*header)||
+       header->magic!=SB_STORAGE_MAGIC||!header->generation||header->flags>1||
+       header->size>SB_STORAGE_MAX||info.size!=(int64_t)(sizeof(*header)+header->size)||
+       (header->flags&&header->size)||
+       (header->flags?header->checksum!=sb_storage_hash((const unsigned char *)"",0):0)){
+        close(fd);return 0;
+    }
+    uint32_t hash=2166136261u;unsigned char bytes[512];uint64_t offset=0;
+    while(offset<header->size){size_t take=(size_t)(header->size-offset);if(take>sizeof(bytes))take=sizeof(bytes);
+        int64_t got=pread(fd,bytes,take,(int64_t)sizeof(*header)+(int64_t)offset);
+        if(got!=(int64_t)take){close(fd);return 0;}
+        for(size_t i=0;i<take;++i)hash=(hash^bytes[i])*16777619u;offset+=take;
+    }
+    if(hash!=header->checksum){close(fd);return 0;}
+    *fd_out=fd;return 1;
+}
+static int sb_storage_commit(const char *name,unsigned slot,uint64_t generation,
+                             const void *data,size_t size,int tombstone,int *fd_out)
+{
+    struct sb_storage_header header={SB_STORAGE_MAGIC,generation,size,
+        sb_storage_hash((const unsigned char *)data,size),(uint32_t)tombstone};
+    char path[128];sb_storage_path(name,slot,path);
+    int fd=openat(MUSL_AT_FDCWD,path,MUSL_O_CREAT|MUSL_O_TRUNC|2|O_CLOEXEC,0600);
+    if(fd<0)return 0;
+    int ok=write(fd,&header,sizeof(header))==(int64_t)sizeof(header);
+    size_t offset=0;
+    while(ok&&offset<size){int64_t put=write(fd,(const unsigned char *)data+offset,size-offset);
+        if(put<=0)ok=0;else offset+=(size_t)put;}
+    if(ok&&fsync(fd))ok=0;
+    if(!ok){close(fd);(void)unlinkat(MUSL_AT_FDCWD,path,0);return 0;}
+    *fd_out=fd;return 1;
+}
+void *SbStorageOpenRecord(const char *name)
+{
+    if(*sb_storage_open_location()){set_error(16);return 0;}
+    char normalized[32];if(!sb_storage_name(name,normalized)){set_error(EINVAL);return 0;}
+    struct sb_storage_header headers[2];int fds[2]={-1,-1};
+    int valid[2]={sb_storage_read_header(normalized,0,&headers[0],&fds[0]),
+                  sb_storage_read_header(normalized,1,&headers[1],&fds[1])};
+    int selected=-1;
+    if(valid[0])selected=0;
+    if(valid[1]&&(selected<0||headers[1].generation>headers[selected].generation))selected=1;
+    if(selected>=0&&fds[1-selected]>=0)close(fds[1-selected]);
+    struct SbStorageRecordPrivate *record=malloc(sizeof(*record));
+    if(!record){if(fds[0]>=0)close(fds[0]);if(fds[1]>=0)close(fds[1]);set_error(12);return 0;}
+    record->fd=selected<0?-1:fds[selected];record->slot=selected<0?1:(unsigned)selected;
+    record->generation=selected<0?0:headers[selected].generation;
+    record->tombstone=selected<0?0:headers[selected].flags;
+    record->size=selected<0||record->tombstone?0:(int64_t)headers[selected].size;
+    for(size_t i=0;i<sizeof(record->name);++i)record->name[i]=normalized[i];
+    *sb_storage_open_location()=record;return record;
+}
+bool SbStorageCloseRecord(void *raw)
+{
+    struct SbStorageRecordPrivate *record=raw;
+    if(!record||record!=*sb_storage_open_location()){set_error(EINVAL);return false;}
+    int result=record->fd<0?0:close(record->fd);*sb_storage_open_location()=0;free(record);
+    return result==0;
+}
+int64_t SbStorageGetRecordSize(void *raw)
+{
+    struct SbStorageRecordPrivate *record=raw;
+    if(!record||record!=*sb_storage_open_location()){set_error(EINVAL);return -1;}return record->size;
+}
+int64_t SbStorageReadRecord(void *raw,char *output,int64_t size)
+{
+    struct SbStorageRecordPrivate *record=raw;
+    if(!record||record!=*sb_storage_open_location()){set_error(EINVAL);return -1;}
+    if(size<0||(!output&&size)){set_error(EINVAL);return -1;}
+    if(!size||!record->size||record->fd<0)return 0;
+    size_t count=(uint64_t)size<(uint64_t)record->size?(size_t)size:(size_t)record->size;
+    return pread(record->fd,output,count,sizeof(struct sb_storage_header));
+}
+bool SbStorageWriteRecord(void *raw,const char *data,int64_t size)
+{
+    struct SbStorageRecordPrivate *record=raw;
+    if(!record||record!=*sb_storage_open_location()){set_error(EINVAL);return false;}
+    if(size<0||size>SB_STORAGE_MAX||(!data&&size)){set_error(EINVAL);return false;}
+    if(record->generation==UINT64_MAX){set_error(EOVERFLOW);return false;}
+    unsigned slot=1-record->slot;int fd=-1;
+    if(!sb_storage_commit(record->name,slot,record->generation+1,data,(size_t)size,0,&fd))return false;
+    if(record->fd>=0)close(record->fd);record->fd=fd;record->slot=slot;
+    ++record->generation;record->size=size;record->tombstone=0;return true;
+}
+bool SbStorageDeleteRecord(const char *name)
+{
+    char normalized[32];if(!sb_storage_name(name,normalized)){set_error(EINVAL);return false;}
+    struct SbStorageRecordPrivate *opened=*sb_storage_open_location();
+    if(opened){size_t i=0;while(i<sizeof(opened->name)&&normalized[i]&&normalized[i]==opened->name[i])++i;
+        if(i==sizeof(opened->name)||(!normalized[i]&&!opened->name[i])){set_error(16);return false;}}
+    struct sb_storage_header headers[2];int fds[2]={-1,-1};
+    int valid[2]={sb_storage_read_header(normalized,0,&headers[0],&fds[0]),
+                  sb_storage_read_header(normalized,1,&headers[1],&fds[1])};
+    int selected=-1;if(valid[0])selected=0;
+    if(valid[1]&&(selected<0||headers[1].generation>headers[selected].generation))selected=1;
+    if(selected<0||headers[selected].flags){if(fds[0]>=0)close(fds[0]);if(fds[1]>=0)close(fds[1]);return false;}
+    uint64_t generation=headers[selected].generation;
+    if(generation==UINT64_MAX){close(fds[selected]);if(fds[1-selected]>=0)close(fds[1-selected]);set_error(EOVERFLOW);return false;}
+    unsigned target=1-(unsigned)selected;int replacement=-1;
+    int ok=sb_storage_commit(normalized,target,generation+1,0,0,1,&replacement);
+    close(fds[selected]);if(fds[1-selected]>=0)close(fds[1-selected]);
+    if(replacement>=0)close(replacement);return ok!=0;
+}
 char *realpath(const char *path,char *resolved)
 {
     char normalized[128];if(runtime_path(path,normalized))return 0;

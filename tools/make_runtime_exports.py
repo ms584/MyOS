@@ -9,6 +9,8 @@ wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','cl
         'SbDrmGenerateSessionUpdateRequest','SbDrmGetMetrics','SbDrmIsServerCertificateUpdatable',
         'SbDrmUpdateServerCertificate','SbDrmUpdateSession','SbMicrophoneCreate',
         'SbMicrophoneDestroy','SbMicrophoneGetAvailable','SbMicrophoneOpen','SbMicrophoneRead',
+        'SbStorageCloseRecord','SbStorageDeleteRecord','SbStorageGetRecordSize',
+        'SbStorageOpenRecord','SbStorageReadRecord','SbStorageWriteRecord',
         'SbSpeechSynthesisCancel','SbSpeechSynthesisIsSupported','SbSpeechSynthesisSpeak',
         'dup','epoll_create1','epoll_ctl','epoll_wait','eventfd','fcntl','fdatasync','fdopendir','free',
         'fstat','fstatat','fsync','ftruncate','getcwd','ioctl_FIONREAD','isatty','lseek','madvise','malloc','mkdir','mkdtemp','mkstemp',

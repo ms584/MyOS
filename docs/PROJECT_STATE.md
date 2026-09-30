@@ -1,12 +1,13 @@
 # MyOS project state
 
 Updated: 2026-09-30. Repo: /home/xytron404/myos (WSL Ubuntu).
-Checkpoint 571c559, branch main; TLS ABI/emutls follow-up tests passed.
+Base checkpoint 18191dd, branch main; TLS follow-up passed; Starboard storage
+slice is committed locally and verified by focused plus full dynamic regression.
 Fetched origin: no new origin/main commits. Owner pushes manually.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
-- 139/242 strong imports have fixture coverage; 103 remain plus a weak TLS symbol.
+- 144/242 strong imports have fixture coverage; 98 remain plus a weak TLS symbol.
   Counts and fixtures do not prove full ABI compatibility.
 - Phase 32 and Phase 33 are NOT PASSED; actual YouTube playback is unproven.
 - Sequence: finish 33.1/33.2 -> 33.3 media -> 33.4 YouTube -> 33.5 Rickroll.
@@ -32,6 +33,10 @@ Fetched origin: no new origin/main commits. Owner pushes manually.
 - `pthread_key_t` now uses the pinned pointer ABI (`void *`); full-width bounds,
   canaries, all 32 slots and destructor passes are tested. Upstream compiler-rt
   emutls runs as a Ring 3 fixture; this does not execute Cobalt itself.
+- Starboard storage now uses validated two-generation record files and v2-disk
+  fsync commits, with tombstones for durable deletion. Ring 3 reboot tests cover
+  immediate read-back, name/one-open validation, persistence and deletion; see
+  PHASE331_STORAGE.md. This is not a Cobalt browser acceptance test.
 
 ## Validation at checkpoint
 - Pinned Cobalt staging passed at 256 MiB (139 bound, 103 missing), with all
@@ -40,11 +45,15 @@ Fetched origin: no new origin/main commits. Owner pushes manually.
   full regression at 20:53 +07 (normal kernel 232368 bytes).
 - TLS key/emutls ELF regression passed at 21:27; weak-TLS audit and full
   tests/test_system.py passed at 21:54 +07 (normal kernel 232368 bytes).
+- Full tests/test_system.py passed at 22:54 +07 (normal framebuffer image
+  restored; kernel 234864 bytes). After the final storage tombstone semantic
+  correction, the focused storage and full tests/test_elf_dynamic.py passed at
+  23:01 +07; normal image is 1474560 bytes with kernel 234896 bytes.
 
 ## Known gaps and next dependency
-1. Continue Starboard storage contract and missing required pthread/signal,
-   networking and renderer interfaces. The current TLS fixture is not the real
-   Cobalt weak initializer executing.
+1. Continue missing required pthread/signal, networking and renderer
+   interfaces. The TLS fixture is not the real Cobalt weak initializer
+   executing.
 2. Replace legacy single-stream TCP with independent cancellable connections;
    test concurrent requests, partial I/O, readiness, resolver/options and TLS.
 3. Build the real Evergreen launcher, event loop, graphics/input bridge and run

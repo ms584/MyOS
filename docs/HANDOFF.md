@@ -3,6 +3,33 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 Starboard storage continuation — 2026-09-30
+
+Starting from local commit 18191dd, the storage slice is committed locally on
+branch main (do not push; no changes were pushed). Before the commit, the branch
+was six commits ahead of origin/main. Implemented Starboard
+open/close/size/read/delete and the header's write API using two checksummed
+record generations, fsync on
+the persistent v2 disk, and durable tombstones. The runtime export allowlist
+now exposes these APIs. The five Cobalt-exported storage imports move from
+139/242 to 144/242 tested; `SbStorageWriteRecord` is implemented as the header
+API but is not an import in the pinned export CSV.
+
+`tests/test_elf_dynamic.py --storage-only` and the full
+`tests/test_elf_dynamic.py` passed at 22:26 +07. A contract edge case was then
+corrected (deleting an existing tombstone returns false); the focused storage
+test and full dynamic suite passed again at 23:01 +07. Ring 3 checks immediate
+read-back, single-open/name validation, data after reboot, durable deletion,
+repeat-delete behavior, and tombstone state after another reboot. The full
+`tests/test_system.py` regression passed at 22:54 +07 and restored the normal
+framebuffer image. The final normal image is 1474560 bytes with a 234896-byte
+kernel. See PHASE331_STORAGE.md for limits and failure behavior. This is a
+local checkpoint only; no push.
+
+Phase 33.1/33.2 remain OPEN: Cobalt itself still does not execute in MyOS and
+HTML/JavaScript/DOM/input/HTTPS endurance acceptance remains absent. Do not
+start Phase 33.3.
+
 ## Phase 33.2 finalizer continuation — 2026-09-30
 
 Local baseline 74cdf9a passed full lifecycle/pthread regression at 20:17 +07.
