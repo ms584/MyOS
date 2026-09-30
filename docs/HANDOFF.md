@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 local socket continuation — 2026-09-30
+
+After c8c9c96, AF_UNIX SOCK_STREAM socketpair reuses shared descriptors and waits
+with endpoint-local shared status, duplex 4096-byte rings, send/recv/read/write,
+half/full shutdown, poll/epoll/FIONREAD and generation-based close cancellation.
+The native 16 MiB fixture passes blocked-reader/writer cancellation and wakeup,
+two waiting readers, duplicates, slot reuse and partial-install rollback.
+See PHASE331_SOCKETPAIR.md for supported subsets, SIGPIPE/network limits and
+the concurrent-TCP follow-on design. Pinned Cobalt staging passes (139 tested
+strong imports, 103 missing; 64 MiB OOM cleanup). Full system regression passed
+at 19:38 +07 and restored the normal framebuffer image, including logger tests.
+Phase 33.1/33.2 remain OPEN; no real Cobalt web execution and no Phase 33.3.
+
 ## Phase 33.1 system ABI continuation — 2026-09-30
 
 The following file slice is the tested local checkpoint after 4be9c3b. See

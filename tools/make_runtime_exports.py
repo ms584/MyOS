@@ -16,7 +16,7 @@ wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','cl
         'kSbFileMaxName','kSbFileMaxPath','kSbFileSepString','kSbMaxThreads',
         'malloc_usable_size','mincore','mmap','mprotect','msync','munmap','prctl',
         'openat','opendir','pathconf','pipe','pipe2','poll','posix_memalign','pread','pwrite','read','readdir','readdir_r',
-        'readv','realloc','realpath','unlinkat','write','writev',
+        'readv','realloc','realpath','recv','send','shutdown','socketpair','unlinkat','write','writev',
         'sched_getaffinity','sched_setscheduler','sched_yield','setpriority','sysconf','uname',
         'pthread_attr_destroy','pthread_attr_getstack','pthread_attr_getstacksize',
         'pthread_attr_init','pthread_attr_setdetachstate','pthread_attr_setstacksize',

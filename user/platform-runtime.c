@@ -655,7 +655,7 @@ void *pthread_getspecific(unsigned key)
 #define EPIPE 32
 #define ENOTSUP 95
 
-enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5 };
+enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5,DESCRIPTOR_SOCKETPAIR=6 };
 struct epoll_event { uint32_t events;uint64_t data __attribute__((packed)); } __attribute__((packed));
 struct pollfd { int32_t fd;uint16_t events,revents; };
 struct descriptor_object;
@@ -677,6 +677,10 @@ struct descriptor_object {
         struct { struct epoll_registration registrations[EPOLL_REGS]; } epoll;
         struct { int32_t kernel_fd; } file;
         struct { char path[128]; } directory;
+        struct {
+            unsigned char bytes[2][PIPE_CAPACITY];
+            uint32_t head[2],count[2],readers[2],writers[2],read_shutdown[2],write_shutdown[2],status_flags[2];
+        } socketpair;
     } value;
 };
 struct descriptor_slot {
@@ -756,7 +760,9 @@ static int descriptor_acquire(int fd,struct descriptor_ref *reference)
     if(!slot->object){spin_unlock(&state->lock);return 0;}
     __atomic_add_fetch(&slot->object->references,1,__ATOMIC_RELAXED);
     unsigned flags=(slot->flags&~(O_APPEND|O_NONBLOCK))|
-        __atomic_load_n(&slot->object->status_flags,__ATOMIC_ACQUIRE);
+        (slot->object->type==DESCRIPTOR_SOCKETPAIR?
+         __atomic_load_n(&slot->object->value.socketpair.status_flags[(slot->access>>2)&1],__ATOMIC_ACQUIRE):
+         __atomic_load_n(&slot->object->status_flags,__ATOMIC_ACQUIRE));
     *reference=(struct descriptor_ref){slot->object,index,slot->generation,slot->access,flags};
     spin_unlock(&state->lock);return 1;
 }
@@ -800,10 +806,107 @@ static uint32_t object_ready(struct descriptor_object *object,unsigned access)
         if((access&1)&&!object->value.pipe.writers)ready|=POLLHUP;
         if((access&2)&&object->value.pipe.readers&&object->value.pipe.count<PIPE_CAPACITY)ready|=POLLOUT;
         if((access&2)&&!object->value.pipe.readers)ready|=POLLERR|POLLHUP;
+    } else if(object->type==DESCRIPTOR_SOCKETPAIR){
+        unsigned side=(access>>2)&1,peer=side^1;
+        if(object->value.socketpair.count[side]||object->value.socketpair.read_shutdown[side]||
+           !object->value.socketpair.writers[peer]||object->value.socketpair.write_shutdown[peer])ready|=POLLIN;
+        if(!object->value.socketpair.writers[peer]||object->value.socketpair.write_shutdown[peer])ready|=0x2000;
+        /* A write that will fail immediately is also nonblocking-ready. */
+        if(object->value.socketpair.write_shutdown[side]||!object->value.socketpair.readers[peer]||
+           object->value.socketpair.read_shutdown[peer]||object->value.socketpair.count[peer]<PIPE_CAPACITY)ready|=POLLOUT;
+        if((!object->value.socketpair.readers[peer]&&!object->value.socketpair.writers[peer])||
+           (object->value.socketpair.read_shutdown[peer]&&object->value.socketpair.write_shutdown[peer])||
+           (object->value.socketpair.read_shutdown[side]&&object->value.socketpair.write_shutdown[side]))ready|=POLLHUP;
     } else if(object->type==DESCRIPTOR_FILE||object->type==DESCRIPTOR_DIRECTORY){if(access&1)ready|=POLLIN;if(access&2)ready|=POLLOUT;}
     spin_unlock(&object->lock);return ready;
 }
 static int set_error(int error){*__errno_location()=error;return -1;}
+
+#define MSG_PEEK 2
+#define MSG_DONTWAIT 0x40
+#define MSG_NOSIGNAL 0x4000
+#define ENOTSOCK 88
+static int64_t socketpair_io_ref(const struct descriptor_ref *reference,void *buffer,size_t length,int flags,int writing)
+{
+    struct descriptor_ref r=*reference;
+    struct descriptor_object *object=r.object;
+    if(length>INT64_MAX){object_release(object);return set_error(EINVAL);}
+    if(!buffer&&length){object_release(object);return set_error(EFAULT);}
+    if(flags&~(MSG_DONTWAIT|(writing?MSG_NOSIGNAL:MSG_PEEK))){object_release(object);return set_error(ENOTSUP);}
+    if(object->type!=DESCRIPTOR_SOCKETPAIR){object_release(object);return set_error(ENOTSOCK);}
+    unsigned side=(r.access>>2)&1,peer=side^1;int64_t result=-1;
+    if(!length){result=0;goto done;}
+    for(;;){
+        if(!descriptor_current(&r)){set_error(EBADF);break;}
+        spin_lock(&object->lock);
+        uint64_t sequence=object->sequence;
+        if(writing){
+            if(object->value.socketpair.write_shutdown[side]||!object->value.socketpair.readers[peer]||
+               object->value.socketpair.read_shutdown[peer]){spin_unlock(&object->lock);set_error(EPIPE);break;}
+            unsigned space=PIPE_CAPACITY-object->value.socketpair.count[peer];
+            if(space){
+                size_t count=length<space?length:space;
+                unsigned tail=(object->value.socketpair.head[peer]+object->value.socketpair.count[peer])%PIPE_CAPACITY;
+                for(size_t i=0;i<count;++i){object->value.socketpair.bytes[peer][tail]=((unsigned char *)buffer)[i];tail=(tail+1)%PIPE_CAPACITY;}
+                object->value.socketpair.count[peer]+=(unsigned)count;
+                spin_unlock(&object->lock);descriptor_changed(object);result=(int64_t)count;break;
+            }
+        } else {
+            if(object->value.socketpair.read_shutdown[side]){spin_unlock(&object->lock);result=0;break;}
+            unsigned available=object->value.socketpair.count[side];
+            if(available){
+                size_t count=length<available?length:available;unsigned head=object->value.socketpair.head[side];
+                for(size_t i=0;i<count;++i){((unsigned char *)buffer)[i]=object->value.socketpair.bytes[side][head];head=(head+1)%PIPE_CAPACITY;}
+                if(!(flags&MSG_PEEK)){object->value.socketpair.head[side]=head;object->value.socketpair.count[side]-=(unsigned)count;}
+                spin_unlock(&object->lock);if(!(flags&MSG_PEEK))descriptor_changed(object);result=(int64_t)count;break;
+            }
+            if(!object->value.socketpair.writers[peer]||object->value.socketpair.write_shutdown[peer]){
+                spin_unlock(&object->lock);result=0;break;}
+        }
+        spin_unlock(&object->lock);
+        if((flags&MSG_DONTWAIT)||(__atomic_load_n(&object->value.socketpair.status_flags[side],__ATOMIC_ACQUIRE)&O_NONBLOCK)){set_error(EAGAIN);break;}
+        (void)wait64(&object->sequence,sequence,0);
+    }
+done:object_release(object);return result;
+}
+static int64_t socketpair_io(int fd,void *buffer,size_t length,int flags,int writing)
+{struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+ return socketpair_io_ref(&r,buffer,length,flags,writing);}
+int64_t send(int fd,const void *buffer,size_t length,int flags)
+{return socketpair_io(fd,(void *)buffer,length,flags,1);}
+int64_t recv(int fd,void *buffer,size_t length,int flags)
+{return socketpair_io(fd,buffer,length,flags,0);}
+int socketpair(int domain,int type,int protocol,int descriptors[2])
+{
+    if(!descriptors)return set_error(EFAULT);
+    if(domain!=1)return set_error(97);
+    if((type&~(O_NONBLOCK|O_CLOEXEC))!=1||protocol)return set_error(93);
+    struct descriptor_state *state=descriptor_state();if(!state)return set_error(ENOMEM);
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_SOCKETPAIR);if(!object)return set_error(ENOMEM);
+    for(unsigned side=0;side<2;++side){
+        object->value.socketpair.readers[side]=object->value.socketpair.writers[side]=1;
+        object->value.socketpair.status_flags[side]=(unsigned)type&O_NONBLOCK;
+    }
+    spin_lock(&state->lock);
+    unsigned flags=(unsigned)type&(O_NONBLOCK|O_CLOEXEC);
+    int first=descriptor_install_locked(state,object,3,flags);
+    int second=first<0?-1:descriptor_install_locked(state,object,7,flags);
+    if(second<0&&first>=0){struct descriptor_slot *slot=&state->slots[first-FD_BASE];
+        slot->object=0;slot->access=slot->flags=0;++slot->generation;object->references=0;}
+    spin_unlock(&state->lock);
+    if(second<0){free(object);return set_error(24);}
+    descriptors[0]=first;descriptors[1]=second;return 0;
+}
+int shutdown(int fd,int how)
+{
+    if(how<0||how>2)return set_error(EINVAL);struct descriptor_ref r={0};
+    if(!descriptor_acquire(fd,&r))return set_error(EBADF);
+    if(r.object->type!=DESCRIPTOR_SOCKETPAIR){object_release(r.object);return set_error(ENOTSOCK);}
+    unsigned side=(r.access>>2)&1;spin_lock(&r.object->lock);
+    if(how==0||how==2){r.object->value.socketpair.read_shutdown[side]=1;r.object->value.socketpair.count[side]=0;}
+    if(how==1||how==2)r.object->value.socketpair.write_shutdown[side]=1;
+    spin_unlock(&r.object->lock);descriptor_changed(r.object);object_release(r.object);return 0;
+}
 
 int close(int fd)
 {
@@ -835,6 +938,8 @@ int close(int fd)
         if((closed.access&1)&&closed.object->value.pipe.readers)--closed.object->value.pipe.readers;
         if((closed.access&2)&&closed.object->value.pipe.writers)--closed.object->value.pipe.writers;
     }
+    if(closed.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(closed.access>>2)&1;
+        --closed.object->value.socketpair.readers[side];--closed.object->value.socketpair.writers[side];}
     spin_unlock(&closed.object->lock);descriptor_changed(closed.object);object_release(closed.object);return 0;
 }
 int64_t read(int fd,void *buffer,size_t length)
@@ -845,6 +950,7 @@ int64_t read(int fd,void *buffer,size_t length)
     struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&1)){
         if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
     struct descriptor_object *object=reference.object;int64_t result=-1;
+    if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,buffer,length,0,0);
     if(object->type==DESCRIPTOR_EVENT){
         if(length!=8){set_error(EINVAL);goto done;}
         for(;;){spin_lock(&object->lock);uint64_t value=object->value.event.counter;
@@ -887,6 +993,7 @@ int64_t write(int fd,const void *buffer,size_t length)
     struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&2)){
         if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
     struct descriptor_object *object=reference.object;int64_t result=-1;
+    if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,(void *)buffer,length,MSG_NOSIGNAL,1);
     if(object->type==DESCRIPTOR_EVENT){
         if(length!=8){set_error(EINVAL);goto done;}
         uint64_t add=*(const uint64_t *)buffer;if(add==UINT64_MAX){set_error(EINVAL);goto done;}
@@ -1028,6 +1135,7 @@ int ioctl_FIONREAD(int fd,int *available)
     if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
     int result=0;spin_lock(&reference.object->lock);
     if(reference.object->type==DESCRIPTOR_PIPE)*available=(int)reference.object->value.pipe.count;
+    else if(reference.object->type==DESCRIPTOR_SOCKETPAIR)*available=(int)reference.object->value.socketpair.count[(reference.access>>2)&1];
     else if(reference.object->type==DESCRIPTOR_EVENT)*available=reference.object->value.event.counter?8:0;
     else result=EINVAL;
     spin_unlock(&reference.object->lock);object_release(reference.object);
@@ -1137,6 +1245,8 @@ int dup(int fd)
             if(reference.access&1)++reference.object->value.pipe.readers;
             if(reference.access&2)++reference.object->value.pipe.writers;
         }
+        if(reference.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(reference.access>>2)&1;
+            ++reference.object->value.socketpair.readers[side];++reference.object->value.socketpair.writers[side];}
         spin_unlock(&reference.object->lock);
     }
     spin_unlock(&state->lock);object_release(reference.object);return result<0?set_error(ENOSPC):result;
@@ -1160,6 +1270,8 @@ int fcntl(int fd,int command,...)
                 if(reference.access&1)++reference.object->value.pipe.readers;
                 if(reference.access&2)++reference.object->value.pipe.writers;
             }
+            if(reference.object->type==DESCRIPTOR_SOCKETPAIR){unsigned side=(reference.access>>2)&1;
+                ++reference.object->value.socketpair.readers[side];++reference.object->value.socketpair.writers[side];}
             spin_unlock(&reference.object->lock);
         }
         spin_unlock(&state->lock);object_release(reference.object);
@@ -1173,7 +1285,10 @@ int fcntl(int fd,int command,...)
         struct descriptor_slot *slot=&s->slots[reference.slot];if(slot->object!=reference.object||slot->generation!=reference.generation)result=-EBADF;
         else if(command==MUSL_F_SETFD){if(argument&~MUSL_FD_CLOEXEC)result=-EINVAL;else slot->flags=(slot->flags&~O_CLOEXEC)|(argument?O_CLOEXEC:0);}
         else {if(argument&~(3|O_APPEND|O_NONBLOCK))result=-EINVAL;
-            else __atomic_store_n(&reference.object->status_flags,(unsigned)argument&(O_APPEND|O_NONBLOCK),__ATOMIC_RELEASE);}
+            else if(reference.object->type==DESCRIPTOR_SOCKETPAIR){
+                if(argument&O_APPEND)result=-EINVAL;
+                else __atomic_store_n(&reference.object->value.socketpair.status_flags[(reference.access>>2)&1],(unsigned)argument&O_NONBLOCK,__ATOMIC_RELEASE);
+            } else __atomic_store_n(&reference.object->status_flags,(unsigned)argument&(O_APPEND|O_NONBLOCK),__ATOMIC_RELEASE);}
         spin_unlock(&s->lock);
     } else result=-EINVAL;
     object_release(reference.object);return result<0?set_error(-result):result;

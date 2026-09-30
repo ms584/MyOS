@@ -9,7 +9,7 @@ acceptance in MyOS.
 The fixed Ring 3 platform runtime owns a per-process descriptor table. A table
 entry carries a generation and points to a refcounted open object. Operations
 acquire a temporary reference after validating the descriptor and generation;
-`close` invalidates the entry first, marks the object closed, wakes blocked
+`close` invalidates the entry first, updates endpoint ownership, wakes blocked
 operations and drops the table reference. The object is destroyed only after
 all temporary and epoll-held references are released.
 
@@ -17,8 +17,10 @@ This separation prevents slot reuse from turning an old descriptor into access
 to a new object. A blocking operation observes close as cancellation and
 returns `EBADF`. Epoll registrations hold object references rather than raw
 descriptor-table pointers and release them on delete or epoll destruction.
-The same ownership rules are intended for sockets; socket syscalls are not yet
-implemented.
+Duplicates share an open object but retain separate slot generations. Closing
+the waited-on slot cancels that operation without closing surviving duplicates.
+The file and AF_UNIX socketpair continuations now use these ownership rules;
+see PHASE331_FILES.md and PHASE331_SOCKETPAIR.md. TCP sockets remain pending.
 
 ## Implemented contracts
 

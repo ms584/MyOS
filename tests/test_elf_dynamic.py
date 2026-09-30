@@ -129,6 +129,14 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(file_image),str(file_obj)],check=True)
     platform_specs.append(f'file={file_image}')
+    socket_obj=out/'elf-platform-socketpair.o';socket_image=out/'socketpair.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-socketpair.c',
+                    '-o',str(socket_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(socket_image),str(socket_obj)],check=True)
+    platform_specs.append(f'socketpair={socket_image}')
     sync_obj=out/'elf-platform-file-sync.o';sync_image=out/'file-sync.so'
     subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
                     '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
@@ -177,6 +185,8 @@ def exercise(cobalt=None):
         assert 'ELF system, constants and honest optional-feature contracts PASS' in output,output
         output=command(vm,'elf run file','ELF exited with status 38')
         assert 'ELF regular-file descriptor ABI and shared lifetime PASS' in output,output
+        output=command(vm,'elf run socketpair','ELF exited with status 40')
+        assert 'ELF socketpair duplex, shutdown, readiness and cancellation PASS' in output,output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')

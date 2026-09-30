@@ -191,6 +191,9 @@ def fault_test(case,marker,error):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--suite',choices=['all','boot','memory','keyboard','exceptions','timer','processes','syscalls','filesystem','shell','storage','graphics','mouse','desktop','settings','calculator','snake','browser','audio','video','release','apps'],default='all');args=parser.parse_args()
     try:
+        if args.suite=='all':
+            from test_run_logged import main as logging_exercise
+            logging_exercise()
         build()
         boot_test('framebuffer-64M',keyboard=args.suite in ('all','keyboard'))
         if args.suite in ('all','shell'):
