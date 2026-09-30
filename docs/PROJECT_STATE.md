@@ -1,17 +1,16 @@
 # MyOS project state
 
 Updated: 2026-09-30. Repo: /home/xytron404/myos (WSL Ubuntu).
-Baseline: 74cdf9a, branch main; tested finalizer continuation ready for commit.
-After git fetch origin, origin/main has no new changes; commits remain local.
+Checkpoint 571c559, branch main; TLS ABI/emutls follow-up tests passed.
+Fetched origin: no new origin/main commits. Owner pushes manually.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
 - 139/242 strong imports have fixture coverage; 103 remain plus a weak TLS symbol.
-  Symbol counts and fixture passes do not prove full ABI compatibility.
+  Counts and fixtures do not prove full ABI compatibility.
 - Phase 32 and Phase 33 are NOT PASSED; actual YouTube playback is unproven.
-- Sequence: finish 33.1/33.2 -> 33.3 standard media -> 33.4 YouTube ->
-  33.5 Rickroll. Check Phase 32 search/select/play separately.
-- The owner pushes manually. Do not push.
+- Sequence: finish 33.1/33.2 -> 33.3 media -> 33.4 YouTube -> 33.5 Rickroll.
+  Check Phase 32 search/select/play separately.
 
 ## Current implementation slice
 - Clocks/pthreads, shared descriptors, eventfd/pipe/poll/epoll/FIONREAD and
@@ -30,18 +29,22 @@ After git fetch origin, origin/main has no new changes; commits remain local.
 - DT_FINI/reverse FINI_ARRAY, exit-status preservation, malformed/wrapped targets,
   fault/timeout/cancel and repeat-launch cleanup pass native fixtures.
   See PHASE332_FINALIZERS.md. This is not the Cobalt event-loop launcher.
+- `pthread_key_t` now uses the pinned pointer ABI (`void *`); full-width bounds,
+  canaries, all 32 slots and destructor passes are tested. Upstream compiler-rt
+  emutls runs as a Ring 3 fixture; this does not execute Cobalt itself.
 
 ## Validation at checkpoint
 - Pinned Cobalt staging passed at 256 MiB (139 bound, 103 missing), with all
   staged pages reclaimed; 64 MiB OOM rollback passed. This does not run Cobalt.
-- Lifecycle/pthread full regression passed at 20:17 +07; normal image restored.
-- Finalizer focused/pinned staging passed at 20:24 +07; full regression passed
-  at 20:53 +07. Normal framebuffer image restored (kernel 232368 bytes).
-- Weak TLS static checker passes all 160 direct calls; native emulated TLS pending.
+- Lifecycle/pthread regression passed at 20:17; finalizer focus at 20:24 and
+  full regression at 20:53 +07 (normal kernel 232368 bytes).
+- TLS key/emutls ELF regression passed at 21:27; weak-TLS audit and full
+  tests/test_system.py passed at 21:54 +07 (normal kernel 232368 bytes).
 
 ## Known gaps and next dependency
-1. Commit the tested finalizers; correct pointer-sized pthread TLS key ABI
-   (current output/arguments use 32 bits), test emulated TLS, then Starboard.
+1. Continue Starboard storage contract and missing required pthread/signal,
+   networking and renderer interfaces. The current TLS fixture is not the real
+   Cobalt weak initializer executing.
 2. Replace legacy single-stream TCP with independent cancellable connections;
    test concurrent requests, partial I/O, readiness, resolver/options and TLS.
 3. Build the real Evergreen launcher, event loop, graphics/input bridge and run

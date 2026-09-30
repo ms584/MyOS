@@ -606,26 +606,31 @@ int pthread_once(volatile int *once,void (*routine)(void))
     }
     while(__atomic_load_n(once,__ATOMIC_ACQUIRE)!=2)yield_cpu();return 0;
 }
-int pthread_key_create(unsigned *key,void (*destructor)(void *))
+/* Pinned musl_pthread_key_t is void *; its opaque value is a bounded slot
+ * index. Keep the API pointer-typed and validate the complete opaque value. */
+int pthread_key_create(void **key,void (*destructor)(void *))
 {
     if(!key)return EINVAL;
     for(unsigned i=0;i<THREAD_KEYS;++i){uint32_t bit=1u<<i,old=__atomic_fetch_or(key_bits(),bit,__ATOMIC_ACQ_REL);
-        if(!(old&bit)){clear_key_values(i);key_destructors()[i]=destructor;*key=i;return 0;}}
+        if(!(old&bit)){clear_key_values(i);key_destructors()[i]=destructor;*key=(void *)(uintptr_t)i;return 0;}}
     return EAGAIN;
 }
-int pthread_key_delete(unsigned key)
+int pthread_key_delete(void *raw_key)
 {
+    uintptr_t key=(uintptr_t)raw_key;
     if(key>=THREAD_KEYS)return EINVAL;uint32_t bit=1u<<key;
     if(!(__atomic_fetch_and(key_bits(),~bit,__ATOMIC_ACQ_REL)&bit))return EINVAL;
     key_destructors()[key]=0;clear_key_values(key);return 0;
 }
-int pthread_setspecific(unsigned key,const void *value)
+int pthread_setspecific(void *raw_key,const void *value)
 {
+    uintptr_t key=(uintptr_t)raw_key;
     if(key>=THREAD_KEYS||!(__atomic_load_n(key_bits(),__ATOMIC_ACQUIRE)&(1u<<key)))return EINVAL;
     key_values()[key]=(void *)value;return 0;
 }
-void *pthread_getspecific(unsigned key)
+void *pthread_getspecific(void *raw_key)
 {
+    uintptr_t key=(uintptr_t)raw_key;
     if(key>=THREAD_KEYS||!(__atomic_load_n(key_bits(),__ATOMIC_ACQUIRE)&(1u<<key)))return 0;
     return key_values()[key];
 }

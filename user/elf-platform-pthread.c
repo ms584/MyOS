@@ -18,8 +18,8 @@ extern int sem_timedwait(void *,const struct timespec *);
 extern int pthread_rwlock_init(void *,const void *),pthread_rwlock_rdlock(void *);
 extern int pthread_rwlock_wrlock(void *),pthread_rwlock_unlock(void *),pthread_rwlock_destroy(void *);
 extern int pthread_once(volatile int *,void (*)(void));
-extern int pthread_key_create(unsigned *,void (*)(void *)),pthread_key_delete(unsigned);
-extern int pthread_setspecific(unsigned,const void *);extern void *pthread_getspecific(unsigned);
+extern int pthread_key_create(void **,void (*)(void *)),pthread_key_delete(void *);
+extern int pthread_setspecific(void *,const void *);extern void *pthread_getspecific(void *);
 extern uint64_t pthread_self(void);extern int pthread_setname_np(uint64_t,const char *);
 extern int pthread_getname_np(uint64_t,char *,size_t),pthread_kill(uint64_t,int);
 extern int pthread_getschedparam(uint64_t,int *,void *);
@@ -29,7 +29,21 @@ extern int pthread_sigmask(int,const void *,void *);
 extern int *__errno_location(void);
 
 static uint64_t mutex_words[5],condition_words[6],semaphore_words[4],rwlock_words[7];
-static unsigned key,counter,destructed,once_count;
+static void *key;
+static unsigned counter,destructed,once_count;
+static void *full_keys[32],*rearm_key;
+static unsigned rearm_count;
+static void rearm_destructor(void *value)
+{++rearm_count;if(rearm_count<5)(void)pthread_setspecific(rearm_key,value);}
+static void *key_worker(void *unused)
+{
+    (void)unused;
+    for(unsigned i=0;i<32;++i)if(pthread_getspecific(full_keys[i]))return (void *)1;
+    if(pthread_setspecific(full_keys[0],(void *)0x4567))return (void *)2;
+    return 0;
+}
+static void *rearm_worker(void *unused)
+{(void)unused;return (void *)(uintptr_t)pthread_setspecific(rearm_key,(void *)1);}
 static volatile int once_control;
 static int overflow_errno[2];
 static void *mask_worker(void *unused)
@@ -179,6 +193,30 @@ uint64_t _start(void)
     for(unsigned i=2;i<16;++i)if(check[i])return 54;
     if(pthread_sigmask(1,wide,0)||pthread_sigmask(0,0,guarded.mask))return 55;
     for(unsigned i=0;i<16;++i)if(guarded.mask[i])return 56;
+    struct { uint64_t before;void *key;uint64_t after; } guarded_key={0x123456789abcdef0ull,(void *)UINTPTR_MAX,0xfedcba9876543210ull};
+    * __errno_location()=123;
+    if(pthread_key_create(0,0)!=22)return 57;
+    if(pthread_key_create(&guarded_key.key,0))return 64;
+    if((uintptr_t)guarded_key.key>=32)return 66;
+    if(guarded_key.before!=0x123456789abcdef0ull)return 67;
+    if(guarded_key.after!=0xfedcba9876543210ull)return 68;
+    if(*__errno_location()!=123)return 69;
+    void *bogus=(void *)((uintptr_t)guarded_key.key|(1ull<<32));
+    if(pthread_setspecific(guarded_key.key,(void *)0x1234)||pthread_setspecific(bogus,(void *)0x5678)!=22||
+       pthread_key_delete(bogus)!=22||pthread_getspecific(bogus)||
+       pthread_getspecific(guarded_key.key)!=(void *)0x1234||pthread_key_delete(guarded_key.key))return 58;
+    for(unsigned i=0;i<32;++i){full_keys[i]=(void *)UINTPTR_MAX;
+        if(pthread_key_create(&full_keys[i],0)||(uintptr_t)full_keys[i]>=32||pthread_getspecific(full_keys[i])||
+           pthread_setspecific(full_keys[i],(void *)(uintptr_t)(i+1)))return 59;}
+    guarded_key.key=(void *)UINTPTR_MAX;
+    if(pthread_key_create(&guarded_key.key,0)!=11||guarded_key.key!=(void *)UINTPTR_MAX||
+       guarded_key.before!=0x123456789abcdef0ull||guarded_key.after!=0xfedcba9876543210ull)return 60;
+    if(pthread_create(&thread,0,key_worker,0)||pthread_join(thread,&results[0])||results[0]||
+       pthread_getspecific(full_keys[0])!=(void *)1)return 61;
+    for(unsigned i=0;i<32;++i)if(pthread_key_delete(full_keys[i]))return 62;
+    if(pthread_key_create(&rearm_key,rearm_destructor)||pthread_getspecific(rearm_key)||
+       pthread_create(&thread,0,rearm_worker,0)||pthread_join(thread,&results[0])||results[0]||
+       rearm_count!=4||pthread_key_delete(rearm_key)||*__errno_location()!=123)return 63;
     print("ELF pthread ABI, clocks, masks, lifecycle and TLS PASS\n");
     return 35;
 }

@@ -304,3 +304,22 @@ Per-task x87/MMX/SSE context support has been added; see
 FP/SIMD limitation only. The owner requires completion of 33.1 and 33.2
 before starting 33.3. Cobalt startup remains unimplemented; neither parent
 gate is being marked complete.
+
+## Local checkpoint — 2026-09-30
+
+Commit `571c559` records DT_FINI/reverse FINI_ARRAY and the weak TLS static
+audit. Its focused/pinned checks and full system regression passed; normal
+framebuffer image restored at 232368 kernel bytes. No push was made.
+
+Follow-up work fixes the pinned `pthread_key_t` ABI to pointer-typed `void *`
+entry points, validating full-width opaque values and all 32 key slots. The
+runtime key/destructor fixture, compiler-rt `llvmorg-18.1.8` emutls Ring 3
+fixture and weak TLS audit unit test pass. Full `tests/test_system.py` passed
+again at 21:54 +07, restoring the normal framebuffer image (232368 bytes).
+The added ABI/emutls sources, tests and docs remain local; owner pushes manually.
+
+This does not run Cobalt or prove its compiler build, native weak initializer,
+Starboard storage, TCP concurrency, renderer/input bridge, HTML/JavaScript/DOM,
+or verified HTTPS acceptance. Keep Phases 33.1/33.2 open and do not start 33.3.
+Next: continue the Starboard storage/runtime and concurrent TCP dependencies,
+then implement the real Evergreen launcher and renderer/input path.

@@ -175,6 +175,13 @@ def fixtures():
             fini_variants[bad_name]=bad
         for variant,bad in fini_variants.items():
             path=out/(variant+'.so');path.write_bytes(bad);fini_specs.append(f'{variant}={path}')
+    emutls_obj=out/'elf-platform-emutls.o';emutls_image=out/'emutls.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-Itests/emutls-abi','-c',
+                    'user/elf-platform-emutls.c','-o',str(emutls_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(emutls_image),str(emutls_obj)],check=True)
     for source,name in (('elf-platform-allocator','allocator'),('elf-platform-vm','vm')):
         obj=out/(source+'.o');image=out/(name+'.so')
         subprocess.run(['nasm','-f','elf64',f'user/{source}.asm','-o',str(obj)],check=True)
@@ -243,7 +250,9 @@ def fixtures():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
     disk=out/'assets.img';disk.unlink(missing_ok=True);create(disk,specs)
     fini_disk=out/'finalizer-assets.img';fini_disk.unlink(missing_ok=True);create(fini_disk,fini_specs)
-    return out,disk,fini_disk
+    emutls_disk=out/'emutls-assets.img';emutls_disk.unlink(missing_ok=True)
+    create(emutls_disk,[f'emutls={emutls_image}'])
+    return out,disk,fini_disk,emutls_disk
 
 def exercise_finalizers(disk):
     before=digest(disk);vm=VM('elf-finalizers',disk=disk,ram=16)
@@ -274,8 +283,19 @@ def exercise_finalizers(disk):
     finally:vm.close()
     assert digest(disk)==before
 
+def exercise_emutls(disk):
+    before=digest(disk);vm=VM('elf-emutls',disk=disk,ram=16)
+    try:
+        vm.wait('myos> ')
+        output=command(vm,'elf live emutls','ELF exited with status 43')
+        assert 'ELF upstream emutls isolation, alignment, growth and destructor cleanup PASS' in output,output
+        assert_live_resources(output)
+    finally:vm.close()
+    assert digest(disk)==before
+    print('PASS: upstream compiler-rt emutls growth, weak TLS zero binding, isolation and worker reclamation',flush=True)
+
 def exercise(cobalt=None):
-    out,disk,fini_disk=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
+    out,disk,fini_disk,emutls_disk=fixtures();before=digest(disk);vm=VM('elf-dynamic',disk=disk,ram=16)
     try:
         vm.wait('myos> ')
         output=command(vm,'elf link dynamic','staged image released; not executed')
@@ -335,6 +355,7 @@ def exercise(cobalt=None):
     finally:vm.close()
     assert digest(disk)==before
     exercise_finalizers(fini_disk)
+    exercise_emutls(emutls_disk)
     data=out/'file-sync-data.img';data.unlink(missing_ok=True);create_image(data,large=True)
     for name,marker in (('file-sync-commit','ELF file fsync committed binary data PASS'),
                         ('file-sync-reboot','ELF file fsync reboot persistence PASS')):
@@ -377,4 +398,8 @@ def exercise(cobalt=None):
         finally:vm.close()
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--cobalt',type=Path);exercise(p.parse_args().cobalt)
+    p=argparse.ArgumentParser();p.add_argument('--cobalt',type=Path);p.add_argument('--emutls-only',action='store_true')
+    args=p.parse_args()
+    if args.emutls_only:
+        _,_,_,disk=fixtures();exercise_emutls(disk)
+    else:exercise(args.cobalt)
