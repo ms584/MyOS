@@ -3,6 +3,25 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 live lifecycle and pthread ABI audit — 2026-09-30
+
+Tested local continuation from 57e2b97: explicit `elf live` runs beyond the demo
+deadline and Escape kills/reaps all threads; `elf run` remains bounded. The
+16 MiB native fixture runs for >60 seconds with blocked pipe/semaphore/condition
+workers, retained allocation and open file, then verifies page/heap/file cleanup,
+repeat launch, constructor cancellation, normal exit, RELRO fault and early OOM.
+See PHASE331_LIFECYCLE.md for force-cancel/input/finalizer limits.
+
+The pinned signal mask ABI is 128 bytes, not 128 bits. Full output initialization,
+reserved/highest-signal handling, inheritance and canaries are tested; masks
+still do not deliver signals. Semaphore errors now use -1/errno and atomic
+overflow rejection; pthread name failures do not partially mutate names/output
+or errno. See PHASE331_PTHREAD.md. Focused tests/hash checks/pinned Cobalt staging
+passed at 19:51 +07 (139 resolved, 103 missing; 64 MiB OOM reclamation). Full
+tests/test_system.py passed at 20:17 +07 and restored the normal framebuffer
+image. Next: single-image finalizer lifecycle, then remaining essential services.
+Phase 33.1/33.2 remain OPEN, Cobalt web acceptance is unproven, no Phase 33.3.
+
 ## Phase 33.1 local socket continuation — 2026-09-30
 
 After c8c9c96, AF_UNIX SOCK_STREAM socketpair reuses shared descriptors and waits

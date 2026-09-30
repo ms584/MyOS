@@ -40,6 +40,7 @@ uintptr_t vm_unmap(uintptr_t);
 uintptr_t vm_translate(uintptr_t);
 void *kmalloc(size_t);
 void kfree(void *);
+size_t heap_allocated(void);
 void memory_test(void);
 void scheduler_init(void);
 bool task_create(void (*)(void));

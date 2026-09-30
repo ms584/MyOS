@@ -86,30 +86,46 @@ int elf_inspect(const struct elf_source *s)
     if(plan.dynamic)print("ELF: inspection only; not executed\n");
     return 0;
 }
-static int load_image(const struct elf_source *s,int32_t *status,bool run)
+static int load_image(const struct elf_source *s,int32_t *status,bool run,bool live)
 {
     struct elf_plan plan;int result=elf_plan_read(s,&plan);if(result)return result;
     /* A shared library with no executable entry can be linked/inspected only. */
     if(run&&!elf_executable(&plan,plan.entry))return -95;
-    size_t before=pages_free();
+    size_t before=pages_free(),heap_before=heap_allocated();
     struct process *p=process_stage_elf(s,&plan);
-    if(!p){check(pages_free()==before,"ELF failed-load page reclamation");return -12;}
+    if(!p){check(pages_free()==before,"ELF failed-load page reclamation");
+        if(live)check(heap_allocated()==heap_before,"ELF live failed-load heap reclamation");return -12;}
     print("ELF staged pages: ");decimal(p->page_count);print("\n");
     struct elf_start start;result=elf_prepare(p,&plan,&start);
     if(result||!run){process_discard_elf(p);
         check(pages_free()==before,"ELF staged page reclamation");
+        if(live)check(heap_allocated()==heap_before,"ELF live staged heap reclamation");
         print("ELF staged image released; not executed\n");return result;}
     uint64_t pid=p->pid;
     if(!process_start_elf(p,start.init,start.array,start.count)){
-        process_discard_elf(p);check(pages_free()==before,"ELF attach cleanup");return -12;}
-    uint64_t deadline=ticks+500;
-    while(p->state==PROCESS_RUNNING&&ticks<deadline)__asm__ volatile("sti; hlt":::"memory");
-    if(p->state==PROCESS_RUNNING){(void)process_kill(pid);result=-110;}
+        process_discard_elf(p);check(pages_free()==before,"ELF attach cleanup");
+        if(live)check(heap_allocated()==heap_before,"ELF live attach heap reclamation");return -12;}
+    /* Explicit foreground lifecycle opt-in; fixture run retains its 5s limit.
+     * No application-thread cooperation is needed for forced cancellation. */
+    bool cancelled=false;uint64_t deadline=live?UINT64_MAX:ticks+500;
+    if(live)print("ELF live: started; Escape stops all threads\n");
+    while(p->state==PROCESS_RUNNING&&ticks<deadline){
+        if(live){int key;while((key=keyboard_get())>=0)if(key==27){cancelled=true;break;}
+            if(cancelled)break;}
+        __asm__ volatile("sti; hlt":::"memory");
+    }
+    if(p->state==PROCESS_RUNNING){check(process_kill(pid),"ELF cancellation stop");result=cancelled?-125:-110;}
     else if(p->exited){*status=p->exit_status;result=0;}
     else result=-8;
     check(process_reap(pid),"ELF process reap");
     check(pages_free()==before,"ELF page reclamation");
+    if(live){
+        /* Applications may legitimately grow persistent RAMFS state. Report
+         * the global heap count; controlled fixtures assert a zero delta. */
+        print("ELF live: pages reclaimed; heap-before=");decimal(heap_before);
+        print(" heap-after=");decimal(heap_allocated());print("\n");}
     return result;
 }
-int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true);}
-int elf_link(const struct elf_source *s){return load_image(s,0,false);}
+int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false);}
+int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true);}
+int elf_link(const struct elf_source *s){return load_image(s,0,false,false);}

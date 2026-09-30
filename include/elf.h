@@ -16,4 +16,5 @@ bool elf_executable(const struct elf_plan *,uint64_t);
 int elf_prepare(struct process *,const struct elf_plan *,struct elf_start *);
 int elf_link(const struct elf_source *);
 int elf_run(const struct elf_source *,int32_t *);
+int elf_live(const struct elf_source *,int32_t *);
 #endif

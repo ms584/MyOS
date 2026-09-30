@@ -66,6 +66,7 @@ uint64_t _start(void)
     if(setpriority(0,0,0)||setpriority(0,0,1)!=-1||*__errno_location()!=1)return 16;
 
     char name[16];if(prctl(15,(void *)"system")||prctl(16,name)||!equal(name,"system"))return 17;
+    if(prctl(15,(void *)"abcdefghijklmnopq")||prctl(16,name)||!equal(name,"abcdefghijklmno"))return 24;
     if(prctl(12345,(void *)0)!=-1||*__errno_location()!=22)return 18;
     struct musl_utsname identity;if(uname(&identity)||!equal(identity.sysname,"MyOS")||
        !equal(identity.machine,"x86_64")||!equal(identity.nodename,"myos"))return 19;

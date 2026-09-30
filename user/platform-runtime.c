@@ -212,6 +212,9 @@ int msync(void *address,size_t length,int flags)
 #define EBUSY 16
 #define EDEADLK 35
 #define ETIMEDOUT 110
+#define ENOSYS 38
+#define EOVERFLOW 75
+#define MUSL_SIGSET_WORDS 16u
 #define THREAD_KEYS 32u
 
 struct timespec { int64_t tv_sec,tv_nsec; };
@@ -419,22 +422,21 @@ int pthread_attr_getstack(const void *raw,void **stack,size_t *size)
 }
 int pthread_setname_np(uint64_t thread,const char *name)
 {
-    if(!name)return EINVAL;
-    if(thread==RUNTIME_TLS_BASE){unsigned i=0;char *target=main_thread_name();
-        for(;i<15&&name[i];++i)target[i]=name[i];
-        if(name[i])return 34;target[i]=0;return 0;}
-    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
-    unsigned i=0;for(;i<15&&name[i];++i)control->name[i]=name[i];
-    if(name[i])return 34;control->name[i]=0;return 0;
+    if(!name)return EINVAL;char *target;
+    if(thread==RUNTIME_TLS_BASE)target=main_thread_name();
+    else {struct thread_control *control=thread_control(thread);if(!control)return ESRCH;target=control->name;}
+    unsigned length=0;while(length<16&&name[length])++length;
+    if(length==16)return 34;
+    for(unsigned i=0;i<=length;++i)target[i]=name[i];return 0;
 }
 int pthread_getname_np(uint64_t thread,char *name,size_t size)
 {
-    if(!name||!size)return EINVAL;
+    if(!name)return EINVAL;if(size<16)return 34;
     if(thread==RUNTIME_TLS_BASE){const char fallback[]="main";
         const char *source=main_thread_name()[0]?main_thread_name():fallback;size_t i=0;
-        for(;i+1<size&&source[i];++i)name[i]=source[i];name[i]=0;return 0;}
+        for(;i<15&&source[i];++i)name[i]=source[i];name[i]=0;return 0;}
     struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
-    size_t i=0;for(;i+1<size&&control->name[i];++i)name[i]=control->name[i];name[i]=0;return 0;
+    size_t i=0;for(;i<15&&control->name[i];++i)name[i]=control->name[i];name[i]=0;return 0;
 }
 int pthread_getschedparam(uint64_t thread,int *policy,void *parameter)
 {
@@ -451,8 +453,12 @@ int pthread_sigmask(int how,const void *set,void *old)
 {
     uint64_t *current=signal_mask();
     if(set&&(how<0||how>2))return EINVAL;
-    if(old){((uint64_t *)old)[0]=current[0];((uint64_t *)old)[1]=current[1];}
-    if(set){uint64_t first=((const uint64_t *)set)[0],second=((const uint64_t *)set)[1];
+    uint64_t first=0,second=0;
+    if(set){first=((const uint64_t *)set)[0];second=((const uint64_t *)set)[1]&0x7fffffffffffffffull;}
+    /* musl_sigset_t is 128 BYTES, despite a 128-bit comment in the pinned
+     * wrapper helper. Its supported signal range is 1..127; clear all padding. */
+    if(old){for(unsigned i=0;i<MUSL_SIGSET_WORDS;++i)((uint64_t *)old)[i]=i<2?current[i]:0;}
+    if(set){
         if(how==0){current[0]|=first;current[1]|=second;}
         else if(how==1){current[0]&=~first;current[1]&=~second;}
         else {current[0]=first;current[1]=second;}
@@ -533,11 +539,21 @@ int pthread_cond_timedwait(void *raw,void *mutex,const struct timespec *time)
 }
 
 int sem_init(void *raw,int shared,unsigned value)
-{if(!raw||shared||value>0x7fffffff)return EINVAL;*(uint64_t *)raw=value;return 0;}
-int sem_destroy(void *raw){return raw?0:EINVAL;}
+{
+    if(!raw||value>0x7fffffff){*__errno_location()=EINVAL;return -1;}
+    if(shared){*__errno_location()=ENOSYS;return -1;} /* No process-shared VM. */
+    *(uint64_t *)raw=value;return 0;
+}
+int sem_destroy(void *raw){if(!raw){*__errno_location()=EINVAL;return -1;}return 0;}
 int sem_post(void *raw)
 {
-    if(!raw)return -1;__atomic_add_fetch((uint64_t *)raw,1,__ATOMIC_RELEASE);wake64(raw,1);return 0;
+    if(!raw){*__errno_location()=EINVAL;return -1;}volatile uint64_t *count=raw;
+    uint64_t value=__atomic_load_n(count,__ATOMIC_RELAXED);
+    for(;;){
+        if(value>=0x7fffffff){*__errno_location()=EOVERFLOW;return -1;}
+        if(__atomic_compare_exchange_n(count,&value,value+1,0,__ATOMIC_RELEASE,__ATOMIC_RELAXED))break;
+    }
+    wake64(raw,1);return 0;
 }
 static int sem_take(void *raw,uint64_t deadline)
 {
@@ -1542,7 +1558,8 @@ int prctl(int operation,...)
 {
     va_list arguments;va_start(arguments,operation);void *argument=va_arg(arguments,void *);va_end(arguments);
     if(operation==MUSL_PR_SET_NAME){if(!argument)return set_error(EFAULT);
-        int rc=pthread_setname_np(pthread_self(),argument);if(rc)return set_error(rc);return 0;}
+        char name[16];string_copy(name,argument,sizeof(name));
+        int rc=pthread_setname_np(pthread_self(),name);if(rc)return set_error(rc);return 0;}
     if(operation==MUSL_PR_GET_NAME){if(!argument)return set_error(EFAULT);
         int rc=pthread_getname_np(pthread_self(),argument,16);if(rc)return set_error(rc);return 0;}
     return set_error(EINVAL);

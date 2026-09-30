@@ -26,10 +26,24 @@ extern int pthread_getschedparam(uint64_t,int *,void *);
 extern int pthread_mutexattr_init(void *),pthread_mutexattr_settype(void *,int),pthread_mutexattr_destroy(void *);
 extern int pthread_condattr_init(void *),pthread_condattr_setclock(void *,int),pthread_condattr_destroy(void *);
 extern int pthread_sigmask(int,const void *,void *);
+extern int *__errno_location(void);
 
 static uint64_t mutex_words[5],condition_words[6],semaphore_words[4],rwlock_words[7];
 static unsigned key,counter,destructed,once_count;
 static volatile int once_control;
+static int overflow_errno[2];
+static void *mask_worker(void *unused)
+{
+    (void)unused;uint64_t mask[16];for(unsigned i=0;i<16;++i)mask[i]=0x55;
+    if(pthread_sigmask(0,0,mask)||mask[0]!=(1ull<<9)||mask[1]!=(1ull<<62))return (void *)1;
+    for(unsigned i=2;i<16;++i)if(mask[i])return (void *)2;
+    return 0;
+}
+static void *overflow_worker(void *raw)
+{
+    unsigned index=(unsigned)(uintptr_t)raw;int result=sem_post(semaphore_words);
+    overflow_errno[index]=*__errno_location();return (void *)(uintptr_t)(result?1:0);
+}
 static void once_routine(void){++once_count;}
 static void destructor(void *value){if(value)++destructed;}
 static void *worker(void *raw)
@@ -66,7 +80,8 @@ uint64_t _start(void)
     uint64_t attr[7]={0},probe_attr[7]={0},threads[2],thread;void *results[2],*stack=0;size_t stack_size=0,probe_size=0;
     uint32_t mutex_attr[2]={0},cond_attr[2]={0};char name[16];int policy=-1,parameter=-1;
     struct timespec realtime,monotonic,before,after,pause={0,20000000};
-    uint64_t mask[2]={5,9},old[2],check[2];
+    uint64_t mask[16]={5,9},old[16],check[16];
+    _Static_assert(sizeof(mask)==128,"pinned musl_sigset_t storage");
     if(pthread_attr_init(attr)||pthread_attr_setstacksize(attr,65536)||
        pthread_attr_getstacksize(attr,&stack_size)||stack_size!=65536)return 1;
     if(pthread_mutexattr_init(mutex_attr)||pthread_mutexattr_settype(mutex_attr,1)||
@@ -128,6 +143,42 @@ uint64_t _start(void)
        pthread_mutex_destroy(mutex_words)||pthread_condattr_destroy(cond_attr)||
        pthread_mutexattr_destroy(mutex_attr)||pthread_attr_destroy(attr))return 15;
     if(pthread_mutex_trylock(mutex_words)||pthread_mutex_unlock(mutex_words))return 16;
+    if(sem_init(0,0,0)!=-1||*__errno_location()!=22||
+       sem_destroy(0)!=-1||*__errno_location()!=22||sem_post(0)!=-1||*__errno_location()!=22)return 41;
+    if(sem_init(semaphore_words,0,0)||sem_init(semaphore_words,1,1)!=-1||*__errno_location()!=38||
+       sem_init(semaphore_words,0,0xffffffffu)!=-1||*__errno_location()!=22)return 42;
+    if(sem_timedwait(semaphore_words,&expired_sem)!=-1||*__errno_location()!=110)return 43;
+    struct timespec invalid_sem={0,-1};
+    if(sem_timedwait(semaphore_words,&invalid_sem)!=-1||*__errno_location()!=22||
+       sem_wait(0)!=-1||*__errno_location()!=22)return 44;
+    if(sem_init(semaphore_words,0,0x7ffffffeu)||
+       pthread_create(&threads[0],0,overflow_worker,(void *)0)||
+       pthread_create(&threads[1],0,overflow_worker,(void *)1)||
+       pthread_join(threads[0],&results[0])||pthread_join(threads[1],&results[1]))return 45;
+    if((uintptr_t)results[0]+(uintptr_t)results[1]!=1||
+       overflow_errno[(uintptr_t)results[0]?0:1]!=75)return 46;
+    if(sem_post(semaphore_words)!=-1||*__errno_location()!=75||sem_wait(semaphore_words)||
+       sem_post(semaphore_words)||sem_post(semaphore_words)!=-1||*__errno_location()!=75||
+       sem_destroy(semaphore_words))return 47;
+    char tiny[4]={'x','x','x','x'};*__errno_location()=123;
+    if(pthread_getname_np(pthread_self(),tiny,sizeof(tiny))!=34||tiny[0]!='x'||
+       *__errno_location()!=123)return 48;
+    if(pthread_setname_np(pthread_self(),"abcdefghijklmnop")!=34||
+       pthread_getname_np(pthread_self(),name,sizeof(name))||name[0]!='m'||name[4]!=0||
+       *__errno_location()!=123)return 49;
+    struct { uint64_t before,mask[16],after; } guarded={0x123456789abcdef0ull,{0},0xfedcba9876543210ull};
+    for(unsigned i=0;i<16;++i)guarded.mask[i]=0x5555;
+    if(pthread_sigmask(123,0,guarded.mask)||guarded.before!=0x123456789abcdef0ull||
+       guarded.after!=0xfedcba9876543210ull)return 50;
+    for(unsigned i=0;i<16;++i)if(guarded.mask[i])return 51;
+    uint64_t wide[16]={(1ull<<8)|(1ull<<18)|(1ull<<9),(1ull<<62)|(1ull<<63)};
+    wide[15]=UINT64_MAX;
+    if(pthread_sigmask(2,wide,0)||pthread_create(&thread,0,mask_worker,0)||
+       pthread_join(thread,&results[0])||results[0])return 52;
+    if(pthread_sigmask(0,0,check)||check[0]!=(1ull<<9)||check[1]!=(1ull<<62))return 53;
+    for(unsigned i=2;i<16;++i)if(check[i])return 54;
+    if(pthread_sigmask(1,wide,0)||pthread_sigmask(0,0,guarded.mask))return 55;
+    for(unsigned i=0;i<16;++i)if(guarded.mask[i])return 56;
     print("ELF pthread ABI, clocks, masks, lifecycle and TLS PASS\n");
     return 35;
 }

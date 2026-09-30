@@ -3,6 +3,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 from pathlib import Path
 import struct
 import subprocess
@@ -30,6 +31,33 @@ def long_command(vm,text,timeout=240):
         if result.endswith('myos> '):return result
         time.sleep(.1)
     raise AssertionError((text,vm.log.read_text()[-4000:]))
+
+def cancel_live(vm,name,marker,timeout=90,minimum_elapsed=0):
+    offset=len(vm.log.read_text());begin=time.monotonic();type_text(vm,'elf live '+name+'\n')
+    while time.monotonic()-begin<timeout:
+        output=vm.log.read_text()[offset:]
+        assert 'PANIC' not in output and not output.endswith('myos> '),output
+        if marker in output:break
+        time.sleep(.05)
+    else:raise AssertionError((name,marker,vm.log.read_text()[-4000:]))
+    assert time.monotonic()-begin>=minimum_elapsed
+    vm.command('input-send-event',{'events':[
+        {'type':'key','data':{'down':down,'key':{'type':'qcode','data':'esc'}}}
+        for down in (True,False)]})
+    end=time.monotonic()+5
+    while time.monotonic()<end:
+        output=vm.log.read_text()[offset:]
+        assert 'PANIC' not in output,output
+        if output.endswith('myos> '):
+            assert 'ELF cancelled; all threads stopped' in output,output
+            assert_live_resources(output)
+            return
+        time.sleep(.05)
+    raise AssertionError(('live cancellation unresponsive',vm.log.read_text()[-4000:]))
+
+def assert_live_resources(output):
+    match=re.search(r'ELF live: pages reclaimed; heap-before=(\d+) heap-after=(\d+)',output)
+    assert match and match[1]==match[2],output
 
 def fixtures():
     out=OUT/'elf-dynamic';out.mkdir(exist_ok=True)
@@ -67,6 +95,9 @@ def fixtures():
     weak=next(symoff+i*24 for i in range(count) if original[symoff+i*24+4]>>4==2)
     mutate('missing',weak+4,'B',(original[weak+4]&15)|16)
     mutate('bad-rela-size',positions[9]+8,'Q',16)
+    # A live opt-in must preserve failed-load page/heap rollback at low RAM.
+    last_load=max(i for i,p in enumerate(ph) if p[0]==1 and p[6])
+    mutate('live-oom',phoff+last_load*56+40,'Q',32*1024*1024)
     mutate('duplicate-tag',positions[4],'q',5)
     mutate('needed',positions[4],'q',1)
     mutate('unknown-reloc',rel[0][0]+8,'Q',99)
@@ -137,6 +168,14 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(socket_image),str(socket_obj)],check=True)
     platform_specs.append(f'socketpair={socket_image}')
+    lifecycle_obj=out/'elf-platform-lifecycle.o';lifecycle_image=out/'lifecycle.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-lifecycle.c',
+                    '-o',str(lifecycle_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(lifecycle_image),str(lifecycle_obj)],check=True)
+    platform_specs.append(f'lifecycle={lifecycle_image}')
     sync_obj=out/'elf-platform-file-sync.o';sync_image=out/'file-sync.so'
     subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
                     '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
@@ -187,6 +226,21 @@ def exercise(cobalt=None):
         assert 'ELF regular-file descriptor ABI and shared lifetime PASS' in output,output
         output=command(vm,'elf run socketpair','ELF exited with status 40')
         assert 'ELF socketpair duplex, shutdown, readiness and cancellation PASS' in output,output
+        command(vm,'touch /home/live-open') # Include persistent RAMFS allocation in baseline.
+        cancel_live(vm,'lifecycle','ELF live runtime beyond 60 seconds PASS',minimum_elapsed=60)
+        command(vm,'rm /home/live-open') # Kernel handle references must be gone.
+        for _ in range(2):
+            command(vm,'touch /home/live-open')
+            cancel_live(vm,'lifecycle','ELF live workers blocked PASS',timeout=15)
+            command(vm,'rm /home/live-open')
+        cancel_live(vm,'constructor-loop','ELF live: started',timeout=15)
+        output=command(vm,'elf live dynamic','ELF exited with status 32')
+        assert_live_resources(output)
+        output=command(vm,'elf live relro-fault','error: invalid executable')
+        assert 'USER FAULT' in output,output
+        assert_live_resources(output)
+        command(vm,'elf live live-oom','error: out of memory')
+        print('PASS: >60s native lifecycle, Escape cancel with blocked workers, repeated launch, page/heap/file reclamation',flush=True)
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')

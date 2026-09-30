@@ -71,6 +71,11 @@ uintptr_t vm_unmap(uintptr_t va){
 }
 struct block {size_t size;struct block *next,*prev;uint64_t free;};
 static struct block *heap;
+size_t heap_allocated(void){
+    uint64_t flags=irq_save();size_t bytes=0;
+    for(struct block *b=heap;b;b=b->next)if(!b->free)bytes+=b->size;
+    irq_restore(flags);return bytes;
+}
 void *kmalloc(size_t size){
     if(!size||size>heap_bytes-sizeof(struct block))return 0;
     size=(size+15)&~15ull;uint64_t f=irq_save();
