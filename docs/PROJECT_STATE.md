@@ -39,8 +39,9 @@ Fetched origin: no new origin/main commits. Owner pushes manually.
   PHASE331_STORAGE.md. This is not a Cobalt browser acceptance test.
 
 ## Validation at checkpoint
-- Pinned Cobalt staging passed at 256 MiB (139 bound, 103 missing), with all
-  staged pages reclaimed; 64 MiB OOM rollback passed. This does not run Cobalt.
+- Pinned actual Cobalt staging passed at 256 MiB (144 strong imports resolved,
+  98 missing), with all staged pages reclaimed; 64 MiB OOM rollback passed at
+  23:13 +07. The image was not executed; this does not run Cobalt.
 - Lifecycle/pthread regression passed at 20:17; finalizer focus at 20:24 and
   full regression at 20:53 +07 (normal kernel 232368 bytes).
 - TLS key/emutls ELF regression passed at 21:27; weak-TLS audit and full
@@ -49,6 +50,9 @@ Fetched origin: no new origin/main commits. Owner pushes manually.
   restored; kernel 234864 bytes). After the final storage tombstone semantic
   correction, the focused storage and full tests/test_elf_dynamic.py passed at
   23:01 +07; normal image is 1474560 bytes with kernel 234896 bytes.
+- The final `tests/test_elf_dynamic.py --cobalt build/engine-evaluation/libcobalt.so`
+  run passed at 23:13 +07: 144 resolved/98 missing and 64 MiB OOM rollback.
+  Actual Cobalt execution and web acceptance remain unproven.
 
 ## Known gaps and next dependency
 1. Continue missing required pthread/signal, networking and renderer

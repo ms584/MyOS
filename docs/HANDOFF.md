@@ -26,6 +26,14 @@ framebuffer image. The final normal image is 1474560 bytes with a 234896-byte
 kernel. See PHASE331_STORAGE.md for limits and failure behavior. This is a
 local checkpoint only; no push.
 
+The pinned actual Cobalt staging run
+(`tests/test_elf_dynamic.py --cobalt build/engine-evaluation/libcobalt.so`)
+passed at 23:13 +07: relocations were processed, 144 strong imports resolved,
+98 remained missing, all staged pages were reclaimed, and the 64 MiB OOM
+rollback passed. Cobalt was not executed. No browser, HTML, JavaScript, DOM,
+input or HTTPS acceptance has passed; Phase 33.1/33.2 remain OPEN and 33.3 has
+not started.
+
 Phase 33.1/33.2 remain OPEN: Cobalt itself still does not execute in MyOS and
 HTML/JavaScript/DOM/input/HTTPS endurance acceptance remains absent. Do not
 start Phase 33.3.
