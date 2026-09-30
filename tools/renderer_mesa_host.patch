@@ -1,0 +1,32 @@
+--- a/meson.build
++++ b/meson.build
+@@ -1463,7 +1463,9 @@
+ with_c11_threads = false
+ if cc.has_function('thrd_create', prefix: '#include <threads.h>')
+-  if with_platform_android
+-    # Current only Android's c11 <threads.h> are verified
++  if with_platform_android or host_machine.system() == 'linux'
++    # Host-only feasibility spike: glibc 2.43 stdlib already defines once_flag.
++    # Use its C11 thread API, not Mesa's conflicting pthread emulation.
++    # This is not a MyOS target configuration or native validation.
+     pre_args += '-DHAVE_THRD_CREATE'
+     with_c11_threads = true
+   endif
+--- a/src/util/cnd_monotonic.c
++++ b/src/util/cnd_monotonic.c
+@@ -32,3 +32,9 @@
+ #include <assert.h>
++
++#if defined(__GLIBC__) && defined(HAVE_THRD_CREATE)
++/* Host-only spike: glibc's mtx_* uses pthread_mutex_t storage internally. */
++_Static_assert(sizeof(mtx_t) == sizeof(pthread_mutex_t), "glibc mutex storage");
++_Static_assert(_Alignof(mtx_t) == _Alignof(pthread_mutex_t), "glibc mutex alignment");
++#endif
+
+ #ifdef _WIN32
+@@ -135,1 +141,1 @@
+-   int rt = pthread_cond_timedwait(&cond->cond, mtx, abs_time);
++   int rt = pthread_cond_timedwait(&cond->cond, (pthread_mutex_t *)mtx, abs_time);
+@@ -154,1 +160,1 @@
+-   return (pthread_cond_wait(&cond->cond, mtx) == 0) ? thrd_success : thrd_error;
++   return (pthread_cond_wait(&cond->cond, (pthread_mutex_t *)mtx) == 0) ? thrd_success : thrd_error;

@@ -3,6 +3,20 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 renderer feasibility continuation — 2026-10-01
+
+Runtime baseline is local 8003d20; its full/UEFI regression is green and normal
+image restored. The isolated Mesa 25.0.7 softpipe core built on WSL at 03:06;
+host-only context/shader/texture/glyph-mask/guard tests passed at 03:07/03:12.
+The measured 17854872-byte library depends on libc/libm/libgcc/libstdc++ and
+uses PT_TLS/TPOFF64/TLSDESC; it cannot be used unchanged by the MyOS loader.
+The pinned tables have 44 EGL and 246 GLES slots. Inventory verifies ordered
+offsets/hashes, not API completeness. Source checksum and reproducible host-only
+compatibility patch are recorded in PHASE332_RENDERER.md. No native backend
+is chosen: actual context/present/texture/text, native memory/CPU and engine
+acceptance still need implementation and proof. Production code/image did not
+change in this spike. Phase 33.1/33.2 remain OPEN, no Phase 33.3, no push.
+
 ## Phase 33.1 socket timeout continuation — 2026-10-01
 
 Continuation from a6e2899. SOL_SOCKET receive/send timeout options use the

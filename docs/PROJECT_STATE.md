@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline a6e2899; tested socket-deadline continuation ready for local commit.
+Runtime baseline 8003d20; renderer measurement continuation is local only.
 Origin/main remains 54ef570 after the latest fetch. Owner pushes manually.
 
 ## Scope and status
@@ -45,12 +45,12 @@ Origin/main remains 54ef570 after the latest fetch. Owner pushes manually.
   relocations/RELRO/reclamation and 64 MiB OOM rollback; engine NOT executed.
 - Packaged UEFI owned DMA/stack, real pixels/frames/PCM (435/655 Hz) and
   RTL8139/DHCP/DNS tests PASSED at 02:50.
-- Renderer spike isolated in build/renderer-evaluation: Mesa 25.0.7 checksum
-  matches upstream; Linux EGL requires DRM. Native backend not yet chosen.
+- Host-only Mesa core/texture/glyph probe passed 03:12; 44 EGL/246 GLES slots
+  audited. PT_TLS/shared dependencies block native: PHASE332_RENDERER.md.
 
 ## Required next work
-1. Local commit of tested deadline slice; resolver/interfaces/remaining options
-   and native Cobalt TLS remain required. No push.
+1. Implement resolver/interfaces/remaining options and native Cobalt TLS.
+   Runtime checkpoint committed locally; no push.
 2. Resolve remaining required signals/platform contracts and native renderer
    feasibility. Build the actual Evergreen/event/window/input adapters.
 3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
