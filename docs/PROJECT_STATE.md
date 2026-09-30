@@ -8,7 +8,7 @@ Check current Git status/HEAD each new chat.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
-- 75/242 strong imports resolve; 167 remain plus a separate weak TLS symbol.
+- 108/242 strong imports resolve; 134 remain plus a separate weak TLS symbol.
   Symbol counts and fixture passes do not prove full ABI compatibility.
 - Phase 32 and Phase 33 are NOT PASSED; actual YouTube playback is unproven.
 - Sequence: finish 33.1/33.2 -> 33.3 standard media -> 33.4 YouTube ->
@@ -27,12 +27,17 @@ Check current Git status/HEAD each new chat.
 - The self-test kernel outgrew the old 0x73000 linker guard. BIOS and UEFI
   reservations were audited and the in-memory guard now ends at 0x80000; the
   independent 256 KiB kernel-file cap is unchanged.
+- The next tested slice adds real PID/TID identity, uid/euid, auxv, resource
+  limits, single-CPU affinity, scheduler-policy validation, prctl thread names,
+  sysconf and uname. Four Starboard data constants reflect the actual MyOS
+  filesystem/thread limits. DRM, microphone and speech imports now report
+  documented unavailable behavior rather than fake successful devices.
 
 ## Validation at checkpoint
 - Focused `tests/test_elf_dynamic.py` passed, including the new pthread/clock
   and descriptor fixtures.
-- The optional pinned Cobalt staging test passed: 75 tested imports resolved,
-  167 strong imports remain, and normal plus 64 MiB-OOM staged pages reclaim.
+- The optional pinned Cobalt staging test passed: 108 tested imports resolved,
+  134 strong imports remain, and normal plus 64 MiB-OOM staged pages reclaim.
 - The full `tests/test_system.py` regression passed and restored the normal
   framebuffer image.
 - The focused audio regression also passed after making boot waits tolerant of

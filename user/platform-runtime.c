@@ -1,4 +1,6 @@
 #include <stddef.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 #define SYS_VM_MAP 14u
@@ -197,12 +199,14 @@ int msync(void *address,size_t length,int flags)
 #define SYS_WAKE 21u
 #define SYS_THREAD_DETACH 26u
 #define SYS_CLOCK_NANOS 27u
+#define SYS_GETTID 28u
 #define RUNTIME_TLS_BASE 0x803f010000ull
 #define THREAD_STACK_SIZE (1024u*1024u)
 #define MAIN_STACK_BASE 0x8010001000ull
 #define MAIN_STACK_SIZE (4u*4096u)
 #define THREAD_MAGIC 0x4d594f5350544852ull
 #define EAGAIN 11
+#define EPERM 1
 #define EINVAL 22
 #define ESRCH 3
 #define EBUSY 16
@@ -293,6 +297,7 @@ static void (**key_destructors(void))(void *)
 {return (void (**)(void *))(uintptr_t)(RUNTIME_TLS_BASE+1152);}
 static void **key_values(void){return (void **)(uintptr_t)(self_page()+64);}
 static uint64_t *signal_mask(void){return (uint64_t *)(uintptr_t)(self_page()+384);}
+static char *main_thread_name(void){return (char *)(uintptr_t)(RUNTIME_TLS_BASE+512);}
 static void clear_key_values(unsigned key)
 {for(unsigned i=0;i<=8;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
 static struct thread_control *thread_control(uint64_t thread)
@@ -415,7 +420,9 @@ int pthread_attr_getstack(const void *raw,void **stack,size_t *size)
 int pthread_setname_np(uint64_t thread,const char *name)
 {
     if(!name)return EINVAL;
-    if(thread==RUNTIME_TLS_BASE)return 0;
+    if(thread==RUNTIME_TLS_BASE){unsigned i=0;char *target=main_thread_name();
+        for(;i<15&&name[i];++i)target[i]=name[i];
+        if(name[i])return 34;target[i]=0;return 0;}
     struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     unsigned i=0;for(;i<15&&name[i];++i)control->name[i]=name[i];
     if(name[i])return 34;control->name[i]=0;return 0;
@@ -423,8 +430,9 @@ int pthread_setname_np(uint64_t thread,const char *name)
 int pthread_getname_np(uint64_t thread,char *name,size_t size)
 {
     if(!name||!size)return EINVAL;
-    if(thread==RUNTIME_TLS_BASE){const char main_name[]="main";size_t i=0;
-        for(;i+1<size&&main_name[i];++i)name[i]=main_name[i];name[i]=0;return 0;}
+    if(thread==RUNTIME_TLS_BASE){const char fallback[]="main";
+        const char *source=main_thread_name()[0]?main_thread_name():fallback;size_t i=0;
+        for(;i+1<size&&source[i];++i)name[i]=source[i];name[i]=0;return 0;}
     struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     size_t i=0;for(;i+1<size&&control->name[i];++i)name[i]=control->name[i];name[i]=0;return 0;
 }
@@ -993,3 +1001,154 @@ int ioctl_FIONREAD(int fd,int *available)
     spin_unlock(&reference.object->lock);object_release(reference.object);
     return result?set_error(result):0;
 }
+
+/* Pinned Cobalt musl system ABI.  Report only capabilities MyOS actually owns. */
+#define MUSL_SC_CLK_TCK 2
+#define MUSL_SC_OPEN_MAX 4
+#define MUSL_SC_VERSION 29
+#define MUSL_SC_PAGESIZE 30
+#define MUSL_SC_THREADS 67
+#define MUSL_SC_THREAD_DESTRUCTOR_ITERATIONS 73
+#define MUSL_SC_THREAD_KEYS_MAX 74
+#define MUSL_SC_THREAD_STACK_MIN 75
+#define MUSL_SC_THREAD_THREADS_MAX 76
+#define MUSL_SC_NPROCESSORS_CONF 83
+#define MUSL_SC_NPROCESSORS_ONLN 84
+#define MUSL_SC_MONOTONIC_CLOCK 149
+#define MUSL_SC_READER_WRITER_LOCKS 153
+#define MUSL_SC_TIMEOUTS 164
+#define MUSL_AT_PAGESZ 6
+#define MUSL_AT_UID 11
+#define MUSL_AT_EUID 12
+#define MUSL_AT_GID 13
+#define MUSL_AT_EGID 14
+#define MUSL_AT_CLKTCK 17
+#define MUSL_AT_SECURE 23
+#define MUSL_RLIMIT_STACK 3
+#define MUSL_RLIMIT_NPROC 6
+#define MUSL_RLIMIT_NOFILE 7
+#define MUSL_PRIO_PROCESS 0
+#define MUSL_PR_SET_NAME 15
+#define MUSL_PR_GET_NAME 16
+
+struct musl_rlimit { uint64_t current,maximum; };
+struct musl_cpu_set { uint64_t bits[16]; };
+struct musl_utsname { char sysname[257],nodename[257],release[257],version[257],machine[257],domainname[257]; };
+const int32_t kSbFileMaxName=31;
+const uint32_t kSbFileMaxPath=127;
+static const char file_separator[]="/";
+const char *const kSbFileSepString=file_separator;
+const uint32_t kSbMaxThreads=8;
+
+static void string_copy(char *destination,const char *source,size_t capacity)
+{
+    if(!capacity)return;size_t i=0;for(;i+1<capacity&&source[i];++i)destination[i]=source[i];
+    destination[i]=0;
+}
+int32_t getpid(void){return (int32_t)call3(2,0,0,0);}
+int32_t gettid(void){return (int32_t)call3(SYS_GETTID,0,0,0);}
+uint32_t getuid(void){return 0;}
+uint32_t geteuid(void){return 0;}
+long sysconf(int name)
+{
+    switch(name){
+    case MUSL_SC_CLK_TCK:return 100;
+    case MUSL_SC_OPEN_MAX:return 40;
+    case MUSL_SC_VERSION:return 200809;
+    case MUSL_SC_PAGESIZE:return PAGE_SIZE;
+    case MUSL_SC_THREADS:case MUSL_SC_MONOTONIC_CLOCK:
+    case MUSL_SC_READER_WRITER_LOCKS:case MUSL_SC_TIMEOUTS:return 200809;
+    case MUSL_SC_THREAD_DESTRUCTOR_ITERATIONS:return 4;
+    case MUSL_SC_THREAD_KEYS_MAX:return THREAD_KEYS;
+    case MUSL_SC_THREAD_STACK_MIN:return 16384;
+    case MUSL_SC_THREAD_THREADS_MAX:return 8;
+    case MUSL_SC_NPROCESSORS_CONF:case MUSL_SC_NPROCESSORS_ONLN:return 1;
+    default:return set_error(EINVAL);
+    }
+}
+unsigned long getauxval(unsigned long type)
+{
+    switch(type){
+    case MUSL_AT_PAGESZ:return PAGE_SIZE;
+    case MUSL_AT_UID:case MUSL_AT_EUID:case MUSL_AT_GID:case MUSL_AT_EGID:
+    case MUSL_AT_SECURE:return 0;
+    case MUSL_AT_CLKTCK:return 100;
+    default:*__errno_location()=ENOENT;return 0;
+    }
+}
+int getrlimit(int resource,struct musl_rlimit *limit)
+{
+    if(!limit)return set_error(EFAULT);
+    if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){40,40};
+    else if(resource==MUSL_RLIMIT_NPROC)*limit=(struct musl_rlimit){8,8};
+    else if(resource==MUSL_RLIMIT_STACK)*limit=(struct musl_rlimit){THREAD_STACK_SIZE,16u*1024u*1024u};
+    else return set_error(EINVAL);
+    return 0;
+}
+int sched_getaffinity(int32_t pid,size_t size,struct musl_cpu_set *mask)
+{
+    if(!mask)return set_error(EFAULT);
+    if(pid!=0&&pid!=getpid())return set_error(ESRCH);
+    if(size<sizeof(*mask))return set_error(EINVAL);
+    for(unsigned i=0;i<16;++i)mask->bits[i]=0;mask->bits[0]=1;return 0;
+}
+int sched_setscheduler(int32_t pid,int policy,const int *parameter)
+{
+    if(!parameter)return set_error(EFAULT);
+    if(pid!=0&&pid!=getpid())return set_error(ESRCH);
+    if(policy||*parameter)return set_error(EINVAL);
+    return 0;
+}
+int sched_yield(void){yield_cpu();return 0;}
+int setpriority(int which,uint32_t who,int priority)
+{
+    if(which!=MUSL_PRIO_PROCESS||(who&&who!=(uint32_t)getpid()))return set_error(EINVAL);
+    if(priority)return set_error(EPERM);return 0;
+}
+int prctl(int operation,...)
+{
+    va_list arguments;va_start(arguments,operation);void *argument=va_arg(arguments,void *);va_end(arguments);
+    if(operation==MUSL_PR_SET_NAME){if(!argument)return set_error(EFAULT);
+        int rc=pthread_setname_np(pthread_self(),argument);if(rc)return set_error(rc);return 0;}
+    if(operation==MUSL_PR_GET_NAME){if(!argument)return set_error(EFAULT);
+        int rc=pthread_getname_np(pthread_self(),argument,16);if(rc)return set_error(rc);return 0;}
+    return set_error(EINVAL);
+}
+int uname(struct musl_utsname *name)
+{
+    if(!name)return set_error(EFAULT);
+    for(size_t i=0;i<sizeof(*name);++i)((unsigned char *)name)[i]=0;
+    string_copy(name->sysname,"MyOS",257);string_copy(name->nodename,"myos",257);
+    string_copy(name->release,"0.33",257);string_copy(name->version,"Phase 33.1",257);
+    string_copy(name->machine,"x86_64",257);string_copy(name->domainname,"local",257);return 0;
+}
+
+/* Optional Starboard features are advertised as unavailable, never as dummy
+ * successful devices or DRM sessions. */
+void *SbDrmCreateSystem(const char *key,void *context,void *request,void *updated,
+                        void *statuses,void *certificate,void *closed)
+{(void)key;(void)context;(void)request;(void)updated;(void)statuses;(void)certificate;(void)closed;return 0;}
+void SbDrmGenerateSessionUpdateRequest(void *system,int ticket,const char *type,const void *data,int size)
+{(void)system;(void)ticket;(void)type;(void)data;(void)size;}
+void SbDrmUpdateSession(void *system,int ticket,const void *key,int key_size,const void *session,int session_size)
+{(void)system;(void)ticket;(void)key;(void)key_size;(void)session;(void)session_size;}
+void SbDrmCloseSession(void *system,const void *session,int size)
+{(void)system;(void)session;(void)size;}
+bool SbDrmIsServerCertificateUpdatable(void *system){(void)system;return false;}
+void SbDrmUpdateServerCertificate(void *system,int ticket,const void *certificate,int size)
+{(void)system;(void)ticket;(void)certificate;(void)size;}
+const void *SbDrmGetMetrics(void *system,int *size)
+{(void)system;if(size)*size=0;return 0;}
+void SbDrmDestroySystem(void *system){(void)system;}
+
+int SbMicrophoneGetAvailable(void *information,int count)
+{(void)information;return count<0?-1:0;}
+void *SbMicrophoneCreate(int id,int frequency,int size)
+{(void)id;(void)frequency;(void)size;return 0;}
+bool SbMicrophoneOpen(void *microphone){(void)microphone;return false;}
+int SbMicrophoneRead(void *microphone,void *data,int size)
+{(void)microphone;(void)data;(void)size;return -1;}
+void SbMicrophoneDestroy(void *microphone){(void)microphone;}
+bool SbSpeechSynthesisIsSupported(void){return false;}
+void SbSpeechSynthesisSpeak(const char *text){(void)text;}
+void SbSpeechSynthesisCancel(void){}

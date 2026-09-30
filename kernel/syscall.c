@@ -128,6 +128,11 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_GETPID:
         frame->rax = process->pid;
         break;
+    case SYS_GETTID: {
+        struct process_thread *thread=scheduler_current_thread();
+        frame->rax=thread?thread->tid:process->pid;
+        break;
+    }
     case SYS_TICKS:
         frame->rax = ticks;
         break;

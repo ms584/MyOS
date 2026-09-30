@@ -112,6 +112,14 @@ def fixtures():
     subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
                     '-o',str(wait_image),str(wait_obj)],check=True)
     platform_specs.append(f'wait={wait_image}')
+    system_obj=out/'elf-platform-system.o';system_image=out/'system.so'
+    subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+                    '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                    '-Wall','-Wextra','-Werror','-c','user/elf-platform-system.c',
+                    '-o',str(system_obj)],check=True)
+    subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start',
+                    '-o',str(system_image),str(system_obj)],check=True)
+    platform_specs.append(f'system={system_image}')
     specs=[f'dynamic={library}',*platform_specs]
     for name,data in variants.items():
         path=out/(name+'.so');path.write_bytes(data);specs.append(f'{name}={path}')
@@ -147,6 +155,8 @@ def exercise(cobalt=None):
         assert 'ELF pthread ABI, clocks, masks, lifecycle and TLS PASS' in output,output
         output=command(vm,'elf run wait','ELF exited with status 36')
         assert 'ELF descriptor lifetime, eventfd, pipe, poll, epoll and FIONREAD PASS' in output,output
+        output=command(vm,'elf run system','ELF exited with status 37')
+        assert 'ELF system, constants and honest optional-feature contracts PASS' in output,output
         output=command(vm,'elf run relro-fault','error: invalid executable')
         assert 'vector=14 error=0x0000000000000007' in output and 'ELF RELRO: protected' in output,output
         output=command(vm,'elf run constructor-fault','error: invalid executable')

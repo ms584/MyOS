@@ -3,6 +3,20 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1 system ABI continuation — 2026-09-30
+
+After the clock/wait commit, the tested Cobalt allowlist advances from 75 to
+108 strong imports. A new Ring 3 fixture validates actual MyOS PID versus TID,
+uid/euid, auxv, resource limits, CPU affinity, scheduler-policy rejection,
+yield, priority rejection, prctl names, sysconf, uname and the four imported
+Starboard filesystem/thread constants. A kernel `SYS_GETTID` returns the real
+scheduler thread identity. DRM, microphone and speech imports implement their
+pinned documented unavailable behavior and never advertise fake devices or
+sessions. Focused dynamic tests and pinned Cobalt 256/64 MiB staging/OOM tests
+pass; Cobalt now stops safely on 134 missing strong imports and the weak TLS
+initializer remains zero-bound. This remains dependency progress only: the
+HTML/JavaScript/DOM/input/HTTPS gate is not passed and Phase 33.3 is not started.
+
 ## Phase 33.1 runtime clocks and waits — 2026-09-30
 
 This local slice starts from b6c74b5 and remains inside Phase 33.1/33.2. It

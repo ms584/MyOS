@@ -6,14 +6,14 @@ SbAudioSinkGetNearestSupportedSampleFrequency,GLOBAL,platform callback,audio,uni
 SbAudioSinkIsAudioSampleTypeSupported,GLOBAL,platform callback,audio,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbDecodeTargetGetInfo,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbDecodeTargetRelease,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmCloseSession,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmCreateSystem,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmDestroySystem,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmGenerateSessionUpdateRequest,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmGetMetrics,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmIsServerCertificateUpdatable,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmUpdateServerCertificate,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbDrmUpdateSession,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmCloseSession,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmCreateSystem,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmDestroySystem,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmGenerateSessionUpdateRequest,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmGetMetrics,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmIsServerCertificateUpdatable,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmUpdateServerCertificate,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbDrmUpdateSession,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbEventCancel,GLOBAL,platform callback,event,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbEventSchedule,GLOBAL,platform callback,event,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbGetEglInterface,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -30,11 +30,11 @@ SbMediaGetBufferGarbageCollectionDurationThreshold,GLOBAL,platform callback,medi
 SbMediaGetInitialBufferCapacity,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMediaGetVideoBufferBudget,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMediaIsBufferPoolAllocateOnDemand,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMicrophoneCreate,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMicrophoneDestroy,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMicrophoneGetAvailable,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMicrophoneOpen,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMicrophoneRead,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMicrophoneCreate,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMicrophoneDestroy,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMicrophoneGetAvailable,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMicrophoneOpen,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMicrophoneRead,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbPlayerCreate,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbPlayerDestroy,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbPlayerGetAudioConfiguration,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -48,9 +48,9 @@ SbPlayerSetPlaybackRate,GLOBAL,platform callback,media,unimplemented,https://git
 SbPlayerSetVolume,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbPlayerWriteEndOfStream,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbPlayerWriteSamples,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbSpeechSynthesisCancel,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbSpeechSynthesisIsSupported,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbSpeechSynthesisSpeak,GLOBAL,optional unsupported feature,optional,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbSpeechSynthesisCancel,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbSpeechSynthesisIsSupported,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbSpeechSynthesisSpeak,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbStorageCloseRecord,GLOBAL,platform callback,storage,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbStorageDeleteRecord,GLOBAL,platform callback,storage,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbStorageGetRecordSize,GLOBAL,platform callback,storage,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -116,27 +116,27 @@ fsync,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/b
 ftruncate,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 gai_strerror,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 getaddrinfo,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
-getauxval,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_auxv_abi_wrappers.h
+getauxval,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_auxv_abi_wrappers.h
 getcwd,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-geteuid,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
+geteuid,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 getifaddrs,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 getpeername,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-getpid,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
-getrlimit,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_resource_abi_wrappers.h
+getpid,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
+getrlimit,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_resource_abi_wrappers.h
 getsockname,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 getsockopt,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-gettid,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
-getuid,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
+gettid,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
+getuid,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 if_indextoname,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 inotify_add_watch,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_inotify_abi_wrappers.h
 inotify_init1,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_inotify_abi_wrappers.h
 inotify_rm_watch,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_inotify_abi_wrappers.h
 ioctl_FIONREAD,GLOBAL,MyOS service,wait,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_ioctl_abi_wrappers.h
 isatty,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-kSbFileMaxName,GLOBAL,platform data,constant,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-kSbFileMaxPath,GLOBAL,platform data,constant,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-kSbFileSepString,GLOBAL,platform data,constant,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-kSbMaxThreads,GLOBAL,platform data,constant,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+kSbFileMaxName,GLOBAL,platform data,constant,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+kSbFileMaxPath,GLOBAL,platform data,constant,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+kSbFileSepString,GLOBAL,platform data,constant,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+kSbMaxThreads,GLOBAL,platform data,constant,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 listen,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 lseek,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 madvise,GLOBAL,MyOS service,vm,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -158,7 +158,7 @@ pipe,GLOBAL,MyOS service,wait,implemented-tested,https://github.com/youtube/coba
 pipe2,GLOBAL,MyOS service,wait,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_pipe2_abi_wrappers.h
 poll,GLOBAL,MyOS service,wait,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_poll_abi_wrappers.h
 posix_memalign,GLOBAL,libc,allocator,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-prctl,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_prctl_abi_wrappers.h
+prctl,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_prctl_abi_wrappers.h
 pread,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 pthread_attr_destroy,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_pthread_abi_wrappers.h
 pthread_attr_getstack,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_pthread_abi_wrappers.h
@@ -216,9 +216,9 @@ recv,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt
 recvmmsg,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 recvmsg,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 rename,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-sched_getaffinity,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_sched_abi_wrappers.h
-sched_setscheduler,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_sched_abi_wrappers.h
-sched_yield,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+sched_getaffinity,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_sched_abi_wrappers.h
+sched_setscheduler,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_sched_abi_wrappers.h
+sched_yield,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 sem_destroy,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_semaphore_abi_wrappers.h
 sem_init,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_semaphore_abi_wrappers.h
 sem_post,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_semaphore_abi_wrappers.h
@@ -227,7 +227,7 @@ sem_wait,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtub
 send,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 sendmsg,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 sendto,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-setpriority,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_resource_abi_wrappers.h
+setpriority,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_resource_abi_wrappers.h
 setsockopt,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 shutdown,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 sigaction,GLOBAL,MyOS service,signal,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_signal_abi_wrappers.h
@@ -236,8 +236,8 @@ socket,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/coba
 socketpair,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socketpair_abi_wrappers.h
 statvfs,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_statvfs_abi_wrappers.h
 symlink,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-sysconf,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
-uname,GLOBAL,MyOS service,system,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_uname_abi_wrappers.h
+sysconf,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
+uname,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_uname_abi_wrappers.h
 unlinkat,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
 utimensat,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_stat_abi_wrappers.h
 write,GLOBAL,MyOS service,file,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_unistd_abi_wrappers.h
