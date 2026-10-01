@@ -1,0 +1,81 @@
+--- a/src/util/u_thread.c
++++ b/src/util/u_thread.c
+@@ -75,7 +75,7 @@
+ void u_thread_setname( const char *name )
+ {
+ #if defined(HAVE_PTHREAD)
+-#if DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || defined(__GLIBC__) || DETECT_OS_MANAGARM || DETECT_OS_FUCHSIA
++#if DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || defined(__GLIBC__) || DETECT_OS_MANAGARM || DETECT_OS_FUCHSIA || defined(__myos__)
+    int ret = pthread_setname_np(pthread_self(), name);
+    if (ret == ERANGE) {
+       char buf[16];
+@@ -154,7 +154,7 @@
+ int64_t
+ util_thread_get_time_nano(thrd_t thread)
+ {
+-#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__) && !defined(__managarm__)
++#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__) && !defined(__managarm__) && !defined(__myos__)
+    struct timespec ts;
+    clockid_t cid;
+ 
+@@ -174,10 +174,11 @@
+ #endif
+ }
+ 
+-#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__)
++#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__) && !defined(__myos__)
+ 
+ void util_barrier_init(util_barrier *barrier, unsigned count)
+ {
++   assert(count > 0);
+    pthread_barrier_init(barrier, NULL, count);
+ }
+ 
+@@ -195,6 +196,7 @@
+ 
+ void util_barrier_init(util_barrier *barrier, unsigned count)
+ {
++   assert(count > 0);
+    barrier->count = count;
+    barrier->waiters = 0;
+    barrier->sequence = 0;
+@@ -215,6 +217,7 @@
+ 
+    assert(barrier->waiters < barrier->count);
+    barrier->waiters++;
++   const bool serial = barrier->waiters == barrier->count;
+ 
+    if (barrier->waiters < barrier->count) {
+       uint64_t sequence = barrier->sequence;
+@@ -230,7 +233,7 @@
+ 
+    mtx_unlock(&barrier->mutex);
+ 
+-   return true;
++   return serial;
+ }
+ 
+ #endif
+--- a/src/util/u_thread.h
++++ b/src/util/u_thread.h
+@@ -116,7 +116,7 @@
+  * util_barrier
+  */
+ 
+-#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__)
++#if defined(HAVE_PTHREAD) && !defined(__APPLE__) && !defined(__HAIKU__) && !defined(__myos__)
+ 
+ typedef pthread_barrier_t util_barrier;
+ 
+--- a/src/util/macros.h
++++ b/src/util/macros.h
+@@ -30,7 +30,9 @@
+ #endif
+ #include <stddef.h>
+ #include <stdint.h>
++#ifndef __myos__
+ #include <stdio.h>
++#endif
+ 
+ #ifdef _GAMING_XBOX
+ #define strdup _strdup

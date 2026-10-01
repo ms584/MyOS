@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native Mesa thread utilities — 2026-10-01
+
+Checkpoint follows local 30f06b6, kernel/runtime unchanged at 45e08d7. See
+PHASE332_THREAD_UTIL.md. Actual pinned Mesa u_thread.c/h plus minimal target
+headers/primitives compile without host libc/C11 or Linux platform detection.
+Portable mutex/condition barrier now selects one serial thread per generation;
+eight workers pass 48 reusable barrier generations, semaphore wakeup, distinct
+native dispatch TLS, inherited/restored signal masks and exact name truncation.
+Zero-count fault and blocked-barrier process cancel/relaunch reclaim resources.
+BIOS 83457 exited 0 at 10:59:54 +07; UEFI 54086 at 11:00:26. Shared images
+unchanged, fresh full kernel baseline reused. CPU number/affinity/CPU-time remain
+unsupported upstream fallbacks; zero profiling value is NOT measured CPU time.
+Not a full Mesa build/renderer, EGL/GLES or Cobalt web acceptance. Actual native
+dependency closure and context/present gate remain next. No Phase 33.3 or push.
+
 ## Phase 33.2 target C11 SDK — 2026-10-01
 
 Checkpoint follows 45e08d7; see PHASE332_C11_SDK.md. Three pristine pinned Mesa

@@ -13,5 +13,6 @@ int *__errno_location(void);
 #define ENOMEM 12
 #define EBUSY 16
 #define EINVAL 22
+#define ERANGE 34
 #define ETIMEDOUT 110
 #endif
