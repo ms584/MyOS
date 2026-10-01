@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target no-exception C++ lifetime SDK — 2026-10-01
+
+Checkpoint follows 26c97aa; kernel/runtime unchanged at 45e08d7. See
+PHASE332_CXX_LIFETIME.md. Standalone SDK scalar/array/sized/aligned/nothrow new
+and delete use MyOS allocators. No-exception ordinary-new failure is an owned
+process fault, not null/fake success. No full <new>/new-handler/exception/unwind
+or TLS-destructor claim. Process-local __cxa_atexit/atexit/__cxa_finalize supports
+DSO filtering, LIFO selection, recursive/reentrant registration and at-most-once
+callbacks. Cooperative FINI_ARRAY shutdown drains compiler global destructors;
+fault/cancel/_Exit still skip user callbacks and reclaim process resources.
+Final BIOS 58320 PASS 11:46:12 +07: actual compiler calls/destructors, overlapping
+finalize workers, exhaustion/registration errors, OOM fault/cancel/relaunch and
+exact page/heap recovery. UEFI 27537 exited 0 at 11:47:44; both are terminal.
+Private boot snapshots only; normal BIOS/UEFI unchanged, full baseline reused.
+Not renderer-linked, C++ container closure or Cobalt web acceptance; no count
+improvement or phase closure. No Phase 33.3 and no push.
+
 ## Phase 33.2 native target math prototype — 2026-10-01
 
 Checkpoint follows 6e4bd4a; kernel/runtime remain 45e08d7. See PHASE332_MATH_SDK.md.

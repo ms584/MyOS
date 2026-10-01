@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Native target math checkpoint follows 6e4bd4a. Local only; no push.
+Native C++ lifetime checkpoint follows 26c97aa. Local only; no push.
 Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -34,6 +34,7 @@ Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
 - Real Mesa thread utils/barrier/semaphore/dispatch TLS/masks/names port:
   PHASE332_THREAD_UTIL.md; native BIOS/UEFI PASS, not a graphics backend.
 - Native math prototype/FP state: PHASE332_MATH_SDK.md; not renderer-linked.
+- Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -44,6 +45,8 @@ Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
   detailed times and coverage in PHASE332_C11_SDK.md/PHASE332_THREAD_UTIL.md.
 - Math 1895 MPFR vectors/FP isolation/relaunch: BIOS PASS 11:25:38,
   UEFI PASS 11:26:11. No host library in native fixture; exact resources.
+- C++ lifetime BIOS PASS 11:46:12, UEFI PASS 11:47:44: overlapping finalize,
+  allocator exhaustion/registration errors, OOM fault/cancel/relaunch/resources.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
