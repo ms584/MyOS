@@ -11,6 +11,50 @@ The older host-spike statement that PT_TLS is rejected describes that baseline.
 The Linux candidate still lacks target libc/C11/C++ and dependency closure;
 this change does NOT make that library loadable or select a native backend.
 
+## MyOS target configuration and first real compile — 12:10 +07
+
+tools/probe_renderer_target.py now configures a freshly extracted, hash-verified
+Mesa 25.0.7 source against MyOS rather than measuring the Linux binary again.
+Only mesa_c11_target.patch, mesa_thread_util_target.patch and the new
+mesa_build_target.patch are applied; the glibc host patch is never applied.
+The compiler boundary disables implicit C/C++ host headers and default system
+libraries, undefines Linux macros and links configure probes to a fresh archive
+of actual platform-runtime.c/platform-tls.asm providers. No syscall stub is used.
+No host target execution or automatic dependency download is permitted.
+
+The selected *probe configuration*, not a selected production backend, remains
+in-process softpipe OSMesa, EGL/GLX/GBM/Vulkan/LLVM/codecs disabled. The MyOS patch
+skips libdl only for this explicitly restricted configuration: upstream u_dl.c
+already returns unavailable on a non-POSIX/non-Windows target. It does not claim
+dlopen/driver-plugin support. OpenMP detection is disabled because compiler flag
+acceptance cannot prove a MyOS OpenMP runtime. Byte order uses actual compiler
+target constants instead of glibc endian headers. Linux dependencies are not
+renamed or supplied with fake success functions.
+
+Meson setup passed. The real ninja compile now passes C11 sources and the first
+BLAKE3 memset failure, but still fails on math.h, sys/types.h, fcntl.h,
+inttypes.h and the os_time.h localtime_r declaration. This is an observed first
+closure frontier, not an exhaustive list or evidence of a complete renderer.
+The existing native-tested math prototype still needs header/library integration;
+C++ containers/target standard-library configuration also remain unresolved.
+Do not use host glibc-configured libstdc++ OS/gthread headers with Cobalt opaque
+pthread types. EGL/GLES context/present and native Cobalt remain unproven.
+
+Full configure/compile logs and report: build/renderer-evaluation/
+target-config-ad2v00f_/. Pipeline 97415 finished 12:10:01: configure_exit=0,
+compile_exit=1. tools/renderer_target_compiler.py rejects library/search/response
+escape routes; tests/test_renderer_target_compiler.py passed at 12:12:42 with
+the real runtime archive (link only, no DT_NEEDED/undefined, ABI sizes/macros).
+New SDK memset uses actual byte writes. Affected native Mesa-util BIOS 13315
+passed at 12:08:45 with integer-to-byte conversion, zero length, unaligned spans
+and buffer guards, plus existing thread/cancel/relaunch/resources. UEFI was not
+rerun for this SDK change. Shared normal images/kernel/runtime are unchanged;
+the fresh full regression is retained, not rerun or mislabeled as a new result.
+
+Reproduce: python3 tools/run_logged.py -- python3 tools/probe_renderer_target.py
+--compile. The current command correctly exits nonzero for the unresolved source
+closure; this must not be reported as a graphics PASS. No Phase 33.3 or push.
+
 ## Pinned boundary, not two graphics imports
 
 The pinned Starboard headers require EGL 1.5 and contain 44 EGL table slots

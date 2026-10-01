@@ -3,6 +3,33 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 honest MyOS renderer cross-configuration — 2026-10-01
+
+Checkpoint follows f2a2955. Fetch at 12:11 +07 found origin/main at 26c97aa:
+the owner pushed earlier commits; this agent did not push. Full kernel/runtime
+baseline remains 45e08d7 and both normal boot images retain their prior hashes.
+tools/probe_renderer_target.py extracts the sealed Mesa archive, applies only
+target patches and runs Meson with system=myos, no host stdlib/header search,
+no fallback downloads and a fresh real MyOS runtime archive for link checks.
+In-process softpipe OSMesa needs no plugin loader; the target patch explicitly
+limits that configuration rather than faking dlopen. No OpenMP runtime is claimed.
+MyOS byte order comes from compiler target constants, not Linux endian headers.
+Actual memset provider and SDK declaration fix the first BLAKE3 compile failure.
+Affected Mesa-util BIOS test 13315 exited 0 at 12:08:45, including added byte/
+length/buffer-boundary assertions, cancellation/relaunch and exact resources.
+No UEFI/full-suite rerun for this private SDK-only change; earlier evidence for
+unchanged kernel/runtime is retained, not reported as a new SDK UEFI pass.
+Target configure 97415 exited with compile failure at 12:10:01: Meson setup
+passed, but actual source compilation needs math.h, sys/types.h, fcntl.h,
+inttypes.h and localtime_r closure. Full logs/report are in
+build/renderer-evaluation/target-config-ad2v00f_/; PHASE332_RENDERER.md details it.
+Compiler boundary link/pinned types/no Linux macros and nine forbidden library,
+search, response and OpenMP routes passed at 12:12:42. This is compile evidence,
+not native rendering, GLES/EGL, backend selection or Cobalt execution.
+Next: integrate the already-native-tested math SDK into the measured renderer
+closure; close actual libc/C++ failures, then native GLES/context/presentation
+and Cobalt HTML/JS/DOM/input/HTTPS endurance. 33.1/33.2 OPEN; no 33.3 or push.
+
 ## Phase 33.2 target no-exception C++ lifetime SDK — 2026-10-01
 
 Checkpoint follows 26c97aa; kernel/runtime unchanged at 45e08d7. See

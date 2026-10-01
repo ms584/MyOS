@@ -10,3 +10,9 @@ size_t strlen(const char *text)
 {
     size_t length=0;while(text[length])++length;return length;
 }
+void *memset(void *destination,int value,size_t length)
+{
+    unsigned char *out=destination;
+    for(size_t i=0;i<length;++i)out[i]=(unsigned char)value;
+    return destination;
+}

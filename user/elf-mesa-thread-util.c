@@ -40,6 +40,14 @@ static int worker(void *raw)
 }
 int _start(void)
 {
+    unsigned char bytes[260];
+    CHECK(memset(bytes,0x123,sizeof(bytes))==bytes);
+    for(unsigned i=0;i<sizeof(bytes);++i)CHECK(bytes[i]==0x23);
+    CHECK(memset(bytes+3,-1,253)==bytes+3);
+    for(unsigned i=0;i<sizeof(bytes);++i)CHECK(bytes[i]==(i>=3&&i<256?0xff:0x23));
+    CHECK(memset(bytes+100,0,0)==bytes+100&&bytes[100]==0xff);
+    CHECK(memset(bytes+7,0,247)==bytes+7);
+    for(unsigned i=7;i<254;++i)CHECK(bytes[i]==0);
     _Static_assert(sizeof(sigset_t)==128,"pinned masks");
     sigset_t original,empty,after;CHECK(!sigemptyset(&empty));
     CHECK(!pthread_sigmask(SIG_SETMASK,&empty,&original));

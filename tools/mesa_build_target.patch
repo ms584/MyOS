@@ -1,0 +1,38 @@
+--- a/meson.build
++++ b/meson.build
+@@ -1543,6 +1543,14 @@
+ # check for dl support
+ dep_dl = null_dep
+-if host_machine.system() != 'windows'
++if host_machine.system() == 'myos'
++  # This probe links the software driver into OSMesa. MyOS has no dlopen
++  # contract: do not require Linux libdl or claim that plugins are available.
++  # Native EGL/GLES platform integration is a separate, still-open gate.
++  if not with_osmesa or get_option('gallium-drivers') != ['softpipe'] or with_egl or with_gbm or with_glx != 'disabled' or get_option('vulkan-drivers') != []
++    error('MyOS cross probe supports only in-process softpipe OSMesa; no dynamic driver loading')
++  endif
++  dep_dl = dependency('', required : false)
++elif host_machine.system() != 'windows'
+   if not cc.has_function('dlopen')
+     dep_dl = cc.find_library('dl', required : true)
+   endif
+@@ -2093,2 +2101,2 @@
+-if host_machine.cpu_family() == 'x86_64' and cc.get_id() == 'gcc'
++if host_machine.system() != 'myos' and host_machine.cpu_family() == 'x86_64' and cc.get_id() == 'gcc'
+   dep_openmp = dependency('openmp', required : false)
+--- a/src/util/u_endian.h
++++ b/src/util/u_endian.h
+@@ -30,2 +30,12 @@
+-#ifdef HAVE_ENDIAN_H
++#if defined(__myos__)
++# if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++#  define UTIL_ARCH_LITTLE_ENDIAN 1
++#  define UTIL_ARCH_BIG_ENDIAN 0
++# elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#  define UTIL_ARCH_LITTLE_ENDIAN 0
++#  define UTIL_ARCH_BIG_ENDIAN 1
++# else
++#  error "Unsupported MyOS target byte order"
++# endif
++#elif defined(HAVE_ENDIAN_H)
+ #include <endian.h>
