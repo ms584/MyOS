@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 sorting/PRNG SDK — 2026-10-01
+
+Checkpoint follows78922ff; PHASE332_SORT_SDK.md. Real sealed musl smoothsort
+and PRNG; native serialized rand state, existing owned FINI101/atexit provider.
+Actual Mesa C++ sorting retains per-thread TLS and restores outer callbacks
+after nested sorts. BIOS63099 PASS16:50:06 sdk-jc3x6zmf, UEFI3822 native PASS
+sdk-vxdjxmpo: guards/large records/GNU context/nested8workers/seed vectors/
+serialized sequence/reverse-finalizers/relaunch/exact resources. Headers PASS.
+Target3822 compile1 16:52:51 target-config-le70fafh clears rand/atexit/qsort;
+abort/scanning/conversion/OS-info/rwlock/time/C++ headers remain. No renderer
+or Cobalt pass. Kernel/runtime/normal images unchanged, hashes checked16:53.
+All jobs terminal. No Phase33.3 or push.
+
 ## Phase 33.1/33.2 open-file unlink — 2026-10-01
 
 Work follows b789051; PHASE331_UNLINK.md. Namespace hides live orphan files,

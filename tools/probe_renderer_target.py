@@ -31,7 +31,8 @@ patch = (root / 'tools/mesa_c11_target.patch').read_text().replace(
     'b/threads_posix.c', 'b/src/c11/impl/threads_posix.c')
 for content in (patch, (root / 'tools/mesa_thread_util_target.patch').read_text(),
                 (root / 'tools/mesa_build_target.patch').read_text(),
-                (root / 'tools/mesa_file_target.patch').read_text()):
+                (root / 'tools/mesa_file_target.patch').read_text(),
+                (root / 'tools/mesa_sort_target.patch').read_text()):
     subprocess.run(['git', 'apply', '--check', '--directory=' + str(source.relative_to(root)), '-'],
                    input=content, text=True, cwd=root, check=True)
     subprocess.run(['git', 'apply', '--directory=' + str(source.relative_to(root)), '-'],
@@ -63,11 +64,14 @@ with (out / 'math-build.log').open('w') as math_log, contextlib.redirect_stdout(
     math_build = runpy.run_path(str(root / 'tools/build_math_sdk.py'))
 with (out / 'format-build.log').open('w') as format_log, contextlib.redirect_stdout(format_log):
     format_build = runpy.run_path(str(root / 'tools/build_format_sdk.py'),init_globals={'math_build':math_build})
+with (out / 'sort-build.log').open('w') as sort_log, contextlib.redirect_stdout(sort_log):
+    sort_build = runpy.run_path(str(root / 'tools/build_sort_sdk.py'),init_globals={'math_build':math_build})
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
 subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
                 str(environment),
                 *map(str,format_build['objects']),
+                *map(str,sort_build['objects']),
                 *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'

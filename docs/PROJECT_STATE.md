@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Tested open-file unlink checkpoint follows b789051. No push.
+Tested sort/PRNG SDK checkpoint follows 78922ff. No push.
 Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 
 ## Scope and status
@@ -29,6 +29,7 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
   PHASE332_ENVIRONMENT.md, PHASE332_FORMAT_SDK.md, PHASE332_STREAM_SDK.md,
   PHASE332_MEMSTREAM_SDK.md, PHASE332_STRING_SDK.md, PHASE332_STAT_SDK.md.
 - Open-file unlink/name reuse/last-close: PHASE331_UNLINK.md.
+- Real smoothsort/Mesa TLS sort/PRNG/finalizer SDK: PHASE332_SORT_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -49,9 +50,11 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
   enclosing hash command typo failed, corrected artifact evidence 16:36:11.
 - Earlier stat/headers/streams 16406 PASS 15:23:28; strings C/C++ 58821 PASS.
   C11/thread/math/format/environment/memstream details in respective docs.
-- Renderer 99936 exit 1 15:57:35, target-config-qjsmm8xd: configure/boundary
-  PASS, compile FAIL. mkstemp cleared; abort/rand/sscanf/atexit/OS-info,
-  socket ENOSYS and C++ u_qsort <thread> remain. No host libraries.
+- Sort BIOS63099 PASS16:50:06 and UEFI3822 PASS; three relaunches/resources.
+  Header regression PASS16:53:27; real nested/threaded Mesa sort tested.
+- Renderer3822 compile1 16:52:51, target-config-le70fafh: configure/boundary
+  PASS; rand/atexit/qsort cleared. abort/sscanf/strtod/OS-info/ENOSYS,
+  rwlock/time/C++ cstdint remain. No host libraries or backend selection.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
