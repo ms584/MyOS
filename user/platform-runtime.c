@@ -258,22 +258,33 @@ static int wait64(volatile uint64_t *word,uint64_t value,uint64_t deadline)
 {return (int)call3(SYS_WAIT,(uintptr_t)word,value,deadline);}
 static void wake64(volatile uint64_t *word,unsigned count)
 {(void)call3(SYS_WAKE,(uintptr_t)word,count,0);}
+static __attribute__((noinline)) uint64_t ticks(void)
+{return (uint64_t)call3(SYS_TICKS,0,0,0);}
 static int clock_nanos(int clock,uint64_t *value)
 {
     int64_t result=call3(SYS_CLOCK_NANOS,(unsigned)clock,0,0);
     if(result<0)return (int)-result;*value=(uint64_t)result;return 0;
 }
+static __attribute__((noinline)) int timespec_nanos(const struct timespec *time,uint64_t *value)
+{
+    if(!time||time->tv_sec<0||
+       time->tv_nsec<0||time->tv_nsec>=1000000000)return EINVAL;
+    if((uint64_t)time->tv_sec>(UINT64_MAX-(uint64_t)time->tv_nsec)/1000000000ull)return EINVAL;
+    *value=(uint64_t)time->tv_sec*1000000000ull+(uint64_t)time->tv_nsec;return 0;
+}
+static __attribute__((noinline)) uint64_t duration_deadline(uint64_t duration,uint64_t now)
+{
+    uint64_t add=duration/10000000ull+(duration%10000000ull!=0);
+    return add>UINT64_MAX-1-now?UINT64_MAX-1:now+add;
+}
 static int deadline_ticks(int clock,const struct timespec *time,uint64_t *deadline)
 {
-    if(!time||!deadline||(clock!=0&&clock!=1)||time->tv_sec<0||
-       time->tv_nsec<0||time->tv_nsec>=1000000000)return EINVAL;
-    if((uint64_t)time->tv_sec>UINT64_MAX/1000000000ull)return EINVAL;
-    uint64_t target=(uint64_t)time->tv_sec*1000000000ull+(uint64_t)time->tv_nsec;
+    uint64_t target;int converted=timespec_nanos(time,&target);if(converted)return converted;
+    if(!deadline||(clock!=0&&clock!=1))return EINVAL;
     uint64_t now_ns=0;int rc=clock_nanos(clock,&now_ns);if(rc)return rc;
-    uint64_t now_ticks=(uint64_t)call3(SYS_TICKS,0,0,0);
+    uint64_t now_ticks=ticks();
     if(target<=now_ns){*deadline=now_ticks;return 0;}
-    uint64_t delta=target-now_ns,add=delta/10000000ull+(delta%10000000ull!=0);
-    *deadline=add>UINT64_MAX-1-now_ticks?UINT64_MAX-1:now_ticks+add;return 0;
+    *deadline=duration_deadline(target-now_ns,now_ticks);return 0;
 }
 int clock_gettime(int clock,struct timespec *time)
 {
@@ -285,23 +296,20 @@ int clock_gettime(int clock,struct timespec *time)
 }
 int clock_nanosleep(int clock,int flags,const struct timespec *request,struct timespec *remaining)
 {
-    if(!request||(clock!=0&&clock!=1)||(flags!=0&&flags!=1)||request->tv_sec<0||
-       request->tv_nsec<0||request->tv_nsec>=1000000000)return EINVAL;
+    if((clock!=0&&clock!=1)||(flags!=0&&flags!=1))return EINVAL;
     uint64_t deadline;
     if(flags){int rc=deadline_ticks(clock,request,&deadline);if(rc)return rc;}
     else {
-        if((uint64_t)request->tv_sec>UINT64_MAX/1000000000ull)return EINVAL;
-        uint64_t duration=(uint64_t)request->tv_sec*1000000000ull+(uint64_t)request->tv_nsec;
-        uint64_t add=duration/10000000ull+(duration%10000000ull!=0);
-        uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0);
-        deadline=add>UINT64_MAX-1-now?UINT64_MAX-1:now+add;
+        uint64_t duration;int rc=timespec_nanos(request,&duration);if(rc)return rc;
+        uint64_t now=ticks();
+        deadline=duration_deadline(duration,now);
     }
-    if(deadline<=(uint64_t)call3(SYS_TICKS,0,0,0))return 0;
+    if(deadline<=ticks())return 0;
     volatile uint64_t *scratch=(uint64_t *)(uintptr_t)(self_page()+32);
     uint64_t value=__atomic_load_n(scratch,__ATOMIC_ACQUIRE);
     for(;;){int rc=wait64(scratch,value,deadline);
         if(rc==-ETIMEDOUT)break;if(rc!=-EAGAIN)return -rc;
-        if(deadline<=(uint64_t)call3(SYS_TICKS,0,0,0))break;
+        if(deadline<=ticks())break;
     }
     if(remaining)*remaining=(struct timespec){0,0};return 0;
 }
@@ -324,27 +332,51 @@ static struct thread_control *thread_control(uint64_t thread)
 }
 static void run_destructors(void)
 {
+    void **values=key_values();void (**destructors)(void *)=key_destructors();
     for(unsigned pass=0;pass<4;++pass){int any=0;
-        for(unsigned key=0;key<THREAD_KEYS;++key){void *value=key_values()[key];
-            void (*destructor)(void *)=key_destructors()[key];
-            if(value&&destructor){key_values()[key]=0;destructor(value);any=1;}
+        for(unsigned key=0;key<THREAD_KEYS;++key){void *value=values[key];
+            void (*destructor)(void *)=destructors[key];
+            if(value&&destructor){values[key]=0;destructor(value);any=1;}
         }
         if(!any)break;
     }
+}
+static volatile uint64_t *active_workers(void)
+{return (volatile uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+16);}
+static void worker_finished(void)
+{__atomic_sub_fetch(active_workers(),1,__ATOMIC_RELEASE);wake64(active_workers(),~0u);}
+extern _Noreturn void MyOSMainThreadExit(uint64_t);
+_Noreturn void pthread_exit(void *result)
+{
+    struct thread_control *control=self_control();
+    if(control)control->result=result;
+    run_destructors();
+    if(control){
+        __atomic_store_n(&control->done,1,__ATOMIC_RELEASE);wake64(&control->done,~0u);
+        worker_finished();
+        (void)call3(SYS_THREAD_EXIT,0,0,0);
+    }else{
+        /* Preserve the owned bootstrap/finalizer frame, not the caller's
+         * abandoned stack frame. Main termination must not kill workers. */
+        uint64_t frame=*(const uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+56);
+        if(!frame)__builtin_trap();
+        *(void **)(uintptr_t)(RUNTIME_TLS_BASE+24)=result;
+        volatile uint64_t *flags=(volatile uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+40);
+        __atomic_fetch_or(flags,1,__ATOMIC_RELEASE);wake64(flags,~0u);
+        for(;;){uint64_t count=__atomic_load_n(active_workers(),__ATOMIC_ACQUIRE);
+            if(!count)break;(void)wait64(active_workers(),count,0);}
+        MyOSMainThreadExit(frame);
+    }
+    __builtin_trap();
 }
 static void thread_entry(void *raw)
 {
     struct thread_control *control=raw;
     *(struct thread_control **)(uintptr_t)(self_page()+8)=control;
-    for(unsigned i=0;i<THREAD_KEYS;++i)key_values()[i]=0;
+    void **values=key_values();for(unsigned i=0;i<THREAD_KEYS;++i)values[i]=0;
     signal_mask()[0]=control->signal_mask[0];
     signal_mask()[1]=control->signal_mask[1];
-    control->result=control->start(control->argument);
-    run_destructors();
-    __atomic_store_n(&control->done,1,__ATOMIC_RELEASE);wake64(&control->done,~0u);
-    (void)call3(SYS_THREAD_EXIT,0,0,0);
-    (void)call3(SYS_EXIT,127,0,0);
-    for(;;){}
+    pthread_exit(control->start(control->argument));
 }
 int pthread_detach(uint64_t thread);
 int pthread_attr_init(void *raw)
@@ -373,9 +405,10 @@ int pthread_create(uint64_t *thread,const void *raw,void *(*start)(void *),void 
     struct thread_control *control=mapping;
     *control=(struct thread_control){THREAD_MAGIC,0,(uint64_t)(uintptr_t)mapping,length,
         start,argument,0,0,0,0,{signal_mask()[0],signal_mask()[1]},{0}};
+    __atomic_add_fetch(active_workers(),1,__ATOMIC_RELAXED);
     int64_t tid=call4(SYS_THREAD_CREATE,(uintptr_t)thread_entry,(uintptr_t)control,
                       (uintptr_t)mapping+length,0);
-    if(tid<0){munmap(mapping,length);return (int)-tid;}
+    if(tid<0){worker_finished();munmap(mapping,length);return (int)-tid;}
     control->tid=(uint64_t)tid;*thread=(uint64_t)(uintptr_t)control;
     if(raw&&((const struct thread_attr *)raw)->detached){
         int rc=pthread_detach(*thread);if(rc)return rc;
@@ -387,18 +420,31 @@ uint64_t pthread_self(void)
     struct thread_control *control=self_control();
     return control?(uint64_t)(uintptr_t)control:RUNTIME_TLS_BASE;
 }
+int pthread_equal(uint64_t first,uint64_t second){return first==second;}
+/* Join and detach must claim a single word: independent flags allow both
+ * callers to win and race a stack unmap against the joiner's result read. */
+static __attribute__((noinline)) int claim_thread(volatile uint64_t *flags,uint64_t bit)
+{
+    uint64_t value=__atomic_load_n(flags,__ATOMIC_ACQUIRE);
+    for(;;){if(value&6)return EINVAL;
+        if(__atomic_compare_exchange_n(flags,&value,value|bit,0,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE))return 0;}
+}
 int pthread_join(uint64_t thread,void **result)
 {
-    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     if(thread==pthread_self())return EDEADLK;
-    if(__atomic_load_n(&control->detached,__ATOMIC_ACQUIRE))return EINVAL;
-    uint64_t zero=0;
-    if(!__atomic_compare_exchange_n(&control->joined,&zero,1,0,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE))
-        return EINVAL;
+    if(thread==RUNTIME_TLS_BASE){
+        volatile uint64_t *flags=(volatile uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+40);
+        int rc=claim_thread(flags,2);if(rc)return rc;uint64_t value;
+        for(;;){value=__atomic_load_n(flags,__ATOMIC_ACQUIRE);if(value&1)break;
+            (void)wait64(flags,value,0);}
+        if(result)*result=*(void **)(uintptr_t)(RUNTIME_TLS_BASE+24);return 0;
+    }
+    struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
+    int claimed=claim_thread(&control->joined,2);if(claimed)return claimed;
     int32_t status;
     for(;;){int rc=(int)call3(SYS_THREAD_REAP,control->tid,(uintptr_t)&status,0);
         if(!rc)break;if(rc!=-EAGAIN)return -rc;
-        uint64_t deadline=(uint64_t)call3(SYS_TICKS,0,0,0)+1;
+        uint64_t deadline=ticks()+1;
         (void)wait64(&control->done,0,deadline);yield_cpu();
     }
     if(result)*result=control->result;
@@ -407,13 +453,13 @@ int pthread_join(uint64_t thread,void **result)
 }
 int pthread_detach(uint64_t thread)
 {
+    if(thread==RUNTIME_TLS_BASE)return claim_thread((uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+40),4);
     struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
-    if(__atomic_load_n(&control->joined,__ATOMIC_ACQUIRE))return EINVAL;
-    uint64_t expected=0;
-    if(!__atomic_compare_exchange_n(&control->detached,&expected,1,0,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE))
-        return EINVAL;
+    int claimed=claim_thread(&control->joined,4);if(claimed)return claimed;
+    __atomic_store_n(&control->detached,1,__ATOMIC_RELEASE);
     int64_t rc=call3(SYS_THREAD_DETACH,control->tid,control->base,control->length);
-    if(rc<0){__atomic_store_n(&control->detached,0,__ATOMIC_RELEASE);return (int)-rc;}
+    if(rc<0){__atomic_store_n(&control->detached,0,__ATOMIC_RELEASE);
+        __atomic_store_n(&control->joined,0,__ATOMIC_RELEASE);return (int)-rc;}
     return 0;
 }
 int pthread_getattr_np(uint64_t thread,void *raw)
@@ -503,7 +549,19 @@ int pthread_mutex_trylock(void *raw)
 int pthread_mutex_lock(void *raw)
 {
     if(!raw)return EINVAL;for(;;){int rc=pthread_mutex_trylock(raw);
-        if(!rc||rc==EDEADLK)return rc;(void)wait64(&((struct mutex_layout *)raw)->state,1,0);}
+        if(rc!=EBUSY)return rc;(void)wait64(&((struct mutex_layout *)raw)->state,1,0);}
+}
+int pthread_mutex_timedlock(void *raw,const struct timespec *time)
+{
+    int rc=pthread_mutex_trylock(raw);if(rc!=EBUSY)return rc;
+    if(time&&time->tv_sec<0&&time->tv_nsec>=0&&time->tv_nsec<1000000000)return ETIMEDOUT;
+    uint64_t deadline;rc=deadline_ticks(0,time,&deadline);if(rc)return rc;
+    for(;;){
+        rc=pthread_mutex_trylock(raw);if(rc!=EBUSY)return rc;
+        if(deadline<=ticks())return ETIMEDOUT;
+        rc=wait64(&((struct mutex_layout *)raw)->state,1,deadline);
+        if(rc==-ETIMEDOUT)return ETIMEDOUT;if(rc&&rc!=-EAGAIN)return -rc;
+    }
 }
 int pthread_mutex_unlock(void *raw)
 {
@@ -544,7 +602,7 @@ int pthread_cond_timedwait(void *raw,void *mutex,const struct timespec *time)
 {
     if(!raw)return EINVAL;uint64_t d;
     int converted=deadline_ticks(((struct condition_layout *)raw)->clock,time,&d);
-    if(converted)return converted;if(d<=(uint64_t)call3(SYS_TICKS,0,0,0)){
+    if(converted)return converted;if(d<=ticks()){
         int rc=pthread_mutex_unlock(mutex);if(rc)return rc;
         rc=pthread_mutex_lock(mutex);return rc?rc:ETIMEDOUT;
     }
@@ -889,7 +947,7 @@ static uint64_t socket_timeout(struct descriptor_object *object,unsigned side,in
 }
 static uint64_t socket_deadline(uint64_t timeout)
 {
-    if(!timeout)return 0;uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0);
+    if(!timeout)return 0;uint64_t now=ticks();
     if(timeout==UINT64_MAX)return now;
     return timeout>UINT64_MAX-1-now?UINT64_MAX-1:now+timeout;
 }
@@ -908,7 +966,7 @@ static int64_t tcp_io_ref(const struct descriptor_ref *reference,void *buffer,si
         unsigned status=__atomic_load_n(&object->status_flags,__ATOMIC_ACQUIRE);spin_unlock(&object->lock);
         if(rc>=0){result=rc;break;}
         if(rc!=-EAGAIN||(flags&MSG_DONTWAIT)||(status&O_NONBLOCK)){fail(rc);break;}
-        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){set_error(EAGAIN);break;}
+        if(timeout&&ticks()>=deadline){set_error(EAGAIN);break;}
         int waited=wait64(&object->sequence,sequence,deadline);
         if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){fail(waited);break;}
     }
@@ -955,7 +1013,7 @@ static int64_t socketpair_io_ref(const struct descriptor_ref *reference,void *bu
         }
         spin_unlock(&object->lock);
         if((flags&MSG_DONTWAIT)||(__atomic_load_n(&object->value.socketpair.status_flags[side],__ATOMIC_ACQUIRE)&O_NONBLOCK)){set_error(EAGAIN);break;}
-        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){set_error(EAGAIN);break;}
+        if(timeout&&ticks()>=deadline){set_error(EAGAIN);break;}
         int waited=wait64(&object->sequence,sequence,deadline);
         if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){fail(waited);break;}
     }
@@ -1000,7 +1058,7 @@ int connect(int fd,const void *raw,uint32_t length)
         spin_unlock(&r.object->lock);if(rc<0)break;
         if(status.error){rc=-(int64_t)status.error;break;}
         if(status.state==4){rc=0;break;}
-        if(timeout&&(uint64_t)call3(SYS_TICKS,0,0,0)>=deadline){rc=-115;break;}
+        if(timeout&&ticks()>=deadline){rc=-115;break;}
         int waited=wait64(&r.object->sequence,sequence,deadline);
         if(waited<0&&waited!=-EAGAIN&&waited!=-ETIMEDOUT){rc=waited;break;}
     }
@@ -1259,7 +1317,7 @@ int pipe(int fildes[2]){return pipe2(fildes,0);}
 static int poll_deadline(int timeout,uint64_t *deadline)
 {
     if(timeout< -1)return 0;if(timeout<0){*deadline=0;return 1;}
-    uint64_t now=(uint64_t)call3(SYS_TICKS,0,0,0),add=((uint64_t)timeout+9)/10;
+    uint64_t now=ticks(),add=((uint64_t)timeout+9)/10;
     *deadline=add>UINT64_MAX-1-now?UINT64_MAX-1:now+add;return 1;
 }
 int poll(struct pollfd *fds,uint64_t count,int32_t timeout)
@@ -1523,14 +1581,15 @@ static int64_t positioned_io(int fd,void *buffer,size_t length,int64_t offset,in
 }
 int64_t pread(int fd,void *buffer,size_t length,int64_t offset){return positioned_io(fd,buffer,length,offset,0);}
 int64_t pwrite(int fd,const void *buffer,size_t length,int64_t offset){return positioned_io(fd,(void *)buffer,length,offset,1);}
+static __attribute__((noinline)) int64_t vector_io(int fd,const struct iovec_abi *vectors,int count,int output)
+{if((!vectors&&count)||count<0||count>1024){set_error(EINVAL);return -1;}int64_t total=0;
+ for(int i=0;i<count;++i){if(vectors[i].length>(size_t)(INT64_MAX-total)){set_error(EINVAL);return total?total:-1;}
+  int64_t got=output?write(fd,vectors[i].base,vectors[i].length):read(fd,vectors[i].base,vectors[i].length);
+  if(got<0)return total?total:-1;total+=got;if((size_t)got<vectors[i].length)break;}return total;}
 int64_t readv(int fd,const struct iovec_abi *vectors,int count)
-{if((!vectors&&count)||count<0||count>1024){set_error(EINVAL);return -1;}int64_t total=0;
- for(int i=0;i<count;++i){if(vectors[i].length>(size_t)(INT64_MAX-total)){set_error(EINVAL);return total?total:-1;}
-  int64_t got=read(fd,vectors[i].base,vectors[i].length);if(got<0)return total?total:-1;total+=got;if((size_t)got<vectors[i].length)break;}return total;}
+{return vector_io(fd,vectors,count,0);}
 int64_t writev(int fd,const struct iovec_abi *vectors,int count)
-{if((!vectors&&count)||count<0||count>1024){set_error(EINVAL);return -1;}int64_t total=0;
- for(int i=0;i<count;++i){if(vectors[i].length>(size_t)(INT64_MAX-total)){set_error(EINVAL);return total?total:-1;}
-  int64_t put=write(fd,vectors[i].base,vectors[i].length);if(put<0)return total?total:-1;total+=put;if((size_t)put<vectors[i].length)break;}return total;}
+{return vector_io(fd,vectors,count,1);}
 int ftruncate(int fd,int64_t length)
 {if(length<0)return set_error(EINVAL);struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)||r.object->type!=DESCRIPTOR_FILE){if(r.object)object_release(r.object);return set_error(EBADF);}
  spin_lock(&r.object->lock);int64_t rc=call3(SYS_FTRUNCATE,(unsigned)r.object->value.file.kernel_fd,(uint64_t)length,0);spin_unlock(&r.object->lock);object_release(r.object);return rc<0?fail(rc):0;}
@@ -1778,7 +1837,7 @@ static int temporary_name(char *template)
     if(length<6)return set_error(EINVAL);for(size_t i=length-6;i<length;++i)if(template[i]!='X')return set_error(EINVAL);
     static const char alphabet[]="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     uint64_t value=__atomic_add_fetch(temporary_counter(),1,__ATOMIC_RELAXED)^
-                   ((uint64_t)call3(2,0,0,0)<<32)^(uint64_t)call3(SYS_TICKS,0,0,0);
+                   ((uint64_t)call3(2,0,0,0)<<32)^ticks();
     for(unsigned i=0;i<6;++i){template[length-1-i]=alphabet[value%62];value/=62;}return 0;
 }
 int mkstemp(char *template)

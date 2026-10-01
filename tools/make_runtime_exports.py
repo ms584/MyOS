@@ -33,7 +33,7 @@ wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','cl
         'pthread_cond_broadcast','pthread_cond_destroy','pthread_cond_init',
         'pthread_cond_signal','pthread_cond_timedwait','pthread_cond_wait',
         'pthread_condattr_destroy','pthread_condattr_init','pthread_condattr_setclock',
-        'pthread_create','pthread_detach','pthread_getattr_np','pthread_getname_np',
+        'pthread_create','pthread_detach','pthread_equal','pthread_exit','pthread_mutex_timedlock','pthread_getattr_np','pthread_getname_np',
         'pthread_getschedparam','pthread_getspecific','pthread_join','pthread_key_create',
         'pthread_key_delete','pthread_kill','pthread_mutex_destroy','pthread_mutex_init',
         'pthread_mutex_lock','pthread_mutex_trylock','pthread_mutex_unlock',

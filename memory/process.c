@@ -604,6 +604,7 @@ bool process_start_elf(struct process *p,const struct elf_start *start)
     p->frame->r12=start->array;p->frame->r13=start->count;
     p->frame->r14=start->entry?start->entry:p->frame->rip;p->frame->r15=start->init;
     p->frame->rbx=start->fini;p->frame->rbp=start->fini_array;p->frame->rdx=start->fini_count;
+    p->frame->r11=image_leaf(p,PROCESS_RUNTIME_TLS_BASE)?PROCESS_RUNTIME_TLS_BASE:0;
     p->frame->rip=USER_BASE+ELF_BOOT_OFFSET;
     if(!scheduler_attach_process(p)){irq_restore(f);return false;}
     p->state=PROCESS_RUNNING;irq_restore(f);return true;

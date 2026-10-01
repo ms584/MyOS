@@ -5,7 +5,10 @@ elf_start_code:
     ; Kernel supplies verified user addresses in callee-saved registers.
     ; Keep the finalizer count/status in our stack frame. rbx/rbp are ABI
     ; callee-saved; constructors and entry may clobber caller-saved registers.
-    sub rsp,72
+    sub rsp,88
+    mov [rsp+72],r11
+    mov [rsp+40],rbx
+    mov [rsp+48],rbp
     mov [rsp],rdx
     mov [rsp+16],rdi
     mov [rsp+24],rsi
@@ -32,11 +35,19 @@ elf_start_code:
     dec r13
     jmp .array
 .entry:
+    mov r11,[rsp+72]
+    test r11,r11
+    jz .call_entry
+    mov [r11+56],rsp
+    lea rax,[rel .returned]
+    mov [rsp+64],rax
+.call_entry:
     mov rdi,[rsp+16]
     mov rsi,[rsp+24]
     mov rdx,[rsp+32]
     mov rcx,[rsp+56]
     call r14
+.returned:
     mov [rsp+8],rax
     mov r13,[rsp]
 .fini_array:

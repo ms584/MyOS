@@ -3,6 +3,28 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1/33.2 pthread teardown/timed mutex — 2026-10-01
+
+The thread-services checkpoint follows local abf3cd9. Native timed mutex blocks
+against one absolute realtime deadline; shared time conversions reject overflow.
+Explicit worker/main pthread_exit runs TSS destructors, publishes join results,
+waits for wrapper workers and resumes owned finalizers. Main join/detach and
+exclusive atomic join/detach claims are tested. See PHASE331_THREAD_SERVICES.md
+for bounds and constructor-time exit/cleanup/cancellation/signal limitations.
+Combined BIOS fixture PASS 09:48:03 +07, including cancellation/relaunch and
+exact resources. -Oz only for runtime C plus shared helpers keeps process-test
+image at 261144 bytes; normal 252952. No bounds relaxed.
+Fresh uninterrupted tests/test_system.py passed and restored the normal image.
+Full/SDK-guard/native-UEFI-thread/TLS pipeline 52428 exited 0 at 10:23:34;
+extra UEFI guard/launcher/events/UI pipeline 9769 exited 0 at 10:26:06.
+Actual pinned Cobalt refusal/OOM pipeline 2578 exited 0 at 10:26:26; still
+160 resolved/82 strong missing, no execution. Source matches frozen inputs;
+all handles terminal. Normal kernel/runtime/BSS: 252952/29136/0x7d2a0.
+Normal image SHA256:
+0849bb23f54b1f9c0bdf10b7c89f881263c3209827d8d3eaa9466f10da61fa6a.
+No Cobalt execution/renderer closure/import-count improvement is claimed.
+33.1/33.2 remain OPEN; no Phase 33.3 or push.
+
 ## Phase 33.2 target C++ guard provider — 2026-10-01
 
 Standalone SDK object user/platform-cxx-guard.c and actual compiler-emitted C++

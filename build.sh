@@ -5,7 +5,7 @@ if [[ "${MYOS_TRACE:-0}" == 1 ]]; then
     set -x
 fi
 mkdir -p build
-gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
+gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
     -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
     -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -c user/platform-runtime.c -o build/platform-runtime.o
 gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
