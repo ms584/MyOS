@@ -16,6 +16,7 @@ import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--compile', action='store_true', help='Also collect actual target compile failures')
+parser.add_argument('--keep-going', action='store_true', help='Collect all remaining compile failures instead of stopping after eight units')
 options = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 base = root / 'build/renderer-evaluation'
@@ -137,12 +138,15 @@ exit_code = result.returncode
 if options.compile and not exit_code:
     compile_log = out / 'compile.log'
     with compile_log.open('w') as stream:
-        compiled = subprocess.run(['ninja', '-C', str(out / 'build'), '-j2', '-k8'],
+        compiled = subprocess.run(['ninja', '-C', str(out / 'build'), '-j2', '-k0' if options.keep_going else '-k8'],
                                   env=env, stdout=stream, stderr=subprocess.STDOUT)
     report['compile_exit'] = compiled.returncode
     exit_code = compiled.returncode
     errors = [line for line in compile_log.read_text().splitlines()
               if 'error:' in line or line.startswith('FAILED:')]
+    report['compile_failure_limit'] = 0 if options.keep_going else 8
+    report['failed_units'] = sum(line.startswith('FAILED:') for line in errors)
+    report['error_count'] = sum('error:' in line for line in errors)
     print('\n'.join(errors[:30]), flush=True)
 (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps(report), flush=True)

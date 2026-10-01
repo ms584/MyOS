@@ -12,3 +12,10 @@ struct tm *gmtime_r(const time_t *timer,struct tm *output)
 }
 struct tm *localtime_r(const time_t *timer,struct tm *output)
 {return gmtime_r(timer,output);}
+time_t time(time_t *output)
+{
+    struct timespec now;
+    if(clock_gettime(CLOCK_REALTIME,&now))return (time_t)-1;
+    if(output)*output=now.tv_sec;
+    return now.tv_sec;
+}

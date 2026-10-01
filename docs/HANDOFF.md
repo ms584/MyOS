@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 rwlock/time/C++ SDK — 2026-10-01
+
+Checkpoint follows cedb69a; PHASE332_RWLOCK_SDK.md. Correct pinned rwlock80/
+attribute8 declarations; actual unchanged Mesa rwlock through native runtime,
+simultaneous readers/exclusive writer/preempted8workers/errors/cancel/relaunch
+exact resources. Only default attrs proved; existing non-NULL attr handling
+is NOT advertised as full conformance. Real realtime time() adapter preserves
+output on failure;28 C++ integer aliases. BIOS26564 PASS17:12:56, UEFI/time
+regression68696 PASS before its expected target compile1. Header regression PASS.
+Full keep-going probe80264 compile1 17:26:10 target-config-epnbvant exposes
+100 failed units/212 errors,877/887 scheduled commands reached. Use grouped
+dependency evidence for batches, not next8-error iterations or completion%.
+Kernel/runtime/BIOS/UEFI hashes unchanged; all jobs terminal. Cobalt not run.
+No Phase33.3 or push.
+
 ## Phase 33.2 sorting/PRNG SDK — 2026-10-01
 
 Checkpoint follows78922ff; PHASE332_SORT_SDK.md. Real sealed musl smoothsort

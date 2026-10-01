@@ -16,8 +16,11 @@ typedef union { uint8_t bytes[40];void *alignment; } pthread_mutexattr_t;
 typedef union { uint8_t bytes[96];void *alignment; } pthread_cond_t;
 typedef union { uint8_t bytes[40];void *alignment; } pthread_condattr_t;
 typedef union { uint8_t bytes[64];void *alignment; } pthread_once_t;
+typedef union { uint8_t bytes[80];void *alignment; } pthread_rwlock_t;
+typedef union { uint8_t bytes[8]; } pthread_rwlockattr_t;
 #define PTHREAD_MUTEX_INITIALIZER {{0}}
 #define PTHREAD_ONCE_INIT {{0}}
+#define PTHREAD_RWLOCK_INITIALIZER {{0}}
 #define PTHREAD_MUTEX_NORMAL 0
 #define PTHREAD_MUTEX_RECURSIVE 1
 #define PTHREAD_MUTEX_ERRORCHECK 2
@@ -59,11 +62,19 @@ int pthread_key_create(pthread_key_t *,void (*)(void *));
 int pthread_key_delete(pthread_key_t);
 void *pthread_getspecific(pthread_key_t);
 int pthread_setspecific(pthread_key_t,const void *);
+/* Default process-local rwlock attributes only; no pshared/timed/try API. */
+int pthread_rwlock_init(pthread_rwlock_t *,const pthread_rwlockattr_t *);
+int pthread_rwlock_destroy(pthread_rwlock_t *);
+int pthread_rwlock_rdlock(pthread_rwlock_t *);
+int pthread_rwlock_wrlock(pthread_rwlock_t *);
+int pthread_rwlock_unlock(pthread_rwlock_t *);
 #ifdef __cplusplus
 }
 static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
+static_assert(sizeof(pthread_rwlock_t)==80&&alignof(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8,"pinned rwlock storage");
 #else
 _Static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
 _Static_assert(_Alignof(pthread_mutex_t)==8&&_Alignof(pthread_cond_t)==8,"pinned alignment");
+_Static_assert(sizeof(pthread_rwlock_t)==80&&_Alignof(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8,"pinned rwlock storage");
 #endif
 #endif

@@ -19,6 +19,7 @@ int clock_gettime(int,struct timespec *);
 int clock_nanosleep(int,int,const struct timespec *,struct timespec *);
 int nanosleep(const struct timespec *,struct timespec *);
 int timespec_get(struct timespec *,int);
+time_t time(time_t *);
 struct tm *gmtime_r(const time_t *,struct tm *);
 struct tm *localtime_r(const time_t *,struct tm *);
 #ifdef __cplusplus

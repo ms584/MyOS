@@ -31,5 +31,5 @@ for name,path in (('calendar',root/'user/platform-calendar.c'),('convert',source
     objects.append(obj)
 library=out/'libmyos-calendar.a'
 subprocess.run(['ar','rcs',str(library),*map(str,objects)],check=True)
-print('UTC calendar SDK:',out,'pure converter + errno runtime dependency; '
+print('UTC calendar SDK:',out,'pure converter + errno/clock runtime dependencies; '
       'NOT timezone database/DST or native execution.',flush=True)
