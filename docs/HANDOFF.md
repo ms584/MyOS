@@ -3,6 +3,24 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 measured string / allocator SDK — 2026-10-01
+
+Checkpoint follows 00c9b6e; PHASE332_STRING_SDK.md. Actual string providers
+memmove/memcmp/strchr/strncpy/strstr/strdup and declarations for existing
+calloc/aligned_alloc/posix_memalign close measured renderer dependencies.
+Native C11+C++17 58821 exit 0 15:04:02, sdk-oaksy2zo: 37281 overlap moves,
+65536 unsigned compare pairs, string padding/guards/search/copy ownership,
+nonzero alignment/overflow/zero-fill/free and six launches/resources. No full
+libc claim: zero-size posix_memalign still reports ENOMEM and needs attention;
+C++ const overloads/protected-page boundary tests remain unproven. Integer
+and real Mesa blob regressions 2027 exit 0 15:02:28. Renderer 88515 terminal
+exit 1 15:02:19, target-config-matyj2n9: older string/allocator errors cleared,
+new strdup/OS-info/atexit checks exposed. strdup subsequently tested natively.
+Final target 13012 terminal exit 1 15:06:14, target-config-h0vmsizj:
+string/allocator declaration errors cleared; stat/temp/random/abort/scanning,
+OS-info/atexit and OS-socket ENOSYS remain. No native graphics execution.
+Images/kernel/runtime unchanged; no full/UEFI/Cobalt pass, 33.3 or push.
+
 ## Phase 33.2 dynamic memory streams / real Mesa wrapper — 2026-10-01
 
 Checkpoint follows 8dea155; PHASE332_MEMSTREAM_SDK.md. Owned open_memstream
