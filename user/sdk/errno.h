@@ -8,14 +8,18 @@ int *__errno_location(void);
 }
 #endif
 #define errno (*__errno_location())
+#define ENOENT 2
 #define EINTR 4
+#define EIO 5
 #define EBADF 9
 #define EAGAIN 11
 #define ENOMEM 12
 #define EBUSY 16
 #define EINVAL 22
+#define ESPIPE 29
 #define ERANGE 34
 #define EOVERFLOW 75
 #define EILSEQ 84
+#define ENOTSUP 95
 #define ETIMEDOUT 110
 #endif

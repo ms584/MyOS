@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native unbuffered file/console streams — 2026-10-01
+
+Checkpoint follows 06738ef; PHASE332_STREAM_SDK.md. Owned target FILE and
+descriptor-backed fopen/fdopen/fclose/read/write/seek/error/flush services,
+printf/fprintf and console chunking now execute in MyOS. Not Cobalt FILE ABI,
+full stdio, stdin or redirection. Final BIOS 88411 exit 0 at 14:40:56 proves
+binary/append/seek/EOF/errors, fd ownership/cloexec, 8-worker serialization,
+8-file limit, OOM rollback, blocked pipe Escape cancellation and 4 launches
+with identical reclaimed heap/pages. Initial cancel trial intentionally wrote
+a new persistent RAMFS file, causing +4096 heap; source confirms file data
+allocation, not leaked handle. Corrected test holds an existing asset instead.
+Formatter regression PASS 14:32:50. Renderer 13859 setup 0/compile 1 at
+14:38:56, target-config-kx6iuc3g: file-stream failures cleared; memstream,
+stat, mkstemp/unlink, allocator/abort/random/string/scanning still need work.
+Kernel/runtime/images unchanged; no new full/UEFI claim, Cobalt pass, 33.3
+or push. PROJECT_STATE.md remains the current entry point.
+
 ## Phase 33.2 native sealed memory/callback formatting — 2026-10-01
 
 Checkpoint follows bd4da4b; PHASE332_FORMAT_SDK.md. Real sealed musl formatter,

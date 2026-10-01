@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Sealed memory/callback formatter checkpoint follows bd4da4b. No push.
+Native unbuffered file/console stream checkpoint follows 06738ef. No push.
 Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -34,6 +34,7 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Target integer/descriptor headers + native rounding: PHASE332_INTEGER_SDK.md.
 - Guest environment/identity and limits: PHASE332_ENVIRONMENT.md.
 - Native memory/callback formatting and limits: PHASE332_FORMAT_SDK.md.
+- Native unbuffered file/console stream lifecycle: PHASE332_STREAM_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -50,7 +51,8 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Environment 14514 PASS 13:44:11: 8 workers/bounds/empty relaunch/resources.
 - Formatter BIOS PASS 14:10:31; integer/thread utility regressions PASS.
 - C/C++ format/env/math boundary PASS 14:09:20 (not native graphics).
-- Target 46154 at 14:07:35: configure 0, compile 1 (not graphics PASS).
+- Streams BIOS 88411 PASS 14:40:56: OOM/cancel/8 workers/relaunch/resources.
+- Target 13859 at 14:38:56: configure 0, compile 1, target-config-kx6iuc3g.
 - SDK-only change: no new UEFI/full run; kernel/runtime baseline unchanged.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
@@ -60,8 +62,8 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Host Mesa has four Linux dependencies; no native renderer selected.
 
 ## Required next work
-1. Close file/std/memory-stream lifecycle and measured libc/stat failures
-   (PHASE332_FORMAT_SDK.md), then target C++ and native EGL/GLES.
+1. Close memory-stream lifecycle and measured libc/stat failures
+   (PHASE332_STREAM_SDK.md), then target C++ and native EGL/GLES.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.

@@ -1,6 +1,6 @@
 """Compile sealed musl formatting with MyOS callback/lock/UTF-8 adapters.
 
-Memory/callback streams only; does not supply file/standard stream lifecycle.
+Includes owned unbuffered file/console streams, not the pinned Cobalt FILE ABI.
 """
 from pathlib import Path
 import contextlib
@@ -23,7 +23,10 @@ original=(source/'src/stdio/__towrite.c').read_text()
 boundary='\nhidden void __towrite_needs_stdio_exit()'
 assert original.count(boundary)==1
 # Only the pure callback-state transition; not the foreign libc exit hook.
-(out/'towrite.c').write_text(original.split(boundary)[0])
+transition=original.split(boundary)[0]
+assert transition.count('f->flags |= F_ERR;')==1
+(out/'towrite.c').write_text('#include <errno.h>\n'+transition.replace(
+    'f->flags |= F_ERR;', 'f->flags |= F_ERR; errno=EBADF;'))
 original=(source/'src/stdio/fwrite.c').read_text()
 assert original.count('size_t k, l = size*nmemb;')==1
 (out/'fwrite.c').write_text('#include <errno.h>\n#include <stdint.h>\n'+original.replace(
@@ -38,6 +41,7 @@ flags=['-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red
        '-Wall','-Wextra','-Werror','-Wno-parentheses']
 objects=[]
 for name,path in [('adapter',root/'user/platform-format.c'),('string',root/'user/platform-sdk-string.c'),
+                  ('stream',root/'user/platform-stream.c'),
                   ('towrite',out/'towrite.c'),
                   ('fwrite',out/'fwrite.c'),
                   *[(name,source/'src/stdio'/(name+'.c')) for name in
@@ -58,8 +62,9 @@ for line in symbols.splitlines():
     parts=line.split()
     if len(parts)==2 and parts[0]=='U':undefined.add(parts[1])
     elif len(parts)==3:defined.add(parts[2])
-assert undefined-defined <= {'malloc','free','__errno_location','pthread_mutex_lock','pthread_mutex_unlock'},undefined-defined
+assert undefined-defined <= {'malloc','free','__errno_location','pthread_mutex_lock','pthread_mutex_unlock',
+    'pthread_mutex_init','pthread_mutex_destroy','openat','fcntl','close','read','write','lseek'},undefined-defined
 library=out/'libmyos-format.a'
 subprocess.run(['ar','rcs',str(library),*map(str,objects)],check=True)
-print('FORMAT SDK COMPILE ONLY:',out,'callback/memory streams, no file lifecycle; '
+print('FORMAT SDK COMPILE ONLY:',out,'callback/memory and unbuffered file/console streams; '
       'native behavior unproven until tests pass.',flush=True)
