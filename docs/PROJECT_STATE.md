@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Target math/Mesa blob integration checkpoint follows 95580ce. No push.
+Native Mesa time/wait/calendar checkpoint follows 62197f4. No push.
 Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -31,6 +31,7 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
   PHASE332_THREAD_UTIL.md; native BIOS/UEFI PASS, not a graphics backend.
 - Math-only headers/static providers now in renderer cross-probe:
   PHASE332_MATH_SDK.md; final renderer is NOT linked or executed.
+- Native Mesa clock/32-bit wait and UTC calendar: PHASE332_TIME_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -44,8 +45,9 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Exported math headers/1895 vectors + FP workers BIOS 44692 PASS 12:20:46.
 - Real Mesa blob BIOS 44517 PASS 12:37:38: overflow, memchr/realloc growth,
   smallest-allocation exhaustion/trim ownership, three launches/exact resources.
-- Target 53882 terminal 12:31:59: configure 0, compile 1 (not graphics PASS).
-  C/C++ math/provider boundary and forbidden-link routes PASS 12:38:46.
+- Mesa time 12363 PASS 13:20:56: deadlines/calendar/8-worker cancel/relaunch.
+- C11 regression 90595 PASS 13:21:59 after SDK time header/wrapper changes.
+- Target 76188 at 13:22:00: configure 0, compile 1 (not graphics PASS).
 - SDK-only change: no new UEFI/full run; kernel/runtime baseline unchanged.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
@@ -57,7 +59,7 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 
 ## Required next work
 1. Close actual libc/header failures (sys/types.h, fcntl.h, inttypes.h,
-   stdio.h, localtime_r), then target C++ and native EGL/GLES.
+   stdio.h, LONG_MAX), then target C++ and native EGL/GLES.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.

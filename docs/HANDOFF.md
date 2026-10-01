@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native Mesa time/wait/calendar — 2026-10-01
+
+Checkpoint follows 62197f4; see PHASE332_TIME_SDK.md. Target os_time uses actual
+monotonic clocks/blocking timer observations for unnotified 32-bit words; it
+does not cast them to unsafe 64-bit SYS_WAIT or promise address-wake latency.
+Real Mesa C23 time/monotonic-condition sources are exercised; exact 1e9 ns
+addition now carries. Pure sealed musl calendar conversion supplies explicit
+UTC-only localtime_r/gmtime_r, not host timezone/DST or a full libc profile.
+Native BIOS 12363 PASS 13:20:56: clocks/deadlines, guarded offset-four words,
+calendar boundaries, eight sleeping-worker cancellation/relaunch/resources.
+C11 regression 90595 PASS 13:21:59. Renderer 76188 configure 0/compile 1 at
+13:22:00, target-config-bepnfc8v: still sys/types/fcntl/inttypes/stdio headers
+and LONG_MAX. Kernel/runtime/normal images unchanged, no new UEFI/full claim.
+Native graphics/Cobalt remain unexecuted; 33.1/33.2 OPEN; no 33.3 or push.
+
 ## Phase 33.2 target math integration / real Mesa blob — 2026-10-01
 
 Checkpoint follows 95580ce. Math SDK now exports a static archive and only five

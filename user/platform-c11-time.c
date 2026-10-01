@@ -10,8 +10,10 @@ int timespec_get(struct timespec *value,int base)
 {return base==TIME_UTC&&clock_gettime(CLOCK_REALTIME,value)==0?base:0;}
 /* Mesa's c11/time.h maps its extended bases to this distinct symbol.
  * Unsupported CPU-time/raw clocks are reported unavailable, not fabricated. */
+#ifndef MYOS_SDK_EXTERNAL_C23_TIME
 int c23_timespec_get(struct timespec *value,int base)
 {
     if(base!=1&&base!=2)return 0;
     return clock_gettime(base==1?CLOCK_REALTIME:CLOCK_MONOTONIC,value)==0?base:0;
 }
+#endif

@@ -35,6 +35,11 @@ for content in (patch, (root / 'tools/mesa_thread_util_target.patch').read_text(
                    input=content, text=True, cwd=root, check=True)
     subprocess.run(['git', 'apply', '--directory=' + str(source.relative_to(root)), '-'],
                    input=content, text=True, cwd=root, check=True)
+for check in (True,False):
+    subprocess.run(['git','apply',*(['--check'] if check else []),
+                    '--directory='+str(source.relative_to(root)),str(root/'tools/mesa_time_target.patch')],
+                   cwd=root,check=True)
+shutil.copyfile(root/'user/platform-mesa-time.c',source/'src/util/myos_time.c')
 intrinsics = subprocess.check_output(['gcc', '-print-file-name=include'], text=True).strip()
 flags = ['-m64', '-Oz', '-fPIC', '-ffreestanding', '-fno-builtin', '-mno-red-zone',
          '-fno-stack-protector', '-fno-asynchronous-unwind-tables', '-fno-unwind-tables',
@@ -42,15 +47,21 @@ flags = ['-m64', '-Oz', '-fPIC', '-ffreestanding', '-fno-builtin', '-mno-red-zon
 runtime = out / 'runtime.o'
 tls = out / 'tls.o'
 string = out / 'string.o'
+sleep = out / 'sleep.o'
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-runtime.c'), '-o', str(runtime)], check=True)
 subprocess.run(['nasm', '-f', 'elf64', str(root / 'user/platform-tls.asm'), '-o', str(tls)], check=True)
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-sdk-string.c'), '-o', str(string)], check=True)
+subprocess.run(['gcc', *flags, '-DMYOS_SDK_EXTERNAL_C23_TIME=1', '-c',
+                str(root/'user/platform-c11-time.c'), '-o',str(sleep)],check=True)
+with (out/'calendar-build.log').open('w') as calendar_log, contextlib.redirect_stdout(calendar_log):
+    calendar_build=runpy.run_path(str(root/'tools/build_time_sdk.py'))
 provider = out / 'libmyos-runtime-probe.a'
 with (out / 'math-build.log').open('w') as math_log, contextlib.redirect_stdout(math_log):
     math_build = runpy.run_path(str(root / 'tools/build_math_sdk.py'))
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
-subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string),
+subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
+                *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'
 def command(language):

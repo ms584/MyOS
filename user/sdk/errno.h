@@ -14,5 +14,6 @@ int *__errno_location(void);
 #define EBUSY 16
 #define EINVAL 22
 #define ERANGE 34
+#define EOVERFLOW 75
 #define ETIMEDOUT 110
 #endif
