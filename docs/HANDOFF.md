@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 string/C-locale/math-profile batch — 2026-10-01
+
+Checkpoint follows7d9242c; PHASE332_STRING_EXTENSIONS.md. Native bounded/
+unsigned/copy/concat/span/search/token/ASCII folding/classification providers,
+real malloc ownership, eight-worker independent tokenizer tests, C/C++ and
+BIOS/UEFI resources/relaunch PASS. Formatter regression35253 PASS17:55:19.
+Explicit GNU feature profile exposes sealed math constants without Linux ABI.
+Whole24751 compile1 17:58:43 riek2d10:100/212 ->72 failed units/115 errors;
+not completion%. Later GNU strings.h/strchrnul fix: single actual u_debug
+unit18:01:49 clears strcasecmp, still strtoll/sscanf; old whole report retained.
+Conversion/scanning/exit/setjmp/OS-info/C++ remain; no renderer/Cobalt pass.
+Normal image/kernel/runtime unchanged. No Phase33.3 or push.
+
 ## Phase 33.2 rwlock/time/C++ SDK — 2026-10-01
 
 Checkpoint follows cedb69a; PHASE332_RWLOCK_SDK.md. Correct pinned rwlock80/

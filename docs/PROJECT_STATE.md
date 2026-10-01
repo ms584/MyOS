@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Tested rwlock/time/C++ SDK checkpoint follows cedb69a. No push.
+Tested string/C-locale/math-profile checkpoint follows 7d9242c. No push.
 Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 
 ## Scope and status
@@ -31,6 +31,7 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - Open-file unlink/name reuse/last-close: PHASE331_UNLINK.md.
 - Real smoothsort/Mesa TLS sort/PRNG/finalizer SDK: PHASE332_SORT_SDK.md.
 - Real Mesa rwlock80/time/C++ aliases + full dependency map: PHASE332_RWLOCK_SDK.md.
+- String/token/C-locale/math-profile batch: PHASE332_STRING_EXTENSIONS.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -38,7 +39,6 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
 ## Current evidence (2026-10-01, +07)
-- Previous baseline full/SDK/UEFI 52428 PASS 10:23:34, before unlink change.
 - Full coverage completed as passed prefix 83161 + resumed suffix 89247
   exit 0 16:33:42, all remaining tests/VGA/finally; normal restored.
   NOT uninterrupted full-run PASS. Earlier runs hit media 30s boot timeout;
@@ -53,8 +53,10 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - RW/time BIOS26564 PASS17:12:56; UEFI/time regression68696 PASS, then
   expected probe compile1. Headers PASS17:23; no runtime/kernel/image change.
 - Whole renderer80264 compile1 17:26:10, target-config-epnbvant: configure/
-  boundary PASS;100 failed units/212 errors. RW/time/cstdint/ENOSYS cleared.
-  Root groups: math feature constants, C strings/conversion/scanning/exit,
+  boundary PASS;100 failed units/212 errors. New24751 compile1 17:58:43,
+  target-config-riek2d10:72 failed units/115 errors; NOT completion percent.
+  Final string88757 BIOS/UEFI PASS18:01/18:02; formatter35253 PASS17:55.
+  Root groups remaining: C conversion/scanning/exit,
   setjmp, OS-info/file locks and real target C++ dependencies. No backend.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.

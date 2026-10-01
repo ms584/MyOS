@@ -26,6 +26,7 @@ flags = [] if query else [
     '-ffreestanding', '-fno-builtin', '-mno-red-zone', '-fno-stack-protector',
     '-fmax-errors=5',
     '-fno-asynchronous-unwind-tables', '-fno-unwind-tables', '-D__myos__=1',
+    '-D_GNU_SOURCE=1',  # Mesa requires the sealed math header's extension constants.
     '-U__linux__', '-U__linux', '-Ulinux', '-U__gnu_linux__',
 ]
 if options.math_include and not query:
