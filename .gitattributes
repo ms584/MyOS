@@ -1,0 +1,4 @@
+# Unified-diff empty context lines must retain their leading space.
+tools/mesa_c11_target.patch whitespace=-blank-at-eol
+# Preserve the upstream license verbatim, including its terminal blank line.
+vendor/mesa-c11/licenses/BSL-1.0 whitespace=-blank-at-eof

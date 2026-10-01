@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Thread-services checkpoint follows abf3cd9. Local only; no push.
+Target C11 SDK checkpoint follows 45e08d7. Local only; no push.
 Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -29,6 +29,8 @@ Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
   runtime export: PHASE332_CXX_GUARD.md. No import count increase.
 - NEW timed mutex/main+worker pthread_exit, main join/detach and exclusive
   ownership: PHASE331_THREAD_SERVICES.md; constructor-time exit unsupported.
+- NEW pinned Mesa C11 provider on MyOS-only ABI headers; native BIOS/UEFI
+  clocks/threads/once/TSS/cancel tested: PHASE332_C11_SDK.md. Not renderer-linked.
 - Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -39,6 +41,9 @@ Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
 - New thread tests include main/worker exit, join/detach ownership, TSS/finalizers,
   realtime/overflow/error/errno, cancellation/relaunch and exact page/heap counts.
 - Extra UEFI guard/launcher/events/UI pipeline 9769 exited 0 at 10:26:06.
+- Target C11 BIOS PASS 10:46:43, UEFI PASS 10:47:11: no host libc headers or
+  DT_NEEDED; cancelled eight blocked workers/relaunch, exact page/heap recovery.
+  Shared BIOS/UEFI hashes unchanged; kernel sources unchanged, full result reused.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.

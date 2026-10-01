@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target C11 SDK — 2026-10-01
+
+Checkpoint follows 45e08d7; see PHASE332_C11_SDK.md. Three pristine pinned Mesa
+C11 sources plus a separate exact target patch now compile with MyOS-only ABI
+headers, -nostdinc/-ffreestanding and no Linux libc/C11 dependency. Native timed
+mutex uses actual blocking pthread deadlines, not a busy-loop fallback.
+Expanded BIOS PASS 10:46:43 +07, UEFI PASS 10:47:11: eight workers/failed ninth,
+once/TSS/destructors/signed exit, clocks/sleep/errors, recursive/timed mutex and
+condition deadlines, cancellation/relaunch with exact page/heap recovery.
+Tests use private verified boot snapshots; normal BIOS/UEFI images unchanged.
+Kernel/runtime sources unchanged, so fresh full 45e08d7 evidence is retained.
+SDK subset only: not fixed runtime exports, full libc/C11, renderer-linked,
+native EGL/GLES or Cobalt acceptance. No import-count improvement is claimed.
+Next: integrate the target provider into renderer dependency closure and prove
+native GLES/EGL/presentation before actual HTML/JS/DOM/input/HTTPS endurance.
+33.1/33.2 remain OPEN; no Phase 33.3 and no push.
+
 ## Phase 33.1/33.2 pthread teardown/timed mutex — 2026-10-01
 
 The thread-services checkpoint follows local abf3cd9. Native timed mutex blocks
