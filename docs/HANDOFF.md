@@ -3,6 +3,24 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native target math prototype — 2026-10-01
+
+Checkpoint follows 6e4bd4a; kernel/runtime remain 45e08d7. See PHASE332_MATH_SDK.md.
+Verified musl 1.2.6 archive is freshly extracted per isolated target build;
+64 selected math/FP sources close without undefined symbols or DT_NEEDED.
+Standalone library 46904 bytes, no PT_TLS, RW/NX stack and RELRO. No Linux libc,
+loader or syscall source is compiled. Upstream source/license remains intact;
+archive hash matches Buildroot, but MyOS did not independently verify PGP.
+Expanded 1895 MPFR-generated test vectors, IEEE classes/signed zero, selected
+exception flags and four worker rounding/FP-state preemption tests pass natively.
+Three launches reclaim page/heap resources; BIOS 51058 exited 0 at 11:25:38 +07,
+UEFI 49769 at 11:26:11. Shared images unchanged, fresh full baseline reused.
+Sampled accuracy is not full libm certification; visible argument-reducer warning,
+assembly red-zone and unmasked FP/signal limits are recorded in the detailed doc.
+This is not renderer-linked, full libc/C++ closure or a graphics backend selection.
+Native GLES/EGL/present then actual Cobalt HTML/JS/DOM/input/HTTPS endurance remain.
+No import-count improvement or 33.1/33.2 closure; no Phase 33.3 or push.
+
 ## Phase 33.2 native Mesa thread utilities — 2026-10-01
 
 Checkpoint follows local 30f06b6, kernel/runtime unchanged at 45e08d7. See

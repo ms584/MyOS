@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Native Mesa thread-util checkpoint follows 30f06b6. Local only; no push.
+Native target math checkpoint follows 6e4bd4a. Local only; no push.
 Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -33,25 +33,23 @@ Origin/main remains 54ef570 after fetch at 10:11 +07. Owner pushes manually.
   clocks/threads/once/TSS/cancel tested: PHASE332_C11_SDK.md. Not renderer-linked.
 - Real Mesa thread utils/barrier/semaphore/dispatch TLS/masks/names port:
   PHASE332_THREAD_UTIL.md; native BIOS/UEFI PASS, not a graphics backend.
+- Native math prototype/FP state: PHASE332_MATH_SDK.md; not renderer-linked.
 - Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
 ## Current evidence (2026-10-01, +07)
-- Fresh uninterrupted tests/test_system.py PASS on frozen changed source,
-  normal framebuffer image restored. Full + SDK guard + UEFI thread/TLS
-  pipeline 52428 exited 0 at 10:23:34; NOT merely the earlier resumed coverage.
-- Extra UEFI guard/launcher/events/UI pipeline 9769 exited 0 at 10:26:06.
-- Target C11 BIOS PASS 10:46:43, UEFI PASS 10:47:11: no host libc headers or
-  DT_NEEDED; cancelled eight blocked workers/relaunch, exact page/heap recovery.
-  Shared BIOS/UEFI hashes unchanged; kernel sources unchanged, full result reused.
-- Mesa util BIOS PASS 10:59:54, UEFI PASS 11:00:26: 48 barrier generations,
-  single serial thread, TLS/mask isolation, fault/cancel/relaunch/exact resources.
+- Fresh uninterrupted tests/test_system.py PASS; normal image restored.
+  Full + SDK guard + UEFI thread/TLS 52428 exited 0 at 10:23:34.
+- C11/Mesa util scoped BIOS+UEFI PASS, including cancel/relaunch/resources;
+  detailed times and coverage in PHASE332_C11_SDK.md/PHASE332_THREAD_UTIL.md.
+- Math 1895 MPFR vectors/FP isolation/relaunch: BIOS PASS 11:25:38,
+  UEFI PASS 11:26:11. No host library in native fixture; exact resources.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
   Image SHA256 0849bb23f54b1f9c0bdf10b7c89f881263c3209827d8d3eaa9466f10da61fa6a.
-- Process-test kernel 261144; cap 262144 unchanged. Only runtime C uses -Oz.
-  Tested source matches staged inputs; all above handles terminal. No live tests.
+- Process-test kernel 261144; cap unchanged. Only runtime C uses -Oz.
+  All handles terminal; no live tests. Images unchanged, full result reused.
 - Host Mesa still has four Linux dependencies; no native renderer selected.
   PHASE332_RENDERER.md and HANDOFF.md retain measured closure/older evidence.
 
