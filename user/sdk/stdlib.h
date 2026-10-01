@@ -1,6 +1,9 @@
 #ifndef MYOS_SDK_STDLIB_H
 #define MYOS_SDK_STDLIB_H
 #include <stddef.h>
+#if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+#include <alloca.h>
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif

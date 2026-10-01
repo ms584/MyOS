@@ -3,6 +3,29 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Latest handoff: native jump/stack allocation — 2026-10-01
+
+Checkpoint follows 0e24ba7; see PHASE332_JUMP_SDK.md. Read PROJECT_STATE.md,
+AGENTS.md and PHASE33_EXECUTION_PLAN.md first; inspect current Git before work.
+Unchanged sealed musl x64 setjmp/longjmp, guarded SDK jmp_buf and compiler
+stack alloca now tested in real MyOS. Final55677 BIOS PASS18:48:48 and UEFI
+PASS18:49:14: C/C++, six launches, register restoration after timed preemption,
+nested stack unwinding, eight workers and exact resource recovery.
+Whole87828 terminal compile1 18:55:07, target-config-u8ev3uvw: configure and
+boundary PASS;33 failed units/47 errors, down from53/80. No native backend.
+Progress:160/242 strong imports=66.1%; actual Cobalt acceptance0/5=0% verified.
+Neither metric is overall phase completion; Phase33.1/33.2 remain OPEN.
+Next: exit/abort process/finalizer semantics, OS-info/file-lock/stdio and real
+target C++ dependencies; then actual EGL/GLES/Starboard renderer integration.
+Raw SYS_EXIT deliberately skips FINI; pthread_exit is not process exit.
+Do not add success stubs or claim sigsetjmp/signal delivery/C++ unwinding.
+Current batch changes no kernel/runtime/normal image; hashes checked18:50:07.
+Full regression provenance remains passed prefix83161 + suffix89247, NOT a
+single uninterrupted full-run PASS. All jobs terminal; no image owner.
+Owner requested this tested checkpoint because account usage is nearly exhausted.
+Continue from the local commit; no new batch was started. No33.3 and NEVER PUSH.
+Keep commands logged via tools/run_logged.py; never log reads of activity.log.
+
 ## Phase 33.2 sealed conversion/memory scanning — 2026-10-01
 
 Checkpoint followsd96c8ca; PHASE332_SCAN_SDK.md. Actual musl integer/FP/scanf/

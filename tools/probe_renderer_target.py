@@ -69,6 +69,8 @@ with (out / 'sort-build.log').open('w') as sort_log, contextlib.redirect_stdout(
     sort_build = runpy.run_path(str(root / 'tools/build_sort_sdk.py'),init_globals={'math_build':math_build})
 with (out / 'scan-build.log').open('w') as scan_log, contextlib.redirect_stdout(scan_log):
     scan_build = runpy.run_path(str(root / 'tools/build_scan_sdk.py'),init_globals={'math_build':math_build})
+with (out / 'jump-build.log').open('w') as jump_log, contextlib.redirect_stdout(jump_log):
+    jump_build = runpy.run_path(str(root / 'tools/build_jump_sdk.py'),init_globals={'math_build':math_build})
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
 subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
@@ -76,6 +78,7 @@ subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string),
                 *map(str,format_build['objects']),
                 *map(str,sort_build['objects']),
                 *map(str,scan_build['objects']),
+                *map(str,jump_build['objects']),
                 *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'
