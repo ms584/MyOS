@@ -1,8 +1,8 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Native launcher checkpoint follows local 36a5cea; local commit only, no push.
-Origin/main remains 54ef570 after fetch at 07:28 +07. Owner pushes manually.
+Native TLS/SDK C++ checkpoint follows daa0cea; local only. No push.
+Origin/main remains 54ef570 after fetch at 08:43 +07. Owner pushes manually.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
@@ -16,43 +16,44 @@ Origin/main remains 54ef570 after fetch at 07:28 +07. Owner pushes manually.
   FIONREAD: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
 - Refcounted files/dirs, large/positional/vectored reads and real v2-disk fsync:
   PHASE331_FILES.md. Durable Starboard records: PHASE331_STORAGE.md.
-- Independent IPv4 TCP streams, endpoint timeval options and fixed deadlines,
-  descriptor cancellation/dup/poll/epoll/FIONREAD: PHASE331_TCP.md and
-  PHASE331_SOCKET_OPTIONS.md. AF_UNIX duplex: PHASE331_SOCKETPAIR.md.
+- Concurrent TCP/dup/readiness/deadlines: PHASE331_TCP.md,
+  PHASE331_SOCKET_OPTIONS.md; AF_UNIX duplex: PHASE331_SOCKETPAIR.md.
 - Long-running elf live lifecycle, cancellation/fault/OOM/relaunch reclamation:
   PHASE331_LIFECYCLE.md. Init/fini teardown: PHASE332_FINALIZERS.md.
-- NEW: owned native fullscreen window, copied RGBA/XRGB framebuffer and raw
-  PS/2 keyboard/mouse, wait/close/reuse/fault/cancel/relaunch reclamation:
-  PHASE332_NATIVE_UI.md. NOT EGL/GLES or Cobalt execution.
-- NEW native callbacks/cancel, lifecycle/preload, focused SbInputData,
-  real visibility/hidden presents and owned heap queue: PHASE332_EVENTS.md.
-- NEW `elf starboard`: actual SbEventHandle/SABI entry, owned argv/link, guarded
-  2 MiB main stack and actual stack queries/limits: PHASE332_LAUNCHER.md.
-- Pthread masks are the pinned 128-byte ABI; actual signal delivery is absent.
-- Logging cap: 16 MiB per file, two rotations, 48 MiB total; feedback rejected.
-  Never inspect activity.log through run_logged.py; use unwrapped tail -F.
+- Native fullscreen window/pixels/input: PHASE332_NATIVE_UI.md; NOT EGL/GLES.
+- Native callbacks/input/visibility/cancel/preload: PHASE332_EVENTS.md.
+- Guarded 2 MiB SABI/SbEventHandle launcher: PHASE332_LAUNCHER.md.
+- NEW native PT_TLS/GD/LD/IE/TLSDESC, distinct FS/templates, bounded slots and
+  syscall-time detached cleanup: PHASE331_NATIVE_TLS.md; BIOS/UEFI tested.
+- SDK C++ guard provider native-tested; not yet renderer-linked or a fixed
+  runtime export: PHASE332_CXX_GUARD.md. No import count increase.
+- Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
+  never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
 ## Current evidence (2026-10-01, +07)
-- Pinned Cobalt/44-header hashes and 243-row contract register PASS again 06:49.
-- Host-only Mesa probe passed 03:12; TLS/C++ dependency closure inspected 07:03
-  but NOT ported or selected as native backend: PHASE332_RENDERER.md.
-- Small-PIC runtime adopted after native dynamic/runtime/storage/UI/events
-  regression PASS 06:31:41, including >60s lifecycle and exact reclamation.
-- Native launcher PASS 06:39:26: pinned ABI/SABI, zero entry/sectionless,
-  malformed exports, URL/args, 256 KiB stack use, atomic query rejection,
-  getter-before-ctors, real input, guard/NX/getter faults, stop/cancel/relaunch.
-- Expanded scoped regression PASS 06:47:58; actual Cobalt link/launcher still
-  reject 82 missing imports before user execution; both OOM paths reclaim fully.
-- Replacement FULL tests/test_system.py PASS observed 07:21; normal restored:
-  kernel 253464, image 1474560, runtime 29840, BSS end 0x7d400; limits preserved.
-- UEFI DMA/actual frames/PCM + DHCP/DNS PASS 07:21; launcher/events/native UI
-  and ASan/UBSan PASS, sequence exit=0 at 07:22:32. No test remains running.
-- Supplemental BIOS launcher PASS 07:27:28 with exact guard/NX/getter page-fault
-  bits/addresses and twelve malformed exports. Normal image unchanged.
+- Pinned Cobalt/44-header hashes and 243-row contract register PASS again 07:57.
+- Host Mesa reduced-C++ build/probe PASS 08:17:49; 186->176 strong undefined,
+  four Linux dependencies remain; NOT native: PHASE332_RENDERER.md.
+- Native TLS GD/IE/TLSDESC BIOS PASS 07:49:05; expanded LD/zero-only/alignment,
+  12 invalid/3 unsupported cases, RELRO/descriptor bounds, 36 worker lifetimes,
+  exact NX/guard/worker faults, cancel/OOM/relaunch PASS 07:56:26.
+- Normal: kernel 253624, image 1474560, runtime 29936, BSS 0x7d540.
+- Full 72357 stopped 08:11:17 at v2 reboot's 40s boot bound; normal restored.
+  Diagnostic reboot reached prompt by 40.01s and persisted app status 26.
+  Apps use existing 60s VM boot budget; functional checks unchanged.
+- Session 55894 reran apps/all later full checks, Cobalt staging and UEFI;
+  exit 0 at 08:44:17. Earlier unchanged passes retained: resumed full coverage,
+  NOT a fresh uninterrupted full invocation. Normal restored; no live tests.
+- SDK C++ guard native PASS 08:28:46/08:31:04, abort/wake/publication, recursion
+  fault, blocked-worker cancel/relaunch, exact resources; immutable private image.
+- Apps/TLS alignment, storage/16+256 MiB, faults/VGA and UEFI TLS/launcher/
+  events/UI/DMA/frames/captured PCM/DHCP/DNS all PASS. SDK guard UEFI PASS
+  08:42:33. Actual Cobalt refused with 82 strong imports missing, NOT executed.
 
 ## Required next work
-1. Native EGL/GLES/TLS dependency closure and remaining required contracts;
-   preserve private runtime thread identity and test native TLS ownership.
+1. Target libc/C11/C++ and native EGL/GLES closure; remaining required contracts.
+   Mesa needs real blocking pthread_mutex_timedlock and destructor-safe
+   pthread_exit; never adopt its busy-loop timedlock fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.
 

@@ -255,6 +255,8 @@ def main():
             platform_events_exercise()
             from test_starboard_launcher import main as starboard_launcher_exercise
             starboard_launcher_exercise()
+            from test_native_tls import main as native_tls_exercise
+            native_tls_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

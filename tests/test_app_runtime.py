@@ -53,7 +53,9 @@ def exercise():
     subprocess.run(['python3','tools/make_app_disk.py','--large',str(large),'build/capacity.app','capacity'],cwd=ROOT,check=True)
     vm=VM('app-runtime-large',disk=large)
     try:
-        vm.wait('myos> ',timeout=40)
+        # Use the suite's bounded 60-second boot budget. A full self-test boot
+        # plus two validated v2 banks can approach 40 seconds under host load.
+        vm.wait('myos> ')
         output=command(vm,'run /bin/capacity','App exited with status 26')
         assert 'Large C app crossed a code page' in output,output
         command(vm,'cp /bin/capacity /home/capacity')
@@ -62,7 +64,7 @@ def exercise():
     finally:vm.close()
     vm=VM('app-runtime-large-reboot',disk=large)
     try:
-        vm.wait('myos> ',timeout=40)
+        vm.wait('myos> ')
         command(vm,'run /home/capacity','App exited with status 26')
         print('PASS: multi-page executable persists across v2 reboot',flush=True)
     finally:vm.close()
@@ -77,7 +79,7 @@ def exercise():
         disk.write(bytes([byte[0]^0xff]))
     vm=VM('app-runtime-large-recovery',disk=large)
     try:
-        vm.wait('myos> ',timeout=40)
+        vm.wait('myos> ')
         assert 'restored RAMFS generation 1' in vm.log.read_text()
         command(vm,'run /bin/capacity','App exited with status 26')
         command(vm,'run /home/capacity','error: not found')
@@ -88,7 +90,7 @@ def exercise():
     subprocess.run(['python3','tools/make_app_disk.py','--large',str(browser),'build/wapcaplet.app','wapcaplet'],cwd=ROOT,check=True)
     vm=VM('app-runtime-browser-component',disk=browser)
     try:
-        vm.wait('myos> ',timeout=40)
+        vm.wait('myos> ')
         output=command(vm,'run /bin/wapcaplet','App exited with status 26')
         assert 'NetSurf libwapcaplet Ring 3: string interning PASS' in output,output
         print('PASS: real NetSurf dependency ported to isolated Ring 3 with app heap/BSS',flush=True)

@@ -3,6 +3,57 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target C++ guard provider — 2026-10-01
+
+Standalone SDK object user/platform-cxx-guard.c and actual compiler-emitted C++
+fixture now have native scoped evidence. Four blocked workers retry after
+initializer abort; release publishes exactly once, recursion becomes owned
+vector-6 fault, process cancel/relaunch reclaims all resources. Expanded native
+PASS 08:28:46 and repository-source repeat PASS 08:31:04. See
+PHASE332_CXX_GUARD.md; run tests/test_cxx_guard.py. Tests clone/verify an
+immutable image and do not rebuild/change the main regression image.
+The object is statically linkable target SDK groundwork, not included in
+build.sh/fixed runtime or linked into a native renderer yet. No import count
+increase, __cxa_atexit/exception/unwind claim, Cobalt pass or Phase 33.3 work.
+Repository-path/mkdir repeat PASS 08:34:22; expanded host contention also PASS.
+SDK guard UEFI PASS 08:42:33 on a cloned latest package. Native TLS regression
+55894 finished at 08:44:17 with exit 0: complete apps/stronger alignment, storage,
+16/256 MiB, faults/VGA, actual Cobalt refusal/reclamation and native UEFI
+TLS/launcher/events/UI/DMA/PCM/DHCP/DNS all passed. Local checkpoint only; no push.
+
+## Phase 33.1/33.2 native ELF TLS continuation — 2026-10-01
+
+Work from local daa0cea, uncommitted. Native single-module ET_DYN PT_TLS now
+has GD/LD/IE/TLSDESC relocations, a real main/worker FS base and bounded private
+RW/NX slots. Relocated templates and zero TBSS initialize workers independently
+of constructor-modified main values. Existing errno/pthread identity is preserved.
+Slots clear on join/detach; detached stacks now reap on a noncurrent task's next
+syscall instead of waiting for thread creation. No native-libc TCB, dynamic TLS
+modules, C++ TLS destructor registration or renderer is claimed. See
+PHASE331_NATIVE_TLS.md. TLS tests also exposed valid GNU ld RELRO padding;
+only pages already mapped by one writable/nonexecuting LOAD can be protected.
+
+Initial GD/IE/TLSDESC BIOS fixture PASS 07:49:05 +07. Expanded LD/zero-only/
+alignment, twelve invalid and three unsupported cases, whole-descriptor bounds,
+RELRO unmapped-tail rejection, 36 joined/detached worker lifetimes, constructors/
+finalizers, FS/errno/key destructors, exact faults, cancel/OOM and relaunch
+reclamation PASS 07:56:26. Stronger actual-address alignment assertions are in
+the full suite. Last normal build: kernel 253624, runtime 29936, image 1474560,
+BSS end 0x7d540; safety limits unchanged.
+Full session 72357 stopped 08:11:17 at app-runtime-large-reboot's 40s boot
+bound; normal image restored. Diagnostic rerun reached prompt by 40.01s and
+ran persisted app with status 26; no disk/guest fault observed. App boot waits
+now use the suite's existing bounded 60s default, with functional checks intact.
+Session 55894 started 08:17:07: complete apps rerun and all later full checks,
+then actual Cobalt staging/UEFI; earlier unchanged passes retained. No concurrent
+shared-image builds. This is resumed coverage, NOT a fresh full invocation PASS.
+The complete remainder and UEFI chain passed, exit 0 at 08:44:17. Retained
+earlier unchanged checks plus complete apps/later checks constitute resumed full
+coverage, not a fresh uninterrupted full invocation. Normal image restored:
+kernel 253624, runtime 29936, image 1474560, BSS 0x7d540. Prior daa0cea passes
+remain historical, not substitute evidence. Actual native Cobalt is unproved;
+33.1/33.2 OPEN, no Phase 33.3 and no push.
+
 ## Phase 33.2 native launcher continuation — 2026-10-01
 
 Tested local checkpoint following 36a5cea. Added `elf starboard ASSET [URL]`

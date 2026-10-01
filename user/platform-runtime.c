@@ -242,6 +242,17 @@ static int64_t call4(uint64_t number,uint64_t first,uint64_t second,uint64_t thi
 static uint64_t self_page(void){return (uint64_t)(uintptr_t)__errno_location()&~4095ull;}
 static struct thread_control *self_control(void)
 {return *(struct thread_control **)(uintptr_t)(self_page()+8);}
+/* One eager ELF TLS module. This TCB is not a glibc/musl pthread object.
+ * Compiler-generated TLS accesses use FS; private runtime identity stays in
+ * its existing pages. Slot metadata is zero when no ELF TLS is installed. */
+void *__tls_get_addr(const uint64_t index[2])
+{
+    uint64_t tp=*(const uint64_t *)(uintptr_t)(self_page()+48);
+    if(!index||!tp||index[0]!=1){*__errno_location()=EINVAL;return 0;}
+    const uint64_t *tcb=(const void *)(uintptr_t)tp;
+    if(index[1]>=tcb[3]){*__errno_location()=EINVAL;return 0;}
+    return (void *)(uintptr_t)(tcb[2]+index[1]);
+}
 static void yield_cpu(void){(void)call3(SYS_YIELD,0,0,0);}
 static int wait64(volatile uint64_t *word,uint64_t value,uint64_t deadline)
 {return (int)call3(SYS_WAIT,(uintptr_t)word,value,deadline);}

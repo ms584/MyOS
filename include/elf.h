@@ -7,9 +7,11 @@
 #define ELF_STACK_OFFSET 0x10001000ull
 #define ELF_STACK_PAGES 4u
 #define ELF_STARBOARD_STACK_PAGES 512u
+#define ELF_TLS_LIMIT (60u*1024u)
 struct elf_source { void *context; uint64_t size; bool (*read)(void *,uint64_t,void *,size_t); };
 struct elf_segment { uint64_t offset,address,filesz,memsz; uint32_t flags; };
-struct elf_plan { struct elf_segment segments[ELF_SEGMENTS]; unsigned count,stack_pages; uint64_t entry,dynamic_address,dynamic_size,relro_address,relro_size; bool dynamic; };
+struct elf_plan { struct elf_segment segments[ELF_SEGMENTS]; unsigned count,stack_pages; uint64_t entry,dynamic_address,dynamic_size,relro_address,relro_size;
+    uint64_t tls_address,tls_filesz,tls_size,tls_align,tls_offset; bool dynamic; };
 int elf_plan_read(const struct elf_source *,struct elf_plan *);
 int elf_inspect(const struct elf_source *);
 struct process;

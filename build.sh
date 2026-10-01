@@ -16,7 +16,8 @@ gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreesta
     -mno-red-zone -msse2 -fno-stack-protector -fno-asynchronous-unwind-tables \
     -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude \
     -c user/platform-event.c -o build/platform-event.o
-ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o
+nasm -f elf64 user/platform-tls.asm -o build/platform-tls.o
+ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h
 flags=(-m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic

@@ -38,17 +38,28 @@ static bool span(const struct elf_plan *plan,uint64_t offset,uint64_t size,unsig
 }
 static bool read_image(struct linker *l,uint64_t offset,void *dst,size_t size)
 {return span(l->plan,offset,size,4)&&process_image_copy(l->process,USER_BASE+offset,dst,size,false);}
+static bool relro_pages(const struct elf_plan *plan,uint64_t address,uint64_t size)
+{
+    /* GNU ld may include final-page padding beyond p_memsz in PT_GNU_RELRO.
+     * Only accept pages actually mapped by ONE writable, nonexecuting LOAD. */
+    if(address<USER_BASE||address>=USER_BASE+ELF_SPAN||size>USER_BASE+ELF_SPAN-address)return false;
+    for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
+        uint64_t end=s->address+s->memsz;
+        if(s->flags==6&&address>=s->address&&address<end&&
+           address+size<=((end+PAGE_SIZE-1)&~(PAGE_SIZE-1ull)))return true;
+    }return false;
+}
 static bool overlap(uint64_t a,uint64_t n,uint64_t b,uint64_t m)
 {return n&&m&&a<b+m&&b<a+n;}
-static bool target(struct linker *l,uint64_t offset)
+static bool target(struct linker *l,uint64_t offset,unsigned width)
 {
-    if(!span(l->plan,offset,8,6))return false;
+    if(!span(l->plan,offset,width,6))return false;
     uint64_t tables[][2]={{l->plan->dynamic_address-USER_BASE,l->plan->dynamic_size},
         {l->dt[7],l->dt[8]},{l->dt[23],l->dt[2]},
         {l->dt[6],(uint64_t)l->symbols*24},{l->dt[5],l->dt[10]},
         {l->gnu_hash,l->gnu_bytes},{l->dt[4],l->hash_bytes}};
     for(unsigned i=0;i<sizeof(tables)/sizeof(tables[0]);++i)
-        if(overlap(offset,8,tables[i][0],tables[i][1]))return false;
+        if(overlap(offset,width,tables[i][0],tables[i][1]))return false;
     return true;
 }
 static int parse(struct linker *l)
@@ -67,7 +78,7 @@ static int parse(struct linker *l)
         switch(d.tag){
         case 1:case 17:case 18:case 19:case 32:case 33:return -95;
         case 22:return -8;
-        case 30:if(d.value&~10ull)return -95;break;
+        case 30:if(d.value&~26ull)return -95;break;
         default:break;
         }
     }
@@ -102,8 +113,12 @@ static int parse(struct linker *l)
 static int get_symbol(struct linker *l,unsigned index,struct symbol *s)
 {
     if(index>=l->symbols||!read_image(l,l->dt[6]+24ull*index,s,sizeof(*s)))return -8;
-    if((s->info&15)==6||(s->info&15)==10||s->info>>4>2)return -95; /* TLS/IFUNC/unique */
+    if((s->info&15)==10||s->info>>4>2)return -95; /* IFUNC/unique */
     if(s->name>=l->dt[10])return -8;
+    if((s->info&15)==6){
+        if(!l->plan->tls_size||!s->section)return -95; /* No external TLS module. */
+        if(s->section>=0xff00||s->value>=l->plan->tls_size||s->size>l->plan->tls_size-s->value)return -8;
+    }
     return 0;
 }
 static int symbol_name(struct linker *l,const struct symbol *s,char name[256])
@@ -129,6 +144,7 @@ static int imports(struct linker *l)
 static int value(struct linker *l,unsigned index,uint64_t *out,bool *missing)
 {
     struct symbol s;int rc=get_symbol(l,index,&s);if(rc)return rc;*missing=false;
+    if((s.info&15)==6)return -8; /* TLS offsets are not ordinary image VAs. */
     if(!s.section){
         char name[256];if(index&&symbol_name(l,&s,name))return -8;
         if(index&&platform_resolve(name,out))return 0;
@@ -149,11 +165,26 @@ static int relocate(struct linker *l,uint64_t start,uint64_t size)
     for(uint64_t i=0;i<size;i+=24){struct rela r;if(!read_image(l,start+i,&r,sizeof(r)))return -8;
         unsigned type=(uint32_t)r.info,index=(unsigned)(r.info>>32);uint64_t resolved=0;bool missing=false;
         if(!type)continue;
-        if(!target(l,r.offset))return -8;
+        if(!target(l,r.offset,type==36?16:8))return -8;
         if(type==8){if(index||!add_signed(USER_BASE,r.addend,&resolved)||resolved<USER_BASE||resolved>USER_BASE+ELF_SPAN)return -8;++l->relative;}
         else if(type==1||type==6||type==7){int rc=value(l,index,&resolved,&missing);if(rc)return rc;
             if(type==1){if(!missing&&!add_signed(resolved,r.addend,&resolved))return -8;++l->absolute;}
             else{if(r.addend)return -8;if(type==6)++l->global;else ++l->jump;}
+        }else if(type==16||type==17||type==18||type==36){
+            if(!l->plan->tls_size)return -95;
+            uint64_t offset=0;
+            if(index){struct symbol s;int rc=get_symbol(l,index,&s);if(rc)return rc;
+                if((s.info&15)!=6)return -8;offset=s.value;}
+            if(type==16){if(r.addend)return -8;resolved=1;}
+            else {
+                if(!add_signed(offset,r.addend,&offset)||offset>=l->plan->tls_size)return -8;
+                resolved=type==17?offset:offset-l->plan->tls_offset;
+            }
+            if(type==36){uint64_t address;if(!platform_resolve("MyOSTlsDesc",&address))return -95;
+                uint64_t descriptor[]={address,resolved};
+                if(!process_image_copy(l->process,USER_BASE+r.offset,descriptor,16,true))return -8;
+                continue;
+            }
         }else return -95;
         if(missing){++l->skipped;continue;}
         if(!process_image_copy(l->process,USER_BASE+r.offset,&resolved,8,true))return -8;
@@ -194,18 +225,19 @@ static int prepare(struct process *process,const struct elf_plan *plan,struct el
     memset(start,0,sizeof(*start));if(!plan->dynamic)return 0;
     struct linker l={.process=process,.plan=plan};int rc=parse(&l);if(rc)return rc;
     if((rc=imports(&l)))return rc;
-    if((l.platform||starboard)&&!process_map_runtime(process))return -12;
+    if((l.platform||starboard||plan->tls_size)&&!process_map_runtime(process))return -12;
     if((rc=relocate(&l,l.dt[7],l.dt[8]))||(rc=relocate(&l,l.dt[23],l.dt[2])))return rc;
     print("ELF relocations: relative=");decimal(l.relative);print(" absolute=");decimal(l.absolute);
     print(" global=");decimal(l.global);print(" jump=");decimal(l.jump);print(" skipped=");decimal(l.skipped);print("\n");
     print("ELF bindings: missing=");decimal(l.missing);print(" weak-zero=");decimal(l.weak);print("\n");
     if(plan->relro_size){
-        if(!span(plan,plan->relro_address-USER_BASE,plan->relro_size,6)||
+        if(!relro_pages(plan,plan->relro_address,plan->relro_size)||
            (plan->relro_address+plan->relro_size)%PAGE_SIZE||
            !process_image_readonly(process,plan->relro_address,plan->relro_size))return -8;
         print("ELF RELRO: protected\n");
     }
     if(l.missing)return -95; /* Never call constructors/entry against stubs. */
+    if(!process_install_tls(process,plan))return -12;
     if(starboard){
         if((rc=exported_function(&l,"SbEventHandle",&start->handler))||
            (rc=exported_function(&l,"GetEvergreenSabiString",&start->sabi)))return rc;

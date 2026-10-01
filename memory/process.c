@@ -25,6 +25,7 @@ static void release(struct process *process)
     kfree(process->image_pages);
     kfree(process->vm_pages);
     kfree(process->kernel_stack);
+    kfree(process->tls_template);
     memset(process, 0, sizeof(*process));
 }
 
@@ -180,6 +181,8 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
     unsigned stack_pages=plan->stack_pages?plan->stack_pages:ELF_STACK_PAGES;
     if(stack_pages<ELF_STACK_PAGES||stack_pages>ELF_STARBOARD_STACK_PAGES){irq_restore(flags);return 0;}
     unsigned capacity=128+stack_pages-ELF_STACK_PAGES;
+    if(plan->tls_size)capacity+=(PROCESS_THREAD_LIMIT+1u)*
+        (unsigned)((plan->tls_offset+PAGE_SIZE-1)/PAGE_SIZE+1);
     for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
         capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
     }
@@ -421,21 +424,69 @@ bool process_user_access(struct process *p,uint64_t address,size_t length,unsign
     return true;
 }
 
+/* TLS mappings are process-owned bounded slots, never anonymous mmap regions.
+ * Save a relocated immutable template before constructors; each worker gets
+ * a fresh copy, not the main thread's possibly modified values. */
+static void tls_write(struct process *p,uint64_t address,const void *source,size_t length)
+{
+    const unsigned char *bytes=source;
+    while(length){uint64_t *e=vm_leaf(p,address,false);check(e&&(*e&7)==7,"TLS writable mapping");
+        size_t n=PAGE_SIZE-address%PAGE_SIZE;if(n>length)n=length;
+        memcpy((void *)(uintptr_t)((*e&0x000ffffffffff000ull)+address%PAGE_SIZE),bytes,n);
+        address+=n;bytes+=n;length-=n;
+    }
+}
+static uint64_t tls_reset(struct process *p,unsigned slot,bool initialize)
+{
+    uint64_t base=PROCESS_ELF_TLS_BASE+(uint64_t)slot*p->tls_stride;
+    uint64_t mapped=p->tls_stride-PAGE_SIZE,tp=base+mapped-PAGE_SIZE;
+    for(uint64_t a=base;a<base+mapped;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);
+        check(e&&(*e&7)==7,"TLS slot mapping");memset((void *)(uintptr_t)(*e&0x000ffffffffff000ull),0,PAGE_SIZE);}
+    if(initialize){
+        tls_write(p,tp-p->tls_offset,p->tls_template,p->tls_size);
+        uint64_t tcb[]={tp,0,tp-p->tls_offset,p->tls_size};tls_write(p,tp,tcb,sizeof(tcb));
+    }
+    uint64_t active=initialize?tp:0;
+    tls_write(p,PROCESS_RUNTIME_TLS_BASE+(uint64_t)slot*PAGE_SIZE+48,&active,8);
+    return tp;
+}
+bool process_install_tls(struct process *p,const struct elf_plan *plan)
+{
+    if(!plan->tls_size)return true;
+    p->tls_template=kmalloc(plan->tls_size);if(!p->tls_template)return false;
+    memset(p->tls_template,0,plan->tls_size);
+    if(!process_image_copy(p,plan->tls_address,p->tls_template,plan->tls_filesz,false))return false;
+    p->tls_offset=plan->tls_offset;p->tls_size=plan->tls_size;
+    p->tls_stride=((p->tls_offset+PAGE_SIZE-1)&~(PAGE_SIZE-1ull))+2*PAGE_SIZE;
+    for(unsigned slot=0;slot<=PROCESS_THREAD_LIMIT;++slot){
+        uint64_t base=PROCESS_ELF_TLS_BASE+(uint64_t)slot*p->tls_stride;
+        for(uint64_t a=base;a<base+p->tls_stride-PAGE_SIZE;a+=PAGE_SIZE)
+            if(!elf_map_page(p,p->image_capacity,a,6))return false;
+        if(!slot)p->main_fs_base=tls_reset(p,slot,true);
+    }
+    return true;
+}
 static void thread_release(struct process *p,struct process_thread *thread)
 {
     uint64_t user_stack=thread->user_stack;size_t user_length=thread->user_stack_length;
     check(thread->state==PROCESS_THREAD_ZOMBIE,"release live thread");
     check(scheduler_detach_thread(p,thread),"detach user thread");
+    if(p->tls_size)tls_reset(p,(unsigned)(thread-p->threads)+1,false);
     kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));
     if(user_stack)check(!process_vm_unmap(p,user_stack,user_length),"detached stack release");
 }
 
+void process_cleanup_detached(struct process *p)
+{
+    struct process_thread *current=scheduler_current_thread();
+    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
+        if(&p->threads[i]!=current&&p->threads[i].state==PROCESS_THREAD_ZOMBIE&&p->threads[i].detached)
+            thread_release(p,&p->threads[i]);
+}
 int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
                               uint64_t stack,uint64_t tls)
 {
-    for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
-        if(p->threads[i].state==PROCESS_THREAD_ZOMBIE&&p->threads[i].detached)
-            thread_release(p,&p->threads[i]);
+    process_cleanup_detached(p);
     if(!process_user_access(p,entry,1,PROCESS_PROT_EXEC)||stack<8||
        !process_user_access(p,stack-8,8,PROCESS_PROT_WRITE)||
        (tls&&!process_user_access(p,tls,8,PROCESS_PROT_READ)))return -14;
@@ -443,6 +494,7 @@ int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
     for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
         if(p->threads[i].state==PROCESS_THREAD_UNUSED){thread=&p->threads[i];break;}
     if(!thread)return -11;
+    if(p->tls_size&&tls)return -22; /* Installed module owns FS, no replacement. */
     thread->kernel_stack=kmalloc(16384);
     if(!thread->kernel_stack)return -12;
     thread->kernel_top=((uintptr_t)thread->kernel_stack+16384)&~15ull;
@@ -450,9 +502,11 @@ int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
     memset(thread->frame,0,sizeof(*thread->frame));
     thread->frame->rip=entry;thread->frame->cs=0x2b;thread->frame->ss=0x23;
     thread->frame->rsp=(stack&~15ull)-8;thread->frame->rdi=arg;thread->frame->flags=0x202;
-    thread->fs_base=tls;thread->tid=(p->pid<<32)|++p->next_tid;
+    thread->fs_base=p->tls_size?tls_reset(p,(unsigned)(thread-p->threads)+1,true):tls;
+    thread->tid=(p->pid<<32)|++p->next_tid;
     thread->state=PROCESS_THREAD_RUNNING;
     if(!scheduler_attach_thread(p,thread)){
+        if(p->tls_size)tls_reset(p,(unsigned)(thread-p->threads)+1,false);
         kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));return -11;
     }
     return (int64_t)thread->tid;

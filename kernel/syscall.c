@@ -251,6 +251,7 @@ struct frame *syscall_dispatch(struct frame *frame)
         frame->rax = (uint64_t)-1; /* EPERM: only a user process may call. */
         return frame;
     }
+    process_cleanup_detached(process);
     switch (frame->rax) {
     case SYS_WRITE: {
         size_t length = frame->rsi;

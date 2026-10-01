@@ -22,11 +22,23 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
     memset(plan,0,sizeof(*plan));plan->dynamic=h.type==3;plan->stack_pages=ELF_STACK_PAGES;
     uint64_t bias=plan->dynamic?USER_BASE:0;
     if(h.entry>UINT64_MAX-bias)return -8;
-    plan->entry=h.entry+bias;bool entry=false;
+    plan->entry=h.entry+bias;bool entry=false,tls=false;struct phdr tls_header={0};
     for(unsigned i=0;i<h.phnum;++i){
         struct phdr p;if(!read_at(s,h.phoff+i*56,&p,sizeof(p)))return -8;
-        /* Interpreter and TLS require a runtime contract not supplied here. */
-        if(p.type==3||p.type==7)return -95;
+        if(p.type==3)return -95; /* No ELF interpreter/host loader. */
+        if(p.type==7){
+            if(!plan->dynamic)return -95;
+            if(tls||!p.memsz||p.filesz>p.memsz||p.offset>s->size||p.filesz>s->size-p.offset||
+               p.vaddr>=ELF_SPAN||p.memsz>ELF_SPAN-p.vaddr||p.flags!=4)return -8;
+            if(p.memsz>ELF_TLS_LIMIT||p.align>PAGE_SIZE)return -95;
+            uint64_t align=p.align?p.align:1;
+            if((align&(align-1))||p.vaddr%align!=p.offset%align)return -8;
+            tls=true;tls_header=p;plan->tls_address=p.vaddr+bias;plan->tls_filesz=p.filesz;
+            plan->tls_size=p.memsz;plan->tls_align=align;
+            uint64_t first=p.vaddr%align;
+            plan->tls_offset=((p.memsz+first+align-1)&~(align-1))-first;
+            continue;
+        }
         if(p.type==2&&!plan->dynamic)return -95;
         if(p.type==0x6474e551&&(p.flags&1))return -8; /* executable stack */
         if(p.type==2||(p.type==0x6474e552&&plan->dynamic)){
@@ -51,6 +63,14 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
         if((p.flags&1)&&plan->entry>=address&&plan->entry-address<p.filesz)entry=true;
     }
     if(!plan->count||(!plan->dynamic&&!entry))return -8;
+    if(tls){bool backed=false;
+        for(unsigned i=0;i<plan->count;++i){const struct elf_segment *p=&plan->segments[i];
+            if(plan->tls_address>=p->address&&plan->tls_address-p->address<=p->filesz&&
+               plan->tls_filesz<=p->filesz-(plan->tls_address-p->address)&&
+               tls_header.offset==p->offset+plan->tls_address-p->address)backed=true;
+        }
+        if(!backed)return -8;
+    }
     return 0;
 }
 int elf_inspect(const struct elf_source *s)

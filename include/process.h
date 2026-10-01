@@ -14,6 +14,7 @@
 #define PROCESS_VM_END  (USER_BASE + 0x3f000000ull)
 #define PROCESS_RUNTIME_BASE PROCESS_VM_END
 #define PROCESS_RUNTIME_TLS_BASE (PROCESS_RUNTIME_BASE + 0x10000ull)
+#define PROCESS_ELF_TLS_BASE (PROCESS_RUNTIME_BASE + 0x20000ull)
 #define PROCESS_PROT_READ 1u
 #define PROCESS_PROT_WRITE 2u
 #define PROCESS_PROT_EXEC 4u
@@ -47,6 +48,8 @@ struct process {
     struct frame *frame;
     uintptr_t data_page;
     uint64_t main_stack_base,main_stack_length;
+    uint64_t main_fs_base,tls_offset,tls_size,tls_stride;
+    void *tls_template;
     uint64_t preemptions;
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
     bool exited;
@@ -65,6 +68,7 @@ bool process_start_elf(struct process *,const struct elf_start *);
 bool process_image_copy(struct process *,uint64_t,void *,size_t,bool);
 bool process_image_readonly(struct process *,uint64_t,uint64_t);
 bool process_map_runtime(struct process *);
+bool process_install_tls(struct process *,const struct elf_plan *);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 int64_t process_vm_map(struct process *,uint64_t,size_t,unsigned);
 int64_t process_vm_map_fixed(struct process *,uint64_t,size_t,unsigned);
@@ -78,6 +82,7 @@ int64_t process_thread_create(struct process *,uint64_t,uint64_t,uint64_t,uint64
 struct frame *process_thread_exit(struct process *,struct frame *,int32_t);
 int process_thread_reap(struct process *,uint64_t,int32_t *);
 int process_thread_detach(struct process *,uint64_t,uint64_t,size_t);
+void process_cleanup_detached(struct process *);
 struct frame *process_wait(struct process *,struct frame *,uint64_t,uint64_t);
 unsigned process_wake(struct process *,uint64_t,unsigned);
 bool process_notify(struct process *,uint64_t);

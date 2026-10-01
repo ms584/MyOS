@@ -3,6 +3,14 @@
 2026-10-01, runtime baseline 8003d20. Native backend NOT chosen or passed.
 Cobalt has not executed. Phase 33.1/33.2 remain OPEN; no Phase 33.3 work.
 
+Native TLS follow-up, 07:57 +07: GD/LD/IE/TLSDESC and PT_TLS now have native
+single-module fixture evidence, including constructor templates and pthread
+ownership: PHASE331_NATIVE_TLS.md. Resumed full coverage/UEFI passed 08:44:17;
+the earlier unchanged passes were retained after a 40s boot timeout.
+The older host-spike statement that PT_TLS is rejected describes that baseline.
+The Linux candidate still lacks target libc/C11/C++ and dependency closure;
+this change does NOT make that library loadable or select a native backend.
+
 ## Pinned boundary, not two graphics imports
 
 The pinned Starboard headers require EGL 1.5 and contain 44 EGL table slots
@@ -55,6 +63,28 @@ Linux C11/pthread types are not Cobalt's opaque wrapper types either.
 Do not accept host library success as a native context/present gate.
 
 ## Reproduction and tooling
+
+### Reduced-C++ host measurement, 08:17 +07
+
+An independent build with `cpp_rtti=false`, `cpp_eh=none`, fortify disabled
+and stack protector disabled completed 08:14:21. The unchanged desktop-GL
+context/shader/texture/glyph/guard probe passed 08:17:49; `ldd` verified it used
+this separate candidate library, not the system/earlier OSMesa build.
+File/LOAD/span: 17776680/16883393/16895208 bytes. Strong undefined symbols
+decreased 186 -> 176. RTTI vtables, exception personality/unwind continuation
+and fortified wrappers disappeared, but all four DT_NEEDED libraries remain.
+Still required: prime-rehash policy, std bad-alloc/length/system-error helpers,
+new/delete (including sized delete), __cxa_atexit and guard acquire/release.
+Flags are a measurement, NOT an implementation of these contracts or permission
+to turn allocation/errors into fake success. Report: cpp-report.json under
+build/renderer-evaluation; isolated build: mesa-osmesa-cpp-measure.
+The source explicitly selects only API_OPENGL_CORE/COMPAT in OSMesaCreateContext;
+GLES-enabled compilation does not make this probe a GLES/EGL context.
+Standalone target SDK guard provider now has native contention/abort/cancel
+evidence: PHASE332_CXX_GUARD.md. It is not yet linked into this renderer and
+does not change the measured Linux binary's imports. Target libc/C11/C++ and
+real native GLES frontend/presentation remain required.
+No native backend selection or Cobalt acceptance follows from these results.
 
 All commands were run through tools/run_logged.py. Isolated source/build/tool
 directories are under build/renderer-evaluation. Python tooling: Meson 1.8.1,

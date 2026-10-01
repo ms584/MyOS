@@ -95,7 +95,7 @@ bool scheduler_attach_process(struct process *process)
         if (tasks[i].process) continue;
         fp_reset(i);
         tasks[i] = (struct task){.frame=process->frame,.stack=process->kernel_stack,
-            .alive=true,.process=process};
+            .alive=true,.process=process,.fs_base=process->main_fs_base};
         return true;
     }
     return false;
