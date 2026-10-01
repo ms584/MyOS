@@ -21,6 +21,21 @@ void srand(unsigned);
 void qsort(void *,size_t,size_t,int (*)(const void *,const void *));
 void qsort_r(void *,size_t,size_t,int (*)(const void *,const void *,void *),void *);
 int atexit(void (*)(void));
+long strtol(const char *,char **,int);
+unsigned long strtoul(const char *,char **,int);
+long long strtoll(const char *,char **,int);
+unsigned long long strtoull(const char *,char **,int);
+float strtof(const char *,char **);
+double strtod(const char *,char **);
+long double strtold(const char *,char **);
+int atoi(const char *);
+long atol(const char *);
+long long atoll(const char *);
+double atof(const char *);
+int abs(int);
+long labs(long);
+long long llabs(long long);
+void *bsearch(const void *,const void *,size_t,size_t,int (*)(const void *,const void *));
 #ifdef __cplusplus
 }
 #endif

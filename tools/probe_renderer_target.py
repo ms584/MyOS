@@ -67,12 +67,15 @@ with (out / 'format-build.log').open('w') as format_log, contextlib.redirect_std
     format_build = runpy.run_path(str(root / 'tools/build_format_sdk.py'),init_globals={'math_build':math_build})
 with (out / 'sort-build.log').open('w') as sort_log, contextlib.redirect_stdout(sort_log):
     sort_build = runpy.run_path(str(root / 'tools/build_sort_sdk.py'),init_globals={'math_build':math_build})
+with (out / 'scan-build.log').open('w') as scan_log, contextlib.redirect_stdout(scan_log):
+    scan_build = runpy.run_path(str(root / 'tools/build_scan_sdk.py'),init_globals={'math_build':math_build})
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
 subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
                 str(environment),
                 *map(str,format_build['objects']),
                 *map(str,sort_build['objects']),
+                *map(str,scan_build['objects']),
                 *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'

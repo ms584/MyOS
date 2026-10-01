@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 sealed conversion/memory scanning — 2026-10-01
+
+Checkpoint followsd96c8ca; PHASE332_SCAN_SDK.md. Actual musl integer/FP/scanf/
+UTF8 source plus pure math dependencies and real guest allocation. Private
+memory FILE is not stream/Cobalt ABI; no public vfscanf alias or host locale.
+Native real unchanged Mesa strtod wrapper,209 MPFR double+float cases,4
+rounding modes, readonly guard edges, types/scansets/EOF/OOM/8workers/exact
+resources: final74650 BIOS/UEFI PASS, chainexit0 18:29:46. Formatter85049
+PASS18:19:26. Whole24500 compile1 18:24:49 e87xjgfy:53 failedunits/80 errors,
+down from72/115; conversion/scanning/abs/bsearch clear, not completion%.
+exit/abort/alloca/setjmp/OS services/stdio/C++ remain. No backend/Cobalt pass.
+Normal artifacts unchanged18:20:09; all jobs terminal. No33.3 or push.
+
 ## Phase 33.2 string/C-locale/math-profile batch — 2026-10-01
 
 Checkpoint follows7d9242c; PHASE332_STRING_EXTENSIONS.md. Native bounded/

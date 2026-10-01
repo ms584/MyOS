@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Tested string/C-locale/math-profile checkpoint follows 7d9242c. No push.
+Tested sealed conversion/memory-scanner checkpoint follows d96c8ca. No push.
 Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 
 ## Scope and status
@@ -12,29 +12,21 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - Do not start Phase 33.3 before native Cobalt HTML/JS/DOM/input/HTTPS acceptance.
 
 ## Current implementation
-- Clocks/pthreads/keys/emutls and shared descriptors, eventfd/pipe/poll/epoll/
-  FIONREAD: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
-- Files/dirs/read/fsync: PHASE331_FILES.md; records: PHASE331_STORAGE.md.
-- Concurrent TCP/dup/readiness/deadlines: PHASE331_TCP.md,
-  PHASE331_SOCKET_OPTIONS.md; AF_UNIX duplex: PHASE331_SOCKETPAIR.md.
+- Clock/pthread/descriptors: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
+- Files/records: PHASE331_FILES.md, PHASE331_STORAGE.md; orphan: PHASE331_UNLINK.md.
+- TCP/AF_UNIX: PHASE331_TCP.md, PHASE331_SOCKET_OPTIONS.md, PHASE331_SOCKETPAIR.md.
 - Live cancellation/fault/OOM: PHASE331_LIFECYCLE.md; PHASE332_FINALIZERS.md.
 - Window/input: PHASE332_NATIVE_UI.md (NOT EGL/GLES); events: PHASE332_EVENTS.md.
 - Guarded SABI launcher: PHASE332_LAUNCHER.md.
-- Native TLS/bounded slots/detached cleanup: PHASE331_NATIVE_TLS.md (BIOS/UEFI).
-- C++ guard/C11 SDK: PHASE332_CXX_GUARD.md, PHASE332_C11_SDK.md.
-- Timed mutex/exit/join/detach: PHASE331_THREAD_SERVICES.md.
-- Mesa thread utils: PHASE332_THREAD_UTIL.md (BIOS/UEFI, not graphics).
-- Math/header cross-probe: PHASE332_MATH_SDK.md; renderer NOT linked/executed.
-- Pure/native SDK: PHASE332_TIME_SDK.md, PHASE332_INTEGER_SDK.md,
-  PHASE332_ENVIRONMENT.md, PHASE332_FORMAT_SDK.md, PHASE332_STREAM_SDK.md,
-  PHASE332_MEMSTREAM_SDK.md, PHASE332_STRING_SDK.md, PHASE332_STAT_SDK.md.
-- Open-file unlink/name reuse/last-close: PHASE331_UNLINK.md.
+- TLS/thread/C11/Mesa utility evidence: PHASE331_NATIVE_TLS.md,
+  PHASE331_THREAD_SERVICES.md, PHASE332_C11_SDK.md, PHASE332_THREAD_UTIL.md.
+- Math/pure/native SDK and stream/stat/environment details: HANDOFF.md + SDK docs.
 - Real smoothsort/Mesa TLS sort/PRNG/finalizer SDK: PHASE332_SORT_SDK.md.
 - Real Mesa rwlock80/time/C++ aliases + full dependency map: PHASE332_RWLOCK_SDK.md.
 - String/token/C-locale/math-profile batch: PHASE332_STRING_EXTENSIONS.md.
+- Sealed conversion/scanf/UTF8 + real Mesa wrapper: PHASE332_SCAN_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
-- Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
-  No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
+- Renderer configure PASS/compile FAIL: PHASE332_RENDERER.md; no host libs/OpenMP.
 - Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -44,20 +36,16 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
   NOT uninterrupted full-run PASS. Earlier runs hit media 30s boot timeout;
   diagnostic proved shell in 30.74s. Media boot waits now common 60s,
   all assertions retained; details/provenance PHASE331_UNLINK.md.
-- Unlink/Mesa/snapshot 79689 PASS 15:47:30; sdk-nh2mfw41, private normal boot.
-  Live handles/name reuse/128 close cycles/cancel/relaunch/exact reclaim;
-  actual Mesa anonymous files and v1/v2 live-orphan snapshot/reboot PASS.
-- Fresh normal UEFI/unlink 96289 native test PASS 16:34:55, sdk-oeghfxmx;
-  enclosing hash command typo failed, corrected artifact evidence 16:36:11.
-- Earlier string/stat/stream/sort/thread/math proofs in respective SDK docs.
-- RW/time BIOS26564 PASS17:12:56; UEFI/time regression68696 PASS, then
-  expected probe compile1. Headers PASS17:23; no runtime/kernel/image change.
-- Whole renderer80264 compile1 17:26:10, target-config-epnbvant: configure/
-  boundary PASS;100 failed units/212 errors. New24751 compile1 17:58:43,
-  target-config-riek2d10:72 failed units/115 errors; NOT completion percent.
-  Final string88757 BIOS/UEFI PASS18:01/18:02; formatter35253 PASS17:55.
-  Root groups remaining: C conversion/scanning/exit,
-  setjmp, OS-info/file locks and real target C++ dependencies. No backend.
+- Unlink/Mesa/snapshot79689 BIOS +96289 UEFI PASS; exact resources,
+  v1/v2 live-orphan snapshot/reboot; full provenance PHASE331_UNLINK.md.
+- Earlier RW/time/string/stat/stream/sort/thread/math proofs: respective SDK docs.
+- Whole renderer24500 compile1 18:24:49, target-config-e87xjgfy: configure/
+  boundary PASS;53 failed units/80 errors, prior72/115; NOT completion percent.
+- Final scanner/Mesa74650 BIOS/UEFI PASS, chain exit0 18:29:46: MPFR209,
+  rounding/readonly guard edges/scanf/UTF8/OOM/8workers/resources.
+  Formatter85049 PASS18:19:26. No kernel/runtime/image change.
+- Remaining: exit/abort/alloca/setjmp, OS-info/file locks/stdio details and
+  genuine target C++ dependencies. No native backend or Cobalt execution.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
