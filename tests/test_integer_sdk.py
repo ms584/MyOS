@@ -18,6 +18,7 @@ body='''#include <limits.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/stat.h>
 static_assert(sizeof(long)==8,"LP64");
 char *(*environment_reader)(const char *)=getenv;
 gid_t (*group_reader)(void)=getegid;

@@ -28,6 +28,7 @@ int ftruncate(int,off_t);
 int fsync(int);
 int fdatasync(int);
 int unlinkat(int,const char *,int);
+int unlink(const char *);
 int access(const char *,int);
 int isatty(int);
 char *getcwd(char *,size_t);

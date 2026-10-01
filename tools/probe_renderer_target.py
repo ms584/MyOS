@@ -30,7 +30,8 @@ patch = (root / 'tools/mesa_c11_target.patch').read_text().replace(
     'a/threads_posix.c', 'a/src/c11/impl/threads_posix.c').replace(
     'b/threads_posix.c', 'b/src/c11/impl/threads_posix.c')
 for content in (patch, (root / 'tools/mesa_thread_util_target.patch').read_text(),
-                (root / 'tools/mesa_build_target.patch').read_text()):
+                (root / 'tools/mesa_build_target.patch').read_text(),
+                (root / 'tools/mesa_file_target.patch').read_text()):
     subprocess.run(['git', 'apply', '--check', '--directory=' + str(source.relative_to(root)), '-'],
                    input=content, text=True, cwd=root, check=True)
     subprocess.run(['git', 'apply', '--directory=' + str(source.relative_to(root)), '-'],

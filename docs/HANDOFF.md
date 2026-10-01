@@ -3,6 +3,24 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target stat / real Mesa file utility — 2026-10-01
+
+Checkpoint follows 32b1fc2; PHASE332_STAT_SDK.md. 144-byte stat SDK header,
+open/stat/unlink source adapters over real runtime, target Mesa os_file.c
+fixes for fdopen leakage/positive ENOMEM/explicit long fcntl convention.
+Initial native 59812 exit 0 15:19:51: output guards/field layout/failed-output
+rollback, file/dir/asset metadata, actual unique/read/dup/cloexec/binary utility,
+allocator exhaustion and handle reopen/relaunch/resources. Expanded fixture
+adds targeted failure injection over actual runtime malloc/realloc for fdopen,
+initial buffer and final trim; not production stub behavior. Final expanded
+batch 16406 exit 0 15:23:28: stat SDK sdk-girrz58t, C/C++ header audit and
+file-stream OOM/cancel/relaunch regression sdk-88fsmfcq PASS. Existing metadata
+fixed identities/zero times/modes and EBUSY unlink-while-open remain open;
+headers do not prove full stat/POSIX or anonymous temporary-file semantics.
+Renderer 55958 terminal exit 1 15:21:15, target-config-j9niz748: stat/open/unlink
+errors cleared; mkstemp/random/abort/scanning and OS-info/atexit/socket remain.
+No kernel/runtime changes, full/UEFI/Cobalt pass, 33.3 or push.
+
 ## Phase 33.2 measured string / allocator SDK — 2026-10-01
 
 Checkpoint follows 00c9b6e; PHASE332_STRING_SDK.md. Actual string providers

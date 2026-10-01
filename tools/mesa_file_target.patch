@@ -1,0 +1,63 @@
+diff --git a/src/util/os_file.c b/src/util/os_file.c
+--- a/src/util/os_file.c
++++ b/src/util/os_file.c
+@@ -35,7 +35,13 @@ os_file_create_unique(const char *filename, int filemode)
+    int fd = open(filename, O_CREAT | O_EXCL | O_WRONLY, filemode);
+    if (fd == -1)
+       return NULL;
+-   return fdopen(fd, "w");
++   FILE *f = fdopen(fd, "w");
++   if (!f) {
++      int saved = errno;
++      close(fd);
++      errno = saved;
++   }
++   return f;
+ }
+ 
+ 
+@@ -54,7 +60,7 @@ int
+ os_dupfd_cloexec(int fd)
+ {
+    int minfd = 3;
+-   int newfd = fcntl(fd, F_DUPFD_CLOEXEC, minfd);
++   int newfd = fcntl(fd, F_DUPFD_CLOEXEC, (long)minfd);
+ 
+    if (newfd >= 0)
+       return newfd;
+@@ -62,7 +68,7 @@ os_dupfd_cloexec(int fd)
+    if (errno != EINVAL)
+       return -1;
+ 
+-   newfd = fcntl(fd, F_DUPFD, minfd);
++   newfd = fcntl(fd, F_DUPFD, (long)minfd);
+ 
+    if (newfd < 0)
+       return -1;
+@@ -150,7 +156,7 @@ os_read_file(const char *filename, size_t *size)
+    char *buf = malloc(len);
+    if (!buf) {
+       close(fd);
+-      errno = -ENOMEM;
++      errno = ENOMEM;
+       return NULL;
+    }
+ 
+@@ -161,7 +167,7 @@ os_read_file(const char *filename, size_t *size)
+       if (!newbuf) {
+          free(buf);
+          close(fd);
+-         errno = -ENOMEM;
++         errno = ENOMEM;
+          return NULL;
+       }
+ 
+@@ -181,7 +187,7 @@ os_read_file(const char *filename, size_t *size)
+    char *newbuf = realloc(buf, len);
+    if (!newbuf) {
+       free(buf);
+-      errno = -ENOMEM;
++      errno = ENOMEM;
+       return NULL;
+    }
+    buf = newbuf;

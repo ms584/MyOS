@@ -24,7 +24,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Existing runtime providers only; open() and advisory locking not supplied. */
+/* Existing runtime plus source open adapter; advisory locking not supplied. */
+int open(const char *,int,...);
 int openat(int,const char *,int,...);
 int fcntl(int,int,...);
 #ifdef __cplusplus

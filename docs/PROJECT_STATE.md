@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Measured string/allocator SDK checkpoint follows 00c9b6e. No push.
+Target stat/real Mesa file checkpoint follows 32b1fc2. No push.
 Origin/main is 26c97aa after fetch at 15:08 +07. Owner pushes manually.
 
 ## Scope and status
@@ -32,6 +32,7 @@ Origin/main is 26c97aa after fetch at 15:08 +07. Owner pushes manually.
 - Native unbuffered file/console stream lifecycle: PHASE332_STREAM_SDK.md.
 - Native memory streams/real Mesa wrapper: PHASE332_MEMSTREAM_SDK.md.
 - Native strings/allocator declarations: PHASE332_STRING_SDK.md.
+- Target stat/open/unlink + real Mesa utility: PHASE332_STAT_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -43,11 +44,12 @@ Origin/main is 26c97aa after fetch at 15:08 +07. Owner pushes manually.
   Full + SDK guard + UEFI thread/TLS 52428 exited 0 at 10:23:34.
 - C11/thread/math/C++ BIOS+UEFI and time/integer/environment: evidence in docs.
 - Strings C/C++ 58821 PASS 15:04:02; integer/blob regression 2027 PASS 15:02:28.
+- Stat/Mesa/failure rollback + C/C++ headers/file streams 16406 PASS 15:23:28.
 - Formatter/file-stream regression 97536 PASS 14:52:39; integer/thread PASS.
 - C/C++ format/env/math boundary PASS 14:09:20 (not native graphics).
 - Streams/cancel 32852 PASS 14:53:56: live 64 KiB memory buffer reclaimed.
 - Memory streams 72224 PASS 14:51:37: real Mesa/OOM/seek/8 workers/relaunch.
-- Target 13012 at 15:06:14: configure 0, compile 1, target-config-h0vmsizj.
+- Target 55958 at 15:21:15: configure 0, compile 1, target-config-j9niz748.
 - SDK-only change: no new UEFI/full run; kernel/runtime baseline unchanged.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
@@ -57,7 +59,7 @@ Origin/main is 26c97aa after fetch at 15:08 +07. Owner pushes manually.
 - Host Mesa has four Linux dependencies; no native renderer selected.
 
 ## Required next work
-1. Close measured libc/stat/OS-info failures (PHASE332_STRING_SDK.md),
+1. Close temporary lifetime/libc/OS-info failures (PHASE332_STAT_SDK.md),
    then target C++ and native EGL/GLES.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and

@@ -42,6 +42,7 @@ flags=['-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red
 objects=[]
 for name,path in [('adapter',root/'user/platform-format.c'),('string',root/'user/platform-sdk-string.c'),
                   ('stream',root/'user/platform-stream.c'),
+                  ('file',root/'user/platform-file-sdk.c'),
                   ('towrite',out/'towrite.c'),
                   ('fwrite',out/'fwrite.c'),
                   *[(name,source/'src/stdio'/(name+'.c')) for name in
@@ -63,7 +64,8 @@ for line in symbols.splitlines():
     if len(parts)==2 and parts[0]=='U':undefined.add(parts[1])
     elif len(parts)==3:defined.add(parts[2])
 assert undefined-defined <= {'malloc','realloc','free','__errno_location','pthread_mutex_lock','pthread_mutex_unlock',
-    'pthread_mutex_init','pthread_mutex_destroy','openat','fcntl','close','read','write','lseek'},undefined-defined
+    'pthread_mutex_init','pthread_mutex_destroy','openat','fcntl','close','read','write','lseek',
+    'fstatat','unlinkat'},undefined-defined
 library=out/'libmyos-format.a'
 subprocess.run(['ar','rcs',str(library),*map(str,objects)],check=True)
 print('FORMAT SDK COMPILE ONLY:',out,'callback/memory and unbuffered file/console streams; '
