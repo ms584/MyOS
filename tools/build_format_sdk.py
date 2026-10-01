@@ -62,7 +62,7 @@ for line in symbols.splitlines():
     parts=line.split()
     if len(parts)==2 and parts[0]=='U':undefined.add(parts[1])
     elif len(parts)==3:defined.add(parts[2])
-assert undefined-defined <= {'malloc','free','__errno_location','pthread_mutex_lock','pthread_mutex_unlock',
+assert undefined-defined <= {'malloc','realloc','free','__errno_location','pthread_mutex_lock','pthread_mutex_unlock',
     'pthread_mutex_init','pthread_mutex_destroy','openat','fcntl','close','read','write','lseek'},undefined-defined
 library=out/'libmyos-format.a'
 subprocess.run(['ar','rcs',str(library),*map(str,objects)],check=True)

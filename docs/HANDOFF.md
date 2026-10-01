@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 dynamic memory streams / real Mesa wrapper — 2026-10-01
+
+Checkpoint follows 8dea155; PHASE332_MEMSTREAM_SDK.md. Owned open_memstream
+supports binary writes, seek/overwrite/zero gaps, flush/close publication and
+caller-owned buffer after close. Real sealed Mesa memstream.c/h wrapper runs
+in MyOS; no host FILE/libc/thread state or Cobalt ABI/graphics pass. Native
+72224 exit 0 14:51:37, sdk-z_s76v13: actual OOM rollback/recovery, overflow,
+eight concurrent writers, three relaunches/resources. Initial OOM recovery
+fault exposed stale wend after clearing wpos; fixed all write-state pointers
+for memory and descriptor streams, same reproducer passes. Formatter/file
+regressions 97536 exit 0 14:52:39; expanded Escape cancellation with unclosed
+64 KiB memory stream 32852 exit 0 14:53:56. Renderer 30351 terminal exit 1
+14:53:47, target-config-usw_gujn: setup/boundary pass, memstream failure
+cleared; stat/temp/string/scanning/allocator/random/abort remain.
+Images/kernel/runtime unchanged; no new
+full/UEFI claim, no 33.3 or push. PROJECT_STATE.md is the current entry point.
+
 ## Phase 33.2 native unbuffered file/console streams — 2026-10-01
 
 Checkpoint follows 06738ef; PHASE332_STREAM_SDK.md. Owned target FILE and

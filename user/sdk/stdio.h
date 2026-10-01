@@ -17,6 +17,7 @@ extern FILE *const stderr;
 /* Unbuffered stream profile; standard input and redirection remain unavailable. */
 FILE *fopen(const char *,const char *);
 FILE *fdopen(int,const char *);
+FILE *open_memstream(char **,size_t *);
 int fclose(FILE *);
 size_t fread(void *,size_t,size_t,FILE *);
 int fflush(FILE *);

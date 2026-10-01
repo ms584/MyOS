@@ -11,6 +11,7 @@
 #define F_EOF 16
 #define F_ERR 32
 #define F_STD 0x10000
+#define F_MEM 0x20000
 struct myos_FILE {
     unsigned flags;
     unsigned char *rpos,*rend,*wpos,*wbase,*wend,*buf;

@@ -22,6 +22,11 @@ static void *worker(void *arg)
 int _start(void)
 {
 #ifdef STREAM_CANCEL
+    char *cancel_buffer;size_t cancel_size;
+    FILE *cancel_memory=open_memstream(&cancel_buffer,&cancel_size);CHECK(cancel_memory);
+    char block[2048];memset(block,'M',sizeof(block));
+    for(unsigned i=0;i<32;++i)CHECK(fwrite(block,1,sizeof(block),cancel_memory)==sizeof(block));
+    CHECK(!fflush(cancel_memory)&&cancel_size==65536);
     int ends[2];CHECK(!pipe(ends));blocked=fdopen(ends[0],"r");CHECK(blocked);
     /* Existing asset avoids conflating persistent RAMFS data with leaked handles. */
     shared=fopen("/assets/stream","r");CHECK(shared&&fgetc(shared)>=0);
