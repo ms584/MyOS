@@ -35,6 +35,8 @@ long pathconf(const char *,int);
 pid_t getpid(void);
 uid_t getuid(void);
 uid_t geteuid(void);
+gid_t getgid(void);
+gid_t getegid(void);
 #ifdef __cplusplus
 }
 #endif

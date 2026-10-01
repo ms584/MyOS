@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Target integer/descriptor headers checkpoint follows 11fd4cd. No push.
+Guest renderer environment checkpoint follows 6ea5840. No push.
 Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 
 ## Scope and status
@@ -24,15 +24,15 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Guarded SABI launcher: PHASE332_LAUNCHER.md.
 - Native PT_TLS/GD/LD/IE/TLSDESC, bounded slots and detached cleanup:
   PHASE331_NATIVE_TLS.md; BIOS/UEFI tested.
-- C++ guard SDK: PHASE332_CXX_GUARD.md; not a fixed runtime export.
-- Timed mutex/pthread_exit/join/detach: PHASE331_THREAD_SERVICES.md.
-- Pinned Mesa C11 SDK: PHASE332_C11_SDK.md; native BIOS/UEFI tested.
+- C++ guard/C11 SDK: PHASE332_CXX_GUARD.md, PHASE332_C11_SDK.md.
+- Timed mutex/exit/join/detach: PHASE331_THREAD_SERVICES.md.
 - Real Mesa thread utils/barrier/semaphore/dispatch TLS/masks/names port:
   PHASE332_THREAD_UTIL.md; native BIOS/UEFI PASS, not a graphics backend.
 - Math-only headers/static providers now in renderer cross-probe:
   PHASE332_MATH_SDK.md; final renderer is NOT linked or executed.
 - Native Mesa clock/32-bit wait and UTC calendar: PHASE332_TIME_SDK.md.
 - Target integer/descriptor headers + native rounding: PHASE332_INTEGER_SDK.md.
+- Guest environment/identity and limits: PHASE332_ENVIRONMENT.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -43,25 +43,24 @@ Origin/main is 26c97aa after fetch at 12:11 +07. Owner pushes manually.
 - Fresh uninterrupted tests/test_system.py PASS; normal image restored.
   Full + SDK guard + UEFI thread/TLS 52428 exited 0 at 10:23:34.
 - C11/thread-utils/math/C++ SDK BIOS+UEFI PASS: detailed evidence in their docs.
-- Exported math headers/1895 vectors + FP workers BIOS 44692 PASS 12:20:46.
-- Real Mesa blob BIOS 44517 PASS 12:37:38: overflow, memchr/realloc growth,
-  smallest-allocation exhaustion/trim ownership, three launches/exact resources.
+- Math 1895-vector/FP-worker BIOS 44692 PASS; blob/OOM BIOS 44517 PASS.
 - Mesa time 12363 PASS 13:20:56: deadlines/calendar/8-worker cancel/relaunch.
 - C11 regression 90595 PASS 13:21:59 after SDK time header/wrapper changes.
 - Integer C/C++ macros PASS 13:28:08; native 13727 PASS 13:34:07/resources.
-- Target 67816 at 13:31:48: configure 0, compile 1 (not graphics PASS).
+- Environment 14514 PASS 13:44:11: 8 workers/bounds/empty relaunch/resources.
+- C11/C++17 headers PASS 13:45:37; env/math link boundary PASS 13:47:15.
+- Target 33565 at 13:45:34: configure 0, compile 1 (not graphics PASS).
 - SDK-only change: no new UEFI/full run; kernel/runtime baseline unchanged.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
   Image SHA256 0849bb23f54b1f9c0bdf10b7c89f881263c3209827d8d3eaa9466f10da61fa6a.
-- Process-test kernel 261144; cap unchanged. Only runtime C uses -Oz.
-- All jobs terminal; normal images unchanged, full result reused.
+- Process-test kernel 261144; cap unchanged; all jobs terminal/images unchanged.
 - Host Mesa has four Linux dependencies; no native renderer selected.
 
 ## Required next work
-1. Close actual libc/header failures (getgid/getegid/getenv, stdio/FILE,
-   sys/stat.h, static_assert), then target C++ and native EGL/GLES.
+1. Close actual libc/header failures (stdio/FILE, sys/stat.h,
+   posix_memalign/calloc/rand/strcmp), then target C++ and native EGL/GLES.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.

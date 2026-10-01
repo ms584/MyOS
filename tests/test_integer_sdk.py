@@ -15,6 +15,12 @@ flags=['-m64','-ffreestanding','-fno-builtin','-nostdinc','-isystem',include,
        '-Ulinux','-U__gnu_linux__','-Wall','-Wextra','-Wformat=2','-Werror']
 body='''#include <limits.h>
 #include <inttypes.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <unistd.h>
+static_assert(sizeof(long)==8,"LP64");
+char *(*environment_reader)(const char *)=getenv;
+gid_t (*group_reader)(void)=getegid;
 #ifdef __linux__
 #error Host ABI
 #endif
@@ -57,6 +63,7 @@ for compiler,language in (('gcc','c'),('g++','c++')):
         source=out/(compiler+('-unsigned' if unsigned else '-signed')+'.'+('c' if language=='c' else 'cpp'))
         source.write_text(body)
         subprocess.run([compiler,*flags,*(['-nostdinc++'] if language=='c++' else []),
+            '-std=c++17' if language=='c++' else '-std=c11',
             '-funsigned-char' if unsigned else '-fsigned-char',
             '-DEXPECT_UNSIGNED_CHAR='+str(int(unsigned)),'-fsyntax-only',str(source)],check=True)
 print('PASS: all 154 integer format macros match target C/C++ types; LP64 limits '

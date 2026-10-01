@@ -3,6 +3,22 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 guest renderer environment — 2026-10-01
+
+Checkpoint follows 6ea5840; see PHASE332_ENVIRONMENT.md. SDK getenv/setenv/
+unsetenv copies guest-owned values under native pthread locking; empty on
+each launch, no WSL inheritance. 64 active keys/64 KiB including retired
+strings: pointers remain valid until teardown, but mutation history can exhaust
+the arena; ENOMEM preserves prior state. Group identity is the existing single
+guest identity, not credential/permission enforcement. C11 static_assert now
+works without replacing the C++ keyword. Native Mesa wrappers/8 workers/
+bounds/relaunch/resources PASS 14514 at 13:44:11 +07. C11/C++17 headers PASS
+13:45:37; actual C/C++ environment/math link boundary PASS 13:47:15.
+Renderer 33565 setup 0/compile 1 at 13:45:34, target-config-ilqu9vvw: still
+stdio/FILE, sys/stat.h, posix_memalign/calloc/rand/strcmp closure. Images and
+kernel/runtime unchanged; no new full/UEFI claim, no import-count increase,
+no native graphics/Cobalt acceptance, no 33.3 or push.
+
 ## Phase 33.2 target integer/descriptor headers — 2026-10-01
 
 Checkpoint follows 11fd4cd; see PHASE332_INTEGER_SDK.md. Compiler-derived

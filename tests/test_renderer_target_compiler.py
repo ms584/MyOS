@@ -7,6 +7,7 @@ import tempfile
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--provider', type=Path, required=True)
 parser.add_argument('--math-include', type=Path)
+parser.add_argument('--environment', action='store_true', help='Require the real guest environment SDK')
 options = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 intrinsics = subprocess.check_output(['gcc', '-print-file-name=include'], text=True).strip()
@@ -35,6 +36,10 @@ int main(void) { struct timespec t; return clock_gettime(CLOCK_MONOTONIC,&t); }
         source = source.replace('return clock_gettime(CLOCK_MONOTONIC,&t);',
                                 'double (*volatile f)(double)=sqrt;\n'
                                 'return clock_gettime(CLOCK_MONOTONIC,&t)+(int)f(4.0);')
+    if options.environment:
+        source = source.replace('#include <time.h>', '#include <time.h>\n#include <stdlib.h>\n#include <unistd.h>')
+        source = source.replace('clock_gettime(CLOCK_MONOTONIC,&t)',
+                                '(clock_gettime(CLOCK_MONOTONIC,&t)+getgid()+getegid()+!!getenv("MYOS_BOUNDARY_PROBE"))')
     for language in ('c', 'cpp'):
         current = command.copy();current[3] = language
         text = source if language == 'c' else source.replace('_Static_assert', 'static_assert')
