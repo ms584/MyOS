@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target integer/descriptor headers — 2026-10-01
+
+Checkpoint follows 11fd4cd; see PHASE332_INTEGER_SDK.md. Compiler-derived
+integer limits and all 154 target format macros pass C/C++ signed/unsigned
+plain-char checks. This does not provide runtime printf/scanf. New descriptor
+headers expose only existing providers; native typed file/pipe calls and real
+Mesa LP64/SSE ties-even rounding pass, including three launches/resources:
+13727 exited 0 at 13:34:07 +07. fcntl long variadic operands are explicit in
+tests; int-operand source compatibility remains to audit. Renderer 67816:
+setup 0/compile 1 at 13:31:48, target-config-xmrn0q_0; now getgid/getegid/getenv,
+stdio/FILE, sys/stat.h and static_assert fail. Shared images/kernel/runtime
+unchanged; no new full/UEFI claim. No graphics/Cobalt execution, no 33.3/push.
+
 ## Phase 33.2 native Mesa time/wait/calendar — 2026-10-01
 
 Checkpoint follows 62197f4; see PHASE332_TIME_SDK.md. Target os_time uses actual
