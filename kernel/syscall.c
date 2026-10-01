@@ -277,6 +277,16 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_TICKS:
         frame->rax = ticks;
         break;
+    case SYS_MAIN_STACK_INFO: {
+        if(frame->rsi||frame->rdx){frame->rax=(uint64_t)-22;break;}
+        struct main_stack_info info={process->main_stack_base,process->main_stack_length,
+                                    process->main_stack_base-PAGE_SIZE,PAGE_SIZE};
+        if(!process->image_pages){info.guard_base=0;info.guard_length=0;}
+        if(!info.length){frame->rax=(uint64_t)-95;break;}
+        if(!writable_range(process,frame->rdi,sizeof(info))){frame->rax=(uint64_t)-14;break;}
+        copy_to_user(process,frame->rdi,&info,sizeof(info));frame->rax=0;
+        break;
+    }
     case SYS_EXIT:
         fs_close_all(process->files);
         process->exit_status = (int32_t)frame->rdi;

@@ -16,6 +16,7 @@ wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','cl
         'SbWindowSetDefaultOptions','SbWindowGetDiagonalSizeInInches',
         'MyOSUiQuery','MyOSUiPresent','MyOSUiPoll',
         'MyOSUiWindow','MyOSUiSetVisible','SbRunStarboardMain',
+        'MyOSStarboardRun','MyOSStarboardValidate',
         'SbEventSchedule','SbEventCancel','SbSystemRequestStop','SbSystemRequestConceal',
         'SbSystemRequestReveal','SbSystemRequestBlur','SbSystemRequestFocus','SbSystemSupportsResume',
         'connect','dup','epoll_create1','epoll_ctl','epoll_wait','eventfd','fcntl','fdatasync','fdopendir','free',

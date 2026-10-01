@@ -1,6 +1,7 @@
 /* Native Starboard main-thread events. No host event loop or fake renderer. */
 #include "starboard-event-abi.h"
 #include "native-ui.h"
+#include "starboard-sabi.h"
 #define EVENT_GLOBAL 0x803f0106b0ull /* main TLS bytes 1712..1743 */
 #define EVENT_LIMIT 128u
 struct pending { uint32_t id;int64_t deadline;void (*callback)(void *);void *context; };
@@ -179,7 +180,7 @@ static void drain_input(void)
     /* Discard blurred input, bounded even if interrupts keep producing it. */
     for(unsigned i=0;window&&i<128&&MyOSUiPoll(window,&event,0)==1;++i){}
 }
-int SbRunStarboardMain(int argc,char **argv,void (*handler)(const struct sb_event *))
+static int run(int argc,char **argv,void (*handler)(const struct sb_event *),const char *link)
 {
     if(!handler||argc<0||argc>64||(argc&&!argv)){*__errno_location()=22;return -1;}
     lock();if(globals()->phase){unlock();*__errno_location()=16;return -1;}
@@ -190,7 +191,7 @@ int SbRunStarboardMain(int argc,char **argv,void (*handler)(const struct sb_even
     globals()->phase=1;unlock();
     int result=0;
     if(MyOSUiSetVisible(!preload)){result=95;goto cleanup;}
-    struct sb_start_data start={argv,argc,0};
+    struct sb_start_data start={argv,argc,link};
     dispatch(loop,preload?SB_PRELOAD:SB_START,preload?0:&start,now());
     for(;;){
         uint64_t sequence=__atomic_load_n(MyOSUiSequence(),__ATOMIC_ACQUIRE);
@@ -252,4 +253,18 @@ int SbRunStarboardMain(int argc,char **argv,void (*handler)(const struct sb_even
 cleanup:;
     void *window=MyOSUiWindow();if(window)SbWindowDestroy(window);MyOSUiSetVisible(true);
     lock();globals()->phase=2;globals()->loop=0;unlock();free(loop);return result;
+}
+int SbRunStarboardMain(int argc,char **argv,void (*handler)(const struct sb_event *))
+{return run(argc,argv,handler,0);}
+int MyOSStarboardRun(int argc,char **argv,void (*handler)(const struct sb_event *),const char *link)
+{return run(argc,argv,handler,link);}
+int MyOSStarboardValidate(const char *(*get_sabi)(void))
+{
+    static const char expected[]=MYOS_STARBOARD_SABI;
+    const char *actual=get_sabi?get_sabi():0;
+    if(actual){unsigned i=0;for(;i<sizeof(expected)&&actual[i]==expected[i];++i){}
+        if(i==sizeof(expected)){const char ok[]="Starboard SABI: pinned x64 API 18 matched\n";
+            call(1,(uintptr_t)ok,sizeof(ok)-1,0);return 0;}}
+    const char bad[]="Starboard SABI: mismatch; constructors not executed\n";
+    call(1,(uintptr_t)bad,sizeof(bad)-1,0);return 95;
 }

@@ -200,10 +200,10 @@ int msync(void *address,size_t length,int flags)
 #define SYS_THREAD_DETACH 26u
 #define SYS_CLOCK_NANOS 27u
 #define SYS_GETTID 28u
+#define SYS_MAIN_STACK_INFO 48u
 #define RUNTIME_TLS_BASE 0x803f010000ull
 #define THREAD_STACK_SIZE (1024u*1024u)
-#define MAIN_STACK_BASE 0x8010001000ull
-#define MAIN_STACK_SIZE (4u*4096u)
+struct main_stack_info { uint64_t base,length,guard_base,guard_length; };
 #define THREAD_MAGIC 0x4d594f5350544852ull
 #define EAGAIN 11
 #define EPERM 1
@@ -409,7 +409,9 @@ int pthread_getattr_np(uint64_t thread,void *raw)
 {
     if(!raw)return EINVAL;
     struct thread_attr *a=raw;*a=(struct thread_attr){0x41545452,THREAD_STACK_SIZE,0,0};
-    if(thread==RUNTIME_TLS_BASE){a->stack_base=MAIN_STACK_BASE;a->stack_size=MAIN_STACK_SIZE;return 0;}
+    if(thread==RUNTIME_TLS_BASE){struct main_stack_info info;
+        int64_t rc=call3(SYS_MAIN_STACK_INFO,(uintptr_t)&info,0,0);if(rc<0)return (int)-rc;
+        a->stack_base=info.base;a->stack_size=info.length;return 0;}
     struct thread_control *control=thread_control(thread);if(!control)return ESRCH;
     a->stack_base=control->base;a->stack_size=control->length;
     a->detached=control->detached;return 0;
@@ -1865,7 +1867,9 @@ int getrlimit(int resource,struct musl_rlimit *limit)
     if(!limit)return set_error(EFAULT);
     if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){40,40};
     else if(resource==MUSL_RLIMIT_NPROC)*limit=(struct musl_rlimit){8,8};
-    else if(resource==MUSL_RLIMIT_STACK)*limit=(struct musl_rlimit){THREAD_STACK_SIZE,16u*1024u*1024u};
+    else if(resource==MUSL_RLIMIT_STACK){struct main_stack_info info;
+        int64_t rc=call3(SYS_MAIN_STACK_INFO,(uintptr_t)&info,0,0);if(rc<0)return set_error((int)-rc);
+        *limit=(struct musl_rlimit){info.length,info.length};}
     else return set_error(EINVAL);
     return 0;
 }

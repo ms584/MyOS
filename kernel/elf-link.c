@@ -165,12 +165,36 @@ bool elf_executable(const struct elf_plan *plan,uint64_t address)
         if((s->flags&1)&&address>=s->address&&address-s->address<s->filesz)return true;
     }return false;
 }
-int elf_prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start)
+/* Compare only the bounded requested name, not every potentially long C++
+ * export. Entry points must be unambiguous strong functions wholly in RX data. */
+static int exported_function(struct linker *l,const char *name,uint64_t *address)
+{
+    bool found=false;
+    for(unsigned i=1;i<l->symbols;++i){struct symbol s;int rc=get_symbol(l,i,&s);if(rc)return rc;
+        if(!s.name)continue;bool matches=true;
+        for(unsigned n=0;;++n){char c;
+            if(s.name+n>=l->dt[10]||!read_image(l,l->dt[5]+s.name+n,&c,1))return -8;
+            if(c!=name[n]){matches=false;break;}if(!c)break;
+        }
+        if(!matches)continue;
+        if(found||!s.section||s.section>=0xff00||s.info!=0x12||
+           (s.other!=0&&s.other!=3)||!s.size||!span(l->plan,s.value,s.size,5))return -8;
+        bool backed=false;
+        for(unsigned j=0;j<l->plan->count;++j){const struct elf_segment *segment=&l->plan->segments[j];
+            uint64_t lo=segment->address-USER_BASE;
+            if((segment->flags&5)==5&&s.value>=lo&&s.value-lo<segment->filesz&&
+               s.size<=segment->filesz-(s.value-lo)){backed=true;break;}}
+        if(!backed)return -8;
+        *address=USER_BASE+s.value;found=true;
+    }
+    return found?0:-95;
+}
+static int prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start,bool starboard)
 {
     memset(start,0,sizeof(*start));if(!plan->dynamic)return 0;
     struct linker l={.process=process,.plan=plan};int rc=parse(&l);if(rc)return rc;
     if((rc=imports(&l)))return rc;
-    if(l.platform&&!process_map_runtime(process))return -12;
+    if((l.platform||starboard)&&!process_map_runtime(process))return -12;
     if((rc=relocate(&l,l.dt[7],l.dt[8]))||(rc=relocate(&l,l.dt[23],l.dt[2])))return rc;
     print("ELF relocations: relative=");decimal(l.relative);print(" absolute=");decimal(l.absolute);
     print(" global=");decimal(l.global);print(" jump=");decimal(l.jump);print(" skipped=");decimal(l.skipped);print("\n");
@@ -182,6 +206,12 @@ int elf_prepare(struct process *process,const struct elf_plan *plan,struct elf_s
         print("ELF RELRO: protected\n");
     }
     if(l.missing)return -95; /* Never call constructors/entry against stubs. */
+    if(starboard){
+        if((rc=exported_function(&l,"SbEventHandle",&start->handler))||
+           (rc=exported_function(&l,"GetEvergreenSabiString",&start->sabi)))return rc;
+        if(!platform_resolve("MyOSStarboardRun",&start->entry)||
+           !platform_resolve("MyOSStarboardValidate",&start->preflight))return -95;
+    }
     if(l.dt[13]){if(l.dt[13]>=ELF_SPAN)return -8;
         start->fini=USER_BASE+l.dt[13];if(!elf_executable(plan,start->fini))return -8;}
     if(l.dt[28]%8||l.dt[28]>128*8)return -8;
@@ -204,3 +234,7 @@ int elf_prepare(struct process *process,const struct elf_plan *plan,struct elf_s
     }
     return 0;
 }
+int elf_prepare(struct process *p,const struct elf_plan *plan,struct elf_start *start)
+{return prepare(p,plan,start,false);}
+int elf_prepare_starboard(struct process *p,const struct elf_plan *plan,struct elf_start *start)
+{return prepare(p,plan,start,true);}

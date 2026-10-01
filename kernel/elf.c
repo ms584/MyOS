@@ -19,7 +19,7 @@ static bool header(const struct elf_source *s,struct ehdr *h)
 int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
 {
     struct ehdr h;if(!plan||!header(s,&h))return -8;
-    memset(plan,0,sizeof(*plan));plan->dynamic=h.type==3;
+    memset(plan,0,sizeof(*plan));plan->dynamic=h.type==3;plan->stack_pages=ELF_STACK_PAGES;
     uint64_t bias=plan->dynamic?USER_BASE:0;
     if(h.entry>UINT64_MAX-bias)return -8;
     plan->entry=h.entry+bias;bool entry=false;
@@ -86,22 +86,27 @@ int elf_inspect(const struct elf_source *s)
     if(plan.dynamic)print("ELF: inspection only; not executed\n");
     return 0;
 }
-static int load_image(const struct elf_source *s,int32_t *status,bool run,bool live)
+static int load_image(const struct elf_source *s,int32_t *status,bool run,bool live,const char *name,const char *url)
 {
     struct elf_plan plan;int result=elf_plan_read(s,&plan);if(result)return result;
     /* A shared library with no executable entry can be linked/inspected only. */
-    if(run&&!elf_executable(&plan,plan.entry))return -95;
+    if(name){
+        if(!plan.dynamic)return -95;
+        size_t n=0;while(name[n]&&n<=64)++n;if(!n||n>64)return -22;
+        n=0;if(url){while(url[n]&&n<=1024)++n;if(!n||n>1024)return -22;}
+        plan.stack_pages=ELF_STARBOARD_STACK_PAGES;
+    }else if(run&&!elf_executable(&plan,plan.entry))return -95;
     size_t before=pages_free(),heap_before=heap_allocated();
     struct process *p=process_stage_elf(s,&plan);
     if(!p){check(pages_free()==before,"ELF failed-load page reclamation");
         if(live)check(heap_allocated()==heap_before,"ELF live failed-load heap reclamation");return -12;}
     print("ELF staged pages: ");decimal(p->page_count);print("\n");
-    struct elf_start start;result=elf_prepare(p,&plan,&start);
+    struct elf_start start;result=name?elf_prepare_starboard(p,&plan,&start):elf_prepare(p,&plan,&start);
     if(result||!run){process_discard_elf(p);
         check(pages_free()==before,"ELF staged page reclamation");
         if(live)check(heap_allocated()==heap_before,"ELF live staged heap reclamation");
         print("ELF staged image released; not executed\n");return result;}
-    uint64_t pid=p->pid;
+    start.name=name;start.url=url;uint64_t pid=p->pid;
     if(!process_start_elf(p,&start)){
         process_discard_elf(p);check(pages_free()==before,"ELF attach cleanup");
         if(live)check(heap_allocated()==heap_before,"ELF live attach heap reclamation");return -12;}
@@ -126,6 +131,8 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
         print(" heap-after=");decimal(heap_allocated());print("\n");}
     return result;
 }
-int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false);}
-int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true);}
-int elf_link(const struct elf_source *s){return load_image(s,0,false,false);}
+int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false,0,0);}
+int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true,0,0);}
+int elf_link(const struct elf_source *s){return load_image(s,0,false,false,0,0);}
+int elf_starboard(const struct elf_source *s,const char *name,const char *url,int32_t *status)
+{if(!name)return -22;return load_image(s,status,true,true,name,url);}

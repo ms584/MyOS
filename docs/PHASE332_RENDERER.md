@@ -100,6 +100,36 @@ ELF TLS/truncation reporting. Neither tool can mark native_gate_proven true.
 
 ## Next native decision gates
 
+### Additional source/closure inspection, 07:03 +07
+
+The pinned core exports memcpy/memset, unwind entry points and some C++
+operators (_Znwm, _Znam and _ZdaPv). A targeted check at 07:05 found those
+operators, but not Mesa's _ZdlPvm, __cxa_guard_acquire/release, __cxa_throw,
+__gxx_personality_v0 or class_type_info vtable. The host Mesa library's
+undefined symbols include GLIBCXX/CXXABI and versioned glibc fortified stdio
+functions. Its full dependency closure cannot be replaced by a nominal name
+match to Cobalt or by
+binding the pinned musl-opaque pthread boundary to host glibc's C11 types.
+No Clang/Clang++ executable was found on PATH; emulated-TLS compilation is
+therefore a toolchain task, not an available/proven build setting.
+
+Mesa 25.0.7 src/mapi/glapi/glapi.h reads thread-local dispatch/context directly;
+src/mapi/u_current.c defines those variables, and src/util/u_thread.h maps
+__THREAD_INITIAL_EXEC to thread_local (initial-exec on the applicable target).
+This source does not provide a USE_ELF_TLS=0 shortcut to a complete threaded
+MyOS backend. A source adaptation must preserve per-thread state; a shared
+global context would be incorrect. Compiler emutls also requires auditing
+generated dispatch/assembly, not just C/C++ relocations.
+
+Current MyOS errno/pthread state uses fixed private pages independently of FS.
+SYS_THREAD_CREATE accepts a validated caller-supplied FS base; the existing
+pthread_create passes zero, not its errno page. Native x64 TLS must preserve
+this private-page identity while installing a real TCB and module templates/
+offsets, including main-thread and worker lifetime. Static inspection does
+not prove this design.
+These observations narrow the next target-toolchain/TLS/dependency slice;
+they do not select a renderer or demonstrate a native context.
+
 1. Choose a target toolchain/ABI strategy and measure its real closure. Either
    supply tested native TLS/dependencies or compile against MyOS-compatible
    libc/pthread/emutls interfaces. No Linux loader/syscall substitution.

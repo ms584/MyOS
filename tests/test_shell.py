@@ -3,9 +3,12 @@ import time
 from test_system import VM,symbols
 
 def type_text(vm,text):
-    plain={' ':'spc','/':'slash','.':'dot','-':'minus','\n':'ret','\b':'backspace'}
+    plain={' ':'spc','/':'slash','.':'dot','-':'minus','=':'equal',';':'semicolon',
+           '\n':'ret','\b':'backspace'}
+    shifted={':':'semicolon','?':'slash','&':'7','_':'minus','+':'equal'}
     for ch in text:
-        code=plain.get(ch,ch.lower());codes=['shift',code] if ch.isupper() else [code]
+        code=shifted.get(ch,plain.get(ch,ch.lower()))
+        codes=['shift',code] if ch.isupper() or ch in shifted else [code]
         def event(c,down):return {'type':'key','data':{'down':down,'key':{'type':'qcode','data':c}}}
         vm.command('input-send-event',{'events':[event(c,True) for c in codes]})
         time.sleep(.012)

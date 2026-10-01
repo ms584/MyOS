@@ -3,6 +3,12 @@
 Continuation from local 2831cfe, 2026-10-01. Phase 33.1/33.2 remain OPEN.
 This is an isolated Ring 3 runtime and native fixture, NOT Cobalt execution.
 
+Follow-up: PHASE332_LAUNCHER.md adds the real SbEventHandle/SABI loader boundary
+and guarded main stack, and natively validates/adopts the small-PIC codegen.
+The measurements/next steps below describe this event checkpoint's baseline;
+PROJECT_STATE.md records current regression status. Cobalt web acceptance remains
+unproven, including native EGL/GLES, wheel input and verified HTTPS endurance.
+
 ## ABI and ownership
 
 `user/platform-event.c` provides SbRunStarboardMain, SbEventSchedule/Cancel,

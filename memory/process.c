@@ -85,6 +85,8 @@ static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,u
     process->frame->cs = 0x2b;
     process->frame->ss = 0x23;
     process->frame->rsp = USER_BASE + (loaded?(PROCESS_CODE_PAGES+2ull):3ull)*PAGE_SIZE + PAGE_SIZE - 8;
+    process->main_stack_base=process->frame->rsp+8-PAGE_SIZE;
+    process->main_stack_length=PAGE_SIZE;
     process->frame->flags = 0x202;       /* IF=1, IOPL=0. */
     process->pid = next_pid++;
     process->state = PROCESS_RUNNING;
@@ -175,7 +177,9 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
     uint64_t flags=irq_save();struct process *p=0;
     for(unsigned i=0;i<PROCESS_LIMIT;++i)if(processes[i].state==PROCESS_UNUSED){p=&processes[i];break;}
     if(!p){irq_restore(flags);return 0;}
-    unsigned capacity=128;
+    unsigned stack_pages=plan->stack_pages?plan->stack_pages:ELF_STACK_PAGES;
+    if(stack_pages<ELF_STACK_PAGES||stack_pages>ELF_STARBOARD_STACK_PAGES){irq_restore(flags);return 0;}
+    unsigned capacity=128+stack_pages-ELF_STACK_PAGES;
     for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
         capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
     }
@@ -194,8 +198,13 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
                (void *)(page+begin-va),(size_t)(stop-begin)))goto failed;
         }
     }
-    /* Four NX stack pages with a guard beneath them; no executable stack. */
-    for(unsigned i=0;i<4;++i)if(!elf_map_page(p,capacity,USER_BASE+ELF_STACK_OFFSET+i*PAGE_SIZE,6))goto failed;
+    /* Fixed top preserves legacy ELF addresses; grow downward with an unmapped
+     * guard below the allocation. Starboard's 2 MiB is a budget, not a measured
+     * Cobalt minimum. Image/VM/bootstrap ranges stay disjoint. */
+    p->main_stack_length=(uint64_t)stack_pages*PAGE_SIZE;
+    p->main_stack_base=USER_BASE+ELF_STACK_OFFSET+ELF_STACK_PAGES*PAGE_SIZE-p->main_stack_length;
+    for(unsigned i=0;i<stack_pages;++i)
+        if(!elf_map_page(p,capacity,p->main_stack_base+i*PAGE_SIZE,6))goto failed;
     if(!elf_map_page(p,capacity,USER_BASE+ELF_BOOT_OFFSET,5))goto failed;
     p->kernel_stack=kmalloc(16384);if(!p->kernel_stack)goto failed;
     p->kernel_top=((uintptr_t)p->kernel_stack+16384)&~15ull;
@@ -212,7 +221,7 @@ bool process_map_runtime(struct process *p)
 {
     if(!p||p->state!=PROCESS_LOADING)return false;
     size_t size=(size_t)(platform_runtime_end-platform_runtime_start);
-    if(!size||size>64*PAGE_SIZE)return false;
+    if(!size||size>PROCESS_RUNTIME_TLS_BASE-PROCESS_RUNTIME_BASE)return false;
     unsigned capacity=p->image_capacity;
     if(!capacity)return false;
     for(size_t offset=0;offset<size;offset+=PAGE_SIZE){
@@ -522,10 +531,24 @@ bool process_start_elf(struct process *p,const struct elf_start *start)
     uint64_t f=irq_save();
     if(!p||!start||p->state!=PROCESS_LOADING){irq_restore(f);return false;}
     uint64_t *e=image_leaf(p,USER_BASE+ELF_BOOT_OFFSET);check(e!=0,"ELF bootstrap map");
-    size_t size=(size_t)(elf_start_end-elf_start_code);check(size<=PAGE_SIZE,"ELF bootstrap size");
-    memcpy((void *)(uintptr_t)(*e&0x000ffffffffff000ull),elf_start_code,size);
+    size_t size=(size_t)(elf_start_end-elf_start_code);check(size<=512,"ELF bootstrap size");
+    unsigned char *boot=(void *)(uintptr_t)(*e&0x000ffffffffff000ull);
+    memcpy(boot,elf_start_code,size);
+    if(start->name){
+        size_t n=0,u=0;while(n<=64&&start->name[n])++n;
+        if(start->url)while(u<=1024&&start->url[u])++u;
+        if(!n||n>64||u>1024){irq_restore(f);return false;}
+        uint64_t base=USER_BASE+ELF_BOOT_OFFSET;
+        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+536),*url=name+n+1;
+        memcpy(name,start->name,n+1);args[0]=base+536;args[1]=args[2]=0;
+        p->frame->rdi=1;p->frame->rsi=base+512;
+        if(start->url){memcpy(url,"--url=",6);memcpy(url+6,start->url,u+1);
+            args[1]=base+(uint64_t)(url-(char *)boot);p->frame->rdi=2;
+            p->frame->r10=args[1]+6;}
+        p->frame->rcx=start->handler;p->frame->r8=start->preflight;p->frame->r9=start->sabi;
+    }
     p->frame->r12=start->array;p->frame->r13=start->count;
-    p->frame->r14=p->frame->rip;p->frame->r15=start->init;
+    p->frame->r14=start->entry?start->entry:p->frame->rip;p->frame->r15=start->init;
     p->frame->rbx=start->fini;p->frame->rbp=start->fini_array;p->frame->rdx=start->fini_count;
     p->frame->rip=USER_BASE+ELF_BOOT_OFFSET;
     if(!scheduler_attach_process(p)){irq_restore(f);return false;}

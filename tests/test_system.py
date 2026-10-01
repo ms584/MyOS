@@ -253,6 +253,8 @@ def main():
             native_ui_exercise()
             from test_platform_events import main as platform_events_exercise
             platform_events_exercise()
+            from test_starboard_launcher import main as starboard_launcher_exercise
+            starboard_launcher_exercise()
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

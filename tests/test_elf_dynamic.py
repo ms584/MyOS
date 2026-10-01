@@ -416,6 +416,12 @@ def exercise_cobalt(cobalt,out=None):
         assert 'staged image released; not executed' in output,output[-4000:]
         imports=[line.split(': ',1)[1] for line in output.splitlines() if line.startswith('ELF missing: ')]
         assert sorted(imports)==sorted(expected)
+        output=long_command(vm,'elf starboard cobalt https://myos.test/')
+        assert f'missing={len(expected)} weak-zero=1' in output,output[-4000:]
+        assert 'staged image released; not executed' in output,output[-4000:]
+        assert 'Starboard SABI:' not in output and 'ELF live: started' not in output,output[-4000:]
+        assert sorted(line.split(': ',1)[1] for line in output.splitlines()
+                      if line.startswith('ELF missing: '))==sorted(expected)
         command(vm,'run /bin/hello','App exited with status 42')
         print(f'PASS: actual Cobalt mapped and relocations processed in MyOS; {len(exports)} tested runtime imports resolved, {len(expected)} missing imports block execution; all staged pages reclaimed',flush=True)
     finally:vm.close()
@@ -424,6 +430,8 @@ def exercise_cobalt(cobalt,out=None):
     try:
         vm.wait('myos> ')
         output=long_command(vm,'elf link cobalt')
+        assert 'error: out of memory' in output,output
+        output=long_command(vm,'elf starboard cobalt')
         assert 'error: out of memory' in output,output
         command(vm,'run /bin/hello','App exited with status 42')
         print('PASS: actual large image OOM at 64 MiB rolls back and leaves shell/apps usable',flush=True)

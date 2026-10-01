@@ -60,13 +60,13 @@ static void execute(char *line){
     char *arg=word(&rest);
     if(equal(cmd,"assets")){if(arg)print("usage: assets\n");else asset_list();return;}
     if(equal(cmd,"elf")){
-        char *name=word(&rest);
-        if(!arg||!name||word(&rest)||(!equal(arg,"inspect")&&!equal(arg,"run")&&!equal(arg,"live")&&!equal(arg,"link"))){print("usage: elf inspect|link|run|live ASSET\n");return;}
+        char *name=word(&rest),*url=word(&rest);bool starboard=arg&&equal(arg,"starboard");
+        if(!arg||!name||(url&&!starboard)||word(&rest)||(!starboard&&!equal(arg,"inspect")&&!equal(arg,"run")&&!equal(arg,"live")&&!equal(arg,"link"))){print("usage: elf inspect|link|run|live ASSET; elf starboard ASSET [URL]\n");return;}
         struct asset_file file;int result=asset_open(name,&file);
         if(!result){struct elf_source source={&file,file.size,asset_read};
             if(equal(arg,"inspect"))result=elf_inspect(&source);
             else if(equal(arg,"link"))result=elf_link(&source);
-            else{int32_t status=0;result=equal(arg,"live")?elf_live(&source,&status):elf_run(&source,&status);
+            else{int32_t status=0;result=starboard?elf_starboard(&source,name,url,&status):equal(arg,"live")?elf_live(&source,&status):elf_run(&source,&status);
                 if(!result){print("ELF exited with status ");if(status<0){putchar('-');decimal(-(int64_t)status);}else decimal(status);print("\n");}}
         }
         if(result==-125)print("ELF cancelled; all threads stopped\n");

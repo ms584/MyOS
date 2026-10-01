@@ -3,6 +3,39 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native launcher continuation — 2026-10-01
+
+Tested local checkpoint following 36a5cea. Added `elf starboard ASSET [URL]`
+for the real SbEventHandle/GetEvergreenSabiString boundary, SABI validation in
+Ring 3 before constructors, owned immutable argv/link and a guarded NX 2 MiB
+main stack. Generic zero-entry `elf run/live` remains rejected. Actual main
+pthread attributes and RLIMIT_STACK now query mapped size instead of hardcoded
+values. Missing strong imports remain fail-closed before any user initialization.
+See PHASE332_LAUNCHER.md for bounds, export validation and teardown semantics.
+
+Small-PIC runtime codegen was adopted only after native runtime/lifecycle,
+storage/UI/event regression PASS 06:31:41 +07. Native launcher fixture PASS
+06:39:26 covers sectionless/zero entry, eleven malformed exports, pinned SABI
+before constructors, URL punctuation via real PS/2 keys, recursive 256 KiB
+stack, atomic output rejection, getter/guard/NX faults, real input, graceful
+finalizers, cancel/relaunch and exact page/heap reclamation. Normal kernel is
+253464 bytes and runtime 29840 bytes, within unchanged safety limits.
+Expanded scoped regression PASS 06:47:58, including actual Cobalt link/launcher
+refusal before user execution and 64 MiB OOM rollback. Origin/main remains
+54ef570 after fetch 06:47. Replacement full tests/test_system.py PASSED by
+07:21, including new launcher/runtime/UI/events, >60s lifecycle, TCP/options,
+storage/reboot, RAM/fault and VGA fallback. Normal image restored: kernel
+253464 bytes, image 1474560, runtime 29840, BSS end 0x7d400; limits unchanged.
+UEFI package/DMA/actual frames/captured PCM and DHCP/DNS passed by 07:21.
+Native UEFI launcher/events/UI and ASan/UBSan passed; the complete sequence
+exited zero at 07:22:32. Supplemental BIOS launcher passed 07:27:28 with exact
+guard/NX/getter page-fault bits/addresses and twelve malformed exports, including
+reserved visibility bits. Assertions were strengthened without production
+changes after the full run; normal image unchanged. Commit locally, never push.
+Actual Cobalt still lacks
+82 strong imports, plus weak TLS; HTML/JS/DOM/input/verified HTTPS >=60s is
+NOT proved. Phase 33.1/33.2 remain OPEN, no Phase 33.3 and no push.
+
 ## Phase 33.2 event/lifecycle continuation — 2026-10-01
 
 Continuation from 2831cfe. The Ring 3 event pump now implements

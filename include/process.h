@@ -46,6 +46,7 @@ struct process {
     uintptr_t kernel_top;
     struct frame *frame;
     uintptr_t data_page;
+    uint64_t main_stack_base,main_stack_length;
     uint64_t preemptions;
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
     bool exited;

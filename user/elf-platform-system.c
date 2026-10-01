@@ -55,6 +55,7 @@ uint64_t _start(void)
     struct musl_rlimit limit;
     if(getrlimit(7,&limit)||limit.current!=40||limit.maximum!=40)return 8;
     if(getrlimit(6,&limit)||limit.current!=8||limit.maximum!=8)return 9;
+    if(getrlimit(3,&limit)||limit.current!=16384||limit.maximum!=16384)return 25;
     if(getrlimit(99,&limit)!=-1||*__errno_location()!=22)return 10;
 
     struct musl_cpu_set mask;
