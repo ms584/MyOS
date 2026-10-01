@@ -4,6 +4,29 @@
 Phase 33.1/33.2 remain OPEN. Cobalt has not executed and no graphics backend
 is selected. This is a native-tested math prototype, not renderer closure.
 
+## Math-only SDK / cross-probe integration — 12:38 +07
+
+After 95580ce, build_math_sdk.py additionally emits libmyos-math.a and a narrow
+SDK include tree: math.h, fenv.h, features.h, x86_64 bits/fenv.h and MyOS
+myos/math-types.h. COPYRIGHT accompanies the package. Upstream header content
+is retained except math.h's bits/alltypes.h include is redirected to math-only
+evaluation typedefs; no musl pthread, time, file or other OS types are exported.
+The math header declares upstream functions beyond the selected closure; those
+are not claimed implemented. Missing providers still fail at link, not fake
+success. float/double evaluation types are checked in C/C++ for the x64 profile;
+no claim covers every exported long-double function or other target ABI.
+
+The renderer cross-probe uses these headers and real math/string objects in its
+configure provider archive. C/C++ sqrt/clock provider link/no host libraries,
+opaque pthread sizes and nine forbidden library routes each passed 12:38:46.
+This is not a final renderer link or backend/context/present acceptance.
+tests/test_math_sdk.py now consumes the exported header tree first: native BIOS
+44692 PASS 12:20:46, retaining 1895 vectors, FP-state workers and exact relaunch
+resources. No algorithm/flag changes or new UEFI/full-suite claim.
+Real Mesa blob.c consumer uses the same header tree and passed BIOS 12:37:38;
+PHASE332_RENDERER.md records bounds/OOM and remaining actual compile failures.
+Normal BIOS/UEFI hashes unchanged; the valid full kernel/runtime run is retained.
+
 ## Pinned sources and target build
 
 musl 1.2.6 archive SHA256:
@@ -68,6 +91,6 @@ Archive prerequisite: build/math-evaluation/musl-1.2.6.tar.gz, exact hash above.
 No global packages/install. MPFR libmpfr.so.6 is a host test-only prerequisite.
 Run python3 tools/run_logged.py -- python3 tests/test_math_sdk.py [--uefi].
 Source trees/objects remain disposable build artifacts, not a selected full
-renderer distribution. SDK object integration, libc/C++ dependency closure,
+renderer distribution. Final renderer linking, libc/C++ dependency closure,
 native GLES/EGL/context/presentation and real Cobalt web acceptance remain.
 No Cobalt import count increase, Phase 33.3 work or push.

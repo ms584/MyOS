@@ -16,3 +16,10 @@ void *memset(void *destination,int value,size_t length)
     for(size_t i=0;i<length;++i)out[i]=(unsigned char)value;
     return destination;
 }
+void *memchr(const void *source,int value,size_t length)
+{
+    const unsigned char *bytes=source;
+    for(size_t i=0;i<length;++i)
+        if(bytes[i]==(unsigned char)value)return (void *)(bytes+i);
+    return 0;
+}

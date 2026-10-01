@@ -25,7 +25,7 @@ def main(uefi=False):
     for check in (True,False):
         subprocess.run(['git','apply',*(['--check'] if check else []),
                         '--directory='+str(out.relative_to(root)),'tools/mesa_c11_target.patch'],cwd=root,check=True)
-    flags=[*flags,'-I'+str(root/'vendor/mesa-c11/src'),'-I'+str(out),'-DHAVE_PTHREAD','-DHAVE_STRUCT_TIMESPEC']
+    flags=['-I'+str(build['sdk_include']),*flags,'-I'+str(root/'vendor/mesa-c11/src'),'-I'+str(out),'-DHAVE_PTHREAD','-DHAVE_STRUCT_TIMESPEC']
     for name,source,extra in (('threads',source,['-Wno-unused-function']),
                               ('time',root/'user/platform-c11-time.c',[]),
                               ('fixture',root/'user/elf-sdk-math.c',[])):

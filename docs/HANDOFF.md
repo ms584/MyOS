@@ -3,6 +3,37 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 target math integration / real Mesa blob — 2026-10-01
+
+Checkpoint follows 95580ce. Math SDK now exports a static archive and only five
+math headers plus COPYRIGHT. math.h's type include is redirected to MyOS-only
+float_t/double_t evaluation types; musl pthread/OS type headers are not exported.
+The target renderer probe links actual math and string providers into its
+configure archive. This is not a finished renderer library or native GLES.
+Math's unchanged 64-source closure and exported headers passed native BIOS
+1895-vector/FP-worker/relaunch testing: 44692 exited 0 at 12:20:46 +07.
+Both C and C++ compiler boundary/math link checks passed 12:38:46; no Linux
+macros/default libraries/DT_NEEDED/undefined symbols. Nine forbidden link/search/
+response/OpenMP routes are rejected in each language.
+Actual pinned Mesa blob.c now compiles and runs with the target SDK. realloc is
+declared with the existing MyOS allocator ABI; memchr has a real byte-search
+provider. Target source patch rejects size/capacity overflow, saturates growth,
+retains the original buffer if trimming realloc fails, and checks available
+reader bytes with an unsigned count only after the pointer-order guard.
+Native BIOS test 44517 PASS 12:37:38: growth beyond 4 KiB, typed/string readback,
+fixed guards, truncated strings, SIZE_MAX rejection, actual failure down to
+one-byte allocation, trim ownership and three launches/exact page/heap recovery.
+An earlier pressure fixture left a page for small allocation; it failed, was
+diagnosed, and was corrected rather than counted as PASS. No kernel changes.
+Target compile 53882 at 12:31:59 still fails on sys/types.h, fcntl.h, inttypes.h,
+stdio.h and os_time.h localtime_r. Logs: target-config-8gnsdabk; the final signed
+reader comparison was subsequently compiled/run by the native blob test.
+Private frozen BIOS only for new SDK changes; no new UEFI/full-run claim.
+Normal BIOS/UEFI hashes unchanged, valid full 45e08d7 baseline retained.
+Next: close measured libc/time/C++ failures, prove native EGL/GLES/context/
+presentation, then run Cobalt HTML/JS/DOM/input/verified HTTPS >=60s/relaunch.
+33.1/33.2 OPEN, no 33.3, no import-count improvement and no push.
+
 ## Phase 33.2 honest MyOS renderer cross-configuration — 2026-10-01
 
 Checkpoint follows f2a2955. Fetch at 12:11 +07 found origin/main at 26c97aa:

@@ -13,6 +13,7 @@ parser.add_argument('--language', choices=('c', 'cpp'), required=True)
 parser.add_argument('--sdk', type=Path, required=True)
 parser.add_argument('--intrinsics', type=Path, required=True)
 parser.add_argument('--provider', type=Path, required=True)
+parser.add_argument('--math-include', type=Path)
 options, args = parser.parse_known_args()
 if args[:1] == ['--']:
     args = args[1:]
@@ -27,6 +28,9 @@ flags = [] if query else [
     '-fno-asynchronous-unwind-tables', '-fno-unwind-tables', '-D__myos__=1',
     '-U__linux__', '-U__linux', '-Ulinux', '-U__gnu_linux__',
 ]
+if options.math_include and not query:
+    assert options.math_include.resolve().is_relative_to(options.provider.parent.resolve())
+    flags += ['-I' + str(options.math_include)]
 if not query and options.language == 'cpp':
     flags += ['-nostdinc++', '-fno-exceptions', '-fno-rtti']
 for arg in args:

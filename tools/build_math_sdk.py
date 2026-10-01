@@ -1,6 +1,7 @@
 """Measure a target-only musl math closure; not a native renderer gate."""
 from pathlib import Path
 import hashlib
+import shutil
 import subprocess
 import tempfile
 
@@ -70,7 +71,23 @@ subprocess.run(['ld', '-shared', '--hash-style=both', '-z', 'now', '-z', 'relro'
 dynamic = subprocess.check_output(['readelf', '-dW', str(library)], text=True)
 assert '(NEEDED)' not in dynamic, dynamic
 assert not subprocess.check_output(['nm', '-u', str(library)], text=True).strip()
+static_library = out / 'libmyos-math.a'
+subprocess.run(['ar', 'rcs', str(static_library), *map(str, objects.values())], check=True)
+# Export only math headers, never the musl include tree or OS/pthread types.
+sdk_include = out / 'sdk/include'
+(sdk_include / 'bits').mkdir(parents=True)
+(sdk_include / 'myos').mkdir()
+for name in ('features.h', 'fenv.h'):
+    shutil.copyfile(source / 'include' / name, sdk_include / name)
+shutil.copyfile(source / 'arch/x86_64/bits/fenv.h', sdk_include / 'bits/fenv.h')
+shutil.copyfile(root / 'user/sdk/myos/math-types.h', sdk_include / 'myos/math-types.h')
+math_header = (source / 'include/math.h').read_text()
+assert math_header.count('#include <bits/alltypes.h>') == 1
+(sdk_include / 'math.h').write_text(math_header.replace(
+    '#include <bits/alltypes.h>', '#include <myos/math-types.h>'))
+shutil.copyfile(source / 'COPYRIGHT', out / 'sdk/COPYRIGHT')
 print('COMPILE/LINK ONLY: target math bytes', library.stat().st_size,
       'sources', len(sources), 'no undefined/DT_NEEDED; NOT native execution.', flush=True)
+print('MATH-ONLY SDK headers:', sdk_include, 'static archive:', static_library, flush=True)
 for path in sorted(sources.values()):
     print('SOURCE', path.relative_to(source), flush=True)

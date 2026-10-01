@@ -13,6 +13,34 @@ this change does NOT make that library loadable or select a native backend.
 
 ## MyOS target configuration and first real compile — 12:10 +07
 
+Follow-up math/blob checkpoint (after 95580ce): the cross-probe now receives
+math-only headers and all 64 actual math objects plus SDK string providers.
+No full musl header tree or host libc/C++ is exposed. math.h and BLAKE3/blob
+compile failures are closed; this does not mean a final renderer has linked.
+Full target configure/compile 53882 finished 12:31:59 in
+build/renderer-evaluation/target-config-8gnsdabk: setup 0, compile 1. Observed
+remaining frontier: sys/types.h, fcntl.h, inttypes.h, stdio.h, localtime_r.
+C/C++ math-header/sqrt-provider link, pinned types/no Linux ABI and forbidden
+library routes passed 12:38:46 (compile/link only). PHASE332_MATH_SDK.md records
+the new exported-header native numeric test, not a graphics/backend gate.
+
+Actual pinned src/util/blob.c is also native-tested via tests/test_mesa_blob.py.
+The SDK now declares its existing realloc provider and implements memchr.
+Target patches reject addition overflow, saturate capacity doubling, preserve
+buffer ownership on failed trimming realloc and avoid signed count comparison
+after the reader's pointer-order check. BIOS 44517 passed 12:37:38: growth,
+aligned typed/string reads, fixed-size guards, truncated input, SIZE_MAX reserve,
+real allocator exhaustion including one-byte allocation, failed-trim ownership
+and three launches/exact page/heap recovery. Earlier small-allocation pressure
+was insufficient and failed; only the corrected terminal run is a PASS.
+The final signed reader comparison was compiled by this native fixture after
+the full cross-build run. No new UEFI/full regression: kernel/runtime/images
+unchanged. Headers can be reused only after comparison against the sealed musl
+archive and current MyOS math-types source; no repeated math build is needed.
+Reproduce: python3 tools/run_logged.py -- python3 tests/test_mesa_blob.py
+[--math-sdk build/math-evaluation/target-qrhf88ei]. The fixture is an actual
+renderer utility consumer, not rendering, EGL/GLES, shader execution or Cobalt.
+
 tools/probe_renderer_target.py now configures a freshly extracted, hash-verified
 Mesa 25.0.7 source against MyOS rather than measuring the Linux binary again.
 Only mesa_c11_target.patch, mesa_thread_util_target.patch and the new

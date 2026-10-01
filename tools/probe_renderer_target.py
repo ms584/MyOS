@@ -5,9 +5,12 @@ Generated cross files, compiler probes and logs are isolated build artifacts.
 """
 from pathlib import Path
 import argparse
+import contextlib
 import hashlib
 import json
 import os
+import runpy
+import shutil
 import subprocess
 import tempfile
 
@@ -38,24 +41,34 @@ flags = ['-m64', '-Oz', '-fPIC', '-ffreestanding', '-fno-builtin', '-mno-red-zon
          '-nostdinc', '-isystem', intrinsics, '-I' + str(root / 'user/sdk')]
 runtime = out / 'runtime.o'
 tls = out / 'tls.o'
+string = out / 'string.o'
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-runtime.c'), '-o', str(runtime)], check=True)
 subprocess.run(['nasm', '-f', 'elf64', str(root / 'user/platform-tls.asm'), '-o', str(tls)], check=True)
+subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-sdk-string.c'), '-o', str(string)], check=True)
 provider = out / 'libmyos-runtime-probe.a'
-subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls)], check=True)
+with (out / 'math-build.log').open('w') as math_log, contextlib.redirect_stdout(math_log):
+    math_build = runpy.run_path(str(root / 'tools/build_math_sdk.py'))
+math_include = out / 'math-include'
+shutil.copytree(math_build['sdk_include'], math_include)
+subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string),
+                *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'
 def command(language):
     return ['python3', str(compiler), '--language', language, '--sdk', str(root / 'user/sdk'),
-            '--intrinsics', intrinsics, '--provider', str(provider), '--']
+            '--intrinsics', intrinsics, '--provider', str(provider),
+            '--math-include', str(math_include), '--']
 # Test the boundary itself before trusting configure results. This is link
 # evidence only: never execute MyOS syscall instructions on the Linux host.
 boundary_source = '''#include <pthread.h>
 #include <time.h>
+#include <math.h>
 #if defined(__linux__) || defined(__GLIBC__)
 #error Host OS ABI leaked into MyOS probe
 #endif
 _Static_assert(sizeof(pthread_mutex_t) == 80, "Cobalt mutex ABI");
 _Static_assert(sizeof(pthread_cond_t) == 96, "Cobalt cond ABI");
-int main(void) { struct timespec t; return clock_gettime(CLOCK_MONOTONIC, &t); }
+int main(void) { struct timespec t; double (*volatile f)(double)=sqrt;
+return clock_gettime(CLOCK_MONOTONIC, &t) + (int)f(4.0); }
 '''
 boundary = out / 'runtime-boundary'
 boundary_result = subprocess.run(command('c') + ['-x', 'c', '-', '-o', str(boundary)],
@@ -92,6 +105,7 @@ with log.open('w') as stream:
     result = subprocess.run(args, env=env, stdout=stream, stderr=subprocess.STDOUT)
 report = dict(output=str(out.relative_to(root)), configure_exit=result.returncode,
               boundary_checks_passed=True,
+              math_sdk_integrated=True,
               host_libraries_allowed=False, native_execution=False,
               native_backend_selected=False)
 exit_code = result.returncode

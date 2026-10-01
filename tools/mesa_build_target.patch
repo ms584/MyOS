@@ -36,3 +36,38 @@
 +# endif
 +#elif defined(HAVE_ENDIAN_H)
  #include <endian.h>
+--- a/src/util/blob.c
++++ b/src/util/blob.c
+@@ -48,6 +48,11 @@
+    if (blob->out_of_memory)
+       return false;
+ 
++   if (additional > SIZE_MAX - blob->size || additional > SIZE_MAX - blob->allocated) {
++      blob->out_of_memory = true;
++      return false;
++   }
++
+    if (blob->size + additional <= blob->allocated)
+       return true;
+ 
+@@ -58,5 +63,5 @@
+    else
+-      to_allocate = blob->allocated * 2;
++      to_allocate = blob->allocated > SIZE_MAX / 2 ? SIZE_MAX : blob->allocated * 2;
+ 
+    to_allocate = MAX2(to_allocate, blob->allocated + additional);
+ 
+@@ -135,5 +140,7 @@
+    /* Trim the buffer. */
+-   *buffer = realloc(*buffer, *size);
++   void *trimmed = realloc(*buffer, *size);
++   if (trimmed != NULL || *size == 0)
++      *buffer = trimmed;
+ }
+ 
+ bool
+@@ -269,3 +276,3 @@
+-   if (blob->current <= blob->end && blob->end - blob->current >= size)
++   if (blob->current <= blob->end && (size_t)(blob->end - blob->current) >= size)
+       return true;
+ 
