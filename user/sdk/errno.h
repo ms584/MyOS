@@ -16,5 +16,6 @@ int *__errno_location(void);
 #define EINVAL 22
 #define ERANGE 34
 #define EOVERFLOW 75
+#define EILSEQ 84
 #define ETIMEDOUT 110
 #endif

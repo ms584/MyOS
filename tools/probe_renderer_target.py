@@ -60,10 +60,13 @@ with (out/'calendar-build.log').open('w') as calendar_log, contextlib.redirect_s
 provider = out / 'libmyos-runtime-probe.a'
 with (out / 'math-build.log').open('w') as math_log, contextlib.redirect_stdout(math_log):
     math_build = runpy.run_path(str(root / 'tools/build_math_sdk.py'))
+with (out / 'format-build.log').open('w') as format_log, contextlib.redirect_stdout(format_log):
+    format_build = runpy.run_path(str(root / 'tools/build_format_sdk.py'),init_globals={'math_build':math_build})
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
 subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
                 str(environment),
+                *map(str,format_build['objects']),
                 *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
 compiler = root / 'tools/renderer_target_compiler.py'

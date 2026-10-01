@@ -3,6 +3,22 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.2 native sealed memory/callback formatting — 2026-10-01
+
+Checkpoint follows bd4da4b; PHASE332_FORMAT_SDK.md. Real sealed musl formatter,
+pure long-double helpers and target callback/pthread/UTF-8 adapters now compile
+and execute in MyOS; no foreign stdio/thread/syscall state. Internal FILE is
+not a validated layout for Cobalt-owned objects. File/std/memory-stream
+lifecycle and full locale/scanning remain pending. Native final BIOS PASS
+14:10:31: integer/FP/special values/position, guards/UTF-8/errors/asprintf,
+callback locking/fwrite overflow, three launches/resources. Failed helper and
+fixture-length trials were fixed, not counted PASS. Integer and native thread
+utility regressions pass; obsolete stdio include skip removed. Renderer 46154
+setup 0/compile 1 14:07:35, target-config-qpv095ob: FILE type issue cleared,
+stdio lifecycle/stat/mkstemp/unlink/abort/allocator/random/string needs remain.
+C/C++ format/env/math boundary PASS 14:09:20. Images/kernel/runtime unchanged;
+no new full/UEFI claim, native graphics/Cobalt pass, 33.3 or push.
+
 ## Phase 33.2 guest renderer environment — 2026-10-01
 
 Checkpoint follows 6ea5840; see PHASE332_ENVIRONMENT.md. SDK getenv/setenv/

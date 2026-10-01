@@ -10,6 +10,13 @@ size_t strlen(const char *text)
 {
     size_t length=0;while(text[length])++length;return length;
 }
+size_t strnlen(const char *text,size_t bound)
+{size_t length=0;while(length<bound&&text[length])++length;return length;}
+int strcmp(const char *first,const char *second)
+{
+    const unsigned char *a=(const unsigned char *)first,*b=(const unsigned char *)second;
+    while(*a&&*a==*b){++a;++b;}return (int)*a-(int)*b;
+}
 void *memset(void *destination,int value,size_t length)
 {
     unsigned char *out=destination;

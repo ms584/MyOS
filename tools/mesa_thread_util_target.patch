@@ -67,15 +67,3 @@
  
  typedef pthread_barrier_t util_barrier;
  
---- a/src/util/macros.h
-+++ b/src/util/macros.h
-@@ -30,7 +30,9 @@
- #endif
- #include <stddef.h>
- #include <stdint.h>
-+#ifndef __myos__
- #include <stdio.h>
-+#endif
- 
- #ifdef _GAMING_XBOX
- #define strdup _strdup

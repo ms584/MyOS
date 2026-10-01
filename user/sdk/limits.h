@@ -3,6 +3,8 @@
 #define INT_MAX __INT_MAX__
 #define INT_MIN (-INT_MAX-1)
 #define CHAR_BIT __CHAR_BIT__
+#define MB_LEN_MAX 4
+#define NL_ARGMAX 9
 #define SCHAR_MAX __SCHAR_MAX__
 #define SCHAR_MIN (-SCHAR_MAX-1)
 #define UCHAR_MAX (SCHAR_MAX*2+1)

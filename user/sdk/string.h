@@ -8,6 +8,9 @@ void *memcpy(void *,const void *,size_t);
 void *memset(void *,int,size_t);
 void *memchr(const void *,int,size_t);
 size_t strlen(const char *);
+size_t strnlen(const char *,size_t);
+int strcmp(const char *,const char *);
+char *strerror(int);
 #ifdef __cplusplus
 }
 #endif
