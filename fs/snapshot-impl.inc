@@ -20,10 +20,10 @@ bool fs_snapshot_export(void *slots,size_t stride,size_t max_file)
     if(!slots||!snapshot_shape(stride,max_file))return false;
     uint64_t flags=irq_save();
     for(unsigned i=0;i<FS_NODES;++i)
-        if(nodes[i].used&&nodes[i].type==FS_FILE&&nodes[i].size>max_file){irq_restore(flags);return false;}
+        if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].type==FS_FILE&&nodes[i].size>max_file){irq_restore(flags);return false;}
     memset(slots,0,stride*FS_NODES);
     for(unsigned i=0;i<FS_NODES;++i){
-        if(!nodes[i].used)continue;
+        if(!nodes[i].used||nodes[i].unlinked)continue;
         struct fs_disk_meta *slot=snapshot_mut(slots,stride,i);
         slot->used=1;slot->parent=nodes[i].parent;slot->type=nodes[i].type;
         slot->size=(uint32_t)nodes[i].size;memcpy(slot->name,nodes[i].name,FS_NAME);

@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Target stat/real Mesa file checkpoint follows 32b1fc2. No push.
+Tested open-file unlink checkpoint follows b789051. No push.
 Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 
 ## Scope and status
@@ -25,14 +25,10 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - Timed mutex/exit/join/detach: PHASE331_THREAD_SERVICES.md.
 - Mesa thread utils: PHASE332_THREAD_UTIL.md (BIOS/UEFI, not graphics).
 - Math/header cross-probe: PHASE332_MATH_SDK.md; renderer NOT linked/executed.
-- Native Mesa clock/32-bit wait and UTC calendar: PHASE332_TIME_SDK.md.
-- Target integer/descriptor headers + native rounding: PHASE332_INTEGER_SDK.md.
-- Guest environment/identity and limits: PHASE332_ENVIRONMENT.md.
-- Native memory/callback formatting and limits: PHASE332_FORMAT_SDK.md.
-- Native unbuffered file/console stream lifecycle: PHASE332_STREAM_SDK.md.
-- Native memory streams/real Mesa wrapper: PHASE332_MEMSTREAM_SDK.md.
-- Native strings/allocator declarations: PHASE332_STRING_SDK.md.
-- Target stat/open/unlink + real Mesa utility: PHASE332_STAT_SDK.md.
+- Pure/native SDK: PHASE332_TIME_SDK.md, PHASE332_INTEGER_SDK.md,
+  PHASE332_ENVIRONMENT.md, PHASE332_FORMAT_SDK.md, PHASE332_STREAM_SDK.md,
+  PHASE332_MEMSTREAM_SDK.md, PHASE332_STRING_SDK.md, PHASE332_STAT_SDK.md.
+- Open-file unlink/name reuse/last-close: PHASE331_UNLINK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Target Mesa configure PASS; real compile still fails: PHASE332_RENDERER.md.
   No Linux libs/OpenMP; native memset/memchr and real Mesa blob utility tested.
@@ -40,27 +36,31 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
 ## Current evidence (2026-10-01, +07)
-- Fresh uninterrupted tests/test_system.py PASS; normal image restored.
-  Full + SDK guard + UEFI thread/TLS 52428 exited 0 at 10:23:34.
-- C11/thread/math/C++ BIOS+UEFI and time/integer/environment: evidence in docs.
-- Strings C/C++ 58821 PASS 15:04:02; integer/blob regression 2027 PASS 15:02:28.
-- Stat/Mesa/failure rollback + C/C++ headers/file streams 16406 PASS 15:23:28.
-- Formatter/file-stream regression 97536 PASS 14:52:39; integer/thread PASS.
-- C/C++ format/env/math boundary PASS 14:09:20 (not native graphics).
-- Streams/cancel 32852 PASS 14:53:56: live 64 KiB memory buffer reclaimed.
-- Memory streams 72224 PASS 14:51:37: real Mesa/OOM/seek/8 workers/relaunch.
-- Target 55958 at 15:21:15: configure 0, compile 1, target-config-j9niz748.
-- SDK-only change: no new UEFI/full run; kernel/runtime baseline unchanged.
+- Previous baseline full/SDK/UEFI 52428 PASS 10:23:34, before unlink change.
+- Full coverage completed as passed prefix 83161 + resumed suffix 89247
+  exit 0 16:33:42, all remaining tests/VGA/finally; normal restored.
+  NOT uninterrupted full-run PASS. Earlier runs hit media 30s boot timeout;
+  diagnostic proved shell in 30.74s. Media boot waits now common 60s,
+  all assertions retained; details/provenance PHASE331_UNLINK.md.
+- Unlink/Mesa/snapshot 79689 PASS 15:47:30; sdk-nh2mfw41, private normal boot.
+  Live handles/name reuse/128 close cycles/cancel/relaunch/exact reclaim;
+  actual Mesa anonymous files and v1/v2 live-orphan snapshot/reboot PASS.
+- Fresh normal UEFI/unlink 96289 native test PASS 16:34:55, sdk-oeghfxmx;
+  enclosing hash command typo failed, corrected artifact evidence 16:36:11.
+- Earlier stat/headers/streams 16406 PASS 15:23:28; strings C/C++ 58821 PASS.
+  C11/thread/math/format/environment/memstream details in respective docs.
+- Renderer 99936 exit 1 15:57:35, target-config-qjsmm8xd: configure/boundary
+  PASS, compile FAIL. mkstemp cleared; abort/rand/sscanf/atexit/OS-info,
+  socket ENOSYS and C++ u_qsort <thread> remain. No host libraries.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
-  Image SHA256 0849bb23f54b1f9c0bdf10b7c89f881263c3209827d8d3eaa9466f10da61fa6a.
-- Process-test kernel 261144; cap unchanged; all jobs terminal/images unchanged.
-- Host Mesa has four Linux dependencies; no native renderer selected.
+  BIOS SHA256 765a3f0c65e9746e80a14226ac2a142651ecbca1e3858cf2c5b2a61212335e5d.
+- Process-test kernel 261144; cap unchanged. Normal UEFI restored, hashes
+  in PHASE331_UNLINK.md; all jobs terminal, no shared-image owner.
 
 ## Required next work
-1. Close temporary lifetime/libc/OS-info failures (PHASE332_STAT_SDK.md),
-   then target C++ and native EGL/GLES.
+1. Close remaining libc/OS-info/C++ renderer failures, then native EGL/GLES.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.
 2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.

@@ -49,8 +49,10 @@ Initial native 59812 exit 0 15:19:51, sdk-gj_2dlq9.
 Existing PHASE331_FILES.md limits are not cured by headers: fixed owner/modes,
 zero timestamps, placeholder inode identities, no symlinks/permissions model,
 no chmod/chown/statvfs. fstat supports files/directories, not pipe/socket stat.
-unlink-while-open returns EBUSY; this must be resolved before claiming Mesa
-anonymous temporary-file semantics. No mkstemp success is advertised.
+At this historical checkpoint unlink-while-open returned EBUSY. The subsequent
+PHASE331_UNLINK.md implements and natively tests orphan/temporary lifetime;
+its architectural full/UEFI verification is tracked separately. This fixture
+alone does not prove Mesa anonymous temporary-file semantics.
 os_same_file_description cannot determine distinct descriptor identity on this
 target; no kcmp/sysctl emulation is claimed. Growing-file read/realloc failure
 branch is corrected but not separately forced by this fixture.

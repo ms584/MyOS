@@ -40,7 +40,7 @@ def main():
     subprocess.run(['python3','tools/make_video_disk.py',str(DISK)],check=True)
     bare=VM('phase31-no-sb16',disk=DISK)
     try:
-        bare.wait('myos> ',30)
+        bare.wait('myos> ')
         send(bare,'video play /home/demo.myv')
         bare.wait('Video requires SB16 audio',8)
     finally:bare.close()
@@ -48,7 +48,7 @@ def main():
     capture.unlink(missing_ok=True)
     vm=VM('phase31-video',disk=DISK,audio=capture)
     try:
-        vm.wait('myos> ',30)
+        vm.wait('myos> ')
         send(vm,'video play /etc/motd')
         vm.wait('Video: invalid or unavailable MYV1 clip',8)
         send(vm,'video play /home/demo.myv')
@@ -114,7 +114,7 @@ def main():
 
     low=VM('phase31-video-16m',ram=16,disk=DISK,audio=OUT/'phase31-16m.wav')
     try:
-        low.wait('myos> ',30)
+        low.wait('myos> ')
         send(low,'video play /home/demo.myv')
         low.wait('Video: invalid or unavailable MYV1 clip',8)
         low.wait('myos> ',5)
@@ -124,7 +124,7 @@ def main():
 
     minimum=VM('phase31-video-32m',ram=32,disk=DISK,audio=OUT/'phase31-32m.wav')
     try:
-        minimum.wait('myos> ',30)
+        minimum.wait('myos> ')
         send(minimum,'video play /home/demo.myv')
         minimum.wait('VIDEO COMPLETE',12)
         minimum.wait('myos> ',5)
@@ -138,7 +138,7 @@ def main():
     subprocess.run(['python3','tools/make_video_disk.py',str(bad_disk),'--input',str(bad_clip)],check=True)
     broken=VM('phase31-video-bad',disk=bad_disk,audio=OUT/'phase31-bad.wav')
     try:
-        broken.wait('myos> ',30)
+        broken.wait('myos> ')
         send(broken,'video play /home/demo.myv')
         broken.wait('Video: invalid or unavailable MYV1 clip',8)
         broken.wait('myos> ',5)

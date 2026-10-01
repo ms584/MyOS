@@ -13,6 +13,8 @@ void free(void *);
 char *getenv(const char *);
 int setenv(const char *,const char *,int);
 int unsetenv(const char *);
+int mkstemp(char *);
+char *mkdtemp(char *);
 #ifdef __cplusplus
 }
 #endif

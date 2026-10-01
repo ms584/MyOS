@@ -16,7 +16,7 @@ void fs_test(void)
     check(fs_read(files,b,buffer,8)==4&&buffer[0]==0&&buffer[3]=='f',"binary read");
     check(fs_read(files,b,buffer,8)==0,"EOF");
     check(fs_write(files,b,"x",1)==-9,"read-only handle");
-    check(fs_unlink("/home/test/file")==-16&&fs_unlink("/home/test")==-39,"busy and nonempty");
+    check(fs_unlink("/home/test")==-39,"nonempty directory");
     check(!fs_stat("/home/test/../test/file",&info)&&info.size==7&&info.type==FS_FILE,"stat and parent path");
     check(fs_list("/home/test",0,&info)==1&&fs_list("/home/test",1,&info)==0,"directory iteration");
     check(!fs_close(files,a)&&fs_close(files,a)==-9,"close and invalid handle");

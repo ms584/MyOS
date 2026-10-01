@@ -80,7 +80,9 @@ def main():
     saved.unlink(missing_ok=True)
     vm=VM('phase30-file',disk=disk,audio=saved)
     try:
-        vm.wait('myos> ',30)
+        # Process self-tests plus v2 ATA import measured 30.74s on WSL.
+        # Use the common bounded 60s shell-boot budget, not the media timeout.
+        vm.wait('myos> ')
         send(vm,'audio play /etc/motd')
         vm.wait('Audio unavailable, invalid WAV or queue full')
         send(vm,'audio play /home/sample.wav')

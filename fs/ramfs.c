@@ -1,7 +1,7 @@
 #include "fs-snapshot.h"
 #define FS_ASSET_NODE UINT32_MAX
 struct node {
-    bool used;
+    bool used, unlinked;
     unsigned parent, type, references;
     size_t size, capacity;
     char name[FS_NAME];
@@ -17,7 +17,7 @@ static bool equal(const char *a,const char *b)
 static int child(unsigned parent,const char *name)
 {
     for (unsigned i=1;i<FS_NODES;++i)
-        if (nodes[i].used && nodes[i].parent==parent && equal(nodes[i].name,name)) return (int)i;
+        if (nodes[i].used && !nodes[i].unlinked && nodes[i].parent==parent && equal(nodes[i].name,name)) return (int)i;
     return -2;
 }
 
@@ -127,7 +127,10 @@ int fs_close(struct fs_handle *table,int fd)
 {
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file){irq_restore(flags);return -9;}
-    if(file->node!=FS_ASSET_NODE)--nodes[file->node-1].references;
+    if(file->node!=FS_ASSET_NODE){
+        struct node *node=&nodes[file->node-1];
+        if(!--node->references&&node->unlinked){kfree(node->data);memset(node,0,sizeof(*node));}
+    }
     memset(file,0,sizeof(*file));irq_restore(flags);return 0;
 }
 void fs_close_all(struct fs_handle *table)
@@ -224,10 +227,12 @@ int fs_unlink(const char *path)
 {
     uint64_t flags=irq_save();int result=resolve(path,false,0);
     if(result<0)goto done;
-    if(!result || nodes[result].references){result=-16;goto done;}
+    if(!result || (nodes[result].type==FS_DIR&&nodes[result].references)){result=-16;goto done;}
     for(unsigned i=1;i<FS_NODES;++i)
-        if(nodes[i].used && nodes[i].parent==(unsigned)result){result=-39;goto done;}
-    kfree(nodes[result].data);memset(&nodes[result],0,sizeof(nodes[result]));result=0;
+        if(nodes[i].used && !nodes[i].unlinked && nodes[i].parent==(unsigned)result){result=-39;goto done;}
+    if(nodes[result].references)nodes[result].unlinked=true;
+    else {kfree(nodes[result].data);memset(&nodes[result],0,sizeof(nodes[result]));}
+    result=0;
 done:
     irq_restore(flags);return result;
 }
@@ -260,7 +265,7 @@ int fs_list(const char *path,unsigned position,struct fs_entry *result)
     uint64_t flags=irq_save();int node=resolve(path,false,0),ret=0;
     if(node<0){ret=node;goto done;}
     if(nodes[node].type!=FS_DIR){ret=-20;goto done;}
-    for(unsigned i=1;i<FS_NODES;++i)if(nodes[i].used&&nodes[i].parent==(unsigned)node){
+    for(unsigned i=1;i<FS_NODES;++i)if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)node){
         if(!position--){entry(i,result);ret=1;break;}
     }
 done:

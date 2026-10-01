@@ -3,6 +3,26 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase 33.1/33.2 open-file unlink — 2026-10-01
+
+Work follows b789051; PHASE331_UNLINK.md. Namespace hides live orphan files,
+handles retain data until final close, snapshots omit orphans. SDK exposes
+existing mkstemp/mkdtemp. Expanded 79689 PASS 15:47:30: real sealed Mesa
+anonymous-file creation, zero extension/CLOEXEC/error cleanup, 128 cycles,
+dup/name/parent reuse, cancellation/relaunch/exact recovery and v1/v2 snapshot
+commit/reboot with live 8 KiB orphan. No shared mmap/SCM_RIGHTS claim.
+Full 62280 stopped at audio disk boot timeout (15:40:28), normal image restored;
+retry 81645 also timed out. Diagnostic 71194 measured successful boot 30.74s;
+audio boot wait now common 60s, media assertions unchanged. Full 83161 passed
+through audio then video's same 30s boot budget expired; common 60s now there
+too. Suffix 89247 resumed through every remaining test/VGA/finally:
+exit0 16:33:42. Aggregate full coverage complete, NOT uninterrupted run.
+Fresh normal UEFI/unlink PASS16:34:55 sdk-oeghfxmx. Subsequent hash filename
+typo corrected16:36:11 without rerunning passed test. Normal BIOS/UEFI;
+hashes/provenance PHASE331_UNLINK.md. Renderer99936 clears mkstemp but
+libc/OS-info/C++ still block native backend. All jobs terminal.
+Current image ownership/status is in PROJECT_STATE.md. No push or Phase 33.3.
+
 ## Phase 33.2 target stat / real Mesa file utility — 2026-10-01
 
 Checkpoint follows 32b1fc2; PHASE332_STAT_SDK.md. 144-byte stat SDK header,

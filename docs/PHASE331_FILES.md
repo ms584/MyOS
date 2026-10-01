@@ -46,7 +46,9 @@ resolution remains open. Metadata has fixed modes/owner, zero timestamps and
 placeholder inode identities. No chmod/chown/statvfs success is advertised.
 Directory stream contention, atomic vectored I/O on pipes, links, rename,
 inotify, metadata mutation and file-backed mmap remain pending.
-Open-file unlink still reports EBUSY under the original RAMFS contract.
+Open-file unlink reported EBUSY at this historical checkpoint. Subsequent
+PHASE331_UNLINK.md implements retained orphan lifetime until final close,
+with scoped native tests; its full/UEFI regression status is tracked there.
 64-bit offsets are bounded by the backing store; sparse unbounded seek is
 not implemented. Standard descriptors and non-file metadata have limited
 compatibility. These limits must be resolved where the real engine uses them.
