@@ -21,6 +21,7 @@ ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-r
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h
 flags=(-m64 -std=c11 -Oz -ffreestanding -fno-builtin -fno-pie -fno-pic
+       -ffunction-sections -fdata-sections -flto
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
        -fno-asynchronous-unwind-tables -fno-unwind-tables
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -Ibuild -Ivendor/mbedtls/include
@@ -60,7 +61,7 @@ for source in vendor/mbedtls/library/*.c; do
     gcc -m64 -std=c11 -Os -ffreestanding -fno-builtin -fno-pie -fno-pic \
         -mno-red-zone -mgeneral-regs-only -fno-stack-protector \
         -fno-asynchronous-unwind-tables -fno-unwind-tables \
-        -ffunction-sections -fdata-sections -U_FORTIFY_SOURCE -Ivendor/mbedtls/include \
+        -ffunction-sections -fdata-sections -flto -U_FORTIFY_SOURCE -Ivendor/mbedtls/include \
         -Ivendor/mbedtls/library -c "$source" -o "$obj"
     tls_objects+=("$obj")
 done
@@ -73,7 +74,12 @@ nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
 nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
 nasm -f bin user/demo.asm -o build/user-demo.bin
 nasm -f elf64 user/blob.asm -o build/user-blob.o
-ld -m elf_x86_64 --gc-sections --build-id=none -Map=build/kernel.map -T kernel/linker.ld -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
+# Use the compiler driver so its matching LTO plugin performs cross-file
+# optimization. Keep the freestanding ABI and explicit linker/loader guards;
+# no host startup objects, dynamic linker or libc may enter this image.
+gcc "${flags[@]}" -nostdlib -static -no-pie \
+    -Wl,--gc-sections,--build-id=none,-Map=build/kernel.map,-T,kernel/linker.ld \
+    -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
 test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }

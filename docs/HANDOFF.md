@@ -5,6 +5,26 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Current baseline a2cf871 plus kernel/TLS LTO budget slice,2026-10-05:
+PHASE332_KERNEL_BUDGET.md. Old test262072/cap262144 -> current249792,12352 free,
+without cap/ABI/low-memory/W^X relaxation or dropping a runtime service.
+Initial full43137 exit1 at21:33:44: LTO-renamed private mouse symbols broke the
+desktop test lookup. Fixed unique-only alias helper/adversarial unit PASS;
+full32406 terminal exit0 Oct4 22:07:28 PASS/normal BIOS restored. Normal kernel
+245692/runtime29904; UEFI rebuiltOct5. ELF RX/RW only/no dynamic/unresolved,
+BSS end0x7b648<0x80000; current hashes in detailed doc. Pinned44797 exit0
+02:21:32 actual core staging/RELRO/79-missing/64MiB OOM/recovery PASS.
+Provider9564 exit0 02:23:05 BIOS64/UEFI128 stage + UEFI64/BIOS16 OOM PASS,
+each twice/exact page return/entry-zero reject, not constructors/getters execution.
+Native81712 exit0 02:26:20 BIOS2czt0ygc/UEFIs5wv1hcj PASS/two launches,
+real pinned tables/EGL1.5/sRGB/fence/image/GLSL/glyph/input/exact resources,
+not Cobalt. Normal hashes unchanged02:26:29; all jobs terminal/no live owner.
+Measured core LOAD end0x632faa0/no PT_TLS; provider end0xed21b8/TLS80 bytes.
+96MiB provider base would overlap; checked page-rounded ownership after core is
+next, not implemented. Pinned core emulated TLS/provider only native TLS need
+explicit bounded policy, preflight-before-init and actual cross-image cleanup.
+Imports163/242=67.4% subset, Cobalt0/5; no closure/33.3/push.
+
 Baseline2ee96b4 plus separate genuine renderer provider package/native staging:
 PHASE332_RENDERER_PROVIDER.md. Builder reuses exact native-tested linker closure,
 excludes fixture entry/font, links via ld/no host CRT/libc and roots real getters.

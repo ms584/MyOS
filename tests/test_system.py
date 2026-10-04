@@ -113,12 +113,26 @@ class VM:
             self.process.kill();self.process.wait(timeout=5)
         self.stream.close();self.connection.close();self.sock.unlink(missing_ok=True)
 
-def symbols():
+def parse_symbols(output):
     result={}
-    for line in subprocess.check_output(['nm','build/kernel.elf'],text=True).splitlines():
+    aliases={}
+    for line in output.splitlines():
         fields=line.split()
-        if len(fields)==3:result[fields[2]]=int(fields[0],16)
+        if len(fields)!=3:continue
+        name=fields[2]
+        result[name]=int(fields[0],16)
+        # GCC LTO promotes private objects to uniquely suffixed symbols.
+        # An alias is safe only if exactly one actual symbol owns the name;
+        # never guess between same-named statics from different source files.
+        base,separator,suffix=name.rpartition('.lto_priv.')
+        if separator and base and suffix.isdecimal():
+            aliases.setdefault(base,[]).append(name)
+    for base,names in aliases.items():
+        if base not in result and len(names)==1:result[base]=result[names[0]]
     return result
+
+def symbols():
+    return parse_symbols(subprocess.check_output(['nm','build/kernel.elf'],text=True))
 
 def boot_test(name,ram=64,keyboard=False,text=False):
     vm=VM(name,ram)
