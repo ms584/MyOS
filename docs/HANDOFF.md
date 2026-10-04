@@ -5,6 +5,24 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 tested system/log checkpoint after09d1627:
+[PHASE332_SYSTEM_SERVICES.md](PHASE332_SYSTEM_SERVICES.md). Typed pinned system/
+log/path/property/memory/RNG/network services; BIOS/UEFI core fixture and BIOS
+carrier reconnect/no-RDRAND/debugger abort/owned executable path PASS. Optional
+unavailable contracts are NOT implemented features. Fixture imports185/24276.4%,
+observed pair binding187/24277.3% (55 missing), actual Cobalt0/5. Origin/main now
+09d1627 after owner push, fetched05:29:09+07; no agent push. Scoped57868 exit0
+05:29:28 paired+extra UEFI PASS. Full93005 exit0 06:04:28,
+ALL architectural regression PASS; normal BIOS/UEFI restored/hashes in detailed
+doc. No active job/image owner. Kernel test261056/cap262144 only1088 free; normal252864/runtime31760/
+BSS0x7d230. Do not reuse older full PASS or image hashes for this new slice.
+Next remaining file/network/capability dependencies and real Cobalt web gate.
+Private runtime-packing probe:5800 payload bytes saved, bounded target decoder
+444 bytes; host ASan/UBSan roundtrip/CRC/mutation/truncation/bounds PASS only.
+Not integrated/NOT MyOS proof. LTO24-byte saving/syscall-outline232-byte growth
+rejected. Asset-v1 flat32 names cannot package real Cobalt resource hierarchy;
+fonts/ICU/trust assets remain to pin/package. No33.3.
+
 2026-10-05 baseline3c568c9 plus tested explicit pair execution/lifecycle:
 PHASE332_PAIR_EXECUTION.md. New bootstrap validates SABI before provider/core
 constructors; controlRW/NX page rather than main stack owns per-image callbacks.

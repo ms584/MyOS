@@ -269,6 +269,8 @@ def main():
             platform_events_exercise()
             from test_starboard_launcher import main as starboard_launcher_exercise
             starboard_launcher_exercise()
+            for system_options in ([],['--network'],['--no-entropy'],['--launcher']):
+                subprocess.run([sys.executable,'tests/test_starboard_system.py',*system_options],check=True)
             from test_native_tls import main as native_tls_exercise
             native_tls_exercise()
             from test_thread_services import main as thread_services_exercise

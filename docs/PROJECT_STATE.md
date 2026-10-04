@@ -1,16 +1,19 @@
 # MyOS project state
 
 Updated: 2026-10-05. Repo /home/xytron404/myos (WSL Ubuntu), main.
-Baseline3c568c9 + tested paired execution/lifecycle checkpoint.
-Origin/main db934b7 (fetchOct5 04:03:14 +07). Owner pushes; never push.
+Baseline09d1627 + tested typed system/log services checkpoint.
+Origin/main09d1627 (fetchOct5 05:29:09 +07). Owner pushes; never push.
 
 ## Scope/status
 - Phase33.1/33.2 OPEN. Actual Cobalt has not executed; acceptance0/5 (0% verified).
-- Fixture-tested imports163/242=67.4%; paired strong binding165/242=68.2%,
-  77 missing plus separately tracked weak TLS. NOT overall phase/API completion.
+- Fixture-tested imports185/242=76.4%; observed pair binding187/242=77.3%,
+  55 missing plus separately tracked weak TLS. NOT overall phase/API completion.
 - Phase32/33 NOT PASSED; actual YouTube playback unproven. No Phase33.3.
 
 ## Current implementation
+- Typed pinned system/log services: PHASE332_SYSTEM_SERVICES.md. TLS errors,
+  atomic signal-safe log, real process memory, guest paths/locale/timezone/RNG,
+  carrier+DHCP network query. Optional unsupported contracts remain unavailable.
 - Clock/pthread/descriptors: PHASE331_WAIT.md, PHASE331_PTHREAD.md,
   PHASE331_SYSTEM.md; signals: PHASE331_SIGNALS.md (cross-thread/pause absent).
 - TLS/thread/C11/Mesa utility: PHASE331_NATIVE_TLS.md,
@@ -29,24 +32,20 @@ Origin/main db934b7 (fetchOct5 04:03:14 +07). Owner pushes; never push.
   One PT_TLS image only; no generic DT_NEEDED/DTV/unload/foreign-libc support.
 
 ## Current evidence (+07)
-- Full60258 exit0 04:35:21: ALL architectural regression PASS, normal BIOS restored;
-  also basic paired BIOS/UEFI and original single-image exit24-launch PASS.
-- Adversarial96920 exit0 04:44:44: BIOS256 kphqch0e/UEFI256 h6imtmtj/
-  BIOS64 kadxl3lg/UEFI128 q1tg2fw5 PASS. Genuine provider worker EGL/GLES cyan
-  pixels/current-context/TLS slot reuse/terminate-reinit/relaunch; actual SDK DSO
-  callback registries, concurrent8/worker/recursive/constructor/raw exit, fault/
-  finalizer-fault/loop/NX-control/cancel/exact pages+heap. Low-RAM second-image OOM.
-- Positive paired SABI57910 exit0 04:50:48: BIOS xhenzlsy/UEFI vmbiwr04 PASS;
-  zero-entry handler, owned readonly argv/URL, 2MiB guarded NX stack/256KiB probe,
-  Start/Stop/reverse finalizers/relaunch/exact resources. Fixture, NOT Cobalt.
-- Measured20570 exit0 04:49:15: PROCESS_TESTS=1 kernel254240/cap262144,
-  7904 bytes free; normal250144/runtime30224, BSS end0x7c790<0x80000.
-  Normal restore hashes unchanged; BIOS/UEFI frozen-image hashes match.
-- No active job/image owner. Logs/hashes/artifacts in PHASE332_PAIR_EXECUTION.md.
-  activity.log capped48MiB; never inspect it via run_logged.py (use unwrapped tail).
+- New slice scoped BIOS/UEFI system fixtures PASS; BIOS network/carrier reconnect,
+  no-entropy/debugger abort, owned executable path/readonly argv PASS.
+  Scoped57868 exit0 05:29:28: actual pair+extra UEFI PASS.
+  Full93005 exit0 06:04:28: ALL architectural regression PASS,
+  including new system tests; normal BIOS/UEFI restored and hashed.
+  Normal kernel252864/runtime31760/BSS end0x7d230. Test kernel261056/cap262144,
+  only1088 bytes free. Final hashes in PHASE332_SYSTEM_SERVICES.md.
+- Previous paired execution evidence: PHASE332_PAIR_EXECUTION.md.
+  New logs build/starboard-system-*.log; no active job/image owner.
+  activity.log capped48MiB.
+  Never inspect activity.log via run_logged.py (use unwrapped tail).
 
 ## Required next work
-1. Remaining77 genuine Cobalt imports/typed Starboard system/network/media capability
+1. Remaining55 genuine Cobalt imports/network/file/media capability
    contracts; implement and test real required behavior, not success stubs. Keep
    compressed-media implementation for33.3 after web gates. Do not close phases.
 2. Actual engine DSO/env/emutls/worker/thread/RAM needs unmeasured (worker limit8).
@@ -57,5 +56,9 @@ Origin/main db934b7 (fetchOct5 04:03:14 +07). Owner pushes; never push.
    concurrent scripts/assets, interactive>=60s, close/relaunch with measured resources.
    Fix regressions first; scoped tests + full for architecture, normal restore,
    update docs/local commit. Owner pushes only.
+4. Budget: isolated packing prototype saves5800 bytes; C decoder444 bytes,
+   ASan/UBSan exact bytes/CRC/mutations/truncation/bounds PASS on host only.
+   NOT integrated. LTO saves24; syscall outline increases232: reject both.
+   Asset-v1 is flat32 files; actual content/fonts/ICU/trust hierarchy is pending.
 
 Background: HANDOFF.md. No imported-symbol percentage can close33.1/33.2.

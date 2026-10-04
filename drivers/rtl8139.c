@@ -58,6 +58,8 @@ bool nic_init(void)
     return true;
 }
 bool nic_ready(void){return online;}
+/* RTL8139 MediaStatus LinkDown bit2; independent of a cached DHCP lease. */
+bool nic_link_up(void){return online&&!(inb(base+0x58)&4);}
 const uint8_t *nic_mac(void){return address;}
 bool nic_send(const void *data,size_t length)
 {

@@ -4,6 +4,10 @@
 #include "tcp.h"
 #include "native-ui.h"
 #include "graphics.h"
+#include "system-call.h"
+#include "net.h"
+#include "nic.h"
+#include "elf.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -82,6 +86,76 @@ static int user_path(struct process *p,char *path,uintptr_t address)
         if(!path[i])return 0;
     }
     return -36;
+}
+static int ensure_directory(const char *path)
+{
+    int rc=fs_mkdir(path);if(rc&&rc!=-17)return rc;
+    struct fs_entry entry;rc=fs_stat(path,&entry);
+    return rc?rc:entry.type==FS_DIR?0:-20;
+}
+static int system_path(struct process *p,struct frame *f)
+{
+    struct system_path_request request;
+    if(f->rdx)return -22;
+    if(!copy_from_user(p,(void *)&request,f->rsi,sizeof(request)))return -14;
+    const char *value=0;char executable[FS_PATH];
+    switch(request.id){
+    case 0:value="/assets";break;
+    case 1:value="/home/cobalt/cache";break;
+    case 2:value="/home/cobalt/debug";break;
+    case 5:value="/home/cobalt/tmp";break;
+    case 8:value="/home/cobalt";break;
+    case 6:{
+        /* The loader's read-only owned argv0 identifies the actual asset, not
+         * a guessed /proc/self/exe or hard-coded libcobalt filename. */
+        uint64_t name,boot=USER_BASE+ELF_BOOT_OFFSET;
+        if(!copy_from_user(p,(void *)&name,boot+512,8)||name!=boot+536)return -2;
+        memcpy(executable,"/assets/",8);unsigned i=0;
+        for(;i<=64;++i){char c;if(!copy_from_user(p,&c,name+i,1))return -14;
+            executable[8+i]=c;if(!c)break;}
+        if(!i||i>64)return -2;value=executable;break;
+    }
+    default:return request.id<0||request.id>8?-22:-95;
+    }
+    size_t length=0;while(value[length])++length;
+    if(request.length<=0||(uint32_t)request.length<=length)return -22;
+    if(!request.buffer||!writable_range(p,request.buffer,length+1))return -14;
+    if(request.id==1||request.id==2||request.id==5||request.id==8){
+        int rc=ensure_directory("/home/cobalt");if(rc)return rc;
+        if(request.id!=8&&(rc=ensure_directory(value)))return rc;
+    }
+    copy_to_user(p,request.buffer,value,length+1);return 0;
+}
+static int64_t system_call(struct process *p,struct frame *f)
+{
+    switch(f->rdi){
+    case SYSTEM_LOG:{
+        size_t length=f->rdx;if(length>SYSTEM_LOG_LIMIT)return -22;
+        if(!readable_range(p,f->rsi,length))return -14;
+        char buffer[256];
+        for(size_t at=0;at<length;){size_t n=length-at;if(n>sizeof(buffer))n=sizeof(buffer);
+            check(copy_from_user(p,buffer,f->rsi+at,n),"system log validated range");
+            for(size_t i=0;i<n;++i)if(native_ui_owns(p))serial_put(buffer[i]);else putchar(buffer[i]);
+            at+=n;
+        }
+        return (int64_t)length;
+    }
+    case SYSTEM_RANDOM:{
+        if(f->rdx>256)return -22;
+        if(!writable_range(p,f->rsi,f->rdx))return -14;
+        if(!f->rdx)return 0;
+        if(!security_entropy_ready())return -38;
+        unsigned char bytes[256];if(!security_random(bytes,f->rdx))return -5;
+        copy_to_user(p,f->rsi,bytes,f->rdx);return 0;
+    }
+    case SYSTEM_PATH:return system_path(p,f);
+    case SYSTEM_TOTAL_BYTES:case SYSTEM_OWNED_BYTES:case SYSTEM_DISCONNECTED:
+        if(f->rsi||f->rdx)return -22;
+        if(f->rdi==SYSTEM_TOTAL_BYTES)return (int64_t)(pages_total()*PAGE_SIZE);
+        if(f->rdi==SYSTEM_OWNED_BYTES)return (int64_t)(((uint64_t)p->page_count+p->vm_page_count)*PAGE_SIZE);
+        return !nic_link_up()||!net_configured();
+    default:return -22;
+    }
 }
 static int64_t file_call(struct process *p,struct frame *f)
 {
@@ -253,6 +327,7 @@ struct frame *syscall_dispatch(struct frame *frame)
     }
     process_cleanup_detached(process);
     switch (frame->rax) {
+    case SYS_SYSTEM:frame->rax=(uint64_t)system_call(process,frame);break;
     case SYS_MEMORY_INFO:
         frame->rax=frame->rdi==0?pages_total():frame->rdi==1?pages_free():(uint64_t)-22;
         break;

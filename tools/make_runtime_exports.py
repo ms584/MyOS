@@ -5,6 +5,13 @@ import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
 wanted={'__errno_location','access','abort','signal','sigaction','raise','MyOSSignalReturn','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close','closedir',
+        'SbLog','SbLogRaw','SbSystemBreakIntoDebugger','SbSystemGetErrorString','SbSystemGetExtension',
+        'SbSystemGetLastError','SbSystemGetLocaleId','SbSystemGetPath','SbSystemGetProperty',
+        'SbSystemGetRandomUInt64','SbSystemGetRandomData','SbSystemGetStack','SbSystemGetTotalCPUMemory',
+        'SbSystemGetUsedCPUMemory','SbSystemGetUsedGPUMemory','SbSystemGetTotalGPUMemory',
+        'SbSystemHasCapability','SbSystemHideSplashScreen','SbSystemIsDebuggerAttached',
+        'SbSystemNetworkIsDisconnected','SbSystemRaisePlatformError',
+        'SbSystemSignWithCertificationSecretKey','SbSystemSymbolize','SbTimeZoneGetName','SbSystemClearLastError',
         'SbDrmCloseSession','SbDrmCreateSystem','SbDrmDestroySystem',
         'SbDrmGenerateSessionUpdateRequest','SbDrmGetMetrics','SbDrmIsServerCertificateUpdatable',
         'SbDrmUpdateServerCertificate','SbDrmUpdateSession','SbMicrophoneCreate',

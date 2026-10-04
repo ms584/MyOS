@@ -5,6 +5,7 @@
 typedef void (*nic_receive_fn)(const uint8_t *,size_t);
 bool nic_init(void);
 bool nic_ready(void);
+bool nic_link_up(void);
 const uint8_t *nic_mac(void);
 bool nic_send(const void *,size_t);
 unsigned nic_poll(nic_receive_fn,unsigned budget);
