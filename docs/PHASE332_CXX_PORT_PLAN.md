@@ -107,3 +107,33 @@ stdint-gcc.h, not host libc. tests/test_integer_sdk.py [--hosted] both PASS:
 <new>/pinned pthread profile boundary now PASS, no DT_NEEDED, host library routes
 rejected. Only header/link-boundary evidence; no library/container/native claim.
 All source/configuration results above are NOT native/renderer/Cobalt PASS.
+
+## Real gthread target adapter — 2026-10-04
+
+GCC's original gthr-posix.h now has an explicit MyOS C++ branch: sched.h,
+strong pthread bindings (no weak pthread_cancel proxy), real dynamic condition
+initialization and existing native realtime mutex-deadline calls. No API invented
+or silently implemented as unlocked success. Standalone source preparation
+selects gthr-default.h -> gthr-posix.h as the target compiler build normally does.
+Compiler native TLS is disabled: link support does not prove loader/TLS semantics.
+45019 configure0 11:49:38 aieavow6 still had gthreads unset: the missing default
+header prevented the genuine probe. 31069 build2 11:50:12. Corrected source
+selection30635 configure0 11:52:17 jf2fl8q3: HAS_GTHREADS=1, HAVE_TLS undefined.
+Whole source build12608 exit2 11:57:50; cstdlib/locale/stdio/time/support-source
+gaps remain. No standard container library or renderer has been linked.
+
+tests/test_gthread.py --configuration build/cxx-target-evaluation/configure-jf2fl8q3
+[--uefi], actual user/elf-gthread.cpp imports upstream generated gthread headers.
+Final22111 exit0 11:59:17: BIOS native-11g0qzk2 and UEFI native-czlcqy1x; four
+successful launches + one blocked-worker Escape cancellation per firmware.
+Each success: eight workers, 8000 exclusive counter updates with yield while
+locked, condition publication/wakeup, once-only initialization, eight TSS
+destructors, recursive lock/trylock/unlock, monotonic-measured realtime cond
+deadline. Repeated launch and cancellation return exact pages/heap/file counts.
+ELF has strong pthread references, no weak-zero/pthread_cancel or DT_NEEDED.
+Fixture uses actual write/abort providers; upstream cstdlib remains failing and
+is deliberately not hidden or claimed by this thread-only dependency test.
+Both normal image hashes remain PHASE332_OS_INFO.md values. No runtime/kernel
+architecture change: reuse full93613; scope is target source patch/fixture only.
+Next: implement and test missing real C-library services needed by upstream
+containers/stdlib, then actual vector/unordered_map/mutex users/Mesa rendering.

@@ -41,6 +41,9 @@ for check in (True,False):
                     '--directory='+str(source.relative_to(root)),str(root/'tools/gcc_myos_target.patch')],
                    cwd=root,check=True)
 target='x86_64-unknown-myos'
+# GCC's target compiler build normally selects this header. Standalone
+# libstdc++ configuration needs the same real selection in its source tree.
+(source/'libgcc/gthr-default.h').symlink_to('gthr-posix.h')
 assert subprocess.check_output(['sh',str(source/'config.sub'),target],text=True).strip()==target
 intrinsics=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
 def command(language):
@@ -55,7 +58,8 @@ build=out/'build';build.mkdir()
 options=['sh',str(source/'libstdc++-v3/configure'),
          '--build=x86_64-pc-linux-gnu','--host='+target,'--target='+target,
          '--disable-multilib','--disable-shared','--enable-static',
-         '--disable-nls','--disable-libstdcxx-pch','--enable-clocale=generic']
+         '--disable-nls','--disable-libstdcxx-pch','--enable-clocale=generic',
+         '--disable-tls'] # Compiler TLS link probes do not prove a MyOS TLS loader ABI.
 log=out/'configure.log'
 with log.open('w') as output:
     result=subprocess.run(options,cwd=build,env=env,stdout=output,stderr=subprocess.STDOUT)

@@ -5,6 +5,25 @@
 -	     | fiwix* )
 +	     | fiwix* | myos* )
  		;;
+--- a/libgcc/gthr-posix.h
++++ b/libgcc/gthr-posix.h
+@@ -35,3 +35,15 @@
+ #include <pthread.h>
+-
++#ifdef __myos__
++/* All MyOS C++ thread services bind to real runtime providers. Do not use
++   pthread_cancel as a weak active-thread proxy or silently disable locking. */
++# include <sched.h>
++# undef GTHREAD_USE_WEAK
++# define GTHREAD_USE_WEAK 0
++/* The SDK has no static cond initializer; use its real initialization API. */
++# define _GTHREAD_USE_COND_INIT_FUNC 1
++/* Native realtime mutex deadlines are implemented and tested. */
++# undef _GTHREAD_USE_MUTEX_TIMEDLOCK
++# define _GTHREAD_USE_MUTEX_TIMEDLOCK 1
++#endif
++
+ #if ((defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)) \
 --- a/libstdc++-v3/crossconfig.m4
 +++ b/libstdc++-v3/crossconfig.m4
 @@ -176,10 +176,13 @@

@@ -40,6 +40,15 @@ Target stdint gap resolved10:56:26 with GCC target-intrinsic header (no glibc).
 Integer154 macros/types C/C++/char signs PASS both freestanding and hosted;
 upstream <new>/pthread no-host boundary PASS. C++ library still not built.
 Normal kernel253112/runtime29136 and SHA256 hashes in PHASE332_OS_INFO.md.
+Gthread follow-up: explicit MyOS strong pthread/sched/dynamic-cond adapter, no
+weak pthread_cancel/unlocked fallback, native compiler TLS disabled. Correct
+standalone gthr-default source selection enables actual configure thread probe:
+30635 exit0 11:52:17 jf2fl8q3. Native22111 exit0 11:59:17 BIOS/UEFI,8 successful
+launches/2 blocked cancels;8workers/8000 exclusion updates/cond publication/once/
+TSS destructors/recursive lock/timed wait/relaunch/exact resources. Normal hashes
+unchanged; architecture/runtime unchanged, reuse full93613. Whole C++12608 build2
+11:57:50: cstdlib/locale/stdio/time/support-source gaps remain; no containers,
+native renderer or Cobalt gate. PHASE332_CXX_PORT_PLAN.md has exact reproduction.
 
 Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,

@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Implementation checkpoint6e17a77; managed-memory/Mesa/empty-GNU and C++ groundwork.
+Baseline b035062; native gthread follow-up to managed-memory/C++ groundwork.
 Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 
 ## Scope and status
@@ -27,7 +27,7 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 - SDK exit/_Exit + bootstrap FINI progress: PHASE332_EXIT_SDK.md.
 - Native self-signal/pending/kernel-owned context/abort: PHASE331_SIGNALS.md.
 - Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
-- Sealed GCC15.2.0 configure probes: PHASE332_CXX_PORT_PLAN.md; no C++ build.
+- Sealed GCC15.2.0 gthread adapter: PHASE332_CXX_PORT_PLAN.md; library build fails.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Renderer configure PASS/compile FAIL: PHASE332_RENDERER.md; no host libs/OpenMP.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
@@ -47,7 +47,9 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 - C++27830 configure/header validation exit0 10:47:26; build60077 exit2.
   Opt-in upstream C++ header profile; target stdint fixed, boundary PASS10:56.
   Integer154 macros/types PASS C/C++ hosted+freestanding; no native library proof.
-  Gthreads unset/native TLS unproven; details PHASE332_CXX_PORT_PLAN.md.
+  New30635 configure0 11:52:17 jf2fl8q3: real gthreads yes, native TLS disabled.
+  Native22111 BIOS/UEFI exit0 11:59:17:8 launches/2cancels/exact resources.
+  Library12608 build2; cstdlib/locale/stdio/time gaps, no container/renderer proof.
 - Signals/masks delivery PASS BIOS/UEFI: PHASE331_SIGNALS.md; stronger66362
   exit0 09:57:35,72 launches/12cancels/RAX/full-RFLAGS/exact resources.
 - Kernel-only -Oz recovers4096 test-image bytes; no cap/feature/assertion change.
