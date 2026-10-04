@@ -57,7 +57,8 @@ sources=[egl_source/(name+'.c') for name in (
 sources.append(source/'src/util/rwlock.c')
 if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/util/os_file.c',
                                root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c',
-                               root/'user/egl-image-test.c',root/'user/egl-context-test.c'])
+                               root/'user/egl-image-test.c',root/'user/egl-context-test.c',
+                               root/'user/egl-surface-test.c'])
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:

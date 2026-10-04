@@ -139,6 +139,9 @@ static void *render(void *unused)
     extern int MyOSEglContextTest(EGLDisplay,EGLConfig);
     CHECK(!MyOSEglContextTest(display,config));
     say("Native EGL requested-version/debug callback/surfaceless FBO checked\n");
+    extern int MyOSEglSurfaceTest(EGLDisplay,EGLConfig);
+    CHECK(!MyOSEglSurfaceTest(display,config));
+    say("Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked\n");
     CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
     CHECK(eglGetError()==EGL_BAD_CONFIG);
     const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
@@ -148,8 +151,15 @@ static void *render(void *unused)
 #if defined(MYOS_NATIVE_EGL_WINDOW)
     struct native_ui_info info;extern int MyOSUiQuery(void *,struct native_ui_info *);
     CHECK(!MyOSUiQuery(window,&info)&&info.width>=720&&info.height>=568);
+    const EGLint window_attributes[]={EGL_GL_COLORSPACE_KHR,
+#if defined(MYOS_NATIVE_EGL_SRGB)
+        EGL_GL_COLORSPACE_SRGB_KHR,
+#else
+        EGL_GL_COLORSPACE_LINEAR_KHR,
+#endif
+        EGL_NONE};
     EGLSurface surface=eglCreateWindowSurface(display,config,
-        (EGLNativeWindowType)(uintptr_t)SbWindowGetPlatformHandle(window),0);
+        (EGLNativeWindowType)(uintptr_t)SbWindowGetPlatformHandle(window),window_attributes);
     CHECK(surface!=EGL_NO_SURFACE);
     CHECK(eglCreateWindowSurface(display,config,(EGLNativeWindowType)(uintptr_t)window,0)==EGL_NO_SURFACE&&
           eglGetError()==EGL_BAD_ALLOC); /* one surface per native window */
@@ -249,8 +259,20 @@ static void *render(void *unused)
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,64,64,0,GL_RGBA,GL_UNSIGNED_BYTE,texture_pixels);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();
     READ_PIXELS(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,readback);
+#if defined(MYOS_NATIVE_EGL_SRGB)
+    /* Independent rounded 255*(1.055*((8*i+4)/255)^(1/2.4)-.055).
+     * Shader/rasterization quantization may differ by at most one byte. */
+    const unsigned char encoded_gradient[]={34,61,79,93,105,115,125,133,141,148,155,162,168,174,180,185,
+        190,196,200,205,210,214,219,223,227,231,235,239,243,246,250,254};
+#endif
     for(unsigned y=0;y<32;++y)for(unsigned x=0;x<32;++x){
-        unsigned i=(y*32+x)*4;CHECK(readback[i]==x*8+4&&readback[i+1]==y*8+4&&
+        unsigned i=(y*32+x)*4;
+#if defined(MYOS_NATIVE_EGL_SRGB)
+        CHECK(readback[i]+1>=encoded_gradient[x]&&readback[i]<=encoded_gradient[x]+1&&
+              readback[i+1]+1>=encoded_gradient[y]&&readback[i+1]<=encoded_gradient[y]+1&&
+#else
+        CHECK(readback[i]==x*8+4&&readback[i+1]==y*8+4&&
+#endif
             readback[i+2]==((x/4+y/4)&1)*255&&readback[i+3]==255);}
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,colors);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
@@ -294,7 +316,12 @@ static void *render(void *unused)
 #if defined(MYOS_NATIVE_EGL_WINDOW)
             font_row=15-row;
 #endif
-            unsigned expected=((renderer_font[text[character]*16+font_row]>>(7-column))&1)*128;
+#if defined(MYOS_NATIVE_EGL_SRGB)
+            unsigned intensity=188;
+#else
+            unsigned intensity=128;
+#endif
+            unsigned expected=((renderer_font[text[character]*16+font_row]>>(7-column))&1)*intensity;
             CHECK(readback[i]==expected&&readback[i+1]==expected&&
                   readback[i+2]==expected&&readback[i+3]==255);
             ink+=expected!=0;

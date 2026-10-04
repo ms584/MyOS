@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline b8f8128 + genuine GLES/debug/surfaceless context follow-up.
+Baseline0e5d299 + genuine EGL surface storage/draw-read/sRGB follow-up.
 Origin/main db934b7 (fetch19:07:51 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -34,6 +34,7 @@ Origin/main db934b7 (fetch19:07:51 +07). Owner pushes; never push.
   KHR fence/8 waiters after context teardown PASS: PHASE332_NATIVE_EGL_SYNC.md.
   Actual image storage/2D write-back/cube/3D/RBO: PHASE332_NATIVE_EGL_IMAGE.md.
   Context/version/debug/surfaceless evidence: PHASE332_NATIVE_EGL_CONTEXT.md.
+  Persistent surfaces/linear128/sRGB188: PHASE332_NATIVE_EGL_COLORSPACE.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -42,6 +43,9 @@ Origin/main db934b7 (fetch19:07:51 +07). Owner pushes; never push.
 - Cobalt maps/relocates but79 missing strong imports prevent execution.
 - Pinned95008 exit0 16:11:52: Cobalt hash/staging/79-missing/RELRO and
   64MiB OOM/rollback/shell recovery PASS. No live test/image owner.
+- Surface matrix BIOSlinear/BIOSsRGB/UEFIsRGB/pbuffer PASS; final borrowed-pointer
+  cleanup21/21 compile19:51:39, BIOS71541 PASS19:54:19/two launches/resources.
+  Detailed matrix/final-build distinction in colorspace doc; normal hashes unchanged.
 - Slabs fix small-object OOM; generic translator replaces NX-violating JIT.
 - Normal253880/runtime29904. Test kernel measured262072/cap262144 (72 bytes
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
@@ -49,9 +53,8 @@ Origin/main db934b7 (fetch19:07:51 +07). Owner pushes; never push.
 ## Required next work
 1. Pinned EGL table requires1.5: current1.4 is insufficient. Remaining1.5 contracts,
    exact SABI tables/module coexistence and ownership interleavings remain.
-   Context20/20 compile19:22:51; BIOS41016 PASS19:24:43/2 launches.
-   UEFI6bp0_opw/pbufferxtmebax169227 exit0 19:28:38; two launches each.
-   Colorspace/core1.5 plus image lifetime/backend target limits need further audit.
+   Core1.5/OpenCL-absent semantics plus image lifetime/backend target limits,
+   terminate/reinit, bind-allocation rollback and zero-sized pbuffer need audit.
    Input is still after rendering teardown, not concurrent engine interaction.
    Solve72-byte test-kernel headroom before adding embedded runtime services.
    Production worker limit8 remains; actual Cobalt thread requirements unproven.

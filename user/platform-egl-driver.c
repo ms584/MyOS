@@ -21,6 +21,9 @@ extern int MyOSUiPresent(void *,const struct native_ui_present *);
 extern int MyOSMesaInitializeImages(void);
 extern int MyOSMesaMakeCurrentSurfaceless(OSMesaContext);
 extern int MyOSMesaEnableDebug(OSMesaContext);
+extern void *MyOSMesaCreateDrawable(void *,unsigned,unsigned,int);
+extern void MyOSMesaDestroyDrawable(void *);
+extern int MyOSMesaBindDrawables(OSMesaContext,void *,void *,int);
 extern void *MyOSMesaCreateImage(OSMesaContext,unsigned,unsigned,unsigned,int,int *);
 extern void MyOSMesaDestroyImage(void *);
 extern void MyOSMesaTranslateImage(void *,struct st_egl_image *);
@@ -31,7 +34,7 @@ extern int MyOSMesaServerWaitFence(void *);
 extern void MyOSMesaDestroyFence(void *);
 struct myos_display { unsigned references; };
 struct myos_context { _EGLContext base; OSMesaContext mesa; };
-struct myos_surface { _EGLSurface base; void *pixels; };
+struct myos_surface { _EGLSurface base; void *pixels,*drawable; };
 struct myos_sync { _EGLSync base; void *fence; };
 struct myos_image { _EGLImage base; void *mesa; };
 static EGLBoolean fail(EGLint code,const char *where){return _eglError(code,where);}
@@ -74,6 +77,7 @@ static EGLBoolean initialize(_EGLDisplay *display)
     display->ClientAPIs=EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT_KHR;
     display->Extensions.KHR_create_context=EGL_TRUE;
     display->Extensions.KHR_surfaceless_context=EGL_TRUE;
+    display->Extensions.KHR_gl_colorspace=EGL_TRUE;
     display->Extensions.KHR_fence_sync=EGL_TRUE;
     display->Extensions.KHR_wait_sync=EGL_TRUE;
     display->Extensions.KHR_image_base=EGL_TRUE;
@@ -92,7 +96,10 @@ static void free_context(_EGLResource *resource)
     OSMesaDestroyContext(context->mesa);free(context);display_put(display);
 }
 static void free_surface(_EGLResource *resource)
-{struct myos_surface *surface=(void *)resource;free(surface->pixels);free(surface);}
+{
+    struct myos_surface *surface=(void *)resource;
+    MyOSMesaDestroyDrawable(surface->drawable);free(surface->pixels);free(surface);
+}
 static _EGLContext *create_context(_EGLDisplay *display,_EGLConfig *config,
                                  _EGLContext *share,const EGLint *attributes)
 {
@@ -150,6 +157,9 @@ static _EGLSurface *create_pbuffer(_EGLDisplay *display,_EGLConfig *config,const
      * pixel because OSMesa rejects zero-sized buffers. Query remains exact. */
     surface->pixels=calloc(width? (size_t)width:1,(height?(size_t)height:1)*4);
     if(!surface->pixels){free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL pbuffer storage");return 0;}
+    surface->drawable=MyOSMesaCreateDrawable(surface->pixels,width? (unsigned)width:1,
+        height? (unsigned)height:1,surface->base.GLColorspace==EGL_GL_COLORSPACE_SRGB_KHR);
+    if(!surface->drawable){free(surface->pixels);free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL pbuffer drawable");return 0;}
     surface->base.Resource.OnFinalRelease=free_surface;
     return &surface->base;
 }
@@ -180,28 +190,27 @@ static _EGLSurface *create_window(_EGLDisplay *display,_EGLConfig *config,
     surface->base.Width=(EGLint)info.width;surface->base.Height=(EGLint)info.height;
     surface->pixels=calloc((size_t)info.width*info.height,4);
     if(!surface->pixels){free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL window pixels");return 0;}
+    surface->drawable=MyOSMesaCreateDrawable(surface->pixels,info.width,info.height,
+        surface->base.GLColorspace==EGL_GL_COLORSPACE_SRGB_KHR);
+    if(!surface->drawable){free(surface->pixels);free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL window drawable");return 0;}
     surface->base.Resource.OnFinalRelease=free_surface;
     return &surface->base;
 }
 static EGLBoolean make_current(_EGLDisplay *display,_EGLSurface *draw,_EGLSurface *read,_EGLContext *base)
 {
-    if(base&&draw!=read)return fail(EGL_BAD_MATCH,"MyOS EGL draw/read");
+    if(base&&(!draw!=!read))return fail(EGL_BAD_MATCH,"MyOS EGL draw/read");
     _EGLContext *old;_EGLSurface *old_draw,*old_read;
     if(!_eglBindContext(base,draw,read,&old,&old_draw,&old_read))return EGL_FALSE;
     if(old)glFlush();
-    struct myos_surface *surface=(void *)draw;
-    EGLBoolean bound=base&&!surface?
-        MyOSMesaMakeCurrentSurfaceless(((struct myos_context *)base)->mesa):
-        OSMesaMakeCurrent(base?((struct myos_context *)base)->mesa:0,
-        surface?surface->pixels:0,GL_UNSIGNED_BYTE,
-        surface?(surface->base.Width?surface->base.Width:1):0,
-        surface?(surface->base.Height?surface->base.Height:1):0);
+    EGLBoolean bound=MyOSMesaBindDrawables(base?((struct myos_context *)base)->mesa:0,
+        draw?((struct myos_surface *)draw)->drawable:0,
+        read?((struct myos_surface *)read)->drawable:0,draw&&draw->Type==EGL_WINDOW_BIT?0:1);
     if(!bound){
         _EGLContext *new_context;_EGLSurface *new_draw,*new_read;
         _eglBindContext(old,old_draw,old_read,&new_context,&new_draw,&new_read);
         destroy_surface(display,new_draw);destroy_surface(display,new_read);
         destroy_context(display,new_context);
-    }else if(base&&draw)OSMesaPixelStore(OSMESA_Y_UP,draw->Type==EGL_WINDOW_BIT?0:1);
+    }
     _EGLDisplay *old_display=old?old->Resource.Display:display;
     destroy_surface(old_display,old_draw);destroy_surface(old_display,old_read);
     destroy_context(old_display,old);

@@ -15,7 +15,7 @@ root=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(root/'tools'));sys.path.insert(0,str(root/'tests'))
 from build_cxx_containers_sdk import build
 from make_asset_disk import create
-from test_system import VM
+from test_system import VM,OUT
 from test_shell import type_text
 from test_elf_dynamic import assert_live_resources
 from test_video import frame_shot
@@ -26,6 +26,7 @@ parser.add_argument('--uefi',action='store_true')
 parser.add_argument('--gles',action='store_true',help='Real Mesa GLES profile/GLSL100, not EGL')
 parser.add_argument('--egl-core',type=Path,help='Actual Mesa EGL core + MyOS pbuffer driver archive')
 parser.add_argument('--egl-window',action='store_true',help='Present through an actual native EGL window swap')
+parser.add_argument('--egl-srgb',action='store_true',help='Genuine sRGB window and independent encoded glyph oracle')
 parser.add_argument('--diagnostic',action='store_true',help='Transparent test-only allocation/lock wrappers')
 parser.add_argument('--launches',type=int,choices=(1,2,3),default=2)
 parser.add_argument('--ram',type=int,choices=(128,256,512,1024),default=256)
@@ -34,6 +35,7 @@ parser.add_argument('--startup-timeout',type=int,choices=(120,300,600),default=1
 args=parser.parse_args()
 if args.egl_core and not args.gles:parser.error('--egl-core requires --gles')
 if args.egl_window and not args.egl_core:parser.error('--egl-window requires --egl-core')
+if args.egl_srgb and not args.egl_window:parser.error('--egl-srgb requires --egl-window')
 probe=args.renderer_probe.resolve();cfg=args.configuration.resolve()
 assert probe.is_relative_to((root/'build/renderer-evaluation').resolve())
 assert cfg.is_relative_to((root/'build/cxx-target-evaluation').resolve())
@@ -58,6 +60,7 @@ flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
        '-D__myos__=1',*(['-DMYOS_NATIVE_GLES=1'] if args.gles else []),
        *(['-DMYOS_NATIVE_EGL=1','-DEGL_NO_X11=1'] if args.egl_core else []),
        *(['-DMYOS_NATIVE_EGL_WINDOW=1'] if args.egl_window else []),
+       *(['-DMYOS_NATIVE_EGL_SRGB=1'] if args.egl_srgb else []),
        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
        '-nostdinc','-isystem',intrinsics,'-I'+str(root/'user/sdk'),
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
@@ -141,12 +144,14 @@ try:
             # GLES coordinates are bottom-left; native framebuffer is top-left.
             color_checks=[(x,1071-y,rgb) for x,y,rgb in color_checks]
         frame_shot(vm,f'{vm.name}-{launch}-present.ppm',color_checks)
+        shutil.copyfile(OUT/f'{vm.name}-{launch}-present.ppm',out/f'{launch}-present.ppm')
         glyphs=font.read_bytes()
         checks=[(688+character*8+column,552+row,(value,value,value))
                 for character,code in enumerate(b'MyOS') for row in range(16)
                 for column in range(8)
-                for value in [128 if glyphs[code*16+row]&(128>>column) else 0]]
+                for value in [(188 if args.egl_srgb else 128) if glyphs[code*16+row]&(128>>column) else 0]]
         frame_shot(vm,f'{vm.name}-{launch}-text.ppm',checks)
+        shutil.copyfile(OUT/f'{vm.name}-{launch}-text.ppm',out/f'{launch}-text.ppm')
         vm.key('a');end=time.monotonic()+30
         while time.monotonic()<end:
             output=vm.log.read_text()[offset:]
@@ -158,6 +163,7 @@ try:
         if args.egl_core:assert 'Native EGL core/error/current/deferred destroy checked' in output,output
         if args.egl_core:assert 'Native EGL last-core-pin cleanup checked' in output,output
         if args.egl_core:assert 'Native EGL requested-version/debug callback/surfaceless FBO checked' in output,output
+        if args.egl_core:assert 'Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked' in output,output
         if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_core:assert 'Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output
@@ -166,7 +172,7 @@ try:
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
           ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
           '; '+('EGL1.4 native window swap; ' if args.egl_window else 'EGL1.4 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
-          'NOT Cobalt.',out,flush=True)
+          ('sRGB encoded window pixels; ' if args.egl_srgb else '')+'NOT Cobalt.',out,flush=True)
 except BaseException:
     # Capture the real running CPU before teardown; never infer a deadlock from
     # a silent log alone. Map user RIPs back to the exact linked target image.
@@ -182,5 +188,7 @@ except BaseException:
             time.sleep(.05)
     print('Native renderer failure diagnostics:',out/'failure-registers.log',flush=True)
     raise
-finally:vm.close()
+finally:
+    vm.close()
+    if vm.log.exists():shutil.copyfile(vm.log,out/'serial.log')
 assert digest(boot)==before==digest(image)

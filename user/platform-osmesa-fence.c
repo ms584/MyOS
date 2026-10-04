@@ -71,3 +71,4 @@ void MyOSMesaDestroyFence(void *handle)
     fence->screen->fence_reference(fence->screen,&fence->fence,NULL);FREE(fence);
 }
 #include "platform-osmesa-image.inc"
+#include "platform-osmesa-surface.inc"

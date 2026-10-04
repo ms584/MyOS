@@ -5,6 +5,23 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline0e5d299 plus genuine surface-owned Gallium storage/draw-read/sRGB:
+PHASE332_NATIVE_EGL_COLORSPACE.md. Real UNORM/SRGB formats, persistent pixels
+across unshared contexts, distinct draw/read binding, linear128/sRGB188 alpha
+oracles and actual QMP window glyphs. Borrowed current_buffer cleared after
+successful switch/unbind; native inactive-context API assertion verifies cleanup.
+Strict21/21 core-_44v3idy compile19:37:39; BIOSlinear mfnu40df PASS19:39:48,
+BIOSsRGB fmd_okq3 PASS19:46:05; UEFIsRGB uk7w_m7a/pbuffer r2xvr4l0
+PASS78061 exit0 19:51:34. Final cleanup core-up2fftbs compiled19:51:39,
+BIOSsRGB1j_y1dxv PASS71541 exit0 19:54:19. Final cleanup not rerun on
+UEFI/pbuffer; preceding matrix covers unchanged surface/color paths.
+Two launches/exact resources each; retained per-fixture serial+PPM evidence.
+All jobs terminal, four normal image hashes unchanged19:56:42. Initial sRGB
+failure was linear-only gradient oracle; independent gamma oracle now verifies
+actual encoding, not changed production output. Still EGL1.4, imports163/242,
+Cobalt0/5; no phase pass/33.3/push. Next core1.5/OpenCL-absent contracts,
+exact pinned SABI/provider coexistence and genuine remaining APIs/engine gate.
+
 Baseline b8f8128 plus genuine GLES versions/debug/surfaceless contexts:
 PHASE332_NATIVE_EGL_CONTEXT.md. Requested versions passed to original OSMesa;
 actual debug state/callbacks, no dummy framebuffer, FBO pixel oracle. Fixed
