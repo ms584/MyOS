@@ -5,6 +5,27 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline2ee96b4 plus separate genuine renderer provider package/native staging:
+PHASE332_RENDERER_PROVIDER.md. Builder reuses exact native-tested linker closure,
+excludes fixture entry/font, links via ld/no host CRT/libc and roots real getters.
+Input/evidence SHA manifest; no interpreter/NEEDED/TEXTREL/RWX, getter RX exports,
+allowed relocations and all strong imports match current runtime allowlist.
+provider-njs6506e built21:04:31:16,375,808 file bytes,15,532,099 LOAD bytes;
+TLS8 initialized/80 total/align8, DTPMOD64/DTPOFF64, init array24/fini8.
+Real native staging/relocation/TLS/RELRO/discard twice: BIOS64um7w8hg1 PASS.
+Initial30924 exit1 21:11:22 UEFI64jaxywxg5 OOM (2792 free pages<provider LOAD),
+not UEFI pass. Updated56309 exit0 21:17:56: UEFI64e2vwlzaf expected OOM,
+UEFI12872wb3cma normal staging, BIOS16tmi7xcu0 expected OOM all PASS/repeated
+exact page return/entry0 fail-closed. No getters/constructors/Cobalt execution
+claimed; shell mem verifies pages, not separately measured kernel heap delta.
+Normal hashes unchanged21:20:53, kernel/runtime unchanged/full9925 applicable;
+all jobs terminal. Next core/provider coexistence/export resolution, collision/
+permissions/rollback, actual multi-module TLS snapshots/worker isolation and
+init/fini/exit/DSO ownership before Cobalt. Existing kernel uses one USER_BASE
+bias/module1/template; test kernel72-byte headroom/cap and low-memory boundary
+unchanged. Imports163/242=67.4% subset,79+weakTLS remain; Cobalt0/5.
+No phase closure/33.3/push; RAM observations are not Cobalt RAM requirements.
+
 Baseline1289e65 plus exact pinned246 GLES table/native table dispatch:
 PHASE332_NATIVE_GLES_INTERFACE.md. Generator preserves actual header field order,
 checks246 offsets/size and typed assignments, hashes unchanged upstream headers.

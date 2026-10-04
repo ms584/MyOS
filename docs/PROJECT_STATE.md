@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline1289e65 + pinned246 GLES table/native dispatch (see evidence doc).
+Baseline2ee96b4 + separate genuine provider package/native staging.
 Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -18,7 +18,6 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 - Guarded SABI launcher: PHASE332_LAUNCHER.md.
 - TLS/thread/C11/Mesa utility evidence: PHASE331_NATIVE_TLS.md,
   PHASE331_THREAD_SERVICES.md, PHASE332_C11_SDK.md, PHASE332_THREAD_UTIL.md.
-- C/C++/math/string SDK evidence and remaining library gaps: HANDOFF.md + SDK docs.
 - Native self-signal/pending/kernel-owned context/abort: PHASE331_SIGNALS.md.
 - Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
 - Renderer compiler/link closure PASS: PHASE332_RENDERER_CLOSURE.md.
@@ -34,6 +33,7 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
   Core1.5 wide sync/image/debug/no-CL: PHASE332_NATIVE_EGL_CORE15.md.
   Pinned EGL table/query: PHASE332_NATIVE_EGL_INTERFACE.md (not loader exports).
   Pinned GLES table/native dispatch: PHASE332_NATIVE_GLES_INTERFACE.md.
+  Real provider package/TLS/staging/OOM: PHASE332_RENDERER_PROVIDER.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -41,8 +41,8 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 - Full9925 exit0 16:08:50 covers allocator/VM; normal BIOS/UEFI restored.
 - Pinned95008 exit0 16:11:52: Cobalt hash/staging/79-missing/RELRO and
   64MiB OOM/rollback/shell recovery PASS. No live test/image owner.
-- EGL table37260 PASS20:33:34. GLES final24/24 compile20:44:26;
-  BIOS+UEFI43457 PASS20:50:27; corrected missing query symbol, failure retained.
+- GLES43457 PASS20:50:27. Provider BIOS64 stage PASS; UEFI128 stage +
+  UEFI64/BIOS16 OOM matrix56309 PASS21:17:56, repeated/exact page return.
 - Normal253880/runtime29904. Test kernel measured262072/cap262144 (72 bytes
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
 
