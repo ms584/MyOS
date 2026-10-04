@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline e12f51b; tested managed-memory/Mesa/empty-GNU and C++ configure checkpoint.
+Implementation checkpoint6e17a77; managed-memory/Mesa/empty-GNU and C++ groundwork.
 Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 
 ## Scope and status

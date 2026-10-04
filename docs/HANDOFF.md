@@ -5,7 +5,7 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Tested native self-signal checkpoint — 2026-10-04
 
-Current follow-up after e12f51b: PHASE332_OS_INFO.md. Real managed PMM totals/
+Local implementation checkpoint6e17a77: PHASE332_OS_INFO.md. Real managed PMM totals/
 free snapshots exposed through pinned sysconf, actual Mesa os_misc adapter,
 u_dl unavailable-branch header and valid empty-GNU/SysV import-only ELF fix.
 74376 scoped BIOS16/64/256 +UEFI128/256 C/C++30 launches/8workers/resources
@@ -15,8 +15,8 @@ full regression/normal BIOS/UEFI/pinned staging/hashes; exit0 10:55:33, all PASS
 30 positive launches/10 malformed hash rejects,PMM and exact process resources.
 Renderer87879 terminal compile1 10:19:42 yi0713xx:11 units/11 errors (prior13/16),
 os_misc/u_dl clear; no renderer/backend/Cobalt PASS. Do not restart93613 on
-observation timeout. No architecture/source/shared-image mutation while
-93613 is now terminal and ownership released; full97678 below is historical, not current
+observation timeout. Job93613 is now terminal and ownership released;
+full97678 below is historical, not current
 architecture proof. Imports unchanged163/242=67.4%; actual Cobalt0/5. No33.3/push.
 Independent C++ source preparation: PHASE332_CXX_PORT_PLAN.md. GCC15.2.0 archive
 download89279 exit0 10:26:04, official SHA512 verified; selected source/license
