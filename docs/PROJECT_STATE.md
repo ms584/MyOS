@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline524c75c + tested native GLES context feasibility checkpoint.
+Baseline d43c15d + tested native glyph-atlas text checkpoint.
 Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -26,6 +26,7 @@ Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
   Native pixels/input/teardown/relaunch BIOS+UEFI PASS; no EGL/GLES backend.
   PHASE332_NATIVE_RENDERER.md; packed allocator: PHASE331_ALLOCATOR.md.
   GLES profile +desktop regression BIOS/UEFI PASS: PHASE332_NATIVE_GLES.md.
+  Glyph alpha/text512 pixels GLES BIOS/UEFI +desktop PASS: PHASE332_NATIVE_TEXT.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -49,7 +50,7 @@ Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
 
 ## Required next work
-1. Native text/real EGL/GLES and SABI integration; OSMesa smoke is not Cobalt.
+1. Real EGL/GLES and SABI integration; glyph atlas is not Cobalt text/DOM.
    Private OSMesa GLES extension uses actual API_OPENGLES2; BIOS67924 PASS,
    UEFI PASS too; desktop BIOS +UEFI91407 PASS16:28:04. No EGL/module/table yet.
    Solve72-byte test-kernel headroom before adding embedded runtime services.

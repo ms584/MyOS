@@ -25,6 +25,7 @@ extern int MyOSUiPoll(void *,struct native_ui_event *,int);
 static SbWindow window;
 static unsigned char pixels[32*32*4];
 static unsigned char texture_pixels[64*64*4],readback[32*32*4];
+extern const unsigned char renderer_font[4096];
 static void say(const char *text){write(1,text,strlen(text));}
 #define CHECK(value) do{if(!(value)){say("Native renderer FAIL: " #value "\n");__builtin_trap();}}while(0)
 static GLuint shader(GLenum type,const char *source)
@@ -107,11 +108,38 @@ static void *render(void *unused)
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,colors);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
     say("Native OSMesa shaders/textures/pixels checked\n");
+    struct native_ui_present present={(uintptr_t)pixels,32,32,128,NATIVE_UI_RGBA8,688,520};
+    CHECK(!MyOSUiPresent(window,&present));
+    /* Existing licensed glyph masks are expanded in MyOS, then sampled and
+     * alpha-blended by real Mesa. No host-generated rendered text/frame. */
+    static const unsigned char text[]="MyOS";
+    for(unsigned y=0;y<16;++y)for(unsigned x=0;x<32;++x){
+        unsigned i=(y*32+x)*4;
+        texture_pixels[i]=texture_pixels[i+1]=texture_pixels[i+2]=255;
+        texture_pixels[i+3]=(renderer_font[text[x/8]*16+y]&(128u>>(x%8)))?128:0;
+    }
+    glViewport(0,0,32,16);glClearColor(0,0,0,1);glClear(GL_COLOR_BUFFER_BIT);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,32,16,0,GL_RGBA,GL_UNSIGNED_BYTE,texture_pixels);
+    glEnable(GL_BLEND);
+    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+    glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
+    glReadPixels(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,readback);
+    unsigned ink=0;
+    for(unsigned character=0;character<4;++character)for(unsigned row=0;row<16;++row)
+        for(unsigned column=0;column<8;++column){
+            unsigned i=(row*32+character*8+column)*4;
+            unsigned expected=((renderer_font[text[character]*16+row]>>(7-column))&1)*128;
+            CHECK(readback[i]==expected&&readback[i+1]==expected&&
+                  readback[i+2]==expected&&readback[i+3]==255);
+            ink+=expected!=0;
+        }
+    CHECK(ink>32&&ink<256);glDisable(GL_BLEND);
+    present=(struct native_ui_present){(uintptr_t)pixels,32,16,128,NATIVE_UI_RGBA8,688,552};
+    CHECK(!MyOSUiPresent(window,&present));
+    say("Native glyph atlas/alpha blend/all512 text pixels checked\n");
     glDisableVertexAttribArray((GLuint)attribute);glUseProgram(0);
     glDeleteBuffers(1,&buffer);glDeleteTextures(1,&texture);
     glDeleteProgram(program);glDeleteShader(vertex);glDeleteShader(fragment);
-    struct native_ui_present present={(uintptr_t)pixels,32,32,128,NATIVE_UI_RGBA8,688,520};
-    CHECK(!MyOSUiPresent(window,&present));
     CHECK(OSMesaMakeCurrent(0,0,GL_UNSIGNED_BYTE,0,0));
     CHECK(!OSMesaGetCurrentContext());OSMesaDestroyContext(context);
     say("Native OSMesa context destroyed\n");return (void *)(uintptr_t)90;

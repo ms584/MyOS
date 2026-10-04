@@ -5,6 +5,14 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline d43c15d plus native text follow-up: PHASE332_NATIVE_TEXT.md.
+Licensed static glyph masks expanded/sampled/alpha-blended in MyOS; all512
+text RGBA pixels/native and QMP frame RGB oracle PASS BIOS GLES50163 16:33:45,
+kepg1ao7/two launches/exact resources. UEFI61812 exit0 16:35:10 d5cj8na9
+and desktop63417 exit0 16:36:53 cpoxl897 PASS same checks/two launches.
+No live image owner; no TrueType/Unicode/Skia/DOM/EGL/Cobalt claim.
+Production kernel/runtime/images unchanged16:38:14. Tested checkpoint, no push.
+
 Baseline524c75c plus tested GLES follow-up: PHASE332_NATIVE_GLES.md.
 Private OSMesa profile routes genuine Mesa API_OPENGLES2; actual ES3.1,
 GLSL100/reject-desktop120/1024 pixel oracle/input/teardown/two launches/exact

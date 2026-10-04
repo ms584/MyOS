@@ -57,6 +57,12 @@ flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
        '-I'+str(probe/'mesa-25.0.7/include'),'-Wall','-Wextra','-Werror']
 fixture=out/'fixture.o';finalize=out/'finalize.o'
+font=root/'assets/myos-font.bin'
+assert hashlib.sha256(font.read_bytes()).hexdigest()==(
+    '38cea9db0e28a9458cad63a57050167cbb87c94f2f5805d097f7cfee871bda94')
+font_object=out/'font.o'
+subprocess.run(['nasm','-f','elf64',str(root/'user/renderer-font.asm'),
+                '-o',str(font_object)],cwd=root,check=True)
 environment=out/'environment.o';process_exit=out/'process-exit.o'
 for source,target in [(root/'user/elf-native-renderer.c',fixture),
                       (root/'user/platform-cxx-finalize.c',finalize),
@@ -83,7 +89,7 @@ library=out/'renderer.so'
 # configure-only platform runtime/TLS archive. Runtime imports bind in MyOS.
 subprocess.run(['ld','-shared','--gc-sections','--hash-style=both','-Bsymbolic',
                 '-z','now','-z','relro','-z','noexecstack','-e','_start',
-                '-o',str(library),str(fixture),str(finalize),str(environment),str(process_exit),
+                '-o',str(library),str(fixture),str(font_object),str(finalize),str(environment),str(process_exit),
                 str(mesa/'src/gallium/targets/osmesa/libOSMesa.so.8.0.0.p/osmesa_target.c.o'),
                 *trace,'--start-group',
                 *map(str,archives),str(containers['library']),str(math['static_library']),
@@ -116,6 +122,12 @@ try:
         frame_shot(vm,f'{vm.name}-{launch}-present.ppm',[
             (692,524,(255,0,0)),(712,524,(0,255,0)),
             (692,544,(0,0,255)),(712,544,(255,255,0))])
+        glyphs=font.read_bytes()
+        checks=[(688+character*8+column,552+row,(value,value,value))
+                for character,code in enumerate(b'MyOS') for row in range(16)
+                for column in range(8)
+                for value in [128 if glyphs[code*16+row]&(128>>column) else 0]]
+        frame_shot(vm,f'{vm.name}-{launch}-text.ppm',checks)
         vm.key('a');end=time.monotonic()+30
         while time.monotonic()<end:
             output=vm.log.read_text()[offset:]
@@ -124,6 +136,7 @@ try:
         else:raise AssertionError(vm.log.read_text()[-6000:])
         assert 'ELF exited with status 90' in output and 'teardown PASS' in output,output
         if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
+        assert 'Native glyph atlas/alpha blend/all512 text pixels checked' in output,output
         assert_live_resources(output)
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
           ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
