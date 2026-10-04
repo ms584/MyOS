@@ -57,6 +57,9 @@ static void *render(void *unused)
         EGL_SURFACE_TYPE,EGL_PBUFFER_BIT,EGL_RED_SIZE,8,EGL_NONE};
     EGLConfig config;EGLint count=0;
     CHECK(eglChooseConfig(display,config_attributes,&config,1,&count)&&count==1);
+    extern int MyOSEglLifetimeTest(EGLDisplay,EGLConfig);
+    CHECK(!MyOSEglLifetimeTest(display,config));
+    say("Native EGL last-core-pin cleanup checked\n");
     CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
     CHECK(eglGetError()==EGL_BAD_CONFIG);
     const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};

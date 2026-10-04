@@ -1,8 +1,8 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline437b701 + native MyOS EGL platform/window-swap follow-up.
-Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
+Baseline1214dc4 + EGL final-core-pin lifetime correction.
+Origin/main452faaa (fetch18:26:42 +07). Owner pushes; never push.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
@@ -30,6 +30,7 @@ Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
   Real EGL core/driver pbuffer/current/deferred-destroy BIOS+UEFI PASS:
   PHASE332_NATIVE_EGL.md. Native EGL window BIOS+UEFI PASS:
   PHASE332_NATIVE_EGL_WINDOW.md. Partial EGL1.4 backend, not Cobalt.
+  Final-core-reference cleanup BIOS/UEFI/pbuffer PASS: PHASE332_EGL_LIFETIME.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -50,10 +51,10 @@ Origin/main452faaa (fetch15:51 +07). Owner pushes; never push.
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
 
 ## Required next work
-1. Native window ownership/lifetime adversarial tests, SABI tables/module coexistence.
-   EGL window BIOS52391 PASS18:06:25; strict16/16 compile18:09:33.
-   UEFI window +affected pbuffer/GLES48983 PASS18:13:05; normal hashes unchanged.
-   No module/SABI table yet; window input test occurs after rendering teardown.
+1. Pinned EGL table requires1.5: current1.4 is insufficient. Real sync/images,
+   exact SABI tables/module coexistence and ownership interleavings remain.
+   Final-core-pin17/17 compile18:22:31; native39964 PASS18:26:43/exact cleanup.
+   Prior window/regression48983 PASS18:13:05; input after rendering teardown.
    Solve72-byte test-kernel headroom before adding embedded runtime services.
 2. Fix any regression before new features; native cross-thread signals/pause/SIGINFO.
 3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and

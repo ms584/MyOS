@@ -1,0 +1,29 @@
+--- a/egldisplay.h
++++ b/egldisplay.h
+@@ -93,6 +93,10 @@
+    EGLBoolean IsLinked;
+    EGLint RefCount;
+
++#ifdef __myos__
++   /* Driver cleanup must also run when egl_relax releases the last pin. */
++   void (*OnFinalRelease)(struct _egl_resource *);
++#endif
+    EGLLabelKHR Label;
+
+    /* used to link resources of the same type */
+--- a/egldisplay.c
++++ b/egldisplay.c
+@@ -420,7 +420,12 @@
+ _eglPutResource(_EGLResource *res)
+ {
+    assert(res && res->RefCount > 0);
+-   return p_atomic_dec_zero(&res->RefCount);
++   EGLBoolean final = p_atomic_dec_zero(&res->RefCount);
++#ifdef __myos__
++   if (final && res->OnFinalRelease)
++      res->OnFinalRelease(res);
++#endif
++   return final;
+ }
+
+ /**

@@ -5,6 +5,20 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline1214dc4 plus final-core-pin cleanup: PHASE332_EGL_LIFETIME.md.
+Found driver-only final free missed core-held references; MyOS-only internal
+OnFinalRelease now calls actual context/backing/display cleanup at zero, including
+egl_relax_end. White-box native test pins/destroys/unpins and observes actual
+destructor exactly once, not a mocked allocation. Strict17/17 compile18:22:31
+core-_oys8k6i; native BIOSqd7nly83/UEFItbutzzx0/pbufferh_5qtanu PASS39964
+terminal exit0 18:26:43, two launches each/exact resources and actual last-pin
+destructor markers. Normal hashes unchanged18:25:29. Fetch18:26:42 confirms
+origin/main452faaa, local5 ahead/0 behind before checkpoint; no merge/push.
+Critical integration constraint: pinned Starboard EGL header requires1.5;
+current truthful1.4 window backend is insufficient for the complete table.
+Next real Gallium fences/EGL sync, images and required1.5 contracts before
+claiming SbGetEglInterface complete. Imports/Cobalt gate unchanged; no33.3/push.
+
 Baseline437b701 plus native MyOS EGL platform/window swap:
 PHASE332_NATIVE_EGL_WINDOW.md. BIOS52391 exit0 18:06:25 urztpo4h PASS,
 2 launches/exact resources, real frames through eglSwapBuffers (not fixture

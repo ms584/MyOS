@@ -57,6 +57,14 @@ static EGLBoolean initialize(_EGLDisplay *display)
 }
 static EGLBoolean terminate(_EGLDisplay *display)
 {_eglReleaseDisplayResources(display);display_put(display);return EGL_TRUE;}
+static void free_context(_EGLResource *resource)
+{
+    _EGLDisplay *display=resource->Display;
+    struct myos_context *context=(void *)resource;
+    OSMesaDestroyContext(context->mesa);free(context);display_put(display);
+}
+static void free_surface(_EGLResource *resource)
+{struct myos_surface *surface=(void *)resource;free(surface->pixels);free(surface);}
 static _EGLContext *create_context(_EGLDisplay *display,_EGLConfig *config,
                                  _EGLContext *share,const EGLint *attributes)
 {
@@ -73,14 +81,13 @@ static _EGLContext *create_context(_EGLDisplay *display,_EGLConfig *config,
         OSMESA_CONTEXT_MAJOR_VERSION,2,OSMESA_CONTEXT_MINOR_VERSION,0,0};
     context->mesa=OSMesaCreateContextAttribs(options,share?((struct myos_context *)share)->mesa:0);
     if(!context->mesa){free(context);fail(EGL_BAD_ALLOC,"MyOS GLES context");return 0;}
+    context->base.Resource.OnFinalRelease=free_context;
     display_get(display);return &context->base;
 }
 static EGLBoolean destroy_context(_EGLDisplay *display,_EGLContext *base)
 {
-    if(base&&_eglPutContext(base)){
-        struct myos_context *context=(void *)base;
-        OSMesaDestroyContext(context->mesa);free(context);display_put(display);
-    }
+    (void)display;
+    if(base)_eglPutContext(base);
     return EGL_TRUE;
 }
 static _EGLSurface *create_pbuffer(_EGLDisplay *display,_EGLConfig *config,const EGLint *attributes)
@@ -108,14 +115,13 @@ static _EGLSurface *create_pbuffer(_EGLDisplay *display,_EGLConfig *config,const
      * pixel because OSMesa rejects zero-sized buffers. Query remains exact. */
     surface->pixels=calloc(width? (size_t)width:1,(height?(size_t)height:1)*4);
     if(!surface->pixels){free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL pbuffer storage");return 0;}
+    surface->base.Resource.OnFinalRelease=free_surface;
     return &surface->base;
 }
 static EGLBoolean destroy_surface(_EGLDisplay *display,_EGLSurface *base)
 {
     (void)display;
-    if(base&&_eglPutSurface(base)){
-        struct myos_surface *surface=(void *)base;free(surface->pixels);free(surface);
-    }
+    if(base)_eglPutSurface(base);
     return EGL_TRUE;
 }
 static _EGLSurface *create_window(_EGLDisplay *display,_EGLConfig *config,
@@ -139,6 +145,7 @@ static _EGLSurface *create_window(_EGLDisplay *display,_EGLConfig *config,
     surface->base.Width=(EGLint)info.width;surface->base.Height=(EGLint)info.height;
     surface->pixels=calloc((size_t)info.width*info.height,4);
     if(!surface->pixels){free(surface);fail(EGL_BAD_ALLOC,"MyOS EGL window pixels");return 0;}
+    surface->base.Resource.OnFinalRelease=free_surface;
     return &surface->base;
 }
 static EGLBoolean make_current(_EGLDisplay *display,_EGLSurface *draw,_EGLSurface *read,_EGLContext *base)
