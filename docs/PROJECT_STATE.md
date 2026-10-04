@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Checkpoint follows d506dd5: native self-signals tested; local commit pending.
+Implementation checkpoint52267bb follows d506dd5: native self-signals tested.
 Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 
 ## Scope and status
@@ -55,10 +55,9 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
   Normal BIOS/UEFI hashes and scoped nonmutation: PHASE331_SIGNALS.md.
 
 ## Required next work
-1. Finish reviewed local commit; no live process or shared-image owner remains.
-2. Native cross-thread sends/wait interruption/pause; actual SIGINFO/context
+1. Native cross-thread sends/wait interruption/pause; actual SIGINFO/context
    and required flags. Renderer ybt5nn3q still needs OS-info/C++/EGL.
-3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
+2. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.
 
 Details: HANDOFF.md; test evidence: build/system-tests/. Never push.

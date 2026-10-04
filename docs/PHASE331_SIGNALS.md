@@ -1,6 +1,6 @@
 # Phase 33.1 native self-signal delivery
 
-Implementation follows d506dd5, 2026-10-04. Dependency slice, NOT phase closure.
+Implementation52267bb follows d506dd5, 2026-10-04. NOT phase closure.
 Full regression97678 exit0 09:55:59+07; normal BIOS/UEFI restored.
 Final scoped66362 exit0 09:57:35; all jobs terminal, no shared-image owner.
 Renderer49393 remains a terminal compile failure; see evidence below.
@@ -112,7 +112,7 @@ Current normal kernel253080; test kernel261272, cap262144:
 rodata37352/data35992/BSS194208; BSS end0x7d340 below stack0x80000.
 Do not grow statically allocated state or casually raise boot/layout limits.
 
-Next: reviewed local commit, then actual cross-task sends/interruptible waits/
+Next: actual cross-task sends/interruptible waits/
 pause, SIGINFO/context
 and restart/alternate-stack requirements as needed by Cobalt; native renderer
 dependency/OS-info/C++/EGL work and actual web endurance gate remain open.

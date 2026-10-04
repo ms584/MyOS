@@ -5,7 +5,7 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Tested native self-signal checkpoint — 2026-10-04
 
-Follows d506dd5; local commit pending. Dependency checkpoint, phases still OPEN.
+Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,
 bounded GP/FP handler contexts and fault repair; real default SIGABRT abort.
 Native78959 BIOS/UEFI36 launches/profile +6cancels/profile PASS09:15:46,
