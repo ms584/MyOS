@@ -1,8 +1,8 @@
 # MyOS project state
 
-Updated: 2026-10-01. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Tested native jump/stack-allocation checkpoint follows 0e24ba7. No push.
-Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
+Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
+Tested stdio dependency checkpoint follows d147ec8. No push.
+Origin/main is d147ec8 (fetch 07:29 +07). Owner pushes manually.
 
 ## Scope and status
 - Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
@@ -22,18 +22,14 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - Guarded SABI launcher: PHASE332_LAUNCHER.md.
 - TLS/thread/C11/Mesa utility evidence: PHASE331_NATIVE_TLS.md,
   PHASE331_THREAD_SERVICES.md, PHASE332_C11_SDK.md, PHASE332_THREAD_UTIL.md.
-- Math/pure/native SDK and stream/stat/environment details: HANDOFF.md + SDK docs.
-- Real smoothsort/Mesa TLS sort/PRNG/finalizer SDK: PHASE332_SORT_SDK.md.
-- Real Mesa rwlock80/time/C++ aliases + full dependency map: PHASE332_RWLOCK_SDK.md.
-- String/token/C-locale/math-profile batch: PHASE332_STRING_EXTENSIONS.md.
-- Sealed conversion/scanf/UTF8 + real Mesa wrapper: PHASE332_SCAN_SDK.md.
-- Sealed native jumps/registers/stack allocation: PHASE332_JUMP_SDK.md.
+- Math/string/sort/rwlock/stat/scan/jump SDK evidence: HANDOFF.md + SDK docs.
+- sprintf/vsprintf/getc/atomic fgets: PHASE332_STDIO_READ_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Renderer configure PASS/compile FAIL: PHASE332_RENDERER.md; no host libs/OpenMP.
 - Pinned 128-byte signal masks; no signal delivery. Logs capped at 48 MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
-## Current evidence (2026-10-01, +07)
+## Current evidence (+07; older entries 2026-10-01)
 - Full coverage completed as passed prefix 83161 + resumed suffix 89247
   exit 0 16:33:42, all remaining tests/VGA/finally; normal restored.
   NOT uninterrupted full-run PASS. Earlier runs hit media 30s boot timeout;
@@ -44,22 +40,23 @@ Origin/main is 32b1fc2 (observed 15:27 +07). Owner pushes manually.
 - Earlier RW/time/string/stat/stream/sort/thread/math proofs: respective SDK docs.
 - Whole renderer87828 compile1 18:55:07, target-config-u8ev3uvw: configure/
   boundary PASS;33 failed units/47 errors, prior53/80; NOT completion percent.
-- Final scanner/Mesa74650 BIOS/UEFI PASS, chain exit0 18:29:46: MPFR209,
-  rounding/readonly guard edges/scanf/UTF8/OOM/8workers/resources.
-  Formatter85049 PASS18:19:26. No kernel/runtime/image change.
-- Native jump55677 BIOS PASS18:48:48/UEFI PASS18:49:14: C/C++, six launches,
-  register restoration/timed preemption/nested stacks/8workers/exact resources.
-- Remaining: exit/abort, OS-info/file locks/stdio details and
+- Scanner74650 and jump55677 BIOS/UEFI PASS; detailed provenance in SDK docs.
+- 2026-10-04 formatter75731 PASS sdk-u22lwj7g; stream final12440 exit0
+  07:38:27: BIOS C11 sdk-zu4r_ko4 + UEFI C++17 sdk-urta56f3 PASS.
+  Line bounds/binary/EOF/EAGAIN/8readers/3cancels/4relaunches/exact resources.
+- Seven affected Mesa units compile0 07:37:21 in existing u8ev3uvw build.
+  Old whole report retained; no new whole-renderer success/count is claimed.
+- Remaining: exit/abort, OS-info/file locks/buffered stdio and
   genuine target C++ dependencies. No native backend or Cobalt execution.
 - Actual pinned Cobalt refusal/OOM checks 2578 exited 0 at 10:26:26:
   160 resolved, 82 strong imports missing; NOT executed or web acceptance.
 - Normal: kernel 252952, image 1474560, runtime 29136, BSS 0x7d2a0.
   BIOS SHA256 765a3f0c65e9746e80a14226ac2a142651ecbca1e3858cf2c5b2a61212335e5d.
-- Process-test kernel 261144; cap unchanged. Normal UEFI restored, hashes
-  in PHASE331_UNLINK.md; all jobs terminal, no shared-image owner.
+- Process-test kernel 261144; cap unchanged. Normal kernel/runtime/BIOS/UEFI
+  hashes unchanged 2026-10-04 07:34:29; all jobs terminal, no image owner.
 
 ## Required next work
-1. Read PHASE332_JUMP_SDK.md and full u8ev3uvw compile.log. Audit exit/abort
+1. Read PHASE332_STDIO_READ_SDK.md and original u8ev3uvw compile.log. Audit exit/abort
    against PHASE332_FINALIZERS.md: raw SYS_EXIT skips FINI; pthread_exit is
    not process exit. Implement real lifecycle semantics, then OS-info/C++/EGL.
    Audit absolute-wait edges; no host libc/GL substitute or busy-loop fallback.

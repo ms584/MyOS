@@ -188,11 +188,10 @@ int fclose(FILE *f)
     else if(close(f->fd))result=EOF;
     release(&f->mutex);release(&registry);pthread_mutex_destroy(&f->mutex);free(f);return result;
 }
-size_t fread(void *data,size_t size,size_t count,FILE *f)
+/* Caller holds the stream lock, including throughout a complete fgets call. */
+static size_t read_locked(void *data,size_t length,FILE *f)
 {
-    if(size&&count>SIZE_MAX/size){errno=EOVERFLOW;return 0;}
-    if(!size||!count)return 0;
-    acquire(&f->mutex);size_t done=0,length=size*count;
+    size_t done=0;
     if((f->flags&F_NORD)||(!(f->flags&F_MEM)&&f->fd<0)){f->flags|=F_ERR;errno=EBADF;}
     else if(f->flags&F_STD){f->flags|=F_ERR;errno=ENOTSUP;}
     else if(!(f->flags&F_EOF))while(done<length){
@@ -200,7 +199,28 @@ size_t fread(void *data,size_t size,size_t count,FILE *f)
         if(got<0){if(errno==EINTR)continue;f->flags|=F_ERR;break;}
         if(!got){f->flags|=F_EOF;break;}done+=(size_t)got;
     }
+    return done;
+}
+size_t fread(void *data,size_t size,size_t count,FILE *f)
+{
+    if(size&&count>SIZE_MAX/size){errno=EOVERFLOW;return 0;}
+    if(!size||!count)return 0;
+    acquire(&f->mutex);size_t done=read_locked(data,size*count,f);
     release(&f->mutex);return done/size;
+}
+char *fgets(char *data,int count,FILE *f)
+{
+    /* Defined SDK extension for nonpositive counts: leave output untouched. */
+    if(count<=0){errno=EINVAL;return 0;}
+    acquire(&f->mutex);
+    size_t done=0;unsigned char byte;int failed=0;
+    while(done<(size_t)count-1){
+        if(read_locked(&byte,1,f)!=1){failed=!!(f->flags&F_ERR);break;}
+        data[done++]=(char)byte;if(byte=='\n')break;
+    }
+    char *result=0;
+    if(!failed&&(done||count==1)){data[done]=0;result=data;}
+    release(&f->mutex);return result;
 }
 int fseek(FILE *f,long offset,int whence)
 {
@@ -231,6 +251,7 @@ int setvbuf(FILE *f,char *buffer,int mode,size_t size)
 {(void)buffer;(void)size;if(mode!=_IONBF)return error(ENOTSUP);acquire(&f->mutex);int result=flush_locked(f);release(&f->mutex);return result;}
 int fputc(int value,FILE *f){unsigned char byte=(unsigned char)value;return fwrite(&byte,1,1,f)==1?byte:EOF;}
 int fgetc(FILE *f){unsigned char byte;return fread(&byte,1,1,f)==1?byte:EOF;}
+int getc(FILE *f){return fgetc(f);}
 int fputs(const char *text,FILE *f){size_t size=strlen(text);return fwrite(text,1,size,f)==size?0:EOF;}
 int puts(const char *text)
 {

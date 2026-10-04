@@ -23,9 +23,18 @@ static size_t capture(FILE *stream,const unsigned char *data,size_t length)
 }
 static int formatted(FILE *stream,const char *format,...)
 {va_list args;va_start(args,format);int result=vfprintf(stream,format,args);va_end(args);return result;}
+static int unbounded(char *output,const char *format,...)
+{va_list args;va_start(args,format);int result=vsprintf(output,format,args);va_end(args);return result;}
 int _start(void)
 {
     char text[256];
+    unsigned char sentinels[258];memset(sentinels,0xa5,sizeof(sentinels));
+    CHECK(sprintf((char *)sentinels+1,"%08x:%.3f:%ld",0x12,1.25,INT64_MIN)==35);
+    CHECK(!strcmp((char *)sentinels+1,"00000012:1.250:-9223372036854775808"));
+    CHECK(sentinels[0]==0xa5&&!sentinels[36]&&sentinels[37]==0xa5&&sentinels[257]==0xa5);
+    CHECK(unbounded(text,"%2$d:%1$d:%3$a:%4$.2Lf",7,9,1.5,-0.0L)==18);
+    CHECK(!strcmp(text,"9:7:0x1.8p+0:-0.00"));
+    CHECK(sprintf(text,"%s","")==0&&!text[0]);
     CHECK(snprintf(text,sizeof(text),"%ld/%lu",INT64_MIN,UINT64_MAX)==41);
     CHECK(!strcmp(text,"-9223372036854775808/18446744073709551615"));
     CHECK(snprintf(text,sizeof(text),"%08x %.3f %.3Lf %a",0x12,1.25,1.25L,1.5)==sizeof("00000012 1.250 1.250 0x1.8p+0")-1);

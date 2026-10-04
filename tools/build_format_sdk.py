@@ -46,7 +46,7 @@ for name,path in [('adapter',root/'user/platform-format.c'),('string',root/'user
                   ('towrite',out/'towrite.c'),
                   ('fwrite',out/'fwrite.c'),
                   *[(name,source/'src/stdio'/(name+'.c')) for name in
-                    ('vfprintf','vsnprintf','snprintf','vasprintf','asprintf')]]:
+                    ('vfprintf','vsnprintf','snprintf','vsprintf','sprintf','vasprintf','asprintf')]]:
     extra=['-Wno-error=sign-compare','-Wno-error=implicit-fallthrough',
            '-Wno-error=unterminated-string-initialization','-Wno-error=maybe-uninitialized'] if name=='vfprintf' else []
     if name in ('fwrite','vsnprintf'):extra=['-Wno-error=sign-compare']

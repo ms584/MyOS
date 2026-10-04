@@ -8,17 +8,34 @@
 #include <pthread.h>
 #define CHECK(x) do{if(!(x)){fprintf(stderr,"stream failed: %s\n",#x);__builtin_trap();}}while(0)
 static FILE *shared;
+static pthread_mutex_t seen_lock=PTHREAD_MUTEX_INITIALIZER;
+static unsigned line_seen[8];
+static void *line_reader(void *arg)
+{
+    char line[6];
+    while(fgets(line,sizeof(line),shared)){
+        unsigned id=line[0]-'0',value=(line[2]-'0')*10+line[3]-'0';
+        CHECK(id<8&&value<16&&line[1]==':'&&line[4]=='\n'&&!line[5]);
+        CHECK(!pthread_mutex_lock(&seen_lock));
+        CHECK(!(line_seen[id]&(1u<<value)));line_seen[id]|=1u<<value;
+        CHECK(!pthread_mutex_unlock(&seen_lock));
+    }
+    CHECK(feof(shared)&&!ferror(shared));return arg;
+}
 static void *held[20000];
 #ifdef STREAM_CANCEL
 static FILE *blocked;
 static void *reader(void *arg)
-{(void)arg;puts("stream blocked reader ready");fgetc(blocked);__builtin_trap();}
+{(void)arg;char line[16];puts("stream blocked reader ready");fgets(line,sizeof(line),blocked);__builtin_trap();}
 #endif
 static void *worker(void *arg)
 {
     for(int i=0;i<16;++i)CHECK(fprintf(shared,"%ld:%02d\n",(long)(uintptr_t)arg,i)==5);
     return arg;
 }
+#ifdef __cplusplus
+extern "C"
+#endif
 int _start(void)
 {
 #ifdef STREAM_CANCEL
@@ -81,6 +98,37 @@ int _start(void)
     }
     for(unsigned i=0;i<8;++i)CHECK(seen[i]==65535);
     CHECK(!fclose(shared));
+    shared=fopen(path,"r");CHECK(shared);
+    for(uintptr_t i=0;i<8;++i)CHECK(!pthread_create(&threads[i],0,line_reader,(void *)i));
+    for(uintptr_t i=0;i<8;++i){void *result;CHECK(!pthread_join(threads[i],&result)&&result==(void *)i);}
+    for(unsigned i=0;i<8;++i)CHECK(line_seen[i]==65535);
+    CHECK(!fclose(shared)&&!pthread_mutex_destroy(&seen_lock));
+    f=fopen(path,"w+");CHECK(f);
+    CHECK(fwrite("\xff\0Z\nabcdef\nlast",1,15,f)==15&&!fseek(f,0,SEEK_SET));
+    CHECK(getc(f)==255&&getc(f)==0&&!fseek(f,0,SEEK_SET));
+    unsigned char guard[10];memset(guard,0xa5,sizeof(guard));
+    CHECK(!fgets((char *)guard+1,0,f)&&errno==EINVAL&&guard[1]==0xa5&&ftell(f)==0);
+    CHECK(!fgets((char *)guard+1,-1,f)&&errno==EINVAL&&ftell(f)==0);
+    CHECK(fgets((char *)guard+1,1,f)==(char *)guard+1&&!guard[1]&&ftell(f)==0);
+    CHECK(fgets((char *)guard+1,5,f)==(char *)guard+1);
+    CHECK(guard[0]==0xa5&&guard[1]==255&&!guard[2]&&guard[3]=='Z'&&guard[4]=='\n'&&!guard[5]&&guard[6]==0xa5);
+    CHECK(fgets(data,4,f)==data&&!strcmp(data,"abc"));
+    CHECK(fgets(data,8,f)==data&&!strcmp(data,"def\n"));
+    CHECK(fgets(data,8,f)==data&&!strcmp(data,"last")&&feof(f));
+    data[0]='Q';CHECK(!fgets(data,8,f)&&data[0]=='Q');
+    CHECK(!fseek(f,0,SEEK_SET)&&!feof(f)&&getc(f)==255);
+    CHECK(!fclose(f));f=fopen(path,"w");CHECK(f);
+    CHECK(!fgets(data,8,f)&&ferror(f)&&errno==EBADF);CHECK(!fclose(f));
+    f=fopen(path,"r");CHECK(f);data[0]='Q';
+    CHECK(!fgets(data,8,f)&&feof(f)&&!ferror(f)&&data[0]=='Q');CHECK(!fclose(f));
+    int pipe_ends[2];CHECK(!pipe2(pipe_ends,O_NONBLOCK));
+    f=fdopen(pipe_ends[0],"r");CHECK(f);
+    CHECK(write(pipe_ends[1],"AB",2)==2);
+    memset(guard,0xa5,sizeof(guard));
+    CHECK(!fgets((char *)guard+1,5,f)&&errno==EAGAIN&&ferror(f)&&!feof(f));
+    CHECK(guard[0]==0xa5&&guard[1]=='A'&&guard[2]=='B'&&guard[6]==0xa5);
+    clearerr(f);CHECK(!close(pipe_ends[1]));
+    CHECK(!fgets(data,8,f)&&feof(f)&&!ferror(f));CHECK(!fclose(f));
     FILE *files[8];for(unsigned i=0;i<8;++i){files[i]=fopen(path,"r");CHECK(files[i]);}
     CHECK(!fopen(path,"r")&&errno==24);
     for(unsigned i=0;i<8;++i)CHECK(!fclose(files[i]));

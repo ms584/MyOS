@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Latest checkpoint: real stdio read/format dependencies — 2026-10-04
+
+Follows d147ec8; fetch confirmed origin/main at d147ec8, clean baseline07:29.
+PHASE332_STDIO_READ_SDK.md records sealed sprintf/vsprintf, real getc and
+fgets locking an entire line, with documented count/error/EOF behavior.
+Formatter75731 PASS sdk-u22lwj7g. Expanded stream12440 chainexit0 07:38:27:
+BIOS C11 sdk-zu4r_ko4 + UEFI C++17 sdk-urta56f3, binary/count guards/partial
+EAGAIN/EOF/8shared readers/3blocked-read cancels/4relaunches/exact resources.
+Seven previously failed Mesa sprintf/fgets units compile0 07:37:21 using
+existing u8ev3uvw build. Original whole33-unit/47-error report is historical;
+no new whole-renderer count or backend success. Kernel/runtime/images unchanged;
+no architectural change or duplicate full-system run. All jobs terminal.
+Next: proper exit/abort lifecycle, OS-info/locking/buffering and real target C++.
+Imports160/242=66.1%, actual Cobalt0/5 verified; phases remain OPEN. No33.3/push.
+
 ## Latest handoff: native jump/stack allocation — 2026-10-01
 
 Checkpoint follows 0e24ba7; see PHASE332_JUMP_SDK.md. Read PROJECT_STATE.md,
