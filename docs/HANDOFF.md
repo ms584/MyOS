@@ -3,6 +3,22 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Tested owned-image SDK exit — 2026-10-04
+
+Checkpoint follows0643303. PHASE332_EXIT_SDK.md is authoritative
+for private bootstrap ABI/support limits. exit runs registered callbacks and
+remaining FINI on the caller stack; _Exit kills whole process without FINI.
+Main/worker/constructor/reentrant/normal-FINI/raw/loop cancellation native
+74114 BIOS/UEFI24 launches/profile + C++ lifetime PASS, chainexit0 07:50:41.
+Five affected Mesa units compile0 07:49:56; no core-import/backend acceptance.
+Full78177 uninterrupted test_system.py PASS; chainexit0 08:23:55 includes
+normal BIOS/UEFI restoration and hashes. Supersedes older aggregate coverage.
+Renderer1929 terminal compile1 07:56:52, target-config-uay8w01f: configure/
+boundary PASS;21 failed units/29 errors, prior33/47; still no native backend.
+All jobs terminal; no image owner. abort/SIGABRT still unsupported;
+core raise/signal/sigaction remain unimplemented (import register checked08:00).
+No33.3/push/phase closure. Keep goal active.
+
 ## Latest checkpoint: real stdio read/format dependencies — 2026-10-04
 
 Follows d147ec8; fetch confirmed origin/main at d147ec8, clean baseline07:29.

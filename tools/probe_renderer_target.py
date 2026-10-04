@@ -48,11 +48,13 @@ flags = ['-m64', '-Oz', '-fPIC', '-ffreestanding', '-fno-builtin', '-mno-red-zon
          '-fno-stack-protector', '-fno-asynchronous-unwind-tables', '-fno-unwind-tables',
          '-nostdinc', '-isystem', intrinsics, '-I' + str(root / 'user/sdk')]
 runtime = out / 'runtime.o'
+process_exit = out / 'process-exit.o'
 tls = out / 'tls.o'
 string = out / 'string.o'
 sleep = out / 'sleep.o'
 environment = out / 'environment.o'
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-runtime.c'), '-o', str(runtime)], check=True)
+subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-exit.c'), '-o', str(process_exit)], check=True)
 subprocess.run(['nasm', '-f', 'elf64', str(root / 'user/platform-tls.asm'), '-o', str(tls)], check=True)
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-sdk-string.c'), '-o', str(string)], check=True)
 subprocess.run(['gcc', *flags, '-c', str(root / 'user/platform-environment.c'), '-o', str(environment)], check=True)
@@ -74,7 +76,7 @@ with (out / 'jump-build.log').open('w') as jump_log, contextlib.redirect_stdout(
 math_include = out / 'math-include'
 shutil.copytree(math_build['sdk_include'], math_include)
 subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string), str(sleep),
-                str(environment),
+                str(environment), str(process_exit),
                 *map(str,format_build['objects']),
                 *map(str,sort_build['objects']),
                 *map(str,scan_build['objects']),

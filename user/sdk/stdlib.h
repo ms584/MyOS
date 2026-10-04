@@ -24,6 +24,8 @@ void srand(unsigned);
 void qsort(void *,size_t,size_t,int (*)(const void *,const void *));
 void qsort_r(void *,size_t,size_t,int (*)(const void *,const void *,void *),void *);
 int atexit(void (*)(void));
+void exit(int) __attribute__((noreturn));
+void _Exit(int) __attribute__((noreturn));
 long strtol(const char *,char **,int);
 unsigned long strtoul(const char *,char **,int);
 long long strtoll(const char *,char **,int);

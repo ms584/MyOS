@@ -24,6 +24,14 @@ elf_start_code:
     test rax,rax
     jnz .exit
 .init:
+    ; Publish the owned frame before constructors may call SDK exit().
+    mov r11,[rsp+72]
+    test r11,r11
+    jz .init_call
+    mov [r11+56],rsp
+    lea rax,[rel .returned]
+    mov [rsp+64],rax
+.init_call:
     test r15,r15
     jz .array
     call r15
@@ -35,12 +43,6 @@ elf_start_code:
     dec r13
     jmp .array
 .entry:
-    mov r11,[rsp+72]
-    test r11,r11
-    jz .call_entry
-    mov [r11+56],rsp
-    lea rax,[rel .returned]
-    mov [rsp+64],rax
 .call_entry:
     mov rdi,[rsp+16]
     mov rsi,[rsp+24]
@@ -54,11 +56,13 @@ elf_start_code:
     test r13,r13
     jz .fini
     dec r13
+    mov [rsp],r13
     call [rbp+r13*8]
     jmp .fini_array
 .fini:
     test rbx,rbx
     jz .exit
+    mov qword [rsp+40],0
     call rbx
 .exit:
     mov rdi,[rsp+8]
