@@ -35,6 +35,7 @@ uintptr_t page_alloc(void);
 uintptr_t pages_alloc_contiguous(unsigned);
 void page_free(uintptr_t);
 size_t pages_free(void);
+size_t pages_total(void);
 bool vm_map(uintptr_t,uintptr_t,uint64_t);
 uintptr_t vm_unmap(uintptr_t);
 uintptr_t vm_translate(uintptr_t);

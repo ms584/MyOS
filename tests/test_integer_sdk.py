@@ -3,16 +3,22 @@
 Compile evidence, not a claim of runtime printf/scanf support.
 """
 from pathlib import Path
+import argparse
 import subprocess
 import tempfile
 
 root=Path(__file__).resolve().parents[1]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--hosted',action='store_true',help='Target hosted language profile, no host headers')
+options=parser.parse_args()
 base=root/'build/integer-evaluation';base.mkdir(parents=True,exist_ok=True)
 out=Path(tempfile.mkdtemp(prefix='formats-',dir=base))
 include=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
 flags=['-m64','-ffreestanding','-fno-builtin','-nostdinc','-isystem',include,
        '-I'+str(root/'user/sdk'),'-D__myos__=1','-U__linux__','-U__linux',
        '-Ulinux','-U__gnu_linux__','-Wall','-Wextra','-Wformat=2','-Werror']
+if options.hosted:
+    flags.remove('-ffreestanding')
 body='''#include <limits.h>
 #include <inttypes.h>
 #include <assert.h>

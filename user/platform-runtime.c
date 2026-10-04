@@ -1885,6 +1885,8 @@ char *mkdtemp(char *template)
 #define MUSL_SC_THREAD_THREADS_MAX 76
 #define MUSL_SC_NPROCESSORS_CONF 83
 #define MUSL_SC_NPROCESSORS_ONLN 84
+#define MUSL_SC_PHYS_PAGES 85
+#define MUSL_SC_AVPHYS_PAGES 86
 #define MUSL_SC_MONOTONIC_CLOCK 149
 #define MUSL_SC_READER_WRITER_LOCKS 153
 #define MUSL_SC_TIMEOUTS 164
@@ -1934,6 +1936,10 @@ long sysconf(int name)
     case MUSL_SC_THREAD_STACK_MIN:return 16384;
     case MUSL_SC_THREAD_THREADS_MAX:return 8;
     case MUSL_SC_NPROCESSORS_CONF:case MUSL_SC_NPROCESSORS_ONLN:return 1;
+    /* Only boot-map usable RAM managed by MyOS (currently below256MiB).
+     * Available pages are an instantaneous unreserved PMM snapshot. */
+    case MUSL_SC_PHYS_PAGES:return (long)call3(50,0,0,0);
+    case MUSL_SC_AVPHYS_PAGES:return (long)call3(50,1,0,0);
     default:return set_error(EINVAL);
     }
 }

@@ -7,12 +7,13 @@ static size_t heap_bytes;
 #define NX (1ull<<63)
 #define ADDR 0x000ffffffffff000ull
 static uint8_t available[MAX_PAGES/8],owned[MAX_PAGES/8];
-static size_t free_count;
+static size_t free_count,total_count;
 static unsigned hint=256;
 struct e820 {uint64_t base,length;uint32_t type,attributes;} __attribute__((packed));
 static bool bit(uint8_t *b,unsigned n){return (b[n/8]>>(n%8))&1;}
 static void set(uint8_t *b,unsigned n,bool v){if(v)b[n/8]|=1u<<(n%8);else b[n/8]&=~(1u<<(n%8));}
 size_t pages_free(void){return free_count;}
+size_t pages_total(void){return total_count;}
 uintptr_t page_alloc(void){
     uint64_t f=irq_save();if(!free_count){irq_restore(f);return 0;}
     for(unsigned k=0;k<MAX_PAGES;++k){unsigned n=(hint+k)%MAX_PAGES;
@@ -103,6 +104,7 @@ void memory_init(void){
         }
     }
     for(unsigned n=0;n<MAX_PAGES;++n)if(bit(available,n))++free_count;
+    total_count=free_count; /* Managed usable pages, before heap allocations. */
     heap_bytes=free_count>MAX_HEAP_BYTES/PAGE_SIZE+2048?MAX_HEAP_BYTES:MIN_HEAP_BYTES;
     check(free_count>heap_bytes/PAGE_SIZE+512,"insufficient RAM");
     for(unsigned i=0;i<heap_bytes/PAGE_SIZE;++i){uintptr_t p=page_alloc();check(p&&vm_map(0x100000000ull+i*PAGE_SIZE,p,2|NX),"heap mapping");}

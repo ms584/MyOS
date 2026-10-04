@@ -1,0 +1,44 @@
+--- a/config.sub
++++ b/config.sub
+@@ -1751,3 +1751,3 @@
+ 	     | nsk* | powerunix* | genode* | zvmoe* | qnx* | emx* | zephyr* \
+-	     | fiwix* )
++	     | fiwix* | myos* )
+ 		;;
+--- a/libstdc++-v3/crossconfig.m4
++++ b/libstdc++-v3/crossconfig.m4
+@@ -176,10 +176,13 @@
+-  *-linux* | *-uclinux* | *-gnu* | *-kfreebsd*-gnu | *-cygwin* | *-solaris*)
++  *-myos* | *-linux* | *-uclinux* | *-gnu* | *-kfreebsd*-gnu | *-cygwin* | *-solaris*)
+     GLIBCXX_CHECK_COMPILER_FEATURES
+     GLIBCXX_CHECK_LINKER_FEATURES
+     GLIBCXX_CHECK_MATH_SUPPORT
+     GLIBCXX_CHECK_STDLIB_SUPPORT
+-    AC_DEFINE(_GLIBCXX_USE_DEV_RANDOM)
+-    AC_DEFINE(_GLIBCXX_USE_RANDOM_TR1)
++    # MyOS has no /dev/random provider. Keep real capability probes below.
++    AS_IF([test "${host##*-}" != myos], [
++      AC_DEFINE(_GLIBCXX_USE_DEV_RANDOM)
++      AC_DEFINE(_GLIBCXX_USE_RANDOM_TR1)
++    ])
+     GCC_CHECK_TLS
+     AC_CHECK_FUNCS(__cxa_thread_atexit_impl)
+     AC_CHECK_FUNCS(aligned_alloc posix_memalign memalign _aligned_malloc)
+--- a/libstdc++-v3/configure
++++ b/libstdc++-v3/configure
+@@ -38859,3 +38859,3 @@
+-  *-linux* | *-uclinux* | *-gnu* | *-kfreebsd*-gnu | *-cygwin* | *-solaris*)
++  *-myos* | *-linux* | *-uclinux* | *-gnu* | *-kfreebsd*-gnu | *-cygwin* | *-solaris*)
+ 
+   # All these tests are for C++; save the language and the compiler flags.
+@@ -42075,5 +42075,8 @@
+-    $as_echo "#define _GLIBCXX_USE_DEV_RANDOM 1" >>confdefs.h
++    # MyOS has no /dev/random provider. Keep real capability probes below.
++    if test "${host##*-}" != myos; then :
++      $as_echo "#define _GLIBCXX_USE_DEV_RANDOM 1" >>confdefs.h
+ 
+-    $as_echo "#define _GLIBCXX_USE_RANDOM_TR1 1" >>confdefs.h
++      $as_echo "#define _GLIBCXX_USE_RANDOM_TR1 1" >>confdefs.h
++    fi
+ 
+ 

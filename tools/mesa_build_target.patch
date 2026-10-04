@@ -71,3 +71,43 @@
 +   if (blob->current <= blob->end && (size_t)(blob->end - blob->current) >= size)
        return true;
  
+--- a/src/util/os_misc.c
++++ b/src/util/os_misc.c
+@@ -61,3 +61,3 @@
+ #  include <cutils/properties.h>
+-#elif DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || DETECT_OS_HURD || DETECT_OS_MANAGARM
++#elif DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || DETECT_OS_HURD || DETECT_OS_MANAGARM || defined(__myos__)
+ #  include <unistd.h>
+@@ -276,4 +276,4 @@
+ os_get_total_physical_memory(uint64_t *size)
+ {
+-#if DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || DETECT_OS_HURD || DETECT_OS_MANAGARM
++#if DETECT_OS_LINUX || DETECT_OS_CYGWIN || DETECT_OS_SOLARIS || DETECT_OS_HURD || DETECT_OS_MANAGARM || defined(__myos__)
+    const long phys_pages = sysconf(_SC_PHYS_PAGES);
+@@ -342,4 +342,12 @@
+ os_get_available_system_memory(uint64_t *size)
+ {
+-#if DETECT_OS_LINUX
++#if defined(__myos__)
++   /* Snapshot of actually free managed PMM pages, not /proc or host RAM. */
++   const long pages = sysconf(_SC_AVPHYS_PAGES);
++   const long page_size = sysconf(_SC_PAGE_SIZE);
++   if (pages < 0 || page_size <= 0)
++      return false;
++   *size = (uint64_t)pages * (uint64_t)page_size;
++   return true;
++#elif DETECT_OS_LINUX
+    char *meminfo = os_read_file("/proc/meminfo", NULL);
+@@ -406,4 +414,4 @@
+ os_get_page_size(uint64_t *size)
+ {
+-#if DETECT_OS_POSIX_LITE && !DETECT_OS_APPLE && !DETECT_OS_HAIKU
++#if (DETECT_OS_POSIX_LITE && !DETECT_OS_APPLE && !DETECT_OS_HAIKU) || defined(__myos__)
+    const long page_size = sysconf(_SC_PAGE_SIZE);
+--- a/src/util/u_dl.c
++++ b/src/util/u_dl.c
+@@ -30,3 +30,4 @@
+ #include "detect_os.h"
++#include <stddef.h> /* NULL also needed by the unavailable-platform branch. */
+ 
+ #if DETECT_OS_POSIX_LITE

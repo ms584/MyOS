@@ -5,6 +5,42 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Tested native self-signal checkpoint — 2026-10-04
 
+Current follow-up after e12f51b: PHASE332_OS_INFO.md. Real managed PMM totals/
+free snapshots exposed through pinned sysconf, actual Mesa os_misc adapter,
+u_dl unavailable-branch header and valid empty-GNU/SysV import-only ELF fix.
+74376 scoped BIOS16/64/256 +UEFI128/256 C/C++30 launches/8workers/resources
+PASS10:14:28. New93613 from10:15:39 adds malformed hash rejection then mandatory
+full regression/normal BIOS/UEFI/pinned staging/hashes; exit0 10:55:33, all PASS.
+93613 scoped prefix PASS observed10:18:14: BIOS native-eoyxv3lq/UEFI native-nvtf4_lr,
+30 positive launches/10 malformed hash rejects,PMM and exact process resources.
+Renderer87879 terminal compile1 10:19:42 yi0713xx:11 units/11 errors (prior13/16),
+os_misc/u_dl clear; no renderer/backend/Cobalt PASS. Do not restart93613 on
+observation timeout. No architecture/source/shared-image mutation while
+93613 is now terminal and ownership released; full97678 below is historical, not current
+architecture proof. Imports unchanged163/242=67.4%; actual Cobalt0/5. No33.3/push.
+Independent C++ source preparation: PHASE332_CXX_PORT_PLAN.md. GCC15.2.0 archive
+download89279 exit0 10:26:04, official SHA512 verified; selected source/license
+extraction217MiB including archive. No library installed/configured/built.
+Observed config.sub rejects myos, and upstream mutex requires a hosted-library
+profile. Actual target configuration/gthread ABI is the next work, not copying
+installed Linux c++config/gthread libraries or hand-writing STL containers.
+Configure diagnostic24609 exit1 10:36:32: unsupported target. Real cross probes
+now selected by gcc_myos_target.patch, without assumed /dev/random support.
+1589 exit0 10:45:39 z2mdr78d nevertheless failed generated headers (missing GCC
+metadata), so its report's complete flag is rejected. Added original metadata
+extraction and required c++config.h validation;27830 exit0 10:47:26 p4slmkpj,
+headers generated. Source build60077 exit2 10:48:08; SDK-new shadowing,
+freestanding profile, gthread/static-condition and actual C-library gaps.
+Opt-in --cxx-library fixes header precedence/language profile, defaults unchanged;
+83926 configure0 10:51:28 q02cu_qs. Boundary10:52:04 FAIL: hosted GCC stdint.h
+needs target header absent from SDK. No glibc fallback allowed. Gthreads macro
+unset, native-TLS probe macro is not semantic proof. Follow CXX_PORT_PLAN for
+next actual header/thread configuration. No C++ library/native acceptance yet.
+Target stdint gap resolved10:56:26 with GCC target-intrinsic header (no glibc).
+Integer154 macros/types C/C++/char signs PASS both freestanding and hosted;
+upstream <new>/pthread no-host boundary PASS. C++ library still not built.
+Normal kernel253112/runtime29136 and SHA256 hashes in PHASE332_OS_INFO.md.
+
 Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,
 bounded GP/FP handler contexts and fault repair; real default SIGABRT abort.

@@ -14,7 +14,11 @@ parser.add_argument('--sdk', type=Path, required=True)
 parser.add_argument('--intrinsics', type=Path, required=True)
 parser.add_argument('--provider', type=Path, required=True)
 parser.add_argument('--math-include', type=Path)
+parser.add_argument('--cxx-library', action='store_true',
+                    help='Upstream C++ headers before SDK shims; hosted language profile, not host libraries')
 options, args = parser.parse_known_args()
+if options.cxx_library and options.language != 'cpp':
+    parser.error('--cxx-library requires --language cpp')
 if args[:1] == ['--']:
     args = args[1:]
 # Meson version/target queries must remain the actual compiler's answers.
@@ -22,8 +26,10 @@ query = any(arg in ('--version', '-dumpmachine', '-dumpversion', '-print-search-
             or arg.startswith('-print-file-name=') for arg in args)
 compiler = 'g++' if options.language == 'cpp' else 'gcc'
 flags = [] if query else [
-    '-nostdinc', '-isystem', str(options.intrinsics), '-I' + str(options.sdk),
-    '-ffreestanding', '-fno-builtin', '-mno-red-zone', '-fno-stack-protector',
+    '-nostdinc', '-isystem', str(options.intrinsics),
+    *(['-idirafter', str(options.sdk)] if options.cxx_library else ['-I' + str(options.sdk)]),
+    *([] if options.cxx_library else ['-ffreestanding']),
+    '-fno-builtin', '-mno-red-zone', '-fno-stack-protector',
     '-fmax-errors=5',
     '-fno-asynchronous-unwind-tables', '-fno-unwind-tables', '-D__myos__=1',
     '-D_GNU_SOURCE=1',  # Mesa requires the sealed math header's extension constants.

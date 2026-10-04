@@ -253,6 +253,9 @@ struct frame *syscall_dispatch(struct frame *frame)
     }
     process_cleanup_detached(process);
     switch (frame->rax) {
+    case SYS_MEMORY_INFO:
+        frame->rax=frame->rdi==0?pages_total():frame->rdi==1?pages_free():(uint64_t)-22;
+        break;
     case SYS_SIGNAL:
         return process_signal_call(process,frame);
     case SYS_WRITE: {

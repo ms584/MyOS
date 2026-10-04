@@ -103,6 +103,9 @@ static int parse(struct linker *l)
             if(value&1){gnu_count=i+1;break;}}
             if(gnu_count<=last)return -8;}
         l->gnu_bytes=chains-l->gnu_hash+4ull*(gnu_count-h[1]);
+        /* Empty GNU buckets omit unhashable undefined symbols. Only the
+         * independently bounded SysV table can give their full count. */
+        if(!last&&sysv_count>=gnu_count)gnu_count=sysv_count;
     }
     if(!sysv_count&&!gnu_count)return -8;
     if(sysv_count&&gnu_count&&sysv_count!=gnu_count)return -8;

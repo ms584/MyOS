@@ -11,6 +11,11 @@
 #define X_OK 1
 #define W_OK 2
 #define R_OK 4
+/* Pinned musl values, not the host's unistd ABI. */
+#define _SC_PAGE_SIZE 30
+#define _SC_PAGESIZE 30
+#define _SC_PHYS_PAGES 85
+#define _SC_AVPHYS_PAGES 86
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,6 +38,7 @@ int access(const char *,int);
 int isatty(int);
 char *getcwd(char *,size_t);
 long pathconf(const char *,int);
+long sysconf(int);
 pid_t getpid(void);
 uid_t getuid(void);
 uid_t geteuid(void);
