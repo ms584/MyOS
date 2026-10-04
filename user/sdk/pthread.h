@@ -33,8 +33,10 @@ int pthread_equal(pthread_t,pthread_t);
 int pthread_setname_np(pthread_t,const char *);
 int pthread_getname_np(pthread_t,char *,size_t);
 int pthread_sigmask(int,const sigset_t *,sigset_t *);
-#ifdef __cplusplus
+#if defined(__cplusplus) && __cplusplus >= 201103L
 [[noreturn]]
+#elif defined(__cplusplus)
+__attribute__((noreturn))
 #else
 _Noreturn
 #endif
@@ -70,8 +72,13 @@ int pthread_rwlock_wrlock(pthread_rwlock_t *);
 int pthread_rwlock_unlock(pthread_rwlock_t *);
 #ifdef __cplusplus
 }
+#if __cplusplus >= 201103L
 static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
 static_assert(sizeof(pthread_rwlock_t)==80&&alignof(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8,"pinned rwlock storage");
+#else
+typedef char __myos_pthread_storage[(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64)?1:-1];
+typedef char __myos_rwlock_storage[(sizeof(pthread_rwlock_t)==80&&__alignof__(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8)?1:-1];
+#endif
 #else
 _Static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
 _Static_assert(_Alignof(pthread_mutex_t)==8&&_Alignof(pthread_cond_t)==8,"pinned alignment");

@@ -137,3 +137,9 @@ Both normal image hashes remain PHASE332_OS_INFO.md values. No runtime/kernel
 architecture change: reuse full93613; scope is target source patch/fixture only.
 Next: implement and test missing real C-library services needed by upstream
 containers/stdlib, then actual vector/unordered_map/mutex users/Mesa rendering.
+
+Follow-ups: PHASE332_CSTDLIB_SDK.md (0f3f768) and PHASE332_CSTRING_SDK.md.
+Native Cstdlib/Cstring dependencies now tested; C++98 ABI/gthread also PASS.
+Latest whole library build-after-cstring.log exit2 12:32:29 still needs real
+stdio/ctime/locale/math and omitted support-source integration. No full C++,
+native renderer or Cobalt acceptance. Do not substitute compile macros for APIs.

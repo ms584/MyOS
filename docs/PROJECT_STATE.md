@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline3699a87; sealed native Cstdlib follow-up to gthread/C++ groundwork.
+Baseline0f3f768; native Cstring/C++98 follow-up to Cstdlib/gthread groundwork.
 Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 
 ## Scope and status
@@ -29,6 +29,7 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 - Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
 - Sealed GCC15.2.0 gthread adapter: PHASE332_CXX_PORT_PLAN.md; library build fails.
 - Sealed division/UTF-8/upstream cstdlib: PHASE332_CSTDLIB_SDK.md; no shell/locale.
+- Native bytewise collation/C++98 ABI headers: PHASE332_CSTRING_SDK.md.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Renderer configure PASS/compile FAIL: PHASE332_RENDERER.md; no host libs/OpenMP.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
@@ -50,7 +51,11 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
   Library12608 build2; cstdlib/locale/stdio/time gaps, no container/renderer proof.
 - New34118 exit0 12:14:54: Cstdlib C/C++ BIOS/UEFI12 launches, guard edges,
   8workers/exact resources; affected scan/MPFR/OOM BIOS/UEFI PASS. All terminal.
-  Whole C++ after-Cstdlib still build2; missing cstring/stdio/time/support sources.
+  C++98 gthread99435 exit0 12:27:36 BIOS/UEFI,8 launches/2cancels/resources.
+- Cstring59789 exit0 12:30:55: C11/C++98/17 BIOS/UEFI12 launches, guards,
+  8workers/exact resources. Integer/compiler boundary regression PASS12:32:29.
+  Whole C++ build2: stdio/ctime/locale/math/omitted support sources remain;
+  cstring and C++98 ABI syntax groups cleared. Normal hashes unchanged12:32:44.
 - Signals/masks delivery PASS BIOS/UEFI: PHASE331_SIGNALS.md; stronger66362
   exit0 09:57:35,72 launches/12cancels/RAX/full-RFLAGS/exact resources.
 - Test kernel261304/cap262144,840bytes headroom. Normal253112/runtime29136;

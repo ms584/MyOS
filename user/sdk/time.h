@@ -24,8 +24,13 @@ struct tm *gmtime_r(const time_t *,struct tm *);
 struct tm *localtime_r(const time_t *,struct tm *);
 #ifdef __cplusplus
 }
+#if __cplusplus >= 201103L
 static_assert(sizeof(struct timespec)==16,"target timespec");
 static_assert(sizeof(struct tm)==56,"target UTC calendar ABI");
+#else
+typedef char __myos_timespec_size[(sizeof(struct timespec)==16)?1:-1];
+typedef char __myos_tm_size[(sizeof(struct tm)==56)?1:-1];
+#endif
 #else
 _Static_assert(sizeof(struct timespec)==16,"target timespec");
 _Static_assert(sizeof(struct tm)==56,"target UTC calendar ABI");

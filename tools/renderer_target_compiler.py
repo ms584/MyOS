@@ -39,7 +39,8 @@ if options.math_include and not query:
     assert options.math_include.resolve().is_relative_to(options.provider.parent.resolve())
     flags += ['-I' + str(options.math_include)]
 if not query and options.language == 'cpp':
-    flags += ['-nostdinc++', '-fno-exceptions', '-fno-rtti']
+    flags += ['-nostdinc++', '-fno-exceptions', '-fno-rtti',
+              '-D__STDC_LIMIT_MACROS=1', '-D__STDC_CONSTANT_MACROS=1']
 for arg in args:
     tokens = arg[4:].split(',') if arg.startswith('-Wl,') else [arg]
     if any(token.startswith(('-l', '-L', '@')) or token in ('-Xlinker', '-fopenmp') or (

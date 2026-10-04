@@ -15,6 +15,9 @@ int memcmp(const void *,const void *,size_t);
 size_t strlen(const char *);
 size_t strnlen(const char *,size_t);
 int strcmp(const char *,const char *);
+/* Fixed bytewise collation profile only; no language-sensitive locale sorting. */
+int strcoll(const char *,const char *);
+size_t strxfrm(char *,const char *,size_t);
 int strncmp(const char *,const char *,size_t);
 char *strcpy(char *,const char *);
 char *strcat(char *,const char *);

@@ -56,6 +56,15 @@ Final34118 exit0 12:14:54 BIOS/UEFI12 C/C++ launches/native unmapped-page edges,
 Normal hashes unchanged; kernel/runtime unchanged, reuse full93613. Whole C++
 after-Cstdlib build2 12:15:04; current cstdlib errors clear but cstring/stdio/time/
 locale/support-source failures remain. No containers/renderer/Cobalt acceptance.
+Native Cstring/C++98 follows0f3f768: PHASE332_CSTRING_SDK.md. Fixed bytewise
+musl collation/transform providers and older C++ ABI-check syntax, no layout change.
+Gthread99435 exit0 12:27:36 C++98 BIOS/UEFI8 launches/2cancels/resources.
+Cstring59789 exit0 12:30:55 C11/C++98/17 BIOS/UEFI12 launches, byte-order/length/
+errno/canaries/unmapped page edges/8workers/exact resources. Integer154 checks
+and C11/C++98/17 no-host boundary PASS12:32:29. Whole C++ after-cstring build2:
+stdio/ctime/locale/math/omitted support sources remain; no container/render gate.
+All jobs terminal; normal four hashes unchanged12:32:44, reuse full93613.
+Next work should target actual Cobalt blockers, not interpret fixtures as phase pass.
 
 Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,

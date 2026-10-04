@@ -47,9 +47,18 @@ int main(void) { struct timespec t; return clock_gettime(CLOCK_MONOTONIC,&t); }
         source = source.replace('struct timespec t;',
                                 'struct timespec t; char buffer[32];\n'
                                 'if(snprintf(buffer,sizeof(buffer),"%ld:%.2Lf",17L,1.25L)!=7) return 9;')
-    for language in ('c', 'cpp'):
+    for language, standard in (('c','c11'), ('cpp','c++98'), ('cpp','c++17')):
         current = command.copy();current[3] = language
+        current += ['-std='+standard]
         text = source if language == 'c' else source.replace('_Static_assert', 'static_assert')
+        if standard=='c++98':
+            text=text.replace('static_assert(sizeof(pthread_mutex_t)==80, "mutex");',
+                              'typedef char mutex_size[(sizeof(pthread_mutex_t)==80)?1:-1];')
+            text=text.replace('static_assert(sizeof(pthread_cond_t)==96, "cond");',
+                              'typedef char cond_size[(sizeof(pthread_cond_t)==96)?1:-1];')
+            text=text.replace('static_assert(sizeof(float_t)==4 && sizeof(double_t)==8, "math evaluation types");',
+                              'typedef char math_size[(sizeof(float_t)==4 && sizeof(double_t)==8)?1:-1];')
+        text='#include <stdint.h>\n#if UINT64_MAX != 18446744073709551615ULL || INT64_C(42) != 42\n#error Target integer macros missing\n#endif\n'+text
         x = 'c' if language == 'c' else 'c++'
         result = subprocess.run(current + ['-x', x, '-', '-o', str(output)],
                                 input=text, text=True, capture_output=True)
@@ -75,16 +84,17 @@ int main(void) { struct timespec t; return clock_gettime(CLOCK_MONOTONIC,&t); }
 #if !__STDC_HOSTED__ || defined(__linux__) || defined(__GLIBC__)
 #error Wrong C++ language/target profile
 #endif
-static_assert(sizeof(pthread_mutex_t)==80 && sizeof(pthread_cond_t)==96);
-static_assert(sizeof(std::nothrow_t)>0);
-static_assert(sizeof(std::bad_alloc)>0); // Upstream <new>, not the smaller SDK shim.
+typedef char pthread_size[(sizeof(pthread_mutex_t)==80 && sizeof(pthread_cond_t)==96)?1:-1];
+typedef char nothrow_size[(sizeof(std::nothrow_t)>0)?1:-1];
+typedef char bad_alloc_size[(sizeof(std::bad_alloc)>0)?1:-1]; // Upstream <new>, not SDK shim.
 extern "C" int main() { return 0; }
 '''
-        result=subprocess.run(current+['-std=c++17','-x','c++','-','-o',str(output)],
-                              input=source,text=True,capture_output=True)
-        assert result.returncode==0,result.stderr[-1800:]
-        assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(output)],text=True)
-        assert not subprocess.check_output(['nm','-u',str(output)],text=True).strip()
+        for standard in ('c++98','c++17'):
+            result=subprocess.run(current+['-std='+standard,'-x','c++','-','-o',str(output)],
+                                  input=source,text=True,capture_output=True)
+            assert result.returncode==0,result.stderr[-1800:]
+            assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(output)],text=True)
+            assert not subprocess.check_output(['nm','-u',str(output)],text=True).strip()
         for forbidden in ('-lstdc++','-L/usr/lib','-Wl,-lstdc++'):
             result=subprocess.run(current+[forbidden,'-x','c++','-','-o',str(output)],
                                   input=source,text=True,capture_output=True)

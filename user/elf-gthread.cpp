@@ -13,8 +13,8 @@ extern "C" void abort(void) __attribute__((noreturn));
 #if _GLIBCXX_GTHREAD_USE_WEAK
 #error MyOS locking must not disappear behind weak-zero bindings
 #endif
-static_assert(sizeof(__gthread_mutex_t)==80 && sizeof(__gthread_cond_t)==96);
-static_assert(sizeof(__gthread_once_t)==64);
+typedef char gthread_mutex_cond_sizes[(sizeof(__gthread_mutex_t)==80 && sizeof(__gthread_cond_t)==96)?1:-1];
+typedef char gthread_once_size[(sizeof(__gthread_once_t)==64)?1:-1];
 static __gthread_mutex_t mutex=__GTHREAD_MUTEX_INIT;
 static __gthread_recursive_mutex_t recursive;
 static __gthread_cond_t cond;

@@ -13,6 +13,7 @@ from test_elf_dynamic import long_command,assert_live_resources,cancel_live
 from make_asset_disk import create
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--configuration',type=Path,required=True)
+parser.add_argument('--std',choices=('c++98','c++17'),default='c++17')
 parser.add_argument('--uefi',action='store_true');args=parser.parse_args()
 configuration=args.configuration.resolve()
 assert configuration.is_relative_to((root/'build/cxx-target-evaluation').resolve())
@@ -20,7 +21,7 @@ base=root/'build/gthread-evaluation';base.mkdir(parents=True,exist_ok=True)
 out=Path(tempfile.mkdtemp(prefix='native-',dir=base))
 headers=configuration/'build/include'
 intrinsics=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
-flags=['-m64','-Os','-std=c++17','-fPIC','-fvisibility=hidden','-fno-builtin',
+flags=['-m64','-Os','-std='+args.std,'-fPIC','-fvisibility=hidden','-fno-builtin',
        '-mno-red-zone','-fno-stack-protector','-fno-asynchronous-unwind-tables',
        '-fno-unwind-tables','-fno-exceptions','-fno-rtti','-nostdinc','-nostdinc++',
        '-isystem',intrinsics,'-I'+str(headers),'-I'+str(headers/'x86_64-unknown-myos'),
