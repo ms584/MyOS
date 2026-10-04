@@ -11,6 +11,7 @@
 #include "native-ui.h"
 #if defined(MYOS_NATIVE_EGL)
 #include <EGL/egl.h>
+#include <EGL/eglext.h>
 #endif
 #if defined(MYOS_NATIVE_GLES)
 #define NATIVE_PROFILE OSMESA_MYOS_GLES_PROFILE
@@ -31,6 +32,81 @@ static unsigned char texture_pixels[64*64*4],readback[32*32*4];
 extern const unsigned char renderer_font[4096];
 static void say(const char *text){write(1,text,strlen(text));}
 #define CHECK(value) do{if(!(value)){say("Native renderer FAIL: " #value "\n");__builtin_trap();}}while(0)
+#if defined(MYOS_NATIVE_EGL)
+struct fence_wait {
+    EGLDisplay display;EGLSyncKHR sync;
+    PFNEGLCREATESYNCKHRPROC create;
+    PFNEGLCLIENTWAITSYNCKHRPROC wait;
+    PFNEGLGETSYNCATTRIBKHRPROC query;
+    PFNEGLWAITSYNCKHRPROC server_wait;
+};
+static struct fence_wait pending_fence;
+static PFNEGLDESTROYSYNCKHRPROC destroy_pending_fence;
+static void *wait_fence(void *argument)
+{
+    struct fence_wait *work=argument;
+    CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
+    CHECK(work->create(work->display,EGL_SYNC_FENCE_KHR,0)==EGL_NO_SYNC_KHR);
+    CHECK(eglGetError()==EGL_BAD_MATCH);
+    for(unsigned i=0;i<16;++i){
+        CHECK(work->wait(work->display,work->sync,0,0)==EGL_CONDITION_SATISFIED_KHR);
+        CHECK(work->wait(work->display,work->sync,EGL_SYNC_FLUSH_COMMANDS_BIT_KHR,
+                         EGL_FOREVER_KHR)==EGL_CONDITION_SATISFIED_KHR);
+        EGLint status=0;CHECK(work->query(work->display,work->sync,EGL_SYNC_STATUS_KHR,&status));
+        CHECK(status==EGL_SIGNALED_KHR);
+    }
+    CHECK(!work->server_wait(work->display,work->sync,0)&&eglGetError()==EGL_BAD_MATCH);
+    CHECK(eglReleaseThread());return (void *)(uintptr_t)91;
+}
+static void check_fences(EGLDisplay display)
+{
+    CHECK(strstr(eglQueryString(display,EGL_EXTENSIONS),"EGL_KHR_fence_sync"));
+    CHECK(strstr(eglQueryString(display,EGL_EXTENSIONS),"EGL_KHR_wait_sync"));
+    struct fence_wait work={.display=display,
+        .create=(PFNEGLCREATESYNCKHRPROC)eglGetProcAddress("eglCreateSyncKHR"),
+        .wait=(PFNEGLCLIENTWAITSYNCKHRPROC)eglGetProcAddress("eglClientWaitSyncKHR"),
+        .query=(PFNEGLGETSYNCATTRIBKHRPROC)eglGetProcAddress("eglGetSyncAttribKHR"),
+        .server_wait=(PFNEGLWAITSYNCKHRPROC)eglGetProcAddress("eglWaitSyncKHR")};
+    PFNEGLDESTROYSYNCKHRPROC destroy=(PFNEGLDESTROYSYNCKHRPROC)eglGetProcAddress("eglDestroySyncKHR");
+    CHECK(work.create&&work.wait&&work.query&&work.server_wait&&destroy);
+    const EGLint bad_attributes[]={EGL_WIDTH,1,EGL_NONE};
+    CHECK(work.create(display,EGL_SYNC_FENCE_KHR,bad_attributes)==EGL_NO_SYNC_KHR&&
+          eglGetError()==EGL_BAD_ATTRIBUTE);
+    CHECK(work.create(display,EGL_SYNC_REUSABLE_KHR,0)==EGL_NO_SYNC_KHR&&
+          eglGetError()==EGL_BAD_ATTRIBUTE);
+    /* Queue a real pixel write before the fence, without a prior Finish. */
+    glEnable(GL_SCISSOR_TEST);glScissor(0,0,1,1);glClearColor(1,0,1,1);
+    glClear(GL_COLOR_BUFFER_BIT);glDisable(GL_SCISSOR_TEST);
+    work.sync=work.create(display,EGL_SYNC_FENCE_KHR,0);CHECK(work.sync!=EGL_NO_SYNC_KHR);
+    EGLint value=0;
+    CHECK(work.query(display,work.sync,EGL_SYNC_TYPE_KHR,&value)&&value==EGL_SYNC_FENCE_KHR);
+    CHECK(work.query(display,work.sync,EGL_SYNC_CONDITION_KHR,&value)&&
+          value==EGL_SYNC_PRIOR_COMMANDS_COMPLETE_KHR);
+    value=0x777;CHECK(!work.query(display,work.sync,EGL_NONE,&value)&&
+          eglGetError()==EGL_BAD_ATTRIBUTE&&value==0x777);
+    CHECK(work.server_wait(display,work.sync,0));
+    CHECK(!work.server_wait(display,work.sync,1)&&eglGetError()==EGL_BAD_PARAMETER);
+    unsigned char completed[4];glReadPixels(0,0,1,1,GL_RGBA,GL_UNSIGNED_BYTE,completed);
+    CHECK(completed[0]==255&&completed[1]==0&&completed[2]==255&&completed[3]==255);
+    EGLSyncKHR pinned=work.create(display,EGL_SYNC_FENCE_KHR,0);CHECK(pinned!=EGL_NO_SYNC_KHR);
+    extern int MyOSEglSyncLifetimeTest(EGLDisplay,EGLSyncKHR);
+    CHECK(!MyOSEglSyncLifetimeTest(display,pinned));
+    pending_fence=work;destroy_pending_fence=destroy;
+}
+static void finish_fences(void)
+{
+    struct fence_wait work=pending_fence;
+    CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
+    pthread_t workers[8];
+    for(unsigned i=0;i<8;++i)CHECK(!pthread_create(&workers[i],0,wait_fence,&work));
+    for(unsigned i=0;i<8;++i){void *result;CHECK(!pthread_join(workers[i],&result)&&
+        result==(void *)(uintptr_t)91);}
+    CHECK(destroy_pending_fence(work.display,work.sync));
+    CHECK(!destroy_pending_fence(work.display,work.sync)&&eglGetError()==EGL_BAD_PARAMETER);
+    CHECK(eglTerminate(work.display)&&eglTerminate(work.display));
+    say("Native EGL real fence/eight waiters/query/errors/final-pin checked\n");
+}
+#endif
 static GLuint shader(GLenum type,const char *source)
 {
     GLuint value=glCreateShader(type);CHECK(value);
@@ -233,6 +309,7 @@ static void *render(void *unused)
     glDeleteBuffers(1,&buffer);glDeleteTextures(1,&texture);
     glDeleteProgram(program);glDeleteShader(vertex);glDeleteShader(fragment);
 #if defined(MYOS_NATIVE_EGL)
+    check_fences(display);
     CHECK(eglSwapBuffers(display,surface)&&eglWaitClient());
     CHECK(eglDestroyContext(display,egl_context));
     EGLint value;CHECK(!eglQueryContext(display,egl_context,EGL_CONTEXT_CLIENT_VERSION,&value));
@@ -242,7 +319,9 @@ static void *render(void *unused)
     CHECK(eglGetError()==EGL_BAD_SURFACE);
     CHECK(eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT));
     CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
-    CHECK(eglTerminate(display)&&eglTerminate(display)&&eglReleaseThread());
+    /* Keep display/fence valid for eight waiters after the creator context and
+     * worker are gone; main then has all eight kernel worker slots available. */
+    CHECK(eglReleaseThread());
     say("Native EGL core/error/current/deferred destroy checked\n");
 #else
     CHECK(OSMesaMakeCurrent(0,0,GL_UNSIGNED_BYTE,0,0));
@@ -264,6 +343,9 @@ int _start(void)
     CHECK(attributes.before==UINT64_C(0xa5a5a5a5a5a5a5a5)&&attributes.after==attributes.before);
     void *result;CHECK(!pthread_join(worker,&result)&&result==(void *)(uintptr_t)90);
     CHECK(!OSMesaGetCurrentContext());
+#if defined(MYOS_NATIVE_EGL)
+    finish_fences();
+#endif
     say("Native OSMesa frame ready\n");
 #if defined(MYOS_NATIVE_EGL)
     CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&eglGetError()==EGL_SUCCESS);

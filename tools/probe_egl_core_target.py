@@ -47,17 +47,20 @@ subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl
                cwd=egl_source,check=True)
 subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_lifetime.patch')],
                cwd=egl_source,check=True)
+subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_sync_atomic.patch')],
+               cwd=egl_source,check=True)
 sources=[egl_source/(name+'.c') for name in (
     'eglapi','eglarray','eglconfigdebug','eglconfig','eglcontext','eglcurrent',
     'egldevice','egldisplay','eglglobals','eglimage','egllog','eglsurface','eglsync')]
 sources.append(source/'src/util/rwlock.c')
 if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/util/os_file.c',
-                               root/'user/egl-lifetime-test.c'])
+                               root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c'])
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:
         obj=out/(path.stem+'.o')
         command=[*flags,'-I'+str(egl_source),'-I'+str(root/'include'),'-DEGL_NO_X11=1',
+                 '-I'+str(source/'src/gallium/frontends/osmesa'),
                  '-D_EGL_NATIVE_PLATFORM=_EGL_PLATFORM_MYOS',
                  '-c',str(path),'-o',str(obj)]
         log.write('$ '+shlex.join(command)+'\n');log.flush()

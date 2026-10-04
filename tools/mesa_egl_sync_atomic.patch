@@ -1,0 +1,13 @@
+--- a/eglapi.c
++++ b/eglapi.c
+@@ -2072,1 +2072,1 @@
+-   if (s->SyncStatus == EGL_SIGNALED_KHR)
++   if (__atomic_load_n(&s->SyncStatus, __ATOMIC_ACQUIRE) == EGL_SIGNALED_KHR)
+--- a/eglsync.c
++++ b/eglsync.c
+@@ -146,1 +146,1 @@
+-      if (sync->SyncStatus != EGL_SIGNALED_KHR &&
++      if (__atomic_load_n(&sync->SyncStatus, __ATOMIC_ACQUIRE) != EGL_SIGNALED_KHR &&
+@@ -153,1 +153,1 @@
+-      *value = sync->SyncStatus;
++      *value = __atomic_load_n(&sync->SyncStatus, __ATOMIC_ACQUIRE);

@@ -5,6 +5,18 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baselineaaf4bff plus genuine original Gallium fences/EGL KHR sync:
+PHASE332_NATIVE_EGL_SYNC.md. Adapter builds original MyOS-configured OSMesa
+frontend and uses st_flush/fence_finish/reference, no invented completion.
+Original softpipe is synchronous with its own completed token, not hardware
+asynchronous fencing. Atomic status/core reads; actual final-core-pin cleanup.
+Strict18/18 compile18:32:33 core-oqchddg5. Native BIOSdgtafpln/UEFI6ofaylet/
+pbufferkt9dtqk5 PASS91809 exit0 18:40:03, two launches each/exact resources.
+Normal hashes unchanged18:39:08; jobs terminal/no image owner. First69110
+failed on8 worker-slot limit (render creator+8 exceeds it). Fixture now joins
+creator before starting8 waiters, also proving fence lifetime past context death.
+No production cap change; EGL1.4, not pinned1.5/SABI/Cobalt/phase acceptance.
+
 Baseline1214dc4 plus final-core-pin cleanup: PHASE332_EGL_LIFETIME.md.
 Found driver-only final free missed core-held references; MyOS-only internal
 OnFinalRelease now calls actual context/backing/display cleanup at zero, including

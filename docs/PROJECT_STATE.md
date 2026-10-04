@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline1214dc4 + EGL final-core-pin lifetime correction.
+Baselineaaf4bff + genuine Gallium/EGL fence follow-up.
 Origin/main452faaa (fetch18:26:42 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -31,6 +31,7 @@ Origin/main452faaa (fetch18:26:42 +07). Owner pushes; never push.
   PHASE332_NATIVE_EGL.md. Native EGL window BIOS+UEFI PASS:
   PHASE332_NATIVE_EGL_WINDOW.md. Partial EGL1.4 backend, not Cobalt.
   Final-core-reference cleanup BIOS/UEFI/pbuffer PASS: PHASE332_EGL_LIFETIME.md.
+  KHR fence/8 waiters after context teardown PASS: PHASE332_NATIVE_EGL_SYNC.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -38,8 +39,6 @@ Origin/main452faaa (fetch18:26:42 +07). Owner pushes; never push.
 - Full9925 terminal exit0 16:08:50 covers new allocator/VM; normal BIOS/UEFI
   restored. Old full93613 is historical, not this architecture's evidence.
 - Cobalt maps/relocates but79 missing strong imports prevent execution.
-- GCC _1j4xqjo: gthreads yes; whole make exit2 13:27:49 (before errno fix).
-  Not rerun; no full C++ library. Ctime/errno now separately tested.
 - Packed allocator65329 exit0 15:31:30: BIOS yoexdyr8/UEFI9ndojdgg,3 launches
   each/8workers/collision/wrap/packing/zero/alignment/OOM/exact resources PASS.
 - Full/affected9925 PASS: blob e83rz9tb; lifetime BIOS l8wpahe4/UEFI oxo9w78y,
@@ -53,9 +52,11 @@ Origin/main452faaa (fetch18:26:42 +07). Owner pushes; never push.
 ## Required next work
 1. Pinned EGL table requires1.5: current1.4 is insufficient. Real sync/images,
    exact SABI tables/module coexistence and ownership interleavings remain.
-   Final-core-pin17/17 compile18:22:31; native39964 PASS18:26:43/exact cleanup.
-   Prior window/regression48983 PASS18:13:05; input after rendering teardown.
+   Fence18/18 compile18:32:33; BIOS/UEFI/pbuffer91809 PASS18:40:03/2 launches.
+   Initial69110 failed on8 worker-slot limit; fixture now joins creator first.
+   Prior lifetime39964 PASS18:26:43; input still after rendering teardown.
    Solve72-byte test-kernel headroom before adding embedded runtime services.
+   Production worker limit8 remains; actual Cobalt thread requirements unproven.
 2. Fix any regression before new features; native cross-thread signals/pause/SIGINFO.
 3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
    verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.

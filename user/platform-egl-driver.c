@@ -15,9 +15,15 @@ extern int MyOSUiPresent(void *,const struct native_ui_present *);
 #include "egldriver.h"
 #include "eglcurrent.h"
 #include "eglsurface.h"
+#include "eglsync.h"
+extern void *MyOSMesaCreateFence(void);
+extern int MyOSMesaWaitFence(void *,uint64_t);
+extern int MyOSMesaServerWaitFence(void *);
+extern void MyOSMesaDestroyFence(void *);
 struct myos_display { unsigned references; };
 struct myos_context { _EGLContext base; OSMesaContext mesa; };
 struct myos_surface { _EGLSurface base; void *pixels; };
+struct myos_sync { _EGLSync base; void *fence; };
 static EGLBoolean fail(EGLint code,const char *where){return _eglError(code,where);}
 static void display_get(_EGLDisplay *display)
 {__atomic_add_fetch(&((struct myos_display *)display->DriverData)->references,1,__ATOMIC_RELAXED);}
@@ -53,6 +59,8 @@ static EGLBoolean initialize(_EGLDisplay *display)
         free(config);free(state);return fail(EGL_BAD_ALLOC,"MyOS EGL config link");
     }
     display->ClientAPIs=EGL_OPENGL_ES2_BIT;
+    display->Extensions.KHR_fence_sync=EGL_TRUE;
+    display->Extensions.KHR_wait_sync=EGL_TRUE;
     state->references=1;display->DriverData=state;return EGL_TRUE;
 }
 static EGLBoolean terminate(_EGLDisplay *display)
@@ -195,6 +203,36 @@ static EGLBoolean swap_interval(_EGLDisplay *display,_EGLSurface *surface,EGLint
 {(void)display;(void)surface;(void)interval;return EGL_TRUE;} /* core clamps to supported0 */
 static EGLBoolean copy_buffers(_EGLDisplay *display,_EGLSurface *surface,void *pixmap)
 {(void)display;(void)surface;(void)pixmap;return fail(EGL_BAD_NATIVE_PIXMAP,"MyOS EGL has no native pixmaps");}
+static void free_sync(_EGLResource *resource)
+{
+    _EGLDisplay *display=resource->Display;struct myos_sync *sync=(void *)resource;
+    MyOSMesaDestroyFence(sync->fence);free(sync);display_put(display);
+}
+static _EGLSync *create_sync(_EGLDisplay *display,EGLenum type,const EGLAttrib *attributes)
+{
+    if(type!=EGL_SYNC_FENCE_KHR){fail(EGL_BAD_ATTRIBUTE,"MyOS EGL sync type");return 0;}
+    struct myos_sync *sync=calloc(1,sizeof(*sync));
+    if(!sync){fail(EGL_BAD_ALLOC,"MyOS EGL fence");return 0;}
+    if(!_eglInitSync(&sync->base,display,type,attributes)){free(sync);return 0;}
+    sync->fence=MyOSMesaCreateFence();
+    if(!sync->fence){free(sync);fail(EGL_BAD_ALLOC,"MyOS Mesa fence");return 0;}
+    sync->base.Resource.OnFinalRelease=free_sync;display_get(display);return &sync->base;
+}
+static EGLBoolean destroy_sync(_EGLDisplay *display,_EGLSync *sync)
+{(void)display;if(sync)_eglPutSync(sync);return EGL_TRUE;}
+static EGLint client_wait_sync(_EGLDisplay *display,_EGLSync *base,EGLint flags,EGLTime timeout)
+{
+    (void)display;
+    if(flags&EGL_SYNC_FLUSH_COMMANDS_BIT_KHR){
+        _EGLContext *current=_eglGetCurrentContext();if(current)glFlush();
+    }
+    if(!MyOSMesaWaitFence(((struct myos_sync *)base)->fence,timeout))return EGL_TIMEOUT_EXPIRED_KHR;
+    __atomic_store_n(&base->SyncStatus,EGL_SIGNALED_KHR,__ATOMIC_RELEASE);
+    return EGL_CONDITION_SATISFIED_KHR;
+}
+static EGLint server_wait_sync(_EGLDisplay *display,_EGLSync *sync)
+{(void)display;return MyOSMesaServerWaitFence(((struct myos_sync *)sync)->fence)?
+    EGL_TRUE:fail(EGL_BAD_MATCH,"MyOS Mesa server fence wait");}
 const _EGLDriver _eglDriver={.Initialize=initialize,.Terminate=terminate,
     .CreateContext=create_context,.DestroyContext=destroy_context,.MakeCurrent=make_current,
     .CreateWindowSurface=create_window,
@@ -202,4 +240,6 @@ const _EGLDriver _eglDriver={.Initialize=initialize,.Terminate=terminate,
     /* These core helpers always reject binding our EGL_NO_TEXTURE pbuffers,
      * and release of an unbound image is the defined no-op. Never NULL-call. */
     .BindTexImage=_eglBindTexImage,.ReleaseTexImage=_eglReleaseTexImage,.CopyBuffers=copy_buffers,
+    .CreateSyncKHR=create_sync,.DestroySyncKHR=destroy_sync,
+    .ClientWaitSyncKHR=client_wait_sync,.WaitSyncKHR=server_wait_sync,
     .SwapBuffers=swap_buffers,.SwapInterval=swap_interval,.WaitClient=wait_client,.WaitNative=wait_native};

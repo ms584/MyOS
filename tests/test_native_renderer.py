@@ -157,6 +157,7 @@ try:
         if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
         if args.egl_core:assert 'Native EGL core/error/current/deferred destroy checked' in output,output
         if args.egl_core:assert 'Native EGL last-core-pin cleanup checked' in output,output
+        if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output
         assert 'Native glyph atlas/alpha blend/all512 text pixels checked' in output,output
         assert_live_resources(output)
