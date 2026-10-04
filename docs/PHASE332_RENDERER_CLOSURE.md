@@ -48,10 +48,13 @@ NOT native renderer/Cobalt acceptance. No Phase33.3 work and no push.
 The library embeds libmyos-runtime-probe.a for configure/link checks. Do NOT
 execute that archive's fixed runtime/TLS assumptions in native ELF fixtures.
 It has PT_TLS, R_X86_64_DTPMOD64 relocations and weak unresolved
-_ZTH23_mesa_glapi_tls_Context. Real thread-local context/initializer semantics
-need implementation or Mesa's real non-TLS thread-specific path, not weak-zero
-substitution. Then use genuine native providers and test context/pixels/textures/
-destruction/relaunch/resources before wiring EGL/GLES and SABI/Cobalt.
+_ZTH23_mesa_glapi_tls_Context. This compiler-only result did not verify native
+thread-local context/initializer semantics. Existing PHASE331_NATIVE_TLS.md
+already implements eager single-module TLS; it was not absent. Follow-up
+PHASE332_NATIVE_RENDERER.md binds the real 32-byte Mesa TLS/context using the
+installed runtime. The optional C++ initializer refers to a C-defined zero-
+initialized context, not a missing mandatory implementation. Full pixel,
+destruction/relaunch/resources checks remain before EGL/GLES and SABI/Cobalt.
 
 Full93613 remains valid: no kernel/runtime architecture changes; all four
 normal hashes unchanged13:50:03 (PHASE332_OS_INFO.md). Full libstdc++ still

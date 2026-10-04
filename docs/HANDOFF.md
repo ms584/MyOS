@@ -5,10 +5,18 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Native follow-up to a38b85b: PHASE332_NATIVE_RENDERER.md. Genuine OSMesa now
+creates/binds a context in Ring 3 with installed runtime/TLS, missing0 imports.
+300s BIOS run FAILED before pixel/present/input/teardown proof; not native PASS.
+600s marked run86476 terminal exit1 15:03:34, native-bcahc3qq: clear pixels pass,
+vertex compile times out; CPU samples confirm first-fit process_vm_map scanning.
+No live image owner; normal hashes unchanged15:03:54 +07.
+No Cobalt HTML/JS/DOM/input/HTTPS proof; Phases33.1/33.2 remain OPEN.
+
 Latest follow-up to2944b63: PHASE332_RENDERER_CLOSURE.md. Real Mesa target
 compilation/link now passes with no host libraries/strong undefined/DT_NEEDED.
 This is a compiler-only probe runtime, NOT executable native renderer proof.
-GLAPI ELF TLS +weak initializer remain; replace probe runtime before native use.
+Native use must replace probe runtime; existing real eager TLS is supported.
 Sealed errno ABI,2357 MPFR vectors/four rounding modes and actual guard/popcount
 providers pass BIOS/UEFI native checks. All jobs terminal, hashes unchanged
 13:50:03 +07. Cobalt0/5; Phases33.1/33.2 OPEN, no33.3, never push.

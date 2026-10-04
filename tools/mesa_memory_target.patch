@@ -1,0 +1,14 @@
+--- a/src/gallium/drivers/softpipe/sp_tex_tile_cache.h
++++ b/src/gallium/drivers/softpipe/sp_tex_tile_cache.h
+@@ -41,2 +41,10 @@
+-#define TEX_TILE_SIZE_LOG2 5
++#if defined(__myos__)
++/* Keep all API limits and all 16 cache entries. Smaller power-of-two tiles
++ * bound eager per-sampler storage on MyOS's 256 MiB managed-memory profile.
++ * Addressing/fill/eviction already derive from TEX_TILE_SIZE_LOG2 below.
++ */
++#define TEX_TILE_SIZE_LOG2 3
++#else
++#define TEX_TILE_SIZE_LOG2 5
++#endif
+ #define TEX_TILE_SIZE (1 << TEX_TILE_SIZE_LOG2)

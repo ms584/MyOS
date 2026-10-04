@@ -11,6 +11,7 @@ extern "C" {
 #endif
 typedef void *pthread_t;
 typedef void *pthread_key_t;
+typedef union { uint8_t bytes[80];void *alignment; } pthread_attr_t;
 typedef union { uint8_t bytes[80];void *alignment; } pthread_mutex_t;
 typedef union { uint8_t bytes[40];void *alignment; } pthread_mutexattr_t;
 typedef union { uint8_t bytes[96];void *alignment; } pthread_cond_t;
@@ -26,6 +27,10 @@ typedef union { uint8_t bytes[8]; } pthread_rwlockattr_t;
 #define PTHREAD_MUTEX_ERRORCHECK 2
 #define PTHREAD_DESTRUCTOR_ITERATIONS 4
 int pthread_create(pthread_t *,const void *,void *(*)(void *),void *);
+int pthread_attr_init(pthread_attr_t *);
+int pthread_attr_destroy(pthread_attr_t *);
+int pthread_attr_setstacksize(pthread_attr_t *,size_t);
+int pthread_attr_getstacksize(const pthread_attr_t *,size_t *);
 int pthread_join(pthread_t,void **);
 int pthread_detach(pthread_t);
 pthread_t pthread_self(void);
@@ -73,13 +78,16 @@ int pthread_rwlock_unlock(pthread_rwlock_t *);
 #ifdef __cplusplus
 }
 #if __cplusplus >= 201103L
+static_assert(sizeof(pthread_attr_t)==80&&alignof(pthread_attr_t)==8,"pinned thread attributes");
 static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
 static_assert(sizeof(pthread_rwlock_t)==80&&alignof(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8,"pinned rwlock storage");
 #else
+typedef char __myos_attr_storage[(sizeof(pthread_attr_t)==80&&__alignof__(pthread_attr_t)==8)?1:-1];
 typedef char __myos_pthread_storage[(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64)?1:-1];
 typedef char __myos_rwlock_storage[(sizeof(pthread_rwlock_t)==80&&__alignof__(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8)?1:-1];
 #endif
 #else
+_Static_assert(sizeof(pthread_attr_t)==80&&_Alignof(pthread_attr_t)==8,"pinned thread attributes");
 _Static_assert(sizeof(pthread_mutex_t)==80&&sizeof(pthread_cond_t)==96&&sizeof(pthread_once_t)==64,"pinned storage");
 _Static_assert(_Alignof(pthread_mutex_t)==8&&_Alignof(pthread_cond_t)==8,"pinned alignment");
 _Static_assert(sizeof(pthread_rwlock_t)==80&&_Alignof(pthread_rwlock_t)==8&&sizeof(pthread_rwlockattr_t)==8,"pinned rwlock storage");
