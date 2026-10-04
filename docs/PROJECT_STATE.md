@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baselineb9f2fdc + pinned44 EGL table/actual version query (see evidence doc).
+Baseline1289e65 + pinned246 GLES table/native dispatch (see evidence doc).
 Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -23,8 +23,6 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 - Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
 - Renderer compiler/link closure PASS: PHASE332_RENDERER_CLOSURE.md.
   Native BIOS+UEFI: PHASE332_NATIVE_RENDERER.md; allocator: PHASE331_ALLOCATOR.md.
-  GLES profile +desktop regression BIOS/UEFI PASS: PHASE332_NATIVE_GLES.md.
-  Glyph alpha/text512 pixels GLES BIOS/UEFI +desktop PASS: PHASE332_NATIVE_TEXT.md.
   Real EGL core/driver pbuffer/current/deferred-destroy BIOS+UEFI PASS:
   PHASE332_NATIVE_EGL.md. Native EGL window BIOS+UEFI PASS:
   PHASE332_NATIVE_EGL_WINDOW.md. Dependency evidence, not Cobalt.
@@ -35,6 +33,7 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
   Persistent surfaces/linear128/sRGB188: PHASE332_NATIVE_EGL_COLORSPACE.md.
   Core1.5 wide sync/image/debug/no-CL: PHASE332_NATIVE_EGL_CORE15.md.
   Pinned EGL table/query: PHASE332_NATIVE_EGL_INTERFACE.md (not loader exports).
+  Pinned GLES table/native dispatch: PHASE332_NATIVE_GLES_INTERFACE.md.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -42,13 +41,13 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 - Full9925 exit0 16:08:50 covers allocator/VM; normal BIOS/UEFI restored.
 - Pinned95008 exit0 16:11:52: Cobalt hash/staging/79-missing/RELRO and
   64MiB OOM/rollback/shell recovery PASS. No live test/image owner.
-- Core15 matrix44277 PASS20:17:38. Query BIOS+UEFI59910 PASS20:27:16;
-  pinned table23/23 compile20:26:55, BIOS+UEFI37260 PASS20:33:34.
+- EGL table37260 PASS20:33:34. GLES final24/24 compile20:44:26;
+  BIOS+UEFI43457 PASS20:50:27; corrected missing query symbol, failure retained.
 - Normal253880/runtime29904. Test kernel measured262072/cap262144 (72 bytes
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
 
 ## Required next work
-1. Exact GLES table + actual module/provider coexistence remain; imports unchanged.
+1. Actual module/provider coexistence/export resolution remains; imports unchanged.
    Actual queried context version fixed; audit image numeric/backend limits,
    terminate/reinit, bind-allocation rollback and zero-sized pbuffer dimensions.
    Input is still after rendering teardown, not concurrent engine interaction.

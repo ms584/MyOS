@@ -65,6 +65,7 @@ flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
        '-nostdinc','-isystem',intrinsics,'-I'+str(root/'user/sdk'),
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
        '-I'+str(probe/'mesa-25.0.7/include'),'-Wall','-Wextra','-Werror']
+if args.egl_core:flags.append('-I'+str(args.egl_core.resolve()/'include'))
 fixture=out/'fixture.o';finalize=out/'finalize.o'
 font=root/'assets/myos-font.bin'
 assert hashlib.sha256(font.read_bytes()).hexdigest()==(
@@ -166,6 +167,8 @@ try:
         if args.egl_core:assert 'Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked' in output,output
         if args.egl_core:assert 'Native EGL core15 wide sync/image/debug and absent OpenCL checked' in output,output
         if args.egl_core:assert 'Native EGL pinned44 interface/type adapters checked' in output,output
+        if args.egl_core and args.gles:assert 'Native GLES pinned interface dispatch enabled' in output,output
+        if args.egl_core and args.gles:assert 'Native GLES genuine internalformat query/errors checked' in output,output
         if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_core:assert 'Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output

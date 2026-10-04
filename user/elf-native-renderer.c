@@ -27,6 +27,9 @@
 extern int MyOSUiPresent(void *,const struct native_ui_present *);
 extern int MyOSUiPoll(void *,struct native_ui_event *,int);
 static SbWindow window;
+#if defined(MYOS_NATIVE_EGL) && defined(MYOS_NATIVE_GLES)
+#include "gles-dispatch.h"
+#endif
 static unsigned char pixels[32*32*4];
 static unsigned char texture_pixels[64*64*4],readback[32*32*4];
 extern const unsigned char renderer_font[4096];
@@ -46,6 +49,9 @@ static void *wait_fence(void *argument)
 {
     struct fence_wait *work=argument;
     CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
+#if defined(MYOS_NATIVE_GLES)
+    CHECK(SbGetGlesInterface());
+#endif
     CHECK(work->create(work->display,EGL_SYNC_FENCE_KHR,0)==EGL_NO_SYNC_KHR);
     CHECK(eglGetError()==EGL_BAD_MATCH);
     for(unsigned i=0;i<16;++i){
@@ -119,6 +125,13 @@ static GLuint shader(GLenum type,const char *source)
 static void *render(void *unused)
 {
     (void)unused;say("Native OSMesa context begin\n");
+#if defined(MYOS_NATIVE_EGL) && defined(MYOS_NATIVE_GLES)
+    const SbGlesInterface *gles=SbGetGlesInterface();CHECK(gles&&gles==SbGetGlesInterface());
+    for(unsigned i=0;i<MYOS_GLES_INTERFACE_SLOTS;++i){
+        void (*slot)(void)=0;memcpy(&slot,(const char *)gles+i*sizeof(slot),sizeof(slot));CHECK(slot);
+    }
+    say("Native GLES pinned interface dispatch enabled\n");
+#endif
     int origin_x=0,origin_y=0;
 #define READ_PIXELS(x,y,w,h,format,type,data) glReadPixels((x)+origin_x,(y)+origin_y,w,h,format,type,data)
     CHECK(!OSMesaGetCurrentContext());
@@ -210,6 +223,13 @@ static void *render(void *unused)
     CHECK(OSMesaGetCurrentContext()==context);
     const char *version=(const char *)glGetString(GL_VERSION);CHECK(version);
     say(version);say("\n");
+#if defined(MYOS_NATIVE_EGL) && defined(MYOS_NATIVE_GLES)
+    GLint samples=-7;glGetInternalformativ(GL_RENDERBUFFER,GL_RGBA8,GL_NUM_SAMPLE_COUNTS,1,&samples);
+    CHECK(glGetError()==GL_NO_ERROR&&samples>=0);
+    GLint sentinel=77;glGetInternalformativ(GL_RENDERBUFFER,GL_RGBA8,GL_NONE,1,&sentinel);
+    CHECK(glGetError()==GL_INVALID_ENUM&&sentinel==77);
+    say("Native GLES genuine internalformat query/errors checked\n");
+#endif
 #if defined(MYOS_NATIVE_GLES)
     CHECK(!strncmp(version,"OpenGL ES ",10));
     /* The actual ES profile rejects desktop GLSL, not just a renamed version. */

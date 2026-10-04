@@ -5,6 +5,28 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline1289e65 plus exact pinned246 GLES table/native table dispatch:
+PHASE332_NATIVE_GLES_INTERFACE.md. Generator preserves actual header field order,
+checks246 offsets/size and typed assignments, hashes unchanged upstream headers.
+245 real GL symbols direct, one genuine original eglGetProcAddress lookup:
+glGetInternalformativ exists in original formatquery.c/dispatch XML but lacks a
+standalone export in the pinned archive. C11 call_once publishes it; getter NULL
+on actual lookup failure. Mutable module-owned table during initialization, not
+claimed read-only RELRO. Real internal-format query/invalid enum unchanged77,
+all fixture shader/VBO/texture/gradient/glyph/GL errors through table, not direct
+parallel GL path; eight fence waiters retrieve after rendering context teardown.
+Initial24/24 compile20:38:06 core-wrrdg7ns; native25288 exit1 20:39:11
+xobuvl21 correctly rejected missing strong GL query before execution, not PASS.
+Final24/24 compile20:44:26 core-0ky0zq6u; BIOS21xnvj1n/UEFIkc_zt45s
+PASS43457 exit0 20:50:27, two launches/exact resources and all required markers.
+Both getters verified GLOBAL DEFAULT FUNC exports20:51:45. Four normal hashes
+unchanged20:51:45; kernel/runtime unchanged/full9925 still applies; no live owner.
+Not production resolver exports; actual provider/core coexistence/lifecycle/TLS/
+relocations/address ownership next, with test-kernel72-byte headroom constraint.
+Imports163/242=67.4% subset,79+weakTLS remain;290 table slots are not242 imports
+or full API coverage. Actual Cobalt0/5; HTML/JS/DOM/concurrent input/verifiedHTTPS
+>=60s/close+relaunch required. No phase closure/33.3/push or certification.
+
 Baselineb9f2fdc plus actual queried context version and pinned44 EGL table:
 PHASE332_NATIVE_EGL_INTERFACE.md. Driver now reads actual original st context
 version after creation, not requested minimum. Native requests2.0/3.0/3.1 EGL

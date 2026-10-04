@@ -12,6 +12,7 @@ import shlex
 import shutil
 import subprocess
 import tempfile
+from generate_gles_interface import generate
 
 root=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser(description=__doc__)
@@ -45,7 +46,7 @@ egl_source=out/'egl-main'
 shutil.copytree(source/'src/egl/main',egl_source)
 headers=out/'include/starboard';headers.mkdir(parents=True)
 pin=json.loads((root/'docs/PHASE331_ABI_SOURCES.json').read_text())
-for name in ('egl.h','log.h','system.h'):
+for name in ('egl.h','gles.h','log.h','system.h'):
     contract=root/'build/engine-evaluation/contracts'/name
     assert hashlib.sha256(contract.read_bytes()).hexdigest()==next(
         entry['sha256'] for entry in pin['headers'] if entry['path'].endswith('/'+name))
@@ -75,6 +76,7 @@ if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/uti
                                root/'user/egl-image-test.c',root/'user/egl-context-test.c',
                                root/'user/egl-surface-test.c',root/'user/egl-core15-test.c',
                                root/'user/platform-egl-interface.c'])
+if args.driver:sources.append(generate(headers/'gles.h',out))
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:
