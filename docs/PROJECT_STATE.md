@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline b035062; native gthread follow-up to managed-memory/C++ groundwork.
+Baseline3699a87; sealed native Cstdlib follow-up to gthread/C++ groundwork.
 Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 
 ## Scope and status
@@ -28,6 +28,7 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 - Native self-signal/pending/kernel-owned context/abort: PHASE331_SIGNALS.md.
 - Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
 - Sealed GCC15.2.0 gthread adapter: PHASE332_CXX_PORT_PLAN.md; library build fails.
+- Sealed division/UTF-8/upstream cstdlib: PHASE332_CSTDLIB_SDK.md; no shell/locale.
 - Allocation/atexit/DSO finalization SDK: PHASE332_CXX_LIFETIME.md; no exceptions.
 - Renderer configure PASS/compile FAIL: PHASE332_RENDERER.md; no host libs/OpenMP.
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
@@ -36,26 +37,24 @@ Origin/main is d147ec8 (fetch 08:31 +07). Owner pushes manually.
 ## Current evidence (+07)
 - New93613 exit0 10:55:33: scoped memory/hash checks, full suite,
   normal BIOS/UEFI restore,pinned contract/staging/OOM/hashes PASS; no live owner.
-- Previous97678 exit0 09:55:59 predates new memory/loader changes; historical.
-  Cobalt maps/relocates but79 missing strong imports prevent execution.
-- Native74376 exit0 10:14:28: Mesa memory queries BIOS16/64/256 +UEFI128/256,
-  C/C++,30 launches,PMM bitmap/data pages/8workers/relaunch/resources PASS.
-  Scoped93613 prefix PASS10:18 observed,30 launches/10 malformed hash rejects.
+- Cobalt maps/relocates but79 missing strong imports prevent execution.
+- Managed RAM/empty-GNU scoped30 launches/10 malformed rejects BIOS/UEFI PASS;
+  exact PMM/data/8workers/relaunch/resources: PHASE332_OS_INFO.md.
 - Whole renderer87879 compile1 10:19:42, target-config-yi0713xx:
   11 failed units/11 errors, prior13/16; os_misc/u_dl compile errors clear.
   No native backend or Cobalt success; compile counts are NOT completion%.
-- C++27830 configure/header validation exit0 10:47:26; build60077 exit2.
-  Opt-in upstream C++ header profile; target stdint fixed, boundary PASS10:56.
+- Opt-in upstream C++ header profile; target stdint fixed, boundary PASS10:56.
   Integer154 macros/types PASS C/C++ hosted+freestanding; no native library proof.
   New30635 configure0 11:52:17 jf2fl8q3: real gthreads yes, native TLS disabled.
   Native22111 BIOS/UEFI exit0 11:59:17:8 launches/2cancels/exact resources.
   Library12608 build2; cstdlib/locale/stdio/time gaps, no container/renderer proof.
+- New34118 exit0 12:14:54: Cstdlib C/C++ BIOS/UEFI12 launches, guard edges,
+  8workers/exact resources; affected scan/MPFR/OOM BIOS/UEFI PASS. All terminal.
+  Whole C++ after-Cstdlib still build2; missing cstring/stdio/time/support sources.
 - Signals/masks delivery PASS BIOS/UEFI: PHASE331_SIGNALS.md; stronger66362
   exit0 09:57:35,72 launches/12cancels/RAX/full-RFLAGS/exact resources.
-- Kernel-only -Oz recovers4096 test-image bytes; no cap/feature/assertion change.
-  Previous normal hashes: PHASE331_SIGNALS.md; not current architecture proof.
-  New93613 test kernel261304/cap262144,840bytes headroom. Normal253112/runtime29136;
-  current BIOS/UEFI hashes PHASE332_OS_INFO.md (not previous signal hashes).
+- Test kernel261304/cap262144,840bytes headroom. Normal253112/runtime29136;
+  current BIOS/UEFI hashes PHASE332_OS_INFO.md, unchanged by this SDK-only work.
 
 ## Required next work
 1. Native target C++ gthread/header/services/library build and container tests.
