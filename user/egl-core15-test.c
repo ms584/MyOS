@@ -7,10 +7,31 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "starboard/egl.h"
+/* Exercise the exact pinned table ABI, not a parallel fixture-only layout. */
+#define eglQueryString interface->eglQueryString
+#define eglGetError interface->eglGetError
+#define eglCreateSync interface->eglCreateSync
+#define eglGetProcAddress interface->eglGetProcAddress
+#define eglCreateContext interface->eglCreateContext
+#define eglMakeCurrent interface->eglMakeCurrent
+#define eglWaitSync interface->eglWaitSync
+#define eglClientWaitSync interface->eglClientWaitSync
+#define eglGetSyncAttrib interface->eglGetSyncAttrib
+#define eglCreateImage interface->eglCreateImage
+#define eglDestroyImage interface->eglDestroyImage
+#define eglDestroySync interface->eglDestroySync
+#define eglDestroyContext interface->eglDestroyContext
 int MyOSEglCore15Test(EGLDisplay,EGLConfig);
 #define CORE_CHECK(x) do{if(!(x)){fprintf(stderr,"Native EGL core15 FAIL line %d: %s\n",__LINE__,#x);return __LINE__;}}while(0)
 int MyOSEglCore15Test(EGLDisplay display,EGLConfig config)
 {
+    const SbEglInterface *interface=SbGetEglInterface();CORE_CHECK(interface);
+    CORE_CHECK(interface==SbGetEglInterface()&&interface->eglGetDisplay(0)==display);
+    for(unsigned i=0;i<44;++i){
+        void (*slot)(void)=NULL;memcpy(&slot,(const char *)interface+i*sizeof(slot),sizeof(slot));
+        CORE_CHECK(slot);
+    }
     CORE_CHECK(!strncmp(eglQueryString(display,EGL_VERSION),"1.5",3));
     CORE_CHECK(!strstr(eglQueryString(display,EGL_EXTENSIONS),"EGL_KHR_cl_event2"));
     CORE_CHECK(eglCreateSync(display,EGL_SYNC_FENCE,NULL)==EGL_NO_SYNC&&eglGetError()==EGL_BAD_MATCH);

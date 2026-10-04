@@ -165,6 +165,7 @@ try:
         if args.egl_core:assert 'Native EGL requested-version/debug callback/surfaceless FBO checked' in output,output
         if args.egl_core:assert 'Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked' in output,output
         if args.egl_core:assert 'Native EGL core15 wide sync/image/debug and absent OpenCL checked' in output,output
+        if args.egl_core:assert 'Native EGL pinned44 interface/type adapters checked' in output,output
         if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_core:assert 'Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output

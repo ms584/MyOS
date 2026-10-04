@@ -1,7 +1,7 @@
 # MyOS project state
 
 Updated: 2026-10-04. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baselinef11758f + core1.5 entry-point work (see evidence doc).
+Baselineb9f2fdc + pinned44 EGL table/actual version query (see evidence doc).
 Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 
 ## Scope and status
@@ -34,6 +34,7 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
   Context/version/debug/surfaceless evidence: PHASE332_NATIVE_EGL_CONTEXT.md.
   Persistent surfaces/linear128/sRGB188: PHASE332_NATIVE_EGL_COLORSPACE.md.
   Core1.5 wide sync/image/debug/no-CL: PHASE332_NATIVE_EGL_CORE15.md.
+  Pinned EGL table/query: PHASE332_NATIVE_EGL_INTERFACE.md (not loader exports).
 - Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
   never inspect activity.log via run_logged.py (use unwrapped tail -F).
 
@@ -41,14 +42,14 @@ Origin/main db934b7 (fetch20:17:08 +07). Owner pushes; never push.
 - Full9925 exit0 16:08:50 covers allocator/VM; normal BIOS/UEFI restored.
 - Pinned95008 exit0 16:11:52: Cobalt hash/staging/79-missing/RELRO and
   64MiB OOM/rollback/shell recovery PASS. No live test/image owner.
-- Core15 initial BIOS57800 PASS20:05:08. Final22/22 compile20:10:18;
-  final BIOS+UEFI+pbuffer44277 PASS20:17:38; details in core15/colorspace docs.
+- Core15 matrix44277 PASS20:17:38. Query BIOS+UEFI59910 PASS20:27:16;
+  pinned table23/23 compile20:26:55, BIOS+UEFI37260 PASS20:33:34.
 - Normal253880/runtime29904. Test kernel measured262072/cap262144 (72 bytes
   headroom). Full PASS; no kernel budget relaxation or RWX bypass.
 
 ## Required next work
-1. Pinned EGL44-entry/GLES tables + actual module/provider coexistence remain.
-   Audit actual vs requested queried context version; image value/backend limits,
+1. Exact GLES table + actual module/provider coexistence remain; imports unchanged.
+   Actual queried context version fixed; audit image numeric/backend limits,
    terminate/reinit, bind-allocation rollback and zero-sized pbuffer dimensions.
    Input is still after rendering teardown, not concurrent engine interaction.
    Solve72-byte test-kernel headroom before adding embedded runtime services.

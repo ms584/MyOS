@@ -5,6 +5,26 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baselineb9f2fdc plus actual queried context version and pinned44 EGL table:
+PHASE332_NATIVE_EGL_INTERFACE.md. Driver now reads actual original st context
+version after creation, not requested minimum. Native requests2.0/3.0/3.1 EGL
+queries before binding match actual GL3.1. Version-only core7zrxg58b22/22
+compile20:20:08, BIOSj9w5_jr9/UEFIk5b3h8g_ PASS59910 exit0 20:27:16.
+SbGetEglInterface uses exact hash-verified pinned declaration/all44 real Mesa
+functions; native intptr adapter wrappers, strict function-pointer types/scalar
+ABI/size checks. Core15 semantic tests call context/debug/sync/image/error paths
+through this table, exact cyan pixels; all slots nonNULL is not full API proof.
+Final core-lu672okl23/23 compile20:26:55. BIOS4n9rxyg_/UEFImpf0jksv
+PASS37260 exit0 20:33:34, two opens/exact resources/required table marker.
+Initial table compile failure retained; fixed compiler macro/C prototype, no
+header rewrite or warning/ABI suppression. Four normal hashes unchanged20:32:45;
+kernel/runtime unchanged, full9925 remains applicable, no live owner.
+Not a production loader export: single-object linker rejects DT_NEEDED and
+resolves only fixed runtime allowlist. Next exact GLES table, real dispatch test,
+provider coexistence/relocations/TLS/lifecycle/address ownership and remaining79
+strong imports/weakTLS before Cobalt HTML/JS/DOM/input/verifiedHTTPS>=60s/relaunch.
+Imports163/242=67.4% supported subset; Cobalt0/5. No phase closure/33.3/push.
+
 Baselinef11758f plus genuine core1.5 sync/image/debug attribute entry points:
 PHASE332_NATIVE_EGL_CORE15.md. All original feature gates retained except the
 CL proxy: no OpenCL provider, CL type rejected BAD_PARAMETER; KHR_cl_event2

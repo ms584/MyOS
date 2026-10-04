@@ -21,6 +21,7 @@ extern int MyOSUiPresent(void *,const struct native_ui_present *);
 extern int MyOSMesaInitializeImages(void);
 extern int MyOSMesaMakeCurrentSurfaceless(OSMesaContext);
 extern int MyOSMesaEnableDebug(OSMesaContext);
+extern unsigned MyOSMesaContextVersion(OSMesaContext);
 extern void *MyOSMesaCreateDrawable(void *,unsigned,unsigned,int);
 extern void MyOSMesaDestroyDrawable(void *);
 extern int MyOSMesaBindDrawables(OSMesaContext,void *,void *,int);
@@ -119,6 +120,13 @@ static _EGLContext *create_context(_EGLDisplay *display,_EGLConfig *config,
         OSMESA_CONTEXT_MINOR_VERSION,context->base.ClientMinorVersion,0};
     context->mesa=OSMesaCreateContextAttribs(options,share?((struct myos_context *)share)->mesa:0);
     if(!context->mesa){free(context);fail(EGL_BAD_ALLOC,"MyOS GLES context");return 0;}
+    /* EGL queries describe the supported context, not the requested minimum.
+     * Original state tracker computes its actual version during creation. */
+    unsigned version=MyOSMesaContextVersion(context->mesa);
+    if(!version){OSMesaDestroyContext(context->mesa);free(context);
+        fail(EGL_BAD_ALLOC,"MyOS GLES context version");return 0;}
+    context->base.ClientMajorVersion=(EGLint)(version/10);
+    context->base.ClientMinorVersion=(EGLint)(version%10);
     if((context->base.Flags&EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR)&&!MyOSMesaEnableDebug(context->mesa)){
         OSMesaDestroyContext(context->mesa);free(context);
         fail(EGL_BAD_ALLOC,"MyOS GLES debug state");return 0;

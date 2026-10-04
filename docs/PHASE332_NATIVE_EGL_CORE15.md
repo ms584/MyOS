@@ -25,10 +25,9 @@ MyOS core image validation rejects out-of-range names with BAD_PARAMETER before
 they can alias valid EGL_IMAGE_PRESERVED. Other platform/converter attribute
 matrices, image numeric value ranges and generic configuration contracts still
 need audit. This is not proof of every API/attribute combination.
-Also audit eglQueryContext(CLIENT_VERSION): the original core returns the driver
-base's requested version, while OSMesa may create a higher compatible version.
-The driver must expose the actual supported context version rather than assume
-that matching requested values prove the query contract (spec section3.7.4).
+Follow-up fixes actual-vs-requested eglQueryContext(CLIENT_VERSION): see
+PHASE332_NATIVE_EGL_INTERFACE.md for the adapter and native2.0/3.0/3.1 comparison
+with actual GL state (spec section3.7.4). Other audits above remain open.
 
 ## Native tests
 

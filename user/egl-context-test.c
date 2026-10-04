@@ -21,6 +21,19 @@ int MyOSEglContextTest(EGLDisplay display,EGLConfig config)
     EGLint renderable=0;CONTEXT_CHECK(eglGetConfigAttrib(display,config,EGL_RENDERABLE_TYPE,&renderable));
     CONTEXT_CHECK((renderable&(EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT_KHR))==
                   (EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT_KHR));
+    const EGLint versions[][5]={{EGL_CONTEXT_MAJOR_VERSION,2,EGL_CONTEXT_MINOR_VERSION,0,EGL_NONE},
+        {EGL_CONTEXT_MAJOR_VERSION,3,EGL_CONTEXT_MINOR_VERSION,0,EGL_NONE},
+        {EGL_CONTEXT_MAJOR_VERSION,3,EGL_CONTEXT_MINOR_VERSION,1,EGL_NONE}};
+    for(unsigned i=0;i<3;++i){
+        EGLContext actual=eglCreateContext(display,config,EGL_NO_CONTEXT,versions[i]);
+        CONTEXT_CHECK(actual!=EGL_NO_CONTEXT);
+        EGLint queried=0;CONTEXT_CHECK(eglQueryContext(display,actual,EGL_CONTEXT_CLIENT_VERSION,&queried));
+        CONTEXT_CHECK(eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,actual));
+        GLint major=0,minor=0;glGetIntegerv(GL_MAJOR_VERSION,&major);glGetIntegerv(GL_MINOR_VERSION,&minor);
+        CONTEXT_CHECK(glGetError()==GL_NO_ERROR&&queried==major&&major==3&&minor==1);
+        CONTEXT_CHECK(eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT));
+        CONTEXT_CHECK(eglDestroyContext(display,actual));
+    }
     const EGLint bad_versions[][5]={{EGL_CONTEXT_MAJOR_VERSION_KHR,2,EGL_CONTEXT_MINOR_VERSION_KHR,1,EGL_NONE},
         {EGL_CONTEXT_MAJOR_VERSION_KHR,3,EGL_CONTEXT_MINOR_VERSION_KHR,2,EGL_NONE},
         {EGL_CONTEXT_MAJOR_VERSION_KHR,3,EGL_CONTEXT_MINOR_VERSION_KHR,-1,EGL_NONE}};

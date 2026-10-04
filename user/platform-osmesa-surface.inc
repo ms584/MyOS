@@ -20,6 +20,9 @@
 void *MyOSMesaCreateDrawable(void *,unsigned,unsigned,int);
 void MyOSMesaDestroyDrawable(void *);
 int MyOSMesaBindDrawables(OSMesaContext,void *,void *,int);
+unsigned MyOSMesaContextVersion(OSMesaContext);
+unsigned MyOSMesaContextVersion(OSMesaContext context)
+{return context&&context->st&&context->st->ctx?context->st->ctx->Version:0;}
 static bool myos_surface_validate(struct st_context *st,
     struct pipe_frontend_drawable *drawable,const enum st_attachment_type *attachments,
     unsigned count,struct pipe_resource **out,struct pipe_resource **resolve)

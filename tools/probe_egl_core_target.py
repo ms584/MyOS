@@ -43,6 +43,19 @@ base=root/'build/egl-core-evaluation';base.mkdir(parents=True,exist_ok=True)
 out=Path(tempfile.mkdtemp(prefix='core-',dir=base))
 egl_source=out/'egl-main'
 shutil.copytree(source/'src/egl/main',egl_source)
+headers=out/'include/starboard';headers.mkdir(parents=True)
+pin=json.loads((root/'docs/PHASE331_ABI_SOURCES.json').read_text())
+for name in ('egl.h','log.h','system.h'):
+    contract=root/'build/engine-evaluation/contracts'/name
+    assert hashlib.sha256(contract.read_bytes()).hexdigest()==next(
+        entry['sha256'] for entry in pin['headers'] if entry['path'].endswith('/'+name))
+    shutil.copyfile(contract,headers/name)
+(headers/'configuration.h').write_text(
+    '#define SB_SIZE_OF_POINTER __SIZEOF_POINTER__\n#define SB_SIZE_OF_LONG __SIZEOF_LONG__\n'
+    '#define SB_SIZE_OF(x) SB_SIZE_OF_##x\n'
+    '#define SB_NORETURN __attribute__((noreturn))\n'
+    '#define SB_PRINTF_FORMAT(a,b) __attribute__((format(printf,a,b)))\n')
+(headers/'export.h').write_text('#define SB_EXPORT\n')
 subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_myos_platform.patch')],
                cwd=egl_source,check=True)
 subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_lifetime.patch')],
@@ -60,12 +73,14 @@ sources.append(source/'src/util/rwlock.c')
 if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/util/os_file.c',
                                root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c',
                                root/'user/egl-image-test.c',root/'user/egl-context-test.c',
-                               root/'user/egl-surface-test.c',root/'user/egl-core15-test.c'])
+                               root/'user/egl-surface-test.c',root/'user/egl-core15-test.c',
+                               root/'user/platform-egl-interface.c'])
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:
         obj=out/(path.stem+'.o')
         command=[*flags,'-I'+str(egl_source),'-I'+str(root/'include'),'-DEGL_NO_X11=1',
+                 '-I'+str(out/'include'),
                  '-I'+str(source/'src/gallium/frontends/osmesa'),
                  '-D_EGL_NATIVE_PLATFORM=_EGL_PLATFORM_MYOS',
                  '-c',str(path),'-o',str(obj)]

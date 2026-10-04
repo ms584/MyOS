@@ -145,6 +145,7 @@ static void *render(void *unused)
     extern int MyOSEglCore15Test(EGLDisplay,EGLConfig);
     CHECK(!MyOSEglCore15Test(display,config));
     say("Native EGL core15 wide sync/image/debug and absent OpenCL checked\n");
+    say("Native EGL pinned44 interface/type adapters checked\n");
     CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
     CHECK(eglGetError()==EGL_BAD_CONFIG);
     const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
