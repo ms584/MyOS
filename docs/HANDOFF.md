@@ -3,6 +3,16 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Latest renderer dependency checkpoint — 2026-10-04
+
+Latest follow-up to2944b63: PHASE332_RENDERER_CLOSURE.md. Real Mesa target
+compilation/link now passes with no host libraries/strong undefined/DT_NEEDED.
+This is a compiler-only probe runtime, NOT executable native renderer proof.
+GLAPI ELF TLS +weak initializer remain; replace probe runtime before native use.
+Sealed errno ABI,2357 MPFR vectors/four rounding modes and actual guard/popcount
+providers pass BIOS/UEFI native checks. All jobs terminal, hashes unchanged
+13:50:03 +07. Cobalt0/5; Phases33.1/33.2 OPEN, no33.3, never push.
+
 ## Tested native self-signal checkpoint — 2026-10-04
 
 Local implementation checkpoint6e17a77: PHASE332_OS_INFO.md. Real managed PMM totals/

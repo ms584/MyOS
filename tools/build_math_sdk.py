@@ -27,6 +27,7 @@ flags = ['-m64', '-std=c11', '-O2', '-fPIC', '-ffreestanding', '-fno-builtin',
          '-D__myos__=1', '-D_XOPEN_SOURCE=700',
          '-U__linux__', '-U__linux', '-Ulinux', '-U__gnu_linux__']
 public = 'ceil frexpf sin floorf fma sincosf log10 fmin ceilf trunc fminf cosf sinf atanf atan2f fmaxf fmaf fmax log2f ldexpf rint ldexp floor pow log2 frexp cos logf exp2f powf expf sqrt sqrtf fabs fabsf scalbn scalbnf'.split()
+public += 'copysign copysignf llrint llround log lrint lrintf lroundf rintf round roundf truncf'.split()
 objects = {}
 sources = {}
 pending = {name: source / 'src/math' / (name + '.c') for name in public}

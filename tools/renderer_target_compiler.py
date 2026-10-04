@@ -54,5 +54,6 @@ for arg in args:
               file=sys.stderr)
         sys.exit(1)
 link = not query and not any(arg in ('-c', '-E', '-S', '-fsyntax-only') for arg in args)
-tail = ['-nostdlib', '-Wl,-e,main', '-x', 'none', str(options.provider)] if link else []
+tail = (['-nostdlib', *([] if '-shared' in args else ['-Wl,-e,main']),
+         '-x', 'none', str(options.provider)] if link else [])
 sys.exit(subprocess.run([compiler, *flags, *args, *tail]).returncode)

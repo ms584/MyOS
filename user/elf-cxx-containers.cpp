@@ -5,9 +5,37 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <cerrno>
+#include <bits/error_constants.h>
+#include <time.h>
+static_assert(E2BIG==7 && EAFNOSUPPORT==97 && EADDRINUSE==98 &&
+              EADDRNOTAVAIL==99 && EISCONN==106 && EHWPOISON==133,
+              "canonical target errno values");
+static_assert(EWOULDBLOCK==EAGAIN && ENOTSUP==EOPNOTSUPP && EDEADLOCK==EDEADLK,
+              "canonical errno aliases");
+static_assert(static_cast<int>(std::errc::address_family_not_supported)==EAFNOSUPPORT &&
+              static_cast<int>(std::errc::address_in_use)==EADDRINUSE &&
+              static_cast<int>(std::errc::already_connected)==EISCONN,
+              "actual GCC error_constants ABI");
 static void require(bool good) {
     if(!good) { const char fail[]="native GCC containers assertion failed\n";
         write(1,fail,sizeof(fail)-1);abort(); }
+}
+struct Initialized {
+    pthread_t identity;
+    Initialized():identity(pthread_self()){}
+};
+static void compiler_helpers() {
+    static Initialized initialized;
+    require(initialized.identity!=0);
+    uint64_t state=UINT64_C(0xc0ba170000000001);
+    for(unsigned i=0;i<256;++i) {
+        state^=state<<13;state^=state>>7;state^=state<<17;
+        uint64_t input=i==0?0:i==1?UINT64_MAX:i<66?UINT64_C(1)<<(i-2):state;
+        volatile uint64_t reference=input;unsigned expected=0;
+        while(reference) {expected+=(unsigned)(reference&1);reference>>=1;}
+        require((unsigned)__builtin_popcountll(input)==expected);
+    }
 }
 struct Tracked {
     int *live;unsigned value;
@@ -55,7 +83,16 @@ static void containers() {
     unsigned long expected=0;for(unsigned long i=0;i<513;++i)if(i%3)expected+=i*17+3;
     require(sum==expected);
 }
-static void *worker(void *value) { for(int i=0;i<8;++i)containers();return value; }
+static void *worker(void *value) {
+    for(int i=0;i<8;++i) {
+        errno=700+(int)(uintptr_t)value;
+        containers();
+        timespec now;
+        require(clock_gettime(CLOCK_MONOTONIC,&now)==0 &&
+                errno==700+(int)(uintptr_t)value);
+    }
+    return value;
+}
 extern "C" int _start() {
 #ifdef CONTAINER_LENGTH_FAULT
     std::vector<unsigned long> value;value.reserve(SIZE_MAX);return 1;
@@ -65,6 +102,7 @@ extern "C" int _start() {
     std::vector<unsigned long> value(1,7);volatile size_t index=3;return (int)value[index];
 #else
     containers();pthread_t threads[8];
+    compiler_helpers();
     for(unsigned long i=0;i<8;++i)require(pthread_create(&threads[i],0,worker,(void *)(i+1))==0);
     for(unsigned long i=0;i<8;++i) {void *value=0;
         require(pthread_join(threads[i],&value)==0 && value==(void *)(i+1));}

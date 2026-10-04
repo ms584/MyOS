@@ -45,6 +45,14 @@ static int fp_worker(void *raw)
         CHECK(fegetround()==modes[who]);
         volatile double x=1.5,y=-1.5;
         CHECK(rint(x)==positive[who]&&rint(y)==negative[who]);
+        CHECK(rintf((float)x)==positive[who]&&rintf((float)y)==negative[who]);
+        CHECK(lrint(x)==(long)positive[who]&&lrint(y)==(long)negative[who]);
+        CHECK(lrintf((float)x)==(long)positive[who]&&lrintf((float)y)==(long)negative[who]);
+        CHECK(llrint(x)==(long long)positive[who]&&llrint(y)==(long long)negative[who]);
+        CHECK(llround(x)==2&&llround(y)==-2);
+        CHECK(lroundf((float)x)==2&&lroundf((float)y)==-2);
+        CHECK(round(x)==2&&round(y)==-2&&roundf((float)x)==2&&roundf((float)y)==-2);
+        CHECK(truncf((float)x)==1&&truncf((float)y)==-1);
         CHECK(fetestexcept(FE_INVALID|FE_DIVBYZERO)==flag);
     }
     return (int)who+100;
@@ -67,6 +75,13 @@ int _start(void)
     int exponent;CHECK(frexp(8,&exponent)==0.5&&exponent==4);
     CHECK(frexpf(0x1p-149f,&exponent)==0.5f&&exponent==-148);
     CHECK(ldexp(0.5,4)==8&&ldexpf(0.5f,4)==8);
+    CHECK(llround(4294967297.5)==4294967298LL);
+    CHECK(llround(-4294967297.5)==-4294967298LL);
+    CHECK(llrint(4294967297.5)==4294967298LL);
+    CHECK(lrint(4294967297.5)==4294967298L);
+    CHECK(lroundf(1073741952.0f)==1073741952L);
+    CHECK(bits(copysign(0,-1))==UINT64_C(0x8000000000000000));
+    CHECK(bits((double)copysignf(0,-1))==UINT64_C(0x8000000000000000));
     CHECK(scalbn(1,-1074)==0x1p-1074&&scalbnf(1,-149)==0x1p-149f);
     CHECK(fmin(NAN,2)==2&&fmax(2,NAN)==2);
     CHECK(fminf(NAN,2)==2&&fmaxf(2,NAN)==2);

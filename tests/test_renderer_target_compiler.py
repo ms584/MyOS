@@ -66,6 +66,16 @@ int main(void) { struct timespec t; return clock_gettime(CLOCK_MONOTONIC,&t); }
         dynamic = subprocess.check_output(['readelf', '-dW', str(output)], text=True)
         assert '(NEEDED)' not in dynamic
         assert not subprocess.check_output(['nm', '-u', str(output)], text=True).strip()
+        shared=Path(scratch)/('shared-'+standard+'.so')
+        shared_result=subprocess.run(current+['-shared','-Wl,--no-undefined','-x',x,
+                                              '-','-o',str(shared)],
+                                     input='int shared_api(void){return 42;}\n',
+                                     text=True,capture_output=True)
+        assert shared_result.returncode==0,shared_result.stderr
+        assert not subprocess.check_output(['nm','-u',str(shared)],text=True).strip()
+        elf_header=subprocess.check_output(['readelf','-hW',str(shared)],text=True)
+        assert next(line.split(':',1)[1].strip() for line in elf_header.splitlines()
+                    if 'Entry point address:' in line)=='0x0'
         for forbidden in (['-lm'], ['-L/usr/lib'], ['-Wl,-lm'], ['-Wl,-L,/usr/lib'],
                           ['-Xlinker', '/usr/lib/libc.so'], ['-fopenmp'], ['@response'],
                           ['/usr/lib/libc.a'], ['../../unverified.a']):

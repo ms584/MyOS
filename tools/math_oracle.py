@@ -40,7 +40,11 @@ def generate(destination):
         ('expf', 'exp', 1, True, 2), ('exp2f', 'exp2', 1, True, 2),
         ('sqrtf', 'sqrt', 1, True, 0), ('pow', 'pow', 2, False, 2),
         ('powf', 'pow', 2, True, 2), ('atan2f', 'atan2', 2, True, 2),
-        ('fma', 'fma', 3, False, 0), ('fmaf', 'fma', 3, True, 0)]
+        ('fma', 'fma', 3, False, 0), ('fmaf', 'fma', 3, True, 0),
+        ('log', 'log', 1, False, 2), ('rintf', 'rint', 1, True, 0),
+        ('round', 'round', 1, False, 0), ('roundf', 'round', 1, True, 0),
+        ('truncf', 'trunc', 1, True, 0),
+        ('copysign', 'copysign', 2, False, 0), ('copysignf', 'copysign', 2, True, 0)]
     unary = [0.0, -0.0, 1.0, -1.0, 0.1, -0.1, 0.5, 1.5, -1.5,
              2.0, 10.0, 100.0, -100.0, 1e-30, -1e-30, 1e30, -1e30,
              1e-300, -1e-300, 1e300, -1e300, float('inf'), -float('inf'), float('nan')]
@@ -65,7 +69,7 @@ def generate(destination):
              'static const struct math_case cases[] = {']
     count = 0
     for index, (name, oracle, arity, single, ulps) in enumerate(definitions):
-        no_rounding = oracle in ('ceil', 'floor', 'trunc')
+        no_rounding = oracle in ('ceil', 'floor', 'trunc', 'round')
         fn = function(oracle, [ptr] * (arity+1) + ([] if no_rounding else [C.c_int]))
         inputs = [(x,) for x in unary] if arity == 1 else binary if arity == 2 else triple
         for row in inputs:

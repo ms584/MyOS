@@ -42,6 +42,15 @@ def build(configuration,math_provider):
         assert not subprocess.check_output(['nm','-u',str(obj)],text=True).strip()
         objects.append(obj)
     cxx_objects=[]
+    for name,path in [('guard',root/'user/platform-cxx-guard.c'),
+                      ('compiler-builtins',root/'user/platform-compiler-builtins.c')]:
+        obj=out/(name+'.o')
+        subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding',
+                        '-fno-builtin','-mno-red-zone','-fno-stack-protector',
+                        '-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+                        '-nostdinc','-isystem',include,'-I'+str(root/'user/sdk'),
+                        '-Wall','-Wextra','-Werror','-c',str(path),'-o',str(obj)],check=True)
+        cxx_objects.append(obj)
     for name,path in [('allocation',root/'user/platform-cxx-allocation.cpp'),
                       ('assert',root/'user/platform-cxx-assert.cpp'),
                       ('hash',source/'src/c++11/hashtable_c++0x.cc')]:
