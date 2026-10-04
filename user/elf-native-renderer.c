@@ -43,6 +43,8 @@ static GLuint shader(GLenum type,const char *source)
 static void *render(void *unused)
 {
     (void)unused;say("Native OSMesa context begin\n");
+    int origin_x=0,origin_y=0;
+#define READ_PIXELS(x,y,w,h,format,type,data) glReadPixels((x)+origin_x,(y)+origin_y,w,h,format,type,data)
     CHECK(!OSMesaGetCurrentContext());
 #if defined(MYOS_NATIVE_EGL)
     CHECK(!eglInitialize((EGLDisplay)(uintptr_t)1,0,0));
@@ -61,15 +63,34 @@ static void *render(void *unused)
     EGLContext egl_context=eglCreateContext(display,config,EGL_NO_CONTEXT,context_attributes);
     CHECK(egl_context!=EGL_NO_CONTEXT);
     const EGLint surface_attributes[]={EGL_WIDTH,32,EGL_HEIGHT,32,EGL_NONE};
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+    struct native_ui_info info;extern int MyOSUiQuery(void *,struct native_ui_info *);
+    CHECK(!MyOSUiQuery(window,&info)&&info.width>=720&&info.height>=568);
+    EGLSurface surface=eglCreateWindowSurface(display,config,
+        (EGLNativeWindowType)(uintptr_t)SbWindowGetPlatformHandle(window),0);
+    CHECK(surface!=EGL_NO_SURFACE);
+    CHECK(eglCreateWindowSurface(display,config,(EGLNativeWindowType)(uintptr_t)window,0)==EGL_NO_SURFACE&&
+          eglGetError()==EGL_BAD_ALLOC); /* one surface per native window */
+    origin_x=688;origin_y=(int)info.height-552;
+#else
     EGLSurface surface=eglCreatePbufferSurface(display,config,surface_attributes);
+#endif
     CHECK(surface!=EGL_NO_SURFACE&&eglMakeCurrent(display,surface,surface,egl_context));
     CHECK(eglGetCurrentDisplay()==display&&eglGetCurrentContext()==egl_context&&
           eglGetCurrentSurface(EGL_DRAW)==surface&&eglGetCurrentSurface(EGL_READ)==surface);
-    EGLint width=0;CHECK(eglQuerySurface(display,surface,EGL_WIDTH,&width)&&width==32);
-    CHECK(!eglBindTexImage(display,surface,EGL_BACK_BUFFER)&&eglGetError()==EGL_BAD_MATCH);
-    CHECK(eglReleaseTexImage(display,surface,EGL_BACK_BUFFER));
-    CHECK(!eglCopyBuffers(display,surface,(EGLNativePixmapType)(uintptr_t)1)&&
+    EGLint width=0;CHECK(eglQuerySurface(display,surface,EGL_WIDTH,&width));
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+    CHECK(width==(EGLint)info.width);
+#else
+    CHECK(width==32);
+#endif
+    EGLSurface plain=eglCreatePbufferSurface(display,config,surface_attributes);
+    CHECK(plain!=EGL_NO_SURFACE);
+    CHECK(!eglBindTexImage(display,plain,EGL_BACK_BUFFER)&&eglGetError()==EGL_BAD_MATCH);
+    CHECK(eglReleaseTexImage(display,plain,EGL_BACK_BUFFER));
+    CHECK(!eglCopyBuffers(display,plain,(EGLNativePixmapType)(uintptr_t)1)&&
           eglGetError()==EGL_BAD_NATIVE_PIXMAP);
+    CHECK(eglDestroySurface(display,plain));
     const EGLint texture_attributes[]={EGL_WIDTH,1,EGL_HEIGHT,1,
         EGL_TEXTURE_FORMAT,EGL_TEXTURE_RGBA,EGL_TEXTURE_TARGET,EGL_TEXTURE_2D,EGL_NONE};
     CHECK(eglCreatePbufferSurface(display,config,texture_attributes)==EGL_NO_SURFACE&&
@@ -106,9 +127,9 @@ static void *render(void *unused)
     CHECK(strncmp(version,"OpenGL ES ",10));
 #endif
     say("Native OSMesa context bound\n");
-    glViewport(0,0,32,32);glDisable(GL_DITHER);
+    glViewport(origin_x,origin_y,32,32);glDisable(GL_DITHER);
     glClearColor(0,0,1,1);glClear(GL_COLOR_BUFFER_BIT);glFinish();
-    unsigned char sample[4];glReadPixels(8,8,1,1,GL_RGBA,GL_UNSIGNED_BYTE,sample);
+    unsigned char sample[4];READ_PIXELS(8,8,1,1,GL_RGBA,GL_UNSIGNED_BYTE,sample);
     CHECK(sample[0]==0&&sample[1]==0&&sample[2]==255&&sample[3]==255);
     say("Native OSMesa clear pixels checked\n");
     GLuint vertex=shader(GL_VERTEX_SHADER,VERTEX_VERSION "attribute vec2 position;varying vec2 uv;"
@@ -135,7 +156,7 @@ static void *render(void *unused)
     glVertexAttribPointer((GLuint)attribute,2,GL_FLOAT,GL_FALSE,0,0);
     glEnableVertexAttribArray((GLuint)attribute);glDrawArrays(GL_TRIANGLES,0,6);glFinish();
     CHECK(glGetError()==GL_NO_ERROR);
-    for(unsigned i=0;i<4;++i){glReadPixels(i&1?24:4,i&2?24:4,1,1,
+    for(unsigned i=0;i<4;++i){READ_PIXELS(i&1?24:4,i&2?24:4,1,1,
         GL_RGBA,GL_UNSIGNED_BYTE,sample);CHECK(!memcmp(sample,colors+4*i,4));}
     /* 64 source tiles exceed the 16-entry cache; cross boundaries/evict and
      * then re-upload the original texture to prove invalidation too. */
@@ -145,43 +166,65 @@ static void *render(void *unused)
         texture_pixels[i+2]=(unsigned char)(((x/8+y/8)&1)*255);texture_pixels[i+3]=255;}
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,64,64,0,GL_RGBA,GL_UNSIGNED_BYTE,texture_pixels);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();
-    glReadPixels(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,readback);
+    READ_PIXELS(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,readback);
     for(unsigned y=0;y<32;++y)for(unsigned x=0;x<32;++x){
         unsigned i=(y*32+x)*4;CHECK(readback[i]==x*8+4&&readback[i+1]==y*8+4&&
             readback[i+2]==((x/4+y/4)&1)*255&&readback[i+3]==255);}
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,colors);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
     say("Native OSMesa shaders/textures/pixels checked\n");
-    glReadPixels(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
+    READ_PIXELS(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
     struct native_ui_present present={(uintptr_t)pixels,32,32,128,NATIVE_UI_RGBA8,688,520};
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+    (void)present;CHECK(eglSwapBuffers(display,surface));
+#else
     CHECK(!MyOSUiPresent(window,&present));
+#endif
     /* Existing licensed glyph masks are expanded in MyOS, then sampled and
      * alpha-blended by real Mesa. No host-generated rendered text/frame. */
     static const unsigned char text[]="MyOS";
     for(unsigned y=0;y<16;++y)for(unsigned x=0;x<32;++x){
         unsigned i=(y*32+x)*4;
         texture_pixels[i]=texture_pixels[i+1]=texture_pixels[i+2]=255;
-        texture_pixels[i+3]=(renderer_font[text[x/8]*16+y]&(128u>>(x%8)))?128:0;
+        unsigned font_row=y;
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+        font_row=15-y;
+#endif
+        texture_pixels[i+3]=(renderer_font[text[x/8]*16+font_row]&(128u>>(x%8)))?128:0;
     }
-    glViewport(0,0,32,16);glClearColor(0,0,0,1);glClear(GL_COLOR_BUFFER_BIT);
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+    origin_y=(int)info.height-568;
+#endif
+    glViewport(origin_x,origin_y,32,16);glClearColor(0,0,0,1);
+    /* Clear only the text rectangle; a native surface keeps the color frame. */
+    glEnable(GL_SCISSOR_TEST);glScissor(origin_x,origin_y,32,16);glClear(GL_COLOR_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,32,16,0,GL_RGBA,GL_UNSIGNED_BYTE,texture_pixels);
     glEnable(GL_BLEND);
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
-    glReadPixels(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,readback);
+    READ_PIXELS(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,readback);
     unsigned ink=0;
     for(unsigned character=0;character<4;++character)for(unsigned row=0;row<16;++row)
         for(unsigned column=0;column<8;++column){
             unsigned i=(row*32+character*8+column)*4;
-            unsigned expected=((renderer_font[text[character]*16+row]>>(7-column))&1)*128;
+            unsigned font_row=row;
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+            font_row=15-row;
+#endif
+            unsigned expected=((renderer_font[text[character]*16+font_row]>>(7-column))&1)*128;
             CHECK(readback[i]==expected&&readback[i+1]==expected&&
                   readback[i+2]==expected&&readback[i+3]==255);
             ink+=expected!=0;
         }
     CHECK(ink>32&&ink<256);glDisable(GL_BLEND);
-    glReadPixels(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
+    READ_PIXELS(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
     present=(struct native_ui_present){(uintptr_t)pixels,32,16,128,NATIVE_UI_RGBA8,688,552};
+#if defined(MYOS_NATIVE_EGL_WINDOW)
+    CHECK(eglSwapBuffers(display,surface));say("Native EGL window swap checked\n");
+#else
     CHECK(!MyOSUiPresent(window,&present));
+#endif
     say("Native glyph atlas/alpha blend/all512 text pixels checked\n");
     glDisableVertexAttribArray((GLuint)attribute);glUseProgram(0);
     glDeleteBuffers(1,&buffer);glDeleteTextures(1,&texture);

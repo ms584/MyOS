@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 import tempfile
 
@@ -40,7 +41,11 @@ while index<len(original):
 source=probe/'mesa-25.0.7'
 base=root/'build/egl-core-evaluation';base.mkdir(parents=True,exist_ok=True)
 out=Path(tempfile.mkdtemp(prefix='core-',dir=base))
-sources=[source/'src/egl/main'/(name+'.c') for name in (
+egl_source=out/'egl-main'
+shutil.copytree(source/'src/egl/main',egl_source)
+subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_myos_platform.patch')],
+               cwd=egl_source,check=True)
+sources=[egl_source/(name+'.c') for name in (
     'eglapi','eglarray','eglconfigdebug','eglconfig','eglcontext','eglcurrent',
     'egldevice','egldisplay','eglglobals','eglimage','egllog','eglsurface','eglsync')]
 sources.append(source/'src/util/rwlock.c')
@@ -49,8 +54,8 @@ objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:
         obj=out/(path.stem+'.o')
-        command=[*flags,'-I'+str(source/'src/egl/main'),'-DEGL_NO_X11=1',
-                 '-D_EGL_NATIVE_PLATFORM=_EGL_PLATFORM_SURFACELESS',
+        command=[*flags,'-I'+str(egl_source),'-I'+str(root/'include'),'-DEGL_NO_X11=1',
+                 '-D_EGL_NATIVE_PLATFORM=_EGL_PLATFORM_MYOS',
                  '-c',str(path),'-o',str(obj)]
         log.write('$ '+shlex.join(command)+'\n');log.flush()
         result=subprocess.run(command,cwd=item['directory'],stdout=log,stderr=subprocess.STDOUT)

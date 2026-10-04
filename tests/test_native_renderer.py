@@ -25,6 +25,7 @@ parser.add_argument('--configuration',type=Path,required=True)
 parser.add_argument('--uefi',action='store_true')
 parser.add_argument('--gles',action='store_true',help='Real Mesa GLES profile/GLSL100, not EGL')
 parser.add_argument('--egl-core',type=Path,help='Actual Mesa EGL core + MyOS pbuffer driver archive')
+parser.add_argument('--egl-window',action='store_true',help='Present through an actual native EGL window swap')
 parser.add_argument('--diagnostic',action='store_true',help='Transparent test-only allocation/lock wrappers')
 parser.add_argument('--launches',type=int,choices=(1,2,3),default=2)
 parser.add_argument('--ram',type=int,choices=(128,256,512,1024),default=256)
@@ -32,6 +33,7 @@ parser.add_argument('--startup-timeout',type=int,choices=(120,300,600),default=1
                     help='Bound cold Mesa shader initialization; never a Cobalt pass criterion')
 args=parser.parse_args()
 if args.egl_core and not args.gles:parser.error('--egl-core requires --gles')
+if args.egl_window and not args.egl_core:parser.error('--egl-window requires --egl-core')
 probe=args.renderer_probe.resolve();cfg=args.configuration.resolve()
 assert probe.is_relative_to((root/'build/renderer-evaluation').resolve())
 assert cfg.is_relative_to((root/'build/cxx-target-evaluation').resolve())
@@ -55,6 +57,7 @@ intrinsics=subprocess.check_output(['gcc','-print-file-name=include'],text=True)
 flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
        '-D__myos__=1',*(['-DMYOS_NATIVE_GLES=1'] if args.gles else []),
        *(['-DMYOS_NATIVE_EGL=1','-DEGL_NO_X11=1'] if args.egl_core else []),
+       *(['-DMYOS_NATIVE_EGL_WINDOW=1'] if args.egl_window else []),
        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
        '-nostdinc','-isystem',intrinsics,'-I'+str(root/'user/sdk'),
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
@@ -117,7 +120,7 @@ options=dict(ram=args.ram,boot_image=image,asset_disk=disk)
 if args.uefi:options.update(boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),
                                                     Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
 print('Native renderer fixture:',out,'bytes:',library.stat().st_size,'RAM MiB:',args.ram,flush=True)
-vm=VM('native-renderer'+('-egl' if args.egl_core else '-gles' if args.gles else '')+
+vm=VM('native-renderer'+('-egl-window' if args.egl_window else '-egl' if args.egl_core else '-gles' if args.gles else '')+
       ('-uefi' if args.uefi else ''),**options)
 try:
     vm.wait('myos> ')
@@ -131,9 +134,13 @@ try:
             if 'Native OSMesa frame ready\n' in output:break
             time.sleep(.05)
         else:raise AssertionError(vm.log.read_text()[-6000:])
-        frame_shot(vm,f'{vm.name}-{launch}-present.ppm',[
+        color_checks=[
             (692,524,(255,0,0)),(712,524,(0,255,0)),
-            (692,544,(0,0,255)),(712,544,(255,255,0))])
+            (692,544,(0,0,255)),(712,544,(255,255,0))]
+        if args.egl_window:
+            # GLES coordinates are bottom-left; native framebuffer is top-left.
+            color_checks=[(x,1071-y,rgb) for x,y,rgb in color_checks]
+        frame_shot(vm,f'{vm.name}-{launch}-present.ppm',color_checks)
         glyphs=font.read_bytes()
         checks=[(688+character*8+column,552+row,(value,value,value))
                 for character,code in enumerate(b'MyOS') for row in range(16)
@@ -149,11 +156,12 @@ try:
         assert 'ELF exited with status 90' in output and 'teardown PASS' in output,output
         if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
         if args.egl_core:assert 'Native EGL core/error/current/deferred destroy checked' in output,output
+        if args.egl_window:assert 'Native EGL window swap checked' in output,output
         assert 'Native glyph atlas/alpha blend/all512 text pixels checked' in output,output
         assert_live_resources(output)
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
           ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
-          '; '+('EGL1.4 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
+          '; '+('EGL1.4 native window swap; ' if args.egl_window else 'EGL1.4 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
           'NOT Cobalt.',out,flush=True)
 except BaseException:
     # Capture the real running CPU before teardown; never infer a deadlock from

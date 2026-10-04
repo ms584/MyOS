@@ -5,6 +5,17 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline437b701 plus native MyOS EGL platform/window swap:
+PHASE332_NATIVE_EGL_WINDOW.md. BIOS52391 exit0 18:06:25 urztpo4h PASS,
+2 launches/exact resources, real frames through eglSwapBuffers (not fixture
+MyOSUiPresent), orientation/upright alpha glyphs and duplicate-window rejection.
+Strict original-source patch16/16 compile PASS18:09:33 core-m4do_ey7.
+UEFI window2t04ggj1/pbuffer_ts99fct/GLESczpkuqbh PASS48983 exit0 18:13:05,
+two launches each/exact resources; four normal hashes unchanged18:12:21.
+Still partial EGL1.4,
+no SABI tables/module coexistence/Cobalt or60s gate. Input is after worker
+teardown, not concurrent engine input. No33.3/push; architecture unchanged.
+
 Baseline bdab91c plus genuine EGL core/MyOS driver: PHASE332_NATIVE_EGL.md.
 Original Mesa EGL14 units plus native driver/os_file16/16 compile. EGL1.4
 pbuffer/context/thread-local error/current/deferred-destroy native BIOS

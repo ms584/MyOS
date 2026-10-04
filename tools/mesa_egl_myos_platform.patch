@@ -1,0 +1,24 @@
+--- a/egldisplay.h
++++ b/egldisplay.h
+@@ -56,6 +56,9 @@
+    _EGL_PLATFORM_DEVICE,
+    _EGL_PLATFORM_WINDOWS,
+
++#ifdef __myos__
++   _EGL_PLATFORM_MYOS,
++#endif
+    _EGL_NUM_PLATFORMS,
+    _EGL_INVALID_PLATFORM = -1
+ };
+--- a/egldisplay.c
++++ b/egldisplay.c
+@@ -83,6 +83,9 @@
+    {_EGL_PLATFORM_SURFACELESS, "surfaceless"},
+    {_EGL_PLATFORM_DEVICE, "device"},
+    {_EGL_PLATFORM_WINDOWS, "windows"},
++#ifdef __myos__
++   {_EGL_PLATFORM_MYOS, "myos"},
++#endif
+ };
+
+ /**
