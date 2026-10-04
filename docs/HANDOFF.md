@@ -6,6 +6,8 @@ this document retains historical context and may describe earlier checkpoints.
 ## Latest renderer dependency checkpoint — 2026-10-04
 
 Baseline db934b7 plus native EGL image storage sharing:
+Tested implementation commit60f33c3; fetch19:07:51 confirms origin/main
+db934b7, local one implementation commit ahead before this docs follow-up.
 PHASE332_NATIVE_EGL_IMAGE.md. Actual Gallium resources/reference ownership,
 frontend image hooks installed before context creation and locked EGL lookup.
 Unshared context writes back through2D image; six cube faces/3D slice imported
