@@ -295,7 +295,10 @@ static uintptr_t vm_new_page(struct process *p)
 }
 static void vm_forget(struct process *p,uintptr_t page)
 {
-    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page){p->vm_pages[i]=0;return;}
+    /* Track live owned pages, not the entire allocation history. Swap removal
+     * preserves ownership and keeps churn from growing the ledger forever. */
+    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page){
+        p->vm_pages[i]=p->vm_pages[--p->vm_page_count];return;}
     panic("untracked process VM page");
 }
 static uint64_t *vm_leaf(struct process *p,uint64_t address,bool create)

@@ -15,6 +15,30 @@
 #define HEADER_MAGIC 0x4d594f53414c4c4full
 
 struct allocation { uint64_t magic,base,length,requested; };
+#define SLAB_MAGIC 0x4d594f53534c4142ull
+#define SLAB_HEADER 64u
+struct allocation_slab { struct allocation_slab *next;uint64_t magic,used,slot; };
+struct allocator_state {
+    uintptr_t cursor;
+    struct allocation_slab *heads[5];
+    uint64_t reserved[2],lock[10]; /* pinned opaque80-byte native mutex */
+};
+/* Per-process runtime data; these bounds are the SYS_VM_MAP ABI in process.h.
+ * Reserve a unique hint, not memory. Kernel ownership/collision checks remain
+ * authoritative and a rejected hint falls back to the original gap search.
+ */
+#define ALLOCATION_VM_BASE 0x8020000000ull
+#define ALLOCATION_VM_END  0x803f000000ull
+/* Main private RW/NX TLS page bytes1744..1887, after event state1712..1743.
+ * Zero initialization chooses VM_BASE; never put mutable state in RX code.
+ */
+static struct allocator_state *allocator_state(void)
+{return (struct allocator_state *)(uintptr_t)0x803f0106d0ull;}
+static uintptr_t *allocation_cursor(void)
+{return &allocator_state()->cursor;}
+_Static_assert(sizeof(struct allocator_state)==144,"private allocator state bound");
+int pthread_mutex_lock(void *);
+int pthread_mutex_unlock(void *);
 int *__errno_location(void);
 
 static int64_t call3(uint64_t number,uint64_t first,uint64_t second,uint64_t third)
@@ -27,15 +51,63 @@ static int64_t call3(uint64_t number,uint64_t first,uint64_t second,uint64_t thi
     return (int64_t)a;
 }
 static int power_of_two(size_t value){return value&&!(value&(value-1));}
+static uintptr_t allocation_hint(size_t length)
+{
+    if(length>ALLOCATION_VM_END-ALLOCATION_VM_BASE)return 0;
+    uintptr_t *cursor=allocation_cursor();
+    uintptr_t previous=__atomic_load_n(cursor,__ATOMIC_RELAXED);
+    for(;;){
+        uintptr_t address=previous;
+        if(address<ALLOCATION_VM_BASE||address>ALLOCATION_VM_END-length)
+            address=ALLOCATION_VM_BASE;
+        if(__atomic_compare_exchange_n(cursor,&previous,address+length,
+                                     1,__ATOMIC_RELAXED,__ATOMIC_RELAXED))return address;
+    }
+}
+static int64_t allocation_map(size_t length)
+{
+    uintptr_t hint=allocation_hint(length);
+    int64_t mapped=call3(SYS_VM_MAP,hint,length,PROT_RW);
+    return mapped<0&&hint?call3(SYS_VM_MAP,0,length,PROT_RW):mapped;
+}
+/* Small objects share pages, without changing the public allocation header.
+ * One native mutex protects membership/bitmaps; no allocator call is made by
+ * that mutex or while creating a slab. Empty slabs are unmapped immediately.
+ */
+static void *allocate_small(size_t size)
+{
+    unsigned index=0;size_t slot=64;
+    while(slot<size+sizeof(struct allocation)){slot*=2;++index;}
+    struct allocator_state *state=allocator_state();
+    if(pthread_mutex_lock(state->lock))return 0;
+    struct allocation_slab *slab=state->heads[index];
+    unsigned slots=(PAGE_SIZE-SLAB_HEADER)/(unsigned)slot;
+    uint64_t available=(UINT64_C(1)<<slots)-1;
+    while(slab&&slab->used==available)slab=slab->next;
+    if(!slab){
+        int64_t mapped=allocation_map(PAGE_SIZE);
+        if(mapped<0){(void)pthread_mutex_unlock(state->lock);return 0;}
+        slab=(void *)(uintptr_t)mapped;
+        *slab=(struct allocation_slab){state->heads[index],SLAB_MAGIC,0,slot};
+        state->heads[index]=slab;
+    }
+    unsigned bit=(unsigned)__builtin_ctzll(available&~slab->used);
+    slab->used|=UINT64_C(1)<<bit;
+    struct allocation *header=(void *)((uintptr_t)slab+SLAB_HEADER+bit*slot);
+    *header=(struct allocation){SLAB_MAGIC,(uintptr_t)slab,slot,size};
+    (void)pthread_mutex_unlock(state->lock);
+    return header+1;
+}
 static void *allocate(size_t alignment,size_t size,int exact)
 {
     if(!size||!power_of_two(alignment)||alignment<sizeof(void *))return 0;
     if(exact&&size%alignment)return 0;
     if(size>SIZE_MAX-sizeof(struct allocation)-alignment)return 0;
+    if(alignment<=16&&size<=1024-sizeof(struct allocation))return allocate_small(size);
     size_t need=size+sizeof(struct allocation)+alignment-1;
     if(need>SIZE_MAX-(PAGE_SIZE-1))return 0;
     size_t length=(need+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
-    int64_t mapped=call3(SYS_VM_MAP,0,length,PROT_RW);
+    int64_t mapped=allocation_map(length);
     if(mapped<0)return 0;
     uintptr_t address=((uintptr_t)mapped+sizeof(struct allocation)+alignment-1)&~(uintptr_t)(alignment-1);
     struct allocation *header=(struct allocation *)address-1;
@@ -47,6 +119,21 @@ void free(void *address)
 {
     if(!address)return;
     struct allocation *header=(struct allocation *)address-1;
+    if(header->magic==SLAB_MAGIC){
+        struct allocator_state *state=allocator_state();
+        if(pthread_mutex_lock(state->lock))return;
+        struct allocation_slab *slab=(void *)(uintptr_t)header->base;
+        size_t slot=header->length;unsigned index=0;
+        for(size_t n=64;n<slot;n*=2)++index;
+        unsigned bit=(unsigned)(((uintptr_t)header-(uintptr_t)slab-SLAB_HEADER)/slot);
+        header->magic=0;slab->used&=~(UINT64_C(1)<<bit);
+        if(!slab->used){
+            struct allocation_slab **link=&state->heads[index];
+            while(*link&&*link!=slab)link=&(*link)->next;
+            if(*link){*link=slab->next;(void)call3(SYS_VM_UNMAP,(uintptr_t)slab,PAGE_SIZE,0);}
+        }
+        (void)pthread_mutex_unlock(state->lock);return;
+    }
     if(header->magic!=HEADER_MAGIC)return;
     uint64_t base=header->base,length=header->length;header->magic=0;
     (void)call3(SYS_VM_UNMAP,base,length,0);
@@ -54,13 +141,15 @@ void free(void *address)
 void *calloc(size_t count,size_t size)
 {
     if(count&&size>SIZE_MAX/count){*__errno_location()=12;return 0;}
-    return malloc(count*size);
+    size_t bytes=count*size;unsigned char *memory=malloc(bytes);
+    if(memory)for(size_t i=0;i<bytes;++i)memory[i]=0;
+    return memory;
 }
 size_t malloc_usable_size(void *address)
 {
     if(!address)return 0;
     struct allocation *header=(struct allocation *)address-1;
-    return header->magic==HEADER_MAGIC?(size_t)header->requested:0;
+    return header->magic==HEADER_MAGIC||header->magic==SLAB_MAGIC?(size_t)header->requested:0;
 }
 void *realloc(void *address,size_t size)
 {

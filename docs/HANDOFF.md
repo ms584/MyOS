@@ -5,6 +5,26 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Latest follow-up to452faaa: real native OSMesa shader/texture/pixel oracle/QMP
+frame/key input/teardown/relaunch PASS BIOS91959 15:25:50 (j4m9973h) and
+UEFI46868 15:28:03 (cefi3_3l),2 launches each/exact resources. New small-object
+slabs fix the evidenced96-byte allocation failure with0 managed free pages;
+native mutex/atomic hints protect shared allocator state. Compact live-page
+ledger avoids allocation-history growth. Mesa's genuine generic vertex
+translator replaces executable-malloc SSE JIT; NX/W^X remain enforced.
+See PHASE331_ALLOCATOR.md and PHASE332_NATIVE_RENDERER.md. Allocator65329
+exit0 15:31:30: BIOS yoexdyr8/UEFI9ndojdgg,3 launches each/exact resources.
+9925 terminal exit0 16:08:50: full suite/normal BIOS+UEFI restore/affected blob
+and lifetime BIOS/UEFI PASS; exact resources/OOM/cancel/relaunch verified.
+Final four normal hashes match PHASE331_ALLOCATOR.md; image ownership released.
+Test kernel262072/cap262144 (72 bytes headroom); normal253880/runtime29904.
+Old93613 is historical, superseded by new full9925. Tested local checkpoint.
+Fetch15:51 +07 confirms owner pushed452faaa; origin/main equals local HEAD.
+No merge or push by the agent. Pinned95008 terminal exit0 16:11:52: actual
+Cobalt hash/staging/79-missing/RELRO/reclamation and64MiB OOM rollback PASS.
+Default full dynamic_exercise does not include the optional core. No live owner.
+No EGL/GLES/text/backend-selection/Cobalt acceptance; Phases33.1/33.2 OPEN.
+
 Native follow-up to a38b85b: PHASE332_NATIVE_RENDERER.md. Genuine OSMesa now
 creates/binds a context in Ring 3 with installed runtime/TLS, missing0 imports.
 300s BIOS run FAILED before pixel/present/input/teardown proof; not native PASS.

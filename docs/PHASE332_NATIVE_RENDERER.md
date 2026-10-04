@@ -1,7 +1,29 @@
 # Phase33.2 genuine native OSMesa checkpoint (2026-10-04)
 
 Follow-up to a38b85b. This is NOT EGL/GLES, Cobalt, or Phase33 acceptance.
-No push, no33.3. Kernel/runtime architecture unchanged; full93613 remains valid.
+No push, no33.3. The original452faaa fixture-only checkpoint reused full93613.
+Latest allocator/VM follow-up: full9925 and affected regressions PASS16:08:50.
+
+## Latest native rendering evidence (+07)
+
+- Small-object page amplification caused real OOM: trace96-byte malloc failed
+  with managed free pages0 (native-28xh2kh0), not shader-language failure.
+  PHASE331_ALLOCATOR.md describes actual packed allocation/live-page tracking.
+- With allocations fixed, shaders/link passed but vertex translation tried to
+  execute RW/NX heap at0x80235e3020. Mesa rtasm non-POSIX fallback used malloc
+  for executable code. tools/mesa_exec_target.patch selects the original generic
+  translator for MyOS and truthfully returns NULL for unsupported exec malloc.
+  No RWX mapping, NX bypass, fake vertices or replacement pixels.
+- Final91959 BIOS exit0 15:25:50, native-j4m9973h. Final46868 UEFI exit0
+  15:28:03, native-cefi3_3l. Genuine context/GLSL120/VBO/texture drawing, four-
+  color oracle/all1024 checker-gradient pixels/cache eviction/re-upload,
+  QMP screen pixels, actual key input, worker TLS/main isolation/context/window
+  destruction, status90/exact resources and2 launches each all PASS.
+  Logs native-generic[-uefi]-120.log in build/renderer-evaluation;
+  frames build/system-tests/native-renderer[-uefi]-[0,1]-present.ppm.
+- NOT native text, GLES/EGL, selected production backend, Cobalt or web evidence.
+  The strict original engine acceptance remains unchanged. Full regression PASS;
+  normal BIOS/UEFI restored, hashes in PHASE331_ALLOCATOR.md.
 
 ## Implementation
 
@@ -16,7 +38,7 @@ No push, no33.3. Kernel/runtime architecture unchanged; full93613 remains valid.
 - Existing eager native ELF TLS supports the real Mesa32-byte template. The
   weak C++ _ZTH23_mesa_glapi_tls_Context initializer is optional for the C-defined
   zero-initialized TLS pointer, not a fake initializer implementation. Actual
-  worker context/GetCurrentContext binds; main/teardown isolation still pending.
+  worker context/GetCurrentContext binds; main/teardown isolation PASS natively.
 - SDK pthread_attr_t is pinned 80bytes/alignment8, with C11/C++98/17 guards and
   declarations for existing native attr APIs. Fixture uses512KiB worker stack,
   validates stack attribute and sentinel bytes. Main keeps its small stack.
@@ -26,10 +48,11 @@ No push, no33.3. Kernel/runtime architecture unchanged; full93613 remains valid.
   caches; profile reduces this to roughly12MiB. More eviction is a performance
   tradeoff. Mandatory blitter shader pre-cache is NOT bypassed.
 - MyOS PMM MAX_PAGES is256MiB: raising QEMU RAM512 does not raise managed RAM.
-  No speculative allocator, kernel memory cap or resource-accounting changes.
+  Allocator/live-page-ledger fixes are documented in PHASE331_ALLOCATOR.md;
+  kernel memory cap remains unchanged.
 - Test-only --diagnostic wrappers forward real calls; no locks/guards bypassed.
 
-## Required functional checks (not all reached)
+## Native OSMesa functional checks (all PASS; not EGL/GLES/Cobalt)
 
 Create/bind context; clear/read exact blue pixels; compile GLSL120 shaders;
 real VBO/texture drawing; exact four-color oracle; all1024 gradient/checker

@@ -1,0 +1,20 @@
+--- a/src/gallium/auxiliary/translate/translate.c
++++ b/src/gallium/auxiliary/translate/translate.c
+@@ -41,2 +41,2 @@
+-#if DETECT_ARCH_X86 || DETECT_ARCH_X86_64
++#if (DETECT_ARCH_X86 || DETECT_ARCH_X86_64) && !defined(__myos__)
+    translate = translate_sse2_create( key );
+--- a/src/gallium/auxiliary/rtasm/rtasm_execmem.c
++++ b/src/gallium/auxiliary/rtasm/rtasm_execmem.c
+@@ -159,3 +159,11 @@
+ {
++#if defined(__myos__)
++   /* Anonymous malloc memory is RW/NX, not executable. No RWX workaround:
++    * translate_create selects the genuine generic vertex translator.
++    */
++   (void)size;
++   return NULL;
++#else
+    return MALLOC( size );
++#endif
+ }
