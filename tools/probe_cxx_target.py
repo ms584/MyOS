@@ -30,6 +30,9 @@ with archive.open('rb') as stream:
 assert subprocess.check_output(['gcc','-dumpfullversion'],text=True).strip()=='15.2.0'
 out=Path(tempfile.mkdtemp(prefix='configure-',dir=base))
 members=['libstdc++-v3','libgcc/gthr.h','libgcc/gthr-posix.h','libgcc/gthr-single.h',
+         'libgcc/unwind-pe.h','libiberty/cp-demangle.c','libiberty/cp-demangle.h',
+         'include/demangle.h','include/libiberty.h','include/ansidecl.h',
+         'include/dyn-string.h','include/safe-ctype.h',
          'gcc/BASE-VER','gcc/DATESTAMP',
          'COPYING3','COPYING.RUNTIME','config','config.guess','config.sub','config-ml.in',
          'install-sh','ltmain.sh','missing','mkinstalldirs','move-if-change','compile','depcomp']

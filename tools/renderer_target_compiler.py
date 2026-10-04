@@ -37,7 +37,10 @@ flags = [] if query else [
 ]
 if options.math_include and not query:
     assert options.math_include.resolve().is_relative_to(options.provider.parent.resolve())
-    flags += ['-I' + str(options.math_include)]
+    # GCC <cmath> uses include_next: target C math must follow upstream C++
+    # headers rather than precede them. Default C/renderer profile is unchanged.
+    flags += (['-idirafter', str(options.math_include)] if options.cxx_library
+              else ['-I' + str(options.math_include)])
 if not query and options.language == 'cpp':
     flags += ['-nostdinc++', '-fno-exceptions', '-fno-rtti',
               '-D__STDC_LIMIT_MACROS=1', '-D__STDC_CONSTANT_MACROS=1']

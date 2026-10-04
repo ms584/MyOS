@@ -17,6 +17,9 @@ static unsigned exhaust()
     while(count<128){void *p=::operator new(1024*1024,std::nothrow);if(!p)break;pressure[count++]=p;}
     require(count>0&&count<128);
     while(count<2048){void *p=::operator new(4096,std::nothrow);if(!p)break;pressure[count++]=p;}
+    /* 4096 plus allocation metadata needs two pages. A final single page can
+     * still fit a destructor registration: exhaust minimum allocations too. */
+    while(count<2048){void *p=::operator new(1,std::nothrow);if(!p)break;pressure[count++]=p;}
     require(count<2048);return count;
 }
 static void thread_finish(void *raw)

@@ -65,6 +65,20 @@ and C11/C++98/17 no-host boundary PASS12:32:29. Whole C++ after-cstring build2:
 stdio/ctime/locale/math/omitted support sources remain; no container/render gate.
 All jobs terminal; normal four hashes unchanged12:32:44, reuse full93613.
 Next work should target actual Cobalt blockers, not interpret fixtures as phase pass.
+Real GCC containers/renderer follow-up: PHASE332_CXX_CONTAINERS.md. Exact original
+prime rehash, actual vector/hash and no-exception allocation; native ELFs import
+the installed runtime, never embed configure-only fixed TLS/data runtime objects.
+Final62162 exit0 13:00:28 BIOS/UEFI: SDK archive used by renderer, fatal length/
+range/GCC assertion SIGABRT, eight-worker recovery/exact resources. Prior positive
+runs reused for unchanged algorithms. Affected UEFI lifetime pressure exposed a
+fixture assumption (two-page allocations can leave one page for registration);
+minimum allocations now exhausted too, no assertion weakened. Corrected56071
+BIOS/UEFI exit0 12:53:32. Math include_next/support-source groups now clear.
+Renderer20532 terminal configure0/compile1 13:00:03, target-config-3c959yqk:
+5 failedunits/13 errors, prior11/11. Remaining ctime, cache sys/file.h, ddebug
+mkdir, HUD _IOLBF. No linked/native backend or Cobalt pass; imports163/242,
+actual0/5. All jobs terminal; unchanged normal hashes/full93613 valid.
+Fetch12:59 origin/main3699a87 is ancestor of local HEAD. Never push.
 
 Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,

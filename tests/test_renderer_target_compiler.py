@@ -89,6 +89,9 @@ typedef char nothrow_size[(sizeof(std::nothrow_t)>0)?1:-1];
 typedef char bad_alloc_size[(sizeof(std::bad_alloc)>0)?1:-1]; // Upstream <new>, not SDK shim.
 extern "C" int main() { return 0; }
 '''
+        if options.math_include:
+            source=source.replace('#include <new>', '#include <new>\n#include <cmath>')
+            source=source.replace('return 0;', 'return (int)std::sqrt(4.0)-2;')
         for standard in ('c++98','c++17'):
             result=subprocess.run(current+['-std='+standard,'-x','c++','-','-o',str(output)],
                                   input=source,text=True,capture_output=True)

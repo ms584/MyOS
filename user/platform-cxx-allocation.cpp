@@ -10,6 +10,7 @@ const nothrow_t nothrow{};
 [[noreturn]] void __throw_bad_alloc(){__builtin_trap();}
 [[noreturn]] void __throw_bad_array_new_length(){__builtin_trap();}
 [[noreturn]] void __throw_length_error(const char *){__builtin_trap();}
+[[noreturn]] void __throw_out_of_range(const char *){__builtin_trap();}
 [[noreturn]] void __throw_system_error(int){__builtin_trap();}
 }
 static void *allocate(size_t size,size_t alignment,bool nullable)

@@ -143,3 +143,9 @@ Native Cstdlib/Cstring dependencies now tested; C++98 ABI/gthread also PASS.
 Latest whole library build-after-cstring.log exit2 12:32:29 still needs real
 stdio/ctime/locale/math and omitted support-source integration. No full C++,
 native renderer or Cobalt acceptance. Do not substitute compile macros for APIs.
+
+PHASE332_CXX_CONTAINERS.md: actual GCC vector/hash/prime-rehash SDK tested on
+BIOS/UEFI, fatal range/assertion ABI and recovery. Integrated into renderer's
+explicit --cxx-configuration profile. GCC _1j4xqjo configure PASS, full library
+still fails stdio/ctime/locale/errno. Renderer3c959yqk compile1 (5 units/13 errors):
+ctime/cache flock header/mkdir/_IOLBF remain. Full C++ and Cobalt still OPEN.

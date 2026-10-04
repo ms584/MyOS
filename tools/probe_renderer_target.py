@@ -17,6 +17,8 @@ import tempfile
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--compile', action='store_true', help='Also collect actual target compile failures')
 parser.add_argument('--keep-going', action='store_true', help='Collect all remaining compile failures instead of stopping after eight units')
+parser.add_argument('--cxx-configuration', type=Path,
+                    help='Real generated GCC MyOS headers and native-tested no-exception container SDK')
 options = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 base = root / 'build/renderer-evaluation'
@@ -83,11 +85,23 @@ subprocess.run(['ar', 'rcs', str(provider), str(runtime), str(tls), str(string),
                 *map(str,jump_build['objects']),
                 *map(str,calendar_build['objects']),
                 *map(str, math_build['objects'].values())], check=True)
+if options.cxx_configuration:
+    from build_cxx_containers_sdk import build as build_containers
+    cxx_configuration=options.cxx_configuration.resolve()
+    container_build=build_containers(cxx_configuration,provider)
+    # Pure string/math objects already belong to this checked provider.
+    subprocess.run(['ar','rcs',str(provider),*map(str,container_build['cxx_objects'])],check=True)
 compiler = root / 'tools/renderer_target_compiler.py'
 def command(language):
-    return ['python3', str(compiler), '--language', language, '--sdk', str(root / 'user/sdk'),
+    result=['python3', str(compiler), '--language', language, '--sdk', str(root / 'user/sdk'),
             '--intrinsics', intrinsics, '--provider', str(provider),
-            '--math-include', str(math_include), '--']
+            '--math-include', str(math_include)]
+    if language=='cpp' and options.cxx_configuration:
+        result+=['--cxx-library','--','-isystem',str(cxx_configuration/'build/include'),
+                 '-isystem',str(cxx_configuration/'build/include/x86_64-unknown-myos'),
+                 '-isystem',str(cxx_configuration/'gcc-15.2.0/libstdc++-v3/libsupc++')]
+    else:result+=['--']
+    return result
 # Test the boundary itself before trusting configure results. This is link
 # evidence only: never execute MyOS syscall instructions on the Linux host.
 boundary_source = '''#include <pthread.h>
@@ -114,6 +128,18 @@ assert not subprocess.check_output(['nm', '-u', str(boundary)], text=True).strip
 rejected = subprocess.run(command('c') + ['-lm', '-x', 'c', '-', '-o', str(out / 'forbidden')],
                           input='int main(void) { return 0; }', text=True, capture_output=True)
 assert rejected.returncode and 'rejects unverified' in rejected.stderr
+if options.cxx_configuration:
+    text='''#include <vector>
+#include <unordered_map>
+int main() { std::vector<unsigned long> v(5,7);
+std::unordered_map<unsigned long,unsigned long> m; m.emplace(3,v[2]);
+m.reserve(32); return m.at(3)==7?0:1; }
+'''
+    result=subprocess.run(command('cpp')+['-std=c++17','-x','c++','-','-o',str(out/'cxx-boundary')],
+                          input=text,text=True,capture_output=True)
+    assert result.returncode==0,result.stderr[-2000:]
+    assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(out/'cxx-boundary')],text=True)
+    assert not subprocess.check_output(['nm','-u',str(out/'cxx-boundary')],text=True).strip()
 cross = out / 'myos.ini'
 cross.write_text('[binaries]\nc = ' + repr(command('c')) + '\ncpp = ' + repr(command('cpp')) +
                  '\nar = \'ar\'\nstrip = \'strip\'\npkg-config = \'false\'\n' +
@@ -140,6 +166,7 @@ with log.open('w') as stream:
 report = dict(output=str(out.relative_to(root)), configure_exit=result.returncode,
               boundary_checks_passed=True,
               math_sdk_integrated=True,
+              cxx_container_sdk_integrated=bool(options.cxx_configuration),
               host_libraries_allowed=False, native_execution=False,
               native_backend_selected=False)
 exit_code = result.returncode
