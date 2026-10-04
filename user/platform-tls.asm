@@ -1,5 +1,14 @@
 bits 64
 section .text
+global MyOSSignalReturn
+MyOSSignalReturn:
+    ; A handler RET leaves the user-address token above its return address.
+    ; Kernel restores only the matching top kernel-owned GP/flags/FP context.
+    mov rsi,[rsp]
+    mov edi,3
+    mov eax,49
+    int 0x80
+    ud2                         ; rejected/tampered return faults this process
 global MyOSTlsDesc
 MyOSTlsDesc:
     ; x64 TLSDESC ABI: descriptor in rax, return TP-relative offset in rax.

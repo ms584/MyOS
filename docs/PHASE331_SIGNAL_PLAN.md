@@ -1,6 +1,7 @@
 # Phase 33.1 signal ABI groundwork and delivery plan
 
 Updated 2026-10-04; follows a536b93. Delivery below is DESIGN, not implemented.
+Later implementation/evidence: PHASE331_SIGNALS.md supersedes delivery status.
 Phase33.1/33.2 remain OPEN; no new core imports or actual Cobalt acceptance.
 
 ## Implemented and measured in this checkpoint

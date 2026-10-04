@@ -253,6 +253,8 @@ struct frame *syscall_dispatch(struct frame *frame)
     }
     process_cleanup_detached(process);
     switch (frame->rax) {
+    case SYS_SIGNAL:
+        return process_signal_call(process,frame);
     case SYS_WRITE: {
         size_t length = frame->rsi;
         if (length > SYS_WRITE_MAX) { frame->rax = (uint64_t)-22; break; }

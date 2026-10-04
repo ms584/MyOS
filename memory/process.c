@@ -19,6 +19,7 @@ static void release(struct process *process)
 {
     fs_close_all(process->files);
     /* Only detached, noncurrent address spaces may reach this function. */
+    process_signal_release(process);
     for (unsigned i = 0; i < process->page_count; ++i) if(process->image_pages?process->image_pages[i]:process->pages[i])page_free(process->image_pages?process->image_pages[i]:process->pages[i]);
     for(unsigned i=0;i<process->vm_page_count;++i)if(process->vm_pages[i])page_free(process->vm_pages[i]);
     for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)kfree(process->threads[i].kernel_stack);
@@ -141,6 +142,9 @@ struct frame *process_fault(struct frame *frame)
     process->fault_rip = frame->rip;
     if (frame->vector == 14)
         __asm__ volatile ("mov %%cr2,%0" : "=r"(process->fault_address));
+    unsigned signal=frame->vector==6?4:(frame->vector==0||frame->vector==16||frame->vector==19)?8:
+        (frame->vector==1||frame->vector==3)?5:frame->vector==17?7:11;
+    if(process_signal_fault(process,signal))return frame;
     print("USER FAULT pid="); decimal(process->pid);
     print(" vector="); decimal(frame->vector);
     print(" error="); hex(frame->error);
@@ -424,6 +428,19 @@ bool process_user_access(struct process *p,uint64_t address,size_t length,unsign
     return true;
 }
 
+bool process_copy_user(struct process *p,uint64_t address,void *buffer,size_t length,bool write)
+{
+    if(!process_user_access(p,address,length,write?PROCESS_PROT_WRITE:PROCESS_PROT_READ))return false;
+    uint8_t *bytes=buffer;
+    while(length){uint64_t *e=vm_leaf(p,address,false);
+        size_t count=PAGE_SIZE-address%PAGE_SIZE;if(count>length)count=length;
+        void *physical=(void *)(uintptr_t)((*e&0x000ffffffffff000ull)+address%PAGE_SIZE);
+        if(write)memcpy(physical,bytes,count);else memcpy(bytes,physical,count);
+        address+=count;bytes+=count;length-=count;
+    }
+    return true;
+}
+
 /* TLS mappings are process-owned bounded slots, never anonymous mmap regions.
  * Save a relocated immutable template before constructors; each worker gets
  * a fresh copy, not the main thread's possibly modified values. */
@@ -471,6 +488,7 @@ static void thread_release(struct process *p,struct process_thread *thread)
     uint64_t user_stack=thread->user_stack;size_t user_length=thread->user_stack_length;
     check(thread->state==PROCESS_THREAD_ZOMBIE,"release live thread");
     check(scheduler_detach_thread(p,thread),"detach user thread");
+    process_signal_reset_thread(p,thread,false);
     if(p->tls_size)tls_reset(p,(unsigned)(thread-p->threads)+1,false);
     kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));
     if(user_stack)check(!process_vm_unmap(p,user_stack,user_length),"detached stack release");
@@ -505,6 +523,7 @@ int64_t process_thread_create(struct process *p,uint64_t entry,uint64_t arg,
     thread->fs_base=p->tls_size?tls_reset(p,(unsigned)(thread-p->threads)+1,true):tls;
     thread->tid=(p->pid<<32)|++p->next_tid;
     thread->state=PROCESS_THREAD_RUNNING;
+    process_signal_reset_thread(p,thread,true);
     if(!scheduler_attach_thread(p,thread)){
         if(p->tls_size)tls_reset(p,(unsigned)(thread-p->threads)+1,false);
         kfree(thread->kernel_stack);memset(thread,0,sizeof(*thread));return -11;
@@ -516,6 +535,7 @@ struct frame *process_thread_exit(struct process *p,struct frame *frame,int32_t 
 {
     struct process_thread *thread=scheduler_current_thread();
     if(!thread){frame->rax=(uint64_t)-1;return frame;}
+    process_signal_reset_thread(p,thread,false);
     thread->exit_status=status;thread->state=PROCESS_THREAD_ZOMBIE;
     check(scheduler_stop_thread(p,thread),"stop current user thread");
     return schedule(frame);

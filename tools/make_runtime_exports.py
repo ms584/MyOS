@@ -4,7 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
-wanted={'__errno_location','access','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close','closedir',
+wanted={'__errno_location','access','abort','signal','sigaction','raise','MyOSSignalReturn','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close','closedir',
         'SbDrmCloseSession','SbDrmCreateSystem','SbDrmDestroySystem',
         'SbDrmGenerateSessionUpdateRequest','SbDrmGetMetrics','SbDrmIsServerCertificateUpdatable',
         'SbDrmUpdateServerCertificate','SbDrmUpdateSession','SbMicrophoneCreate',

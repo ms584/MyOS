@@ -1,5 +1,5 @@
-/* Pinned x64 Cobalt/musl layouts and mask helpers only.
- * No signal/sigaction/raise/pause provider or signal delivery is supplied. */
+/* Pinned x64 Cobalt/musl layouts; native self signals/simple handlers only.
+ * No cross-thread delivery, pause, SA_SIGINFO/ONSTACK/RESTART/job control yet. */
 #ifndef MYOS_SDK_SIGNAL_H
 #define MYOS_SDK_SIGNAL_H
 #include <stdint.h>
@@ -55,6 +55,15 @@ struct sigaction {
 #define SIGSEGV 11
 #define SIGSTOP 19
 #define SIGSYS 31
+#ifdef __cplusplus
+extern "C" {
+#endif
+int sigaction(int,const struct sigaction *,struct sigaction *);
+void (*signal(int,void (*)(int)))(int);
+int raise(int);
+#ifdef __cplusplus
+}
+#endif
 static inline int sigemptyset(sigset_t *set)
 {
     if(!set){errno=EINVAL;return -1;}

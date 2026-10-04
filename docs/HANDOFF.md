@@ -3,6 +3,29 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Tested native self-signal checkpoint — 2026-10-04
+
+Follows d506dd5; local commit pending. Dependency checkpoint, phases still OPEN.
+PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,
+bounded GP/FP handler contexts and fault repair; real default SIGABRT abort.
+Native78959 BIOS/UEFI36 launches/profile +6cancels/profile PASS09:15:46,
+thread-exit/context slot reuse/nesting bound/exact resources; masks39400 PASS.
+Final66362 exit0 09:57:35: explicit RAX/full-RFLAGS restoration PASS, BIOS
+delivery-ft2by0y0/UEFI delivery-83dghx44,72 launches/12cancels/exact resources.
+Full97678 exit0 09:55:59: uninterrupted test_system.py, normal BIOS/UEFI restore,
+pinned Cobalt mapping/relocations/missing-import rollback and64MiB OOM PASS.
+All jobs terminal, no shared-image owner. Hashes in PHASE331_SIGNALS.md;
+stronger scoped runs prove normal image nonmutation. Kernel253080/runtime29104,
+BSS end0x7d340. Prior full78177 is historical before these architecture changes.
+Renderer49393 terminal compile1 09:23:29 ybt5nn3q:13 failedunits/16 errors,
+prior21/29; abort declarations clear, no backend/Cobalt acceptance.
+Kernel-only -Oz frees4096test bytes before signal work; no changed cap/feature
+or assertion. Currenttest261272/cap262144 leaves872bytes. New bindings163/242
+(67.4% coverage),79 strong +weakTLS remain; Cobalt0/5. Cross-thread/pause/
+SIGINFO/alternate stack/restart still pending; never silently accept flags.
+Next: cross-task sends/wait interruption/pause/SIGINFO; renderer OS-info/C++/EGL
+and actual native Cobalt web endurance still required. No33.3/push.
+
 ## Signal ABI/mask groundwork — 2026-10-04
 
 Follows a536b93; fetch08:31 confirms origin/main remains d147ec8. No push.

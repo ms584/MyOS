@@ -57,6 +57,7 @@ struct process {
     struct fs_handle files[FS_HANDLES];
     struct process_thread threads[PROCESS_THREAD_LIMIT];
     uint64_t next_tid;
+    struct process_signal *signals;
 };
 
 struct elf_source;
@@ -66,6 +67,12 @@ void process_discard_elf(struct process *);
 struct elf_start;
 bool process_start_elf(struct process *,const struct elf_start *);
 bool process_image_copy(struct process *,uint64_t,void *,size_t,bool);
+bool process_copy_user(struct process *,uint64_t,void *,size_t,bool);
+struct frame *process_signal_call(struct process *,struct frame *);
+struct frame *process_signal_deliver(struct frame *);
+bool process_signal_fault(struct process *,unsigned);
+void process_signal_reset_thread(struct process *,struct process_thread *,bool);
+void process_signal_release(struct process *);
 bool process_image_readonly(struct process *,uint64_t,uint64_t);
 bool process_map_runtime(struct process *);
 bool process_install_tls(struct process *,const struct elf_plan *);

@@ -201,6 +201,7 @@ int msync(void *address,size_t length,int flags)
 #define SYS_CLOCK_NANOS 27u
 #define SYS_GETTID 28u
 #define SYS_MAIN_STACK_INFO 48u
+#define SYS_SIGNAL 49u
 #define RUNTIME_TLS_BASE 0x803f010000ull
 #define THREAD_STACK_SIZE (1024u*1024u)
 struct main_stack_info { uint64_t base,length,guard_base,guard_length; };
@@ -318,7 +319,6 @@ static uint32_t *key_bits(void){return (uint32_t *)(uintptr_t)(RUNTIME_TLS_BASE+
 static void (**key_destructors(void))(void *)
 {return (void (**)(void *))(uintptr_t)(RUNTIME_TLS_BASE+1152);}
 static void **key_values(void){return (void **)(uintptr_t)(self_page()+64);}
-static uint64_t *signal_mask(void){return (uint64_t *)(uintptr_t)(self_page()+384);}
 static char *main_thread_name(void){return (char *)(uintptr_t)(RUNTIME_TLS_BASE+512);}
 static void clear_key_values(unsigned key)
 {for(unsigned i=0;i<=8;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
@@ -374,8 +374,6 @@ static void thread_entry(void *raw)
     struct thread_control *control=raw;
     *(struct thread_control **)(uintptr_t)(self_page()+8)=control;
     void **values=key_values();for(unsigned i=0;i<THREAD_KEYS;++i)values[i]=0;
-    signal_mask()[0]=control->signal_mask[0];
-    signal_mask()[1]=control->signal_mask[1];
     pthread_exit(control->start(control->argument));
 }
 int pthread_detach(uint64_t thread);
@@ -404,7 +402,7 @@ int pthread_create(uint64_t *thread,const void *raw,void *(*start)(void *),void 
     if(mapping==(void *)(uintptr_t)-1)return EAGAIN;
     struct thread_control *control=mapping;
     *control=(struct thread_control){THREAD_MAGIC,0,(uint64_t)(uintptr_t)mapping,length,
-        start,argument,0,0,0,0,{signal_mask()[0],signal_mask()[1]},{0}};
+        start,argument,0,0,0,0,{0,0},{0}};
     __atomic_add_fetch(active_workers(),1,__ATOMIC_RELAXED);
     int64_t tid=call4(SYS_THREAD_CREATE,(uintptr_t)thread_entry,(uintptr_t)control,
                       (uintptr_t)mapping+length,0);
@@ -510,20 +508,37 @@ int pthread_kill(uint64_t thread,int signal)
 }
 int pthread_sigmask(int how,const void *set,void *old)
 {
-    uint64_t *current=signal_mask();
-    if(set&&(how<0||how>2))return EINVAL;
-    uint64_t first=0,second=0;
-    if(set){first=((const uint64_t *)set)[0];second=((const uint64_t *)set)[1]&0x7fffffffffffffffull;}
-    /* musl_sigset_t is 128 BYTES, despite a 128-bit comment in the pinned
-     * wrapper helper. Its supported signal range is 1..127; clear all padding. */
-    if(old){for(unsigned i=0;i<MUSL_SIGSET_WORDS;++i)((uint64_t *)old)[i]=i<2?current[i]:0;}
-    if(set){
-        if(how==0){current[0]|=first;current[1]|=second;}
-        else if(how==1){current[0]&=~first;current[1]&=~second;}
-        else {current[0]=first;current[1]=second;}
-        current[0]&=~((1ull<<8)|(1ull<<18));
-    }
-    return 0;
+    return (int)-call4(SYS_SIGNAL,1,(unsigned)how,(uintptr_t)set,(uintptr_t)old);
+}
+typedef void (*signal_handler)(int);
+struct runtime_signal_action {
+    signal_handler handler;uint64_t mask[16];uint32_t flags,padding;
+    void (*restorer)(void);
+};
+int sigaction(int signal,const void *action,void *old)
+{
+    int64_t result=call4(SYS_SIGNAL,0,(unsigned)signal,(uintptr_t)action,(uintptr_t)old);
+    if(result<0){*__errno_location()=(int)-result;return -1;}return 0;
+}
+signal_handler signal(int number,signal_handler handler)
+{
+    struct runtime_signal_action action={handler,{0},0,0,0},old;
+    /* No SA_RESTART claim: interruptible external sends are not supplied yet. */
+    if(sigaction(number,&action,&old))return (signal_handler)(uintptr_t)-1;
+    return old.handler;
+}
+int raise(int signal)
+{
+    int64_t result=call3(SYS_SIGNAL,2,(unsigned)signal,0);
+    if(result<0){*__errno_location()=(int)-result;return -1;}return 0;
+}
+_Noreturn void abort(void)
+{
+    (void)raise(6);
+    /* A returned/ignored/blocked SIGABRT handler cannot prevent the second,
+     * allocation-independent default SIGABRT termination. No fake exit134. */
+    (void)call3(SYS_SIGNAL,4,6,0);
+    __builtin_unreachable();
 }
 
 struct mutex_layout { volatile uint64_t state;uint64_t owner;uint32_t recursion,type; };

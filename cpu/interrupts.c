@@ -23,10 +23,10 @@ void interrupts_init(void){
 }
 void timer_init(void){outb(0x43,0x34);outb(0x40,11932&255);outb(0x40,11932>>8);outb(0x21,inb(0x21)&~1u);}
 struct frame *interrupt_dispatch(struct frame *f){
-    if (f->vector == 128) return syscall_dispatch(f);
+    if (f->vector == 128) return process_signal_deliver(syscall_dispatch(f));
     if(f->vector<32){
         if ((f->cs & 3) == 3 && f->vector != 2 && f->vector != 8 && f->vector != 18)
-            return process_fault(f);
+            return process_signal_deliver(process_fault(f));
         print("\nEXCEPTION ");decimal(f->vector);print(" error=");hex(f->error);print(" rip=");hex(f->rip);
         if(f->vector==14){uintptr_t cr2;__asm__ volatile("mov %%cr2,%0":"=r"(cr2));print(" cr2=");hex(cr2);}
         panic(f->vector==6?"Invalid Opcode":f->vector==13?"General Protection Fault":f->vector==14?"Page Fault":"CPU exception");
@@ -39,5 +39,5 @@ struct frame *interrupt_dispatch(struct frame *f){
     if(f->vector==37)audio_irq();
     if(f->vector>=40)outb(0xa0,0x20);
     outb(0x20,0x20);
-    return f->vector==32?schedule(f):f;
+    return process_signal_deliver(f->vector==32?schedule(f):f);
 }
