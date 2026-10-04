@@ -16,11 +16,14 @@ static bool header(const struct elf_source *s,struct ehdr *h)
         h->phentsize==56&&h->phnum&&h->phnum<=64&&h->phoff<=s->size&&
         (uint64_t)h->phnum*56<=s->size-h->phoff;
 }
-int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
+int elf_plan_read_at(const struct elf_source *s,struct elf_plan *plan,uint64_t base)
 {
     struct ehdr h;if(!plan||!header(s,&h))return -8;
+    if(base<USER_BASE||base>=USER_BASE+ELF_SPAN||base%PAGE_SIZE)return -8;
+    if(h.type!=3&&base!=USER_BASE)return -95;
     memset(plan,0,sizeof(*plan));plan->dynamic=h.type==3;plan->stack_pages=ELF_STACK_PAGES;
-    uint64_t bias=plan->dynamic?USER_BASE:0;
+    uint64_t bias=plan->dynamic?base:0;plan->load_bias=bias;
+    uint64_t available=USER_BASE+ELF_SPAN-base;
     if(h.entry>UINT64_MAX-bias)return -8;
     plan->entry=h.entry+bias;bool entry=false,tls=false;struct phdr tls_header={0};
     for(unsigned i=0;i<h.phnum;++i){
@@ -29,7 +32,7 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
         if(p.type==7){
             if(!plan->dynamic)return -95;
             if(tls||!p.memsz||p.filesz>p.memsz||p.offset>s->size||p.filesz>s->size-p.offset||
-               p.vaddr>=ELF_SPAN||p.memsz>ELF_SPAN-p.vaddr||p.flags!=4)return -8;
+               p.vaddr>=available||p.memsz>available-p.vaddr||p.flags!=4)return -8;
             if(p.memsz>ELF_TLS_LIMIT||p.align>PAGE_SIZE)return -95;
             uint64_t align=p.align?p.align:1;
             if((align&(align-1))||p.vaddr%align!=p.offset%align)return -8;
@@ -42,7 +45,7 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
         if(p.type==2&&!plan->dynamic)return -95;
         if(p.type==0x6474e551&&(p.flags&1))return -8; /* executable stack */
         if(p.type==2||(p.type==0x6474e552&&plan->dynamic)){
-            if(p.vaddr>ELF_SPAN||p.memsz>ELF_SPAN-p.vaddr||!plan->dynamic)return -8;
+            if(p.vaddr>available||p.memsz>available-p.vaddr||!plan->dynamic)return -8;
             if(p.type==2){if(plan->dynamic_size||!p.filesz||p.filesz>65536||p.filesz%16||p.filesz>p.memsz)return -8;
                 plan->dynamic_address=p.vaddr+bias;plan->dynamic_size=p.filesz;}
             else{if(plan->relro_size)return -8;plan->relro_address=p.vaddr+bias;plan->relro_size=p.memsz;}
@@ -51,6 +54,7 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
         if(p.filesz>p.memsz||p.offset>s->size||p.filesz>s->size-p.offset||
            p.vaddr>UINT64_MAX-bias||(p.flags&~7u)||!(p.flags&4)||((p.flags&3)==3))return -8;
         if(p.align>1&&((p.align&(p.align-1))||p.vaddr%p.align!=p.offset%p.align))return -8;
+        if(plan->dynamic&&p.align>1&&bias%p.align)return -8;
         if(!p.memsz)continue;
         uint64_t address=p.vaddr+bias;
         if(address<USER_BASE||address>=USER_BASE+ELF_SPAN||p.memsz>USER_BASE+ELF_SPAN-address||plan->count==ELF_SEGMENTS)return -8;
@@ -73,6 +77,8 @@ int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
     }
     return 0;
 }
+int elf_plan_read(const struct elf_source *s,struct elf_plan *plan)
+{return elf_plan_read_at(s,plan,USER_BASE);}
 int elf_inspect(const struct elf_source *s)
 {
     struct elf_plan plan;int result=elf_plan_read(s,&plan);if(result)return result;
@@ -154,5 +160,31 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
 int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false,0,0);}
 int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true,0,0);}
 int elf_link(const struct elf_source *s){return load_image(s,0,false,false,0,0);}
+int elf_link_pair(const struct elf_source *core,const struct elf_source *provider)
+{
+    struct elf_plan plans[2];int rc=elf_plan_read(core,&plans[0]);if(rc)return rc;
+    if(!plans[0].dynamic)return -95;
+    uint64_t end=USER_BASE;
+    for(unsigned i=0;i<plans[0].count;++i){const struct elf_segment *s=&plans[0].segments[i];
+        uint64_t hi=(s->address+s->memsz+PAGE_SIZE-1)&~(PAGE_SIZE-1ull);
+        if(hi>end)end=hi;
+    }
+    /* A full unmapped separation page; never assume the core fits96MiB. */
+    if(end>USER_BASE+ELF_SPAN-2*PAGE_SIZE)return -8;
+    if((rc=elf_plan_read_at(provider,&plans[1],end+PAGE_SIZE)))return rc;
+    if(!plans[1].dynamic||(plans[0].tls_size&&plans[1].tls_size))return -95;
+    const struct elf_source *sources[]={core,provider};
+    const struct elf_plan *owners[]={&plans[0],&plans[1]};
+    size_t before=pages_free(),heap_before=heap_allocated();
+    struct process *p=process_stage_elf_pair(sources,owners);
+    if(!p){check(pages_free()==before,"ELF pair failed-load pages");
+        check(heap_allocated()==heap_before,"ELF pair failed-load heap");return -12;}
+    print("ELF pair provider bias: ");hex(plans[1].load_bias);print("\n");
+    struct elf_start starts[2];rc=elf_prepare_pair(p,owners,starts);
+    process_discard_elf(p);
+    check(pages_free()==before,"ELF pair staged pages");
+    check(heap_allocated()==heap_before,"ELF pair staged heap");
+    print("ELF pair images released; not executed\n");return rc;
+}
 int elf_starboard(const struct elf_source *s,const char *name,const char *url,int32_t *status)
 {if(!name)return -22;return load_image(s,status,true,true,name,url);}

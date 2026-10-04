@@ -63,6 +63,7 @@ struct process {
 struct elf_source;
 struct elf_plan;
 struct process *process_stage_elf(const struct elf_source *,const struct elf_plan *);
+struct process *process_stage_elf_pair(const struct elf_source *const [2],const struct elf_plan *const [2]);
 void process_discard_elf(struct process *);
 struct elf_start;
 bool process_start_elf(struct process *,const struct elf_start *);

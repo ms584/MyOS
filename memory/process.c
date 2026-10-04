@@ -177,25 +177,34 @@ static uintptr_t elf_map_page(struct process *p,unsigned capacity,uint64_t addre
     uintptr_t page=elf_page(p,capacity);if(!page)return 0;
     *e=page|5|((flags&2)?2:0)|((flags&1)?0:NX);return page;
 }
-struct process *process_stage_elf(const struct elf_source *source,const struct elf_plan *plan)
+static struct process *stage_images(const struct elf_source *const sources[],const struct elf_plan *const plans[],unsigned images)
 {
+    if(!images||images>2)return 0;
+    const struct elf_plan *plan=plans[0];
     uint64_t flags=irq_save();struct process *p=0;
     for(unsigned i=0;i<PROCESS_LIMIT;++i)if(processes[i].state==PROCESS_UNUSED){p=&processes[i];break;}
     if(!p){irq_restore(flags);return 0;}
     unsigned stack_pages=plan->stack_pages?plan->stack_pages:ELF_STACK_PAGES;
     if(stack_pages<ELF_STACK_PAGES||stack_pages>ELF_STARBOARD_STACK_PAGES){irq_restore(flags);return 0;}
     unsigned capacity=128+stack_pages-ELF_STACK_PAGES;
-    if(plan->tls_size)capacity+=(PROCESS_THREAD_LIMIT+1u)*
-        (unsigned)((plan->tls_offset+PAGE_SIZE-1)/PAGE_SIZE+1);
-    for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
-        capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
+    unsigned native_tls=0;
+    for(unsigned image=0;image<images;++image){const struct elf_plan *owner=plans[image];
+        if(owner->tls_size){if(++native_tls>1){irq_restore(flags);return 0;}
+            capacity+=(PROCESS_THREAD_LIMIT+1u)*
+                (unsigned)((owner->tls_offset+PAGE_SIZE-1)/PAGE_SIZE+1);}
+        for(unsigned i=0;i<owner->count;++i){const struct elf_segment *s=&owner->segments[i];
+            capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
+        }
     }
     p->image_pages=kmalloc((size_t)capacity*sizeof(uintptr_t));
     if(!p->image_pages)goto failed;
     p->image_capacity=capacity;
     p->root=elf_page(p,capacity);if(!p->root)goto failed;
     ((uint64_t *)p->root)[0]=((uint64_t *)boot_state.root)[0]&~4ull;
-    for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
+    for(unsigned image=0;image<images;++image){const struct elf_plan *owner=plans[image];
+      const struct elf_source *source=sources[image];
+      if(images==2){print("ELF pair mapping module: ");decimal(image);print("\n");}
+      for(unsigned i=0;i<owner->count;++i){const struct elf_segment *s=&owner->segments[i];
         uint64_t end=s->address+s->memsz;
         for(uint64_t va=s->address&~4095ull;va<end;va+=PAGE_SIZE){
             uintptr_t page=elf_map_page(p,capacity,va,s->flags);if(!page)goto failed;
@@ -204,6 +213,7 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
             if(begin<stop&&!source->read(source->context,s->offset+begin-s->address,
                (void *)(page+begin-va),(size_t)(stop-begin)))goto failed;
         }
+      }
     }
     /* Fixed top preserves legacy ELF addresses; grow downward with an unmapped
      * guard below the allocation. Starboard's 2 MiB is a budget, not a measured
@@ -223,6 +233,10 @@ struct process *process_stage_elf(const struct elf_source *source,const struct e
 failed:
     release(p);irq_restore(flags);return 0;
 }
+struct process *process_stage_elf(const struct elf_source *source,const struct elf_plan *plan)
+{const struct elf_source *sources[]={source};const struct elf_plan *plans[]={plan};return stage_images(sources,plans,1);}
+struct process *process_stage_elf_pair(const struct elf_source *const sources[2],const struct elf_plan *const plans[2])
+{return stage_images(sources,plans,2);}
 
 bool process_map_runtime(struct process *p)
 {

@@ -60,6 +60,16 @@ static void execute(char *line){
     char *arg=word(&rest);
     if(equal(cmd,"assets")){if(arg)print("usage: assets\n");else asset_list();return;}
     if(equal(cmd,"elf")){
+        if(arg&&equal(arg,"pair-link")){
+            char *core_name=word(&rest),*provider_name=word(&rest);
+            if(!core_name||!provider_name||word(&rest)){print("usage: elf pair-link CORE PROVIDER\n");return;}
+            struct asset_file core,provider;int rc=asset_open(core_name,&core);
+            if(!rc)rc=asset_open(provider_name,&provider);
+            if(!rc){struct elf_source sources[]={{&core,core.size,asset_read},{&provider,provider.size,asset_read}};
+                rc=elf_link_pair(&sources[0],&sources[1]);}
+            if(rc==-95)print("ELF: unsupported runtime feature; not executed\n");else if(rc)error(rc);
+            return;
+        }
         char *name=word(&rest),*url=word(&rest);bool starboard=arg&&equal(arg,"starboard");
         if(!arg||!name||(url&&!starboard)||word(&rest)||(!starboard&&!equal(arg,"inspect")&&!equal(arg,"run")&&!equal(arg,"live")&&!equal(arg,"link"))){print("usage: elf inspect|link|run|live ASSET; elf starboard ASSET [URL]\n");return;}
         struct asset_file file;int result=asset_open(name,&file);

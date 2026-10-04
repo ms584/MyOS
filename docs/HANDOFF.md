@@ -5,6 +5,28 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 baseline4cc8b59 plus actual pair staging, PHASE332_MODULE_PAIR.md:
+each elf_plan owns load_bias; checked core LOAD end/page guard places provider
+at0x0000008006331000. Both images share one process and owned-page capacity;
+runtime mapped once, genuine dynamic RX getters exported to core, real RELRO
+and sole native TLS module1 copied from provider's relocated biased image.
+Two native TLS images explicitly unsupported; no arbitrary DT_NEEDED/search.
+Pair BIOS9281 PASS02:41:09;75135 PASS02:47:36 UEFI256 and BIOS128 partial
+second-image OOM/BIOS64/UEFI128 OOM; repeat/exact pages+heap checks/shell recovery.
+Actual core strong bindings165/242=68.2%,77 still missing; fixture semantics
+remain163/242=67.4%, Cobalt0/5. Pair does NOT execute constructors/getters/core.
+Final8994 exit0 03:27:23 resolver BIOSegpl7xwj/UEFIr0rgozq0 scoped + ALL full
+architectural regression PASS/normal BIOS restored. Maximum test253888/cap262144
+(8256 free), normal245692/runtime29904, BSS end0x7b648<0x80000. Normal BIOS/UEFI
+match scoped frozen images03:29:05; hashes in detailed doc; no live job/owner.
+Provider SDK exit still traverses only one bootstrap lifecycle frame; do not reuse
+unchanged for pair startup. It runs own cxa finalize and main frame's fini list
+on caller stack then syscall3; no jumping worker to main frame. Core has no
+dynamic imports/exports for these cxa/env/exit names, not proof of no internals.
+Next actual executable pair startup/preflight-before-constructors/init-fini/SDK
+exit/DSO+env ownership, worker TLS/emutls/cancel/close/relaunch, remaining imports
+and real HTML/JS/DOM/input/verifiedHTTPS>=60s. No closure/33.3/push.
+
 Current baseline a2cf871 plus kernel/TLS LTO budget slice,2026-10-05:
 PHASE332_KERNEL_BUDGET.md. Old test262072/cap262144 -> current249792,12352 free,
 without cap/ABI/low-memory/W^X relaxation or dropping a runtime service.

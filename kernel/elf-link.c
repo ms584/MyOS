@@ -1,12 +1,15 @@
 #include "elf.h"
 #include "process.h"
 #include "platform-runtime-exports.h"
-/* Single-object eager linker with an exact allowlist of tested platform exports. */
+/* Eager linker: tested platform allowlist and an explicit two-getter provider.
+ * No arbitrary dependency search, symbol interposition or host loader. */
 struct dyn { int64_t tag;uint64_t value; };
 struct symbol { uint32_t name;uint8_t info,other;uint16_t section;uint64_t value,size; };
 struct rela { uint64_t offset,info;int64_t addend; };
+struct provider_exports { uint64_t egl,gles; };
 struct linker {
     struct process *process;const struct elf_plan *plan;
+    const struct provider_exports *provider;
     uint64_t dt[34],seen,gnu_hash,gnu_bytes,hash_bytes,flags1,relacount;
     unsigned symbols,missing,weak,platform,relative,absolute,global,jump,skipped;
 };
@@ -28,21 +31,29 @@ static bool platform_resolve(const char *name,uint64_t *address)
         if(name_equal(name,platform_exports[i].name)){*address=platform_exports[i].address;return true;}
     return false;
 }
+static bool resolve(struct linker *l,const char *name,uint64_t *address)
+{
+    if(l->provider){
+        if(name_equal(name,"SbGetEglInterface")){*address=l->provider->egl;return true;}
+        if(name_equal(name,"SbGetGlesInterface")){*address=l->provider->gles;return true;}
+    }
+    return platform_resolve(name,address);
+}
 static bool span(const struct elf_plan *plan,uint64_t offset,uint64_t size,unsigned flags)
 {
     if(offset>=ELF_SPAN||size>ELF_SPAN-offset)return false;
     for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
-        uint64_t lo=s->address-USER_BASE;
+        uint64_t lo=s->address-plan->load_bias;
         if(offset>=lo&&offset-lo<=s->memsz&&size<=s->memsz-(offset-lo)&&(s->flags&flags)==flags)return true;
     }return false;
 }
 static bool read_image(struct linker *l,uint64_t offset,void *dst,size_t size)
-{return span(l->plan,offset,size,4)&&process_image_copy(l->process,USER_BASE+offset,dst,size,false);}
+{return span(l->plan,offset,size,4)&&process_image_copy(l->process,l->plan->load_bias+offset,dst,size,false);}
 static bool relro_pages(const struct elf_plan *plan,uint64_t address,uint64_t size)
 {
     /* GNU ld may include final-page padding beyond p_memsz in PT_GNU_RELRO.
      * Only accept pages actually mapped by ONE writable, nonexecuting LOAD. */
-    if(address<USER_BASE||address>=USER_BASE+ELF_SPAN||size>USER_BASE+ELF_SPAN-address)return false;
+    if(address<plan->load_bias||address>=USER_BASE+ELF_SPAN||size>USER_BASE+ELF_SPAN-address)return false;
     for(unsigned i=0;i<plan->count;++i){const struct elf_segment *s=&plan->segments[i];
         uint64_t end=s->address+s->memsz;
         if(s->flags==6&&address>=s->address&&address<end&&
@@ -54,7 +65,7 @@ static bool overlap(uint64_t a,uint64_t n,uint64_t b,uint64_t m)
 static bool target(struct linker *l,uint64_t offset,unsigned width)
 {
     if(!span(l->plan,offset,width,6))return false;
-    uint64_t tables[][2]={{l->plan->dynamic_address-USER_BASE,l->plan->dynamic_size},
+    uint64_t tables[][2]={{l->plan->dynamic_address-l->plan->load_bias,l->plan->dynamic_size},
         {l->dt[7],l->dt[8]},{l->dt[23],l->dt[2]},
         {l->dt[6],(uint64_t)l->symbols*24},{l->dt[5],l->dt[10]},
         {l->gnu_hash,l->gnu_bytes},{l->dt[4],l->hash_bytes}};
@@ -67,7 +78,7 @@ static int parse(struct linker *l)
     if(!l->plan->dynamic_size)return -8;
     bool end=false,gnu=false,flags=false,count=false;
     for(uint64_t pos=0;pos<l->plan->dynamic_size;pos+=16){
-        struct dyn d;if(!read_image(l,l->plan->dynamic_address-USER_BASE+pos,&d,sizeof(d)))return -8;
+        struct dyn d;if(!read_image(l,l->plan->dynamic_address-l->plan->load_bias+pos,&d,sizeof(d)))return -8;
         if(!d.tag){end=true;break;}
         if(d.tag==0x6ffffef5){if(gnu)return -8;gnu=true;l->gnu_hash=d.value;continue;}
         if(d.tag==0x6ffffffb){if(flags)return -8;flags=true;l->flags1=d.value;if(d.value&~0x8000001ull)return -95;continue;}
@@ -138,7 +149,9 @@ static int imports(struct linker *l)
         if(s.section)continue;
         if(!s.name||!(s.info>>4))return -8;
         char name[256];if(symbol_name(l,&s,name))return -8;uint64_t address;
-        if(platform_resolve(name,&address)){++l->platform;print("ELF platform: ");print(name);print("\n");continue;}
+        if(resolve(l,name,&address)){++l->platform;print(l->provider&&
+            (name_equal(name,"SbGetEglInterface")||name_equal(name,"SbGetGlesInterface"))?
+            "ELF provider: ":"ELF platform: ");print(name);print("\n");continue;}
         if((s.info>>4)==2){++l->weak;print("ELF weak zero: ");}
         else{++l->missing;print("ELF missing: ");}
         print(name);print("\n");
@@ -150,12 +163,12 @@ static int value(struct linker *l,unsigned index,uint64_t *out,bool *missing)
     if((s.info&15)==6)return -8; /* TLS offsets are not ordinary image VAs. */
     if(!s.section){
         char name[256];if(index&&symbol_name(l,&s,name))return -8;
-        if(index&&platform_resolve(name,out))return 0;
+        if(index&&resolve(l,name,out))return 0;
         *out=0;*missing=index&&(s.info>>4)!=2;return 0;
     }
     if(s.section==0xfff1){*out=s.value;return 0;}
     if(s.section>=0xff00||!span(l->plan,s.value,s.size,4))return -8;
-    *out=USER_BASE+s.value;return 0;
+    *out=l->plan->load_bias+s.value;return 0;
 }
 static bool add_signed(uint64_t base,int64_t add,uint64_t *out)
 {
@@ -169,7 +182,7 @@ static int relocate(struct linker *l,uint64_t start,uint64_t size)
         unsigned type=(uint32_t)r.info,index=(unsigned)(r.info>>32);uint64_t resolved=0;bool missing=false;
         if(!type)continue;
         if(!target(l,r.offset,type==36?16:8))return -8;
-        if(type==8){if(index||!add_signed(USER_BASE,r.addend,&resolved)||resolved<USER_BASE||resolved>USER_BASE+ELF_SPAN)return -8;++l->relative;}
+        if(type==8){if(index||!add_signed(l->plan->load_bias,r.addend,&resolved)||resolved<l->plan->load_bias||resolved>USER_BASE+ELF_SPAN)return -8;++l->relative;}
         else if(type==1||type==6||type==7){int rc=value(l,index,&resolved,&missing);if(rc)return rc;
             if(type==1){if(!missing&&!add_signed(resolved,r.addend,&resolved))return -8;++l->absolute;}
             else{if(r.addend)return -8;if(type==6)++l->global;else ++l->jump;}
@@ -185,12 +198,12 @@ static int relocate(struct linker *l,uint64_t start,uint64_t size)
             }
             if(type==36){uint64_t address;if(!platform_resolve("MyOSTlsDesc",&address))return -95;
                 uint64_t descriptor[]={address,resolved};
-                if(!process_image_copy(l->process,USER_BASE+r.offset,descriptor,16,true))return -8;
+                if(!process_image_copy(l->process,l->plan->load_bias+r.offset,descriptor,16,true))return -8;
                 continue;
             }
         }else return -95;
         if(missing){++l->skipped;continue;}
-        if(!process_image_copy(l->process,USER_BASE+r.offset,&resolved,8,true))return -8;
+        if(!process_image_copy(l->process,l->plan->load_bias+r.offset,&resolved,8,true))return -8;
     }return 0;
 }
 bool elf_executable(const struct elf_plan *plan,uint64_t address)
@@ -215,20 +228,21 @@ static int exported_function(struct linker *l,const char *name,uint64_t *address
            (s.other!=0&&s.other!=3)||!s.size||!span(l->plan,s.value,s.size,5))return -8;
         bool backed=false;
         for(unsigned j=0;j<l->plan->count;++j){const struct elf_segment *segment=&l->plan->segments[j];
-            uint64_t lo=segment->address-USER_BASE;
+            uint64_t lo=segment->address-l->plan->load_bias;
             if((segment->flags&5)==5&&s.value>=lo&&s.value-lo<segment->filesz&&
                s.size<=segment->filesz-(s.value-lo)){backed=true;break;}}
         if(!backed)return -8;
-        *address=USER_BASE+s.value;found=true;
+        *address=l->plan->load_bias+s.value;found=true;
     }
     return found?0:-95;
 }
-static int prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start,bool starboard)
+static int prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start,bool starboard,
+                   const struct provider_exports *provider,bool runtime_mapped)
 {
     memset(start,0,sizeof(*start));if(!plan->dynamic)return 0;
-    struct linker l={.process=process,.plan=plan};int rc=parse(&l);if(rc)return rc;
+    struct linker l={.process=process,.plan=plan,.provider=provider};int rc=parse(&l);if(rc)return rc;
     if((rc=imports(&l)))return rc;
-    if((l.platform||starboard||plan->tls_size)&&!process_map_runtime(process))return -12;
+    if(!runtime_mapped&&(l.platform||starboard||plan->tls_size)&&!process_map_runtime(process))return -12;
     if((rc=relocate(&l,l.dt[7],l.dt[8]))||(rc=relocate(&l,l.dt[23],l.dt[2])))return rc;
     print("ELF relocations: relative=");decimal(l.relative);print(" absolute=");decimal(l.absolute);
     print(" global=");decimal(l.global);print(" jump=");decimal(l.jump);print(" skipped=");decimal(l.skipped);print("\n");
@@ -248,21 +262,21 @@ static int prepare(struct process *process,const struct elf_plan *plan,struct el
            !platform_resolve("MyOSStarboardValidate",&start->preflight))return -95;
     }
     if(l.dt[13]){if(l.dt[13]>=ELF_SPAN)return -8;
-        start->fini=USER_BASE+l.dt[13];if(!elf_executable(plan,start->fini))return -8;}
+        start->fini=plan->load_bias+l.dt[13];if(!elf_executable(plan,start->fini))return -8;}
     if(l.dt[28]%8||l.dt[28]>128*8)return -8;
     if(l.dt[28]){
         if(!span(plan,l.dt[26],l.dt[28],4))return -8;
-        start->fini_array=USER_BASE+l.dt[26];start->fini_count=(unsigned)(l.dt[28]/8);
+        start->fini_array=plan->load_bias+l.dt[26];start->fini_count=(unsigned)(l.dt[28]/8);
         for(unsigned i=0;i<start->fini_count;++i){uint64_t address;
             if(!read_image(&l,l.dt[26]+8ull*i,&address,8)||!elf_executable(plan,address))return -8;
         }
     }
     if(l.dt[12]){if(l.dt[12]>=ELF_SPAN)return -8;
-        start->init=USER_BASE+l.dt[12];if(!elf_executable(plan,start->init))return -8;}
+        start->init=plan->load_bias+l.dt[12];if(!elf_executable(plan,start->init))return -8;}
     if(l.dt[27]%8||l.dt[27]>128*8)return -8;
     if(l.dt[27]){
         if(!span(plan,l.dt[25],l.dt[27],4))return -8;
-        start->array=USER_BASE+l.dt[25];start->count=(unsigned)(l.dt[27]/8);
+        start->array=plan->load_bias+l.dt[25];start->count=(unsigned)(l.dt[27]/8);
         for(unsigned i=0;i<start->count;++i){uint64_t address;
             if(!read_image(&l,l.dt[25]+8ull*i,&address,8)||!elf_executable(plan,address))return -8;
         }
@@ -270,6 +284,18 @@ static int prepare(struct process *process,const struct elf_plan *plan,struct el
     return 0;
 }
 int elf_prepare(struct process *p,const struct elf_plan *plan,struct elf_start *start)
-{return prepare(p,plan,start,false);}
+{return prepare(p,plan,start,false,0,false);}
 int elf_prepare_starboard(struct process *p,const struct elf_plan *plan,struct elf_start *start)
-{return prepare(p,plan,start,true);}
+{return prepare(p,plan,start,true,0,false);}
+int elf_prepare_pair(struct process *p,const struct elf_plan *const plans[2],struct elf_start starts[2])
+{
+    if(!plans[0]->dynamic||!plans[1]->dynamic||
+       (plans[0]->tls_size&&plans[1]->tls_size))return -95;
+    struct linker provider={.process=p,.plan=plans[1]};struct provider_exports exports;
+    int rc=parse(&provider);if(rc)return rc;
+    if((rc=exported_function(&provider,"SbGetEglInterface",&exports.egl))||
+       (rc=exported_function(&provider,"SbGetGlesInterface",&exports.gles)))return rc;
+    if(!process_map_runtime(p))return -12;
+    if((rc=prepare(p,plans[1],&starts[1],false,0,true)))return rc;
+    return prepare(p,plans[0],&starts[0],false,&exports,true);
+}
