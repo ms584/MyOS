@@ -5,6 +5,17 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline524c75c plus tested GLES follow-up: PHASE332_NATIVE_GLES.md.
+Private OSMesa profile routes genuine Mesa API_OPENGLES2; actual ES3.1,
+GLSL100/reject-desktop120/1024 pixel oracle/input/teardown/two launches/exact
+resources BIOS67924 PASS16:19:51 and UEFI3tgetrcy PASS in80368's log.
+80368 interrupted later during desktop BIOS; desktop retry4f041htj PASS.
+55606 then interrupted during desktop UEFI; standalone91407 terminal exit0
+16:28:04 (_lm9a14j) PASS two launches/exact resources. No live image owner.
+First36305 interrupted by WSL E_UNEXPECTED, process gone before retry;
+not a native PASS or proven MyOS fault. Production images unchanged.
+No EGL/SABI/backend/Cobalt acceptance. Tested local checkpoint; no push/33.3.
+
 Latest follow-up to452faaa: real native OSMesa shader/texture/pixel oracle/QMP
 frame/key input/teardown/relaunch PASS BIOS91959 15:25:50 (j4m9973h) and
 UEFI46868 15:28:03 (cefi3_3l),2 launches each/exact resources. New small-object

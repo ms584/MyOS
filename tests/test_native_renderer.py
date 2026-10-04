@@ -23,6 +23,7 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--renderer-probe',type=Path,required=True)
 parser.add_argument('--configuration',type=Path,required=True)
 parser.add_argument('--uefi',action='store_true')
+parser.add_argument('--gles',action='store_true',help='Real Mesa GLES profile/GLSL100, not EGL')
 parser.add_argument('--diagnostic',action='store_true',help='Transparent test-only allocation/lock wrappers')
 parser.add_argument('--launches',type=int,choices=(1,2,3),default=2)
 parser.add_argument('--ram',type=int,choices=(128,256,512,1024),default=256)
@@ -50,6 +51,7 @@ assert hashlib.sha256(window.read_bytes()).hexdigest()==next(
     item['sha256'] for item in pin['headers'] if item['path'].endswith('/window.h'))
 intrinsics=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
 flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
+       '-D__myos__=1',*(['-DMYOS_NATIVE_GLES=1'] if args.gles else []),
        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
        '-nostdinc','-isystem',intrinsics,'-I'+str(root/'user/sdk'),
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
@@ -98,7 +100,7 @@ options=dict(ram=args.ram,boot_image=image,asset_disk=disk)
 if args.uefi:options.update(boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),
                                                     Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
 print('Native renderer fixture:',out,'bytes:',library.stat().st_size,'RAM MiB:',args.ram,flush=True)
-vm=VM('native-renderer-uefi' if args.uefi else 'native-renderer',**options)
+vm=VM('native-renderer'+('-gles' if args.gles else '')+('-uefi' if args.uefi else ''),**options)
 try:
     vm.wait('myos> ')
     for launch in range(args.launches):
@@ -121,9 +123,11 @@ try:
             time.sleep(.05)
         else:raise AssertionError(vm.log.read_text()[-6000:])
         assert 'ELF exited with status 90' in output and 'teardown PASS' in output,output
+        if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
         assert_live_resources(output)
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
-          ' and exact resources/relaunch; NOT EGL/GLES or Cobalt.',out,flush=True)
+          ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
+          '; NOT EGL or Cobalt.',out,flush=True)
 except BaseException:
     # Capture the real running CPU before teardown; never infer a deadlock from
     # a silent log alone. Map user RIPs back to the exact linked target image.

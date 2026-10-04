@@ -1,0 +1,27 @@
+--- a/include/GL/osmesa.h
++++ b/include/GL/osmesa.h
+@@ -106,3 +106,8 @@
+ #define OSMESA_COMPAT_PROFILE        0x35
+ #define OSMESA_CONTEXT_MAJOR_VERSION 0x36
++#if defined(__myos__)
++/* Private MyOS offscreen frontend extension, NOT an EGL implementation.
++ * Routes to Mesa's genuine GLES state tracker and API validation. */
++#define OSMESA_MYOS_GLES_PROFILE      0x10000
++#endif
+ #define OSMESA_CONTEXT_MINOR_VERSION 0x37
+--- a/src/gallium/frontends/osmesa/osmesa.c
++++ b/src/gallium/frontends/osmesa/osmesa.c
+@@ -617,2 +617,5 @@
+          if (profile != OSMESA_CORE_PROFILE &&
++#if defined(__myos__)
++             profile != OSMESA_MYOS_GLES_PROFILE &&
++#endif
+              profile != OSMESA_COMPAT_PROFILE)
+@@ -683,3 +686,7 @@
+    attribs.profile = (profile == OSMESA_CORE_PROFILE)
+       ? API_OPENGL_CORE : API_OPENGL_COMPAT;
++#if defined(__myos__)
++   if (profile == OSMESA_MYOS_GLES_PROFILE)
++      attribs.profile = API_OPENGLES2;
++#endif
+    attribs.major = version_major;

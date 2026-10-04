@@ -9,6 +9,17 @@
 #include <stdbool.h>
 #include "window.h"
 #include "native-ui.h"
+#if defined(MYOS_NATIVE_GLES)
+#define NATIVE_PROFILE OSMESA_MYOS_GLES_PROFILE
+#define NATIVE_MINOR 0
+#define VERTEX_VERSION "#version 100\n"
+#define FRAGMENT_VERSION "#version 100\nprecision mediump float;\n"
+#else
+#define NATIVE_PROFILE OSMESA_COMPAT_PROFILE
+#define NATIVE_MINOR 1
+#define VERTEX_VERSION "#version 120\n"
+#define FRAGMENT_VERSION "#version 120\n"
+#endif
 extern int MyOSUiPresent(void *,const struct native_ui_present *);
 extern int MyOSUiPoll(void *,struct native_ui_event *,int);
 static SbWindow window;
@@ -30,21 +41,35 @@ static void *render(void *unused)
     (void)unused;say("Native OSMesa context begin\n");
     CHECK(!OSMesaGetCurrentContext());
     const int attributes[]={OSMESA_FORMAT,OSMESA_RGBA,OSMESA_DEPTH_BITS,0,
-        OSMESA_STENCIL_BITS,0,OSMESA_ACCUM_BITS,0,OSMESA_PROFILE,OSMESA_COMPAT_PROFILE,
-        OSMESA_CONTEXT_MAJOR_VERSION,2,OSMESA_CONTEXT_MINOR_VERSION,1,0};
+        OSMESA_STENCIL_BITS,0,OSMESA_ACCUM_BITS,0,OSMESA_PROFILE,NATIVE_PROFILE,
+        OSMESA_CONTEXT_MAJOR_VERSION,2,OSMESA_CONTEXT_MINOR_VERSION,NATIVE_MINOR,0};
     OSMesaContext context=OSMesaCreateContextAttribs(attributes,0);CHECK(context);
     CHECK(OSMesaMakeCurrent(context,pixels,GL_UNSIGNED_BYTE,32,32));
     CHECK(OSMesaGetCurrentContext()==context);
+    const char *version=(const char *)glGetString(GL_VERSION);CHECK(version);
+    say(version);say("\n");
+#if defined(MYOS_NATIVE_GLES)
+    CHECK(!strncmp(version,"OpenGL ES ",10));
+    /* The actual ES profile rejects desktop GLSL, not just a renamed version. */
+    GLuint desktop=glCreateShader(GL_VERTEX_SHADER);CHECK(desktop);
+    const char *invalid="#version 120\nvoid main(){gl_Position=vec4(0.0);}";
+    glShaderSource(desktop,1,&invalid,0);glCompileShader(desktop);
+    GLint accepted=1;glGetShaderiv(desktop,GL_COMPILE_STATUS,&accepted);
+    CHECK(!accepted);glDeleteShader(desktop);
+    say("Native GLES profile/desktop GLSL rejection checked\n");
+#else
+    CHECK(strncmp(version,"OpenGL ES ",10));
+#endif
     say("Native OSMesa context bound\n");
     glViewport(0,0,32,32);glDisable(GL_DITHER);
     glClearColor(0,0,1,1);glClear(GL_COLOR_BUFFER_BIT);glFinish();
     unsigned char sample[4];glReadPixels(8,8,1,1,GL_RGBA,GL_UNSIGNED_BYTE,sample);
     CHECK(sample[0]==0&&sample[1]==0&&sample[2]==255&&sample[3]==255);
     say("Native OSMesa clear pixels checked\n");
-    GLuint vertex=shader(GL_VERTEX_SHADER,"#version 120\nattribute vec2 position;varying vec2 uv;"
+    GLuint vertex=shader(GL_VERTEX_SHADER,VERTEX_VERSION "attribute vec2 position;varying vec2 uv;"
         "void main(){uv=(position+1.0)*0.5;gl_Position=vec4(position,0.0,1.0);}");
     say("Native OSMesa vertex compiled\n");
-    GLuint fragment=shader(GL_FRAGMENT_SHADER,"#version 120\nuniform sampler2D image;varying vec2 uv;"
+    GLuint fragment=shader(GL_FRAGMENT_SHADER,FRAGMENT_VERSION "uniform sampler2D image;varying vec2 uv;"
         "void main(){gl_FragColor=texture2D(image,uv);}");
     say("Native OSMesa fragment compiled\n");
     GLuint program=glCreateProgram();CHECK(program);
