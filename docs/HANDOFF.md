@@ -5,6 +5,25 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baselinef11758f plus genuine core1.5 sync/image/debug attribute entry points:
+PHASE332_NATIVE_EGL_CORE15.md. All original feature gates retained except the
+CL proxy: no OpenCL provider, CL type rejected BAD_PARAMETER; KHR_cl_event2
+not advertised/KHR64 still unavailable. Actual Gallium fences/cyan FBO writes,
+64-bit query/output errors, core texture image creation/deletion. Found legacy
+image converter truncated attribute names; reject high-bit aliases before it.
+Strict22/22 final compile20:10:18 core-ogu957sr. Final BIOSsRGB4c8gy3yq,
+UEFIsRGBasqas4sd/pbuffer4rrsjzfq PASS44277 exit0 20:17:38, two opens and
+exact resources each; required core15 marker preserved with serial/QMP images.
+Initial BIOSjnab46_e PASS57800 20:05:08 predates wide-image guard/marker;
+strict patch failures retained and fixed without relaxing fuzz=0.
+Normal four hashes unchanged20:17:08. Fetch20:17:08 origin/maindb934b7;
+no active image/test owner, no push/33.3 or phase closure. Imports163/242,
+Cobalt0/5. Next fix actual-vs-requested eglQueryContext version (original core
+currently uses requested base version; OSMesa may create a higher one), audit
+numeric image/zero-sized pbuffer/concurrent/terminate contracts, then exact
+pinned44-entry EGL/GLES tables + actual loader provider coexistence and remaining
+79 imports/weakTLS. Native input still after rendering, not real engine interaction.
+
 Baseline0e5d299 plus genuine surface-owned Gallium storage/draw-read/sRGB:
 PHASE332_NATIVE_EGL_COLORSPACE.md. Real UNORM/SRGB formats, persistent pixels
 across unshared contexts, distinct draw/read binding, linear128/sRGB188 alpha

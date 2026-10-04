@@ -1,6 +1,6 @@
 /* MyOS software EGL driver for genuine Mesa core/OSMesa GLES.
  * Native window/pbuffer, real image storage and Gallium fence adapters.
- * EGL core still derives version1.4; no EGL1.5/Cobalt acceptance claim. */
+ * Core1.5 APIs use actual Mesa objects; no certification/Cobalt acceptance. */
 #define GL_GLEXT_PROTOTYPES
 #include <GL/osmesa.h>
 #include <GL/glext.h>

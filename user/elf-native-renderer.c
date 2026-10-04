@@ -127,7 +127,7 @@ static void *render(void *unused)
     CHECK(eglGetError()==EGL_BAD_DISPLAY&&eglGetError()==EGL_SUCCESS);
     EGLDisplay display=eglGetDisplay(EGL_DEFAULT_DISPLAY);CHECK(display!=EGL_NO_DISPLAY);
     EGLint major=0,minor=0;CHECK(eglInitialize(display,&major,&minor));
-    CHECK(major==1&&minor==4); /* Truthful until image/sync/1.5 contracts exist. */
+    CHECK(major==1&&minor==5);
     CHECK(eglBindAPI(EGL_OPENGL_ES_API));
     const EGLint config_attributes[]={EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT,
         EGL_SURFACE_TYPE,EGL_PBUFFER_BIT,EGL_RED_SIZE,8,EGL_NONE};
@@ -142,6 +142,9 @@ static void *render(void *unused)
     extern int MyOSEglSurfaceTest(EGLDisplay,EGLConfig);
     CHECK(!MyOSEglSurfaceTest(display,config));
     say("Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked\n");
+    extern int MyOSEglCore15Test(EGLDisplay,EGLConfig);
+    CHECK(!MyOSEglCore15Test(display,config));
+    say("Native EGL core15 wide sync/image/debug and absent OpenCL checked\n");
     CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
     CHECK(eglGetError()==EGL_BAD_CONFIG);
     const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};

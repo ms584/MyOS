@@ -1,0 +1,52 @@
+--- a/eglapi.c
++++ b/eglapi.c
+@@ -649,7 +649,16 @@
+ {
+    disp->Version = 14;
+ 
+-   if (disp->Extensions.KHR_fence_sync && disp->Extensions.KHR_cl_event2 &&
++   EGLBoolean cl_sync = disp->Extensions.KHR_cl_event2;
++#ifdef __myos__
++   /* No OpenCL provider exists on MyOS. CL_EVENT is an unsupported sync
++    * type (core 1.5 section 3.8.1: BAD_PARAMETER), not a fabricated fence.
++    * Keep KHR_cl_event2 unadvertised. All remaining version gates apply. */
++   if (disp->Platform == _EGL_PLATFORM_MYOS ||
++       disp->Platform == _EGL_PLATFORM_SURFACELESS)
++      cl_sync = EGL_TRUE;
++#endif
++   if (disp->Extensions.KHR_fence_sync && cl_sync &&
+        disp->Extensions.KHR_wait_sync && disp->Extensions.KHR_image_base &&
+        disp->Extensions.KHR_gl_texture_2D_image &&
+        disp->Extensions.KHR_gl_texture_cubemap_image &&
+@@ -1881,12 +1890,21 @@
+    _EGLDisplay *disp = _eglLockDisplay(dpy);
+    EGLImage image;
+    EGLint *int_attribs;
+ 
+    _EGL_FUNC_START(disp, EGL_OBJECT_DISPLAY_KHR, NULL);
+ 
++#ifdef __myos__
++   /* Unknown 64-bit attribute names must not alias valid 32-bit names
++    * through the common legacy converter. Image names are EGL enums. */
++   if (attr_list) {
++      for (size_t i = 0; attr_list[i] != EGL_NONE; i += 2)
++         if (attr_list[i] != (EGLAttrib)(EGLint)attr_list[i])
++            RETURN_EGL_ERROR(disp, EGL_BAD_PARAMETER, EGL_NO_IMAGE);
++   }
++#endif
+    int_attribs = _eglConvertAttribsToInt(attr_list);
+    if (attr_list && !int_attribs)
+       RETURN_EGL_ERROR(disp, EGL_BAD_ALLOC, EGL_NO_IMAGE);
+ 
+    image = _eglCreateImageCommon(disp, ctx, target, buffer, int_attribs);
+    free(int_attribs);
+@@ -1941,1 +1959,8 @@
+-   if (!disp->Extensions.KHR_cl_event2 && orig_is_EGLAttrib) {
++   EGLBoolean wide_supported = disp->Extensions.KHR_cl_event2;
++#ifdef __myos__
++   /* Core and KHR64 are distinct APIs: only core accepts the version gate.
++    * Their different invalid_type_error values already identify the caller. */
++   if (invalid_type_error == EGL_BAD_PARAMETER && disp->Version >= 15)
++      wide_supported = EGL_TRUE;
++#endif
++   if (!wide_supported && orig_is_EGLAttrib) {

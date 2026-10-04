@@ -164,6 +164,7 @@ try:
         if args.egl_core:assert 'Native EGL last-core-pin cleanup checked' in output,output
         if args.egl_core:assert 'Native EGL requested-version/debug callback/surfaceless FBO checked' in output,output
         if args.egl_core:assert 'Native EGL linear128/sRGB188/draw-read/surface storage lifetime checked' in output,output
+        if args.egl_core:assert 'Native EGL core15 wide sync/image/debug and absent OpenCL checked' in output,output
         if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_core:assert 'Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output
@@ -171,7 +172,7 @@ try:
         assert_live_resources(output)
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
           ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
-          '; '+('EGL1.4 native window swap; ' if args.egl_window else 'EGL1.4 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
+          '; '+('EGL1.5 native window swap; ' if args.egl_window else 'EGL1.5 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
           ('sRGB encoded window pixels; ' if args.egl_srgb else '')+'NOT Cobalt.',out,flush=True)
 except BaseException:
     # Capture the real running CPU before teardown; never infer a deadlock from
