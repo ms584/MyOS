@@ -1,6 +1,6 @@
 /* MyOS software EGL driver for genuine Mesa core/OSMesa GLES.
- * Initial pbuffer/context slice only. EGL core derives version1.4: no fake
- * image/sync/colorspace extensions or EGL1.5/Cobalt acceptance claim. */
+ * Native window/pbuffer, real image storage and Gallium fence adapters.
+ * EGL core still derives version1.4; no EGL1.5/Cobalt acceptance claim. */
 #define GL_GLEXT_PROTOTYPES
 #include <GL/osmesa.h>
 #include <GL/glext.h>
@@ -16,6 +16,13 @@ extern int MyOSUiPresent(void *,const struct native_ui_present *);
 #include "eglcurrent.h"
 #include "eglsurface.h"
 #include "eglsync.h"
+#include "eglimage.h"
+#include "frontend/api.h"
+extern int MyOSMesaInitializeImages(void);
+extern void *MyOSMesaCreateImage(OSMesaContext,unsigned,unsigned,unsigned,int,int *);
+extern void MyOSMesaDestroyImage(void *);
+extern void MyOSMesaTranslateImage(void *,struct st_egl_image *);
+bool MyOSEglGetImage(void *,struct st_egl_image *);
 extern void *MyOSMesaCreateFence(void);
 extern int MyOSMesaWaitFence(void *,uint64_t);
 extern int MyOSMesaServerWaitFence(void *);
@@ -24,6 +31,7 @@ struct myos_display { unsigned references; };
 struct myos_context { _EGLContext base; OSMesaContext mesa; };
 struct myos_surface { _EGLSurface base; void *pixels; };
 struct myos_sync { _EGLSync base; void *fence; };
+struct myos_image { _EGLImage base; void *mesa; };
 static EGLBoolean fail(EGLint code,const char *where){return _eglError(code,where);}
 static void display_get(_EGLDisplay *display)
 {__atomic_add_fetch(&((struct myos_display *)display->DriverData)->references,1,__ATOMIC_RELAXED);}
@@ -40,6 +48,8 @@ static EGLBoolean initialize(_EGLDisplay *display)
         return fail(EGL_NOT_INITIALIZED,"MyOS EGL platform");
     if(display->Platform==_EGL_PLATFORM_MYOS&&display->PlatformDisplay)
         return fail(EGL_NOT_INITIALIZED,"MyOS EGL requires default display");
+    /* Install frontend image callbacks before Mesa creates a client context. */
+    if(!MyOSMesaInitializeImages())return fail(EGL_NOT_INITIALIZED,"MyOS Mesa image manager");
     if(display->DriverData){display_get(display);return EGL_TRUE;}
     struct myos_display *state=calloc(1,sizeof(*state));
     _EGLConfig *config=calloc(1,sizeof(*config));
@@ -61,6 +71,11 @@ static EGLBoolean initialize(_EGLDisplay *display)
     display->ClientAPIs=EGL_OPENGL_ES2_BIT;
     display->Extensions.KHR_fence_sync=EGL_TRUE;
     display->Extensions.KHR_wait_sync=EGL_TRUE;
+    display->Extensions.KHR_image_base=EGL_TRUE;
+    display->Extensions.KHR_gl_texture_2D_image=EGL_TRUE;
+    display->Extensions.KHR_gl_texture_cubemap_image=EGL_TRUE;
+    display->Extensions.KHR_gl_texture_3D_image=EGL_TRUE;
+    display->Extensions.KHR_gl_renderbuffer_image=EGL_TRUE;
     state->references=1;display->DriverData=state;return EGL_TRUE;
 }
 static EGLBoolean terminate(_EGLDisplay *display)
@@ -233,6 +248,49 @@ static EGLint client_wait_sync(_EGLDisplay *display,_EGLSync *base,EGLint flags,
 static EGLint server_wait_sync(_EGLDisplay *display,_EGLSync *sync)
 {(void)display;return MyOSMesaServerWaitFence(((struct myos_sync *)sync)->fence)?
     EGL_TRUE:fail(EGL_BAD_MATCH,"MyOS Mesa server fence wait");}
+static void free_image(_EGLResource *resource)
+{
+    _EGLDisplay *display=resource->Display;struct myos_image *image=(void *)resource;
+    MyOSMesaDestroyImage(image->mesa);free(image);display_put(display);
+}
+static _EGLImage *create_image(_EGLDisplay *display,_EGLContext *context,EGLenum target,
+                             EGLClientBuffer buffer,const EGLint *attributes)
+{
+    if(!context){fail(EGL_BAD_CONTEXT,"MyOS EGL image context");return 0;}
+    if((uintptr_t)buffer>UINT32_MAX){fail(EGL_BAD_PARAMETER,"MyOS EGL image name");return 0;}
+    _EGLImageAttribs attrs;if(!_eglParseImageAttribList(&attrs,display,attributes))return 0;
+    unsigned gl_target,layer=0;
+    switch(target){
+    case EGL_GL_TEXTURE_2D_KHR:gl_target=GL_TEXTURE_2D;break;
+    case EGL_GL_TEXTURE_3D_KHR:
+        if(attrs.GLTextureZOffset<0){fail(EGL_BAD_MATCH,"MyOS EGL image layer");return 0;}
+        gl_target=GL_TEXTURE_3D;layer=(unsigned)attrs.GLTextureZOffset;break;
+    case EGL_GL_RENDERBUFFER_KHR:gl_target=GL_RENDERBUFFER;break;
+    case EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X_KHR:case EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X_KHR:
+    case EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Y_KHR:case EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y_KHR:
+    case EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Z_KHR:case EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z_KHR:
+        gl_target=GL_TEXTURE_CUBE_MAP;layer=target-EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X_KHR;break;
+    default:fail(EGL_BAD_PARAMETER,"MyOS EGL image target");return 0;
+    }
+    struct myos_image *image=calloc(1,sizeof(*image));
+    if(!image){fail(EGL_BAD_ALLOC,"MyOS EGL image");return 0;}
+    _eglInitImage(&image->base,display);int error;
+    image->mesa=MyOSMesaCreateImage(((struct myos_context *)context)->mesa,gl_target,
+        (unsigned)(uintptr_t)buffer,layer,attrs.GLTextureLevel,&error);
+    if(!image->mesa){free(image);fail(error,"MyOS Mesa image");return 0;}
+    image->base.Resource.OnFinalRelease=free_image;display_get(display);return &image->base;
+}
+static EGLBoolean destroy_image(_EGLDisplay *display,_EGLImage *image)
+{(void)display;if(image)_eglPutImage(image);return EGL_TRUE;}
+bool MyOSEglGetImage(void *handle,struct st_egl_image *out)
+{
+    _EGLContext *context=_eglGetCurrentContext();if(!context)return false;
+    _EGLDisplay *display=_eglLockDisplay(_eglGetDisplayHandle(context->Resource.Display));
+    if(!display)return false;
+    _EGLImage *image=display->Initialized?_eglLookupImage((EGLImage)handle,display):0;
+    if(image&&out)MyOSMesaTranslateImage(((struct myos_image *)image)->mesa,out);
+    bool valid=image!=0;_eglUnlockDisplay(display);return valid;
+}
 const _EGLDriver _eglDriver={.Initialize=initialize,.Terminate=terminate,
     .CreateContext=create_context,.DestroyContext=destroy_context,.MakeCurrent=make_current,
     .CreateWindowSurface=create_window,
@@ -242,4 +300,5 @@ const _EGLDriver _eglDriver={.Initialize=initialize,.Terminate=terminate,
     .BindTexImage=_eglBindTexImage,.ReleaseTexImage=_eglReleaseTexImage,.CopyBuffers=copy_buffers,
     .CreateSyncKHR=create_sync,.DestroySyncKHR=destroy_sync,
     .ClientWaitSyncKHR=client_wait_sync,.WaitSyncKHR=server_wait_sync,
+    .CreateImageKHR=create_image,.DestroyImageKHR=destroy_image,
     .SwapBuffers=swap_buffers,.SwapInterval=swap_interval,.WaitClient=wait_client,.WaitNative=wait_native};

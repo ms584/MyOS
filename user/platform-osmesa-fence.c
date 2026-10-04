@@ -42,3 +42,4 @@ void MyOSMesaDestroyFence(void *handle)
     struct myos_osmesa_fence *fence=handle;
     fence->screen->fence_reference(fence->screen,&fence->fence,NULL);FREE(fence);
 }
+#include "platform-osmesa-image.inc"

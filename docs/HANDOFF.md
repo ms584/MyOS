@@ -5,6 +5,19 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline db934b7 plus native EGL image storage sharing:
+PHASE332_NATIVE_EGL_IMAGE.md. Actual Gallium resources/reference ownership,
+frontend image hooks installed before context creation and locked EGL lookup.
+Unshared context writes back through2D image; six cube faces/3D slice imported
+through real renderbuffers; source deletion/sibling survival/final-core-pin cleanup.
+Strict19/19 compile19:00:27 core-9_i665c0. BIOS txd7rze3 PASS75806 exit0
+19:02:06, UEFI c239uyti/pbuffer4tf764wh PASS84043 exit0 19:05:20;
+two launches each and exact resources. No active image/test owner remains.
+Initial90554 failed cube-to-texture2D: actual Mesa rejects mismatched pipe target;
+documented boundary, not hidden conversion or copy. Normal hashes unchanged
+19:05:55; kernel/runtime architecture unchanged, full9925 remains applicable.
+Still EGL1.4, not complete pinned1.5/SABI/Cobalt acceptance. No33.3/push.
+
 Baselineaaf4bff plus genuine original Gallium fences/EGL KHR sync:
 PHASE332_NATIVE_EGL_SYNC.md. Adapter builds original MyOS-configured OSMesa
 frontend and uses st_flush/fence_finish/reference, no invented completion.

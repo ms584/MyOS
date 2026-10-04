@@ -309,6 +309,9 @@ static void *render(void *unused)
     glDeleteBuffers(1,&buffer);glDeleteTextures(1,&texture);
     glDeleteProgram(program);glDeleteShader(vertex);glDeleteShader(fragment);
 #if defined(MYOS_NATIVE_EGL)
+    extern int MyOSEglImageTest(EGLDisplay,EGLConfig,EGLContext,EGLSurface);
+    CHECK(!MyOSEglImageTest(display,config,egl_context,surface));
+    say("Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked\n");
     check_fences(display);
     CHECK(eglSwapBuffers(display,surface)&&eglWaitClient());
     CHECK(eglDestroyContext(display,egl_context));

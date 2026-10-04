@@ -54,7 +54,8 @@ sources=[egl_source/(name+'.c') for name in (
     'egldevice','egldisplay','eglglobals','eglimage','egllog','eglsurface','eglsync')]
 sources.append(source/'src/util/rwlock.c')
 if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/util/os_file.c',
-                               root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c'])
+                               root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c',
+                               root/'user/egl-image-test.c'])
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:
