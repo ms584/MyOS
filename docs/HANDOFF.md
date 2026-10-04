@@ -79,6 +79,18 @@ Renderer20532 terminal configure0/compile1 13:00:03, target-config-3c959yqk:
 mkdir, HUD _IOLBF. No linked/native backend or Cobalt pass; imports163/242,
 actual0/5. All jobs terminal; unchanged normal hashes/full93613 valid.
 Fetch12:59 origin/main3699a87 is ancestor of local HEAD. Never push.
+Native UTC calendar followsa79d97c: PHASE332_CALENDAR_SDK.md. Sealed original
+Gregorian/strftime algorithms/fixed English table, real mktime/static/_r wrappers,
+safe difftime/endpoints; CPU clock truthfully-1/ENOSYS (Cobalt imports clock_gettime).
+52566 exit0 13:15:24 BIOS/UEFI,C11/C++98/17,264 civil/ISO-week vectors,all-capacity/
+unmapped edges/8workers/12 launches/exact resources. No timezone/locale switching.
+23097 exit0 13:21:06: Mesa clocks/waits and stream regression both BIOS/UEFI PASS,
+buffered modes correctly rejected ENOTSUP. MyOS disabled-cache build excludes
+unused flock DB objects; native mkdir's actual header included. Renderer64295
+configure0/compile1 13:24:22 snob6k4x:2 ASTC C++ units/10 errno errors (prior5/13),
+ctime/cache/mkdir/_IOLBF clear. Next canonical errno then genuine mutex/once/link
+closure; no backend or Cobalt gate. Normal four hashes unchanged13:25:07,
+reuse full93613; all jobs terminal, no image owner. No33.3/push/phase closure.
 
 Local implementation commit52267bb follows d506dd5; phases still OPEN.
 PHASE331_SIGNALS.md is current: kernel-owned dispositions/masks/self-pending,

@@ -56,6 +56,8 @@ int _start(void)
     FILE *f=fopen(path,"w+e");CHECK(f);
     int fd=fileno(f);CHECK(fd>=0&&fcntl(fd,F_GETFD)==FD_CLOEXEC);
     CHECK(!setvbuf(f,0,_IONBF,0));
+    errno=0;CHECK(setvbuf(f,0,_IOLBF,0)==-1&&errno==ENOTSUP&&ftell(f)==0);
+    errno=0;CHECK(setvbuf(f,0,_IOFBF,0)==-1&&errno==ENOTSUP&&ftell(f)==0);
     CHECK(fwrite("a\0bcde",2,3,f)==3&&ftell(f)==6);
     CHECK(fprintf(f,"-%d",17)==3&&ftell(f)==9);
     CHECK(!fflush(0));CHECK(!fseek(f,0,SEEK_SET));

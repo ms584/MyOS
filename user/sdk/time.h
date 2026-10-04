@@ -1,6 +1,9 @@
 #ifndef MYOS_SDK_TIME_H
 #define MYOS_SDK_TIME_H
+#include <stddef.h>
 typedef long time_t;
+typedef long clock_t;
+#define CLOCKS_PER_SEC 1000000L
 struct timespec { time_t tv_sec;long tv_nsec; };
 /* Current guest local timezone is UTC; no TZ database/DST override API. */
 struct tm {
@@ -20,8 +23,19 @@ int clock_nanosleep(int,int,const struct timespec *,struct timespec *);
 int nanosleep(const struct timespec *,struct timespec *);
 int timespec_get(struct timespec *,int);
 time_t time(time_t *);
+/* CPU accounting is unavailable: clock returns -1/ENOSYS, not wall time. */
+clock_t clock(void);
+double difftime(time_t,time_t);
+time_t mktime(struct tm *);
+struct tm *gmtime(const time_t *);
+struct tm *localtime(const time_t *);
 struct tm *gmtime_r(const time_t *,struct tm *);
 struct tm *localtime_r(const time_t *,struct tm *);
+char *asctime(const struct tm *);
+char *asctime_r(const struct tm *,char *);
+char *ctime(const time_t *);
+char *ctime_r(const time_t *,char *);
+size_t strftime(char *,size_t,const char *,const struct tm *);
 #ifdef __cplusplus
 }
 #if __cplusplus >= 201103L

@@ -70,3 +70,9 @@ changes; private frozen BIOS only. No new UEFI/full-suite claim; existing
 Next: close measured libc/C++ build requirements, prove native context/present,
 then Cobalt HTML/JS/DOM/input/verified HTTPS >=60 seconds and close/relaunch.
 No Phase 33.3 and no push.
+
+2026-10-04 follow-up: PHASE332_CALENDAR_SDK.md expands actual UTC calendar/
+strftime/C++ ctime. Native264 oracle vectors BIOS/UEFI PASS; affected Mesa
+clock/wait tests now also run UEFI, plus stream regression PASS. No CPU-time
+accounting/TZ/locale-switch claim. Current full regression/hash references are
+PHASE332_OS_INFO.md, not historical45e08d7 above. Cobalt gate remains OPEN.

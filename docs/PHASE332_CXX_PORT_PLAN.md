@@ -149,3 +149,10 @@ BIOS/UEFI, fatal range/assertion ABI and recovery. Integrated into renderer's
 explicit --cxx-configuration profile. GCC _1j4xqjo configure PASS, full library
 still fails stdio/ctime/locale/errno. Renderer3c959yqk compile1 (5 units/13 errors):
 ctime/cache flock header/mkdir/_IOLBF remain. Full C++ and Cobalt still OPEN.
+
+PHASE332_CALENDAR_SDK.md: real UTC/strftime/C++ ctime now native-tested
+BIOS/UEFI. Disabled-cache dependency and mkdir/mode declarations fixed.
+Renderer snob6k4x compile1: only2 ASTC units/10 canonical errno errors remain
+at this checkpoint; actual mutex/once/provider link still needs acceptance.
+Latest whole GCC make (build-after-calendar.log) exit2 at13:27:49 +07:
+stdio/locale/canonical errno remain; ctime errors are now cleared.

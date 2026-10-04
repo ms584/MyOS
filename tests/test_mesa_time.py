@@ -1,12 +1,15 @@
 """Native pinned Mesa time utilities; no graphics/Cobalt acceptance claim."""
 from pathlib import Path
 import hashlib
+import argparse
+import contextlib
 import runpy
 import shutil
 import subprocess
 import sys
 
 root=Path(__file__).resolve().parents[1]
+parser=argparse.ArgumentParser();parser.add_argument('--uefi',action='store_true');args=parser.parse_args()
 sys.path.insert(0,str(root/'tests'));sys.path.insert(0,str(root/'tools'))
 from test_c11_sdk import digest
 from test_system import VM
@@ -14,6 +17,10 @@ from test_elf_dynamic import long_command,assert_live_resources,cancel_live
 from make_asset_disk import create
 
 build=runpy.run_path(str(root/'tools/build_time_sdk.py'));out=build['out']
+with (out/'dependencies.log').open('w') as log,contextlib.redirect_stdout(log):
+    formatting=runpy.run_path(str(root/'tools/build_format_sdk.py'))
+    scan=runpy.run_path(str(root/'tools/build_scan_sdk.py'),init_globals={'math_build':formatting['math']})
+dependencies=[str(formatting['library']),str(scan['library']),str(formatting['math']['static_library'])]
 archive=root/'build/renderer-evaluation/mesa-25.0.7.tar.xz'
 with archive.open('rb') as stream:
     assert hashlib.file_digest(stream,'sha256').hexdigest()=='592272df3cf01e85e7db300c449df5061092574d099da275d19e97ef0510f8a6'
@@ -38,18 +45,20 @@ for name,path in (
     objects.append(str(obj))
 library=out/'time-fixture.so'
 subprocess.run(['ld','-shared','--hash-style=both','-Bsymbolic','-z','now','-z','relro',
-    '-z','noexecstack','-e','_start','-o',str(library),*objects],check=True)
+    '-z','noexecstack','-e','_start','-o',str(library),*objects,*dependencies],check=True)
 assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(library)],text=True)
 cancel_object=out/'cancel.o';cancel_library=out/'cancel.so'
 subprocess.run(['gcc',*flags,'-DTEST_TIME_CANCEL=1','-c',str(root/'user/elf-mesa-time.c'),
                 '-o',str(cancel_object)],check=True)
 subprocess.run(['ld','-shared','--hash-style=both','-Bsymbolic','-z','now','-z','relro',
-    '-z','noexecstack','-e','_start','-o',str(cancel_library),*objects[:-1],str(cancel_object)],check=True)
+    '-z','noexecstack','-e','_start','-o',str(cancel_library),*objects[:-1],str(cancel_object),*dependencies],check=True)
 assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(cancel_library)],text=True)
 disk=out/'assets.img';create(disk,[f'time={library}',f'cancel={cancel_library}'])
-boot=root/'build/myos-current.img';image=out/'frozen-boot.img';before=digest(boot)
+boot=root/'build'/('myos-uefi.img' if args.uefi else 'myos-current.img');image=out/'frozen-boot.img';before=digest(boot)
 shutil.copyfile(boot,image);assert before==digest(boot)==digest(image)
-vm=VM('mesa-time',ram=64,boot_image=image,asset_disk=disk)
+options=dict(ram=64,boot_image=image,asset_disk=disk)
+if args.uefi:options.update(ram=128,boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
+vm=VM('mesa-time-uefi' if args.uefi else 'mesa-time',**options)
 try:
     vm.wait('myos> ')
     for _ in range(3):

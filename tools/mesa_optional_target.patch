@@ -1,0 +1,39 @@
+diff --git a/src/util/meson.build b/src/util/meson.build
+--- a/src/util/meson.build
++++ b/src/util/meson.build
+@@ -165,12 +165,19 @@ files_mesa_util = files(
+   'vma.c',
+   'vma.h',
+   'xxhash.h',
+-  'mesa_cache_db.c',
+   'mesa_cache_db.h',
+-  'mesa_cache_db_multipart.c',
+   'mesa_cache_db_multipart.h',
+ )
+
++# MyOS has explicitly disabled shader cache; do not require POSIX flock
++# merely to compile its unused database. Enabled-cache profiles are unchanged.
++if with_shader_cache or host_machine.system() != 'myos'
++  files_mesa_util += files(
++    'mesa_cache_db.c',
++    'mesa_cache_db_multipart.c',
++  )
++endif
++
+ files_drirc = files('00-mesa-defaults.conf')
+
+ if with_amd_vk
+diff --git a/src/gallium/auxiliary/driver_ddebug/dd_draw.c b/src/gallium/auxiliary/driver_ddebug/dd_draw.c
+--- a/src/gallium/auxiliary/driver_ddebug/dd_draw.c
++++ b/src/gallium/auxiliary/driver_ddebug/dd_draw.c
+@@ -39,6 +39,10 @@
+ #include "util/os_time.h"
+ #include <inttypes.h>
+ #include "util/detect.h"
++#ifdef __myos__
++/* mkdir is implemented by the native runtime; use its actual declaration. */
++#include <sys/stat.h>
++#endif
+
+ void
+ dd_get_debug_filename_and_mkdir(char *buf, size_t buflen, bool verbose)
