@@ -160,7 +160,7 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
 int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false,0,0);}
 int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true,0,0);}
 int elf_link(const struct elf_source *s){return load_image(s,0,false,false,0,0);}
-int elf_link_pair(const struct elf_source *core,const struct elf_source *provider)
+static int load_pair(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,int32_t *status)
 {
     struct elf_plan plans[2];int rc=elf_plan_read(core,&plans[0]);if(rc)return rc;
     if(!plans[0].dynamic)return -95;
@@ -173,6 +173,12 @@ int elf_link_pair(const struct elf_source *core,const struct elf_source *provide
     if(end>USER_BASE+ELF_SPAN-2*PAGE_SIZE)return -8;
     if((rc=elf_plan_read_at(provider,&plans[1],end+PAGE_SIZE)))return rc;
     if(!plans[1].dynamic||(plans[0].tls_size&&plans[1].tls_size))return -95;
+    if(status){
+        if(name){size_t n=0;while(name[n]&&n<=64)++n;if(!n||n>64)return -22;
+            n=0;if(url){while(url[n]&&n<=1024)++n;if(!n||n>1024)return -22;}
+            plans[0].stack_pages=ELF_STARBOARD_STACK_PAGES;
+        }else if(!elf_executable(&plans[0],plans[0].entry))return -95;
+    }
     const struct elf_source *sources[]={core,provider};
     const struct elf_plan *owners[]={&plans[0],&plans[1]};
     size_t before=pages_free(),heap_before=heap_allocated();
@@ -180,11 +186,34 @@ int elf_link_pair(const struct elf_source *core,const struct elf_source *provide
     if(!p){check(pages_free()==before,"ELF pair failed-load pages");
         check(heap_allocated()==heap_before,"ELF pair failed-load heap");return -12;}
     print("ELF pair provider bias: ");hex(plans[1].load_bias);print("\n");
-    struct elf_start starts[2];rc=elf_prepare_pair(p,owners,starts);
+    struct elf_start starts[2];rc=status?elf_prepare_pair_execution(p,owners,starts,name!=0):elf_prepare_pair(p,owners,starts);
+    if(status&&!rc){
+        starts[0].name=name;starts[0].url=url;uint64_t pid=p->pid;
+        if(!process_start_elf_pair(p,starts))rc=-12;
+        else{
+            bool cancelled=false;print("ELF pair live: started; Escape stops all threads\n");
+            while(p->state==PROCESS_RUNNING){int key;
+                while((key=keyboard_get())>=0)if(key==27){cancelled=true;break;}
+                if(cancelled)break;
+                __asm__ volatile("sti; hlt":::"memory");
+            }
+            if(cancelled){check(process_kill(pid),"ELF pair cancellation stop");rc=-125;}
+            else if(p->exited)*status=p->exit_status;
+            else rc=-8;
+            check(process_reap(pid),"ELF pair process reap");
+            check(pages_free()==before,"ELF pair live pages");
+            print("ELF pair live: pages reclaimed; heap-before=");decimal(heap_before);
+            print(" heap-after=");decimal(heap_allocated());print("\n");return rc;
+        }
+    }
     process_discard_elf(p);
     check(pages_free()==before,"ELF pair staged pages");
     check(heap_allocated()==heap_before,"ELF pair staged heap");
     print("ELF pair images released; not executed\n");return rc;
 }
+int elf_link_pair(const struct elf_source *core,const struct elf_source *provider)
+{return load_pair(core,provider,0,0,0);}
+int elf_live_pair(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,int32_t *status)
+{if(!status)return -22;return load_pair(core,provider,name,url,status);}
 int elf_starboard(const struct elf_source *s,const char *name,const char *url,int32_t *status)
 {if(!name)return -22;return load_image(s,status,true,true,name,url);}

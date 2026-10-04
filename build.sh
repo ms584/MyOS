@@ -69,6 +69,7 @@ ar rcs build/libmbedtls-myos.a "${tls_objects[@]}"
 nasm -f elf64 user/app-blob.asm -o build/app-blob.o
 nasm -f elf64 user/platform-runtime-blob.asm -o build/platform-runtime-blob.o
 nasm -f elf64 user/elf-start.asm -o build/elf-start.o
+nasm -f elf64 user/elf-pair-start.asm -o build/elf-pair-start.o
 nasm -f elf64 kernel/entry.asm -o build/entry.o
 nasm -f elf64 cpu/interrupts.asm -o build/interrupt-stubs.o
 nasm -f elf64 cpu/context-probe.asm -o build/context-probe.o
@@ -79,7 +80,7 @@ nasm -f elf64 user/blob.asm -o build/user-blob.o
 # no host startup objects, dynamic linker or libc may enter this image.
 gcc "${flags[@]}" -nostdlib -static -no-pie \
     -Wl,--gc-sections,--build-id=none,-Map=build/kernel.map,-T,kernel/linker.ld \
-    -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
+    -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/elf-pair-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
 test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }

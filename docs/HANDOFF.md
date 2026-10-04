@@ -5,6 +5,31 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 baseline3c568c9 plus tested explicit pair execution/lifecycle:
+PHASE332_PAIR_EXECUTION.md. New bootstrap validates SABI before provider/core
+constructors; controlRW/NX page rather than main stack owns per-image callbacks.
+Paired SDK exit marker rejects old ABI before init; shared caller-stack finalizer
+does core-before-provider cxa/reverseFINI_ARRAY/FINI, consumed before callbacks.
+Provider84sokh6g genuine archives plus rebuilt owned paired exit object/hashes.
+Scoped BIOSe4bhyt_s and UEFI1z3fzfat PASS genuine EGL1.5/GLES cyan pixel in worker
+and provider TLS/context teardown/relaunch/exact resources, synthetic protocol
+main/worker/recursive/constructor/raw exit, SABI/oldABI/missing77 rejection/cancel.
+Single-image exit regression frn6lu6t PASS24 launches. Full60258 exit0 04:35:21
+ALL architectural regression PASS/normal BIOS restored. Adversarial96920 exit0
+04:44:44 BIOS256kphqch0e/UEFI256h6imtmtj/BIOS64kadxl3lg/UEFI128q1tg2fw5:
+actual SDK callback registries per image, concurrent8/worker/recursive/constructor/
+raw exit, fault/finalizer-fault/loop, control-page NX, cancel/relaunch/exact pages+
+heap, genuine EGL/GLES worker current-context/TLS slot reuse/terminate-reinit,
+low-RAM second-image OOM all PASS. Positive paired SABI57910 exit0 04:50:48
+BIOSxhenzlsy/UEFIvmbiwr04 PASS zero-entry handler/argv/URL/2MiB NX guarded stack/
+256KiB probe/Start-Stop/finalizers/relaunch/exact resources. NOT Cobalt.
+Measured20570 exit0 04:49:15 PROCESS_TESTS1 kernel254240/cap262144,7904 free;
+normal250144/runtime30224/BSS end0x7c790; normal BIOS/UEFI match scoped frozen
+images, hashes in detailed doc. All jobs terminal/no image owner. Next remaining77
+actual imports/required behavior and real web gates. No push.
+Runtime fixture163/24267.4%, pairbinding165/24268.2%;
+real Cobalt0/5, Phase33.1/33.2 OPEN; no Phase33.3.
+
 2026-10-05 baseline4cc8b59 plus actual pair staging, PHASE332_MODULE_PAIR.md:
 each elf_plan owns load_bias; checked core LOAD end/page guard places provider
 at0x0000008006331000. Both images share one process and owned-page capacity;

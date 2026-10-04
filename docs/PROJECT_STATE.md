@@ -1,62 +1,61 @@
 # MyOS project state
 
-Updated: 2026-10-05. Repo: /home/xytron404/myos (WSL Ubuntu), branch main.
-Baseline4cc8b59 + tested actual core/provider biased staging.
-Origin/main db934b7 (fetchOct5 03:15:11 +07). Owner pushes; never push.
+Updated: 2026-10-05. Repo /home/xytron404/myos (WSL Ubuntu), main.
+Baseline3c568c9 + tested paired execution/lifecycle checkpoint.
+Origin/main db934b7 (fetchOct5 04:03:14 +07). Owner pushes; never push.
 
-## Scope and status
-- Phase 33.1/33.2 remain OPEN: Cobalt has not executed in MyOS.
-- Native fixture coverage: 163/242 strong imports; 79 plus weak TLS remain.
-  Measured fixture coverage67.4%; paired binding165/242=68.2% (77 missing),
-  staging only. Actual Cobalt acceptance0/5 (0% verified).
-  Separate measures, NOT overall phase completion or complete ABI proof.
-- Phase 32/33 NOT PASSED; actual YouTube playback is unproven.
-- Do not start Phase 33.3 before native Cobalt HTML/JS/DOM/input/HTTPS acceptance.
+## Scope/status
+- Phase33.1/33.2 OPEN. Actual Cobalt has not executed; acceptance0/5 (0% verified).
+- Fixture-tested imports163/242=67.4%; paired strong binding165/242=68.2%,
+  77 missing plus separately tracked weak TLS. NOT overall phase/API completion.
+- Phase32/33 NOT PASSED; actual YouTube playback unproven. No Phase33.3.
 
 ## Current implementation
-- Clock/pthread/descriptors: PHASE331_WAIT.md, PHASE331_PTHREAD.md, PHASE331_SYSTEM.md.
-- Window/input/events: PHASE332_NATIVE_UI.md (NOT EGL/GLES), PHASE332_EVENTS.md.
-- Guarded SABI launcher: PHASE332_LAUNCHER.md.
-- TLS/thread/C11/Mesa utility evidence: PHASE331_NATIVE_TLS.md,
+- Clock/pthread/descriptors: PHASE331_WAIT.md, PHASE331_PTHREAD.md,
+  PHASE331_SYSTEM.md; signals: PHASE331_SIGNALS.md (cross-thread/pause absent).
+- TLS/thread/C11/Mesa utility: PHASE331_NATIVE_TLS.md,
   PHASE331_THREAD_SERVICES.md, PHASE332_C11_SDK.md, PHASE332_THREAD_UTIL.md.
-- Native self-signal/pending/kernel-owned context/abort: PHASE331_SIGNALS.md.
-- Renderer real managed-RAM queries/empty-GNU fix: PHASE332_OS_INFO.md.
-- Renderer compiler/link closure PASS: PHASE332_RENDERER_CLOSURE.md.
-  Native BIOS+UEFI: PHASE332_NATIVE_RENDERER.md; allocator: PHASE331_ALLOCATOR.md.
-  Real EGL core/driver pbuffer/current/deferred-destroy BIOS+UEFI PASS:
-  PHASE332_NATIVE_EGL.md. Native EGL window BIOS+UEFI PASS:
-  PHASE332_NATIVE_EGL_WINDOW.md. Dependency evidence, not Cobalt.
-  Final-core-reference cleanup BIOS/UEFI/pbuffer PASS: PHASE332_EGL_LIFETIME.md.
-  KHR fence/8 waiters after context teardown PASS: PHASE332_NATIVE_EGL_SYNC.md.
-  Actual image storage/2D write-back/cube/3D/RBO: PHASE332_NATIVE_EGL_IMAGE.md.
-  Context/version/debug/surfaceless evidence: PHASE332_NATIVE_EGL_CONTEXT.md.
-  Persistent surfaces/linear128/sRGB188: PHASE332_NATIVE_EGL_COLORSPACE.md.
-  Core1.5 wide sync/image/debug/no-CL: PHASE332_NATIVE_EGL_CORE15.md.
-  Pinned EGL table/query: PHASE332_NATIVE_EGL_INTERFACE.md (not loader exports).
-  Pinned GLES table/native dispatch: PHASE332_NATIVE_GLES_INTERFACE.md.
-  Real provider package/TLS/staging/OOM: PHASE332_RENDERER_PROVIDER.md.
-  Kernel budget/LTO and measured next-loader layout: PHASE332_KERNEL_BUDGET.md.
-  Actual pair stage/export binding/rollback: PHASE332_MODULE_PAIR.md.
-- Cross-thread signal/pause/SIGINFO/alt-stack/restart still absent. Logs capped48MiB;
-  never inspect activity.log via run_logged.py (use unwrapped tail -F).
+- Native window/input/events and guarded SABI launcher: PHASE332_NATIVE_UI.md,
+  PHASE332_EVENTS.md, PHASE332_LAUNCHER.md. Not actual engine interaction.
+- Genuine Mesa closure/native EGL/GLES: PHASE332_RENDERER_CLOSURE.md,
+  PHASE332_NATIVE_RENDERER.md and PHASE332_NATIVE_EGL*.md. Not conformance.
+  Pinned tables: PHASE332_NATIVE_EGL_INTERFACE.md, PHASE332_NATIVE_GLES_INTERFACE.md.
+- Kernel LTO/budget: PHASE332_KERNEL_BUDGET.md. Provider: PHASE332_RENDERER_PROVIDER.md.
+  Pair staging/bias/getters/RELRO/OOM: PHASE332_MODULE_PAIR.md.
+- Explicit pair execution/owned SDK exit/finalizers: PHASE332_PAIR_EXECUTION.md.
+  Commands: elf pair-live CORE PROVIDER; elf pair-starboard CORE PROVIDER [URL].
+  SABI before provider/core init; core/provider reverse shutdown on caller stack.
+  Lifecycle RW/NX page, atomic exit owner, old exit ABI fails before constructors.
+  One PT_TLS image only; no generic DT_NEEDED/DTV/unload/foreign-libc support.
 
 ## Current evidence (+07)
-- Pair BIOS9281 PASS02:41:09; matrix75135 PASS02:47:36 UEFI256, BIOS128
-  partial second-image OOM, BIOS64/UEFI128 OOM; repeat/exact pages+heap checks.
-- Final8994 exit0 03:27:23: final resolver BIOS/UEFI pair + ALL full regression
-  PASS; normal BIOS restored, BIOS/UEFI equal scoped frozen images03:29:05.
-- Maximum test253888/cap262144 (8256 free), normal245692/runtime29904.
-  BSS end0x7b648<0x80000; hashes in module-pair doc. No live job/image owner.
+- Full60258 exit0 04:35:21: ALL architectural regression PASS, normal BIOS restored;
+  also basic paired BIOS/UEFI and original single-image exit24-launch PASS.
+- Adversarial96920 exit0 04:44:44: BIOS256 kphqch0e/UEFI256 h6imtmtj/
+  BIOS64 kadxl3lg/UEFI128 q1tg2fw5 PASS. Genuine provider worker EGL/GLES cyan
+  pixels/current-context/TLS slot reuse/terminate-reinit/relaunch; actual SDK DSO
+  callback registries, concurrent8/worker/recursive/constructor/raw exit, fault/
+  finalizer-fault/loop/NX-control/cancel/exact pages+heap. Low-RAM second-image OOM.
+- Positive paired SABI57910 exit0 04:50:48: BIOS xhenzlsy/UEFI vmbiwr04 PASS;
+  zero-entry handler, owned readonly argv/URL, 2MiB guarded NX stack/256KiB probe,
+  Start/Stop/reverse finalizers/relaunch/exact resources. Fixture, NOT Cobalt.
+- Measured20570 exit0 04:49:15: PROCESS_TESTS=1 kernel254240/cap262144,
+  7904 bytes free; normal250144/runtime30224, BSS end0x7c790<0x80000.
+  Normal restore hashes unchanged; BIOS/UEFI frozen-image hashes match.
+- No active job/image owner. Logs/hashes/artifacts in PHASE332_PAIR_EXECUTION.md.
+  activity.log capped48MiB; never inspect it via run_logged.py (use unwrapped tail).
 
 ## Required next work
-1. Pair coexistence and two actual getters are staged/bound; execution remains.
-   Actual queried context version fixed; audit image numeric/backend limits,
-   terminate/reinit, bind-allocation rollback and zero-sized pbuffer dimensions.
-   Input is still after rendering teardown, not concurrent engine interaction.
-   Paired init/fini/SDK exit/DSO ownership and worker TLS/emutls remain untested.
-   Production worker limit8 remains; actual Cobalt thread requirements unproven.
-2. Fix any regression before new features; native cross-thread signals/pause/SIGINFO.
-3. Run Cobalt itself: HTML, JavaScript/DOM/timers, keyboard/mouse/scroll and
-   verified HTTPS with concurrent assets, interactive >=60s, close/relaunch.
+1. Remaining77 genuine Cobalt imports/typed Starboard system/network/media capability
+   contracts; implement and test real required behavior, not success stubs. Keep
+   compressed-media implementation for33.3 after web gates. Do not close phases.
+2. Actual engine DSO/env/emutls/worker/thread/RAM needs unmeasured (worker limit8).
+   Renderer limits/bind rollback/zero-size surfaces/concurrent engine input remain
+   to audit against actual use. Existing shader/window/fence/image fixtures are
+   dependency evidence, not proof every returned table slot is semantically complete.
+3. Execute Cobalt: HTML, JS/DOM/timers, real typing/clicks/scroll, verified HTTPS
+   concurrent scripts/assets, interactive>=60s, close/relaunch with measured resources.
+   Fix regressions first; scoped tests + full for architecture, normal restore,
+   update docs/local commit. Owner pushes only.
 
-Details: HANDOFF.md; test evidence: build/system-tests/. Never push.
+Background: HANDOFF.md. No imported-symbol percentage can close33.1/33.2.

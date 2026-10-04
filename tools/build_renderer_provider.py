@@ -17,6 +17,7 @@ root=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--fixture',type=Path,required=True)
 parser.add_argument('--evidence-log',type=Path,required=True)
+parser.add_argument('--paired-exit',action='store_true',help='Build SDK exit for the explicit two-image lifecycle ABI')
 args=parser.parse_args()
 fixture=args.fixture.resolve();evidence=args.evidence_log.resolve()
 assert fixture.is_relative_to((root/'build/native-renderer-evaluation').resolve())
@@ -38,11 +39,22 @@ assert supports.issubset(inputs) and any(path.name=='libmyos-egl-core.a' for pat
 base=root/'build/renderer-provider-evaluation';base.mkdir(parents=True,exist_ok=True)
 out=Path(tempfile.mkdtemp(prefix='provider-',dir=base));library=out/'provider.so'
 objects=[path for path in inputs if path.suffix=='.o']
+exit_compile=None
+if args.paired_exit:
+    include=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
+    obj=out/'paired-exit.o'
+    exit_compile=['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
+        '-mno-red-zone','-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
+        '-nostdinc','-isystem',include,'-I',str(root/'user/sdk'),'-DMYOS_PAIRED_IMAGE=1',
+        '-ffunction-sections','-fdata-sections','-c',str(root/'user/platform-exit.c'),'-o',str(obj)]
+    subprocess.run(exit_compile,check=True)
+    objects=[obj if path.name=='process-exit.o' else path for path in objects]
 archives=[path for path in inputs if path.suffix=='.a']
 link=['ld','-shared','--gc-sections','--hash-style=both','-Bsymbolic',
       '-z','now','-z','relro','-z','noexecstack','-u','SbGetEglInterface',
       '-u','SbGetGlesInterface','-o',str(library),*map(str,objects),
       '--start-group',*map(str,archives),'--end-group']
+if args.paired_exit:link.extend(['-u','MyOSPairedExitAbi'])
 with (out/'link.log').open('w') as stream:
     stream.write('$ '+shlex.join(link)+'\n');stream.flush()
     subprocess.run(link,stdout=stream,stderr=subprocess.STDOUT,check=True)
@@ -91,6 +103,10 @@ report=dict(output=str(out.relative_to(root)),provider_sha256=digest(library),
     input_fixture=str(fixture),fixture_sha256=digest(fixture/'renderer.so'),
     evidence_log=str(evidence),evidence_sha256=digest(evidence),
     inputs=[dict(path=str(path),sha256=digest(path)) for path in inputs],
+    paired_exit_abi=1 if args.paired_exit else 0,
+    paired_exit_compile=exit_compile,
+    paired_exit_source_sha256=digest(root/'user/platform-exit.c') if args.paired_exit else None,
+    linked_objects=[dict(path=str(path),sha256=digest(path)) for path in objects],
     native_provider_executed=False,cobalt_acceptance_passed=False)
 (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({key:report[key] for key in ('output','bytes','load_memory_bytes','exports',

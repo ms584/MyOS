@@ -67,6 +67,7 @@ struct process *process_stage_elf_pair(const struct elf_source *const [2],const 
 void process_discard_elf(struct process *);
 struct elf_start;
 bool process_start_elf(struct process *,const struct elf_start *);
+bool process_start_elf_pair(struct process *,const struct elf_start *);
 bool process_image_copy(struct process *,uint64_t,void *,size_t,bool);
 bool process_copy_user(struct process *,uint64_t,void *,size_t,bool);
 struct frame *process_signal_call(struct process *,struct frame *);

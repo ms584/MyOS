@@ -214,7 +214,7 @@ bool elf_executable(const struct elf_plan *plan,uint64_t address)
 }
 /* Compare only the bounded requested name, not every potentially long C++
  * export. Entry points must be unambiguous strong functions wholly in RX data. */
-static int exported_function(struct linker *l,const char *name,uint64_t *address)
+static int exported_symbol(struct linker *l,const char *name,uint64_t *address,bool function)
 {
     bool found=false;
     for(unsigned i=1;i<l->symbols;++i){struct symbol s;int rc=get_symbol(l,i,&s);if(rc)return rc;
@@ -224,17 +224,28 @@ static int exported_function(struct linker *l,const char *name,uint64_t *address
             if(c!=name[n]){matches=false;break;}if(!c)break;
         }
         if(!matches)continue;
-        if(found||!s.section||s.section>=0xff00||s.info!=0x12||
-           (s.other!=0&&s.other!=3)||!s.size||!span(l->plan,s.value,s.size,5))return -8;
+        unsigned flags=function?5:4;
+        if(found||!s.section||s.section>=0xff00||s.info!=(function?0x12:0x11)||
+           (s.other!=0&&s.other!=3)||!s.size||(!function&&s.size!=8)||
+           !span(l->plan,s.value,s.size,flags))return -8;
         bool backed=false;
         for(unsigned j=0;j<l->plan->count;++j){const struct elf_segment *segment=&l->plan->segments[j];
             uint64_t lo=segment->address-l->plan->load_bias;
-            if((segment->flags&5)==5&&s.value>=lo&&s.value-lo<segment->filesz&&
+            if((segment->flags&flags)==flags&&!(segment->flags&2)&&s.value>=lo&&s.value-lo<segment->filesz&&
                s.size<=segment->filesz-(s.value-lo)){backed=true;break;}}
         if(!backed)return -8;
         *address=l->plan->load_bias+s.value;found=true;
     }
     return found?0:-95;
+}
+static int exported_function(struct linker *l,const char *name,uint64_t *address)
+{return exported_symbol(l,name,address,true);}
+static int paired_exit_abi(struct linker *l)
+{
+    uint64_t address,version;int rc=exported_symbol(l,"MyOSPairedExitAbi",&address,false);
+    if(rc)return rc;
+    if(!process_image_copy(l->process,address,&version,8,false)||version!=1)return -95;
+    return 0;
 }
 static int prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start,bool starboard,
                    const struct provider_exports *provider,bool runtime_mapped)
@@ -287,15 +298,33 @@ int elf_prepare(struct process *p,const struct elf_plan *plan,struct elf_start *
 {return prepare(p,plan,start,false,0,false);}
 int elf_prepare_starboard(struct process *p,const struct elf_plan *plan,struct elf_start *start)
 {return prepare(p,plan,start,true,0,false);}
-int elf_prepare_pair(struct process *p,const struct elf_plan *const plans[2],struct elf_start starts[2])
+static int prepare_pair(struct process *p,const struct elf_plan *const plans[2],struct elf_start starts[2],bool execute,bool starboard)
 {
     if(!plans[0]->dynamic||!plans[1]->dynamic||
        (plans[0]->tls_size&&plans[1]->tls_size))return -95;
     struct linker provider={.process=p,.plan=plans[1]};struct provider_exports exports;
     int rc=parse(&provider);if(rc)return rc;
+    if(execute&&(rc=paired_exit_abi(&provider)))return rc;
     if((rc=exported_function(&provider,"SbGetEglInterface",&exports.egl))||
        (rc=exported_function(&provider,"SbGetGlesInterface",&exports.gles)))return rc;
     if(!process_map_runtime(p))return -12;
     if((rc=prepare(p,plans[1],&starts[1],false,0,true)))return rc;
-    return prepare(p,plans[0],&starts[0],false,&exports,true);
+    if((rc=prepare(p,plans[0],&starts[0],starboard,&exports,true)))return rc;
+    if(execute){
+        struct linker core={.process=p,.plan=plans[0]};if((rc=parse(&core)))return rc;
+        struct linker *owners[]={&core,&provider};
+        for(unsigned i=0;i<2;++i){
+            rc=exported_function(owners[i],"__cxa_finalize",&starts[i].cxa);
+            if(rc&&rc!=-95)return rc;
+            uint64_t exit_address;
+            rc=exported_function(owners[i],"exit",&exit_address);
+            if(rc&&rc!=-95)return rc;
+            if(!rc&&(rc=paired_exit_abi(owners[i])))return rc;
+        }
+    }
+    return 0;
 }
+int elf_prepare_pair(struct process *p,const struct elf_plan *const plans[2],struct elf_start starts[2])
+{return prepare_pair(p,plans,starts,false,false);}
+int elf_prepare_pair_execution(struct process *p,const struct elf_plan *const plans[2],struct elf_start starts[2],bool starboard)
+{return prepare_pair(p,plans,starts,true,starboard);}

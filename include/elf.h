@@ -1,6 +1,7 @@
 #ifndef MYOS_ELF_H
 #define MYOS_ELF_H
 #include "os.h"
+#include "elf-lifecycle.h"
 #define ELF_SEGMENTS 16u
 #define ELF_SPAN (128ull*1024*1024)
 #define ELF_BOOT_OFFSET 0x10010000ull
@@ -16,11 +17,13 @@ int elf_plan_read(const struct elf_source *,struct elf_plan *);
 int elf_plan_read_at(const struct elf_source *,struct elf_plan *,uint64_t);
 int elf_inspect(const struct elf_source *);
 struct process;
-struct elf_start { uint64_t init,array,fini,fini_array,entry,preflight,handler,sabi;unsigned count,fini_count;const char *name,*url; };
+struct elf_start { uint64_t init,array,fini,fini_array,entry,preflight,handler,sabi,cxa;unsigned count,fini_count;const char *name,*url; };
 bool elf_executable(const struct elf_plan *,uint64_t);
 int elf_prepare(struct process *,const struct elf_plan *,struct elf_start *);
 int elf_prepare_starboard(struct process *,const struct elf_plan *,struct elf_start *);
 int elf_prepare_pair(struct process *,const struct elf_plan *const [2],struct elf_start [2]);
+int elf_prepare_pair_execution(struct process *,const struct elf_plan *const [2],struct elf_start [2],bool);
+int elf_live_pair(const struct elf_source *,const struct elf_source *,const char *,const char *,int32_t *);
 int elf_link_pair(const struct elf_source *,const struct elf_source *);
 int elf_link(const struct elf_source *);
 int elf_run(const struct elf_source *,int32_t *);

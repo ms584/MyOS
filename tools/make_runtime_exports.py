@@ -17,6 +17,7 @@ wanted={'__errno_location','access','abort','signal','sigaction','raise','MyOSSi
         'MyOSUiQuery','MyOSUiPresent','MyOSUiPoll',
         'MyOSUiWindow','MyOSUiSetVisible','SbRunStarboardMain',
         'MyOSStarboardRun','MyOSStarboardValidate',
+        'MyOSFinalizeImages',
         '__tls_get_addr','MyOSTlsDesc',
         'SbEventSchedule','SbEventCancel','SbSystemRequestStop','SbSystemRequestConceal',
         'SbSystemRequestReveal','SbSystemRequestBlur','SbSystemRequestFocus','SbSystemSupportsResume',

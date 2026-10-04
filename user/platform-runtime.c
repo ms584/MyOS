@@ -2121,3 +2121,30 @@ void SbMicrophoneDestroy(void *microphone){(void)microphone;}
 bool SbSpeechSynthesisIsSupported(void){return false;}
 void SbSpeechSynthesisSpeak(const char *text){(void)text;}
 void SbSpeechSynthesisCancel(void){}
+
+#include "../include/elf-lifecycle.h"
+/* Stay on the caller's stack. A concurrent exit waits for the first cleanup
+ * owner; recursive exit by that same owner resumes already-consumed callbacks.
+ * No callback is dispatched on fault/forced cancellation by the kernel. */
+void MyOSFinalizeImages(void)
+{
+    uint64_t address=*(const uint64_t *)(uintptr_t)(0x803f010000ull+56);
+    if(address!=ELF_PAIR_CONTROL_ADDRESS){(void)call3(SYS_EXIT,(uint64_t)-8,0,0);__builtin_trap();}
+    volatile struct elf_pair_control *control=(void *)(uintptr_t)address;
+    if(control->magic!=ELF_PAIR_MAGIC||control->count!=2){
+        (void)call3(SYS_EXIT,(uint64_t)-8,0,0);__builtin_trap();}
+    uint64_t caller=self_page(),expected=0;
+    if(!__atomic_compare_exchange_n(&control->exit_owner,&expected,caller,false,__ATOMIC_ACQ_REL,__ATOMIC_ACQUIRE)&&expected!=caller){
+        for(;;)(void)wait64(&control->exit_owner,expected,UINT64_MAX);
+    }
+    for(unsigned i=0;i<2;++i){volatile struct elf_image_lifecycle *image=&control->images[i];
+        if(!image->active)continue;
+        uint64_t function=image->cxa;image->cxa=0;
+        if(function)((void (*)(void *))(uintptr_t)function)(0);
+        while(image->fini_count){uint64_t index=image->fini_count-1;image->fini_count=index;
+            ((void (**)(void))(uintptr_t)image->fini_array)[index]();}
+        function=image->fini;image->fini=0;
+        if(function)((void (*)(void))(uintptr_t)function)();
+        image->active=0;
+    }
+}

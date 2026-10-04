@@ -60,14 +60,20 @@ static void execute(char *line){
     char *arg=word(&rest);
     if(equal(cmd,"assets")){if(arg)print("usage: assets\n");else asset_list();return;}
     if(equal(cmd,"elf")){
-        if(arg&&equal(arg,"pair-link")){
+        if(arg&&(equal(arg,"pair-link")||equal(arg,"pair-live")||equal(arg,"pair-starboard"))){
+            bool run=!equal(arg,"pair-link"),starboard=equal(arg,"pair-starboard");
             char *core_name=word(&rest),*provider_name=word(&rest);
-            if(!core_name||!provider_name||word(&rest)){print("usage: elf pair-link CORE PROVIDER\n");return;}
+            char *url=word(&rest);
+            if(!core_name||!provider_name||(url&&!starboard)||word(&rest)){
+                print("usage: elf pair-link|pair-live CORE PROVIDER; elf pair-starboard CORE PROVIDER [URL]\n");return;}
             struct asset_file core,provider;int rc=asset_open(core_name,&core);
             if(!rc)rc=asset_open(provider_name,&provider);
             if(!rc){struct elf_source sources[]={{&core,core.size,asset_read},{&provider,provider.size,asset_read}};
-                rc=elf_link_pair(&sources[0],&sources[1]);}
-            if(rc==-95)print("ELF: unsupported runtime feature; not executed\n");else if(rc)error(rc);
+                int32_t status=0;
+                rc=run?elf_live_pair(&sources[0],&sources[1],starboard?core_name:0,url,&status):elf_link_pair(&sources[0],&sources[1]);
+                if(run&&!rc){print("ELF exited with status ");if(status<0){putchar('-');decimal(-(int64_t)status);}else decimal(status);print("\n");}}
+            if(rc==-125)print("ELF cancelled; all threads stopped\n");
+            else if(rc==-95)print("ELF: unsupported runtime feature; not executed\n");else if(rc)error(rc);
             return;
         }
         char *name=word(&rest),*url=word(&rest);bool starboard=arg&&equal(arg,"starboard");

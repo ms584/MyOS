@@ -1,6 +1,7 @@
 #include "boot.h"
 #include "process.h"
 #include "elf.h"
+#include "../build/platform-runtime-exports.h"
 #define NX (1ull << 63)
 static struct process processes[PROCESS_LIMIT];
 static uint64_t next_pid = 1;
@@ -186,7 +187,7 @@ static struct process *stage_images(const struct elf_source *const sources[],con
     if(!p){irq_restore(flags);return 0;}
     unsigned stack_pages=plan->stack_pages?plan->stack_pages:ELF_STACK_PAGES;
     if(stack_pages<ELF_STACK_PAGES||stack_pages>ELF_STARBOARD_STACK_PAGES){irq_restore(flags);return 0;}
-    unsigned capacity=128+stack_pages-ELF_STACK_PAGES;
+    unsigned capacity=128+stack_pages-ELF_STACK_PAGES+(images==2);
     unsigned native_tls=0;
     for(unsigned image=0;image<images;++image){const struct elf_plan *owner=plans[image];
         if(owner->tls_size){if(++native_tls>1){irq_restore(flags);return 0;}
@@ -223,6 +224,7 @@ static struct process *stage_images(const struct elf_source *const sources[],con
     for(unsigned i=0;i<stack_pages;++i)
         if(!elf_map_page(p,capacity,p->main_stack_base+i*PAGE_SIZE,6))goto failed;
     if(!elf_map_page(p,capacity,USER_BASE+ELF_BOOT_OFFSET,5))goto failed;
+    if(images==2&&!elf_map_page(p,capacity,ELF_PAIR_CONTROL_ADDRESS,6))goto failed;
     p->kernel_stack=kmalloc(16384);if(!p->kernel_stack)goto failed;
     p->kernel_top=((uintptr_t)p->kernel_stack+16384)&~15ull;
     p->frame=(struct frame *)(p->kernel_top-sizeof(struct frame));memset(p->frame,0,sizeof(*p->frame));
@@ -616,15 +618,18 @@ void process_discard_elf(struct process *p)
 {
     uint64_t f=irq_save();check(p&&p->state==PROCESS_LOADING,"discard staged ELF");release(p);irq_restore(f);
 }
-bool process_start_elf(struct process *p,const struct elf_start *start)
+static bool start_images(struct process *p,const struct elf_start *start,const struct elf_start *dependency)
 {
     extern const unsigned char elf_start_code[],elf_start_end[];
+    extern const unsigned char elf_pair_start_code[],elf_pair_start_end[];
     uint64_t f=irq_save();
     if(!p||!start||p->state!=PROCESS_LOADING){irq_restore(f);return false;}
     uint64_t *e=image_leaf(p,USER_BASE+ELF_BOOT_OFFSET);check(e!=0,"ELF bootstrap map");
-    size_t size=(size_t)(elf_start_end-elf_start_code);check(size<=512,"ELF bootstrap size");
+    const unsigned char *code=dependency?elf_pair_start_code:elf_start_code;
+    size_t size=dependency?(size_t)(elf_pair_start_end-elf_pair_start_code):(size_t)(elf_start_end-elf_start_code);
+    check(size<=512,"ELF bootstrap size");
     unsigned char *boot=(void *)(uintptr_t)(*e&0x000ffffffffff000ull);
-    memcpy(boot,elf_start_code,size);
+    memcpy(boot,code,size);
     if(start->name){
         size_t n=0,u=0;while(n<=64&&start->name[n])++n;
         if(start->url)while(u<=1024&&start->url[u])++u;
@@ -642,10 +647,26 @@ bool process_start_elf(struct process *p,const struct elf_start *start)
     p->frame->r14=start->entry?start->entry:p->frame->rip;p->frame->r15=start->init;
     p->frame->rbx=start->fini;p->frame->rbp=start->fini_array;p->frame->rdx=start->fini_count;
     p->frame->r11=image_leaf(p,PROCESS_RUNTIME_TLS_BASE)?PROCESS_RUNTIME_TLS_BASE:0;
+    if(dependency){
+        if(!p->frame->r11){irq_restore(f);return false;}
+        struct elf_pair_control control={.magic=ELF_PAIR_MAGIC,.count=2};
+        const struct elf_start *owners[]={start,dependency};
+        for(unsigned i=0;i<2;++i){const struct elf_start *s=owners[i];
+            control.images[i]=(struct elf_image_lifecycle){s->init,s->array,s->count,
+                s->fini,s->fini_array,s->fini_count,s->cxa,0};}
+        if(!process_image_copy(p,ELF_PAIR_CONTROL_ADDRESS,&control,sizeof(control),true)){
+            irq_restore(f);return false;}
+        p->frame->rax=ELF_PAIR_CONTROL_ADDRESS;
+        p->frame->r15=PLATFORM_MYOSFINALIZEIMAGES;
+    }
     p->frame->rip=USER_BASE+ELF_BOOT_OFFSET;
     if(!scheduler_attach_process(p)){irq_restore(f);return false;}
     p->state=PROCESS_RUNNING;irq_restore(f);return true;
 }
+bool process_start_elf(struct process *p,const struct elf_start *start)
+{return start_images(p,start,0);}
+bool process_start_elf_pair(struct process *p,const struct elf_start *starts)
+{return start_images(p,&starts[0],&starts[1]);}
 uint64_t process_create_elf(const struct elf_source *source,const struct elf_plan *plan)
 {
     struct process *p=process_stage_elf(source,plan);if(!p)return 0;
