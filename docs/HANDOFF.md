@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Signal ABI/mask groundwork — 2026-10-04
+
+Follows a536b93; fetch08:31 confirms origin/main remains d147ec8. No push.
+PHASE331_SIGNAL_PLAN.md is the next-work entry point: exact pinned layouts,
+sigaddset and native mask tests implemented; delivery architecture only planned.
+Final34821 exit0 08:37:33: BIOS sdk-1noj828y/UEFI sdk-lokp4w8s, C11/C++17,
+12 launches,127 bit positions/bounds/errno/canaries/aliasing,8-worker inherited
+then isolated masks and exact resources. Integer headers PASS. No new bindings.
+Kernel/runtime/shared BIOS/UEFI unchanged; reuse full78177, no rerun required.
+Before delivery changes measure image/BSS layout: test kernel has1000 bytes
+headroom under256KiB; BSS has11616 bytes before BIOS stack. Do not remove
+tests/raise caps without boot/memory audit. True dispositions/pending/kernel
+context+FX preservation/wait interruption/abort still pending. Imports160/242,
+actual Cobalt0/5; phases OPEN, no33.3. All jobs terminal, no image owner.
+
 ## Tested owned-image SDK exit — 2026-10-04
 
 Checkpoint follows0643303. PHASE332_EXIT_SDK.md is authoritative
