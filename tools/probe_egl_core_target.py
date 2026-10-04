@@ -49,13 +49,15 @@ subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl
                cwd=egl_source,check=True)
 subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_sync_atomic.patch')],
                cwd=egl_source,check=True)
+subprocess.run(['patch','--batch','--fuzz=0','-p1','-i',str(root/'tools/mesa_egl_current_deleted.patch')],
+               cwd=egl_source,check=True)
 sources=[egl_source/(name+'.c') for name in (
     'eglapi','eglarray','eglconfigdebug','eglconfig','eglcontext','eglcurrent',
     'egldevice','egldisplay','eglglobals','eglimage','egllog','eglsurface','eglsync')]
 sources.append(source/'src/util/rwlock.c')
 if args.driver:sources.extend([root/'user/platform-egl-driver.c',source/'src/util/os_file.c',
                                root/'user/egl-lifetime-test.c',root/'user/platform-osmesa-fence.c',
-                               root/'user/egl-image-test.c'])
+                               root/'user/egl-image-test.c',root/'user/egl-context-test.c'])
 objects=[];failed=[]
 with (out/'compile.log').open('w') as log:
     for path in sources:

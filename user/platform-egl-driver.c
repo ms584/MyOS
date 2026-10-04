@@ -19,6 +19,8 @@ extern int MyOSUiPresent(void *,const struct native_ui_present *);
 #include "eglimage.h"
 #include "frontend/api.h"
 extern int MyOSMesaInitializeImages(void);
+extern int MyOSMesaMakeCurrentSurfaceless(OSMesaContext);
+extern int MyOSMesaEnableDebug(OSMesaContext);
 extern void *MyOSMesaCreateImage(OSMesaContext,unsigned,unsigned,unsigned,int,int *);
 extern void MyOSMesaDestroyImage(void *);
 extern void MyOSMesaTranslateImage(void *,struct st_egl_image *);
@@ -56,7 +58,8 @@ static EGLBoolean initialize(_EGLDisplay *display)
     if(!state||!config){free(state);free(config);return fail(EGL_BAD_ALLOC,"eglInitialize");}
     _eglInitConfig(config,display,1);
     config->BufferSize=32;config->RedSize=config->GreenSize=config->BlueSize=config->AlphaSize=8;
-    config->RenderableType=EGL_OPENGL_ES2_BIT;config->Conformant=0; /* not certified */
+    config->RenderableType=EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT_KHR;
+    config->Conformant=0; /* not certified */
     config->SurfaceType=EGL_PBUFFER_BIT;
     if(display->Platform==_EGL_PLATFORM_MYOS)config->SurfaceType|=EGL_WINDOW_BIT;
     config->MaxPbufferWidth=config->MaxPbufferHeight=1024;
@@ -68,7 +71,9 @@ static EGLBoolean initialize(_EGLDisplay *display)
     if(!_eglLinkConfig(config)){
         free(config);free(state);return fail(EGL_BAD_ALLOC,"MyOS EGL config link");
     }
-    display->ClientAPIs=EGL_OPENGL_ES2_BIT;
+    display->ClientAPIs=EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT_KHR;
+    display->Extensions.KHR_create_context=EGL_TRUE;
+    display->Extensions.KHR_surfaceless_context=EGL_TRUE;
     display->Extensions.KHR_fence_sync=EGL_TRUE;
     display->Extensions.KHR_wait_sync=EGL_TRUE;
     display->Extensions.KHR_image_base=EGL_TRUE;
@@ -94,16 +99,23 @@ static _EGLContext *create_context(_EGLDisplay *display,_EGLConfig *config,
     struct myos_context *context=calloc(1,sizeof(*context));
     if(!context){fail(EGL_BAD_ALLOC,"eglCreateContext");return 0;}
     if(!_eglInitContext(&context->base,display,config,share,attributes)){free(context);return 0;}
-    if(context->base.ClientAPI!=EGL_OPENGL_ES_API||context->base.ClientMajorVersion!=2||
-       context->base.ClientMinorVersion||context->base.Flags||context->base.NoError||
+    if(context->base.ClientAPI!=EGL_OPENGL_ES_API||
+       (context->base.ClientMajorVersion!=2&&context->base.ClientMajorVersion!=3)||
+       (context->base.ClientMajorVersion==3&&context->base.ClientMinorVersion>1)||
+       (context->base.Flags&~EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR)||context->base.NoError||
        context->base.ResetNotificationStrategy!=EGL_NO_RESET_NOTIFICATION){
         free(context);fail(EGL_BAD_MATCH,"MyOS EGL context attributes");return 0;
     }
     const int options[]={OSMESA_FORMAT,OSMESA_RGBA,OSMESA_DEPTH_BITS,0,
         OSMESA_STENCIL_BITS,0,OSMESA_ACCUM_BITS,0,OSMESA_PROFILE,OSMESA_MYOS_GLES_PROFILE,
-        OSMESA_CONTEXT_MAJOR_VERSION,2,OSMESA_CONTEXT_MINOR_VERSION,0,0};
+        OSMESA_CONTEXT_MAJOR_VERSION,context->base.ClientMajorVersion,
+        OSMESA_CONTEXT_MINOR_VERSION,context->base.ClientMinorVersion,0};
     context->mesa=OSMesaCreateContextAttribs(options,share?((struct myos_context *)share)->mesa:0);
     if(!context->mesa){free(context);fail(EGL_BAD_ALLOC,"MyOS GLES context");return 0;}
+    if((context->base.Flags&EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR)&&!MyOSMesaEnableDebug(context->mesa)){
+        OSMesaDestroyContext(context->mesa);free(context);
+        fail(EGL_BAD_ALLOC,"MyOS GLES debug state");return 0;
+    }
     context->base.Resource.OnFinalRelease=free_context;
     display_get(display);return &context->base;
 }
@@ -173,12 +185,14 @@ static _EGLSurface *create_window(_EGLDisplay *display,_EGLConfig *config,
 }
 static EGLBoolean make_current(_EGLDisplay *display,_EGLSurface *draw,_EGLSurface *read,_EGLContext *base)
 {
-    if(base&&(!draw||draw!=read))return fail(EGL_BAD_MATCH,"MyOS EGL draw/read");
+    if(base&&draw!=read)return fail(EGL_BAD_MATCH,"MyOS EGL draw/read");
     _EGLContext *old;_EGLSurface *old_draw,*old_read;
     if(!_eglBindContext(base,draw,read,&old,&old_draw,&old_read))return EGL_FALSE;
     if(old)glFlush();
     struct myos_surface *surface=(void *)draw;
-    EGLBoolean bound=OSMesaMakeCurrent(base?((struct myos_context *)base)->mesa:0,
+    EGLBoolean bound=base&&!surface?
+        MyOSMesaMakeCurrentSurfaceless(((struct myos_context *)base)->mesa):
+        OSMesaMakeCurrent(base?((struct myos_context *)base)->mesa:0,
         surface?surface->pixels:0,GL_UNSIGNED_BYTE,
         surface?(surface->base.Width?surface->base.Width:1):0,
         surface?(surface->base.Height?surface->base.Height:1):0);
@@ -187,7 +201,7 @@ static EGLBoolean make_current(_EGLDisplay *display,_EGLSurface *draw,_EGLSurfac
         _eglBindContext(old,old_draw,old_read,&new_context,&new_draw,&new_read);
         destroy_surface(display,new_draw);destroy_surface(display,new_read);
         destroy_context(display,new_context);
-    }else if(base)OSMesaPixelStore(OSMESA_Y_UP,draw->Type==EGL_WINDOW_BIT?0:1);
+    }else if(base&&draw)OSMesaPixelStore(OSMESA_Y_UP,draw->Type==EGL_WINDOW_BIT?0:1);
     _EGLDisplay *old_display=old?old->Resource.Display:display;
     destroy_surface(old_display,old_draw);destroy_surface(old_display,old_read);
     destroy_context(old_display,old);

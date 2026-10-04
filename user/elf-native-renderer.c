@@ -136,6 +136,9 @@ static void *render(void *unused)
     extern int MyOSEglLifetimeTest(EGLDisplay,EGLConfig);
     CHECK(!MyOSEglLifetimeTest(display,config));
     say("Native EGL last-core-pin cleanup checked\n");
+    extern int MyOSEglContextTest(EGLDisplay,EGLConfig);
+    CHECK(!MyOSEglContextTest(display,config));
+    say("Native EGL requested-version/debug callback/surfaceless FBO checked\n");
     CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
     CHECK(eglGetError()==EGL_BAD_CONFIG);
     const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
@@ -317,9 +320,11 @@ static void *render(void *unused)
     CHECK(eglDestroyContext(display,egl_context));
     EGLint value;CHECK(!eglQueryContext(display,egl_context,EGL_CONTEXT_CLIENT_VERSION,&value));
     CHECK(eglGetError()==EGL_BAD_CONTEXT&&OSMesaGetCurrentContext()==context);
+    CHECK(eglGetCurrentContext()==egl_context);
     CHECK(eglDestroySurface(display,surface));
     CHECK(!eglQuerySurface(display,surface,EGL_WIDTH,&value));
     CHECK(eglGetError()==EGL_BAD_SURFACE);
+    CHECK(eglGetCurrentSurface(EGL_DRAW)==surface&&eglGetCurrentSurface(EGL_READ)==surface);
     CHECK(eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT));
     CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
     /* Keep display/fence valid for eight waiters after the creator context and

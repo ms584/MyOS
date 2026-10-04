@@ -1,0 +1,28 @@
+--- a/eglapi.c
++++ b/eglapi.c
+@@ -1696,7 +1696,13 @@
+    _EGLContext *ctx = _eglGetCurrentContext();
+    EGLContext ret;
+ 
++#ifdef __myos__
++   /* EGL1.5 section3.7.4: current references retain the handle after
++    * destruction, but that handle cannot be used in other EGL calls. */
++   ret = ctx ? (EGLContext)ctx : EGL_NO_CONTEXT;
++#else
+    ret = _eglGetContextHandle(ctx);
++#endif
+ 
+    RETURN_EGL_SUCCESS(NULL, ret);
+ }
+@@ -1730,7 +1736,11 @@
+       break;
+    }
+ 
++#ifdef __myos__
++   ret = surf ? (EGLSurface)surf : EGL_NO_SURFACE;
++#else
+    ret = _eglGetSurfaceHandle(surf);
++#endif
+ 
+    RETURN_EGL_ERROR(NULL, err, ret);
+ }

@@ -5,6 +5,18 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline b8f8128 plus genuine GLES versions/debug/surfaceless contexts:
+PHASE332_NATIVE_EGL_CONTEXT.md. Requested versions passed to original OSMesa;
+actual debug state/callbacks, no dummy framebuffer, FBO pixel oracle. Fixed
+first surfaceless viewport initialization so later surfaces cannot reset it.
+Scoped original-core public queries retain deleted-current handles while registry
+lookup still rejects them, as EGL section3.7.4 requires. Strict20/20 compile
+19:22:51 core-qfs_95xh. BIOS fets0c80 PASS41016 exit0 19:24:43, two launches;
+UEFI6bp0_opw/pbufferxtmebax1 PASS69227 exit0 19:28:38, two launches each,
+exact resources. Four normal hashes unchanged19:29:18; all jobs terminal.
+Failures/changes documented, not omitted. Still EGL1.4, no33.3/push/Cobalt gate.
+Next real colorspace/core1.5/OpenCL-absent semantics, SABI/provider integration.
+
 Baseline db934b7 plus native EGL image storage sharing:
 Tested implementation commit60f33c3; fetch19:07:51 confirms origin/main
 db934b7, local one implementation commit ahead before this docs follow-up.

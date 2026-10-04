@@ -157,6 +157,7 @@ try:
         if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
         if args.egl_core:assert 'Native EGL core/error/current/deferred destroy checked' in output,output
         if args.egl_core:assert 'Native EGL last-core-pin cleanup checked' in output,output
+        if args.egl_core:assert 'Native EGL requested-version/debug callback/surfaceless FBO checked' in output,output
         if args.egl_core:assert 'Native EGL real fence/eight waiters/query/errors/final-pin checked' in output,output
         if args.egl_core:assert 'Native EGL shared2D/cube6/3Dlayer/renderbuffer/orphan/final-pin checked' in output,output
         if args.egl_window:assert 'Native EGL window swap checked' in output,output

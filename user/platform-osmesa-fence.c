@@ -2,6 +2,34 @@
  * unit so the adapter uses its actual state tracker. Not a substitute GL API. */
 #include "osmesa.c"
 #include "state_tracker/st_cb_flush.h"
+#include "main/debug_output.h"
+#include "main/viewport.h"
+#include "main/scissor.h"
+int MyOSMesaMakeCurrentSurfaceless(OSMesaContext);
+int MyOSMesaEnableDebug(OSMesaContext);
+int MyOSMesaMakeCurrentSurfaceless(OSMesaContext context)
+{
+    if(!context||!context->st||!st_api_make_current(context->st,NULL,NULL))return 0;
+    struct gl_context *gl=context->st->ctx;
+    /* Mesa's generic check_init_viewport intentionally waits for nonzero
+     * drawable dimensions. EGL first surfaceless bind is initialization too:
+     * zero regions must not be reset on the first later surface bind. */
+    if(!gl->ViewportInitialized){
+        gl->ViewportInitialized=GL_TRUE;
+        for(unsigned i=0;i<MAX_VIEWPORTS;++i){
+            _mesa_set_viewport(gl,i,0,0,0,0);_mesa_set_scissor(gl,i,0,0,0,0);
+        }
+    }
+    return 1;
+}
+int MyOSMesaEnableDebug(OSMesaContext context)
+{
+    /* Same actual Mesa debug state as st_api_create_context's debug path,
+     * set before first bind; OSMesa's public constructor has no flag token. */
+    if(!_mesa_set_debug_state_int(context->st->ctx,GL_DEBUG_OUTPUT,GL_TRUE))return 0;
+    context->st->ctx->Const.ContextFlags|=GL_CONTEXT_FLAG_DEBUG_BIT;
+    _mesa_update_debug_callback(context->st->ctx);return 1;
+}
 struct myos_osmesa_fence {
     struct pipe_screen *screen;
     struct pipe_fence_handle *fence;
