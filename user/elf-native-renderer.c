@@ -9,6 +9,9 @@
 #include <stdbool.h>
 #include "window.h"
 #include "native-ui.h"
+#if defined(MYOS_NATIVE_EGL)
+#include <EGL/egl.h>
+#endif
 #if defined(MYOS_NATIVE_GLES)
 #define NATIVE_PROFILE OSMESA_MYOS_GLES_PROFILE
 #define NATIVE_MINOR 0
@@ -41,11 +44,52 @@ static void *render(void *unused)
 {
     (void)unused;say("Native OSMesa context begin\n");
     CHECK(!OSMesaGetCurrentContext());
+#if defined(MYOS_NATIVE_EGL)
+    CHECK(!eglInitialize((EGLDisplay)(uintptr_t)1,0,0));
+    CHECK(eglGetError()==EGL_BAD_DISPLAY&&eglGetError()==EGL_SUCCESS);
+    EGLDisplay display=eglGetDisplay(EGL_DEFAULT_DISPLAY);CHECK(display!=EGL_NO_DISPLAY);
+    EGLint major=0,minor=0;CHECK(eglInitialize(display,&major,&minor));
+    CHECK(major==1&&minor==4); /* Truthful until image/sync/1.5 contracts exist. */
+    CHECK(eglBindAPI(EGL_OPENGL_ES_API));
+    const EGLint config_attributes[]={EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT,
+        EGL_SURFACE_TYPE,EGL_PBUFFER_BIT,EGL_RED_SIZE,8,EGL_NONE};
+    EGLConfig config;EGLint count=0;
+    CHECK(eglChooseConfig(display,config_attributes,&config,1,&count)&&count==1);
+    CHECK(eglCreateContext(display,(EGLConfig)(uintptr_t)1,EGL_NO_CONTEXT,0)==EGL_NO_CONTEXT);
+    CHECK(eglGetError()==EGL_BAD_CONFIG);
+    const EGLint context_attributes[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
+    EGLContext egl_context=eglCreateContext(display,config,EGL_NO_CONTEXT,context_attributes);
+    CHECK(egl_context!=EGL_NO_CONTEXT);
+    const EGLint surface_attributes[]={EGL_WIDTH,32,EGL_HEIGHT,32,EGL_NONE};
+    EGLSurface surface=eglCreatePbufferSurface(display,config,surface_attributes);
+    CHECK(surface!=EGL_NO_SURFACE&&eglMakeCurrent(display,surface,surface,egl_context));
+    CHECK(eglGetCurrentDisplay()==display&&eglGetCurrentContext()==egl_context&&
+          eglGetCurrentSurface(EGL_DRAW)==surface&&eglGetCurrentSurface(EGL_READ)==surface);
+    EGLint width=0;CHECK(eglQuerySurface(display,surface,EGL_WIDTH,&width)&&width==32);
+    CHECK(!eglBindTexImage(display,surface,EGL_BACK_BUFFER)&&eglGetError()==EGL_BAD_MATCH);
+    CHECK(eglReleaseTexImage(display,surface,EGL_BACK_BUFFER));
+    CHECK(!eglCopyBuffers(display,surface,(EGLNativePixmapType)(uintptr_t)1)&&
+          eglGetError()==EGL_BAD_NATIVE_PIXMAP);
+    const EGLint texture_attributes[]={EGL_WIDTH,1,EGL_HEIGHT,1,
+        EGL_TEXTURE_FORMAT,EGL_TEXTURE_RGBA,EGL_TEXTURE_TARGET,EGL_TEXTURE_2D,EGL_NONE};
+    CHECK(eglCreatePbufferSurface(display,config,texture_attributes)==EGL_NO_SURFACE&&
+          eglGetError()==EGL_BAD_MATCH);
+    const EGLint large_attributes[]={EGL_WIDTH,2048,EGL_HEIGHT,1,EGL_NONE};
+    CHECK(eglCreatePbufferSurface(display,config,large_attributes)==EGL_NO_SURFACE&&
+          eglGetError()==EGL_BAD_ALLOC);
+    const EGLint largest_attributes[]={EGL_WIDTH,2048,EGL_HEIGHT,1,
+        EGL_LARGEST_PBUFFER,EGL_TRUE,EGL_NONE};
+    EGLSurface largest=eglCreatePbufferSurface(display,config,largest_attributes);
+    CHECK(largest!=EGL_NO_SURFACE&&eglQuerySurface(display,largest,EGL_WIDTH,&width)&&width==1024);
+    CHECK(eglDestroySurface(display,largest));
+    OSMesaContext context=OSMesaGetCurrentContext();CHECK(context);
+#else
     const int attributes[]={OSMESA_FORMAT,OSMESA_RGBA,OSMESA_DEPTH_BITS,0,
         OSMESA_STENCIL_BITS,0,OSMESA_ACCUM_BITS,0,OSMESA_PROFILE,NATIVE_PROFILE,
         OSMESA_CONTEXT_MAJOR_VERSION,2,OSMESA_CONTEXT_MINOR_VERSION,NATIVE_MINOR,0};
     OSMesaContext context=OSMesaCreateContextAttribs(attributes,0);CHECK(context);
     CHECK(OSMesaMakeCurrent(context,pixels,GL_UNSIGNED_BYTE,32,32));
+#endif
     CHECK(OSMesaGetCurrentContext()==context);
     const char *version=(const char *)glGetString(GL_VERSION);CHECK(version);
     say(version);say("\n");
@@ -108,6 +152,7 @@ static void *render(void *unused)
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,colors);
     glDrawArrays(GL_TRIANGLES,0,6);glFinish();CHECK(glGetError()==GL_NO_ERROR);
     say("Native OSMesa shaders/textures/pixels checked\n");
+    glReadPixels(0,0,32,32,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
     struct native_ui_present present={(uintptr_t)pixels,32,32,128,NATIVE_UI_RGBA8,688,520};
     CHECK(!MyOSUiPresent(window,&present));
     /* Existing licensed glyph masks are expanded in MyOS, then sampled and
@@ -134,14 +179,29 @@ static void *render(void *unused)
             ink+=expected!=0;
         }
     CHECK(ink>32&&ink<256);glDisable(GL_BLEND);
+    glReadPixels(0,0,32,16,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
     present=(struct native_ui_present){(uintptr_t)pixels,32,16,128,NATIVE_UI_RGBA8,688,552};
     CHECK(!MyOSUiPresent(window,&present));
     say("Native glyph atlas/alpha blend/all512 text pixels checked\n");
     glDisableVertexAttribArray((GLuint)attribute);glUseProgram(0);
     glDeleteBuffers(1,&buffer);glDeleteTextures(1,&texture);
     glDeleteProgram(program);glDeleteShader(vertex);glDeleteShader(fragment);
+#if defined(MYOS_NATIVE_EGL)
+    CHECK(eglSwapBuffers(display,surface)&&eglWaitClient());
+    CHECK(eglDestroyContext(display,egl_context));
+    EGLint value;CHECK(!eglQueryContext(display,egl_context,EGL_CONTEXT_CLIENT_VERSION,&value));
+    CHECK(eglGetError()==EGL_BAD_CONTEXT&&OSMesaGetCurrentContext()==context);
+    CHECK(eglDestroySurface(display,surface));
+    CHECK(!eglQuerySurface(display,surface,EGL_WIDTH,&value));
+    CHECK(eglGetError()==EGL_BAD_SURFACE);
+    CHECK(eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT));
+    CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&!OSMesaGetCurrentContext());
+    CHECK(eglTerminate(display)&&eglTerminate(display)&&eglReleaseThread());
+    say("Native EGL core/error/current/deferred destroy checked\n");
+#else
     CHECK(OSMesaMakeCurrent(0,0,GL_UNSIGNED_BYTE,0,0));
     CHECK(!OSMesaGetCurrentContext());OSMesaDestroyContext(context);
+#endif
     say("Native OSMesa context destroyed\n");return (void *)(uintptr_t)90;
 }
 int _start(void)
@@ -159,6 +219,10 @@ int _start(void)
     void *result;CHECK(!pthread_join(worker,&result)&&result==(void *)(uintptr_t)90);
     CHECK(!OSMesaGetCurrentContext());
     say("Native OSMesa frame ready\n");
+#if defined(MYOS_NATIVE_EGL)
+    CHECK(eglGetCurrentContext()==EGL_NO_CONTEXT&&eglGetError()==EGL_SUCCESS);
+    CHECK(eglReleaseThread());
+#endif
     struct native_ui_event event;
     do{CHECK(MyOSUiPoll(window,&event,-1)==1);}while(event.type!=NATIVE_UI_KEY_DOWN||event.character!=97);
     CHECK(SbWindowDestroy(window));

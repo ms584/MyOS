@@ -24,12 +24,14 @@ parser.add_argument('--renderer-probe',type=Path,required=True)
 parser.add_argument('--configuration',type=Path,required=True)
 parser.add_argument('--uefi',action='store_true')
 parser.add_argument('--gles',action='store_true',help='Real Mesa GLES profile/GLSL100, not EGL')
+parser.add_argument('--egl-core',type=Path,help='Actual Mesa EGL core + MyOS pbuffer driver archive')
 parser.add_argument('--diagnostic',action='store_true',help='Transparent test-only allocation/lock wrappers')
 parser.add_argument('--launches',type=int,choices=(1,2,3),default=2)
 parser.add_argument('--ram',type=int,choices=(128,256,512,1024),default=256)
 parser.add_argument('--startup-timeout',type=int,choices=(120,300,600),default=120,
                     help='Bound cold Mesa shader initialization; never a Cobalt pass criterion')
 args=parser.parse_args()
+if args.egl_core and not args.gles:parser.error('--egl-core requires --gles')
 probe=args.renderer_probe.resolve();cfg=args.configuration.resolve()
 assert probe.is_relative_to((root/'build/renderer-evaluation').resolve())
 assert cfg.is_relative_to((root/'build/cxx-target-evaluation').resolve())
@@ -52,6 +54,7 @@ assert hashlib.sha256(window.read_bytes()).hexdigest()==next(
 intrinsics=subprocess.check_output(['gcc','-print-file-name=include'],text=True).strip()
 flags=['-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone',
        '-D__myos__=1',*(['-DMYOS_NATIVE_GLES=1'] if args.gles else []),
+       *(['-DMYOS_NATIVE_EGL=1','-DEGL_NO_X11=1'] if args.egl_core else []),
        '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',
        '-nostdinc','-isystem',intrinsics,'-I'+str(root/'user/sdk'),
        '-I'+str(root/'include'),'-I'+str(window.parent),'-I'+str(out/'include'),
@@ -85,6 +88,14 @@ archives=[mesa/path for path in (
     'src/gallium/winsys/sw/null/libws_null.a','src/mapi/shared-glapi/libglapi.a',
     'src/gallium/drivers/softpipe/libsoftpipe.a')]
 library=out/'renderer.so'
+egl=[]
+if args.egl_core:
+    core=args.egl_core.resolve()
+    assert core.is_relative_to((root/'build/egl-core-evaluation').resolve())
+    core_report=json.loads((core/'report.json').read_text())
+    assert core_report['driver_compiled'] and not core_report['failed_units']
+    assert core_report['renderer_probe']==str(probe)
+    egl=[str(core/'libmyos-egl-core.a')]
 # Only actual Mesa objects and native-tested pure SDK providers: NEVER the
 # configure-only platform runtime/TLS archive. Runtime imports bind in MyOS.
 subprocess.run(['ld','-shared','--gc-sections','--hash-style=both','-Bsymbolic',
@@ -92,7 +103,7 @@ subprocess.run(['ld','-shared','--gc-sections','--hash-style=both','-Bsymbolic',
                 '-o',str(library),str(fixture),str(font_object),str(finalize),str(environment),str(process_exit),
                 str(mesa/'src/gallium/targets/osmesa/libOSMesa.so.8.0.0.p/osmesa_target.c.o'),
                 *trace,'--start-group',
-                *map(str,archives),str(containers['library']),str(math['static_library']),
+                *egl,*map(str,archives),str(containers['library']),str(math['static_library']),
                 *[str(item['library'] if 'library' in item else item['out']/'libmyos-sort.a')
                   for item in sdk],'--end-group'],check=True)
 assert '(NEEDED)' not in subprocess.check_output(['readelf','-dW',str(library)],text=True)
@@ -106,7 +117,8 @@ options=dict(ram=args.ram,boot_image=image,asset_disk=disk)
 if args.uefi:options.update(boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),
                                                     Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
 print('Native renderer fixture:',out,'bytes:',library.stat().st_size,'RAM MiB:',args.ram,flush=True)
-vm=VM('native-renderer'+('-gles' if args.gles else '')+('-uefi' if args.uefi else ''),**options)
+vm=VM('native-renderer'+('-egl' if args.egl_core else '-gles' if args.gles else '')+
+      ('-uefi' if args.uefi else ''),**options)
 try:
     vm.wait('myos> ')
     for launch in range(args.launches):
@@ -136,11 +148,13 @@ try:
         else:raise AssertionError(vm.log.read_text()[-6000:])
         assert 'ELF exited with status 90' in output and 'teardown PASS' in output,output
         if args.gles:assert 'Native GLES profile/desktop GLSL rejection checked' in output,output
+        if args.egl_core:assert 'Native EGL core/error/current/deferred destroy checked' in output,output
         assert 'Native glyph atlas/alpha blend/all512 text pixels checked' in output,output
         assert_live_resources(output)
     print('PASS: actual native Mesa context/GLSL/VBO/texture pixels/TLS/present/input/teardown'
           ' and exact resources/relaunch; profile='+('GLES' if args.gles else 'desktop GL')+
-          '; NOT EGL or Cobalt.',out,flush=True)
+          '; '+('EGL1.4 pbuffer/context only; ' if args.egl_core else 'NOT EGL; ')+
+          'NOT Cobalt.',out,flush=True)
 except BaseException:
     # Capture the real running CPU before teardown; never infer a deadlock from
     # a silent log alone. Map user RIPs back to the exact linked target image.

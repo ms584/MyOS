@@ -5,6 +5,18 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+Baseline bdab91c plus genuine EGL core/MyOS driver: PHASE332_NATIVE_EGL.md.
+Original Mesa EGL14 units plus native driver/os_file16/16 compile. EGL1.4
+pbuffer/context/thread-local error/current/deferred-destroy native BIOS
+azt9j2al PASS17:46:45 and UEFI3a0fi2pr PASS17:52:31. Expanded unsupported
+texture/pixmap safety and largest-pbuffer tests PASS BIOSiybdvjdi/UEFIfz90ijff;
+affected pure-GLES9f0wh9tu PASS82634 terminal exit0 17:58:02. Two launches/exact resources,
+shader/texture/text pixel and QMP/key checks. UI is still MyOSUiPresent, not
+native EGL window swap. No EGL1.5/SABI tables/Cobalt/phase-closure claim.
+Normal images unchanged17:55:55; full9925 valid for unchanged architecture.
+Next: native MyOS EGL platform/window surfaces, lifetime/concurrency, pinned
+function tables and module coexistence; then actual Cobalt web/HTTPS gate.
+
 Baseline d43c15d plus native text follow-up: PHASE332_NATIVE_TEXT.md.
 Licensed static glyph masks expanded/sampled/alpha-blended in MyOS; all512
 text RGBA pixels/native and QMP frame RGB oracle PASS BIOS GLES50163 16:33:45,
