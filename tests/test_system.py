@@ -56,7 +56,7 @@ class VM:
                             '-drive',f'if=pflash,format=raw,file={variables}'])
         if cpu:command.extend(['-cpu',cpu])
         if rtc:command.extend(['-rtc',f'base={rtc}'])
-        if nic:command.extend(['-nic','user,model=rtl8139'])
+        if nic:command.extend(['-nic',nic if isinstance(nic,str) else 'user,model=rtl8139'])
         if audio is not None:command.extend(['-audiodev',f'wav,id=myos-audio,path={audio}',
                                              '-device','sb16,audiodev=myos-audio'])
         if disk is not None:command.extend(['-drive',f'format=raw,file={disk},if=ide,index={disk_index}'])
@@ -269,6 +269,8 @@ def main():
             platform_events_exercise()
             from test_starboard_launcher import main as starboard_launcher_exercise
             starboard_launcher_exercise()
+            for resolver_options in ([],['--offline'],['--no-entropy']):
+                subprocess.run([sys.executable,'tests/test_netdb.py',*resolver_options],check=True)
             subprocess.run([sys.executable,'tests/test_runtime_pack.py'],check=True)
             for system_options in ([],['--network'],['--no-entropy'],['--launcher']):
                 subprocess.run([sys.executable,'tests/test_starboard_system.py',*system_options],check=True)

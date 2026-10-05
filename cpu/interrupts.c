@@ -2,6 +2,7 @@
 #include "mouse.h"
 #include "audio.h"
 #include "tcp.h"
+#include "dns.h"
 extern void syscall_entry(void);
 struct gate {uint16_t low,selector;uint8_t ist,flags;uint16_t mid;uint32_t high,zero;} __attribute__((packed));
 struct descriptor {uint16_t limit;uint64_t base;} __attribute__((packed));
@@ -33,7 +34,7 @@ struct frame *interrupt_dispatch(struct frame *f){
     }
     if(f->vector==39){outb(0x20,0x0b);if(!(inb(0x20)&128))return f;}
     if(f->vector==47){outb(0xa0,0x0b);if(!(inb(0xa0)&128)){outb(0x20,0x20);return f;}}
-    if(f->vector==32){++ticks;tcp_stream_tick();}
+    if(f->vector==32){++ticks;tcp_stream_tick();dns_job_tick();}
     if(f->vector==33)keyboard_irq();
     if(f->vector==44)mouse_irq();
     if(f->vector==37)audio_irq();

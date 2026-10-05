@@ -1,6 +1,7 @@
 #include "net.h"
 #include "nic.h"
 #include "tcp.h"
+#include "dns.h"
 
 /* Deliberately one outstanding request. Each receive buffer is bounded and
  * copied out of the DMA ring before the device can reuse it. */
@@ -70,6 +71,7 @@ static void receive(const uint8_t *f,size_t n){
         uint16_t length=rd16(payload+4);if(length<8||length>plen)return;
         uint16_t src=rd16(payload),dst=rd16(payload+2);
         if(rd16(payload+6)&&transport_sum(h+12,h+16,17,payload,length))return;
+        if(configured&&same(h+16,ip,4)&&dns_job_receive(h+12,src,dst,payload+8,length-8))return;
         if(udp_filter&&!same(h+12,udp_peer,4))return;
         if(waiting && dst==source_port && (size_t)(length-8)<=sizeof(rx)){
             memcpy(rx,payload+8,length-8);rx_size=length-8;rx_source=src;rx_destination=dst;rx_type=17;waiting=false;
@@ -195,8 +197,12 @@ static uint8_t dhcp_options(uint8_t address[4]){
     return type;
 }
 bool net_configured(void){return configured&&nic_ready();}
+bool net_dns_server(uint8_t out[4])
+{if(!net_configured()||!nic_link_up())return false;memcpy(out,dns,4);return true;}
+bool net_dns_packet(const uint8_t target[4],const uint8_t mac[6],uint16_t port,const uint8_t *data,size_t size)
+{return net_configured()&&nic_link_up()&&udp(ip,target,mac,port,53,data,size);}
 bool net_up(void){
-    if(tcp_stream_busy())return false; /* Do not invalidate live stream tuples. */
+    if(tcp_stream_busy()||dns_job_busy())return false; /* Keep live request/stream tuples. */
     configured=false;have_peer=false;if(!nic_ready())return false;
     uint8_t offered[4],assigned[4];
     for(unsigned attempt=0;attempt<3;++attempt){

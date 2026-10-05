@@ -1,4 +1,47 @@
-# Phase 33.1: resolver continuation (NOT installed / NOT native-tested)
+# Phase 33.1: native resolver — tested subset and full regression checkpoint
+
+## Current authoritative status — 2026-10-05 08:20 +07
+
+Installed/tested local checkpoint in /home/xytron404/myos after465b68b (see Git HEAD).
+Normal BIOS build253144 bytes. Actual SYS_DNS52 START/STATUS/CLOSE/CONFIGURED,
+kernel timer progress, scheduler cleanup and three resident exports are installed.
+Local byte/string helpers fixed resident undefined libc symbols; wire parser uses
+explicit freestanding memcpy/memcmp declarations, not fortified host wrappers.
+
+- Native BIOS21536 exit0 08:10:54: ABI validation, ownership/stale handles,
+  pool bounds, multi-A/CNAME/wrong-ID+question, truncated UDP-to-TCP fallback,
+  eight concurrent workers, timeout progress, worker-exit cleanup, forced cancel,
+  relaunch/exact heap/pages PASS. build/resolver-native.log, dns-z9c3f_4l.
+- Offline/no-entropy/UEFI27945 exit0 08:13:23 PASS; logs resolver-offline.log,
+  resolver-no-entropy.log, resolver-uefi.log; UEFI artifact dns-4vr3dxbc.
+- Host wire/job ASan+UBSan PASS08:19:40: truncations/mutations/hostile packets,
+  ownership/generation/pool/timeout/cleanup and fragmented TCP framing.
+- Paired binding44021 PASS:52 missing; build/resolver-pair.log. NOT execution.
+  Fixture-tested188/24277.7%; paired bindings190/24278.5%. Not complete API ABI.
+- Full architecture79950 exit0 08:55:30: default ALL test_system.py PASS,
+  including DNS/packing/fault variants/low RAM/VGA. Normal BIOS/UEFI restored;
+  build/resolver-full-regression.log and resolver-final-uefi-build.log.
+  Terminal; no production image owner. Normal runtime33888/packed27850,
+  kernel253144/BSS end0x7d450; test kernel261336/cap262144 leaves808 bytes.
+
+Final SHA256 (normal BIOS/UEFI after full):
+```
+kernel.bin d5f2aab05d62b5f09227ae9e4702c6f3ded3165f6fe2c24146f520725c3aea2e
+platform-runtime.bin 56e6aef8455a97026b5d8b83379e1be44acb636c3dcb1a9cdb2fbb1c65bbeec6
+platform-runtime.mrt 259e80f1b9f137b49c220563b6aa78f0db865fe60aaef0cd9b9a06b32926066a
+myos-current.img 5c5b4220e37ac48438502f8c809441839ccbf55cdf84b66458fb0f99f5727ed7
+myos-uefi.img afb12dbc9ac0aa639304f63dde58201aa7d70f8751e2479cd9bedcd8b72ad05f
+```
+
+Limits: IPv4 subset, classic512-byte DNS/no EDNS, up to8 addresses, fixed built-in
+services. IPv6/CNAME-only follow-up and full service/flags behavior remain open.
+Nonzero pthread_kill is still EINVAL: initial native signal-interruption test
+failed and evidence is retained in build/resolver-native-signal-gap.log.
+Current fixture proves worker-exit kernel cleanup, NOT cross-thread signal/EINTR.
+Network peer is deterministic Ethernet fixture, NOT Internet or Cobalt proof.
+Actual Cobalt0/5, Phase33.1/33.2 OPEN, no33.3. No push.
+
+## Historical prototype notes (superseded where contradicted above)
 
 2026-10-05 +07, prepared while runtime-packing full61037 used shared sources.
 Full61037 now exit0 06:57:27, normal BIOS/UEFI restored/hashes recorded in

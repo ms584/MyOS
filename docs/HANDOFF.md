@@ -5,6 +5,27 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 DNS full79950 exit0 08:55:30 ALL architectural PASS; normal BIOS
+and UEFI restored/hash detail in PHASE331_RESOLVER_WIP.md. Normal kernel253144,
+runtime33888/packed27850/BSS0x7d450; test261336 leaves808 bytes. No live test owner.
+Remote fetched08:53:01, still09d1627. Tested local DNS checkpoint; never push.
+Private targeted signal/pause/main-exit prototype BIOS/UEFI native PASS and
+existing signal/thread regressions PASS; DNS real EINTR54 calls/profile PASS.
+Latest3669 exit0 08:54:06. NOT installed: PHASE331_CROSS_THREAD_SIGNALS.md.
+Below pending-job notes are superseded. Cobalt0/5, phases OPEN, no33.3.
+
+2026-10-05 08:20 +07 native DNS slice after local465b68b, uncommitted:
+getaddrinfo/freeaddrinfo/gai_strerror tested IPv4 subset installed, native UDP/TCP
+fallback, process/thread ownership and cleanup. BIOS21536 exit0 08:10:54 PASS;
+27945 exit0 08:13:23 offline/no-entropy/UEFI PASS. Host ASan/UBSan PASS08:19:40.
+Paired binding44021 PASS missing52: fixture188/24277.7%, binding190/24278.5%.
+Actual Cobalt0/5; phases OPEN; no33.3. Network peer is NOT external Internet proof.
+Cross-thread pthread_kill/EINTR remains absent; failing evidence retained in
+build/resolver-native-signal-gap.log. Full architecture job79950 started08:19:40,
+pending: build/resolver-full-regression.log. No source/image mutation while live.
+DNS normal kernel253144; new final hashes/local commit pending. This supersedes
+prototype-only DNS notes below. PROJECT_STATE.md is the current entry point.
+
 2026-10-05 tested runtime packaging checkpoint after local9838bd1:
 [PHASE332_RUNTIME_PACK.md](PHASE332_RUNTIME_PACK.md). Preserve original runtime
 bytes/exports, decode+CRC in private bounded buffer before RX mapping, release

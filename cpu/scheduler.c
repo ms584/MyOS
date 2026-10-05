@@ -1,6 +1,7 @@
 #include "boot.h"
 #include "process.h"
 #include "tcp.h"
+#include "dns.h"
 #include "native-ui.h"
 #define KERNEL_TASKS 4
 #define TASKS (KERNEL_TASKS + PROCESS_LIMIT * (1 + PROCESS_THREAD_LIMIT))
@@ -118,6 +119,7 @@ bool scheduler_attach_thread(struct process *process,struct process_thread *thre
 
 bool scheduler_stop_thread(struct process *process,struct process_thread *thread)
 {
+    dns_job_release_owner(process,thread->tid);
     for(unsigned i=KERNEL_TASKS;i<TASKS;++i)
         if(tasks[i].process==process&&tasks[i].thread==thread){
             tasks[i].alive=false;tasks[i].blocked=false;return true;
@@ -127,6 +129,7 @@ bool scheduler_stop_thread(struct process *process,struct process_thread *thread
 
 bool scheduler_stop_process(struct process *process)
 {
+    dns_job_release_owner(process,0);
     tcp_stream_release_owner(process);
     native_ui_release_owner(process);
     bool found=false;

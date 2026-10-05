@@ -2,6 +2,7 @@
 #include "security.h"
 #include "storage.h"
 #include "tcp.h"
+#include "dns.h"
 #include "native-ui.h"
 #include "graphics.h"
 #include "system-call.h"
@@ -229,6 +230,31 @@ static int64_t file_call(struct process *p,struct frame *f)
     }
 }
 
+static int64_t dns_call(struct process *p,struct frame *f)
+{
+    if(f->rdi>DNS_CALL_CONFIGURED)return -22;
+    struct process_thread *thread=scheduler_current_thread();
+    uint64_t tid=thread?thread->tid:p->pid;
+    if(f->rdi==DNS_CALL_CONFIGURED){uint8_t server[4];
+        return f->rsi||f->rdx?-22:net_dns_server(server)?1:0;}
+    if(f->rdi==DNS_CALL_START){
+        if(f->rdx)return -22;
+        struct dns_start_request request;
+        if(!copy_from_user(p,(char *)&request,f->rsi,sizeof(request)))return -14;
+        if(request.reserved)return -22;
+        size_t length=0;while(length<sizeof(request.name)&&request.name[length])++length;
+        if(length==sizeof(request.name))return -36;
+        if((request.sequence&7)||!writable_range(p,request.sequence,8))return -14;
+        return dns_job_start(p,tid,request.sequence,request.name);
+    }
+    if(f->rsi>UINT32_MAX)return -9;
+    if(f->rdi==DNS_CALL_CLOSE)return f->rdx?-22:dns_job_close(p,tid,(uint32_t)f->rsi);
+    struct dns_job_status status;
+    if(!writable_range(p,f->rdx,sizeof(status)))return -14;
+    int result=dns_job_status(p,tid,(uint32_t)f->rsi,&status);
+    if(!result)copy_to_user(p,f->rdx,&status,sizeof(status));return result;
+}
+
 static int64_t tcp_call(struct process *p,struct frame *f)
 {
     if(f->rax==SYS_TCP_CREATE)return tcp_stream_create(p,f->rdi,f->rsi);
@@ -327,6 +353,7 @@ struct frame *syscall_dispatch(struct frame *frame)
     }
     process_cleanup_detached(process);
     switch (frame->rax) {
+    case SYS_DNS:frame->rax=(uint64_t)dns_call(process,frame);break;
     case SYS_SYSTEM:frame->rax=(uint64_t)system_call(process,frame);break;
     case SYS_MEMORY_INFO:
         frame->rax=frame->rdi==0?pages_total():frame->rdi==1?pages_free():(uint64_t)-22;

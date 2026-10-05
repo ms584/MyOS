@@ -22,7 +22,12 @@ gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreesta
     -fno-unwind-tables -nostdinc -isystem "$(gcc -print-file-name=include)" \
     -Iuser/sdk -Iuser/starboard-system/include -Iinclude -Wall -Wextra -Werror -Wno-misleading-indentation \
     -c user/platform-system.c -o build/platform-system.o
-ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o
+gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
+    -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
+    -fno-unwind-tables -nostdinc -isystem "$(gcc -print-file-name=include)" \
+    -Iuser/sdk -Iinclude -Wall -Wextra -Werror -Wno-misleading-indentation \
+    -c user/platform-netdb.c -o build/platform-netdb.o
+ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o build/platform-netdb.o
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/pack_runtime.py build/platform-runtime.bin build/platform-runtime.mrt
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h
@@ -56,6 +61,11 @@ python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
 gcc "${flags[@]}" -c kernel/runtime-pack.c -o build/kernel-runtime-pack.o
 objects+=(build/kernel-runtime-pack.o)
+for source in net/dns.c net/dns-wire.c; do
+    obj="build/${source//\//-}";obj="${obj%.c}.o"
+    gcc "${flags[@]}" -c "$source" -o "$obj"
+    objects+=("$obj")
+done
 for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c kernel/native-ui.c kernel/signal.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/asset.c kernel/elf.c kernel/elf-link.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c net/tcp.c drivers/sb16.c audio/audio.c security/security.c security/tls_port.c security/tls.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c video/video.c; do
     obj="build/${source//\//-}"
     obj="${obj%.c}.o"
