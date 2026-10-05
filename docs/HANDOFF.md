@@ -5,6 +5,20 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 17:24 supersedes unknown FATAL: trace86372 terminal0 17:22:11,
+genuine Cobalt opens /assets/cobalt_shell.pak (kernel fd3/runtime fd65), then
+requests mmap length1318438, PROT_READ1, MAP_SHARED1, offset0. Anonymous-only
+runtime returns EINVAL, resource bundle load aborts. No HTTP, exact pages/heap
+125184. Pinned release CRX/resources hash verified,135 content files supplied.
+Abort backtrace13585 and resource run88686 also terminal0; diagnostic run exit0
+means harness finished, NOT engine success. No missing-call thunk fired/credit.
+Private sparse full2835 terminal1 17:22:14: copied harness missed third_party
+compiler-rt/emutls.c. Corrected dependency only, full retry90043 LIVE17:23:53
+in /tmp/myos-sparse-regression-oH6bTA, sparse-full-retry.log; freeze/poll SAME.
+Main source eb31a69/normal images unchanged. Next real file-backed mmap semantics,
+then continue engine startup; do not claim complete mmap/phase/web0/5. Details
+PHASE332_SPARSE_VM_WIP.md; staged scripts/source in desktop work directory.
+
 2026-10-05 17:01: PRIVATE sparse VM+real entropy device native42995 terminal0
 BIOS/UEFI/no-entropy PASS16:56:00, real VM allocator-failure ASAN/UBSAN PASS16:59.
 Actual Cobalt78989 terminal0 16:57:28 passes entropy+32GiB reservation, outputs
