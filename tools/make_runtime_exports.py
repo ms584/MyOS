@@ -8,10 +8,13 @@ import sys
 from pathlib import Path
 elf=Path(sys.argv[1]);output=Path(sys.argv[2])
 wanted={'__errno_location','access','abort','signal','sigaction','raise','pause','MyOSSignalReturn','aligned_alloc','calloc','clock_gettime','clock_nanosleep','close','closedir',
+        'SbMediaCanChangeType','SbMediaCanPlayMimeAndKeySystem','SbMediaGetAudioBufferBudget',
+        'SbMediaGetBufferAllocationUnit','SbMediaGetBufferGarbageCollectionDurationThreshold',
+        'SbMediaGetInitialBufferCapacity','SbMediaGetVideoBufferBudget','SbMediaIsBufferPoolAllocateOnDemand',
         'SbAudioSinkCreate','SbAudioSinkDestroy','SbAudioSinkGetMinBufferSizeInFrames',
         'SbAudioSinkGetNearestSupportedSampleFrequency','SbAudioSinkIsAudioSampleTypeSupported',
         'SbAudioSinkGetMaxChannels','SbAudioSinkIsValid','SbAudioSinkIsAudioFrameStorageTypeSupported',
-        'getaddrinfo','freeaddrinfo','gai_strerror','sendmsg','recvmsg',
+        'getaddrinfo','freeaddrinfo','gai_strerror','sendmsg','recvmsg','sendto','recvmmsg',
         'getifaddrs','freeifaddrs','if_indextoname',
         'SbLog','SbLogRaw','SbSystemBreakIntoDebugger','SbSystemGetErrorString','SbSystemGetExtension',
         'SbSystemGetLastError','SbSystemGetLocaleId','SbSystemGetPath','SbSystemGetProperty',

@@ -1,15 +1,15 @@
 # MyOS project state
 
-Updated: 2026-10-05 14:49 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-HEAD7211c2a docs; source baseline51d4100. Audio source uncommitted.
+Updated: 2026-10-05 14:59 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+Baselinef895303 audio; this checkpoint adds ten tested media/stream exports.
 Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 
 ## Scope and measured progress
 
 - Phase33.1/33.2 OPEN; native Cobalt web acceptance0/5 (0% verified).
-- Production registered199/242 (82.2%); actual paired201/242 (83.1%),41 missing.
-- Private new batch: ten more exports, actual paired211/242 (87.2%),31 missing
-  observed14:35. Not yet production; paired adversarial scope58654 PASS14:35:37.
+- Production registered209/242 (86.4%); actual paired211/242 (87.2%),31 missing
+  observed14:53:33 after promotion. Production77672 terminal0 PASS14:58:33.
+- Private new batch native87168 and paired58654 PASS; same ten exports.
 - Counts are binding/fixture coverage, NOT full API semantics or phase percent.
 - Phase32/33 NOT PASSED; no33.3. YouTube playback unproven.
 
@@ -17,7 +17,7 @@ Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 
 - Source51d4100 resource/message/interface baseline full75305 and paired6076
   PASS11:49/11:50; normal BIOS+UEFI restored. PHASE332_ASSET_V2_PROBE.md.
-- Owned SB16 PCM+typed Float32/Int16 sink installed13:21; production62023
+- Owned SB16 PCM+typed Float32/Int16 sink committedf895303; production62023
   BIOS+UEFI PASS13:24:24: waveform, ring/pause/EOS, malformed input, exhaustion,
   callback Destroy, fault/Escape cleanup/relaunch/exact pages+heap.
 - Owner restarted WslService; production pair-q4xi8xvv PASS14:03. New audio
@@ -28,9 +28,11 @@ Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 - Actual pinned audio_sink/media/drm header ABI native BIOS+UEFI67207 PASS14:03;
   private4Fohgm. Upstream inline IsValid is null-only; target helper checks
   stale registry separately. PHASE332_PCM_WIP.md. Pinned fixture promotion pending.
-- New private media policy8 +sendto/recvmmsg2 BIOS+UEFI native87168 PASS14:32:01;
+- New media policy8 +sendto/recvmmsg2 private BIOS+UEFI87168 PASS14:32:01;
   RAM64/256 budgets, concurrent/relaunch/resources, shared caller+socket timeout,
   WAITFORONE and original descriptor generation across vector receive.
+  Production77672 terminal0 PASS14:58:33: normal BIOS+UEFI, media/message both
+  profiles plus actual pinned core/provider paired adversarial/rollback/resources.
   Private /tmp/myos-media-policy-cB3bQ1; PHASE332_IMPORT_BATCH_WIP.md.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
 
@@ -47,9 +49,10 @@ Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 
 ## Next work
 
-1. Required audio scopes/full/pair complete; create local audio checkpoint.
-   Promote tested ten-export batch, then scoped/native paired regressions.
-2. Remaining private31: server socket3, file11, audio config2, player13,
+1. Ten-export scope and final normal hashes complete; local source checkpoint.
+   Full58842 is audio baseline, not this later source. Next architectural slice
+   requires its own full; no need repeat unchanged scopes without impact.
+2. Remaining31: server socket3, file11, audio config2, player13,
    decode-target2. No empty success stubs or fake handles/codec capabilities.
 3. Native Cobalt HTML+JS/DOM/timers, input, verified concurrent HTTPS,
    >=60s interaction and close/relaunch/resources; only then close33.1/33.2.

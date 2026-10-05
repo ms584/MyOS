@@ -16,7 +16,8 @@ _Static_assert(sizeof(struct message_abi)==56,"pinned musl msghdr size");
 _Static_assert(offsetof(struct message_abi,vectors)==16,"pinned musl msg_iov");
 _Static_assert(offsetof(struct message_abi,control_length)==40,"pinned musl controllen");
 
-static int64_t stream_message(int fd,struct message_abi *message,int flags,int writing)
+static int64_t stream_message(int fd,struct message_abi *message,int flags,int writing,
+                             const struct descriptor_ref *pinned)
 {
     if(!message)return set_error(EFAULT);
     struct message_abi header=*message;
@@ -27,7 +28,11 @@ static int64_t stream_message(int fd,struct message_abi *message,int flags,int w
      * than silently routing a datagram to the existing peer. */
     if(writing&&header.name)return set_error(106); /* EISCONN */
     struct descriptor_ref reference={0};
-    if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+    if(pinned){
+        if(!descriptor_current(pinned))return set_error(EBADF);
+        reference=*pinned;
+        __atomic_add_fetch(&reference.object->references,1,__ATOMIC_RELAXED);
+    }else if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
     struct descriptor_object *object=reference.object;
     if(object->type!=DESCRIPTOR_TCP&&object->type!=DESCRIPTOR_SOCKETPAIR){
         object_release(object);return set_error(ENOTSOCK);
@@ -86,6 +91,77 @@ static int64_t stream_message(int fd,struct message_abi *message,int flags,int w
     free(buffer);return result;
 }
 int64_t sendmsg(int fd,const struct message_abi *message,int flags)
-{return stream_message(fd,(struct message_abi *)message,flags,1);}
+{return stream_message(fd,(struct message_abi *)message,flags,1,0);}
 int64_t recvmsg(int fd,struct message_abi *message,int flags)
-{return stream_message(fd,message,flags,0);}
+{return stream_message(fd,message,flags,0,0);}
+
+int64_t sendto(int fd,const void *buffer,size_t length,int flags,
+               const void *destination,uint32_t destination_length)
+{
+    struct iovec_abi vector={(void *)buffer,length};
+    struct message_abi message={.name=(void *)destination,
+        .name_length=destination_length,.vectors=&vector,.vector_count=1};
+    return stream_message(fd,&message,flags,1,0);
+}
+
+/* Pinned musl x64 mmsghdr: 56-byte msghdr + uint32 result + alignment. */
+struct multi_message_abi {struct message_abi message;uint32_t length,padding;};
+_Static_assert(sizeof(struct multi_message_abi)==64,"pinned mmsghdr stride");
+int recvmmsg(int fd,struct multi_message_abi *messages,unsigned count,int flags,
+             struct timespec *timeout)
+{
+    const int wait_for_one=0x10000;
+    if(!count||count>1024)return set_error(EINVAL);
+    if(!messages)return set_error(EFAULT);
+    if(flags&~(MSG_DONTWAIT|MSG_PEEK|wait_for_one))return set_error(ENOTSUP);
+    uint64_t duration=0,start=0,deadline=0;
+    if(timeout){
+        int error=timespec_nanos(timeout,&duration);if(error)return set_error(error);
+        error=clock_nanos(1,&start);if(error)return set_error(error);
+        deadline=duration_deadline(duration,ticks());
+    }
+    struct descriptor_ref reference={0};
+    if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+    struct descriptor_object *object=reference.object;
+    if(object->type!=DESCRIPTOR_TCP&&object->type!=DESCRIPTOR_SOCKETPAIR){
+        object_release(object);return set_error(ENOTSOCK);
+    }
+    unsigned side=object->type==DESCRIPTOR_SOCKETPAIR?(reference.access>>2)&1:0;
+    uint64_t receive_deadline=socket_deadline(socket_timeout(object,side,0));
+    unsigned completed=0;int expired=0;
+    for(;completed<count;){
+        int current_flags=flags&~wait_for_one;
+        if((flags&wait_for_one)&&completed)current_flags|=MSG_DONTWAIT;
+        uint64_t sequence=__atomic_load_n(&object->sequence,__ATOMIC_ACQUIRE);
+        /* With a caller timeout, never enter a receive whose independent
+         * SO_RCVTIMEO could exceed the shared vector deadline. */
+        int64_t result=stream_message(fd,&messages[completed].message,
+            current_flags|(timeout?MSG_DONTWAIT:0),0,&reference);
+        if(result>=0){
+            messages[completed++].length=(uint32_t)result;
+            receive_deadline=socket_deadline(socket_timeout(object,side,0));
+            continue;
+        }
+        int error=*__errno_location();
+        unsigned status=object->type==DESCRIPTOR_TCP?
+            __atomic_load_n(&object->status_flags,__ATOMIC_ACQUIRE):
+            __atomic_load_n(&object->value.socketpair.status_flags[(reference.access>>2)&1],__ATOMIC_ACQUIRE);
+        if(error!=EAGAIN||!timeout||(current_flags&MSG_DONTWAIT)||(status&O_NONBLOCK))break;
+        if(ticks()>=deadline){expired=1;break;}
+        if(receive_deadline&&ticks()>=receive_deadline)break;
+        uint64_t wait_deadline=receive_deadline&&receive_deadline<deadline?receive_deadline:deadline;
+        int waited=wait64(&object->sequence,sequence,wait_deadline);
+        if(waited==-ETIMEDOUT){expired=wait_deadline==deadline;break;}
+        if(waited&&waited!=-EAGAIN){set_error(-waited);break;}
+    }
+    object_release(object);
+    if(timeout){
+        uint64_t now=0;int error=clock_nanos(1,&now);
+        uint64_t elapsed=error||now<start?duration:now-start;
+        uint64_t left=elapsed>=duration?0:duration-elapsed;
+        *timeout=(struct timespec){(int64_t)(left/1000000000ull),(int64_t)(left%1000000000ull)};
+    }
+    if(completed)return (int)completed;
+    if(expired)return 0;
+    return -1;
+}

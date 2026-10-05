@@ -2,6 +2,37 @@
 
 Updated 2026-10-05 14:36 +07. No Phase33.3 work or pushes.
 
+## Production scope complete — 14:59 +07
+
+77672 terminal0 PASS14:58:33. Native message/media BIOS+UEFI, actual core/provider
+paired BIOS+UEFI adversarial/rollback/repeat/exact pages/heap PASS. Outputs:
+message-1bygatjr/message-s2p0rpiq, media-policy-4rr6sgzg/media-policy-pv1kwerq,
+pair-2qmtr66b/pair-x3t_38lw. Normal images retained; no live image owner.
+Actual211/24287.2%, registry209/24286.4%,31 missing. Local source checkpoint.
+Current full evidence is audio baselinef895303 only; later new ten-export source
+has the scoped proof above, not a claim that its entire ALL suite was rerun.
+
+Normal SHA256 observed14:58:33:
+- kernel.bin: d3dd4cae2363effd194292421cd2a44c993a8b3ac8223117cfae1dab787ddb90
+- platform-runtime.bin: 156d7c79b86695e9c3bc506a270f7086fe95510e0f752ad96a12980bffc8a59c
+- platform-runtime.mrt: 3648c436278c6fda1bab5672a8a1a93eda20db141568c528b31e90043785128c
+- platform-runtime.manifest.json: b4394cef482aaa6918f9fe6ffe6d2650318ee969eb9be8a6ae2b876478bffaed
+- myos-current.img: 9d763652977b732d2b9ca321e822619260d021c08b0f14d2556a4cad2292ad6d
+- myos-uefi.img: db154f0ac50a84ffc2de65c961000ff62bbde4a346ee1abc50974badb752a9ed
+
+## Production promotion — 14:54 +07
+
+Audio source checkpointf895303 committed14:50:15, clean before promotion.
+Ten-export batch installed14:51:38 via integrate_import_batch.sh, pipeline77672
+LIVE. Main normal BIOS+UEFI built; native media/message BIOS PASS. Actual main
+core paired serial14:53:33 missing31/provider0 =>211/24287.2%; registry209/242
+86.4%. Entire main paired/UEFI scopes pending; freeze source/images until
+terminal. Logs build/import-batch-{build,uefi-build,message-*,media-*,pair-*}.log.
+Full58842 applies to AUDIO baselinef895303, not later ten-export source. These
+new changes are user runtime/SDK/fixtures/export register only, no new kernel
+architecture. After required scoped/paired results, record normal hashes and
+local commit. Accidental executable mode on this doc corrected to644.
+
 ## Production versus private evidence
 
 - Production HEAD7211c2a; source baseline51d4100. Owned PCM/audio source
@@ -49,7 +80,7 @@ No UDP/ancillary/MSG_WAITALL/full POSIX/conformance claim.
 
 ## Exact next work
 
-1. Required baseline scopes58842/40404 and private58654 complete; no live image owner.
+1. Baseline58842/40404, private58654 and production77672 complete; no live owner.
 2. After required full/audio pair-execution scope PASS and normal BIOS+UEFI
    restoration, create the audio local checkpoint. Promote tested private
    media/message sources+headers+fixtures, update import register and actual

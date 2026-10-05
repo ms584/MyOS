@@ -5,6 +5,23 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 14:59: production77672 terminal0 PASS14:58:33, ten new imports
+native BIOS+UEFI media/message +genuine core/provider paired adversarial/
+rollback/repeat/exact resources both profiles. Normal images retained; hashes
+in PHASE332_IMPORT_BATCH_WIP.md. Actual211/24287.2%, registry209/24286.4%,31
+missing. Local ten-export checkpoint next. Full58842 belongs to preceding
+audio baselinef895303, new batch has affected scopes only. No live image owner.
+Cobalt web0/5, phasesOPEN/no33.3/push. Remaining31 and precise helper files
+in import-batch WIP; pinned audio fixture promotion remains pending.
+
+2026-10-05 14:54: local audio source commitf89530314:50:15, clean before
+ten-export promotion77672 LIVE14:51:38. Normal BIOS+UEFI built, production
+media/message BIOS PASS; actual main pair serial14:53:33 missing31/provider0,
+211/24287.2%, registry209/24286.4%. Full production paired/UEFI scope pending,
+freeze main source/images until terminal. Detailed PHASE332_IMPORT_BATCH_WIP.md.
+No full claim for new ten-export source; full58842 is previous audio baseline.
+No push/33.3/phase closure; actual Cobalt0/5. Next remaining31 unchanged.
+
 2026-10-05 14:49: paired execution40404 terminal0 PASS14:48:20 BIOS+UEFI
 pair-exec-m7snwtau/pair-exec-6bywwc8k, genuine worker rendering/TLS/finalizers/
 fault/cancel/relaunch/exact resources. Normal full-suite hashes unchanged.

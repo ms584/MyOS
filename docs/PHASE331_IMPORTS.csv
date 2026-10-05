@@ -20,16 +20,16 @@ SbGetEglInterface,GLOBAL,platform callback,graphics,unimplemented,https://github
 SbGetGlesInterface,GLOBAL,platform callback,graphics,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbLog,GLOBAL,platform callback,platform,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbLogRaw,GLOBAL,platform callback,platform,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaCanChangeType,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaCanPlayMimeAndKeySystem,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaGetAudioBufferBudget,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaCanChangeType,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaCanPlayMimeAndKeySystem,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaGetAudioBufferBudget,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMediaGetAudioConfiguration,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMediaGetAudioOutputCount,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaGetBufferAllocationUnit,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaGetBufferGarbageCollectionDurationThreshold,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaGetInitialBufferCapacity,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaGetVideoBufferBudget,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-SbMediaIsBufferPoolAllocateOnDemand,GLOBAL,platform callback,media,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaGetBufferAllocationUnit,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaGetBufferGarbageCollectionDurationThreshold,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaGetInitialBufferCapacity,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaGetVideoBufferBudget,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+SbMediaIsBufferPoolAllocateOnDemand,GLOBAL,platform callback,media,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMicrophoneCreate,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMicrophoneDestroy,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 SbMicrophoneGetAvailable,GLOBAL,optional unsupported feature,optional,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
@@ -213,7 +213,7 @@ readv,GLOBAL,MyOS service,file,implemented-tested,https://github.com/youtube/cob
 realloc,GLOBAL,libc,allocator,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 realpath,GLOBAL,MyOS service,file,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 recv,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
-recvmmsg,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+recvmmsg,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 recvmsg,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 rename,GLOBAL,MyOS service,file,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 sched_getaffinity,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_sched_abi_wrappers.h
@@ -226,7 +226,7 @@ sem_timedwait,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/y
 sem_wait,GLOBAL,MyOS service,thread,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_semaphore_abi_wrappers.h
 send,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 sendmsg,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
-sendto,GLOBAL,MyOS service,network,unimplemented,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
+sendto,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/elf_loader/exported_symbols.cc
 setpriority,GLOBAL,MyOS service,system,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_resource_abi_wrappers.h
 setsockopt,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h
 shutdown,GLOBAL,MyOS service,network,implemented-tested,https://github.com/youtube/cobalt/blob/3befd332486952f6603ae3baf2a8713878d6e200/starboard/shared/modular/starboard_layer_posix_socket_abi_wrappers.h

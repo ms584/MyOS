@@ -98,7 +98,7 @@ try:
         assert 'pair provider init' not in output and 'pair core init' not in output,output
         assert 'unsupported runtime feature' in output or ('Starboard SABI: mismatch; constructors not executed' in output and 'ELF exited with status 95' in output),output
     output=long_command(vm,'elf pair-starboard cobalt actual')
-    if args.ram==256:assert 'ELF bindings: missing=41' in output and 'unsupported runtime feature' in output,output
+    if args.ram==256:assert 'ELF bindings: missing=31' in output and 'unsupported runtime feature' in output,output
     else:
         assert 'out of memory' in output.lower(),output
         output=long_command(vm,'elf pair-live normal oom')

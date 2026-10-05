@@ -274,7 +274,7 @@ def main():
             subprocess.run([sys.executable,'tests/test_cross_signal.py','user/elf-cross-signal.c'],check=True)
             subprocess.run([sys.executable,'tests/test_runtime_pack.py'],check=True)
             subprocess.run([sys.executable,'tests/test_asset_format.py'],check=True)
-            for batch_test in ('test_asset_v2.py','test_runtime_asset.py','test_message.py','test_interface.py','test_pcm.py','test_audio_sink.py'):
+            for batch_test in ('test_asset_v2.py','test_runtime_asset.py','test_message.py','test_interface.py','test_pcm.py','test_audio_sink.py','test_media_policy.py'):
                 subprocess.run([sys.executable,'tests/'+batch_test],check=True)
             for system_options in ([],['--network'],['--no-entropy'],['--launcher']):
                 subprocess.run([sys.executable,'tests/test_starboard_system.py',*system_options],check=True)
