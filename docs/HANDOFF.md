@@ -5,6 +5,17 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 10:35 PRIVATE resource checkpoint: PHASE332_ASSET_V2_PROBE.md.
+Production b121452 unchanged. Hidden build-matched runtime extent+v2 resource
+hierarchy and long-name syscall native BIOS/UEFI PASS; relative openat/fstatat
+failure diagnosed/fixed, strengthened native/v1 compatibility session56426
+terminal exit0 10:34:42. Host parser ASan/UBSan/1024/v1 bytes PASS10:23:34.
+Latest private Ts69oq test237728/raw36064/packed29212, cap unchanged. No new
+production imports/Cobalt claims. Joint36452 terminal0 10:37:57 on latest code
+BIOS/UEFI identity/message/interface PASS. Adapted packing50615 terminal0
+10:39:22 BIOS/UEFI host ASan/UBSan+exact/RX/corrupt/relaunch/resources PASS;
+production integration/full still required.
+
 2026-10-05 09:49 targeted signal FULL checkpoint (based on DNS2a71206):
 full7164 exit0 09:46:43 default ALL, new cross/DNS plus packing/TLS/thread/fault/
 low RAM/VGA PASS. Normal BIOS/UEFI restored and hashed; detail in

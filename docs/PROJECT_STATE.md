@@ -1,7 +1,7 @@
 # MyOS project state
 
-Updated: 2026-10-05 09:49 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Tested signal checkpoint based on2a71206; resolve current commit with git log -1.
+Updated: 2026-10-05 10:40 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+Production tested signal checkpoint b121452; resolve latest commit with git log.
 Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
 
 ## Scope and progress
@@ -29,7 +29,6 @@ Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
 ## Current evidence
 - DNS scoped BIOS/UEFI/no-NIC/no-entropy, concurrency/timeout/cancel/relaunch/
   exact resources PASS08:10–08:13; host wire/job ASan+UBSan PASS08:19:40.
-- Paired binding44021 PASS missing52: build/resolver-pair.log. NOT execution.
 - Full79950 exit0 08:55:30: default ALL test_system.py, including DNS, packing,
   faults/low RAM/VGA; normal framebuffer BIOS and UEFI restored/final hashes.
   Logs build/resolver-full-regression.log, resolver-final-uefi-build.log;
@@ -49,11 +48,13 @@ Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
 ## Required next work
 1. Remaining51 batch: PHASE331_REMAINING_BATCH.md; no success stubs. Private
    message2 + interface3 native BIOS/UEFI PASS; NOT production import counts.
-2. PHASE332_RUNTIME_ASSET_PROBE.md: private build-pinned SHA256 runtime asset
-   native BIOS/UEFI fail-closed/RX/relaunch PASS; test233630 vs262014 budget.
-   Integration/packaging/full still pending. DNS IPv6/CNAME/full flags open.
-3. Actual engine environment/emutls/thread/RAM behavior unmeasured (8 workers).
-   Asset-v1 flat32 names cannot package content/fonts/ICU/trust hierarchy.
+2. PHASE332_ASSET_V2_PROBE.md: private hidden build-pinned runtime/hierarchy,
+   host ASan/UBSan+1024/v1 bytes PASS; latest Ts69oq BIOS/UEFI native long names,
+   relative openat/fstatat/large I/O/pointer/readonly/v1 shell PASS10:34:42.
+   Test237728/cap262144; raw36064/packed29212. Joint BIOS/UEFI PASS10:37:57;
+   adapted pack BIOS/UEFI50615 PASS10:39:22. Integration/full pending.
+3. Actual engine resource/emutls/thread/RAM behavior unmeasured (8 workers).
+   Remaining absolute path127 bound; DNS IPv6/CNAME/full flags remain open.
 4. Native Cobalt HTML, JS/DOM/timers, real input, verified HTTPS/concurrent assets,
    interactive>=60s and close/relaunch with measured resources. No33.3 until gates.
 
