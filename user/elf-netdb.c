@@ -62,6 +62,14 @@ static void *interrupted(void *unused){(void)unused;struct addrinfo *result=0;
  /* Exit with a live kernel-owned query; stop-thread must release it even when
   * no user close/cleanup runs. Nonzero cross-thread pthread_kill is still open. */
  pthread_exit((void *)93);}
+static volatile unsigned resolving,signal_hits;
+static void resolver_handler(int number)
+{CHECK(number==SIGUSR1);__atomic_add_fetch(&signal_hits,1,__ATOMIC_RELEASE);}
+static void *signal_interrupted(void *unused)
+{(void)unused;struct addrinfo *result=(void *)1;
+ __atomic_store_n(&resolving,1,__ATOMIC_RELEASE);
+ CHECK(getaddrinfo("block.test","80",0,&result)==EAI_SYSTEM);
+ CHECK(errno==EINTR&&result==(void *)1&&signal_hits==1);return (void *)94;}
 static void private_tests(void)
 {
  volatile uint64_t sequence=0;struct dns_start_request request={.sequence=(uintptr_t)&sequence,.name="multi.test"};
@@ -104,6 +112,13 @@ int _start(void)
  __atomic_store_n(&stop,1,__ATOMIC_RELEASE);CHECK(!pthread_join(tick,0)&&progress>=10);
  for(unsigned i=0;i<18;++i){pthread_t worker;CHECK(!pthread_create(&worker,0,interrupted,0));
   void *value;CHECK(!pthread_join(worker,&value)&&value==(void *)93);}
+ CHECK(signal(SIGUSR1,resolver_handler)!=SIG_ERR);
+ for(unsigned i=0;i<18;++i){pthread_t worker;resolving=signal_hits=0;
+  CHECK(!pthread_create(&worker,0,signal_interrupted,0));
+  while(!__atomic_load_n(&resolving,__ATOMIC_ACQUIRE)){pause_ms(10);}
+  pause_ms(50);CHECK(!pthread_kill(worker,SIGUSR1));void *value;
+  CHECK(!pthread_join(worker,&value)&&value==(void *)94);}
+ SbLogRaw("DNS real cross-thread EINTR/owned job cleanup PASS\n");
  verify("multi.test",2,"multi.test");
  SbLogRaw("DNS native syscall/concurrent/CNAME/wrong-ID/TCP/timeout/worker-cleanup PASS\n");return 89;
 }

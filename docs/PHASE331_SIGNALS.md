@@ -1,5 +1,36 @@
 # Phase 33.1 native self-signal delivery
 
+## Latest targeted-signal integration — 2026-10-05 09:08 +07
+
+After tested DNS local2a71206: native pthread_kill now translates runtime handle
+to full-width live kernel tid; signal0 checks native liveness without allocation.
+SYS_SIGNAL5 queues only in caller process and wakes only the targeted task with
+EINTR when unmasked/nonignored. scheduler_wait checks authoritative pending
+delivery under IRQ/syscall serialization before committing blocking. SYS_SIGNAL6
+supplies atomic pause; native pause() returns-1/errno EINTR after handler.
+SYS_SIGNAL7 marks logical main pthread_exit, clears abandoned main contexts and
+rejects subsequent sends while its task waits for workers/owned finalizers.
+Kernel masks/dispositions/return contexts remain authoritative. No new mutable
+runtime globals, guest saved-register trust, SA_RESTART/SIGINFO/alt-stack claim.
+
+Runtime timed mutex hides EINTR; condition wait reacquires mutex/spurious wake;
+semaphore, pipe/eventfd/socket waits, poll/epoll and DNS return interruption and
+release lifetime pins/jobs. Relative clock_nanosleep calculates remaining
+duration, absolute remaining output is ignored. Existing deadlines preserved.
+
+Scoped16585 exit0 09:06:05 production BIOS/UEFI PASS: each16 cross-signal
+launches/exact resources including stale/foreign/invalid syscall, ignored/blocked,
+pause/sleep/semaphore/pipe/poll/epoll, pthread waits, main exit and default15
+main/worker termination without FINI. DNS54 interrupted getaddrinfo calls/profile
+plus cancel/relaunch PASS; old thread and36-launch/6-cancel handler context suites
+PASS both profiles. Logs build/cross-signal-*.log; detail PHASE331_CROSS_THREAD_SIGNALS.md.
+New full/pair job7164 started09:07:27, currently pair then full; NOT full PASS yet.
+Normal kernel253528/runtime34304/packed28211; private test261726 leaves418 bytes.
+Fixture imports189/24278.1%; actual Cobalt0/5, phases OPEN, no33.3/push.
+
+Everything below is historical self-delivery checkpoint evidence, not the latest
+unsupported-cross-thread/pause status or current image hashes.
+
 Implementation52267bb follows d506dd5, 2026-10-04. NOT phase closure.
 Full regression97678 exit0 09:55:59+07; normal BIOS/UEFI restored.
 Final scoped66362 exit0 09:57:35; all jobs terminal, no shared-image owner.

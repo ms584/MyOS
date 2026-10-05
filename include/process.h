@@ -53,6 +53,7 @@ struct process {
     uint64_t preemptions;
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
     bool exited;
+    bool main_thread_exited;
     int32_t exit_status;
     struct fs_handle files[FS_HANDLES];
     struct process_thread threads[PROCESS_THREAD_LIMIT];
@@ -73,6 +74,7 @@ bool process_copy_user(struct process *,uint64_t,void *,size_t,bool);
 struct frame *process_signal_call(struct process *,struct frame *);
 struct frame *process_signal_deliver(struct frame *);
 bool process_signal_fault(struct process *,unsigned);
+bool process_signal_pending(struct process *);
 void process_signal_reset_thread(struct process *,struct process_thread *,bool);
 void process_signal_release(struct process *);
 bool process_image_readonly(struct process *,uint64_t,uint64_t);
@@ -114,4 +116,5 @@ bool scheduler_stop_thread(struct process *,struct process_thread *);
 bool scheduler_detach_thread(struct process *,struct process_thread *);
 struct frame *scheduler_wait(struct frame *,struct process *,uint64_t,uint64_t);
 unsigned scheduler_wake(struct process *,uint64_t,unsigned);
+bool scheduler_interrupt(struct process *,struct process_thread *);
 #endif

@@ -1,8 +1,40 @@
 # Phase 33.1 next slice: targeted signals and interruptible waits
 
-2026-10-05 08:47 +07. PRIVATE PROTOTYPE TESTED; NOT INSTALLED IN ACTUAL REPO.
-Do not install code while DNS full architecture handle79950 uses shared sources.
+2026-10-05 09:49 +07. INSTALLED; PRODUCTION SCOPED AND FULL PASS.
+
+## Current integration after DNS local2a71206
+
+Installed09:01: kernel/signal.c, cpu/scheduler.c, include/process.h,
+user/platform-runtime.c, SDK signal/pthread declarations, pause export generator.
+Permanent user/elf-cross-signal.c + tests/test_cross_signal.py (full suite);
+native DNS fixture now verifies54 interrupted getaddrinfo calls/profile.
+Production normal build253528 PASS. Scoped16585 exit0 09:06:05:
+BIOS cross-dchpr7tw PASS16 launches/exact resources, including default signal15
+targeting worker or main: whole process stops, no finalizers. UEFI cross-kputkico
+PASS same16 launches; DNS54 real EINTR calls/profile and existing thread/handler
+regressions PASS both profiles. Logs build/cross-signal-*.log.
+Pair PASS pair-fb3kt85j; full7164 exit0 09:46:43 default ALL test_system.py:
+new cross-p89ujklk/DNS, packing, TLS/thread/fault/low RAM/VGA all included.
+Normal framebuffer BIOS + UEFI restored; no live production image owner.
+DNS full79950 is prior baseline only; this is new signal integration evidence.
+Pause tested subset marked: fixture189/24278.1%; actual pair serial observed
+pause binding/missing51 at09:09:52 (191/24278.9%). Whole pair PASS confirmed09:11.
+Historical PRIVATE/NOT INSTALLED/pending-job statements below are superseded.
 Native Cobalt remains0/5; no33.3. Read PHASE331_SIGNALS.md for actual semantics.
+
+## Final normal image identity (7164 exit0 09:46:43 +07)
+
+Normal kernel253528/raw runtime34304/packed28211; BSS end0x7d5d0 <0x80000.
+Full test kernel261726/cap262144 leaves418 bytes; original limits unchanged.
+Logs build/cross-signal-{pair,full-regression,final-uefi-build}.log.
+SHA256:
+```
+32bf6f583df9efa770d18afb806e2e27633028353a9eac94cb09b5288fafbed8  build/kernel.bin
+ca63d948bd0542e31e342f840813ae655436dff19a82db2b2fa677a6472693ae  build/platform-runtime.bin
+71dda20f1d80640479143f2b144130bdd4cd179af26c20a0ad9555517891b7af  build/platform-runtime.mrt
+19435ae23c08405aaf5ef7a4e415bd8c3533586784c7a0aa3a65c1b86bbea20d  build/myos-current.img
+00563e8fa44b013ec6ed9c3a1546caeae03f9032ec219987b75576596b50d21c  build/myos-uefi.img
+```
 
 ## Isolated prototype — 08:29:38 +07
 

@@ -5,6 +5,33 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 09:49 targeted signal FULL checkpoint (based on DNS2a71206):
+full7164 exit0 09:46:43 default ALL, new cross/DNS plus packing/TLS/thread/fault/
+low RAM/VGA PASS. Normal BIOS/UEFI restored and hashed; detail in
+PHASE331_CROSS_THREAD_SIGNALS.md. No live production image owner. Fixture189/242,
+paired191/242,51missing; Cobalt0/5, phases OPEN/no33.3. Origin fetched09:48:20,
+still09d1627; never push. Earlier LIVE/full-pending notes below superseded.
+PHASE332_RUNTIME_ASSET_PROBE.md records PRIVATE external runtime + interface3
+native BIOS/UEFI PASS; SHA256 rejects even valid-CRC foreign runtime before RX.
+Private233630 budget; not integrated/production-counted or full-tested.
+
+2026-10-05 09:29 remaining51 coherent batch: PHASE331_REMAINING_BATCH.md.
+Private optimal MRT1 pack host/native BIOS/UEFI PASS, unchanged decoder/ABI,
+saves480B. Private sendmsg/recvmsg stream subset native BIOS/UEFI PASS four
+launches/exact resources/close-reuse; test image262014 leaves130B. Not installed
+or new production counts. Need durable runtime/resource packaging budget before
+remaining imports; no cap increase/test deletion. Full7164 still live09:28.
+
+2026-10-05 targeted signal integration after local DNS2a71206, uncommitted:
+PHASE331_CROSS_THREAD_SIGNALS.md and PHASE331_SIGNALS.md are current. Scoped16585
+exit0 09:06:05 BIOS/UEFI native signals/pause/lifetime/default termination/no FINI,
+DNS54 EINTR calls/profile and existing thread/handler regressions PASS.
+Pair PASS pair-fb3kt85j; full7164 started09:07:27 confirmed LIVE09:16;
+191/24278.9% binding; fixture189/24278.1%. Full still pending; do not mutate
+sources/shared images or restart while live. Normal253528/runtime34304/packed28211;
+private test261726 leaves418 bytes. No new full PASS; DNS full is old baseline.
+Production code and permanent fixtures now installed. No33.3/push/Cobalt acceptance.
+
 2026-10-05 DNS full79950 exit0 08:55:30 ALL architectural PASS; normal BIOS
 and UEFI restored/hash detail in PHASE331_RESOLVER_WIP.md. Normal kernel253144,
 runtime33888/packed27850/BSS0x7d450; test261336 leaves808 bytes. No live test owner.

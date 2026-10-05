@@ -1,7 +1,7 @@
 #include "syscall.h"
 #include "platform-runtime-exports.h"
 
-/* Native self-delivery subset. No cross-task sends, job control, alternate
+/* Native targeted delivery subset. No job control, alternate
  * stacks, SA_SIGINFO, restart policy or realtime signal queues yet. */
 #define NODEFER 0x40000000u
 #define RESETHAND 0x80000000u
@@ -36,6 +36,9 @@ static bool valid(unsigned signal)
 {return signal>0&&signal<32&&!(signal>=19&&signal<=22);}
 static bool ignored(unsigned signal,const struct action *action)
 {return action->handler==1||(!action->handler&&(signal==17||signal==18||signal==23||signal==28));}
+bool process_signal_pending(struct process *p)
+{return p->signals&&(!p->main_thread_exited||scheduler_current_thread())&&
+    (self(p)->pending&~self(p)->mask[0]);}
 static void clear(struct signal_task *task)
 {
     while(task->context){struct context *context=task->context;
@@ -65,6 +68,7 @@ struct frame *process_signal_deliver(struct frame *frame)
 {
     struct process *p=scheduler_current_process();
     if(!p||!p->signals||p->state!=PROCESS_RUNNING||(frame->cs&3)!=3)return frame;
+    if(p->main_thread_exited&&!scheduler_current_thread())return frame;
     struct signal_task *task=self(p);
     while(task->pending&~task->mask[0]){
         unsigned signal=(unsigned)__builtin_ctzll(task->pending&~task->mask[0])+1;
@@ -149,6 +153,30 @@ struct frame *process_signal_call(struct process *p,struct frame *frame)
         if(command==4)return terminate(p,frame,6);
         if(!ensure(p)){result=-12;goto done;}
         if(!ignored(argument,&p->signals->actions[argument]))self(p)->pending|=1ull<<(argument-1);
+    }else if(command==5){ /* Targeted send: full-width tid, signal, reserved zero. */
+        uint64_t tid=frame->rsi;unsigned number=(unsigned)frame->rdx;
+        struct process_thread *target=0;
+        if(frame->r10||frame->rdx!=number||(number&&!valid(number))){result=-22;goto done;}
+        if(tid!=p->pid){
+            for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)
+                if(p->threads[i].state==PROCESS_THREAD_RUNNING&&p->threads[i].tid==tid)
+                    {target=&p->threads[i];break;}
+            if(!target){result=-3;goto done;}
+        }else if(p->main_thread_exited){result=-3;goto done;}
+        if(!number)goto done;
+        if(!ensure(p)){result=-12;goto done;}
+        struct signal_task *task=&p->signals->tasks[slot(p,target)];
+        if(!ignored(number,&p->signals->actions[number])){
+            uint64_t bit=1ull<<(number-1);task->pending|=bit;
+            if(!(task->mask[0]&bit))(void)scheduler_interrupt(p,target);
+        }
+    }else if(command==6){ /* pause: only targeted signal interruption can wake it. */
+        if(frame->rsi||frame->rdx||frame->r10){result=-22;goto done;}
+        frame->rax=(uint64_t)-4;return scheduler_wait(frame,p,0,0);
+    }else if(command==7){ /* Logical main pthread_exit; task retains owned finalizer frame. */
+        if(frame->rsi||frame->rdx||frame->r10||scheduler_current_thread()){result=-22;goto done;}
+        p->main_thread_exited=true;
+        if(p->signals)clear(&p->signals->tasks[0]);
     }else if(command==3){ /* Restore the top kernel-owned context, never guest registers. */
         struct signal_task *task=p->signals?self(p):0;
         struct context *context=task?task->context:0;

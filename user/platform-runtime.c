@@ -387,21 +387,27 @@ int clock_gettime(int clock,struct timespec *time)
 int clock_nanosleep(int clock,int flags,const struct timespec *request,struct timespec *remaining)
 {
     if((clock!=0&&clock!=1)||(flags!=0&&flags!=1))return EINVAL;
-    uint64_t deadline;
+    uint64_t deadline,end_ns=0;
     if(flags){int rc=deadline_ticks(clock,request,&deadline);if(rc)return rc;}
     else {
         uint64_t duration;int rc=timespec_nanos(request,&duration);if(rc)return rc;
         uint64_t now=ticks();
         deadline=duration_deadline(duration,now);
+        uint64_t start;rc=clock_nanos(1,&start);if(rc)return rc;
+        end_ns=duration>UINT64_MAX-start?UINT64_MAX:start+duration;
     }
     if(deadline<=ticks())return 0;
     volatile uint64_t *scratch=(uint64_t *)(uintptr_t)(self_page()+32);
     uint64_t value=__atomic_load_n(scratch,__ATOMIC_ACQUIRE);
     for(;;){int rc=wait64(scratch,value,deadline);
-        if(rc==-ETIMEDOUT)break;if(rc!=-EAGAIN)return -rc;
+        if(rc==-ETIMEDOUT)break;if(rc!=-EAGAIN){
+            if(rc==-4&&!flags&&remaining){uint64_t now;int error=clock_nanos(1,&now);
+                if(error)return error;uint64_t left=now<end_ns?end_ns-now:0;
+                *remaining=(struct timespec){(int64_t)(left/1000000000ull),(int64_t)(left%1000000000ull)};}
+            return -rc;}
         if(deadline<=ticks())break;
     }
-    if(remaining)*remaining=(struct timespec){0,0};return 0;
+    if(!flags&&remaining)*remaining=(struct timespec){0,0};return 0;
 }
 
 static uint32_t *key_bits(void){return (uint32_t *)(uintptr_t)(RUNTIME_TLS_BASE+1024);}
@@ -450,6 +456,7 @@ _Noreturn void pthread_exit(void *result)
         uint64_t frame=*(const uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+56);
         if(!frame)__builtin_trap();
         *(void **)(uintptr_t)(RUNTIME_TLS_BASE+24)=result;
+        if(call4(SYS_SIGNAL,7,0,0,0)<0)__builtin_trap();
         volatile uint64_t *flags=(volatile uint64_t *)(uintptr_t)(RUNTIME_TLS_BASE+40);
         __atomic_fetch_or(flags,1,__ATOMIC_RELEASE);wake64(flags,~0u);
         for(;;){uint64_t count=__atomic_load_n(active_workers(),__ATOMIC_ACQUIRE);
@@ -592,8 +599,16 @@ int pthread_getschedparam(uint64_t thread,int *policy,void *parameter)
 }
 int pthread_kill(uint64_t thread,int signal)
 {
-    if(thread!=RUNTIME_TLS_BASE&&!thread_control(thread))return ESRCH;
-    if(signal)return EINVAL;return 0;
+    uint64_t tid;
+    if(thread==RUNTIME_TLS_BASE)tid=(uint64_t)call3(2,0,0,0);
+    else {struct thread_control *control=thread_control(thread);
+        if(!control)return ESRCH;tid=control->tid;}
+    return (int)-call4(SYS_SIGNAL,5,tid,(unsigned)signal,0);
+}
+int pause(void)
+{
+    int64_t result=call4(SYS_SIGNAL,6,0,0,0);
+    *__errno_location()=(int)-result;return -1;
 }
 int pthread_sigmask(int how,const void *set,void *old)
 {
@@ -612,7 +627,7 @@ int sigaction(int signal,const void *action,void *old)
 signal_handler signal(int number,signal_handler handler)
 {
     struct runtime_signal_action action={handler,{0},0,0,0},old;
-    /* No SA_RESTART claim: interruptible external sends are not supplied yet. */
+    /* Interruptible targeted sends are supported; no SA_RESTART claim. */
     if(sigaction(number,&action,&old))return (signal_handler)(uintptr_t)-1;
     return old.handler;
 }
@@ -664,7 +679,7 @@ int pthread_mutex_timedlock(void *raw,const struct timespec *time)
         rc=pthread_mutex_trylock(raw);if(rc!=EBUSY)return rc;
         if(deadline<=ticks())return ETIMEDOUT;
         rc=wait64(&((struct mutex_layout *)raw)->state,1,deadline);
-        if(rc==-ETIMEDOUT)return ETIMEDOUT;if(rc&&rc!=-EAGAIN)return -rc;
+        if(rc==-ETIMEDOUT)return ETIMEDOUT;if(rc&&rc!=-EAGAIN&&rc!=-4)return -rc;
     }
 }
 int pthread_mutex_unlock(void *raw)
@@ -736,6 +751,7 @@ static int sem_take(void *raw,uint64_t deadline)
     for(;;){uint64_t value=__atomic_load_n(count,__ATOMIC_ACQUIRE);
         if(value&&__atomic_compare_exchange_n(count,&value,value-1,0,__ATOMIC_ACQUIRE,__ATOMIC_RELAXED))return 0;
         int rc=wait64(count,0,deadline);if(rc==-ETIMEDOUT){*__errno_location()=ETIMEDOUT;return -1;}
+        if(rc&&rc!=-EAGAIN){*__errno_location()=-rc;return -1;}
     }
 }
 int sem_wait(void *raw){return sem_take(raw,0);}
@@ -1323,7 +1339,8 @@ int64_t read(int fd,void *buffer,size_t length)
             uint64_t sequence=object->sequence;spin_unlock(&object->lock);
             if(!descriptor_current(&reference)){set_error(EBADF);break;}
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
-            (void)wait64(&object->sequence,sequence,0);
+            int waited=wait64(&object->sequence,sequence,0);
+            if(waited&&waited!=-EAGAIN){fail(waited);break;}
         }
     } else if(object->type==DESCRIPTOR_PIPE){
         if(!length){result=0;goto done;}
@@ -1337,7 +1354,8 @@ int64_t read(int fd,void *buffer,size_t length)
             if(!descriptor_current(&reference)){set_error(EBADF);break;}
             if(!writers){result=0;break;}
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
-            (void)wait64(&object->sequence,sequence,0);
+            int waited=wait64(&object->sequence,sequence,0);
+            if(waited&&waited!=-EAGAIN){fail(waited);break;}
         }
     } else if(object->type==DESCRIPTOR_FILE){spin_lock(&object->lock);
         result=call3(SYS_FREAD,(unsigned)object->value.file.kernel_fd,(uintptr_t)buffer,length);
@@ -1367,7 +1385,8 @@ int64_t write(int fd,const void *buffer,size_t length)
             uint64_t sequence=object->sequence;spin_unlock(&object->lock);
             if(!descriptor_current(&reference)){set_error(EBADF);break;}
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
-            (void)wait64(&object->sequence,sequence,0);
+            int waited=wait64(&object->sequence,sequence,0);
+            if(waited&&waited!=-EAGAIN){fail(waited);break;}
         }
     } else if(object->type==DESCRIPTOR_PIPE){
         if(!length){result=0;goto done;}
@@ -1382,7 +1401,8 @@ int64_t write(int fd,const void *buffer,size_t length)
             uint64_t sequence=object->sequence;spin_unlock(&object->lock);
             if(!descriptor_current(&reference)){set_error(EBADF);break;}
             if(reference.flags&O_NONBLOCK){set_error(EAGAIN);break;}
-            (void)wait64(&object->sequence,sequence,0);
+            int waited=wait64(&object->sequence,sequence,0);
+            if(waited&&waited!=-EAGAIN){fail(waited);break;}
         }
     } else if(object->type==DESCRIPTOR_FILE){spin_lock(&object->lock);
         result=call4(SYS_FWRITE,(unsigned)object->value.file.kernel_fd,(uintptr_t)buffer,length,
@@ -1438,6 +1458,7 @@ int poll(struct pollfd *fds,uint64_t count,int32_t timeout)
         }
         if(ready||timeout==0)return ready;
         int rc=wait64(&state->sequence,sequence,deadline);if(rc==-ETIMEDOUT)return 0;
+        if(rc&&rc!=-EAGAIN)return set_error(-rc);
     }
 }
 int epoll_create1(int flags)
@@ -1493,6 +1514,7 @@ int epoll_wait(int epfd,struct epoll_event *events,int maximum,int timeout)
         if(count||timeout==0){object_release(epoll.object);return count;}
         int rc=wait64(&state->sequence,sequence,deadline);
         if(rc==-ETIMEDOUT){object_release(epoll.object);return 0;}
+        if(rc&&rc!=-EAGAIN){object_release(epoll.object);return set_error(-rc);}
         if(!descriptor_current(&epoll)){object_release(epoll.object);return set_error(EBADF);}
     }
 }

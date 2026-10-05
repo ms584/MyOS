@@ -1,6 +1,7 @@
 """Native owned resolver contracts with controlled Ethernet peer; NOT Cobalt."""
 import argparse,hashlib,shutil,subprocess,sys,tempfile,time
 from pathlib import Path
+sys.path.insert(0,str(Path.cwd()/'tests'))
 from test_system import ROOT,VM
 from test_elf_dynamic import long_command,assert_live_resources,cancel_live
 from dns_network_fixture import DnsNetwork
@@ -37,6 +38,7 @@ try:
   result=long_command(vm,f'elf live dns{mode}');assert 'ELF exited with status 89' in result,result
   assert ('DNS offline numeric/errors PASS' if mode==0 else 'DNS entropy fail-closed PASS' if mode==3 else 'DNS native syscall/concurrent/CNAME/wrong-ID/TCP/timeout/worker-cleanup PASS') in result,result
   assert_live_resources(result)
+  if mode==1:assert 'DNS real cross-thread EINTR/owned job cleanup PASS' in result,result
  if mode==1:
   cancel_live(vm,'dns2','DNS blocked workers ready')
   result=long_command(vm,'elf live dns1');assert 'ELF exited with status 89' in result,result;assert_live_resources(result)

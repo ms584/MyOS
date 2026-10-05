@@ -38,6 +38,7 @@ int pthread_equal(pthread_t,pthread_t);
 int pthread_setname_np(pthread_t,const char *);
 int pthread_getname_np(pthread_t,char *,size_t);
 int pthread_sigmask(int,const sigset_t *,sigset_t *);
+int pthread_kill(pthread_t,int);
 #if defined(__cplusplus) && __cplusplus >= 201103L
 [[noreturn]]
 #elif defined(__cplusplus)

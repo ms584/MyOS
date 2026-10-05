@@ -168,6 +168,8 @@ struct frame *scheduler_wait(struct frame *frame,struct process *process,
 {
     struct task *task=&tasks[current];
     check(task->process==process&&!task->blocked,"invalid wait task");
+    /* IRQ/syscall serialization makes pending-check and block atomic. */
+    if(process_signal_pending(process)){frame->rax=(uint64_t)-4;return frame;}
     task->frame=frame;task->alive=false;task->blocked=true;
     task->wait_address=address;task->wait_deadline=deadline;
     return schedule(frame);
@@ -186,6 +188,19 @@ unsigned scheduler_wake(struct process *process,uint64_t address,unsigned count)
 }
 
 void scheduler_start(void) { enabled = true; }
+
+bool scheduler_interrupt(struct process *process,struct process_thread *thread)
+{
+    for(unsigned i=KERNEL_TASKS;i<TASKS;++i){
+        struct task *task=&tasks[i];
+        if(task->process!=process||task->thread!=thread)continue;
+        if(!task->alive&&!task->blocked)return false;
+        if(task->blocked){task->frame->rax=(uint64_t)-4;
+            task->blocked=false;task->alive=true;}
+        return true;
+    }
+    return false;
+}
 
 struct frame *schedule(struct frame *frame)
 {

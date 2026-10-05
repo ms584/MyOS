@@ -1,5 +1,5 @@
-/* Pinned x64 Cobalt/musl layouts; native self signals/simple handlers only.
- * No cross-thread delivery, pause, SA_SIGINFO/ONSTACK/RESTART/job control yet. */
+/* Pinned x64 Cobalt/musl layouts; native targeted signals/simple handlers.
+ * No SA_SIGINFO/ONSTACK/RESTART/job control or realtime queues yet. */
 #ifndef MYOS_SDK_SIGNAL_H
 #define MYOS_SDK_SIGNAL_H
 #include <stdint.h>
@@ -61,6 +61,7 @@ extern "C" {
 int sigaction(int,const struct sigaction *,struct sigaction *);
 void (*signal(int,void (*)(int)))(int);
 int raise(int);
+int pause(void);
 #ifdef __cplusplus
 }
 #endif

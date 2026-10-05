@@ -271,6 +271,7 @@ def main():
             starboard_launcher_exercise()
             for resolver_options in ([],['--offline'],['--no-entropy']):
                 subprocess.run([sys.executable,'tests/test_netdb.py',*resolver_options],check=True)
+            subprocess.run([sys.executable,'tests/test_cross_signal.py','user/elf-cross-signal.c'],check=True)
             subprocess.run([sys.executable,'tests/test_runtime_pack.py'],check=True)
             for system_options in ([],['--network'],['--no-entropy'],['--launcher']):
                 subprocess.run([sys.executable,'tests/test_starboard_system.py',*system_options],check=True)
