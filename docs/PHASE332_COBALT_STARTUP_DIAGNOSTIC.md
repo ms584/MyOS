@@ -1,6 +1,6 @@
 # Phase 33.1/33.2 — actual Cobalt failure-only startup diagnostic
 
-Updated 2026-10-05 16:37 +07. PRIVATE ONLY, no33.3/push/phase closure.
+Updated 2026-10-05 16:42 +07. PRIVATE ONLY, no33.3/push/phase closure.
 Tree /tmp/myos-startup-diagnostic-d8WnKd; genuine core/provider hashes checked.
 
 28 unresolved functions bind to assembly call-abort probes that identify the
@@ -25,8 +25,24 @@ Host serves controlled HTML data only; native Cobalt executes inside MyOS.
 - Private61917 terminal0 16:35:22 now passes open but faults at34a3895, the
   internal CHECK after read completion. Probe VM default CPU lacks entropy;
   existing system entropy fixtures use CPU=max for success, qemu64 for failure.
-- CPU=max actual startup89011 LIVE16:36:52; poll SAME, do not restart on timeout.
-  Output startup-diagnostic-dtbmkrny. No result/acceptance credited yet.
+- CPU=max startup89011 terminal0 16:37:36, output startup-diagnostic-dtbmkrny.
+  Execution advances past entropy open/read but faults at34a7c46, again int3/ud2.
+  SABI18 matched, zero HTTP requests, no missing28 probe called; exact pages
+  and heap90624 reclaimed. NOT web acceptance or standalone entropy contract proof.
+- Disassembly34a7b77 requests size=alignment=0x800000000 (32GiB), prot argument0,
+  fd=-1;34a7800 translates protection and calls mmap(flags0x22: PRIVATE|ANONYMOUS),
+  twice on failure, then fatal handler34a7c00. mmap errno is captured by engine.
+  Main process_vm_map rejects lengths larger than its496MiB address range
+  [USER_BASE+0x20000000,USER_BASE+0x3f000000), and allocates physical pages even
+  for PROT_NONE. Therefore this request cannot succeed under current contract.
+  This is virtual address reservation, NOT proof Cobalt needs32GiB physical RAM.
+
+Next architecture slice: genuine sparse PROT_NONE reservations and bounded
+committed physical pages; sufficiently large isolated user address range,
+aligned/hinted reservation handling, overlap/split/partial unmap, protect/commit
+rollback, owner/cancel cleanup and safe copy validation. Audit address assumptions
+and page-table indexing before extending the range. Never return untracked fake
+addresses, map32GiB eagerly, remove checks or patch the native binary.
 
 Need native adversarial entropy-device fixtures (success+no-entropy, dup/flags,
 metadata, short reads, bad pointers, table exhaustion and cleanup), then proper

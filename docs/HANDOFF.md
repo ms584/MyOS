@@ -5,6 +5,13 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 16:42: TCP server checkpoint eb31a69 local only, clean source/normal
+images. CPU=max actual Cobalt diagnostic89011 terminal0 16:37:36 moves past
+entropy to fatal32GiB virtual reservation34a7c46. Main VM496MiB bound/eager
+PROT_NONE allocation cannot satisfy it. Need tracked sparse reservation/commit,
+not32GiB RAM/fake addresses/engine patch. Zero HTTP requests, exact resources
+reclaimed, missing28 unchanged; web0/5/no33.3. Diagnostic doc has exact evidence.
+
 2026-10-05 16:37 supersedes LIVE1701: main full/scoped pipeline terminal0
 PASS16:31:49, normal BIOS/UEFI restored, native TCP server+actual core/provider
 paired BIOS/UEFI PASS, production214/24288.4%,28missing/provider0/weak1.

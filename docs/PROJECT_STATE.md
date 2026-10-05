@@ -1,7 +1,7 @@
 # MyOS project state
 
-Updated: 2026-10-05 16:37 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Baseline3cbd25f; tested TCP server checkpoint; inspect git log for local HEAD.
+Updated: 2026-10-05 16:42 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+Source checkpoint eb31a69 TCP server; normal BIOS/UEFI restored, no live suite.
 Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Scope and measured progress
@@ -14,14 +14,11 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Current work and evidence
 
-- Source51d4100 resource/message/interface baseline full75305 and paired6076
-  PASS11:49/11:50; normal BIOS+UEFI restored. PHASE332_ASSET_V2_PROBE.md.
 - Owned SB16 PCM+typed Float32/Int16 sink committedf895303; production62023
   BIOS+UEFI PASS13:24:24: waveform, ring/pause/EOS, malformed input, exhaustion,
   callback Destroy, fault/Escape cleanup/relaunch/exact pages+heap.
 - Owner restarted WslService; production pair-q4xi8xvv PASS14:03. New audio
   full58842 terminal0 PASS14:43:40; normal BIOS+UEFI restored.
-  Logs build/audio-batch-{pair,full,final-uefi}-service-recovery.log.
   Audio pair-execution40404 terminal0 PASS14:48:20 BIOS+UEFI; final hashes unchanged.
   Normal hashes and full evidence: PHASE332_PCM_WIP.md.
 - Actual pinned audio_sink/media/drm header ABI native BIOS+UEFI67207 PASS14:03;
@@ -32,13 +29,13 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
   WAITFORONE and original descriptor generation across vector receive.
   Production77672 terminal0 PASS14:58:33: normal BIOS+UEFI, media/message both
   profiles plus actual pinned core/provider paired adversarial/rollback/resources.
-  Private /tmp/myos-media-policy-cB3bQ1; PHASE332_IMPORT_BATCH_WIP.md.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
 - Private filesystem inode/atomic rename unit/native BIOS/UEFI PASS; filesystem
   61299 and explicit ATA/storage52587 PASS16:11/16:12. No new POSIX export credit.
 - Actual Cobalt diagnostic47704: SABI18 matched, fault at34a38d8 opening
   /dev/urandom; zero HTTP requests. Private entropy descriptor61917 moved fault
-  to34a3895 (read); default CPU lacks entropy. CPU=max diagnostic89011 pending.
+  to34a3895 (read); default CPU lacks entropy. CPU=max89011 terminal0 16:37:36
+  advances to34a7c46: 32GiB virtual reservation fails; current VM range496MiB.
   28 diagnostic call-abort probes NEVER return success; no API completion credit.
 
 ## Existing foundations and limits
@@ -54,7 +51,8 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Next work
 
-1. Poll SAME89011 private actual startup; identify next real blocker. Private
+1. Implement sparse virtual reservation/commit for actual32GiB engine request;
+   also adversarial-test private entropy descriptor before production promotion.
    /tmp/myos-startup-diagnostic-d8WnKd; PHASE332_COBALT_STARTUP_DIAGNOSTIC.md.
 2. Next28: file11, audio config2, player13/decode-target2. FS inode prerequisite
    private only; PHASE332_FS_IDENTITY_WIP.md. No fake handles/codecs/success.
