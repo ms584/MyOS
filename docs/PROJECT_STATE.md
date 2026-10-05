@@ -1,8 +1,8 @@
 # MyOS project state
 
-Updated: 2026-10-05 17:24 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Source checkpoint eb31a69 TCP server; normal BIOS/UEFI retained; docs8b84f24.
-Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
+Updated: 2026-10-05 19:03 +07; owner requests checkpoint then pause.
+Repo /home/xytron404/myos, WSL Ubuntu, main source eb31a69; normal images intact.
+Origin/main3cbd25f, fetched18:57:51 +07. Owner pushes only; NEVER push.
 
 ## Scope and measured progress
 - Phase33.1/33.2 OPEN; native Cobalt web acceptance0/5 (0% verified).
@@ -34,14 +34,14 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
   61299 and explicit ATA/storage52587 PASS16:11/16:12. No new POSIX export credit.
 - Private sparse32GiB/entropy native42995 BIOS/UEFI PASS16:56:00; exact resources,
   no entropy failure closed. Real VM ASAN/UBSAN allocation rollback PASS16:59:37.
-- Genuine Cobalt resource trace86372 terminal0 17:22:11: opens pinned
-  /assets/cobalt_shell.pak successfully; requests mmap(fd65,length1318438,
-  PROT_READ,MAP_SHARED,offset0). Anonymous-only runtime rejects this, then
-  resource-load FATAL/SIGABRT6; zero HTTP requests, exact heap125184 reclaimed.
-  Verified135 pinned resources. Diagnostic28 abort thunks never succeed/count.
-- Private sparse full2835 terminal1 17:22:14: isolated tree omitted third_party
-  compiler-rt/emutls.c. Harness fixed, same source full retry90043 LIVE17:23:53,
-  /tmp/myos-sparse-regression-oH6bTA/sparse-full-retry.log. No full PASS claim.
+- Private immutable file-map native16031 BIOS/UEFI PASS17:36:36; real VM/file
+  allocator/read-failure ASAN/UBSAN PASS17:37:37, exact cleanup/offsets/rights.
+- Cobalt trace92117 terminal0 17:42:26: both pak mappings succeed; new FATAL
+  path Experiment Config /PathService501, exact heap125184, zero HTTP/web0/5.
+- Sparse retry90043 terminal1 17:46:49; file-map full28885 terminal1 18:02:08:
+  harness omitted pinned contracts/window.h. Pins copied18:59; new full68512
+  LIVE in /tmp/myos-file-map-u9NQ2N/file-map-full-retry.log; no full PASS yet.
+  Freeze this private tree; main normal hashes unchanged19:02. No promotion.
 
 ## Existing foundations and limits
 
@@ -56,10 +56,10 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Next work
 
-1. Poll SAME90043; freeze its source/tests/images until terminal. Implement
-   genuine file-backed mmap (readonly immutable MAP_SHARED required by pak),
-   preserving fd offsets/lifetime, protections/EOF/rollback; no anonymous fake.
-   Engine tree /tmp/myos-sparse-vm-BCcMw4; PHASE332_SPARSE_VM_WIP.md.
+1. Owner pauses. On resume poll SAME68512 before touching private build/source;
+   finish full+normal restore+file/sparse scopes before promotion. Durable WIP
+   source/tests in docs/wip/phase332-file-map; PHASE332_FILE_MAPPING_WIP.md.
+   Next engine issue: Experiment Config path501; distinguish path/config error.
 2. Next28: file11, audio config2, player13/decode-target2. FS inode prerequisite
    private only; PHASE332_FS_IDENTITY_WIP.md. No fake handles/codecs/success.
 3. Native Cobalt HTML+JS/DOM/timers, input, verified concurrent HTTPS,

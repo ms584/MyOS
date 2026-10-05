@@ -5,6 +5,26 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 19:03 OWNER requests checkpoint/local commit then pause. Approval
+available again18:57; origin/main still3cbd25f, no upstream changes/no push.
+Copied all pinned contracts+core/provider into private regression trees; file
+full retry68512 LIVE18:59:16 /tmp/myos-file-map-u9NQ2N/file-map-full-retry.log.
+Freeze tree, poll SAME on resume; no full PASS yet, final scoped/UEFI queued.
+Main source eb31a69 and normal BIOS/UEFI hashes intact19:02. Preserve unpromoted
+file-map/sparse sources/tests/proofs in docs/wip/phase332-file-map (not built by
+main). PHASE332_FILE_MAPPING_WIP.md has limits and next Experiment Config issue.
+Actual imports214/24288.4%, web0/5; no phaseclosure/33.3. Owner always pushes.
+
+STAGED18:02, not copied to main due approval usage limit: private immutable
+file-map native16031 BIOS/UEFI PASS17:36:36, real VM allocator+backing-read failure
+ASAN/UBSAN PASS17:37:37. Genuine Cobalt92117 terminal0 17:42:26 maps pak twice
+successfully, then new FATAL in Experiment Config /PathService key501; actual
+zero HTTP/web0/5. Sparse90043 and file-map28885 full attempts terminal1 due
+missing pinned build contracts/window.h, no full PASS/no live handle. Needcopy
+full pin dependencies/retry before promotion. Main42da94a clean source/images
+last observed unchanged. Detailed desktop work/PHASE332_FILE_MAPPING_WIP.md has
+source/tests/results/repro/limits and next exact caller inspection. No33.3/push.
+
 2026-10-05 17:24 supersedes unknown FATAL: trace86372 terminal0 17:22:11,
 genuine Cobalt opens /assets/cobalt_shell.pak (kernel fd3/runtime fd65), then
 requests mmap length1318438, PROT_READ1, MAP_SHARED1, offset0. Anonymous-only
