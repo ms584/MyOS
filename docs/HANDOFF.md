@@ -5,7 +5,22 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
-2026-10-05 tested system/log checkpoint after09d1627:
+2026-10-05 tested runtime packaging checkpoint after local9838bd1:
+[PHASE332_RUNTIME_PACK.md](PHASE332_RUNTIME_PACK.md). Preserve original runtime
+bytes/exports, decode+CRC in private bounded buffer before RX mapping, release
+temporary buffer on all paths; existing caller owns partial map rollback.
+Normal kernel247072 (5792 bytes smaller). Native BIOS exact mapped-byte hash,
+RX write faults, corrupt-CRC rejection/relaunch/pages/heap PASS. Scoped41563
+exit0 06:22:03: genuine paired renderer/lifecycle/cancel/low-RAM OOM and UEFI PASS.
+Host81180 boundaries 1..65536 literal/overlap ASan/UBSan PASS, permanent full
+suite integration installed. Full61037 exit0 06:57:27 ALL architectural PASS;
+normal BIOS/UEFI restored/hash detail in packing doc. Test255256/cap262144
+6888 bytes free; BSS0x7bb90. No active job/image owner. No33.3.
+Resolver prototypes staged while the full job runs: PHASE331_RESOLVER_WIP.md.
+Parser and mocked ownership/timeout/TCP fallback pass host sanitizers; target
+adapter compiles. NOT installed/native-tested; no new imports/acceptance claim.
+
+2026-10-05 tested system/log local checkpoint9838bd1 after09d1627:
 [PHASE332_SYSTEM_SERVICES.md](PHASE332_SYSTEM_SERVICES.md). Typed pinned system/
 log/path/property/memory/RNG/network services; BIOS/UEFI core fixture and BIOS
 carrier reconnect/no-RDRAND/debugger abort/owned executable path PASS. Optional
@@ -14,12 +29,13 @@ observed pair binding187/24277.3% (55 missing), actual Cobalt0/5. Origin/main no
 09d1627 after owner push, fetched05:29:09+07; no agent push. Scoped57868 exit0
 05:29:28 paired+extra UEFI PASS. Full93005 exit0 06:04:28,
 ALL architectural regression PASS; normal BIOS/UEFI restored/hashes in detailed
-doc. No active job/image owner. Kernel test261056/cap262144 only1088 free; normal252864/runtime31760/
+doc. At that checkpoint no active job/image owner. Kernel test261056/cap262144 only1088 free; normal252864/runtime31760/
 BSS0x7d230. Do not reuse older full PASS or image hashes for this new slice.
 Next remaining file/network/capability dependencies and real Cobalt web gate.
 Private runtime-packing probe:5800 payload bytes saved, bounded target decoder
 444 bytes; host ASan/UBSan roundtrip/CRC/mutation/truncation/bounds PASS only.
-Not integrated/NOT MyOS proof. LTO24-byte saving/syscall-outline232-byte growth
+That private probe is superseded by the packaging WIP above, not full PASS.
+LTO24-byte saving/syscall-outline232-byte growth
 rejected. Asset-v1 flat32 names cannot package real Cobalt resource hierarchy;
 fonts/ICU/trust assets remain to pin/package. No33.3.
 

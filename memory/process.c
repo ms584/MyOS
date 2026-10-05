@@ -1,6 +1,7 @@
 #include "boot.h"
 #include "process.h"
 #include "elf.h"
+#include "runtime-pack.h"
 #include "../build/platform-runtime-exports.h"
 #define NX (1ull << 63)
 static struct process processes[PROCESS_LIMIT];
@@ -243,16 +244,25 @@ struct process *process_stage_elf_pair(const struct elf_source *const sources[2]
 bool process_map_runtime(struct process *p)
 {
     if(!p||p->state!=PROCESS_LOADING)return false;
-    size_t size=(size_t)(platform_runtime_end-platform_runtime_start);
+    size_t size=PLATFORM_RUNTIME_BYTES;
     if(!size||size>PROCESS_RUNTIME_TLS_BASE-PROCESS_RUNTIME_BASE)return false;
     unsigned capacity=p->image_capacity;
     if(!capacity)return false;
+    /* Decode and verify privately, before mapping any executable page. The
+     * generated raw size is independent of the untrusted packed header. */
+    unsigned char *raw=kmalloc(size);
+    if(!raw)return false;
+    if(!runtime_unpack(platform_runtime_start,
+            (size_t)(platform_runtime_end-platform_runtime_start),raw,size)){
+        kfree(raw);return false;
+    }
     for(size_t offset=0;offset<size;offset+=PAGE_SIZE){
         uintptr_t page=elf_map_page(p,capacity,PROCESS_RUNTIME_BASE+offset,5);
-        if(!page)return false;
+        if(!page){kfree(raw);return false;}
         size_t count=size-offset;if(count>PAGE_SIZE)count=PAGE_SIZE;
-        memcpy((void *)page,platform_runtime_start+offset,count);
+        memcpy((void *)page,raw+offset,count);
     }
+    kfree(raw);
     /* One private errno page for the main task and every possible worker. */
     for(unsigned i=0;i<=PROCESS_THREAD_LIMIT;++i)
         if(!elf_map_page(p,capacity,PROCESS_RUNTIME_TLS_BASE+(uint64_t)i*PAGE_SIZE,6))
