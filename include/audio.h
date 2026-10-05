@@ -5,6 +5,16 @@
 /* Phase 30: QEMU SB16, unsigned 8-bit mono PCM at 11025 Hz. */
 bool audio_init(void);
 bool audio_ready(void);
+struct audio_stream_status {
+    uint64_t consumed;
+    uint32_t queued,dma_frames,capacity,sample_rate,channels,sample_bits;
+};
+int audio_stream_acquire(uint64_t owner);
+int audio_stream_queue(uint64_t owner,const uint8_t *pcm,size_t count);
+int audio_stream_status(uint64_t owner,struct audio_stream_status *status);
+void audio_stream_release(uint64_t owner);
+int audio_stream_flush(uint64_t owner);
+int audio_stream_start(uint64_t owner);
 void audio_irq(void);
 bool audio_queue(const uint8_t *pcm,size_t count);
 void audio_stop(void);

@@ -3,6 +3,7 @@
 #include "tcp.h"
 #include "dns.h"
 #include "native-ui.h"
+#include "audio.h"
 #define KERNEL_TASKS 4
 #define TASKS (KERNEL_TASKS + PROCESS_LIMIT * (1 + PROCESS_THREAD_LIMIT))
 
@@ -129,6 +130,7 @@ bool scheduler_stop_thread(struct process *process,struct process_thread *thread
 
 bool scheduler_stop_process(struct process *process)
 {
+    audio_stream_release(process->pid);
     dns_job_release_owner(process,0);
     tcp_stream_release_owner(process);
     native_ui_release_owner(process);

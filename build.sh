@@ -27,7 +27,12 @@ gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreesta
     -fno-unwind-tables -nostdinc -isystem "$(gcc -print-file-name=include)" \
     -Iuser/sdk -Iinclude -Wall -Wextra -Werror -Wno-misleading-indentation \
     -c user/platform-netdb.c -o build/platform-netdb.o
-ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o build/platform-netdb.o
+gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
+    -mno-red-zone -msse2 -fno-stack-protector -fno-asynchronous-unwind-tables \
+    -fno-unwind-tables -nostdinc -isystem "$(gcc -print-file-name=include)" \
+    -Iuser/sdk -Iinclude -Wall -Wextra -Werror -Wno-misleading-indentation \
+    -c user/platform-audio.c -o build/platform-audio.o
+ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o build/platform-netdb.o build/platform-audio.o
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/pack_runtime.py build/platform-runtime.bin build/platform-runtime.mrt
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h

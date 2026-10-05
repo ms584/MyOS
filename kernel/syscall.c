@@ -10,6 +10,8 @@
 #include "nic.h"
 #include "elf.h"
 #include "asset.h"
+#include "audio.h"
+#include "pcm-call.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -128,9 +130,11 @@ static int system_path(struct process *p,struct frame *f)
     }
     copy_to_user(p,request.buffer,value,length+1);return 0;
 }
+#include "pcm-syscall.inc"
 static int64_t system_call(struct process *p,struct frame *f)
 {
     switch(f->rdi){
+    case SYSTEM_AUDIO:return pcm_call(p,f);
     case SYSTEM_LOG:{
         size_t length=f->rdx;if(length>SYSTEM_LOG_LIMIT)return -22;
         if(!readable_range(p,f->rsi,length))return -14;

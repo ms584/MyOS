@@ -1,5 +1,63 @@
 # Phase 33.2 private owned PCM transport
 
+## Full architecture checkpoint — 2026-10-05 14:44 +07
+
+Production full58842 terminal0 PASS14:43:40 default ALL. Normal BIOS restored
+by suite, final UEFI built successfully. Earlier WSL-interrupted runs are NOT
+used as evidence. Logs audio-batch-{full,final-uefi}-service-recovery.log.
+Paired execution40404 terminal0 PASS14:48:20 BIOS+UEFI, actual worker rendering/
+TLS/finalizers/fault/cancel/relaunch/exact resources. Logs audio-batch-pair-
+execution{,-uefi}.log; output pair-exec-m7snwtau/pair-exec-6bywwc8k.
+Final hashes unchanged; no live image owner. Local source commit pending.
+
+Normal SHA256, observed14:43:40:
+- kernel.bin: 2c894a1ddf52cf6010220de2621d4e02b3f2307fa1db6032089993e9863fc1a0
+- platform-runtime.bin: a1591728fee0e62b61837f855bbfbe2d9ac2e19b52ac94e7821e7084b59a1d2e
+- platform-runtime.mrt: 79079211724ecfbe12bbe51ffe2b0753965184060840d6ed7f03098a72c946b1
+- platform-runtime.manifest.json: 101a56455b05ca7568ea61f8c8b57b819b9aa9b92252bab9f26f6bf6770eed02
+- myos-current.img: 24509ff96c625ee2d016c4502cab6a32079ce28cd1917ab49a7e628d0186b00f
+- myos-uefi.img: f3a8f1899f40bc80e58832723136585e6952b88cfaf98c0194f75c80a2275df5
+
+New ten-import private batch detailed separately in PHASE332_IMPORT_BATCH_WIP.md.
+Production still201/24241missing; Cobalt0/5, no33.3/push/phase closure.
+
+## Current recovery and pinned ABI proof — 2026-10-05 14:06 +07
+
+Owner restarted WslService; production pair-q4xi8xvv PASS14:03, pipeline58842
+LIVE13:58:33 now running ALL full. Logs audio-batch-*-service-recovery.log.
+No main source/image mutation until terminal. New full/normal hashes pending.
+Private /tmp/myos-pinned-audio-4Fohgm session67207 exit0 14:03:27 BIOS+UEFI:
+fixture includes actual pinned starboard/audio_sink.h, media.h and drm.h,
+SHA checked against PHASE331_ABI_SOURCES.json, target config API18. Native
+callback prototype/enum/handle widths +Float32/Int16/440Hz/circular/pause/EOS/
+Destroy/fault/cancel/relaunch/exact resources PASS. Outputs pcm-pinned-snjrriyg
+and pcm-pinned-wpy8bfjt; logs private-pinned-audio.log/-uefi.log.
+Source helpers work/elf-audio-sink-pinned.c/test_audio_sink_pinned.py/
+check_pinned_audio_native.sh. No changes to production tests/runtime while full
+owns images. Upstream SbAudioSinkIsValid is inline null-only, NOT stale-handle
+validation: pinned fixture clears handle after Destroy; original target-helper
+fixture keeps registry retirement assertion separately. No lower native gates.
+Pinned fixtures/SDK header promotion and pair-execution scope still pending;
+actual native Cobalt acceptance0/5,201/242 binding,41 missing, no33.3/push.
+
+## Integrated WIP: 2026-10-05 13:30 +07
+
+Source batch installed after clean7211c2a: actual owned driver+SYSTEM_AUDIO8+
+process-stop hook+typed SSE sink, two native fixtures added to ALL/apps runner.
+Production scoped62023 exit0 13:24:24 PCM+sink BIOS/UEFI PASS, normal BIOS+UEFI
+restored. Logs build/audio-batch-{pcm,sink,pcm-uefi,sink-uefi}.log. Production
+includes malformed source/thread exhaustion/callback wait/fault/Escape/relaunch
+with exact pages/heap and actual440Hz. Normal234168/raw38192/packed30840.
+Tracked644 modes restored on build.sh/export generator/system runner.
+Actual pair serial13:26:24 missing41/provider0,201/242=83.1% binding;
+pair91264 terminal1 SIGHUP from init, not complete scope proof; old log kept.
+Retry4675 terminal1 too; dmesg13:30:58 confirms WSL systemd shutdown and ext4
+unmount/remount. No test/QEMU remains live; full never started. No OOM evidence.
+Need stable WSL session before paired/full rerun, no silent global config changes.
+Full new architecture pending. No Cobalt completion.
+Player.h remaining211..678 now fully read13:21:57; no player/codecs implemented.
+No33.3/push/phase closure.
+
 ## Current checkpoint: 2026-10-05 11:40 +07 (supersedes historical notes below)
 
 PRIVATE ONLY, no production PCM source/import promotion; actual Cobalt0/5.

@@ -5,6 +5,69 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 14:49: paired execution40404 terminal0 PASS14:48:20 BIOS+UEFI
+pair-exec-m7snwtau/pair-exec-6bywwc8k, genuine worker rendering/TLS/finalizers/
+fault/cancel/relaunch/exact resources. Normal full-suite hashes unchanged.
+Audio all required scopes complete; local checkpoint next, then private tested
+ten-export promotion. No live image owner; Cobalt acceptance remains0/5.
+
+2026-10-05 14:44 supersedes LIVE58842: full58842 terminal0 PASS14:43:40 default
+ALL including owned PCM/sink, threads/TLS/signals/DNS, resources, fault/RAM/VGA.
+Normal BIOS+UEFI restored; exact hashes in PHASE332_PCM_WIP.md. Paired
+execution40404 LIVE14:44:13 BIOS+UEFI; freeze main source/images until terminal,
+then local audio checkpoint and tested ten-import promotion. No push/33.3.
+
+2026-10-05 14:36: owner asks all remaining41 imports, no empty stubs. Private
+copied media-policy-cB3bQ1 has eight genuine pinned media policies and two
+connected stream exports sendto/recvmmsg; BIOS+UEFI native87168 terminal0
+14:32:01 incl caller+socket deadlines and close/reuse/resources. Actual paired
+serial14:35 missing31/provider0 =>211/24287.2%; whole58654 PASS14:35:37.
+Production unchanged201/24241missing; full58842 still LIVE, do not mutate main
+source/images. Detailed exact sources, tests, limits and next31 in
+PHASE332_IMPORT_BATCH_WIP.md. Origin/main now51d4100 fetched14:30:58; owner
+pushed baseline, agent never pushed. Cobalt acceptance0/5, phaseOPEN/no33.3.
+
+2026-10-05 14:06 recovery: owner restarted WslService, Ubuntu prompt returned.
+No agent global setting/service changes. Production pipeline58842 LIVE13:58:33,
+actual pair-q4xi8xvv PASS14:03 biased exports/relocs/TLS/RELRO/missing41/adversarial/
+rollback/repeat/resources; ALL full now running. Do not mutate source/shared
+build outputs until terminal. Logs audio-batch-*-service-recovery.log.
+Separate pinned audio probe67207 exit0 14:03:27 BIOS+UEFI actual SHA-checked
+audio_sink.h/media.h/drm.h declarations, enums/callback ABI/native behavior PASS.
+Private /tmp/myos-pinned-audio-4Fohgm, source helpers work/elf-audio-sink-pinned.c,
+test_audio_sink_pinned.py/check_pinned_audio_native.sh. Upstream IsValid inline
+checks null only: do not test stale registry semantics using that predicate;
+original target helper variant retains stale-registry check, no assertion removed.
+Promotion of pinned test files and paired execution scope after full still pending.
+Cobalt0/5; no33.3/push. Earlier WSL-blocked notes are historical, not full PASS.
+
+2026-10-05 13:31 retry4675 terminal1 too, no full started. Logged dmesg13:30:58
+shows systemd-shutdow SIGTERM, ext4 unmount/remount, journal unclean shutdown;
+ps confirms no suite/QEMU. Memory available15GB/no swap use, no OOM evidence.
+WSL restarts are external to native MyOS tests; do not relaunch repeatedly or
+change global WSL configuration without permission. Normal scoped images intact,
+audio full/paired still pending, source uncommitted. Need stable WSL session.
+
+2026-10-05 13:30 paired91264 terminal1: QEMU terminated SIGHUP from init,
+not native assertion failure/PASS. Actual core missing41 observed, normal
+source unchanged. Retry/full pipeline4675 LIVE13:29:17, keeps original log;
+build/audio-batch-pair-retry.log -> audio-batch-full.log -> final normal UEFI.
+No source/shared-output edits/restart until terminal. test_elf_pair_execution.py
+now expects actual41; paired execution scoped rerun still pending after full.
+
+2026-10-05 13:27 PCM+typed sink production62023 exit0 13:24:24 BIOS+UEFI
+native PASS, normal images restored. Actual paired serial13:26:24 missing41,
+provider0 =>201/24283.1%; fixture199/24282.2%. Pair91264 live, full new-source
+architecture pending. Source baseline7211c2a, audio uncommitted. Scope details
+PHASE332_PCM_WIP.md. No33.3/push/Cobalt acceptance. Old196/46 notes historical.
+
+2026-10-05 13:23 approval recovered; docs checkpoint7211c2a committed13:19:32,
+source baseline51d4100 unchanged. Owned PCM+typed sink source/fixtures installed
+13:21, production scope62023 LIVE: PCM BIOS PASS, sink and UEFI pending; trap
+restores normal BIOS+UEFI. No source/shared-image mutation while live. Full
+architectural regression and actual pair count still pending; do not recount
+private5 or mark Cobalt passed. Player contract211..678 now fully read13:21:57.
+
 2026-10-05 11:53 local source checkpoint51d4100 (36 files), resource packaging+
 stream/interface batch; full75305 and paired6076 PASS, normal BIOS+UEFI restored.
 Worktree clean at commit11:52:14, no push. Next integrate remaining coherent

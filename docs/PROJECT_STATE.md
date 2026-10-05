@@ -1,66 +1,57 @@
 # MyOS project state
 
-Updated: 2026-10-05 11:53 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Source baseline51d4100 local resource/network checkpoint; full/paired PASS.
-Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
+Updated: 2026-10-05 14:49 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+HEAD7211c2a docs; source baseline51d4100. Audio source uncommitted.
+Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 
-## Scope and progress
-- Phase33.1/33.2 OPEN. Actual Cobalt has not executed: acceptance0/5 (0% verified).
-- Registered fixture194/242=80.2%; actual paired196/242=81.0%,46
-  missing observed twice10:49:45. NOT full semantics/phase percent.
-- Phase32/33 NOT PASSED; YouTube playback unproven. No33.3; never push.
+## Scope and measured progress
 
-## Implemented foundations
-- Clock/pthread/descriptors: PHASE331_WAIT.md, PHASE331_PTHREAD.md,
-  PHASE331_SYSTEM.md. Native TLS/thread/C11: PHASE331_NATIVE_TLS.md,
-  PHASE331_THREAD_SERVICES.md, PHASE332_C11_SDK.md, PHASE332_THREAD_UTIL.md.
-- Signals: PHASE331_SIGNALS.md; new targeted send/pause/wait/main-exit lifetime
-  installed09:01; PHASE331_CROSS_THREAD_SIGNALS.md. Scoped16585 PASS09:06:05.
-- Native UI/events/SABI launcher: PHASE332_NATIVE_UI.md, PHASE332_EVENTS.md,
-  PHASE332_LAUNCHER.md. Genuine Mesa/EGL/GLES: PHASE332_RENDERER_CLOSURE.md,
-  PHASE332_NATIVE_RENDERER.md, PHASE332_NATIVE_EGL*.md; not graphics conformance.
-- Pair mapping/execution/finalizers: PHASE332_MODULE_PAIR.md,
-  PHASE332_PAIR_EXECUTION.md. One PT_TLS; no generic DT_NEEDED/DTV/unload.
-- Typed system/log9838bd1: PHASE332_SYSTEM_SERVICES.md; runtime packing465b68b:
-  PHASE332_RUNTIME_PACK.md. Native DNS: PHASE331_RESOLVER_WIP.md.
-- DNS tested IPv4 getaddrinfo/freeaddrinfo/gai_strerror subset: async owned UDP/
-  TCP fallback, concurrent waits, thread/process exit/cancel cleanup. Not full netdb.
+- Phase33.1/33.2 OPEN; native Cobalt web acceptance0/5 (0% verified).
+- Production registered199/242 (82.2%); actual paired201/242 (83.1%),41 missing.
+- Private new batch: ten more exports, actual paired211/242 (87.2%),31 missing
+  observed14:35. Not yet production; paired adversarial scope58654 PASS14:35:37.
+- Counts are binding/fixture coverage, NOT full API semantics or phase percent.
+- Phase32/33 NOT PASSED; no33.3. YouTube playback unproven.
 
-## Current evidence
-- DNS baseline scoped/host/full79950 PASS08:55:30; details and hashes in
-  PHASE331_RESOLVER_WIP.md. Signal full below supersedes this older baseline.
-- Normal signal kernel253528/runtime34304/packed28211/BSS end0x7d5d0.
-  Full test261726/cap262144 leaves418 bytes; preserve loader/layout limits.
-  BIOS cross-dchpr7tw + UEFI cross-kputkico PASS16 launches/profile/exact resources,
-  default main/worker termination without FINI; DNS54 EINTR calls/profile and
-  existing thread/delivery regressions PASS both profiles. Logs:
-  build/cross-signal-{native,uefi,dns,dns-uefi,thread,thread-uefi,delivery,delivery-uefi}.log.
-  Pair PASS pair-fb3kt85j; full7164 exit0 09:46:43 default ALL, including new
-  cross/DNS, packing/TLS/thread/fault/low RAM/VGA. Normal BIOS/UEFI restored:
-  build/cross-signal-{pair,full-regression,final-uefi-build}.log; hashes in
-  PHASE331_CROSS_THREAD_SIGNALS.md. Historical baseline; resource full supersedes.
+## Current work and evidence
+
+- Source51d4100 resource/message/interface baseline full75305 and paired6076
+  PASS11:49/11:50; normal BIOS+UEFI restored. PHASE332_ASSET_V2_PROBE.md.
+- Owned SB16 PCM+typed Float32/Int16 sink installed13:21; production62023
+  BIOS+UEFI PASS13:24:24: waveform, ring/pause/EOS, malformed input, exhaustion,
+  callback Destroy, fault/Escape cleanup/relaunch/exact pages+heap.
+- Owner restarted WslService; production pair-q4xi8xvv PASS14:03. New audio
+  full58842 terminal0 PASS14:43:40; normal BIOS+UEFI restored.
+  Logs build/audio-batch-{pair,full,final-uefi}-service-recovery.log.
+  Audio pair-execution40404 terminal0 PASS14:48:20 BIOS+UEFI; final hashes unchanged.
+  Normal hashes and full evidence: PHASE332_PCM_WIP.md.
+- Actual pinned audio_sink/media/drm header ABI native BIOS+UEFI67207 PASS14:03;
+  private4Fohgm. Upstream inline IsValid is null-only; target helper checks
+  stale registry separately. PHASE332_PCM_WIP.md. Pinned fixture promotion pending.
+- New private media policy8 +sendto/recvmmsg2 BIOS+UEFI native87168 PASS14:32:01;
+  RAM64/256 budgets, concurrent/relaunch/resources, shared caller+socket timeout,
+  WAITFORONE and original descriptor generation across vector receive.
+  Private /tmp/myos-media-policy-cB3bQ1; PHASE332_IMPORT_BATCH_WIP.md.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
 
-## Required next work
-1. Resource/message2/interface3 batch installed; native private BIOS/UEFI PASS.
-   Build+host44994 PASS10:45:36; pair-gvst4fao PASS10:50:57. Full87856 FAILED
-   stale v1 mutation offset; fixed both v1/v2. Full75305 exit0 11:49:12 ALL PASS;
-   normal BIOS229560/runtime36224/packed29307 and UEFI restored, hashes in asset doc.
-2. PHASE332_ASSET_V2_PROBE.md: private hidden build-pinned runtime/hierarchy,
-   host ASan/UBSan+1024/v1 bytes PASS; latest Ts69oq BIOS/UEFI native long names,
-   relative openat/fstatat/large I/O/pointer/readonly/v1 shell PASS10:34:42.
-   Test237728/cap262144; raw36064/packed29212. Joint BIOS/UEFI PASS10:37:57;
-   adapted pack BIOS/UEFI50615 PASS10:39:22; c3nywg path traversal PASS10:43:49.
-   Integration host/full PASS; pair lifecycle6076 BIOS+UEFI PASS11:50:09,
-   source-matched private c3nywg, genuine worker rendering/finalizers/resources.
-3. Actual engine resource/emutls/thread/RAM behavior unmeasured (8 workers).
-   Remaining absolute path127 bound; DNS IPv6/CNAME/full flags remain open.
-4. Native Cobalt HTML, JS/DOM/timers, real input, verified HTTPS/concurrent assets,
-   interactive>=60s and close/relaunch with measured resources. No33.3 until gates.
-5. PHASE332_PCM_WIP.md: PRIVATE partial-DMA/prebuffer/EOS PCM BIOS/UEFI PASS;
-   Float32/Int16 sink/circular/pause/Destroy/thread exhaustion BIOS+UEFI80619
-   PASS11:35:56. Five private imports NOT counted. Invalid-source34476 PASS;
-   worker/device fault+Escape cancel/relaunch BIOS+UEFI6709 PASS11:45:36.
-   Integration/full and actual Cobalt still required.
+## Existing foundations and limits
 
-Background: HANDOFF.md. No imported-symbol count can close33.1/33.2.
+- Clock/pthread/descriptors/signals: PHASE331_WAIT.md, PHASE331_PTHREAD.md,
+  PHASE331_CROSS_THREAD_SIGNALS.md. Native TLS/thread/C11 adapters tested.
+- Native UI/events/SABI launcher and genuine Mesa/EGL/GLES rendering tested;
+  PHASE332_RENDERER_CLOSURE.md and PHASE332_PAIR_EXECUTION.md, not Cobalt web.
+- Async owned IPv4 DNS/UDP+TCP fallback tested; IPv6/CNAME/full flags open.
+- Loader restricted two-module pair/one PT_TLS; no generic DT_NEEDED/DTV/unload.
+- Actual Cobalt resource/emutls/thread/RAM behavior unmeasured (eight workers).
+  Absolute path127 bound remains; asset hierarchy supports longer relative names.
+
+## Next work
+
+1. Required audio scopes/full/pair complete; create local audio checkpoint.
+   Promote tested ten-export batch, then scoped/native paired regressions.
+2. Remaining private31: server socket3, file11, audio config2, player13,
+   decode-target2. No empty success stubs or fake handles/codec capabilities.
+3. Native Cobalt HTML+JS/DOM/timers, input, verified concurrent HTTPS,
+   >=60s interaction and close/relaunch/resources; only then close33.1/33.2.
+
+Background: HANDOFF.md; detailed current batch: PHASE332_IMPORT_BATCH_WIP.md.
