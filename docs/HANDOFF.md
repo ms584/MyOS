@@ -5,6 +5,15 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 17:01: PRIVATE sparse VM+real entropy device native42995 terminal0
+BIOS/UEFI/no-entropy PASS16:56:00, real VM allocator-failure ASAN/UBSAN PASS16:59.
+Actual Cobalt78989 terminal0 16:57:28 passes entropy+32GiB reservation, outputs
+engine warning app_event_delegate.cc:444 and FATAL immediate_crash.h:193 Check
+false/SIGABRT6. No missing28 probe called, no HTTP requests, exact resources.
+Trace FATAL caller next; do not weaken checks/patch engine. Full/old scopes
+required before promotion; main1e1b749 normal images unchanged. Sparse WIP has
+source/test/repro evidence. Actual web0/5/no33.3/push/phaseclosure unchanged.
+
 2026-10-05 16:42: TCP server checkpoint eb31a69 local only, clean source/normal
 images. CPU=max actual Cobalt diagnostic89011 terminal0 16:37:36 moves past
 entropy to fatal32GiB virtual reservation34a7c46. Main VM496MiB bound/eager

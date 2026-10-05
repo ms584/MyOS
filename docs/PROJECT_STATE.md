@@ -1,6 +1,6 @@
 # MyOS project state
 
-Updated: 2026-10-05 16:42 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+Updated: 2026-10-05 17:01 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
 Source checkpoint eb31a69 TCP server; normal BIOS/UEFI restored, no live suite.
 Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
@@ -32,11 +32,12 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
 - Private filesystem inode/atomic rename unit/native BIOS/UEFI PASS; filesystem
   61299 and explicit ATA/storage52587 PASS16:11/16:12. No new POSIX export credit.
-- Actual Cobalt diagnostic47704: SABI18 matched, fault at34a38d8 opening
-  /dev/urandom; zero HTTP requests. Private entropy descriptor61917 moved fault
-  to34a3895 (read); default CPU lacks entropy. CPU=max89011 terminal0 16:37:36
-  advances to34a7c46: 32GiB virtual reservation fails; current VM range496MiB.
-  28 diagnostic call-abort probes NEVER return success; no API completion credit.
+- Private sparse32GiB/entropy native42995 BIOS/UEFI PASS16:56:00; exact resources,
+  no entropy failure closed. Real VM ASAN/UBSAN allocation rollback PASS16:59:37.
+- Genuine Cobalt78989 terminal0 16:57:28 passes former entropy/reservation
+  blockers, logs engine app_event_delegate.cc:444 then FATAL immediate_crash.h:193
+  Check false/SIGABRT6. Cause unknown; zero HTTP requests, exact heap90624.
+  Diagnostic28 abort thunks never succeed/count. PHASE332_SPARSE_VM_WIP.md.
 
 ## Existing foundations and limits
 
@@ -51,8 +52,8 @@ Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Next work
 
-1. Implement sparse virtual reservation/commit for actual32GiB engine request;
-   also adversarial-test private entropy descriptor before production promotion.
+1. Trace actual engine FATAL caller; private sparse/entropy code needs existing
+   VM/thread/TLS/resource +full architectural regression before promotion.
    /tmp/myos-startup-diagnostic-d8WnKd; PHASE332_COBALT_STARTUP_DIAGNOSTIC.md.
 2. Next28: file11, audio config2, player13/decode-target2. FS inode prerequisite
    private only; PHASE332_FS_IDENTITY_WIP.md. No fake handles/codecs/success.
