@@ -197,6 +197,17 @@ static uint8_t dhcp_options(uint8_t address[4]){
     return type;
 }
 bool net_configured(void){return configured&&nic_ready();}
+void net_interface_snapshot(struct system_interface_snapshot *out)
+{
+    memset(out,0,sizeof(*out));
+    if(!nic_ready())return;
+    out->index=1;out->flags=1u|2u; /* administrative UP, BROADCAST */
+    if(nic_link_up())out->flags|=64u; /* actual carrier RUNNING */
+    memcpy(out->mac,nic_mac(),6);
+    if(!net_configured())return;
+    out->configured=1;memcpy(out->address,ip,4);memcpy(out->netmask,mask,4);
+    for(unsigned i=0;i<4;++i)out->broadcast[i]=ip[i]|(uint8_t)~mask[i];
+}
 bool net_dns_server(uint8_t out[4])
 {if(!net_configured()||!nic_link_up())return false;memcpy(out,dns,4);return true;}
 bool net_dns_packet(const uint8_t target[4],const uint8_t mac[6],uint16_t port,const uint8_t *data,size_t size)

@@ -131,10 +131,12 @@ void ata_init(void)
     for(unsigned drive=0;drive<2;++drive){
         uint32_t sectors=0;if(!identify(drive,&sectors))continue;
         selected_drive=(uint8_t)drive;capacity=sectors;detected=true;
-        uint8_t sector[512];static const char magic[16]="MYOS-ASSET-v1";
+        uint8_t sector[512];static const char magic[16]="MYOS-ASSET-v1",magic2[16]="MYOS-ASSET-v2";
         if(!ata_read(0,sector))continue;
-        bool match=true;for(unsigned i=0;i<16;++i)if(sector[i]!=(uint8_t)magic[i])match=false;
-        if(match&&!asset_capacity){asset_drive=(uint8_t)drive;asset_capacity=sectors;}
+        bool match=true,match2=true;for(unsigned i=0;i<16;++i){
+            if(sector[i]!=(uint8_t)magic[i])match=false;
+            if(sector[i]!=(uint8_t)magic2[i])match2=false;}
+        if((match||match2)&&!asset_capacity){asset_drive=(uint8_t)drive;asset_capacity=sectors;}
     }
     bool fallback=false;uint32_t fallback_capacity=0;uint8_t fallback_drive=0;
     for(unsigned drive=0;drive<2;++drive){

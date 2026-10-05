@@ -2,6 +2,10 @@
 #include "process.h"
 #include "elf.h"
 #include "runtime-pack.h"
+#if PROCESS_RUNTIME_EXTERNAL
+#include "asset.h"
+#include "mbedtls/sha256.h"
+#endif
 #include "../build/platform-runtime-exports.h"
 #define NX (1ull << 63)
 static struct process processes[PROCESS_LIMIT];
@@ -252,10 +256,31 @@ bool process_map_runtime(struct process *p)
      * generated raw size is independent of the untrusted packed header. */
     unsigned char *raw=kmalloc(size);
     if(!raw)return false;
+#if PROCESS_RUNTIME_EXTERNAL
+    struct asset_file file;
+    static const unsigned char expected_hash[32]=PLATFORM_RUNTIME_PACKED_SHA256;
+    unsigned char digest[32];
+    size_t packed_size=PLATFORM_RUNTIME_PACKED_BYTES;
+    /* Pin this build's exact packed identity; the asset cannot substitute a
+     * runtime with different exported addresses, TLS ABI or permissions. */
+    unsigned char *packed=0;
+    bool valid=packed_size>=16&&packed_size<=65536+65536/128+16&&
+        !asset_runtime_open(&file)&&file.size==packed_size;
+    if(valid){packed=kmalloc(packed_size);valid=packed!=0;}
+    if(valid)valid=asset_read(&file,0,packed,packed_size)&&
+        !mbedtls_sha256(packed,packed_size,digest,0);
+    if(valid){unsigned difference=0;
+        for(unsigned i=0;i<sizeof(digest);++i)difference|=digest[i]^expected_hash[i];
+        valid=!difference&&runtime_unpack(packed,packed_size,raw,size);}
+    if(packed)kfree(packed);
+    if(!valid){print("Runtime asset: unavailable or invalid build identity\n");
+        kfree(raw);return false;}
+#else
     if(!runtime_unpack(platform_runtime_start,
             (size_t)(platform_runtime_end-platform_runtime_start),raw,size)){
         kfree(raw);return false;
     }
+#endif
     for(size_t offset=0;offset<size;offset+=PAGE_SIZE){
         uintptr_t page=elf_map_page(p,capacity,PROCESS_RUNTIME_BASE+offset,5);
         if(!page){kfree(raw);return false;}

@@ -5,6 +5,56 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 11:50 production resource full75305 exit0 11:49:12 ALL PASS,
+normal BIOS+UEFI restored (kernel229560/raw36224/packed29307), hashes in
+PHASE332_ASSET_V2_PROBE.md. No live image owner. Private paired scope6076
+exit0 11:50:09 BIOS+UEFI PASS; source matching verified before run. CSV updated
+five tested stream/interface contracts:194/242 fixture,196/242 paired,46 missing.
+Counts are NOT full POSIX or Cobalt completion. Local source commit pending.
+
+2026-10-05 11:46 private sink6709 exit0 11:45:36 BIOS+UEFI malformed initial
+source rollback plus active worker/device main fault and Escape cancellation,
+then successful relaunch/exact heap/pages. No runtime source change necessary.
+Initial22547 expected incorrect fault message, fixed test checks actual vector6.
+Resource pair lifecycle6076 live in c3nywg private image; script cmp verifies
+production source match before running, no main image/source mutation. Main
+full75305 still live; promotion/normal restore/hash/local source commit pending.
+
+2026-10-05 11:40 supersedes older PCM notes: PHASE332_PCM_WIP.md records
+partial-DMA/prebuffer/EOS and typed Float32/Int16 sink. Private E2RLa6 BIOS+
+UEFI80619 exit0 11:35:56 callbacks/circular/pause/Destroy waits/no late callback/
+thread-exhaustion rollback/relaunch/resources. Five private imports NOT promoted
+or counted; Cobalt0/5. Malformed initial source34476 live on private images.
+Main full75305 still live (interface PASS; Starboard system at11:39); do not
+mutate source/shared image until terminal. No33.3/push.
+
+2026-10-05 11:10 current pipeline75305 LIVE, full retry after87856 terminal1
+11:05:54: malformed-volume test mutated v1 offset48 inside a v2 name record,
+not its offset240. Fixed test preserves overflow/error/readonly checks for BOTH
+v1 and v2; no kernel change or weaker assertion. Normal BIOS restored by failing
+suite; final UEFI/hash/source commit still pending. Pair-link PASS unchanged.
+test_elf_pair_execution.py expected remaining count updated46; its scope pending.
+PHASE332_PCM_WIP.md: PRIVATE owned real SB16 PCM transport native BIOS/UEFI+
+actual440Hz/exit cleanup/relaunch/resources96000 terminal0 11:07:54. No sink
+exports/Cobalt acceptance; callbacks/partial DMA/pause/fault/kill still open.
+Do not confuse PCM prototype with production/resource full, or start33.3/push.
+
+2026-10-05 10:48 RESOURCE BATCH INSTALLED/uncommitted after28cdf9b:
+External runtime/v2 catalogue+message2/interface3, relative openat/fstatat
+traversal validates intermediate directories before normalizing dot-dot.
+Latest private c3nywg BIOS/UEFI PASS session79676 terminal0 10:43:49, including
+file/.. ENOTDIR and missing/.. ENOENT. Production44994 terminal0 10:45:36
+build237728/raw36224/packed29307 and host parser PASS. Full pipeline87856 LIVE:
+pair first, then ALL test_system.py, then normal UEFI/final hashes. Logs
+build/resource-batch-{pair,full,final-uefi}.log. No source/image mutation/restart
+while live. Serial observed twice10:49:45 missing46 =>196/24281.0% paired;
+pair-gvst4fao PASS10:50:57 including adversarial/rollback; NOT execution.
+Full87856 now LIVE, normal restore/hash/source commit still pending.
+Cobalt0/5/no33.3/push.
+Known remaining test update after pipeline: test_elf_pair_execution.py still
+expects51; update to actual observed remaining count, scoped pair execution
+regression required before commit. Existing full runner does not invoke it.
+
 2026-10-05 10:35 PRIVATE resource checkpoint: PHASE332_ASSET_V2_PROBE.md.
 Production b121452 unchanged. Hidden build-matched runtime extent+v2 resource
 hierarchy and long-name syscall native BIOS/UEFI PASS; relative openat/fstatat

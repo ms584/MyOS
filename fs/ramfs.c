@@ -102,7 +102,8 @@ int fs_open(struct fs_handle *table,const char *path,unsigned access)
     const char *asset=asset_name(path);
     if(asset){
         if(access&(FS_WRITE|FS_CREATE|FS_TRUNC)){result=-30;goto done;}
-        struct asset_file file;result=asset_open(asset,&file);if(result<0)goto done;
+        struct asset_file file;result=asset_open(asset,&file);
+        if(result<0){if(result==-2&&!asset_directory(asset))result=-21;goto done;}
         table[slot]=(struct fs_handle){FS_ASSET_NODE,access,0,file};
         result=(int)slot+3;goto done;
     }
@@ -246,9 +247,11 @@ int fs_stat(const char *path,struct fs_entry *result)
     if(equal(path,"/assets")||equal(path,"/assets/")){
         memset(result,0,sizeof(*result));result->type=FS_DIR;memcpy(result->name,"assets",7);return 0;
     }
-    const char *asset=asset_name(path);if(asset){uint64_t size;int rc=asset_stat(asset,&size);
-        if(!rc){memset(result,0,sizeof(*result));result->type=FS_FILE;result->size=size;result->reserved=1;
-            size_t i=0;while(i<FS_NAME-1&&asset[i]){result->name[i]=asset[i];++i;}}
+    const char *asset=asset_name(path);if(asset){uint64_t size=0;int rc=asset_stat(asset,&size);unsigned type=FS_FILE;
+        if(rc==-2&&!asset_directory(asset)){rc=0;type=FS_DIR;}
+        if(!rc){memset(result,0,sizeof(*result));result->type=type;result->size=size;result->reserved=1;
+            const char *leaf=asset;for(const char *p=asset;*p;++p)if(*p=='/')leaf=p+1;
+            size_t i=0;while(i<FS_NAME-1&&leaf[i]){result->name[i]=leaf[i];++i;}}
         return rc;}
     uint64_t flags=irq_save();int node=resolve(path,false,0);
     if(node>=0)entry((unsigned)node,result);
@@ -256,9 +259,11 @@ int fs_stat(const char *path,struct fs_entry *result)
 }
 int fs_list(const char *path,unsigned position,struct fs_entry *result)
 {
-    if(equal(path,"/assets")||equal(path,"/assets/")){
-        char name[48];uint64_t size;int rc=asset_entry(position,name,&size);if(rc==1){
-            memset(result,0,sizeof(*result));result->type=FS_FILE;result->size=size;
+    const char *asset=asset_name(path);
+    if(equal(path,"/assets")||equal(path,"/assets/")||asset){
+        char name[48];uint64_t size;unsigned type;
+        int rc=asset_child(asset?asset:"",position,name,&size,&type);if(rc==1){
+            memset(result,0,sizeof(*result));result->type=type;result->size=size;result->reserved=1;
             size_t i=0;while(i<FS_NAME-1&&name[i]){result->name[i]=name[i];++i;}}
         return rc;
     }

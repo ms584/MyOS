@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "../include/system-call.h"
 
 #define SYS_VM_MAP 14u
 #define SYS_VM_UNMAP 15u
@@ -1588,6 +1589,36 @@ static int canonical_path(const char *path,char result[128])
     }
     result[out]=0;return 0;
 }
+/* Directory names are immutable. Pin the open description while taking the
+ * path snapshot; closing/reusing its descriptor cannot substitute a new base. */
+static int runtime_path_at(int directory,const char *path,char result[128])
+{
+    if(!path)return set_error(EFAULT);if(!path[0])return set_error(ENOENT);
+    if(path[0]=='/'||directory==MUSL_AT_FDCWD)return runtime_path(path,result);
+    struct descriptor_ref reference={0};
+    if(!descriptor_acquire(directory,&reference))return set_error(EBADF);
+    if(reference.object->type!=DESCRIPTOR_DIRECTORY){
+        object_release(reference.object);return set_error(20);
+    }
+    char joined[128];size_t used=0;
+    while(reference.object->value.directory.path[used]){
+        joined[used]=reference.object->value.directory.path[used];++used;
+    }
+    object_release(reference.object);
+    if(used>1){if(used==127)return set_error(36);joined[used++]='/';}
+    size_t relative_begin=used;
+    for(size_t i=0;path[i];++i){if(used==127)return set_error(36);joined[used++]=path[i];}
+    joined[used]=0;
+    /* Check each traversed component BEFORE dot/dot-dot normalization: a
+     * regular file or missing component cannot be escaped using /.. . */
+    for(size_t i=relative_begin;i<used;++i)if(joined[i]=='/'&&i>relative_begin){
+        char prefix[128];joined[i]=0;int error=canonical_path(joined,prefix);joined[i]='/';
+        if(error)return -1;struct fs_entry_abi entry;
+        int64_t status=call3(SYS_STAT,(uintptr_t)prefix,(uintptr_t)&entry,0);
+        if(status<0)return fail(status);if(entry.type!=2)return set_error(20);
+    }
+    return canonical_path(joined,result);
+}
 static void stat_convert(const struct fs_entry_abi *source,struct musl_stat_abi *target)
 {
     for(size_t i=0;i<sizeof(*target);++i)((unsigned char *)target)[i]=0;
@@ -1598,12 +1629,11 @@ static void stat_convert(const struct fs_entry_abi *source,struct musl_stat_abi 
 }
 int openat(int directory,const char *path,int flags,...)
 {
-    if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);
     int access_mode=flags&MUSL_O_ACCMODE;if(access_mode==MUSL_O_PATH)return set_error(ENOTSUP);
     unsigned access=access_mode==0?1:access_mode==1?2:access_mode==2?3:0;
     int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY;
     if(!access||(flags&~allowed)||((flags&MUSL_O_TRUNC)&&!(access&2)))return set_error(EINVAL);
-    char normalized[128];if(runtime_path(path,normalized))return -1;
+    char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
     struct fs_entry_abi entry;int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
     if(!status&&entry.type==2){
         if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
@@ -1730,7 +1760,7 @@ int fstat(int fd,struct musl_stat_abi *information)
  else {object_release(r.object);return set_error(EBADF);}
  object_release(r.object);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int fstatat(int directory,const char *path,struct musl_stat_abi *information,int flags)
-{if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);char normalized[128];if(runtime_path(path,normalized))return -1;
+{if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
  struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int access(const char *path,int mode)
 {if(mode&~7)return set_error(EINVAL);struct musl_stat_abi info;if(fstatat(MUSL_AT_FDCWD,path,&info,0))return -1;
@@ -1764,14 +1794,23 @@ struct musl_dirent_abi *readdir(void *raw)
 {
     struct runtime_directory *directory=raw;
     if(!directory||directory->native!=directory){set_error(EINVAL);return 0;}
-    struct fs_entry_abi source;int64_t rc=call3(SYS_READDIR,(uintptr_t)directory->path,
-                                                (uintptr_t)&source,directory->position);
+    struct system_asset_entry source={0};int64_t rc;
+    const char *path=directory->path;
+    if(path[0]=='/'&&path[1]=='a'&&path[2]=='s'&&path[3]=='s'&&path[4]=='e'&&
+       path[5]=='t'&&path[6]=='s'&&(!path[7]||path[7]=='/')){
+        struct system_asset_entry_request request={(uintptr_t)path,directory->position,(uintptr_t)&source};
+        rc=call3(MYOS_SYSTEM_CALL,SYSTEM_ASSET_ENTRY,(uintptr_t)&request,0);
+    }else{
+        struct fs_entry_abi small;rc=call3(SYS_READDIR,(uintptr_t)path,(uintptr_t)&small,directory->position);
+        if(rc==1){source.type=small.type;source.size=small.size;
+            for(unsigned i=0;i<31&&small.name[i];++i)source.name[i]=small.name[i];}
+    }
     if(rc<0){fail(rc);return 0;}if(!rc)return 0;
     struct musl_dirent_abi *entry=&directory->storage;
     for(size_t i=0;i<sizeof(*entry);++i)((unsigned char *)entry)[i]=0;
     entry->ino=directory->position+1;entry->offset=(int64_t)directory->position+1;
     entry->record_length=sizeof(*entry);entry->type=source.type==2?4:8;
-    size_t i=0;for(;i<31&&source.name[i];++i)entry->name[i]=source.name[i];
+    size_t i=0;for(;i<239&&source.name[i];++i)entry->name[i]=source.name[i];
     entry->name[i]=0;++directory->position;return entry;
 }
 int readdir_r(void *raw,struct musl_dirent_abi *entry,struct musl_dirent_abi **result)
@@ -2170,3 +2209,6 @@ void MyOSFinalizeImages(void)
         image->active=0;
     }
 }
+
+#include "platform-message.inc"
+#include "platform-interface.inc"

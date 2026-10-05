@@ -96,14 +96,21 @@ def exercise(cobalt=None):
     assert sha(disk)==before
     print('PASS: read-only assets coexist with persistent data disk; both survive reboot',flush=True)
     # Corrupt table lengths must not become unchecked disk accesses.
-    malformed=out/'bad-volume.img';data=bytearray(disk.read_bytes())
-    struct.pack_into('<Q',data,512+48,2**64-512);malformed.write_bytes(data)
-    vm=VM('elf-bad-volume',disk=malformed)
-    try:
-        vm.wait('myos> ')
-        command(vm,'assets','unavailable or invalid volume')
-        command(vm,'elf run fixture','error: invalid executable')
-    finally:vm.close()
+    legacy=out/'legacy-volume.img';legacy.unlink(missing_ok=True)
+    create(legacy,[f'fixture={out/"fixture.elf"}'],runtime=None,version=1)
+    for source in (legacy,disk):
+        data=bytearray(source.read_bytes());version=struct.unpack_from('<I',data,16)[0]
+        assert version in (1,2)
+        malformed=out/f'bad-volume-v{version}.img'
+        struct.pack_into('<Q',data,512+(48 if version==1 else 240),2**64-512)
+        malformed.write_bytes(data);malformed_before=sha(malformed)
+        vm=VM(f'elf-bad-volume-v{version}',disk=malformed)
+        try:
+            vm.wait('myos> ')
+            command(vm,'assets','unavailable or invalid volume')
+            command(vm,'elf run fixture','error: invalid executable')
+        finally:vm.close()
+        assert sha(malformed)==malformed_before,'malformed volume modified'
     if cobalt:
         audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
         assert sha(cobalt)==audit['library_sha256'],'not the pinned Cobalt binary'

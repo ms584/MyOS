@@ -7,7 +7,7 @@ fi
 mkdir -p build
 gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
     -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
-    -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -c user/platform-runtime.c -o build/platform-runtime.o
+    -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -c user/platform-runtime.c -o build/platform-runtime.o
 gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
     -mno-red-zone -msse2 -fno-stack-protector -fno-asynchronous-unwind-tables \
     -fno-unwind-tables -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude \
@@ -36,7 +36,8 @@ flags=(-m64 -std=c11 -Oz -ffreestanding -fno-builtin -fno-pie -fno-pic
        -mno-red-zone -mgeneral-regs-only -fno-stack-protector
        -fno-asynchronous-unwind-tables -fno-unwind-tables
        -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude -Ibuild -Ivendor/mbedtls/include
-       -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}")
+       -DTEST_CASE="${TEST_CASE:-0}" -DPROCESS_TESTS="${PROCESS_TESTS:-0}"
+       -DPROCESS_RUNTIME_EXTERNAL="${PROCESS_RUNTIME_EXTERNAL:-1}")
 for app in hello port loop capacity; do
     gcc -m64 -Os -mcmodel=large -ffreestanding -fno-builtin -fno-pie -fno-pic -mno-red-zone \
         -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
@@ -85,7 +86,7 @@ for source in vendor/mbedtls/library/*.c; do
 done
 ar rcs build/libmbedtls-myos.a "${tls_objects[@]}"
 nasm -f elf64 user/app-blob.asm -o build/app-blob.o
-nasm -f elf64 user/platform-runtime-blob.asm -o build/platform-runtime-blob.o
+nasm -f elf64 -DRUNTIME_EXTERNAL="${PROCESS_RUNTIME_EXTERNAL:-1}" user/platform-runtime-blob.asm -o build/platform-runtime-blob.o
 nasm -f elf64 user/elf-start.asm -o build/elf-start.o
 nasm -f elf64 user/elf-pair-start.asm -o build/elf-pair-start.o
 nasm -f elf64 kernel/entry.asm -o build/entry.o

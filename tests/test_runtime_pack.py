@@ -1,8 +1,10 @@
 """MRT1 exact resident bytes, fail-closed corruption, RX and reclamation."""
 import argparse
 import hashlib
+import json
 import re
 import random
+import struct
 from pathlib import Path
 import shutil
 import subprocess
@@ -72,16 +74,30 @@ try:
   assert 'vector=14 error=0x0000000000000007' in result and 'address=0x000000803f000000' in result.lower(),result
   assert_live_resources(result)
 finally:vm.close();shutil.copyfile(vm.log,out/'serial.log')
-# Mutate only a private BIOS image. UEFI copies ELF segments, so exercise its
-# normal decoder above, and the fail-closed input path independently under BIOS.
-if not args.uefi:
- symbols=subprocess.check_output(['nm','-n','build/kernel.elf'],text=True).splitlines()
- start=int(next(line.split()[0] for line in symbols if line.endswith(' platform_runtime_start')),16)
- offset=17*512+start-0x10000
- image=bytearray(frozen.read_bytes());assert image[offset:offset+len(packed)]==packed
- image[offset+12]^=1
- damaged=out/'bad-crc.img';damaged.write_bytes(image)
- vm=VM('runtime-pack-corrupt',ram=64,boot_image=damaged,asset_disk=disk)
+# Embedded BIOS corruption and external-runtime corruption use separate private
+# objects. External mode is checked on both boot profiles; never mutate the
+# shared normal image or its resource disk.
+manifest=ROOT/'build/platform-runtime.manifest.json'
+external=manifest.exists() and json.loads(manifest.read_text())['external']
+if external or not args.uefi:
+ if external:
+  image=bytearray(disk.read_bytes())
+  assert image[:13]==b'MYOS-ASSET-v2'
+  offset,length=struct.unpack_from('<QQ',image,32)
+  assert length==len(packed) and image[offset:offset+length]==packed
+  image[offset+12]^=1
+  damaged=out/'bad-crc-assets.img';damaged.write_bytes(image)
+  damaged_options=dict(options,asset_disk=damaged)
+ else:
+  symbols=subprocess.check_output(['nm','-n','build/kernel.elf'],text=True).splitlines()
+  start=int(next(line.split()[0] for line in symbols if line.endswith(' platform_runtime_start')),16)
+  offset=17*512+start-0x10000
+  image=bytearray(frozen.read_bytes());assert image[offset:offset+len(packed)]==packed
+  image[offset+12]^=1
+  damaged=out/'bad-crc.img';damaged.write_bytes(image)
+  damaged_options=dict(options,boot_image=damaged)
+ damaged_hash=hashlib.sha256(damaged.read_bytes()).hexdigest()
+ vm=VM('runtime-pack-corrupt'+('-uefi' if args.uefi else ''),**damaged_options)
  try:
   vm.wait('myos> ')
   def pages():
@@ -93,9 +109,11 @@ if not args.uefi:
   for _ in range(3):
    result=long_command(vm,'elf live exact')
    assert 'out of memory' in result.lower(),result
+   if external:assert 'Runtime asset: unavailable or invalid build identity' in result,result
    assert 'mapped runtime exact bytes PASS' not in result and 'ELF live: started' not in result,result
    assert 'ELF staged image released; not executed' in result and 'PANIC' not in result,result
    assert pages()==baseline,'corrupt-runtime page leak'
  finally:vm.close();shutil.copyfile(vm.log,out/'corrupt-serial.log')
+ assert hashlib.sha256(damaged.read_bytes()).hexdigest()==damaged_hash
 assert before==hashlib.sha256(boot.read_bytes()).hexdigest()
 print('PASS: runtime exact mapped bytes/RX faults/relaunch/resources',vars(args),out,flush=True)

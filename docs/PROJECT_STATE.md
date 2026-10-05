@@ -1,13 +1,13 @@
 # MyOS project state
 
-Updated: 2026-10-05 10:40 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Production tested signal checkpoint b121452; resolve latest commit with git log.
+Updated: 2026-10-05 11:50 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+HEAD28cdf9b; resource batch full PASS, source checkpoint commit pending.
 Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
 
 ## Scope and progress
 - Phase33.1/33.2 OPEN. Actual Cobalt has not executed: acceptance0/5 (0% verified).
-- Fixture-tested189/242=78.1%; observed paired binding191/242=78.9%,51 missing
-  plus separately tracked weak TLS. NOT full API semantics/overall phase percent.
+- Registered fixture194/242=80.2%; actual paired196/242=81.0%,46
+  missing observed twice10:49:45. NOT full semantics/phase percent.
 - Phase32/33 NOT PASSED; YouTube playback unproven. No33.3; never push.
 
 ## Implemented foundations
@@ -27,12 +27,8 @@ Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
   TCP fallback, concurrent waits, thread/process exit/cancel cleanup. Not full netdb.
 
 ## Current evidence
-- DNS scoped BIOS/UEFI/no-NIC/no-entropy, concurrency/timeout/cancel/relaunch/
-  exact resources PASS08:10–08:13; host wire/job ASan+UBSan PASS08:19:40.
-- Full79950 exit0 08:55:30: default ALL test_system.py, including DNS, packing,
-  faults/low RAM/VGA; normal framebuffer BIOS and UEFI restored/final hashes.
-  Logs build/resolver-full-regression.log, resolver-final-uefi-build.log;
-  hashes in PHASE331_RESOLVER_WIP.md. This PASS is DNS baseline, NOT new signals.
+- DNS baseline scoped/host/full79950 PASS08:55:30; details and hashes in
+  PHASE331_RESOLVER_WIP.md. Signal full below supersedes this older baseline.
 - Normal signal kernel253528/runtime34304/packed28211/BSS end0x7d5d0.
   Full test261726/cap262144 leaves418 bytes; preserve loader/layout limits.
   BIOS cross-dchpr7tw + UEFI cross-kputkico PASS16 launches/profile/exact resources,
@@ -42,20 +38,29 @@ Origin/main09d1627, fetched09:48:20 +07; no upstream changes. Owner pushes only.
   Pair PASS pair-fb3kt85j; full7164 exit0 09:46:43 default ALL, including new
   cross/DNS, packing/TLS/thread/fault/low RAM/VGA. Normal BIOS/UEFI restored:
   build/cross-signal-{pair,full-regression,final-uefi-build}.log; hashes in
-  PHASE331_CROSS_THREAD_SIGNALS.md. No live production image owner.
+  PHASE331_CROSS_THREAD_SIGNALS.md. Historical baseline; resource full supersedes.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
 
 ## Required next work
-1. Remaining51 batch: PHASE331_REMAINING_BATCH.md; no success stubs. Private
-   message2 + interface3 native BIOS/UEFI PASS; NOT production import counts.
+1. Resource/message2/interface3 batch installed; native private BIOS/UEFI PASS.
+   Build+host44994 PASS10:45:36; pair-gvst4fao PASS10:50:57. Full87856 FAILED
+   stale v1 mutation offset; fixed both v1/v2. Full75305 exit0 11:49:12 ALL PASS;
+   normal BIOS229560/runtime36224/packed29307 and UEFI restored, hashes in asset doc.
 2. PHASE332_ASSET_V2_PROBE.md: private hidden build-pinned runtime/hierarchy,
    host ASan/UBSan+1024/v1 bytes PASS; latest Ts69oq BIOS/UEFI native long names,
    relative openat/fstatat/large I/O/pointer/readonly/v1 shell PASS10:34:42.
    Test237728/cap262144; raw36064/packed29212. Joint BIOS/UEFI PASS10:37:57;
-   adapted pack BIOS/UEFI50615 PASS10:39:22. Integration/full pending.
+   adapted pack BIOS/UEFI50615 PASS10:39:22; c3nywg path traversal PASS10:43:49.
+   Integration host/full PASS; pair lifecycle6076 BIOS+UEFI PASS11:50:09,
+   source-matched private c3nywg, genuine worker rendering/finalizers/resources.
 3. Actual engine resource/emutls/thread/RAM behavior unmeasured (8 workers).
    Remaining absolute path127 bound; DNS IPv6/CNAME/full flags remain open.
 4. Native Cobalt HTML, JS/DOM/timers, real input, verified HTTPS/concurrent assets,
    interactive>=60s and close/relaunch with measured resources. No33.3 until gates.
+5. PHASE332_PCM_WIP.md: PRIVATE partial-DMA/prebuffer/EOS PCM BIOS/UEFI PASS;
+   Float32/Int16 sink/circular/pause/Destroy/thread exhaustion BIOS+UEFI80619
+   PASS11:35:56. Five private imports NOT counted. Invalid-source34476 PASS;
+   worker/device fault+Escape cancel/relaunch BIOS+UEFI6709 PASS11:45:36.
+   Integration/full and actual Cobalt still required.
 
 Background: HANDOFF.md. No imported-symbol count can close33.1/33.2.

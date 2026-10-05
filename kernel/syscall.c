@@ -9,6 +9,7 @@
 #include "net.h"
 #include "nic.h"
 #include "elf.h"
+#include "asset.h"
 #define PAGE_ADDRESS 0x000ffffffffff000ull
 
 /* Page tables belong to the kernel. Validate U/S at EVERY level, then copy
@@ -150,6 +151,28 @@ static int64_t system_call(struct process *p,struct frame *f)
         copy_to_user(p,f->rsi,bytes,f->rdx);return 0;
     }
     case SYSTEM_PATH:return system_path(p,f);
+    case SYSTEM_INTERFACE:{
+        if(f->rdx)return -22;
+        if(!writable_range(p,f->rsi,sizeof(struct system_interface_snapshot)))return -14;
+        struct system_interface_snapshot snapshot;
+        net_interface_snapshot(&snapshot);
+        copy_to_user(p,f->rsi,&snapshot,sizeof(snapshot));return 0;
+    }
+    case SYSTEM_ASSET_ENTRY:{
+        if(f->rdx)return -22;
+        struct system_asset_entry_request request;
+        if(!copy_from_user(p,(char *)&request,f->rsi,sizeof(request)))return -14;
+        if(request.position>UINT32_MAX)return -22;
+        if(!writable_range(p,request.output,sizeof(struct system_asset_entry)))return -14;
+        char path[FS_PATH];int rc=user_path(p,path,request.path);if(rc)return rc;
+        const char *directory=path;
+        static const char prefix[]="/assets";unsigned i=0;
+        for(;prefix[i];++i)if(path[i]!=prefix[i])return -22;
+        if(path[i]){if(path[i]!='/')return -22;directory=path+i+1;}else directory="";
+        struct system_asset_entry entry={0};
+        rc=asset_child_long(directory,(unsigned)request.position,entry.name,&entry.size,&entry.type);
+        if(rc==1)copy_to_user(p,request.output,&entry,sizeof(entry));return rc;
+    }
     case SYSTEM_TOTAL_BYTES:case SYSTEM_OWNED_BYTES:case SYSTEM_DISCONNECTED:
         if(f->rsi||f->rdx)return -22;
         if(f->rdi==SYSTEM_TOTAL_BYTES)return (int64_t)(pages_total()*PAGE_SIZE);

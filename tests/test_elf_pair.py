@@ -89,7 +89,7 @@ try:
             match=re.search(r'ELF pair provider bias: (0x[0-9A-Fa-f]+)',output)
             assert match and int(match[1],16)==expected_bias,output
             assert 'ELF provider: SbGetEglInterface' in output and 'ELF provider: SbGetGlesInterface' in output,output
-            assert 'ELF bindings: missing=0' in output and 'ELF bindings: missing=51' in output,output
+            assert 'ELF bindings: missing=0' in output and 'ELF bindings: missing=46' in output,output
             assert output.count('ELF RELRO: protected')==2,output
             assert 'ELF missing: SbGetEglInterface' not in output and 'ELF missing: SbGetGlesInterface' not in output,output
             assert 'ELF pair images released; not executed' in output and 'unsupported runtime feature' in output,output

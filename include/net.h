@@ -1,6 +1,8 @@
 #ifndef MYOS_NET_H
 #define MYOS_NET_H
 #include "os.h"
+#include "system-call.h"
+void net_interface_snapshot(struct system_interface_snapshot *out);
 bool net_up(void);
 bool net_configured(void);
 void net_status(void);

@@ -16,24 +16,9 @@ def pack(raw):
     if not 0 < len(raw) <= 65536:
         raise ValueError('runtime must contain 1..65536 bytes')
     packed = bytearray()
-    literal = bytearray()
     seen = {}
-    pos = 0
-
-    def flush():
-        while literal:
-            count = min(len(literal), 128)
-            packed.append(count - 1)
-            packed.extend(literal[:count])
-            del literal[:count]
-
-    def remember(index):
-        chain = seen.setdefault(raw[index:index + 3], [])
-        chain.append(index)
-        if len(chain) > 32:
-            del chain[0]
-
-    while pos < len(raw):
+    matches=[]
+    for pos in range(len(raw)):
         key = raw[pos:pos + 3]
         previous, count = -1, 0
         for candidate in reversed(seen.get(key, [])):
@@ -47,20 +32,30 @@ def pack(raw):
                 count, previous = length, candidate
             if count == 130:
                 break
-        if count >= 4:
-            flush()
-            packed.append(128 + count - 3)
-            packed.extend(struct.pack('<H', pos - previous))
-            for index in range(pos, pos + count):
-                remember(index)
-            pos += count
+        matches.append((count,pos-previous))
+        chain=seen.setdefault(key,[]);chain.append(pos)
+        if len(chain)>32:del chain[0]
+    # Minimize encoded byte count, including literal-run headers. Every shorter
+    # prefix of the longest discovered match uses the same valid distance.
+    costs=[0]*(len(raw)+1);choices=[None]*len(raw)
+    for pos in range(len(raw)-1,-1,-1):
+        best=1<<30;choice=None
+        for count in range(min(128,len(raw)-pos),0,-1):
+            cost=1+count+costs[pos+count]
+            if cost<best:best=cost;choice=(count,0)
+        maximum,distance=matches[pos]
+        for count in range(maximum,2,-1):
+            cost=3+costs[pos+count]
+            if cost<best:best=cost;choice=(count,distance)
+        costs[pos]=best;choices[pos]=choice
+    pos=0
+    while pos<len(raw):
+        count,distance=choices[pos]
+        if distance:
+            packed.append(128+count-3);packed.extend(struct.pack('<H',distance))
         else:
-            literal.append(raw[pos])
-            remember(pos)
-            pos += 1
-            if len(literal) == 128:
-                flush()
-    flush()
+            packed.append(count-1);packed.extend(raw[pos:pos+count])
+        pos+=count
     return struct.pack('<4sIII', b'MRT1', len(raw), len(packed),
                        zlib.crc32(raw)) + packed
 
