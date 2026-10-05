@@ -5,6 +5,12 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 11:53 local source checkpoint51d4100 (36 files), resource packaging+
+stream/interface batch; full75305 and paired6076 PASS, normal BIOS+UEFI restored.
+Worktree clean at commit11:52:14, no push. Next integrate remaining coherent
+contracts including private tested sink, then actual native engine; do not
+repeat unchanged full or confuse196/242 imports with Cobalt acceptance0/5.
+
 2026-10-05 11:50 production resource full75305 exit0 11:49:12 ALL PASS,
 normal BIOS+UEFI restored (kernel229560/raw36224/packed29307), hashes in
 PHASE332_ASSET_V2_PROBE.md. No live image owner. Private paired scope6076
