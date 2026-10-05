@@ -19,7 +19,8 @@ enum { SYS_WRITE = 1, SYS_GETPID = 2, SYS_EXIT = 3, SYS_YIELD = 4, SYS_FOPEN = 5
        SYS_TCP_CLOSE = 41,
        SYS_UI_QUERY = 42, SYS_UI_ACQUIRE = 43, SYS_UI_PRESENT = 44,
        SYS_UI_RELEASE = 45, SYS_UI_EVENT = 46, SYS_UI_VISIBLE = 47,
-       SYS_MAIN_STACK_INFO = 48, SYS_SIGNAL = 49, SYS_MEMORY_INFO = 50, SYS_SYSTEM = 51, SYS_DNS = 52 };
+       SYS_MAIN_STACK_INFO = 48, SYS_SIGNAL = 49, SYS_MEMORY_INFO = 50, SYS_SYSTEM = 51, SYS_DNS = 52,
+       SYS_TCP_BIND = 53, SYS_TCP_LISTEN = 54, SYS_TCP_ACCEPT = 55 };
 struct main_stack_info { uint64_t base,length,guard_base,guard_length; };
 #define SYS_WRITE_MAX 256
 struct frame *syscall_dispatch(struct frame *frame);

@@ -287,9 +287,20 @@ static int64_t tcp_call(struct process *p,struct frame *f)
     if(f->rax==SYS_TCP_CREATE)return tcp_stream_create(p,f->rdi,f->rsi);
     if(f->rdi>UINT32_MAX)return -9;
     uint32_t handle=(uint32_t)f->rdi;
-    if(f->rax==SYS_TCP_CONNECT){struct tcp_address address;
+    if(f->rax==SYS_TCP_ACCEPT){struct tcp_accept_request request;
+        if(f->rdx!=sizeof(request))return -22;
+        if(!writable_range(p,f->rsi,sizeof(request))||
+           !copy_from_user(p,(char *)&request,f->rsi,sizeof(request)))return -14;
+        if(request.reserved)return -22;
+        int64_t result=tcp_stream_accept(p,handle,&request);
+        if(result>=0)copy_to_user(p,f->rsi,&request,sizeof(request));return result;
+    }
+    if(f->rax==SYS_TCP_LISTEN)return f->rsi>INT32_MAX?-22:
+        tcp_stream_listen(p,handle,(unsigned)f->rsi);
+    if(f->rax==SYS_TCP_CONNECT||f->rax==SYS_TCP_BIND){struct tcp_address address;
         if(!copy_from_user(p,(char *)&address,f->rsi,sizeof(address)))return -14;
-        return tcp_stream_connect(p,handle,&address);}
+        return f->rax==SYS_TCP_BIND?tcp_stream_bind(p,handle,&address):
+            tcp_stream_connect(p,handle,&address);}
     if(f->rax==SYS_TCP_STATUS){struct tcp_status status;
         if(f->rdx>2)return -22;
         if(!writable_range(p,f->rsi,sizeof(status)))return -14;
@@ -505,6 +516,7 @@ struct frame *syscall_dispatch(struct frame *frame)
         break;
     case SYS_TCP_CREATE: case SYS_TCP_CONNECT: case SYS_TCP_STATUS:
     case SYS_TCP_SEND: case SYS_TCP_RECV: case SYS_TCP_SHUTDOWN: case SYS_TCP_CLOSE:
+    case SYS_TCP_BIND: case SYS_TCP_LISTEN: case SYS_TCP_ACCEPT:
         frame->rax=(uint64_t)tcp_call(process,frame);break;
     case SYS_UI_QUERY: case SYS_UI_ACQUIRE: case SYS_UI_PRESENT:
     case SYS_UI_RELEASE: case SYS_UI_EVENT: case SYS_UI_VISIBLE:

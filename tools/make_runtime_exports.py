@@ -39,7 +39,7 @@ wanted={'__errno_location','access','abort','signal','sigaction','raise','pause'
         '__tls_get_addr','MyOSTlsDesc',
         'SbEventSchedule','SbEventCancel','SbSystemRequestStop','SbSystemRequestConceal',
         'SbSystemRequestReveal','SbSystemRequestBlur','SbSystemRequestFocus','SbSystemSupportsResume',
-        'connect','dup','epoll_create1','epoll_ctl','epoll_wait','eventfd','fcntl','fdatasync','fdopendir','free',
+        'accept','bind','listen','connect','dup','epoll_create1','epoll_ctl','epoll_wait','eventfd','fcntl','fdatasync','fdopendir','free',
         'fstat','fstatat','fsync','ftruncate','getcwd','ioctl_FIONREAD','isatty','lseek','madvise','malloc','mkdir','mkdtemp','mkstemp',
         'getauxval','geteuid','getpeername','getpid','getrlimit','getsockname','getsockopt','gettid','getuid',
         'kSbFileMaxName','kSbFileMaxPath','kSbFileSepString','kSbMaxThreads',

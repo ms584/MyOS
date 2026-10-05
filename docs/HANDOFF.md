@@ -5,6 +5,36 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Latest renderer dependency checkpoint — 2026-10-04
 
+2026-10-05 16:37 supersedes LIVE1701: main full/scoped pipeline terminal0
+PASS16:31:49, normal BIOS/UEFI restored, native TCP server+actual core/provider
+paired BIOS/UEFI PASS, production214/24288.4%,28missing/provider0/weak1.
+Exact hashes/logs in PHASE332_TCP_SERVER_WIP.md. FS inode prerequisite private
+unit/native/filesystem61299/storage52587 PASS; no POSIX import credit/promotion.
+Actual native Cobalt failure-only diagnostic now executes SABI18 but stops on
+/dev/urandom missing device; private real entropy adapter passes open, default
+CPU read fails closed. CPU=max startup89011 LIVE; poll SAME. Detailed
+PHASE332_COBALT_STARTUP_DIAGNOSTIC.md, no success stubs or production count credit.
+Cobalt web0/5, phasesOPEN, no33.3. Local checkpoint only; owner pushes.
+
+2026-10-05 15:43 supersedes LIVE10184: private paired10184 terminal0 15:40:52
+BIOS/UEFI PASS,214/24288.4%28missing. Server sources/tests promoted uncommitted
+15:43:04; full/main scopes1701 LIVE via integrate_server.sh. Freeze main
+source/tests/images; poll SAME1701, no full/main paired PASS claim yet. Normal
+image restoration in pipeline; docs/local commit after required results. Owner
+pushed3cbd25f, fetched15:42:43; agent never pushes. Detailed server WIP.
+Cobalt web0/5, phasesOPEN/no33.3. Next28 file/audio config/player/decode target.
+
+2026-10-05 15:40: production3cbd25f unchanged,211/24231missing. Private TCP
+server /tmp/myos-tcp-server-1Hd4dq native BIOS/UEFI37664 terminal0 15:33:08
+PASS including binary two-peer echo, EMFILE preservation, epoll, EINTR,
+close/reuse and Escape/exact pages+heap. ASAN/UBSAN15:34:32 PASS, existing
+TCP/message/socket-option regressions PASS. Actual core/provider pair10184
+LIVE UEFI after BIOS PASS (pair-_lbsg_s0); observed missing28/provider0,
+214/24288.4% private only. Finish same10184, then promote and run mandatory
+full+main BIOS/UEFI scopes; restore normal images, local checkpoint/no push.
+Detailed PHASE332_TCP_SERVER_WIP.md and rootRECOVERY exact mirrors/scripts.
+Cobalt web0/5, no33.3/phaseclosure. Do not count private work as production.
+
 2026-10-05 14:59: production77672 terminal0 PASS14:58:33, ten new imports
 native BIOS+UEFI media/message +genuine core/provider paired adversarial/
 rollback/repeat/exact resources both profiles. Normal images retained; hashes

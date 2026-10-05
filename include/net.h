@@ -23,4 +23,5 @@ void net_tcp_close(void);
 int net_stream_route(const uint8_t ip[4],uint8_t mac[6]);
 bool net_stream_packet(const uint8_t ip[4],const uint8_t mac[6],uint8_t *tcp,size_t length);
 void net_stream_address(uint8_t ip[4]);
+bool net_stream_port_busy(uint16_t port);
 #endif

@@ -284,13 +284,23 @@ static bool tcp_packet(const uint8_t target[4],uint16_t port,uint8_t flags,const
     irq_restore(saved);return sent;
 }
 static bool wait_tcp(uint64_t deadline){while(!timeout(deadline)){net_poll();if(tcp_event)return true;idle();}return false;}
+bool net_stream_port_busy(uint16_t port){return tcp_active&&source_port==port;}
+static bool tcp_source_port(void){
+    /* Explicit user binds share the port namespace with native HTTP/TLS.
+     * At most TCP_STREAM_LIMIT ports can be reserved by that pool. */
+    for(unsigned i=0;i<=TCP_STREAM_LIMIT;++i){
+        source_port++;if(source_port<49155)source_port=49155;
+        if(source_port>=56000&&source_port<=60999)source_port=61000;
+        if(!tcp_stream_port_used(source_port))return true;
+    }
+    return false;
+}
 bool net_tcp_open(const uint8_t target[4],uint16_t port){
     if(tcp_active||!configured||!port||!route(target))return false;
+    if(!tcp_source_port())return false;
     tcp_active=true;stream_mode=false;stream_closed=stream_error=false;
     stream_head=stream_tail=stream_used=0;tcp_port=port;
     memcpy(tcp_peer,target,4);
-    source_port++;if(source_port<49155)source_port=49155;
-    if(source_port>=56000&&source_port<=60999)source_port=61000;
     sequence+=1009;acknowledge=0;tcp_event=false;
     for(unsigned attempt=0;attempt<3;++attempt){
         if(!tcp_packet(target,port,2,0,0))break;
@@ -361,10 +371,9 @@ void net_tcp_close(void){
 }
 static bool http_fetch_inner(const uint8_t target[4],uint16_t port,const char *host,const char *path,
                              net_http_sink sink,void *context){
-    if(!configured||!route(target)||!host||!path||!sink)return false;
+    if(tcp_active||!configured||!route(target)||!host||!path||!sink)return false;
+    if(!tcp_source_port())return false;
     tcp_active=true;tcp_port=port;memcpy(tcp_peer,target,4);
-    source_port++;if(source_port<49155)source_port=49155;
-    if(source_port>=56000&&source_port<=60999)source_port=61000;
     sequence+=1009;acknowledge=0;tcp_event=false;
     bool connected=false;
     for(unsigned attempt=0;attempt<3&&!connected;++attempt){

@@ -1,15 +1,14 @@
 # MyOS project state
 
-Updated: 2026-10-05 14:59 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
-Baselinef895303 audio; this checkpoint adds ten tested media/stream exports.
-Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
+Updated: 2026-10-05 16:37 +07. Repo /home/xytron404/myos, WSL Ubuntu, main.
+Baseline3cbd25f; tested TCP server checkpoint; inspect git log for local HEAD.
+Origin/main3cbd25f, fetched15:42:43 +07. Owner pushes only; NEVER push.
 
 ## Scope and measured progress
-
 - Phase33.1/33.2 OPEN; native Cobalt web acceptance0/5 (0% verified).
-- Production registered209/242 (86.4%); actual paired211/242 (87.2%),31 missing
-  observed14:53:33 after promotion. Production77672 terminal0 PASS14:58:33.
-- Private new batch native87168 and paired58654 PASS; same ten exports.
+- Production registered212/242 (87.6%); actual paired214/242 (88.4%),28 missing.
+  TCP server full/scoped1701 terminal0 PASS16:31:49; normal BIOS/UEFI restored.
+  Native server and actual core/provider paired BIOS/UEFI PASS (not web execution).
 - Counts are binding/fixture coverage, NOT full API semantics or phase percent.
 - Phase32/33 NOT PASSED; no33.3. YouTube playback unproven.
 
@@ -35,6 +34,12 @@ Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
   profiles plus actual pinned core/provider paired adversarial/rollback/resources.
   Private /tmp/myos-media-policy-cB3bQ1; PHASE332_IMPORT_BATCH_WIP.md.
 - activity.log bounded48MiB. NEVER read it through run_logged.py.
+- Private filesystem inode/atomic rename unit/native BIOS/UEFI PASS; filesystem
+  61299 and explicit ATA/storage52587 PASS16:11/16:12. No new POSIX export credit.
+- Actual Cobalt diagnostic47704: SABI18 matched, fault at34a38d8 opening
+  /dev/urandom; zero HTTP requests. Private entropy descriptor61917 moved fault
+  to34a3895 (read); default CPU lacks entropy. CPU=max diagnostic89011 pending.
+  28 diagnostic call-abort probes NEVER return success; no API completion credit.
 
 ## Existing foundations and limits
 
@@ -49,11 +54,10 @@ Origin/main51d4100, fetched14:30:58 +07. Owner pushes only; NEVER push.
 
 ## Next work
 
-1. Ten-export scope and final normal hashes complete; local source checkpoint.
-   Full58842 is audio baseline, not this later source. Next architectural slice
-   requires its own full; no need repeat unchanged scopes without impact.
-2. Remaining31: server socket3, file11, audio config2, player13,
-   decode-target2. No empty success stubs or fake handles/codec capabilities.
+1. Poll SAME89011 private actual startup; identify next real blocker. Private
+   /tmp/myos-startup-diagnostic-d8WnKd; PHASE332_COBALT_STARTUP_DIAGNOSTIC.md.
+2. Next28: file11, audio config2, player13/decode-target2. FS inode prerequisite
+   private only; PHASE332_FS_IDENTITY_WIP.md. No fake handles/codecs/success.
 3. Native Cobalt HTML+JS/DOM/timers, input, verified concurrent HTTPS,
    >=60s interaction and close/relaunch/resources; only then close33.1/33.2.
 

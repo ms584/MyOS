@@ -851,6 +851,9 @@ void *pthread_getspecific(void *raw_key)
 #define SYS_TCP_RECV 39u
 #define SYS_TCP_SHUTDOWN 40u
 #define SYS_TCP_CLOSE 41u
+#define SYS_TCP_BIND 53u
+#define SYS_TCP_LISTEN 54u
+#define SYS_TCP_ACCEPT 55u
 #define FD_BASE 64
 #define FD_SLOTS 32u
 #define PIPE_CAPACITY 4096u
@@ -2211,4 +2214,5 @@ void MyOSFinalizeImages(void)
 }
 
 #include "platform-message.inc"
+#include "platform-server.inc"
 #include "platform-interface.inc"

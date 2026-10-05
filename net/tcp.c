@@ -1,17 +1,19 @@
 #include "tcp.h"
 #include "net.h"
 
-enum { TCP_NEW=1,TCP_ROUTE,TCP_SYN,TCP_OPEN,TCP_FAILED };
+enum { TCP_NEW=1,TCP_ROUTE,TCP_SYN,TCP_OPEN,TCP_FAILED,TCP_LISTEN,TCP_SYN_RECEIVED };
 enum { FIN=1,SYN=2,RST=4,ACK=16 };
 enum { IN=1,OUT=4,ERR=8,HUP=16,RDHUP=0x2000 };
 struct stream {
     struct process *owner;
     uint8_t *bytes;
-    uint64_t object_sequence,registry_sequence,deadline,close_deadline;
+    uint64_t object_sequence,registry_sequence,deadline,close_deadline,accept_order;
     uint32_t generation,state,error,reported_error;
     uint32_t send_una,send_next,receive_next;
     uint32_t rx_head,rx_count,tx_head,tx_count,inflight;
     struct tcp_address peer;
+    uint32_t listener;
+    uint8_t bound_ip[4],bound,backlog;
     uint8_t mac[6];
     uint16_t port,window,mss;
     uint8_t retries,read_shutdown,write_shutdown,peer_fin,fin_sent,fin_ack,closing;
@@ -19,12 +21,23 @@ struct stream {
 static struct stream streams[TCP_STREAM_LIMIT];
 static uint16_t next_port=56000;
 static uint32_t next_sequence=0x736f636bu;
+static uint64_t next_accept_order;
 static uint16_t read16(const uint8_t *p){return (uint16_t)((p[0]<<8)|p[1]);}
 static uint32_t read32(const uint8_t *p){return ((uint32_t)read16(p)<<16)|read16(p+2);}
 static void write16(uint8_t *p,uint16_t v){p[0]=(uint8_t)(v>>8);p[1]=(uint8_t)v;}
 static void write32(uint8_t *p,uint32_t v){write16(p,(uint16_t)(v>>16));write16(p+2,(uint16_t)v);}
 static bool before(uint32_t a,uint32_t b){return (int32_t)(a-b)<0;}
 static bool same_ip(const uint8_t *a,const uint8_t *b){return !((a[0]^b[0])|(a[1]^b[1])|(a[2]^b[2])|(a[3]^b[3]));}
+static uint32_t stream_handle(const struct stream *s)
+{return (s->generation<<6)|(uint32_t)(s-streams+1);}
+static void read_mss(struct stream *s,const uint8_t *p,unsigned header)
+{
+    for(unsigned i=20;i<header;){unsigned kind=p[i++];if(!kind)break;if(kind==1)continue;
+        if(i>=header)break;unsigned n=p[i++];if(n<2||n>header-(i-2))break;
+        if(kind==2&&n==4){unsigned mss=read16(p+i);if(mss)s->mss=(uint16_t)(mss<1460?mss:1460);}
+        i+=n-2;
+    }
+}
 static void notify(struct stream *s)
 {
     if(s->closing||!s->owner)return;
@@ -60,7 +73,16 @@ static void destroy(struct stream *s)
 static void drive(struct stream *s)
 {
     if(s->closing&&ticks>=s->close_deadline){destroy(s);return;}
-    if(s->state==TCP_FAILED){if(s->closing)destroy(s);return;}
+    if(s->state==TCP_FAILED){if(s->closing||s->listener)destroy(s);return;}
+    if(s->state==TCP_SYN_RECEIVED){
+        if(ticks<s->deadline)return;
+        if(s->retries>=3){fail(s,110);destroy(s);return;}
+        int ready=net_stream_route(s->peer.ip,s->mac);
+        if(ready<0){fail(s,101);destroy(s);return;}
+        ++s->retries;s->deadline=ticks+150;
+        if(ready&&!packet(s,SYN|ACK,s->send_una,0)){fail(s,101);destroy(s);}
+        return;
+    }
     if(s->state==TCP_ROUTE){
         if(ticks<s->deadline)return;
         if(s->retries>=3){fail(s,110);return;}
@@ -109,6 +131,8 @@ static void drive(struct stream *s)
 }
 bool tcp_stream_busy(void)
 {for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)if(streams[i].bytes)return true;return false;}
+bool tcp_stream_port_used(uint16_t port)
+{for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)if(streams[i].bytes&&streams[i].port==port)return true;return false;}
 int64_t tcp_stream_create(struct process *owner,uint64_t object_sequence,uint64_t registry_sequence)
 {
     if(!owner||(object_sequence&7)||(registry_sequence&7)||
@@ -136,10 +160,48 @@ int tcp_stream_connect(struct process *owner,uint32_t handle,const struct tcp_ad
     if(s->state==TCP_OPEN)return -106;
     if(s->state==TCP_ROUTE||s->state==TCP_SYN)return -114;
     if(s->state==TCP_FAILED)return -(int)s->error;
+    if(s->state!=TCP_NEW)return -22;
     if(peer->reserved||!peer->port||!peer->ip[0]||peer->ip[0]>=224)return -22;
     if(!net_configured())return -101;
     s->peer=*peer;s->state=TCP_ROUTE;s->deadline=ticks;drive(s);
     return s->state==TCP_FAILED?-(int)s->error:-115;
+}
+int tcp_stream_bind(struct process *owner,uint32_t handle,const struct tcp_address *address)
+{
+    struct stream *s=lookup(owner,handle);if(!s)return -9;
+    if(s->state!=TCP_NEW||s->bound||address->reserved)return -22;
+    static const uint8_t any[4]={0};uint8_t local[4];net_stream_address(local);
+    if(!same_ip(address->ip,any)&&(!net_configured()||!same_ip(address->ip,local)))return -99;
+    uint16_t port=address->port?address->port:s->port;
+    if(net_stream_port_busy(port))return -98;
+    for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)
+        if(&streams[i]!=s&&streams[i].bytes&&streams[i].port==port)return -98;
+    s->port=port;s->bound=1;memcpy(s->bound_ip,address->ip,4);return 0;
+}
+int tcp_stream_listen(struct process *owner,uint32_t handle,unsigned backlog)
+{
+    struct stream *s=lookup(owner,handle);if(!s)return -9;
+    if(s->state!=TCP_NEW&&s->state!=TCP_LISTEN)return -22;
+    if(!backlog)backlog=1;if(backlog>=TCP_STREAM_LIMIT)backlog=TCP_STREAM_LIMIT-1;
+    s->bound=1;s->backlog=(uint8_t)backlog;s->state=TCP_LISTEN;notify(s);return 0;
+}
+int64_t tcp_stream_accept(struct process *owner,uint32_t handle,struct tcp_accept_request *request)
+{
+    struct stream *listener=lookup(owner,handle);if(!listener)return -9;
+    if(listener->state!=TCP_LISTEN)return -22;
+    if((request->object_sequence&7)||(request->registry_sequence&7)||
+       !process_user_access(owner,request->object_sequence,8,PROCESS_PROT_WRITE)||
+       !process_user_access(owner,request->registry_sequence,8,PROCESS_PROT_WRITE))return -14;
+    struct stream *selected=0;
+    for(unsigned i=0;i<TCP_STREAM_LIMIT;++i){struct stream *s=&streams[i];
+        if(s->bytes&&s->owner==owner&&s->listener==handle&&s->state==TCP_OPEN&&
+           (!selected||s->accept_order<selected->accept_order))selected=s;
+    }
+    if(!selected)return -11;
+    selected->listener=0;selected->object_sequence=request->object_sequence;
+    selected->registry_sequence=request->registry_sequence;
+    memcpy(request->peer_ip,selected->peer.ip,4);request->peer_port=selected->peer.port;
+    notify(listener);notify(selected);return stream_handle(selected);
 }
 int tcp_stream_status(struct process *owner,uint32_t handle,struct tcp_status *status,unsigned error_mode)
 {
@@ -147,7 +209,11 @@ int tcp_stream_status(struct process *owner,uint32_t handle,struct tcp_status *s
     if(error_mode>2)return -22;
     memset(status,0,sizeof(*status));status->state=s->state;status->available=s->rx_count;
     status->error=error_mode==2?s->error:s->reported_error;status->peer=s->peer;
-    if(s->state!=TCP_NEW){status->local.port=s->port;net_stream_address(status->local.ip);}
+    if(s->state!=TCP_NEW||s->bound){status->local.port=s->port;
+        if(s->state==TCP_NEW||s->state==TCP_LISTEN)memcpy(status->local.ip,s->bound_ip,4);
+        else net_stream_address(status->local.ip);}
+    if(s->state==TCP_LISTEN)for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)
+        if(streams[i].bytes&&streams[i].listener==handle&&streams[i].state==TCP_OPEN){status->ready|=IN;break;}
     if(s->rx_count||s->read_shutdown||s->peer_fin)status->ready|=IN;
     if(s->peer_fin)status->ready|=RDHUP;
     if(s->state==TCP_OPEN&&(s->write_shutdown||s->tx_count<TCP_TX_CAPACITY))status->ready|=OUT;
@@ -190,6 +256,10 @@ int tcp_stream_shutdown(struct process *owner,uint32_t handle,unsigned how)
 int tcp_stream_close(struct process *owner,uint32_t handle)
 {
     struct stream *s=lookup(owner,handle);if(!s)return -9;notify(s);
+    if(s->state==TCP_LISTEN)for(unsigned i=0;i<TCP_STREAM_LIMIT;++i){struct stream *child=&streams[i];
+        if(child->bytes&&child->listener==handle){
+            (void)packet(child,RST|ACK,child->send_next,0);destroy(child);}
+    }
     if(s->state!=TCP_OPEN){destroy(s);return 0;}
     s->closing=1;s->read_shutdown=s->write_shutdown=1;s->rx_count=0;
     s->object_sequence=s->registry_sequence=0;s->close_deadline=ticks+1000;drive(s);return 0;
@@ -206,16 +276,36 @@ bool tcp_stream_receive(const uint8_t source[4],const uint8_t *p,size_t length)
     struct stream *s=0;uint16_t destination=read16(p+2);
     for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)if(streams[i].bytes&&streams[i].port==destination&&
        streams[i].peer.port==read16(p)&&same_ip(streams[i].peer.ip,source)){s=&streams[i];break;}
-    if(!s)return false;
     uint8_t flags=p[13];uint32_t seq=read32(p+4),ack=read32(p+8);uint16_t window=read16(p+14);
+    if(!s){
+        if((flags&(SYN|ACK|RST|FIN))!=SYN||!source[0]||source[0]>=224)return false;
+        struct stream *listener=0;uint8_t local[4];net_stream_address(local);
+        static const uint8_t any[4]={0};
+        for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)
+            if(streams[i].bytes&&streams[i].state==TCP_LISTEN&&streams[i].port==destination&&
+               (same_ip(streams[i].bound_ip,any)||same_ip(streams[i].bound_ip,local))){listener=&streams[i];break;}
+        if(!listener)return false;
+        uint32_t handle=stream_handle(listener);unsigned pending=0;
+        for(unsigned i=0;i<TCP_STREAM_LIMIT;++i)if(streams[i].bytes&&streams[i].listener==handle)++pending;
+        if(pending>=listener->backlog)return true;
+        int64_t created=tcp_stream_create(listener->owner,listener->object_sequence,listener->registry_sequence);
+        if(created<0)return true;
+        s=lookup(listener->owner,(uint32_t)created);s->listener=handle;s->bound=1;s->port=destination;
+        memcpy(s->peer.ip,source,4);s->peer.port=read16(p);s->receive_next=seq+1;
+        s->send_next=s->send_una+1;s->window=window;s->state=TCP_SYN_RECEIVED;
+        read_mss(s,p,header);s->deadline=ticks;drive(s);return true;
+    }
+    if(s->state==TCP_SYN_RECEIVED){
+        if((flags&RST)&&seq==s->receive_next){notify(s);destroy(s);return true;}
+        if((flags&(SYN|ACK|RST|FIN))==SYN&&seq+1==s->receive_next){s->deadline=ticks;drive(s);return true;}
+        if((flags&(SYN|ACK|RST))!=ACK||seq!=s->receive_next||ack!=s->send_next)return true;
+        s->send_una=ack;s->state=TCP_OPEN;s->accept_order=++next_accept_order;notify(s);
+        /* The final handshake ACK may already carry application data. */
+    }
     if(s->state==TCP_SYN){
         if((flags&(RST|ACK))==(RST|ACK)&&ack==s->send_una+1){fail(s,111);return true;}
         if((flags&(SYN|ACK|RST))!=(SYN|ACK)||ack!=s->send_una+1)return true;
-        for(unsigned i=20;i<header;){unsigned kind=p[i++];if(!kind)break;if(kind==1)continue;
-            if(i>=header)break;unsigned n=p[i++];if(n<2||n>header-(i-2))break;
-            if(kind==2&&n==4){unsigned mss=read16(p+i);if(mss&&mss<1460)s->mss=(uint16_t)mss;else if(mss)s->mss=1460;}
-            i+=n-2;
-        }
+        read_mss(s,p,header);
         s->send_una=s->send_next=ack;s->receive_next=seq+1;s->window=window;s->state=TCP_OPEN;
         (void)packet(s,ACK,s->send_next,0);notify(s);return true;
     }
