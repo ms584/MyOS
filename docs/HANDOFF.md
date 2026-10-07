@@ -3,12 +3,13 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
-## PMM512 continuation — 2026-10-08 05:09 +07
+## PMM512 continuation — 2026-10-08 05:17 +07
 
 No source promotion; main normal images/data disks unchanged, no push/33.3.
 Combined SHM8/direct full47797 confirmed live04:58 by its session, now native
-TLS/thread-services portion then test_system.py PASS05:07; affected BIOS/UEFI
-scopes still running, NOT overall full PASS. Source frozen shm-8m-4hJG2I.
+TLS/thread-services portion then test_system.py PASS05:07; runner47797
+terminal0 at05:09:29: full+10 affected scopes BOTH BIOS/UEFI PASS, normal
+restored, normal hashes recorded. Source remains shm-8m-4hJG2I.
 GPU snapshot1891 terminal0, bundle0f114_3y: Chrome_InProcGpuThread tid11
 runnable in actual Mesa sp_find_cached_tile+0x48c (provider bias8006331000,
 RIP8006bc750c). Stack words are candidate pointers, not an unwound backtrace.
@@ -37,17 +38,29 @@ Stripped dynamic symbol fallback names (v8_Node_Print/unw...) are NOT actual
 function identification. Cached random read failure is a hypothesis pending
 errno evidence, not authority to bypass random/cert/fatal checks.
 Private negative-read diagnostic18382 terminal0 observation05:04:35, ymvkznsm:
-same fatal6 but no read-negative trace. Expanded EOF/result trace97279 live
-05:06:05, l24t5y7t; real random descriptors64/67 type8 return8 observed05:07.
-No final result yet. No random bytes logged. Actual core string at3ac371 is
+same fatal6 but no read-negative trace. Expanded EOF/result97279 terminal0
+at05:08:07,l24t5y7t: same fatal, actual random descriptors64/67 type8 return8.
+Identity75223 terminal0 at05:15:16,fcp0dbb7: same fatal/GET68.10s/no DOM/input.
+Read traces show successful random8-byte reads from pthread identities80218ad000/
+8021aad000, not evidence for the failing /22. Trace label tid actually means
+opaque pthread_self control pointer, NOT kernel numeric tid. No entropy bytes
+logged. Raw cached-fd/read-failure hypothesis is unresolved, don't implement a
+speculative random fix. Core/provider nm-D confirms both read/openat UND and
+loader resolves them via runtime; no embedded read definition.
+Next diagnostic: at SIG6 capture cached core fd at USER_BASE+62dec7c, flags
+62dec80/62dec88 and actual code bytes around3469cf0/3469de1 to verify assumed
+path against actual loaded memory. Include failing pthread identity/kernel tid
+if needed. Do not fake random, bypass fatal/certs or weaken pointer checks.
+Actual core string at3ac371 is
 /dev/urandom; function labels remain stripped/unreliable. No speculative fix.
 PMM512 full22674 queued05:06:20 on exact verified live old runnerPID321159 and
-its command; do not restart queue. Once old whole runner exits, new clean tree
+its command, now RUNNING since old completion. Handle confirmedlive05:15;
+do not restart/mutate. New clean tree
 runs mandatory test_system.py +11 BIOS/UEFI scopes including512MiB. Source
 frozen; normal image restore trap even on failure. Queue handle confirmedlive.
 No pause, screenshots every30s; only send PS/2 input after DOM AND actual fixture
 background visible. Terminal0 means observation completed, not web PASS.
-Next: inspect97279/47797/22674 handles and actual frame/beacon/resource evidence,
+Next: inspect22674 handle and implement evidence-only fatal diagnostic,
 and affected regressions; controlled verified HTTPS with enforcement intact,
 input/scrolling/>=60s/close-relaunch gates still required. Keep goal active.
 Clean source/tests/runners + logs: docs/wip/native-pmm512. Diagnostics stay private.

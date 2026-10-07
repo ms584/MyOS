@@ -1,0 +1,10 @@
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Wno-unused-function -Wno-unused-variable -Iuser/sdk -c user/elf-server.c -o /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/server.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/server.so /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/server.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Wno-unused-function -Wno-unused-variable -Iuser/sdk -DCANCEL_ONLY -c user/elf-server.c -o /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/servercancel.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/servercancel.so /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/servercancel.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/shm-8m-4hJG2I/build/system-tests/tcp-server.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/shm-8m-4hJG2I/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/shm-8m-4hJG2I/build/system-tests/tcp-server.sock,server=on,wait=off -nic user,model=rtl8139,hostfwd=tcp:127.0.0.1:39741-:46080 -drive format=raw,file=/home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1/assets.img,if=ide,index=1
+PASS native TCP server launch 0
+PASS native TCP server launch 1
+PASS native TCP server launch 2
+qemu-system-x86_64: terminating on signal 15 from pid 344797 (python3)
+PASS real guest TCP server scoped BIOS/UEFI profile; no Cobalt web claim. /home/xytron404/shm-8m-4hJG2I/build/tcp-server-3q_0bkv1

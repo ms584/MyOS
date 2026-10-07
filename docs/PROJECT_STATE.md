@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 05:09 +07. Repo /home/xytron404/myos, main.
+Updated: 2026-10-08 05:17 +07. Repo /home/xytron404/myos, main.
 Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 ## Scope / honest progress
 - Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
@@ -37,7 +37,7 @@ Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 - Source map_shared_backing unnecessarily stages private pages before alias.
   Direct reservation/reference fix68532 terminal0 at04:20:10: BIOS16/64 and
   UEFI64/256, 4 launches each, real8MiB aliases/rights/exact cleanup PASS.
-  Combined47797 test_system.py PASS05:07; affected scopes still live, NOT full PASS.
+  Combined47797 terminal0 at05:09:29: full+10 scopes BIOS/UEFI PASS, normal restored.
   Cobalt73395 terminal0 observation04:25:15: h74v3taq shows real splash,
   DOM146.58s/timers1..6, then renderer unresponsive. No input/HTML/60s PASS;
   Escape heap327168->368128. Stack1891 terminal0:0f114_3y, GPUtid11 runnable
@@ -48,12 +48,14 @@ Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
   Private pmm-512m-01MfM9 focus28058 terminal0: BIOS16/256/512 and
   UEFI64/256/512, real upper frames/refcounts/alias/exhaustion/recovery PASS.
   Metadata expands after heap bootstrap; BIOS BSS reservation unchanged.
-  PMM512 full22674 queued on verified live runner321159 (avoid third QEMU).
+  PMM512 full22674 now RUNNING, confirmed handle05:15; source frozen.
   Visual95819 terminal0 observation04:59:33, n16qdlc8:
   GET67.58s, no DOM/render/input; new abort6, cached random-file read suspect
   from disassembly, not proven. Negative-read18382 terminal0:ymvkznsm, same
-  fatal/no read-negative traces. EOF/result trace97279 live05:06:05,l24t5y7t:
-  genuine random8-byte reads observed. Inspect handles; no entropy/fatal bypass.
+  fatal/no read-negative traces. EOF97279 terminal0:l24t5y7t, same fatal.
+  Identity75223 terminal0 at05:15:16:fcp0dbb7, same fatal; random8-byte
+  success from OTHER pthread identities, no failing caller evidence yet.
+  Next capture fatal core cached-fd/flags and code bytes before any fix.
   Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
   concurrent assets/certificate errors. Five web gates remain unproven.

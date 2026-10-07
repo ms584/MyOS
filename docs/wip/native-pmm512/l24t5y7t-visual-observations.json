@@ -1,0 +1,22 @@
+[
+  {
+    "elapsed": 5.9109863999983645,
+    "cream_pixels": 0,
+    "frame": "frame-005.ppm"
+  },
+  {
+    "elapsed": 36.00388095199742,
+    "cream_pixels": 0,
+    "frame": "frame-036.ppm"
+  },
+  {
+    "elapsed": 66.10267139999632,
+    "cream_pixels": 0,
+    "frame": "frame-066.ppm"
+  },
+  {
+    "elapsed": 96.2024720739937,
+    "cream_pixels": 0,
+    "frame": "frame-096.ppm"
+  }
+]

@@ -1376,6 +1376,7 @@ static int close_checked(int fd,uint32_t generation,struct descriptor_object *ex
 int close(int fd){return close_checked(fd,0,0);}
 int64_t read(int fd,void *buffer,size_t length)
 {
+    if(length==8)allocation_failure_trace("read entry fd/tid/length",(unsigned)fd,pthread_self(),length);
     if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FREAD,(unsigned)fd,(uintptr_t)buffer,length);
         if(rc<=0||length==8)allocation_failure_trace("raw read fd/length/result",(unsigned)fd,length,(uint64_t)rc);
         if(rc<0){fail(rc);return -1;}return rc;}
@@ -1383,8 +1384,10 @@ int64_t read(int fd,void *buffer,size_t length)
     struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&1)){
         if(reference.object)object_release(reference.object);allocation_failure_trace("read invalid fd/length/access",(unsigned)fd,length,reference.access);set_error(EBADF);return -1;}
     struct descriptor_object *object=reference.object;int64_t result=-1;
-    if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,buffer,length,0,0);
-    if(object->type==DESCRIPTOR_TCP)return tcp_io_ref(&reference,buffer,length,0,0);
+    if(object->type==DESCRIPTOR_SOCKETPAIR){int64_t rc=socketpair_io_ref(&reference,buffer,length,0,0);
+        if(rc<=0||length==8)allocation_failure_trace("socketpair read fd/length/result",(unsigned)fd,length,(uint64_t)rc);return rc;}
+    if(object->type==DESCRIPTOR_TCP){int64_t rc=tcp_io_ref(&reference,buffer,length,0,0);
+        if(rc<=0||length==8)allocation_failure_trace("tcp read fd/length/result",(unsigned)fd,length,(uint64_t)rc);return rc;}
     if(object->type==DESCRIPTOR_RANDOM){
         /* A bounded short read is legal. The kernel validates the entire
          * returned region and fails closed if hardware entropy is unavailable.
@@ -1427,7 +1430,7 @@ int64_t read(int fd,void *buffer,size_t length)
     } else if(object->type==DESCRIPTOR_DIRECTORY)set_error(21);
     else set_error(EBADF);
 done:
-    if(length==8||(!result&&length))allocation_failure_trace("read fd/type/result",(unsigned)fd,object->type,(uint64_t)result);
+    if(length==8||(result<=0&&length))allocation_failure_trace("read fd/type/result",(unsigned)fd,object->type,(uint64_t)result);
     object_release(object);return result;
 }
 int64_t write(int fd,const void *buffer,size_t length)
