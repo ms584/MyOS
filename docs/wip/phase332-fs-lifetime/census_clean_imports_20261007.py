@@ -1,5 +1,5 @@
 """Measure bindings only, NEVER browser or semantic acceptance."""
-import hashlib,json,re,subprocess
+import hashlib,json,re,subprocess,sys
 from pathlib import Path
 main=Path('/home/xytron404/myos')
 audit=json.loads((main/'docs/PHASE33_COBALT_AUDIT.json').read_text())
@@ -12,8 +12,8 @@ required={line.split()[-1] for line in subprocess.check_output(
  if len(line.split())>=2 and line.split()[-2]=='U'}
 assert required<=set(audit['undefined_symbols'])
 assert len(required)==242
-for root in (main,Path('/home/xytron404/cd-QJYMwG')):
- provider=root/'build/renderer-provider-evaluation/provider-84sokh6g/provider.so'
+for root in (tuple(Path(value) for value in sys.argv[1:]) if len(sys.argv)>1 else (main,Path('/home/xytron404/cd-QJYMwG'))):
+ provider=main/'build/renderer-provider-evaluation/provider-84sokh6g/provider.so'
  report=json.loads((provider.parent/'report.json').read_text())
  assert hashlib.sha256(provider.read_bytes()).hexdigest()==report['provider_sha256']
  def strong(path,dynamic=False):

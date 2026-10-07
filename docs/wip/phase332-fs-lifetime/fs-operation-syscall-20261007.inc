@@ -3,7 +3,9 @@
 static int64_t fs_operation_call(struct process *p,struct frame *f)
 {
     struct fs_operation_request r;
-    if(f->rsi!=sizeof(r)||f->rdx||f->r10)return -22;
+    /* INT80 three-argument ABI does not use R10. Never interpret the caller's
+     * unrelated preserved register as an undocumented fourth argument. */
+    if(f->rsi!=sizeof(r)||f->rdx)return -22;
     if(!copy_from_user(p,(char *)&r,f->rdi,sizeof(r)))return -14;
     if(r.operation>FS_CALL_RECORD_RELEASE)return -22;
     if(r.operation==FS_CALL_RECORD||r.operation==FS_CALL_RECORD_RELEASE){

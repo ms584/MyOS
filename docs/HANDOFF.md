@@ -3,6 +3,69 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Native filesystem / CPU clocks — 2026-10-07 17:38 +07
+
+Latest: full64642 terminal1 missing ignored audited contracts/window.h at
+test_native_ui; not PASS. fs-full-missing-pinned-header-failure.log/status
+preserved. Provisioned pinned dependency readonly; combined clean full76516
+started17:37:14 in fs-native-VzEALo, source frozen, fs-full.status RUNNING.
+Includes new CPU-clock fields/scheduler/syscalls and real native window-size
+launcher argv, executable-path offset544, corrected launcher fixture and CPU
+fixture. Required full/scopes/normal restore still pending. Do not promote.
+
+Window scope72035 excluded executable-path query. Audit found kernel SYS_PATH6
+hardcoded old argv0=boot+536; argv grew to4 entries, name now544. Fixed paired
+kernel validation; fixture now calls SbSystemGetPath6 and checks real owned
+asset name. Fresh scope71491 BIOS/UEFI terminal0 17:36 confirms path+old guards.
+Actual24466 ld95w1k2 window trace800x600/query0/acquire1, then fatal return
+0x8003D65369, caller0x8003D64DCC. Disassembly checks object+0x70==0; caller
+queries dev.cobalt.extension.Font (optional fallback-directory extension).
+Font initialization is a hypothesis, NOT yet named unstripped function proof.
+Pinned resource135 package has fonts/fonts.xml referencing .woff2 files, but
+that directory contains only XML. Kernel system font paths3/4 unavailable.
+Do not fake font-extension success or bypass fatal; inspect real font loading/
+packaged/platform font supply. Actual19318 terminal0, wt0mhsip confirms800x600
+native acquire1 then same fatal return0x8003D65369 and HTTP0 after path fix.
+Normal main hashes still preserved. Recovery sources include combined syscall
+in phase331-cpu-clock; DO NOT promote older FS-only syscall over CPU/argv fixes.
+
+Main b34cf75 is the clean prerequisite checkpoint, not browser closure.
+Census17:12: main215registered/217paired,25missing; private FS216/218,24
+missing via true rename. GLOBAL UND242, no abort probes counted.
+fs-native-VzEALo runtime99309 terminal0 16:54:24: BIOS gyf30f09/UEFI kki4aef6
+PASS inode DIR, atomic rename/replaced-open-file lifetime, relative traversal,
+retained readdir fd-close/reuse, typed fcntl/whole-output guards, assets,
+four relaunch/exact resources. SYS56 must NOT validate unusedR10: call3
+sets only RDI/RSI/RDX; retain whole request/path/output validation.
+F_SETLKW ENOTSUP; native cross-process conflict/wakeup not proven yet.
+Full PTY64642 started17:09:34, fs-full.status RUNNING; freeze SAME source.
+Full test_system.py then affected FS/runtime/asset/shared BIOS+UEFI scopes
+and normal restore. Do not promote pending results or mutate its outputs.
+
+Genuine diagnostic fs-cobalt-diag-VQzrRc oo45o3f3/ru5x9dz8 stopped in Ozone
+Show: pinned source calls SbWindowCreate then CHECK(valid). Stripped addr2line
+nearest memset labels are NOT function evidence. h4mabvi1 instead hit worker
+Abseil sysinfo.cc248 clock_gettime EINVAL first, scheduling-sensitive, no HTTP.
+Do not assume graphics-extension warning is the same CHECK; inspect actual
+window options/acquire trace. No engine assertion/return bypass.
+CPU clocks2/3 now private100Hz sampled scheduler accounting: process total,
+main and worker totals separate, sleeping/yielding not falsely wall-charged,
+recycled worker reset. cpu-clock-HEdtNZ21927 terminal0 17:18: BIOS vn9sh7ap/
+UEFI co89of41 PASS busy/sleep/worker reuse/invalid guards/relaunch/resources.
+No full regression/promoted CPU-clock claim. Actual33559 terminal0:
+tcr_z7d5 reaches window trace, request1920x1080 fullscreen/query0; old CPU
+clock fatal no longer observed, but window rejected correctly vs actual800x600.
+Pinned Shell::GetShellDefaultSize parses kContentShellHostWindowSize, exact
+content-shell-host-window-size=WxH (shell.cc1106/shell_switches.cc37).
+Launcher now adds actual native size into the readonly owned bootstrap argv;
+SbWindowCreate policy stays unchanged, no fake1920 surface or assertion bypass.
+Private window scope72035 BIOS/UEFI PASS17:28 including argc/argv/link guards,
+SABI/init/finalizers/256KiBstack/NX/cancel/relaunch/resources. Actual diagnostic
+24466 started17:28:41, result pending. Traces/abort probes stay private.
+Recovery docs/wip/phase332-fs-lifetime and phase331-cpu-clock contain clean
+source separately from diagnostic-only files. Remain FS9+player/decode15;
+five actual web gates unproven, no33.3/push.
+
 ## Inode/shared rename + record locks — 2026-10-07 13:53 +07
 
 Update16:42: production promotion95178 terminal0 16:37:48. Normal kernel and

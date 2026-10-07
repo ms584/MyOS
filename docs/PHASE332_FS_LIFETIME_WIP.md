@@ -1,5 +1,44 @@
 # Phase33.1/33.2 — inode/shared rename and record-lock prerequisite
 
+## Current checkpoint — 2026-10-07 17:20 +07
+
+Main b34cf75 remains clean prerequisites; new FS/runtime not promoted.
+Native fs-native-VzEALo foundation44313 terminal0 16:44:02 BIOS/UEFI PASS.
+Runtime99309 terminal0 16:54:24: BIOS gyf30f09,UEFI kki4aef6 PASS native
+inode DIR/rename/replaced-open-inode lifetime/relative traversal/unlinkat/
+retained readdir fd-close-reuse/typed fcntl whole-output guards/immutable
+assets/four relaunch/exact resources. Raw syscall and runtime_asset BIOS PASS.
+Census17:12: main215registered/217paired,25missing; clean FS216/218,24missing
+by true rename; no diagnostic abort probes counted. NOT full POSIX coverage.
+FS full64642 FAILED missing audited contracts/window.h at native_ui, NOT PASS;
+failure log/status preserved. Provisioned immutable pinned dependency. Combined
+full76516 started17:37:14, fs-full.status RUNNING; freeze SAME private source
+now includes CPU accounting/actual-size argv/path-offset544 fixes from
+phase331-cpu-clock. Full test_system.py plus affected scopes and normal
+BIOS/UEFI restore pending. No main promotion yet.
+
+Runtime changes now wired: readonly AUTO_DIRECTORY atomic open avoids stat/
+open race; real DIR kernel inode basis survives rename/dup, native fstat.
+Streams retain the original open description, not reused fd/path. closedir
+only closes matching fd generation/object, never unrelated reused descriptor.
+Readonly assets/root virtual adapters are explicit bounded exceptions.
+fcntl pointer args use va_arg(void *), scalar args va_arg(int); SEEK_CUR
+locking serialized with file offset. ANY duplicated fd close releases owner
+locks explicitly before object final reclamation. SYS56 validates whole
+request, copied paths and output before mutation; R10 is NOT a call3 argument.
+GETLK/SETLK real nonblocking; SETLKW ENOTSUP pending proper wait/cancel queue.
+Host four-owner oracle is NOT native multi-process conflict/wakeup proof.
+
+Actual Cobalt diagnostics oo45o3f3/ru5x9dz8 reached Ozone window creation
+CHECK; h4mabvi1 instead worker clock_gettime EINVAL (scheduling-sensitive).
+All controlled HTTP requests0. Diagnostic traps/traces never production APIs.
+Separate CPU clocks source/tests in docs/wip/phase331-cpu-clock; native
+BIOS/UEFI PASS, not full-tested/promoted. See PROJECT_STATE for live diagnostic.
+Remaining FS9 requires real attributes/symlink/inotify lifetime, not no-op
+success. Player/decode15 capability/handle/callback contracts remain open.
+
+## Historical host-only checkpoint (superseded status below)
+
 Updated2026-10-07 13:50 +07. PRIVATE WIP, not in main builds. No new import
 claimed: main212registered/214strong paired of242,28missing; clean private
 215/217,25missing, census13:48:38. The census checks actual GLOBAL UND242,
