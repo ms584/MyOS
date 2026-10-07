@@ -57,9 +57,16 @@ __attribute__((visibility("default"))) void SbEventHandle(const SbEvent *event)
     const unsigned expected[]={1,2,4,6,8};CHECK(life<5&&(unsigned)event->type==expected[life++]);
     if(event->type==kSbEventTypeStart){
         SbEventStartData *start=event->data;CHECK(start&&start->argument_values);
-        CHECK(start->argument_count==1||start->argument_count==2);arguments=(const char **)start->argument_values;
+        CHECK(start->argument_count==2||start->argument_count==3);arguments=(const char **)start->argument_values;
         CHECK(arguments[start->argument_count]==0&&arguments[0][0]);
-        if(start->argument_count==2){CHECK(equal(arguments[1],"--url=https://myos.test/a?b=1&c=2"));
+        extern bool SbSystemGetPath(int,char *,int);
+        char executable[128],expected_path[80]="/assets/";unsigned name_length=0;
+        while(arguments[0][name_length]){CHECK(name_length<64);
+            expected_path[8+name_length]=arguments[0][name_length];++name_length;}
+        expected_path[8+name_length]=0;
+        CHECK(SbSystemGetPath(6,executable,sizeof(executable))&&equal(executable,expected_path));
+        CHECK(equal(arguments[start->argument_count-1],"--content-shell-host-window-size=800x600"));
+        if(start->argument_count==3){CHECK(equal(arguments[1],"--url=https://myos.test/a?b=1&c=2"));
             CHECK(equal(start->link,"https://myos.test/a?b=1&c=2"));}
         else CHECK(!start->link);
         uint64_t info[4],attr[7],limit[2];void *base=0;size_t length=0;

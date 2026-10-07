@@ -1,4 +1,5 @@
 #include "syscall.h"
+#include "fs-operation-call.h"
 #include "security.h"
 #include "storage.h"
 #include "tcp.h"
@@ -107,13 +108,23 @@ static int system_path(struct process *p,struct frame *f)
     case 0:value="/assets";break;
     case 1:value="/home/cobalt/cache";break;
     case 2:value="/home/cobalt/debug";break;
+    case 3:case 4:{
+        /* Platform-owned fonts are separate from Evergreen's deliberately
+         * empty font package. Never advertise a directory without its real
+         * configuration and selected default face on the immutable asset disk. */
+        struct fs_entry directory,configuration,font;
+        if(fs_stat("/assets/systemfonts",&directory)||directory.type!=FS_DIR||
+           fs_stat("/assets/systemfonts/fonts.xml",&configuration)||configuration.type!=FS_FILE||!configuration.size||
+           fs_stat("/assets/systemfonts/DejaVuSans.ttf",&font)||font.type!=FS_FILE||font.size<12)return -95;
+        value="/assets/systemfonts";break;
+    }
     case 5:value="/home/cobalt/tmp";break;
     case 8:value="/home/cobalt";break;
     case 6:{
         /* The loader's read-only owned argv0 identifies the actual asset, not
          * a guessed /proc/self/exe or hard-coded libcobalt filename. */
         uint64_t name,boot=USER_BASE+ELF_BOOT_OFFSET;
-        if(!copy_from_user(p,(void *)&name,boot+512,8)||name!=boot+536)return -2;
+        if(!copy_from_user(p,(void *)&name,boot+512,8)||name!=boot+544)return -2;
         memcpy(executable,"/assets/",8);unsigned i=0;
         for(;i<=64;++i){char c;if(!copy_from_user(p,&c,name+i,1))return -14;
             executable[8+i]=c;if(!c)break;}
@@ -264,6 +275,7 @@ static int64_t file_call(struct process *p,struct frame *f)
     }
 }
 
+#include "fs-operation-syscall.inc"
 static int64_t dns_call(struct process *p,struct frame *f)
 {
     if(f->rdi>DNS_CALL_CONFIGURED)return -22;
@@ -520,7 +532,15 @@ struct frame *syscall_dispatch(struct frame *frame)
                                                   (unsigned)frame->rdx);
         break;
     case SYS_CLOCK_NANOS:
-        if(frame->rdi==1)frame->rax=ticks*10000000ull;
+        /* No frequency/UTC adjustment is applied to the PIT counter. The raw
+         * monotonic clock therefore uses the same real100Hz tick source as
+         * monotonic, not a fabricated CPU-clock or nanosecond resolution. */
+        if(frame->rdi==1||frame->rdi==4)frame->rax=ticks*10000000ull;
+        else if(frame->rdi==2)frame->rax=process->cpu_nanos;
+        else if(frame->rdi==3){
+            struct process_thread *thread=scheduler_current_thread();
+            frame->rax=thread?thread->cpu_nanos:process->main_cpu_nanos;
+        }
         else if(frame->rdi==0)
             frame->rax=security_time_ready()?security_unix_time_ns():(uint64_t)-61;
         else frame->rax=(uint64_t)-22;
@@ -531,6 +551,8 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT: case SYS_FS_VOLUME:
         frame->rax = (uint64_t)file_call(process,frame);
         break;
+    case SYS_FS_OPERATION:
+        frame->rax=(uint64_t)fs_operation_call(process,frame);break;
     case SYS_TCP_CREATE: case SYS_TCP_CONNECT: case SYS_TCP_STATUS:
     case SYS_TCP_SEND: case SYS_TCP_RECV: case SYS_TCP_SHUTDOWN: case SYS_TCP_CLOSE:
     case SYS_TCP_BIND: case SYS_TCP_LISTEN: case SYS_TCP_ACCEPT:

@@ -3,6 +3,53 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Import/image promotion and HTTP-policy diagnosis — 2026-10-08 03:34 +07
+
+Main normal imports are now registered240/paired242/242, missing0, static census
+03:33. This is symbol closure only:15 unavailable-media exports and9 POSIX
+ENOSYS boundaries are not working player/codecs/POSIX services. No33.3/no push.
+Clean image-protect-TSMFT6 image-full.status terminal0 and fs-native-VzEALo
+fs-full.status terminal0. Main promotion10793 terminal0 at03:31:47, exact
+kernel/runtime/BIOS binary equivalence and8 affected scopes BIOS/UEFI PASS;
+build/import-image-promotion-normal.sha256 four files verified03:32:04.
+Initial promotion failures restored9 original normal/debug files; missing
+fs-operation-syscall.inc and tools/make_runtime_exports.py were omitted from
+copy list. Both now equal frozen candidate. Preserve failure logs in build/.
+
+Private vm-hint full20782 failed fault6 boot wait15s; not an observed panic
+mismatch. Capacity full76377 failed socketpair status34 because fixture filled
+31 slots while runtime now has64. New fixture derives occupied count from
+sysconf(4)-64-1, retains failure rollback/EMFILE/untouched-output/reuse checks.
+Retry89474 started03:27 in fs-capacity-mL68fc, includes VM hint and corrected
+fault boot60s budget. Do not touch frozen source/build or infer PASS from scope.
+
+Actual native-http-observation-av2317_9: requests[], real final frame blank,
+renderer unresponsive; Escape heap327168->359936, NOT clean resource PASS.
+Serial418 explicitly HTTPS-only violation; pinned source
+cobalt/browser/cobalt_secure_navigation_throttle.cc:26/67 blocks HTTP, returning
+ERR_BLOCKED_BY_CLIENT. HTTPS and CSP policy switches confirmed from switches.h
+and actual core string https-enforcement. Audit files in main
+build/cobalt-http-policy-audit-20261008, with pin/SHA output in activity log.
+Private diagnostic46209 terminal0 observation03:33:34: HTTP fixture+CSP, supported
+--https-enforcement=false replaces verbosity flag ONLY in diagnostic boot argv.
+No certificate bypass, no production policy change, no verified HTTPS claim.
+44g31rq9 records actual GET / at67.389s, but no DOM/timer/input beacons.
+pid5 GP13/error1A rip80034A738C with caller80034692B7: disassembly shows
+allocator tried twice then fatal, NOT proof of which resource is exhausted.
+Heap327168->368128, NOT resource cleanup PASS. New private diagnostic66177
+started03:37 with allocation/mmap/protection failures traced in fixed stack
+buffers and unchanged returns/errno. Inspect same handle/log before restarting.
+Then separately exercise trusted HTTPS with enforcement intact. Five actual
+web acceptance gates remain unproven; Phase33.1/33.2 stay OPEN.
+
+New Windows work artifacts: elf-platform-socketpair-capacity-20261008.c,
+retry_capacity_full_20261008.sh, resume_import_exports_promotion_20261008.sh,
+inspect_cobalt_http_policy_20261008.py, census_promoted_imports_20261008.py,
+process-cobalt-http-diagnostic-20261008.c, test_cobalt_native_http_probe_20261008.py,
+run_cobalt_http_policy_probe_20261008.sh. Diagnostics are separate from main.
+Additional Windows artifacts: runtime-cobalt-allocation-trace-20261008.c and
+run_cobalt_allocation_probe_20261008.sh. Keep them out of production source.
+
 ## Image protection / near VM / actual V8 RWX blocker — 2026-10-07 19:01 +07
 
 Read PHASE331_IMAGE_VM_WIP.md for clean sources, exact commands and limits.

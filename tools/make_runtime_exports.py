@@ -45,7 +45,7 @@ wanted={'__errno_location','access','abort','signal','sigaction','raise','pause'
         'kSbFileMaxName','kSbFileMaxPath','kSbFileSepString','kSbMaxThreads',
         'malloc_usable_size','mincore','mmap','mprotect','msync','munmap','prctl',
         'openat','opendir','pathconf','pipe','pipe2','poll','posix_memalign','pread','pwrite','read','readdir','readdir_r',
-        'readv','realloc','realpath','recv','send','setsockopt','shutdown','socket','socketpair','unlinkat','write','writev',
+        'readv','realloc','realpath','recv','rename','send','setsockopt','shutdown','socket','socketpair','unlinkat','write','writev',
         'sched_getaffinity','sched_setscheduler','sched_yield','setpriority','sysconf','uname',
         'pthread_attr_destroy','pthread_attr_getstack','pthread_attr_getstacksize',
         'pthread_attr_init','pthread_attr_setdetachstate','pthread_attr_setstacksize',
@@ -62,6 +62,13 @@ wanted={'__errno_location','access','abort','signal','sigaction','raise','pause'
         'pthread_self','pthread_setname_np','pthread_setspecific','pthread_sigmask',
         'sem_destroy','sem_init','sem_post','sem_timedwait','sem_wait'}
 wanted.update({'statvfs','SbMediaGetAudioOutputCount','SbMediaGetAudioConfiguration'})
+wanted.update({'chmod','fchmod','fchown','utimensat','symlink','readlink',
+ 'inotify_init1','inotify_add_watch','inotify_rm_watch'})
+wanted.update({'SbPlayerCreate','SbPlayerDestroy','SbPlayerGetAudioConfiguration',
+ 'SbPlayerGetCurrentFrame','SbPlayerGetInfo','SbPlayerGetMaximumNumberOfSamplesPerWrite',
+ 'SbPlayerGetPreferredOutputMode','SbPlayerSeek','SbPlayerSetBounds','SbPlayerSetPlaybackRate',
+ 'SbPlayerSetVolume','SbPlayerWriteEndOfStream','SbPlayerWriteSamples',
+ 'SbDecodeTargetGetInfo','SbDecodeTargetRelease'})
 symbols={}
 for line in subprocess.check_output(['nm','-g','--defined-only',str(elf)],text=True).splitlines():
     fields=line.split()

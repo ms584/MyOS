@@ -38,7 +38,16 @@ gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreesta
     -Iuser/sdk -Iuser/starboard-media/include -Iuser/starboard-system/include -Iinclude \
     -Wall -Wextra -Werror -Wno-misleading-indentation \
     -c user/platform-media-policy.c -o build/platform-media-policy.o
-ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o build/platform-netdb.o build/platform-audio.o build/platform-media-policy.o
+gcc -m64 -std=c11 -Os -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
+    -mno-red-zone -msse2 -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables \
+    -nostdinc -isystem "$(gcc -print-file-name=include)" -Iuser/sdk \
+    -Iuser/starboard-media/include -Iuser/starboard-system/include -Iinclude \
+    -Wall -Wextra -Werror -Wno-misleading-indentation \
+    -c user/platform-player-unavailable.c -o build/platform-player-unavailable.o
+gcc -m64 -std=c11 -Oz -mcmodel=small -fPIC -fno-semantic-interposition -ffreestanding -fno-builtin \
+    -mno-red-zone -mgeneral-regs-only -fno-stack-protector -fno-asynchronous-unwind-tables \
+    -fno-unwind-tables -Wall -Wextra -Werror -c user/platform-fs-unavailable.c -o build/platform-fs-unavailable.o
+ld -m elf_x86_64 --build-id=none -T user/platform-runtime.ld -o build/platform-runtime.elf build/platform-runtime.o build/platform-window.o build/platform-event.o build/platform-tls.o build/platform-system.o build/platform-netdb.o build/platform-audio.o build/platform-media-policy.o build/platform-player-unavailable.o build/platform-fs-unavailable.o
 objcopy -O binary build/platform-runtime.elf build/platform-runtime.bin
 python3 tools/pack_runtime.py build/platform-runtime.bin build/platform-runtime.mrt
 python3 tools/make_runtime_exports.py build/platform-runtime.elf build/platform-runtime-exports.h
@@ -73,6 +82,8 @@ python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
 gcc "${flags[@]}" -c fs/shm-backing.c -o build/fs-shm-backing.o
 objects+=(build/fs-shm-backing.o)
+gcc "${flags[@]}" -c fs/record-lock.c -o build/fs-record-lock.o
+objects+=(build/fs-record-lock.o)
 gcc "${flags[@]}" -c kernel/runtime-pack.c -o build/kernel-runtime-pack.o
 objects+=(build/kernel-runtime-pack.o)
 for source in net/dns.c net/dns-wire.c; do

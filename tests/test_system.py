@@ -195,7 +195,9 @@ def fault_test(case,marker,error):
     build(case)
     vm=VM(f'fault-{case}')
     try:
-        content=vm.wait('PANIC: '+marker)
+        # Fault builds run the same PROCESS_TESTS boot checks as the normal
+        # image. Use its existing boot budget; error/rip/cr2 assertions stay.
+        content=vm.wait('PANIC: '+marker,timeout=60)
         assert f'error=0x{error:016X}' in content,content
         if case in (2,3,4):assert 'cr2=0x0000000200000000' in content,content
         else:assert f"rip=0x{symbols()['fault_site']:016X}" in content,content

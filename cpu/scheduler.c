@@ -211,6 +211,16 @@ struct frame *schedule(struct frame *frame)
 {
     if (!enabled) return frame;
     tasks[current].frame = frame;
+    /* 100 Hz sampled CPU accounting: charge only the task interrupted by
+     * the PIT, including its kernel service time. Sleeping tasks get no
+     * samples; yields/syscalls never manufacture elapsed CPU time. */
+    if(tasks[current].process&&frame->vector==32){
+        struct process *p=tasks[current].process;
+        uint64_t *local=tasks[current].thread?&tasks[current].thread->cpu_nanos:&p->main_cpu_nanos;
+        const uint64_t sample=10000000ull,ceiling=INT64_MAX;
+        p->cpu_nanos=p->cpu_nanos>ceiling-sample?ceiling:p->cpu_nanos+sample;
+        *local=*local>ceiling-sample?ceiling:*local+sample;
+    }
     if (tasks[current].process && (frame->cs & 3) == 3 && frame->vector == 32)
         ++tasks[current].process->preemptions;
     for(unsigned i=KERNEL_TASKS;i<TASKS;++i){

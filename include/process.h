@@ -30,6 +30,7 @@ enum process_state { PROCESS_UNUSED, PROCESS_RUNNING, PROCESS_ZOMBIE, PROCESS_LO
 enum process_thread_state { PROCESS_THREAD_UNUSED, PROCESS_THREAD_RUNNING, PROCESS_THREAD_ZOMBIE };
 struct process_thread {
     uint64_t tid;
+    uint64_t cpu_nanos;
     enum process_thread_state state;
     void *kernel_stack;
     uintptr_t kernel_top;
@@ -58,6 +59,7 @@ struct process {
     uint64_t main_fs_base,tls_offset,tls_size,tls_stride;
     void *tls_template;
     uint64_t preemptions;
+    uint64_t cpu_nanos,main_cpu_nanos;
     uint64_t fault_vector, fault_error, fault_address, fault_rip;
     bool exited;
     bool main_thread_exited;

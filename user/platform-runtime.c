@@ -6,6 +6,7 @@
 #include "../include/vm-file-call.h"
 #include "../include/fs-volume-call.h"
 #include "../include/thread-limit.h"
+#include "../include/fs-operation-call.h"
 
 #define SYS_VM_MAP 14u
 #define SYS_VM_UNMAP 15u
@@ -917,7 +918,7 @@ struct descriptor_object {
         struct { struct epoll_registration registrations[EPOLL_REGS]; } epoll;
         struct { int32_t kernel_fd; } file;
         struct { uint32_t handle,opens; } tcp;
-        struct { char path[128]; } directory;
+        struct { int32_t kernel_fd;uint32_t adapter;char path[128]; } directory;
         struct {
             unsigned char bytes[2][PIPE_CAPACITY];
             uint32_t head[2],count[2],readers[2],writers[2],read_shutdown[2],write_shutdown[2],status_flags[2];
@@ -928,6 +929,16 @@ struct descriptor_slot {
     struct descriptor_object *object;
     uint32_t generation,access,flags;
 };
+static int64_t runtime_record_call(int kernel_fd,unsigned command,void *lock)
+{
+    struct fs_operation_request request={FS_CALL_RECORD,command,kernel_fd,0,0,0,(uintptr_t)lock,32,0};
+    return call3(56,(uintptr_t)&request,sizeof(request),0);
+}
+static void runtime_record_release(int kernel_fd)
+{
+    struct fs_operation_request request={FS_CALL_RECORD_RELEASE,0,kernel_fd,0,0,0,0,0,0};
+    (void)call3(56,(uintptr_t)&request,sizeof(request),0);
+}
 struct descriptor_state {
     volatile uint64_t lock,sequence;
     struct descriptor_slot slots[FD_SLOTS];
@@ -971,6 +982,8 @@ static void object_release(struct descriptor_object *object)
                 object_release(object->value.epoll.registrations[i].object);
     if(object->type==DESCRIPTOR_FILE)
         (void)call3(SYS_FCLOSE,(unsigned)object->value.file.kernel_fd,0,0);
+    if(object->type==DESCRIPTOR_DIRECTORY&&object->value.directory.kernel_fd>0)
+        (void)call3(SYS_FCLOSE,(unsigned)object->value.directory.kernel_fd,0,0);
     if(object->type==DESCRIPTOR_TCP&&object->value.tcp.handle)
         (void)call3(SYS_TCP_CLOSE,object->value.tcp.handle,0,0);
     free(object);
@@ -1299,14 +1312,15 @@ int shutdown(int fd,int how)
     spin_unlock(&r.object->lock);descriptor_changed(r.object);object_release(r.object);return 0;
 }
 
-int close(int fd)
+static int close_checked(int fd,uint32_t generation,struct descriptor_object *expected)
 {
     if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FCLOSE,(unsigned)fd,0,0);return rc<0?fail(rc):0;}
     struct descriptor_state *state=descriptor_state();
     if(!state||fd<FD_BASE||fd>=FD_BASE+(int)FD_SLOTS)return set_error(EBADF);
     unsigned index=(unsigned)(fd-FD_BASE);struct descriptor_slot closed;
     spin_lock(&state->lock);struct descriptor_slot *slot=&state->slots[index];
-    if(!slot->object){spin_unlock(&state->lock);return set_error(EBADF);}
+    if(!slot->object||(expected&&(slot->object!=expected||slot->generation!=generation))){
+        spin_unlock(&state->lock);return set_error(EBADF);}
     closed=*slot;slot->object=0;slot->access=slot->flags=0;++slot->generation;
     for(unsigned i=0;i<FD_SLOTS;++i){
         struct descriptor_object *epoll=state->slots[i].object;
@@ -1323,6 +1337,10 @@ int close(int fd)
     __atomic_add_fetch(&state->sequence,1,__ATOMIC_RELEASE);wake64(&state->sequence,~0u);
     spin_unlock(&state->lock);
     spin_lock(&closed.object->lock);
+    /* POSIX process locks disappear on ANY descriptor close for this inode,
+     * not only on final open-description reclamation (notably dup close). */
+    if(closed.object->type==DESCRIPTOR_FILE)
+        runtime_record_release(closed.object->value.file.kernel_fd);
     if(closed.object->type==DESCRIPTOR_EVENT&&closed.object->value.event.opens)
         --closed.object->value.event.opens;
     if(closed.object->type==DESCRIPTOR_PIPE){
@@ -1335,6 +1353,7 @@ int close(int fd)
         (void)call3(SYS_TCP_CLOSE,closed.object->value.tcp.handle,0,0);closed.object->value.tcp.handle=0;}
     spin_unlock(&closed.object->lock);descriptor_changed(closed.object);object_release(closed.object);return 0;
 }
+int close(int fd){return close_checked(fd,0,0);}
 int64_t read(int fd,void *buffer,size_t length)
 {
     if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FREAD,(unsigned)fd,(uintptr_t)buffer,length);
@@ -1603,6 +1622,7 @@ struct musl_dirent_abi { uint64_t ino;int64_t offset;uint16_t record_length;unsi
 struct runtime_directory {
     void *native;struct musl_dirent_abi *entry;
     char path[128];unsigned position;int descriptor;struct musl_dirent_abi storage;
+    struct descriptor_ref reference;
 };
 
 static int runtime_path(const char *path,char result[128])
@@ -1628,22 +1648,14 @@ static int canonical_path(const char *path,char result[128])
     }
     result[out]=0;return 0;
 }
-/* Directory names are immutable. Pin the open description while taking the
- * path snapshot; closing/reusing its descriptor cannot substitute a new base. */
-static int runtime_path_at(int directory,const char *path,char result[128])
+/* Only immutable assets and the non-renamable root use a path adapter. */
+static int adapter_path_at(const char *base,const char *path,char result[128])
 {
     if(!path)return set_error(EFAULT);if(!path[0])return set_error(ENOENT);
-    if(path[0]=='/'||directory==MUSL_AT_FDCWD)return runtime_path(path,result);
-    struct descriptor_ref reference={0};
-    if(!descriptor_acquire(directory,&reference))return set_error(EBADF);
-    if(reference.object->type!=DESCRIPTOR_DIRECTORY){
-        object_release(reference.object);return set_error(20);
-    }
     char joined[128];size_t used=0;
-    while(reference.object->value.directory.path[used]){
-        joined[used]=reference.object->value.directory.path[used];++used;
+    while(base[used]){
+        joined[used]=base[used];++used;
     }
-    object_release(reference.object);
     if(used>1){if(used==127)return set_error(36);joined[used++]='/';}
     size_t relative_begin=used;
     for(size_t i=0;path[i];++i){if(used==127)return set_error(36);joined[used++]=path[i];}
@@ -1657,6 +1669,26 @@ static int runtime_path_at(int directory,const char *path,char result[128])
         if(status<0)return fail(status);if(entry.type!=2)return set_error(20);
     }
     return canonical_path(joined,result);
+}
+static int runtime_resolve_at(int directory,const char *path,char result[128],
+                              struct descriptor_ref *reference,int *kernel_base)
+{
+    *kernel_base=MUSL_AT_FDCWD;
+    if(!path)return set_error(EFAULT);if(!path[0])return set_error(ENOENT);
+    if(path[0]=='/'||directory==MUSL_AT_FDCWD)return runtime_path(path,result);
+    if(!descriptor_acquire(directory,reference))return set_error(EBADF);
+    if(reference->object->type!=DESCRIPTOR_DIRECTORY)return set_error(20);
+    if(reference->object->value.directory.adapter)
+        return adapter_path_at(reference->object->value.directory.path,path,result);
+    *kernel_base=reference->object->value.directory.kernel_fd;
+    size_t i=0;for(;path[i];++i){if(i==127)return set_error(36);result[i]=path[i];}
+    result[i]=0;return 0;
+}
+static int64_t runtime_fs_at(unsigned operation,int base,const char *path,
+                             unsigned flags,void *buffer,size_t length,uint64_t value)
+{
+    struct fs_operation_request request={operation,flags,base,0,(uintptr_t)path,0,(uintptr_t)buffer,length,value};
+    return call3(56,(uintptr_t)&request,sizeof(request),0);
 }
 static void stat_convert(const struct fs_entry_abi *source,struct musl_stat_abi *target)
 {
@@ -1678,14 +1710,19 @@ static void random_device_stat(struct musl_stat_abi *target)
     target->dev=2;target->ino=1;target->nlink=1;
     target->mode=0020000|0444;target->rdev=1;target->blksize=256;
 }
-int openat(int directory,const char *path,int flags,...)
+static int immutable_asset_path(const char *path)
+{
+    const char prefix[]="/assets";unsigned i=0;
+    while(prefix[i]){if(path[i]!=prefix[i])return 0;++i;}
+    return !path[i]||path[i]=='/';
+}
+static int runtime_open_base(int base,const char *normalized,int flags)
 {
     int access_mode=flags&MUSL_O_ACCMODE;if(access_mode==MUSL_O_PATH)return set_error(ENOTSUP);
     unsigned access=access_mode==0?1:access_mode==1?2:access_mode==2?3:0;
     int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY;
     if(!access||(flags&~allowed)||((flags&MUSL_O_TRUNC)&&!(access&2)))return set_error(EINVAL);
-    char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
-    if(random_device_path(normalized)){
+    if(base==MUSL_AT_FDCWD&&random_device_path(normalized)){
         if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
         if(flags&MUSL_O_DIRECTORY)return set_error(20);
         if(access!=1||flags&(MUSL_O_TRUNC|O_APPEND))return set_error(ENOTSUP);
@@ -1696,27 +1733,44 @@ int openat(int directory,const char *path,int flags,...)
         spin_unlock(&state->lock);
         if(fd<0){free(object);return set_error(24);}return fd;
     }
-    struct fs_entry_abi entry;int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
-    if(!status&&entry.type==2){
+    unsigned myos=access;
+    if(flags&MUSL_O_CREAT)myos|=4;if(flags&MUSL_O_TRUNC)myos|=8;if(flags&MUSL_O_EXCL)myos|=16;
+    if(flags&MUSL_O_DIRECTORY)myos|=32;
+    else if(access==1&&!(flags&(MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC)))myos|=64;
+    /* One kernel operation chooses and pins the inode; no stale pre-stat path. */
+    int64_t kernel=runtime_fs_at(FS_CALL_OPEN_AT,base,normalized,myos,0,0,0);
+    struct fs_entry_abi entry;int adapter=0;
+    if(kernel<0){
+        /* Asset namespace is immutable; a path adapter is safe here only. */
+        if(base!=MUSL_AT_FDCWD||!immutable_asset_path(normalized))return fail(kernel);
+        int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
+        if(status<0||entry.type!=2)return fail(kernel);
         if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
-        if((access&2)||(flags&MUSL_O_TRUNC))return set_error(21);
-        struct descriptor_state *state=descriptor_state();struct descriptor_object *object=descriptor_object(DESCRIPTOR_DIRECTORY);
-        if(!state||!object){if(object)free(object);return set_error(ENOMEM);}
-        size_t i=0;for(;normalized[i]&&i<127;++i)object->value.directory.path[i]=normalized[i];
-        object->value.directory.path[i]=0;spin_lock(&state->lock);
-        int fd=descriptor_install_locked(state,object,1,(unsigned)flags);spin_unlock(&state->lock);
-        if(fd<0){free(object);return set_error(ENOSPC);}return fd;
+        if(access!=1||flags&MUSL_O_TRUNC)return set_error(21);
+        kernel=0;adapter=1;
+    }else{
+        int64_t status=call3(SYS_FSTAT,(unsigned)kernel,(uintptr_t)&entry,0);
+        if(status<0){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);return fail(status);}
+        if(entry.type==2&&base==MUSL_AT_FDCWD&&normalized[0]=='/'&&!normalized[1])adapter=1;
     }
-    if(!status&&(flags&MUSL_O_DIRECTORY))return set_error(20);
-    if(status<0&&status!=-ENOENT)return fail(status);
-    if((flags&MUSL_O_DIRECTORY)&&status==-ENOENT)return fail(status);
-    unsigned myos=access;if(flags&MUSL_O_CREAT)myos|=4;if(flags&MUSL_O_TRUNC)myos|=8;if(flags&MUSL_O_EXCL)myos|=16;
-    int64_t kernel=call3(SYS_FOPEN,(uintptr_t)normalized,myos,0);if(kernel<0)return fail(kernel);
-    struct descriptor_state *state=descriptor_state();struct descriptor_object *object=descriptor_object(DESCRIPTOR_FILE);
-    if(!state||!object){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);if(object)free(object);return set_error(ENOMEM);}
-    object->value.file.kernel_fd=(int32_t)kernel;spin_lock(&state->lock);
+    struct descriptor_state *state=descriptor_state();
+    struct descriptor_object *object=descriptor_object(entry.type==2?DESCRIPTOR_DIRECTORY:DESCRIPTOR_FILE);
+    if(!state||!object){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);if(object)free(object);return set_error(ENOMEM);}
+    if(entry.type==2){
+        object->value.directory.kernel_fd=(int32_t)kernel;object->value.directory.adapter=(unsigned)adapter;
+        if(adapter){size_t i=0;for(;normalized[i]&&i<127;++i)object->value.directory.path[i]=normalized[i];
+            object->value.directory.path[i]=0;}
+    }else object->value.file.kernel_fd=(int32_t)kernel;
+    spin_lock(&state->lock);
     int fd=descriptor_install_locked(state,object,access,(unsigned)flags);spin_unlock(&state->lock);
-    if(fd<0){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(ENOSPC);}return fd;
+    if(fd<0){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(ENOSPC);}return fd;
+}
+int openat(int directory,const char *path,int flags,...)
+{
+    struct descriptor_ref reference={0};char normalized[128];int base;
+    int result=runtime_resolve_at(directory,path,normalized,&reference,&base);
+    if(!result)result=runtime_open_base(base,normalized,flags);
+    if(reference.object)object_release(reference.object);return result;
 }
 int dup(int fd)
 {
@@ -1738,9 +1792,21 @@ int dup(int fd)
 }
 int fcntl(int fd,int command,...)
 {
+    if(command==5||command==6||command==7){
+        va_list arguments;va_start(arguments,command);void *lock=va_arg(arguments,void *);va_end(arguments);
+        struct descriptor_ref reference={0};
+        if(!descriptor_acquire(fd,&reference))return set_error(EBADF);
+        if(reference.object->type!=DESCRIPTOR_FILE){object_release(reference.object);return set_error(EBADF);}
+        /* SEEK_CUR normalization and offset-changing I/O share this lock.
+         * Kernel derives owner/PID and validates the complete flock range. */
+        spin_lock(&reference.object->lock);
+        int64_t result=runtime_record_call(reference.object->value.file.kernel_fd,(unsigned)command,lock);
+        spin_unlock(&reference.object->lock);object_release(reference.object);
+        return result<0?fail(result):0;
+    }
     long argument=0;if(command==MUSL_F_DUPFD||command==MUSL_F_DUPFD_CLOEXEC||
        command==MUSL_F_SETFD||command==MUSL_F_SETFL){va_list arguments;
-        va_start(arguments,command);argument=va_arg(arguments,long);va_end(arguments);}
+        va_start(arguments,command);argument=va_arg(arguments,int);va_end(arguments);}
     if(command==MUSL_F_DUPFD||command==MUSL_F_DUPFD_CLOEXEC){
         if(argument<0||argument>=FD_BASE+(int)FD_SLOTS)return set_error(EINVAL);
         unsigned first=argument<=FD_BASE?0:(unsigned)(argument-FD_BASE);
@@ -1821,13 +1887,24 @@ int fstat(int fd,struct musl_stat_abi *information)
  if(r.object->type==DESCRIPTOR_RANDOM){random_device_stat(information);object_release(r.object);return 0;}
  struct fs_entry_abi entry;int64_t rc;
  if(r.object->type==DESCRIPTOR_FILE)rc=call3(SYS_FSTAT,(unsigned)r.object->value.file.kernel_fd,(uintptr_t)&entry,0);
- else if(r.object->type==DESCRIPTOR_DIRECTORY)rc=call3(SYS_STAT,(uintptr_t)r.object->value.directory.path,(uintptr_t)&entry,0);
+ else if(r.object->type==DESCRIPTOR_DIRECTORY){
+  if(r.object->value.directory.kernel_fd>0)rc=call3(SYS_FSTAT,(unsigned)r.object->value.directory.kernel_fd,(uintptr_t)&entry,0);
+  else rc=call3(SYS_STAT,(uintptr_t)r.object->value.directory.path,(uintptr_t)&entry,0);}
  else {object_release(r.object);return set_error(EBADF);}
  object_release(r.object);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int fstatat(int directory,const char *path,struct musl_stat_abi *information,int flags)
-{if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
- if(random_device_path(normalized)){random_device_stat(information);return 0;}
- struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
+{
+ if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);
+ struct descriptor_ref reference={0};char normalized[128];int base;
+ int result=runtime_resolve_at(directory,path,normalized,&reference,&base);
+ if(!result){
+  if(base==MUSL_AT_FDCWD&&random_device_path(normalized))random_device_stat(information);
+  else {struct fs_entry_abi entry;
+   int64_t rc=runtime_fs_at(FS_CALL_STAT_AT,base,normalized,0,&entry,sizeof(entry),0);
+   if(rc<0)result=fail(rc);else stat_convert(&entry,information);}
+ }
+ if(reference.object)object_release(reference.object);return result;
+}
 int access(const char *path,int mode)
 {if(mode&~7)return set_error(EINVAL);struct musl_stat_abi info;if(fstatat(MUSL_AT_FDCWD,path,&info,0))return -1;
  if((mode&2)&&!(info.mode&0222))return set_error(30);
@@ -1855,10 +1932,11 @@ void *fdopendir(int fd)
         int error=r.object?20:EBADF;if(r.object)object_release(r.object);set_error(error);return 0;}
     struct runtime_directory *directory=malloc(sizeof(*directory));
     if(!directory){object_release(r.object);set_error(ENOMEM);return 0;}
-    *directory=(struct runtime_directory){directory,&directory->storage,{0},0,fd,{0}};
+    *directory=(struct runtime_directory){0};directory->native=directory;
+    directory->entry=&directory->storage;directory->descriptor=fd;directory->reference=r;
     size_t i=0;for(;i<127&&r.object->value.directory.path[i];++i)
         directory->path[i]=r.object->value.directory.path[i];
-    directory->path[i]=0;object_release(r.object);
+    directory->path[i]=0; /* Stream retains original object, not a reused fd. */
     return directory;
 }
 void *opendir(const char *path)
@@ -1875,7 +1953,11 @@ struct musl_dirent_abi *readdir(void *raw)
         struct system_asset_entry_request request={(uintptr_t)path,directory->position,(uintptr_t)&source};
         rc=call3(MYOS_SYSTEM_CALL,SYSTEM_ASSET_ENTRY,(uintptr_t)&request,0);
     }else{
-        struct fs_entry_abi small;rc=call3(SYS_READDIR,(uintptr_t)path,(uintptr_t)&small,directory->position);
+        struct fs_entry_abi small;
+        if(!directory->reference.object->value.directory.adapter)
+            rc=runtime_fs_at(FS_CALL_LIST_AT,directory->reference.object->value.directory.kernel_fd,
+                             ".",0,&small,sizeof(small),directory->position);
+        else rc=call3(SYS_READDIR,(uintptr_t)path,(uintptr_t)&small,directory->position);
         if(rc==1){source.type=small.type;source.size=small.size;
             for(unsigned i=0;i<31&&small.name[i];++i)source.name[i]=small.name[i];}
     }
@@ -1895,17 +1977,25 @@ int readdir_r(void *raw,struct musl_dirent_abi *entry,struct musl_dirent_abi **r
 }
 int closedir(void *raw)
 {struct runtime_directory *directory=raw;if(!directory||directory->native!=directory)return set_error(EINVAL);
- int rc=close(directory->descriptor);directory->native=0;free(directory);return rc;}
+ int rc=close_checked(directory->descriptor,directory->reference.generation,directory->reference.object);
+ object_release(directory->reference.object);directory->native=0;free(directory);return rc;}
 int unlinkat(int directory,const char *path,int flags)
 {
-    if(directory!=MUSL_AT_FDCWD)return set_error(EBADF);
     if(flags&~MUSL_AT_REMOVEDIR)return set_error(EINVAL);
-    char normalized[128];if(runtime_path(path,normalized))return -1;
-    struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
-    if(rc<0)return fail(rc);
-    if((flags&MUSL_AT_REMOVEDIR)&&entry.type!=2)return set_error(20);
-    if(!(flags&MUSL_AT_REMOVEDIR)&&entry.type==2)return set_error(21);
-    rc=call3(SYS_UNLINK,(uintptr_t)normalized,0,0);return rc<0?fail(rc):0;
+    struct descriptor_ref reference={0};char normalized[128];int base;
+    int result=runtime_resolve_at(directory,path,normalized,&reference,&base);
+    if(!result){int64_t rc=runtime_fs_at(FS_CALL_UNLINK_AT,base,normalized,
+        (flags&MUSL_AT_REMOVEDIR)?1:0,0,0,0);if(rc<0)result=fail(rc);}
+    if(reference.object)object_release(reference.object);return result;
+}
+int rename(const char *old_path,const char *new_path)
+{
+    char first[128],second[128];
+    if(runtime_path(old_path,first)||runtime_path(new_path,second))return -1;
+    struct fs_operation_request request={FS_CALL_RENAME_AT,0,MUSL_AT_FDCWD,MUSL_AT_FDCWD,
+        (uintptr_t)first,(uintptr_t)second,0,0,0};
+    int64_t result=call3(56,(uintptr_t)&request,sizeof(request),0);
+    return result<0?fail(result):0;
 }
 
 /* Starboard storage records use two independently validated file generations.
@@ -2122,6 +2212,7 @@ char *mkdtemp(char *template)
 #define MUSL_AT_CLKTCK 17
 #define MUSL_AT_SECURE 23
 #define MUSL_RLIMIT_STACK 3
+#define MUSL_RLIMIT_DATA 2
 #define MUSL_RLIMIT_NPROC 6
 #define MUSL_RLIMIT_NOFILE 7
 #define MUSL_PRIO_PROCESS 0
@@ -2183,6 +2274,10 @@ int getrlimit(int resource,struct musl_rlimit *limit)
 {
     if(!limit)return set_error(EFAULT);
     if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){40,40};
+    /* There is no independently imposed data-segment rlimit in MyOS.
+     * RLIM_INFINITY describes that policy, NOT available physical RAM or a
+     * promise to satisfy allocations. PMM/VM/layout bounds still yield ENOMEM. */
+    else if(resource==MUSL_RLIMIT_DATA)*limit=(struct musl_rlimit){UINT64_MAX,UINT64_MAX};
     else if(resource==MUSL_RLIMIT_NPROC)*limit=(struct musl_rlimit){MYOS_USER_TASK_LIMIT,MYOS_USER_TASK_LIMIT};
     else if(resource==MUSL_RLIMIT_STACK){struct main_stack_info info;
         int64_t rc=call3(SYS_MAIN_STACK_INFO,(uintptr_t)&info,0,0);if(rc<0)return set_error((int)-rc);

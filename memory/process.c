@@ -2,6 +2,7 @@
 #include "process.h"
 #include "elf.h"
 #include "runtime-pack.h"
+#include "native-ui.h"
 #if PROCESS_RUNTIME_EXTERNAL
 #include "asset.h"
 #include "mbedtls/sha256.h"
@@ -166,6 +167,10 @@ struct frame *process_fault(struct frame *frame)
 }
 
 /* Separate ELF64 path: page ownership is dynamic, legacy demos keep their ABI. */
+#define ELF_SEGMENT_MAPPING (1u<<8)
+#define IMAGE_WRITE_CEILING (1ull<<9)
+#define IMAGE_EXEC_CEILING (1ull<<10)
+#define IMAGE_SEGMENT_PAGE (1ull<<11)
 static uintptr_t elf_page(struct process *p,unsigned capacity)
 {
     if(p->page_count>=capacity)return 0;
@@ -182,7 +187,13 @@ static uintptr_t elf_map_page(struct process *p,unsigned capacity,uint64_t addre
     }
     uint64_t *e=&table[(address>>12)&511];if(*e&1)return 0;
     uintptr_t page=elf_page(p,capacity);if(!page)return 0;
-    *e=page|5|((flags&2)?2:0)|((flags&1)?0:NX);return page;
+    *e=page|5|((flags&2)?2:0)|((flags&1)?0:NX);
+    /* Only PT_LOAD segment pages may participate in image mprotect. Bootstrap,
+     * stacks, native TLS and platform runtime keep their separate policies.
+     * These software bits retain original rights even after PROT_NONE/R. */
+    if(flags&ELF_SEGMENT_MAPPING)*e|=IMAGE_SEGMENT_PAGE|
+        ((flags&2)?IMAGE_WRITE_CEILING:0)|((flags&1)?IMAGE_EXEC_CEILING:0);
+    return page;
 }
 static struct process *stage_images(const struct elf_source *const sources[],const struct elf_plan *const plans[],unsigned images)
 {
@@ -214,7 +225,7 @@ static struct process *stage_images(const struct elf_source *const sources[],con
       for(unsigned i=0;i<owner->count;++i){const struct elf_segment *s=&owner->segments[i];
         uint64_t end=s->address+s->memsz;
         for(uint64_t va=s->address&~4095ull;va<end;va+=PAGE_SIZE){
-            uintptr_t page=elf_map_page(p,capacity,va,s->flags);if(!page)goto failed;
+            uintptr_t page=elf_map_page(p,capacity,va,s->flags|ELF_SEGMENT_MAPPING);if(!page)goto failed;
             uint64_t begin=va>s->address?va:s->address,file_end=s->address+s->filesz;
             uint64_t stop=va+PAGE_SIZE<file_end?va+PAGE_SIZE:file_end;
             if(begin<stop&&!source->read(source->context,s->offset+begin-s->address,
@@ -318,7 +329,7 @@ bool process_image_copy(struct process *p,uint64_t address,void *buffer,size_t s
 bool process_image_readonly(struct process *p,uint64_t address,uint64_t size)
 {
     if(address>UINT64_MAX-size)return false;
-    for(uint64_t a=address&~4095ull;a<address+size;a+=PAGE_SIZE){uint64_t *e=image_leaf(p,a);if(!e)return false;*e&=~2ull;}
+    for(uint64_t a=address&~4095ull;a<address+size;a+=PAGE_SIZE){uint64_t *e=image_leaf(p,a);if(!e)return false;*e&=~(2ull|IMAGE_WRITE_CEILING);}
     return true; /* This staged CR3 has never been active: no stale TLB entries. */
 }
 
@@ -467,10 +478,30 @@ int process_vm_unmap(struct process *p,uint64_t address,size_t length)
     return 0;
 }
 
+static int image_protect(struct process *p,uint64_t address,size_t length,unsigned prot)
+{
+    if(!p->image_pages||address<USER_BASE||address>=PROCESS_VM_BASE||
+       length>PROCESS_VM_BASE-address)return -12;
+    /* Preflight every page before changing any permission. Never allocate or
+     * accept a page solely because it happens to be mapped in this CR3. */
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(!entry||!(*entry&1)||!(*entry&IMAGE_SEGMENT_PAGE))return -12;
+        if(((prot&PROCESS_PROT_WRITE)&&!(*entry&IMAGE_WRITE_CEILING))||
+           ((prot&PROCESS_PROT_EXEC)&&!(*entry&IMAGE_EXEC_CEILING)))return -13;
+    }
+    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        *entry=(*entry&~(6ull|NX))|((prot&PROCESS_PROT_READ)?4ull:0)|
+               ((prot&PROCESS_PROT_WRITE)?2ull:0)|((prot&PROCESS_PROT_EXEC)?0:NX);
+        vm_flush(a);
+    }
+    return 0;
+}
 int process_vm_protect(struct process *p,uint64_t address,size_t length,unsigned prot)
 {
-    if(!vm_range(address,length)||(prot&~7u)||
+    if(!length||(address&(PAGE_SIZE-1))||(length&(PAGE_SIZE-1))||
+       address>UINT64_MAX-length||(prot&~7u)||
        ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
+    if(!vm_range(address,length))return image_protect(p,address,length,prot);
     if(!vm_areas_cover(p->vm_areas,address,address+length))return -12;
     /* Preflight mixed ranges before any permission changes. */
     for(uint64_t a=address;a<address+length;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
@@ -809,6 +840,12 @@ void process_discard_elf(struct process *p)
 {
     uint64_t f=irq_save();check(p&&p->state==PROCESS_LOADING,"discard staged ELF");release(p);irq_restore(f);
 }
+static char *window_dimension(char *destination,uint32_t value)
+{
+    char reversed[10];unsigned count=0;
+    do{reversed[count++]=(char)('0'+value%10);value/=10;}while(value);
+    while(count)*destination++=reversed[--count];return destination;
+}
 static bool start_images(struct process *p,const struct elf_start *start,const struct elf_start *dependency)
 {
     extern const unsigned char elf_start_code[],elf_start_end[];
@@ -826,12 +863,25 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
         if(start->url)while(u<=1024&&start->url[u])++u;
         if(!n||n>64||u>1024){irq_restore(f);return false;}
         uint64_t base=USER_BASE+ELF_BOOT_OFFSET;
-        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+536),*url=name+n+1;
-        memcpy(name,start->name,n+1);args[0]=base+536;args[1]=args[2]=0;
+        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+544),*url=name+n+1;
+        memcpy(name,start->name,n+1);args[0]=base+544;args[1]=args[2]=args[3]=0;
         p->frame->rdi=1;p->frame->rsi=base+512;
         if(start->url){memcpy(url,"--url=",6);memcpy(url+6,start->url,u+1);
             args[1]=base+(uint64_t)(url-(char *)boot);p->frame->rdi=2;
             p->frame->r10=args[1]+6;}
+        /* The pinned Cobalt shell otherwise requests1920x1080 regardless of
+         * the native display. Configure its documented WxH switch, keeping
+         * requested size, returned size and real backing surface identical.
+         * These argv strings stay in the existing readonly owned boot page. */
+        struct native_ui_info display;
+        if(start->handler&&!native_ui_query(p,0,&display)&&display.width&&display.height){
+            char *option=start->url?url+u+7:url;
+            static const char prefix[]="--content-shell-host-window-size=";
+            memcpy(option,prefix,sizeof(prefix)-1);
+            char *end=window_dimension(option+sizeof(prefix)-1,display.width);
+            *end++='x';end=window_dimension(end,display.height);*end=0;
+            args[p->frame->rdi++]=base+(uint64_t)(option-(char *)boot);
+        }
         p->frame->rcx=start->handler;p->frame->r8=start->preflight;p->frame->r9=start->sabi;
     }
     p->frame->r12=start->array;p->frame->r13=start->count;
