@@ -3,6 +3,160 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Pinned uname ABI repair / capacity32 scope — 2026-10-07 13:24 +07
+
+Supersedes LIVE80030/80634 below. Main/origin c33f49a, fetch13:00 unchanged.
+Actual12-worker qeg0c8b7 and checked-frame jzptp0v7 identify core caller
+0x800346A5D6 after FS:0x28 stack-canary mismatch. Disassembly + pinned musl
+STARBOARD sys/utsname.h agree: caller1285 bytes/five257-byte fields; MyOS
+cleared1542 bytes/six fields, overwriting257 bytes. Correct private runtime
+removes domainname; no engine edits, assertion bypass or HLT instruction skip.
+Guarded native system fixture BIOS16/64 andUEFI64/256 PASS, four launches /
+exact resources, terminal0 13:15:51. Earlier fixture status4 was stale8-thread
+expectation, preserved uname-abi-old-bound.log, not credited as PASS.
+Genuine9ciyx3qt passes old fault, creates16workers, then EAGAIN on next.
+Local Storage/leveldb files now reached;0HTTP. Heap293120->309504, new files
+versus leak not isolated. All five actual acceptance gates remain unproven.
+
+New capacity32 scope51522 terminal0 13:22:57; cd-QJYMwG capacity32.status /
+logs.32workers/33 total/132 UID tasks, native TLS base runtime+0x40000 with
+compile-time separation assertion. At13:22 BIOS16/64,UEFI64/256 capacity /
+uname guards, native TLS and thread services/teardown PASS. Actual p2388a2x
+reaches Code Cache then calls missing rename, diagnostic abort99. F_SETLK6
+repeatedly-EINVAL in LevelDB, not working locks;0HTTP. Heap325888->354560
+includes new RAMFS/cache files versus leak not isolated. Diagnostic-only
+fcntl logs must never be promoted. Full clean batch93459 LIVE13:23:30,
+shared-clean-full.status/logs; main system/clean process/runtime/generator
+restored with no MyOSMissingImport symbols. Freeze cd source/build until
+terminal. Next rename needs merged inode-identity/DIR lifetime, then real
+record locks; no fake success. Counts remain production212/214,28 missing.
+Main four normal hashes unchanged13:22:25. Recovery snapshots
+docs/wip/phase332-uname-capacity32; prior16 PASS snapshot stays unchanged.
+PHASE332_UNAME_ABI_WIP.md details evidence. No new uname import credited.
+Mandatory clean full for entire statvfs/audio/shared/capacity/ABI batch still
+pending; old combined full excludes it. No source promotion/push/33.3.
+
+## Actual imports and shared-memory dependency — 2026-10-07 12:59 +07
+
+Capacity final scope96189 terminal0 12:57:29, q743m2ks BIOS16/64 and42_pfwgv
+UEFI64/256, including16held workers/overflow17/TSS key clearing/reuse/PT_TLS
+independence/exact resources. Legacy GD/IE/TLSDESC, guards/NX/faults/cancel and
+thread timed-waits/teardown/join-detach races also PASS. TLS windows moved to
+avoid overlap, guard fixture targets configured unmapped page, not old8-slot
+address. See PHASE332_THREAD_CAPACITY_WIP.md and its clean recovery snapshot.
+New real engine trace80030 LIVE12:58:47; do not change cd sources/builds yet.
+New architectural clean full still required; initial full PASS excludes batch.
+
+Superseding status: combined fm-prC903 full/scopes/normal restore terminal0
+12:42:35, main images unchanged. This excludes new volume/audio/shared batch.
+UEFI shared64/2560pqiocf9 terminal0 12:34:26; real RAMFS+shared v1/v2/OOM
+ASAN/UBSAN k4Wzg1 terminal0 12:37:15. Actual lu6q4q7t confirms262144/4-byte
+shared mmap succeeds. zyc7sv42 terminal0 12:41:45 then diagnoses8worker bound:
+six EAGAIN(-11) before ImmediateCrash; PCs0x80034a12dc/0x80034a1372.0HTTP.
+Capacity16/fixed17 advertised bound scope PTY77918 LIVE12:48:24. Static FPU
+buffer exceeded BIOS BSS assertion; moved aligned storage to initialized
+heap, kept reservation intact. No native capacity result yet; freeze cd tree.
+This detail supersedes LIVE61468/23007 below; retains earlier evidence history.
+
+Production still registered212/paired214 of242,28 missing; private real
+statvfs/audio2 not promoted. Clean native tests terminal0 at12:22:50:
+BIOS statvfs-tcupdlcc/audio-output-oqwidx36, UEFI statvfs-y9da69fe/
+audio-output-ech49t_z. No abort probes or logging wrappers in clean build.
+Detailed contracts/evidence: PHASE332_VOLUME_AUDIO_WIP.md and nondiagnostic
+snapshot docs/wip/phase332-volume-audio. Dynamic RAMFS has no block quota;
+audio output is actual mono PCM, not stereo/codec/player support.
+
+Actual pinned engine startup-zzz_smbk terminal0 12:19:23 reaches CrBrowserMain
+after genuine /dev/shm mkdir in disposable guest. ftruncate262144 EFBIG(-27),
+then4-byte MAP_SHARED|RW ENOTSUP(-95). No engine patch/assertion bypass.
+Zero HTTP, all five actual web acceptance gates remain unproven.
+
+Private shared backing now implemented: dedicated /dev/shm files up to1MiB,
+physical page references, coherent fd I/O/multiple mappings, frames retained
+after unlink/close/inode death. Private copies remain separate. Shrinking a
+mapped file explicitly EBUSY until SIGBUS/truncate invalidation exists; no
+full POSIX mmap/truncate claim. Shared subtree excluded from persistent
+snapshots; normal RAMFS/disk formats and64KiB file bounds unchanged.
+PMM reference metadata allocated after heap bootstrap (static128KiB would
+violate BIOS kernel reservation); retained/free frames exercised native RAM
+16/64/256MiB, terminal0 12:28:02. Host shared-backing ASAN/UBSAN D8Tyjd
+PASS12:26:11, including allocation failure rollback, not kernel proof alone.
+Native shared maps BIOS f9pps4rn PASS16/64MiB,4 launches each, worker aliases,
+fd/mapping coherence, readonly ceilings, private copies, process-stop cleanup
+and exact frames/heap. UEFI16MiB never produced kernel serial; preserve
+shared-memory-uefi-16mb-prekernel-failure.log, NOT PASS/API failure evidence.
+SAME binary UEFI64/256 retry session61468 LIVE; status/log below cd-QJYMwG.
+Full architectural regression is still required for this new shared batch.
+
+Supersedes WSL notes below: owner manually restarted WslService~11:56 and
+kept a Ubuntu terminal open. No global service/config change by agent.
+Frozen combined full fm-prC903 PTY23007 started11:58:59; LIVE12:33 nativeTLS,
+no terminal full PASS yet. It includes filename/file-map only, NOT statvfs,
+audio enumeration or shared memory. Do not mutate it or misattribute its
+future PASS to those new features. Main normal hashes unchanged12:33:30.
+Root WSL stop initiator remains unknown. No push/Phase33.3/phase closure.
+
+## Resumed native Cobalt work — 2026-10-07 11:52 +07
+
+Main/origin c33f49a fetched11:24, source eb31a69; no user divergence/source
+promotion/push/33.3. Main normal image hashes unchanged11:48:37. This checkpoint
+supersedes stale LIVE68512 below: original /tmp trees are gone and its terminal
+result cannot be recovered. Never infer full PASS from partial log/fixture count.
+
+Recovered nondiagnostic WIP in persistent /home/xytron404/fm-prC903. Build and
+real process VM/file-map ASAN/UBSAN allocation/read rollback passed11:33.
+Full session20890 then interrupted11:46 (QEMU SIGHUP, host terminal1, no child
+left), despite partial GUI/storage/audio/video PASS in recovery-full.log.
+WSL reported0x8007274c/E_UNEXPECTED and recovered naturally. No shutdown,
+restart or global config change performed; actual root cause unproven.
+
+Genuine engine diagnostic32182 terminal0 11:42:39 in cd-QJYMwG; pinned core,
+provider and135 resources hashes checked. Trace startup-diagnostic-k3w7c2g0:
+SbSystemGetPath(cache/id1) succeeds, but stat/mkdir TEzLw== returnsEINVAL.
+Live RAMFS parser rejects '='; shared snapshot validator has the same narrow
+alphabet. Cache PathService501 therefore fails and engine aborts. Zero HTTP;
+heap125184 restored exactly. This is a diagnosed startup bug, not web success.
+28 unsupported-import abort thunks remain diagnostic-only and never return
+fabricated success; do not promote them or count them as completed APIs.
+
+Private filename fix uses one printable-ASCII predicate for live/snapshot
+names; controls,DEL,non-ASCII and slash prohibited, existing length/dot guards
+unchanged. Supports '=' and space in actual "Experiment Config" name without
+changing snapshot format. Real RAMFS ASAN/UBSAN fn-M1RAJ4 PASS11:45:50 tests
+all printable bytes, invalid bytes/bounds, both v1/v2 snapshots/data roundtrip
+and allocation-failure rollback. No full POSIX/UTF-8-name claim.
+
+At11:48:15 new jobs launched detached to avoid terminal disconnect SIGHUP:
+- fm-prC903 combined nondiagnostic WIP+filename fix; launcherPID486/script488
+  observed11:48:37. combined-build/full.log and combined-regression.status.
+  Full system, normal-private UEFI, file-map BIOS/UEFI, sparse BIOS/noentropy/
+  UEFI and main image hash verification queued. LIVE; no full terminal PASS.
+- cd-QJYMwG cache filename fix engine retry; launcher485/script487 observed.
+  cache-namefix-build/startup.log and cache-namefix.status. LIVE; no result yet.
+Superseding11:50 observation: cache-namefix.status TERMINAL_EXIT=0; genuine
+engine startup-diagnostic-_uszhzqh creates Base64 cache successfully, passes
+Experiment Config path failure, then calls unimplemented statvfs and exits99.
+Zero HTTP; heap125184->129280 needs filesystem-allocation/leak isolation.
+No claim of exact post-fix cleanup or browser acceptance yet.
+
+Detached combined full was killed11:49:31. Guest journal explicitly records
+init.scope stopping timeout and SIGKILL of486/488/1884/QEMU2676. No terminal
+status/full PASS; initiator of stop still unproven. Preserved partial log as
+combined-full-interrupted-114931.log. Restarted SAME frozen sources via
+foreground PTY83868 at11:52:10; combined-full.log/status, full/scopes queued.
+Poll SAME session/status and do not mutate this tree until terminal. A PTY is
+an experimental launch workaround, not proof of fixing WSL or configuration.
+
+Windows work staging has reproducible scripts recover_file_map_20261007.sh,
+prepare_cache_diagnostic_20261007.sh, run_cache_namefix_20261007.sh,
+run_combined_regression_20261007.sh, run_fs_name_unit_20261007.sh and patched
+fs.h/ramfs.c/snapshot-impl.inc/fs-test.c. Production source has not changed.
+Durable filename source/unit snapshot: docs/wip/phase332-file-names, excluded
+from main build. Original file-map snapshot remains nondiagnostic and separate.
+Next promote only nondiagnostic source after complete regression/restore;
+follow real engine execution to HTML/JS/DOM/timers/input/verified concurrent
+HTTPS/60s/relaunch resource gates. All five remain unproven; phases stay OPEN.
+
 ## Latest renderer dependency checkpoint — 2026-10-04
 
 2026-10-05 19:03 OWNER requests checkpoint/local commit then pause. Approval

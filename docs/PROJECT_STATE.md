@@ -1,68 +1,60 @@
 # MyOS project state
-
-Updated: 2026-10-05 19:03 +07; owner requests checkpoint then pause.
-Repo /home/xytron404/myos, WSL Ubuntu, main source eb31a69; normal images intact.
-Origin/main3cbd25f, fetched18:57:51 +07. Owner pushes only; NEVER push.
-
+Updated:2026-10-07 13:24 +07. Native Cobalt acceptance; no33.3/push.
+Repo /home/xytron404/myos, main; origin c33f49a fetched13:00; source eb31a69.
+Main four normal hashes unchanged13:22:25. Owner pushes only.
 ## Scope and measured progress
-- Phase33.1/33.2 OPEN; native Cobalt web acceptance0/5 (0% verified).
-- Production registered212/242 (87.6%); actual paired214/242 (88.4%),28 missing.
-  TCP server full/scoped1701 terminal0 PASS16:31:49; normal BIOS/UEFI restored.
-  Native server and actual core/provider paired BIOS/UEFI PASS (not web execution).
-- Counts are binding/fixture coverage, NOT full API semantics or phase percent.
-- Phase32/33 NOT PASSED; no33.3. YouTube playback unproven.
+- Phase33.1/33.2 OPEN: actual HTML+JS/DOM/timers, input, verified concurrent
+  HTTPS, >=60s interaction, close/relaunch cleanup remain0/5 unproven.
+- Production registered212/242,paired214/242,28 missing verified12:09.
+  Private statvfs/audio2 added/tested, not promoted; no count/fixture phase PASS.
+- Phase32/33 NOT PASSED; YouTube unproven. Do not start33.3.
+## Live work / evidence
+- Old full68512 unrecoverable, NOT PASS; prior fulls interrupted by WSL.
+  Owner restarted service11:56; agent made no global change. See HANDOFF.
+- fm-prC903 combined full+filename PTY23007 terminal0 12:42:35: full system,
+  normal-private UEFI restore,file-map BIOS/UEFI,sparse BIOS/noentropy/UEFI
+  PASS; combined*.log/status/final.sha256. Main normal hashes unchanged.
+  This full excludes statvfs/audio2/shared/capacity; cannot prove new batch.
+- Filename fix realRAMFS ASAN/UBSAN fn-M1RAJ4 PASS11:45:50: printableASCII
+  including Base64/spaced Cobalt names, invalid bytes/bounds, v1/v2 data
+  roundtrip/OOM rollback. Snapshot docs/wip/phase332-file-names.
+- Genuine Cobalt pinned core/provider +135 resources validated. Cache mkdir
+  now succeeds; statvfs implemented real112-byte musl ABI/syscall58.
+  RAMFS reports actual inode counts, no invented blockpool/quota/capacity.
+  ASAN/UBSAN fn-F7eTAc PASS12:02:46; BIOS/UEFI PASS12:09/12:22.
+- Audio enumeration/config2: real analog mono1, absent0, latency unknown0.
+  No codec/player claim. PHASE332_VOLUME_AUDIO_WIP.md has BIOS/UEFI evidence.
+- cd-QJYMwG clean volume/audio2 BIOS/UEFI terminal0 12:22; no abort probes.
+- Shared backing now implemented privately; native BIOS16/64 + UEFI64/256
+  PASS,relaunch/exact resources. PMM reference16/64/256 PASS; realRAMFS shared
+  snapshot/OOM ASAN/UBSAN k4Wzg1 PASS12:37:15. PHASE332_SHARED_MEMORY_WIP.md.
+- Actual lu6q4q7t shared262144/4bytes succeeds; zyc7sv42 old8-worker EAGAIN.
+  0HTTP;25 diagnostic abort probes NEVER APIs; heap deltas not isolated.
+- Capacity16 PASS96189 12:57:29 BIOS16/64,UEFI64/256 saturation/TLS/teardown.
+  FPU heap storage preserves BIOS reservation; TLS windows/TSS keys/guards
+  follow bound. PHASE332_THREAD_CAPACITY_WIP.md holds proven16 snapshot.
+  Actual qeg0c8b7 terminal0 12:59:50:12workers, then #GP in HLT;0HTTP.
+  jzptp0v7 terminal0 13:04:00 saved caller0x800346A5D6: stack-canary failure.
+  Pinned uname ABI five257-byte fields, runtime wrote six:257-byte overwrite.
+  Clean guarded uname fixture BIOS16/64,UEFI64/256 PASS;80634 terminal0
+  13:15:51. Actual9ciyx3qt passes old fault,16workers then EAGAIN;0HTTP.
+  Capacity32 scope51522 terminal0 13:22:57:BIOS16/64,UEFI64/256,TLS/teardown/
+  uname PASS. Actual p2388a2x reaches Code Cache, traps missing rename;
+  F_SETLK6=-EINVAL;0HTTP,heap325888->354560 not isolated. See UNAME_ABI_WIP.
+  New clean full93459 LIVE13:23:30:shared-clean-full.status/logs, freeze cd.
 
-## Current work and evidence
-
-- Owned SB16 PCM+typed Float32/Int16 sink committedf895303; production62023
-  BIOS+UEFI PASS13:24:24: waveform, ring/pause/EOS, malformed input, exhaustion,
-  callback Destroy, fault/Escape cleanup/relaunch/exact pages+heap.
-- Owner restarted WslService; production pair-q4xi8xvv PASS14:03. New audio
-  full58842 terminal0 PASS14:43:40; normal BIOS+UEFI restored.
-  Audio pair-execution40404 terminal0 PASS14:48:20 BIOS+UEFI; final hashes unchanged.
-  Normal hashes and full evidence: PHASE332_PCM_WIP.md.
-- Actual pinned audio_sink/media/drm header ABI native BIOS+UEFI67207 PASS14:03;
-  private4Fohgm. Upstream inline IsValid is null-only; target helper checks
-  stale registry separately. PHASE332_PCM_WIP.md. Pinned fixture promotion pending.
-- New media policy8 +sendto/recvmmsg2 private BIOS+UEFI87168 PASS14:32:01;
-  RAM64/256 budgets, concurrent/relaunch/resources, shared caller+socket timeout,
-  WAITFORONE and original descriptor generation across vector receive.
-  Production77672 terminal0 PASS14:58:33: normal BIOS+UEFI, media/message both
-  profiles plus actual pinned core/provider paired adversarial/rollback/resources.
-- activity.log bounded48MiB. NEVER read it through run_logged.py.
-- Private filesystem inode/atomic rename unit/native BIOS/UEFI PASS; filesystem
-  61299 and explicit ATA/storage52587 PASS16:11/16:12. No new POSIX export credit.
-- Private sparse32GiB/entropy native42995 BIOS/UEFI PASS16:56:00; exact resources,
-  no entropy failure closed. Real VM ASAN/UBSAN allocation rollback PASS16:59:37.
-- Private immutable file-map native16031 BIOS/UEFI PASS17:36:36; real VM/file
-  allocator/read-failure ASAN/UBSAN PASS17:37:37, exact cleanup/offsets/rights.
-- Cobalt trace92117 terminal0 17:42:26: both pak mappings succeed; new FATAL
-  path Experiment Config /PathService501, exact heap125184, zero HTTP/web0/5.
-- Sparse retry90043 terminal1 17:46:49; file-map full28885 terminal1 18:02:08:
-  harness omitted pinned contracts/window.h. Pins copied18:59; new full68512
-  LIVE in /tmp/myos-file-map-u9NQ2N/file-map-full-retry.log; no full PASS yet.
-  Freeze this private tree; main normal hashes unchanged19:02. No promotion.
-
-## Existing foundations and limits
-
-- Clock/pthread/descriptors/signals: PHASE331_WAIT.md, PHASE331_PTHREAD.md,
-  PHASE331_CROSS_THREAD_SIGNALS.md. Native TLS/thread/C11 adapters tested.
-- Native UI/events/SABI launcher and genuine Mesa/EGL/GLES rendering tested;
-  PHASE332_RENDERER_CLOSURE.md and PHASE332_PAIR_EXECUTION.md, not Cobalt web.
-- Async owned IPv4 DNS/UDP+TCP fallback tested; IPv6/CNAME/full flags open.
-- Loader restricted two-module pair/one PT_TLS; no generic DT_NEEDED/DTV/unload.
-- Actual Cobalt resource/emutls/thread/RAM behavior unmeasured (eight workers).
-  Absolute path127 bound remains; asset hierarchy supports longer relative names.
-
-## Next work
-
-1. Owner pauses. On resume poll SAME68512 before touching private build/source;
-   finish full+normal restore+file/sparse scopes before promotion. Durable WIP
-   source/tests in docs/wip/phase332-file-map; PHASE332_FILE_MAPPING_WIP.md.
-   Next engine issue: Experiment Config path501; distinguish path/config error.
-2. Next28: file11, audio config2, player13/decode-target2. FS inode prerequisite
-   private only; PHASE332_FS_IDENTITY_WIP.md. No fake handles/codecs/success.
-3. Native Cobalt HTML+JS/DOM/timers, input, verified concurrent HTTPS,
-   >=60s interaction and close/relaunch/resources; only then close33.1/33.2.
-
-Background: HANDOFF.md; detailed current batch: PHASE332_IMPORT_BATCH_WIP.md.
+## Foundation / limits
+- Clock/pthread/descriptors/signals/TLS tested; relevant PHASE331 docs.
+- Production TCP/full1701 PASS Oct5; audio/media scopes in PHASE332_PCM_WIP.md
+  and PHASE332_IMPORT_BATCH_WIP.md; not actual browser acceptance.
+- Main loader2modules/1PTTLS,8workers; PMM256MiB. Private shared maps only
+  /dev/shm up to1MiB; mapped shrink EBUSY,no SIGBUS/COW/demand paging.
+- Inode/rename private:PHASE332_FS_IDENTITY_WIP.md. Main RAMFS64KiB files;
+  actual Cobalt needs at least256KiB shared backing, not just more exports.
+- activity.log bounded48MiB; NEVER read through run_logged.py.
+## Next
+1. Poll SAME93459; freeze cd source/build until terminal; no full PASS yet.
+2. Resolve rename + real inode-relative DIR lifecycle and record locks, then
+   FS10/player-decode15 contracts; no fabricated success imports.
+3. Promote nondiagnostic source only with full/scoped regression, restore
+   normal images; update docs/local commit. Actual five gates before closure.
