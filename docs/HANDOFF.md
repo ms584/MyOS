@@ -3,7 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
-## Import/image promotion and HTTP-policy diagnosis — 2026-10-08 03:34 +07
+## Import/image promotion and HTTP-policy diagnosis — 2026-10-08 03:48 +07
+
+Production commit049576c. Fetch03:43 origin/main a746889 (ancestor,2 ahead/0
+behind). No push. Normal four hashes verified again03:47:42, unchanged.
+Allocation diagnostics66177/b_8vwfk_ and24630/dzwjsroo are terminal0 observations,
+each GET / once (~65s), no beacons, stopped at deadline by Escape. First trace
+writer had syscall1 args wrong (diagnostic failed to print); second uses actual
+MyOS sys_write(buffer,length) ABI, no negative allocation trace captured.
+This does not disprove all resource failures; no full Cobalt acceptance.
+Private owned-path/verbose24755 started03:46:55, PID302454/QEMU302462 live03:47.
+Private process argv uses name576, but SYS_PATH still expected544; now paired
+to576, same readonly owned-pointer validation. Added --v=1 in seventh argv
+slot, eighth remains NULL; no name shift or production code change. Inspect
+this same live handle and cobalt-owned-verbose-probe.status/log before restart.
+Capacity retry89474 PID292474 live03:47, dynamic/lifecycle PASS, full not done.
 
 Main normal imports are now registered240/paired242/242, missing0, static census
 03:33. This is symbol closure only:15 unavailable-media exports and9 POSIX

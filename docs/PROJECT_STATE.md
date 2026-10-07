@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 03:38 +07. Repo /home/xytron404/myos, main.
-Previous checkpoint 7096f05; origin/main c33f49a last fetched Oct7 13:45.
+Updated: 2026-10-08 03:48 +07. Repo /home/xytron404/myos, main.
+Production049576c; origin/main a746889 fetched03:43; main2 ahead/0 behind.
 ## Scope / honest progress
 - Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
   HTTPS, >=60s interaction and close/relaunch cleanup remain 0/5 unproven.
@@ -36,7 +36,7 @@ Previous checkpoint 7096f05; origin/main c33f49a last fetched Oct7 13:45.
 - Capacity full76377 failed socketpair status34: fixture hardcoded31
   occupied slots. Fixed to advertised bound minus fd base minus1; rollback,
   EMFILE and untouched outputs still asserted. Retry89474 RUNNING03:27;
-  source frozen; inspect live handle/log before restarting. Includes VM hint.
+  PID292474 verified live03:47; dynamic/lifecycle PASS; full still pending.
 ## Actual Cobalt evidence / immediate next
 - Genuine pinned core+Mesa provider started Blink contexts/navigation; previous
   native-http-observation-av2317_9 has requests[], blank actual frame,
@@ -46,9 +46,12 @@ Previous checkpoint 7096f05; origin/main c33f49a last fetched Oct7 13:45.
 - Private HTTP46209 terminal0 observation03:33:34:44g31rq9 records genuine
   GET / at67.39s, no DOM/timer/input beacons; pid5 GP13/error1A at80034A738C,
   allocator caller80034692B7; heap327168->368128, NOT cleanup PASS.
-- Supported https-enforcement=false ONLY in private diagnostic owned argv,
-  CSP provided; NOT verified HTTPS. Allocation-failure trace66177 RUNNING
-  03:37; inspect same handle before restarting. Never fake allocation success.
+- HTTP diagnostics66177/24630 terminal0 observations: GET / again, no beacons,
+  escaped at deadline, not web PASS. First trace writer used wrong syscall
+  argument layout; second corrected, no negative allocation trace captured.
+- Owned-path/verbose diagnostic24755 RUNNING03:46:55, PID302454/QEMU302462
+  live03:47; private argv name576 now matches SYS_PATH checker (was544).
+  HTTP enforcement override remains private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
   concurrent assets/certificate errors. Five web gates remain unproven.
 ## Artifacts / continuation
