@@ -1,0 +1,6 @@
+$ nm build/kernel.elf
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/boot-probe-cleanup-bios.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/boot-probe-cleanup-bios.sock,server=on,wait=off
+qemu-system-x86_64: terminating on signal 15 from pid 367893 (python3)
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/boot-probe-cleanup-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/boot-probe-cleanup-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/boot-probe-cleanup-uefi-vars.fd
+qemu-system-x86_64: terminating on signal 15 from pid 367893 (python3)
+PASS BIOS/UEFI normal boot probes execute then retire; counters stable, timer/shell alive

@@ -1,0 +1,550 @@
+[
+  {
+    "path": "/",
+    "elapsed": 52.67534462599724
+  },
+  {
+    "path": "/evidence?kind=dom&value=Native%20DOM%2042&seq=1",
+    "elapsed": 74.61968902799708
+  },
+  {
+    "path": "/evidence?kind=timer&value=1&seq=2",
+    "elapsed": 76.41794083399873
+  },
+  {
+    "path": "/evidence?kind=timer&value=2&seq=3",
+    "elapsed": 77.30597053699603
+  },
+  {
+    "path": "/evidence?kind=geometry&value=%7B%22x%22%3A125.6484375%2C%22y%22%3A340.75%7D&seq=4",
+    "elapsed": 89.53764000700176
+  },
+  {
+    "path": "/evidence?kind=timer&value=3&seq=5",
+    "elapsed": 89.87823321099859
+  },
+  {
+    "path": "/evidence?kind=timer&value=4&seq=6",
+    "elapsed": 90.7569148229959
+  },
+  {
+    "path": "/evidence?kind=timer&value=5&seq=7",
+    "elapsed": 92.10690364200127
+  },
+  {
+    "path": "/evidence?kind=timer&value=6&seq=8",
+    "elapsed": 93.45712456099864
+  },
+  {
+    "path": "/evidence?kind=timer&value=7&seq=9",
+    "elapsed": 94.80630737899628
+  },
+  {
+    "path": "/evidence?kind=timer&value=8&seq=10",
+    "elapsed": 96.22783689900098
+  },
+  {
+    "path": "/evidence?kind=timer&value=9&seq=11",
+    "elapsed": 97.59707641800196
+  },
+  {
+    "path": "/evidence?kind=timer&value=10&seq=12",
+    "elapsed": 98.96673925600044
+  },
+  {
+    "path": "/evidence?kind=timer&value=11&seq=13",
+    "elapsed": 100.36673159399652
+  },
+  {
+    "path": "/evidence?kind=key&value=a&seq=14",
+    "elapsed": 101.13655601500068
+  },
+  {
+    "path": "/evidence?kind=timer&value=12&seq=15",
+    "elapsed": 102.20757534400036
+  },
+  {
+    "path": "/evidence?kind=timer&value=13&seq=16",
+    "elapsed": 103.56737428099586
+  },
+  {
+    "path": "/evidence?kind=timer&value=14&seq=17",
+    "elapsed": 104.98702182000125
+  },
+  {
+    "path": "/evidence?kind=timer&value=15&seq=18",
+    "elapsed": 106.36822722999932
+  },
+  {
+    "path": "/evidence?kind=timer&value=16&seq=19",
+    "elapsed": 107.74724291799794
+  },
+  {
+    "path": "/evidence?kind=timer&value=17&seq=20",
+    "elapsed": 109.21695460599585
+  },
+  {
+    "path": "/evidence?kind=timer&value=18&seq=21",
+    "elapsed": 110.59764009399805
+  },
+  {
+    "path": "/evidence?kind=timer&value=19&seq=22",
+    "elapsed": 112.07584868199774
+  },
+  {
+    "path": "/evidence?kind=timer&value=20&seq=23",
+    "elapsed": 113.46905406999576
+  },
+  {
+    "path": "/evidence?kind=timer&value=21&seq=24",
+    "elapsed": 114.81714347600064
+  },
+  {
+    "path": "/evidence?kind=timer&value=22&seq=25",
+    "elapsed": 116.24725178399967
+  },
+  {
+    "path": "/evidence?kind=timer&value=23&seq=26",
+    "elapsed": 117.72719159199914
+  },
+  {
+    "path": "/evidence?kind=timer&value=24&seq=27",
+    "elapsed": 119.24709939999593
+  },
+  {
+    "path": "/evidence?kind=timer&value=25&seq=28",
+    "elapsed": 120.68716020799911
+  },
+  {
+    "path": "/evidence?kind=timer&value=26&seq=29",
+    "elapsed": 122.13654481499543
+  },
+  {
+    "path": "/evidence?kind=timer&value=27&seq=30",
+    "elapsed": 123.59840841899859
+  },
+  {
+    "path": "/evidence?kind=timer&value=28&seq=31",
+    "elapsed": 125.08731892400101
+  },
+  {
+    "path": "/evidence?kind=timer&value=29&seq=32",
+    "elapsed": 126.58737242799543
+  },
+  {
+    "path": "/evidence?kind=timer&value=30&seq=33",
+    "elapsed": 128.01703313300095
+  },
+  {
+    "path": "/evidence?kind=timer&value=31&seq=34",
+    "elapsed": 129.47695093700167
+  },
+  {
+    "path": "/evidence?kind=timer&value=32&seq=35",
+    "elapsed": 130.96696224300103
+  },
+  {
+    "path": "/evidence?kind=timer&value=33&seq=36",
+    "elapsed": 132.37764614899788
+  },
+  {
+    "path": "/evidence?kind=timer&value=34&seq=37",
+    "elapsed": 133.83658085500065
+  },
+  {
+    "path": "/evidence?kind=timer&value=35&seq=38",
+    "elapsed": 135.32782616199984
+  },
+  {
+    "path": "/evidence?kind=timer&value=36&seq=39",
+    "elapsed": 136.82709506800165
+  },
+  {
+    "path": "/evidence?kind=timer&value=37&seq=40",
+    "elapsed": 138.30949747400155
+  },
+  {
+    "path": "/evidence?kind=timer&value=38&seq=41",
+    "elapsed": 139.71713667899894
+  },
+  {
+    "path": "/evidence?kind=timer&value=39&seq=42",
+    "elapsed": 141.14753368499805
+  },
+  {
+    "path": "/evidence?kind=timer&value=40&seq=43",
+    "elapsed": 142.61782528999902
+  },
+  {
+    "path": "/evidence?kind=timer&value=41&seq=44",
+    "elapsed": 144.16747779599973
+  },
+  {
+    "path": "/evidence?kind=timer&value=42&seq=45",
+    "elapsed": 145.55780110100022
+  },
+  {
+    "path": "/evidence?kind=timer&value=43&seq=46",
+    "elapsed": 147.0070423069992
+  },
+  {
+    "path": "/evidence?kind=timer&value=44&seq=47",
+    "elapsed": 148.42713661200105
+  },
+  {
+    "path": "/evidence?kind=timer&value=45&seq=48",
+    "elapsed": 149.89789821700106
+  },
+  {
+    "path": "/evidence?kind=timer&value=46&seq=49",
+    "elapsed": 151.3174891219969
+  },
+  {
+    "path": "/evidence?kind=timer&value=47&seq=50",
+    "elapsed": 152.74894602700078
+  },
+  {
+    "path": "/evidence?kind=timer&value=48&seq=51",
+    "elapsed": 154.21785873200133
+  },
+  {
+    "path": "/evidence?kind=timer&value=49&seq=52",
+    "elapsed": 155.87797973599663
+  },
+  {
+    "path": "/evidence?kind=timer&value=50&seq=53",
+    "elapsed": 157.30740043900005
+  },
+  {
+    "path": "/evidence?kind=timer&value=51&seq=54",
+    "elapsed": 158.72811704199557
+  },
+  {
+    "path": "/evidence?kind=timer&value=52&seq=55",
+    "elapsed": 160.48753624600067
+  },
+  {
+    "path": "/evidence?kind=timer&value=53&seq=56",
+    "elapsed": 161.8975134489956
+  },
+  {
+    "path": "/evidence?kind=timer&value=54&seq=57",
+    "elapsed": 163.3281938500004
+  },
+  {
+    "path": "/evidence?kind=timer&value=55&seq=58",
+    "elapsed": 164.73772335099784
+  },
+  {
+    "path": "/evidence?kind=timer&value=56&seq=59",
+    "elapsed": 166.15758625300077
+  },
+  {
+    "path": "/evidence?kind=timer&value=57&seq=60",
+    "elapsed": 167.65782965399558
+  },
+  {
+    "path": "/evidence?kind=timer&value=58&seq=61",
+    "elapsed": 169.0778052550013
+  },
+  {
+    "path": "/evidence?kind=timer&value=59&seq=62",
+    "elapsed": 170.53787615699548
+  },
+  {
+    "path": "/evidence?kind=timer&value=60&seq=63",
+    "elapsed": 171.9872252579953
+  },
+  {
+    "path": "/evidence?kind=timer&value=61&seq=64",
+    "elapsed": 173.3883573589992
+  },
+  {
+    "path": "/evidence?kind=timer&value=62&seq=65",
+    "elapsed": 174.82782346000022
+  },
+  {
+    "path": "/evidence?kind=timer&value=63&seq=66",
+    "elapsed": 176.28015736200177
+  },
+  {
+    "path": "/evidence?kind=timer&value=64&seq=67",
+    "elapsed": 177.69896576299652
+  },
+  {
+    "path": "/evidence?kind=timer&value=65&seq=68",
+    "elapsed": 179.1583119650022
+  },
+  {
+    "path": "/evidence?kind=timer&value=66&seq=69",
+    "elapsed": 180.59707286799676
+  },
+  {
+    "path": "/evidence?kind=timer&value=67&seq=70",
+    "elapsed": 181.97897517000092
+  },
+  {
+    "path": "/evidence?kind=timer&value=68&seq=71",
+    "elapsed": 183.40848947199993
+  },
+  {
+    "path": "/evidence?kind=timer&value=69&seq=72",
+    "elapsed": 184.87878407500102
+  },
+  {
+    "path": "/evidence?kind=key&value=b&seq=73",
+    "elapsed": 186.13835927699984
+  },
+  {
+    "path": "/evidence?kind=timer&value=70&seq=74",
+    "elapsed": 186.93718177799747
+  },
+  {
+    "path": "/evidence?kind=timer&value=71&seq=75",
+    "elapsed": 188.26799788000062
+  },
+  {
+    "path": "/evidence?kind=timer&value=72&seq=76",
+    "elapsed": 189.64813448199857
+  },
+  {
+    "path": "/evidence?kind=timer&value=73&seq=77",
+    "elapsed": 191.06844698500208
+  },
+  {
+    "path": "/evidence?kind=timer&value=74&seq=78",
+    "elapsed": 192.48832738700003
+  },
+  {
+    "path": "/evidence?kind=timer&value=75&seq=79",
+    "elapsed": 193.99424608999834
+  },
+  {
+    "path": "/evidence?kind=timer&value=76&seq=80",
+    "elapsed": 195.36837209200166
+  },
+  {
+    "path": "/evidence?kind=timer&value=77&seq=81",
+    "elapsed": 196.77843809399928
+  },
+  {
+    "path": "/evidence?kind=timer&value=78&seq=82",
+    "elapsed": 198.2280624959967
+  },
+  {
+    "path": "/evidence?kind=timer&value=79&seq=83",
+    "elapsed": 199.6396159989963
+  },
+  {
+    "path": "/evidence?kind=timer&value=80&seq=84",
+    "elapsed": 201.0786403009988
+  },
+  {
+    "path": "/evidence?kind=timer&value=81&seq=85",
+    "elapsed": 202.70812029700028
+  },
+  {
+    "path": "/evidence?kind=timer&value=82&seq=86",
+    "elapsed": 204.09772308999527
+  },
+  {
+    "path": "/evidence?kind=timer&value=83&seq=87",
+    "elapsed": 205.50839058299607
+  },
+  {
+    "path": "/evidence?kind=timer&value=84&seq=88",
+    "elapsed": 206.95856937600183
+  },
+  {
+    "path": "/evidence?kind=timer&value=85&seq=89",
+    "elapsed": 208.36873476899927
+  },
+  {
+    "path": "/evidence?kind=timer&value=86&seq=90",
+    "elapsed": 209.83811366200098
+  },
+  {
+    "path": "/evidence?kind=timer&value=87&seq=91",
+    "elapsed": 211.25934075999976
+  },
+  {
+    "path": "/evidence?kind=timer&value=88&seq=92",
+    "elapsed": 212.7186730579997
+  },
+  {
+    "path": "/evidence?kind=timer&value=89&seq=93",
+    "elapsed": 214.43919495499722
+  },
+  {
+    "path": "/evidence?kind=timer&value=90&seq=94",
+    "elapsed": 215.81824105299893
+  },
+  {
+    "path": "/evidence?kind=timer&value=91&seq=95",
+    "elapsed": 217.25876105100178
+  },
+  {
+    "path": "/evidence?kind=timer&value=92&seq=96",
+    "elapsed": 218.71773034999933
+  },
+  {
+    "path": "/evidence?kind=timer&value=93&seq=97",
+    "elapsed": 220.10846734799998
+  },
+  {
+    "path": "/evidence?kind=timer&value=94&seq=98",
+    "elapsed": 221.5185361469994
+  },
+  {
+    "path": "/evidence?kind=timer&value=95&seq=99",
+    "elapsed": 223.0288351449999
+  },
+  {
+    "path": "/evidence?kind=timer&value=96&seq=100",
+    "elapsed": 224.46039554399613
+  },
+  {
+    "path": "/evidence?kind=timer&value=97&seq=101",
+    "elapsed": 225.99895244299842
+  },
+  {
+    "path": "/evidence?kind=timer&value=98&seq=102",
+    "elapsed": 227.43870344299648
+  },
+  {
+    "path": "/evidence?kind=timer&value=99&seq=103",
+    "elapsed": 228.9191524429989
+  },
+  {
+    "path": "/evidence?kind=timer&value=100&seq=104",
+    "elapsed": 230.31831224299822
+  },
+  {
+    "path": "/evidence?kind=timer&value=101&seq=105",
+    "elapsed": 231.71868474399525
+  },
+  {
+    "path": "/evidence?kind=timer&value=102&seq=106",
+    "elapsed": 233.158394443999
+  },
+  {
+    "path": "/evidence?kind=timer&value=103&seq=107",
+    "elapsed": 234.74092874200142
+  },
+  {
+    "path": "/evidence?kind=timer&value=104&seq=108",
+    "elapsed": 236.17920303999563
+  },
+  {
+    "path": "/evidence?kind=timer&value=105&seq=109",
+    "elapsed": 237.59881463799684
+  },
+  {
+    "path": "/evidence?kind=timer&value=106&seq=110",
+    "elapsed": 239.0384929360007
+  },
+  {
+    "path": "/evidence?kind=timer&value=107&seq=111",
+    "elapsed": 240.43894893399556
+  },
+  {
+    "path": "/evidence?kind=timer&value=108&seq=112",
+    "elapsed": 241.86853263100056
+  },
+  {
+    "path": "/evidence?kind=timer&value=109&seq=113",
+    "elapsed": 243.38910571100132
+  },
+  {
+    "path": "/evidence?kind=timer&value=110&seq=114",
+    "elapsed": 244.86862939199636
+  },
+  {
+    "path": "/evidence?kind=key&value=c&seq=115",
+    "elapsed": 246.12951467499806
+  },
+  {
+    "path": "/evidence?kind=timer&value=111&seq=116",
+    "elapsed": 246.87879496499954
+  },
+  {
+    "path": "/evidence?kind=timer&value=112&seq=117",
+    "elapsed": 248.23955544699857
+  },
+  {
+    "path": "/evidence?kind=timer&value=113&seq=118",
+    "elapsed": 249.6786987289961
+  },
+  {
+    "path": "/evidence?kind=timer&value=114&seq=119",
+    "elapsed": 251.07851151400246
+  },
+  {
+    "path": "/evidence?kind=timer&value=115&seq=120",
+    "elapsed": 252.69925889700244
+  },
+  {
+    "path": "/evidence?kind=timer&value=116&seq=121",
+    "elapsed": 254.11876518200006
+  },
+  {
+    "path": "/evidence?kind=timer&value=117&seq=122",
+    "elapsed": 255.54910236699652
+  },
+  {
+    "path": "/evidence?kind=timer&value=118&seq=123",
+    "elapsed": 256.9687772519974
+  },
+  {
+    "path": "/evidence?kind=timer&value=119&seq=124",
+    "elapsed": 258.37938663800014
+  },
+  {
+    "path": "/evidence?kind=timer&value=120&seq=125",
+    "elapsed": 259.8494975239955
+  },
+  {
+    "path": "/evidence?kind=timer&value=121&seq=126",
+    "elapsed": 261.21945351099566
+  },
+  {
+    "path": "/evidence?kind=timer&value=122&seq=127",
+    "elapsed": 262.6395804979984
+  },
+  {
+    "path": "/evidence?kind=timer&value=123&seq=128",
+    "elapsed": 264.21937798400177
+  },
+  {
+    "path": "/evidence?kind=timer&value=124&seq=129",
+    "elapsed": 265.66040816999885
+  },
+  {
+    "path": "/evidence?kind=timer&value=125&seq=130",
+    "elapsed": 267.050905463002
+  },
+  {
+    "path": "/evidence?kind=timer&value=126&seq=131",
+    "elapsed": 268.4994266569993
+  },
+  {
+    "path": "/evidence?kind=timer&value=127&seq=132",
+    "elapsed": 269.94876574999944
+  },
+  {
+    "path": "/evidence?kind=timer&value=128&seq=133",
+    "elapsed": 271.3697482429998
+  },
+  {
+    "path": "/evidence?kind=timer&value=129&seq=134",
+    "elapsed": 272.77890283699526
+  },
+  {
+    "path": "/evidence?kind=timer&value=130&seq=135",
+    "elapsed": 274.2094977269953
+  },
+  {
+    "path": "/evidence?kind=timer&value=131&seq=136",
+    "elapsed": 275.7000464070006
+  }
+]

@@ -1,5 +1,33 @@
 # Private PMM512 slice, not promoted
 
+## Current continuation (2026-10-08 06:02 +07)
+
+This section supersedes the earlier live/fatal hypotheses below.
+The separate safe-pointer fix requires real PMM-owned frames, retaining U/S,
+RW, canonical and whole-range checks. BIOS/UEFI280MiB every-page random/log
+copy, RO/NONE/supervisor/preflight and two-launch exact cleanup PASS.
+Full22674 failed absent ABI cache; full7014 failed absent pinned Cobalt core.
+Normal restored, failure retained; retry2759 pending with both caches verified.
+Combined SHM8/direct full47797 already PASS; no PMM/source promotion yet.
+
+Native HTML/DOM/timers/key/click actually execute (hfcgru2i/n693w3zt), but long
+refresh final Timer96/Clicks2 trails156timers/3clicks. No responsive60s claim.
+Normal boot CPU probes remain alive indefinitely. Private retirement preserves
+PROCESS_TESTS=1 stress, normal boots reap only probes after checks. BIOS/UEFI
+counter-stop/timer/shell/resource focus PASS; c3sthg1e first background186s->95s,
+DOM126.49s->74.62s. Final Timer114/Keyc still trails131; no click callbacks
+this run. CPU-clock subtest absent in old diagnostic clone, NOT a CPU PASS.
+
+Actual TLS IP URL rejected ERR_CERT_NON_UNIQUE_NAME,0HTTP; deliberately stopped
+after concrete navigation failure. New DNS SAN attempt uses documented DNS-only
+mapping cobalt.example.com->10.0.2.2 and enforcement=true. Disposable public CA
+is loaded via actual hashed cert assets; no verifier bypass. Negative certs and
+concurrent native assets pending. NOT external/public-CA HTTPS/full gate proof.
+Never commit generated private keys/whole TLS directories. Close/relaunch,
+RAMFS cache/resource accounting, scrolling and responsive rendering remain open.
+
+## Historical PMM diagnosis
+
 Derived from frozen shm-8m-4hJG2I with corrected server/socketpair fixtures,
 VM near hints, runtime64/kernel32 descriptors and actual SHM8MiB direct mapping.
 Only memory.c differs from that clean tree. Main still uses PMM256MiB.

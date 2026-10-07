@@ -1,0 +1,47 @@
+[
+  {
+    "elapsed": 5.6326141499957885,
+    "cream_pixels": 0,
+    "frame": "frame-005.ppm"
+  },
+  {
+    "elapsed": 35.72301853400131,
+    "cream_pixels": 0,
+    "frame": "frame-035.ppm"
+  },
+  {
+    "elapsed": 65.82134481799585,
+    "cream_pixels": 0,
+    "frame": "frame-065.ppm"
+  },
+  {
+    "elapsed": 95.91711759499594,
+    "cream_pixels": 480000,
+    "frame": "frame-095.ppm"
+  },
+  {
+    "elapsed": 125.97360912599834,
+    "cream_pixels": 443939,
+    "frame": "frame-125.ppm"
+  },
+  {
+    "elapsed": 155.97614293600054,
+    "cream_pixels": 444436,
+    "frame": "frame-155.ppm"
+  },
+  {
+    "elapsed": 186.1597743769962,
+    "cream_pixels": 444386,
+    "frame": "frame-186.ppm"
+  },
+  {
+    "elapsed": 216.16690005300188,
+    "cream_pixels": 444442,
+    "frame": "frame-216.ppm"
+  },
+  {
+    "elapsed": 246.25532697299786,
+    "cream_pixels": 444293,
+    "frame": "frame-246.ppm"
+  }
+]

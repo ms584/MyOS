@@ -3,6 +3,54 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Boot CPU probes and actual TLS policy — 2026-10-08 06:02 +07
+
+Goal active; production source/main images unchanged. No push/no33.3.
+This section supersedes older RUNNING descriptions below.
+Full22674 terminal1: missing cached contracts/window.h. Full7014 terminal1
+05:57:39: launcher test lacks build/engine-evaluation/libcobalt.so. Neither PASS;
+normal restore traps completed. Preserved pmm-syscall-full-missing-core log/status.
+Cache44 ABI headers seeded; copied core from full-PASS shm-8m-4hJG2I, verified
+SHA256 against PHASE33_COBALT_AUDIT.json. Retry2759 started05:58:08, same frozen
+source/assertions, mandatory full+6 scopes both firmware pending. Future clean
+clones MUST seed pinned core AND verified contract cache first. Do not restart
+retry on observation timeout.
+
+Refresh80475 terminal0 05:42:17:n693w3zt,165 requests,156 timers, key/click x3.
+Actual final Timer96/Clicks2 confirms updates but substantial lag, not60s PASS.
+Normal kernel leaves two _Noreturn context_probe loops and two CPU-bound user
+demos alive. Private four-file retirement experiment preserves PROCESS_TESTS=1
+stress/demos. Normal process_test kills/reaps probes with exact page recovery;
+boot task calls scheduler_finish_boot_tests after syscall/FS boot checks. IRQs
+disabled/current==0 required; ONLY kernel slots1..3 retired, stacks freed/FP reset.
+BIOS/UEFI focus PASS: counters ran then stop; ticks/shell live, process pages exact.
+Runner79005 terminal2: missing test_cpu_clock.py in diagnostic clone, NOT CPU PASS.
+Separate native47709 terminal0 05:55:30:c3sthg1e GET52.68 DOM74.62 visible95s
+versus prior64.81/126.49/186s. Keys a/b/c observed, NO click callbacks this run;
+investigate PS/2 motion rather than assume all input passes. Final Timer114/Keyc
+versus131 timers still lag. Escape pages/all threads reclaimed; heap409088->
+454144 (+45056, same delta as before): warm relaunch/RAMFS cache accounting needed.
+Retirement WIP, NOT promoted or architectural full-PASS.
+
+TLS27590 first attempt enforcement=true, genuine public test CA through actual
+/assets/ssl/certs/<subject_hash>.0 beside pinned133 roots, host TLS serving only.
+Native BoringSSL rejects IP URL net_error-210/ERR_CERT_NON_UNIQUE_NAME; bundle
+3p379730 has0 HTTP requests. Deliberately SIGINT exact Python370295 AFTER proven
+navigation failure; finally saved evidence/closed VM; exit130 NOT PASS.
+Pinned services/network/network_context.cc2989-2990 consumes host-resolver-rules
+only as builder.set_host_mapping_rules; source/hash audit in build/cobalt-resolver-
+rules-audit-20261008. Diagnostic replaces --v=1 with --host-resolver-rules=MAP
+cobalt.example.com 10.0.2.2 (seven args+NULL; owned bootname576 unchanged).
+This maps transport only: actual TLS must still check DNS SAN, chain, validity;
+enforcement=true. NOT external DNS/public Internet proof. New58269 live06:00:52:
+valid certificate plus wrong-host/expired/untrusted TLS servers; negatives must
+receive NO HTTP and native image onerror beacons must identify all3. Three real
+image requests delayed2s measure overlap. Inspect evidence.json, screenshots,
+native errors and cleanup before ANY HTTPS/full acceptance claim. Source frozen.
+NEVER commit generated *.private-key.pem or whole TLS bundle; explicit public
+evidence only. Main four normal hashes OK06:01:26, data disks untouched.
+Sources/runners/evidence in docs/wip/native-pmm512. Goal active.
+
 ## Native HTML/input and safe upper-frame syscalls — 2026-10-08 05:37 +07
 
 Goal active; no push, no33.3, no source promotion/main image changes.

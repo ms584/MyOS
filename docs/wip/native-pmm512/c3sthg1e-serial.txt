@@ -1,0 +1,752 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM frames above256MiB, alias and retained lifetime
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 126679
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 240031 sectors
+Storage: unrecognized data disk; RAM-only
+NIC: RTL8139 initialized
+Security: UTC 1791413457, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> net up
+Network: DHCP configured
+Network: RTL8139, IP 10.0.2.15 gateway 10.0.2.2 DNS 10.0.2.3
+myos> mkdir /dev/shm
+myos> elf pair-starboard cobalt_diag provider http://10.0.2.2:33541/
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x0000008006331000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: access
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18193 absolute=0 global=2 jump=55 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: pthread_mutex_trylock
+ELF platform: SbSystemGetExtension
+ELF platform: pthread_mutex_unlock
+ELF provider: SbGetEglInterface
+ELF provider: SbGetGlesInterface
+ELF platform: SbWindowDestroy
+ELF platform: SbWindowSetDefaultOptions
+ELF platform: SbWindowCreate
+ELF platform: SbWindowGetSize
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: pthread_getspecific
+ELF platform: SbSystemRaisePlatformError
+ELF platform: SbSystemRequestStop
+ELF platform: gettid
+ELF platform: read
+ELF platform: __errno_location
+ELF platform: close
+ELF platform: clock_gettime
+ELF platform: pthread_sigmask
+ELF platform: pthread_setspecific
+ELF platform: pthread_key_create
+ELF platform: write
+ELF platform: sched_yield
+ELF platform: free
+ELF platform: pthread_mutex_init
+ELF platform: pthread_cond_init
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_wait
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_cond_signal
+ELF platform: sem_init
+ELF platform: sem_timedwait
+ELF platform: sem_wait
+ELF platform: sem_post
+ELF platform: pthread_self
+ELF platform: pthread_getschedparam
+ELF platform: sysconf
+ELF platform: munmap
+ELF platform: mmap
+ELF platform: sigaction
+ELF platform: signal
+ELF platform: raise
+ELF platform: uname
+ELF platform: eventfd
+ELF platform: fstat
+ELF platform: fdatasync
+ELF platform: mkdir
+ELF platform: access
+ELF platform: opendir
+ELF platform: readdir
+ELF platform: geteuid
+ELF platform: chmod
+ELF platform: closedir
+ELF platform: mprotect
+ELF platform: madvise
+ELF platform: pipe
+ELF platform: fcntl
+ELF platform: mkstemp
+ELF platform: mkdtemp
+ELF platform: readlink
+ELF platform: posix_memalign
+ELF platform: prctl
+ELF platform: pthread_setname_np
+ELF platform: pthread_create
+ELF platform: poll
+ELF platform: dup
+ELF platform: isatty
+ELF platform: getpid
+ELF platform: pthread_key_delete
+ELF platform: pthread_getname_np
+ELF platform: fchmod
+ELF platform: writev
+ELF platform: ftruncate
+ELF platform: getaddrinfo
+ELF platform: freeaddrinfo
+ELF platform: socketpair
+ELF platform: socket
+ELF platform: setsockopt
+ELF platform: bind
+ELF platform: listen
+ELF platform: connect
+ELF platform: shutdown
+ELF platform: sendmsg
+ELF platform: recvmsg
+ELF platform: getsockname
+ELF platform: getsockopt
+ELF platform: accept
+ELF platform: realloc
+ELF platform: malloc
+ELF platform: gai_strerror
+ELF platform: getifaddrs
+ELF platform: freeifaddrs
+ELF platform: calloc
+ELF platform: sem_destroy
+ELF platform: pthread_mutex_destroy
+ELF platform: SbMicrophoneGetAvailable
+ELF platform: SbMicrophoneCreate
+ELF platform: SbMicrophoneOpen
+ELF platform: SbMicrophoneRead
+ELF platform: SbMicrophoneDestroy
+ELF platform: SbMediaCanPlayMimeAndKeySystem
+ELF platform: SbMediaCanChangeType
+ELF platform: SbMediaGetAudioOutputCount
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: SbMediaGetBufferAllocationUnit
+ELF platform: SbMediaGetAudioBufferBudget
+ELF platform: SbMediaGetBufferGarbageCollectionDurationThreshold
+ELF platform: SbMediaGetInitialBufferCapacity
+ELF platform: SbMediaIsBufferPoolAllocateOnDemand
+ELF platform: SbMediaGetVideoBufferBudget
+ELF platform: SbPlayerWriteEndOfStream
+ELF platform: SbPlayerGetMaximumNumberOfSamplesPerWrite
+ELF platform: SbPlayerCreate
+ELF platform: SbPlayerGetPreferredOutputMode
+ELF platform: SbPlayerDestroy
+ELF platform: SbPlayerSeek
+ELF platform: SbPlayerWriteSamples
+ELF platform: SbPlayerSetBounds
+ELF platform: SbPlayerSetPlaybackRate
+ELF platform: SbPlayerSetVolume
+ELF platform: SbPlayerGetInfo
+ELF platform: SbPlayerGetCurrentFrame
+ELF platform: SbPlayerGetAudioConfiguration
+ELF platform: SbDrmCreateSystem
+ELF platform: SbDrmDestroySystem
+ELF platform: SbDrmIsServerCertificateUpdatable
+ELF platform: SbDrmUpdateServerCertificate
+ELF platform: SbDrmGenerateSessionUpdateRequest
+ELF platform: SbDrmUpdateSession
+ELF platform: SbDrmCloseSession
+ELF platform: getuid
+ELF platform: pause
+ELF weak zero: _ZTHN2v88internal12trap_handler21g_thread_in_wasm_codeE
+ELF platform: malloc_usable_size
+ELF platform: pthread_kill
+ELF platform: getrlimit
+ELF platform: ioctl_FIONREAD
+ELF platform: inotify_add_watch
+ELF platform: inotify_rm_watch
+ELF platform: SbSpeechSynthesisIsSupported
+ELF platform: SbSpeechSynthesisSpeak
+ELF platform: SbSpeechSynthesisCancel
+ELF platform: SbSystemGetLocaleId
+ELF platform: SbTimeZoneGetName
+ELF platform: rename
+ELF platform: SbSystemGetProperty
+ELF platform: kSbFileMaxPath
+ELF platform: SbSystemGetPath
+ELF platform: SbWindowGetDiagonalSizeInInches
+ELF platform: SbSystemRequestConceal
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: SbSystemHasCapability
+ELF platform: SbSystemGetTotalCPUMemory
+ELF platform: SbSystemGetUsedGPUMemory
+ELF platform: SbAudioSinkDestroy
+ELF platform: SbAudioSinkIsAudioSampleTypeSupported
+ELF platform: SbAudioSinkGetMinBufferSizeInFrames
+ELF platform: SbAudioSinkGetNearestSupportedSampleFrequency
+ELF platform: SbAudioSinkCreate
+ELF platform: aligned_alloc
+ELF platform: pthread_cond_broadcast
+ELF platform: kSbFileSepString
+ELF platform: SbLog
+ELF platform: SbSystemGetLastError
+ELF platform: SbSystemGetErrorString
+ELF platform: SbLogRaw
+ELF platform: msync
+ELF platform: kSbMaxThreads
+ELF platform: lseek
+ELF platform: pread
+ELF platform: pwrite
+ELF platform: pthread_condattr_init
+ELF platform: pthread_condattr_setclock
+ELF platform: pthread_condattr_destroy
+ELF platform: pthread_cond_destroy
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_attr_init
+ELF platform: pthread_attr_setdetachstate
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_join
+ELF platform: pthread_detach
+ELF platform: setpriority
+ELF platform: sched_setscheduler
+ELF platform: mincore
+ELF platform: sched_getaffinity
+ELF platform: statvfs
+ELF platform: realpath
+ELF platform: getcwd
+ELF platform: pipe2
+ELF platform: symlink
+ELF platform: pathconf
+ELF platform: fstatat
+ELF platform: openat
+ELF platform: unlinkat
+ELF platform: fdopendir
+ELF platform: recv
+ELF platform: SbEventCancel
+ELF platform: SbEventSchedule
+ELF platform: SbSystemIsDebuggerAttached
+ELF platform: SbSystemBreakIntoDebugger
+ELF platform: epoll_create1
+ELF platform: epoll_ctl
+ELF platform: epoll_wait
+ELF platform: pthread_attr_getstacksize
+ELF platform: kSbFileMaxName
+ELF platform: fsync
+ELF platform: SbSystemGetStack
+ELF platform: SbSystemSymbolize
+ELF platform: pthread_once
+ELF platform: SbStorageOpenRecord
+ELF platform: SbStorageCloseRecord
+ELF platform: SbStorageGetRecordSize
+ELF platform: SbStorageReadRecord
+ELF platform: SbStorageDeleteRecord
+ELF platform: pthread_getattr_np
+ELF platform: pthread_attr_getstack
+ELF platform: send
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_rwlock_destroy
+ELF platform: SbSystemGetRandomUInt64
+ELF platform: inotify_init1
+ELF platform: getauxval
+ELF platform: readv
+ELF platform: utimensat
+ELF platform: clock_nanosleep
+ELF platform: if_indextoname
+ELF platform: getpeername
+ELF platform: recvmmsg
+ELF platform: sendto
+ELF platform: readdir_r
+ELF platform: pthread_mutexattr_settype
+ELF platform: fchown
+ELF platform: SbDecodeTargetRelease
+ELF platform: SbDrmGetMetrics
+ELF platform: SbDecodeTargetGetInfo
+ELF platform: SbSystemHideSplashScreen
+ELF platform: SbSystemNetworkIsDisconnected
+ELF platform: SbSystemSignWithCertificationSecretKey
+ELF relocations: relative=117653 absolute=20 global=17 jump=626 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+Starboard SABI: pinned x64 API 18 matched
+[1007/225100.440000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+[5:/5:1007/225101.160000:INFO:cobalt/media/audio/cobalt_audio_device_factory.cc:24] Register CobaltAudioDeviceFactory
+[5:/5:1007/225101.400000:INFO:cobalt/browser/cobalt_content_browser_client.cc:759] CobaltCommandLine: enable_features=[LimitImageDecodeCacheSize:mb/24, DefaultEnableANGLEValidation, SmallerInterestArea, ReclaimPrepaintTilesWhenIdle, ReclaimOldPrepaintTiles], disable_features=[Vulkan,MemoryCacheStrongReference], enable_h5vcc_settings=[]
+[5:/5:1007/225101.440000:INFO:cobalt/browser/cobalt_content_browser_client.cc:766] CobaltCommandLine: 'autoplay-policy': 'no-user-gesture-required'
+'cc-image-cache-limit-items': '0'
+'content-shell-host-window-size': '800x600'
+'disable-accelerated-video-decode': ''
+'disable-accelerated-video-encode': ''
+'disable-features': 'Vulkan,MemoryCacheStrongReference'
+'disable-gpu-shader-disk-cache': ''
+'disable-in-process-stack-traces': ''
+'disable-rgba-4444-textures': ''
+'enable-aggressive-domstorage-flushing': ''
+'enable-blink-features': 'PreciseMemoryInfo'
+'enable-features': 'LimitImageDecodeCacheSize:mb/24, DefaultEnableANGLEValidation, SmallerInterestArea, ReclaimPrepaintTilesWhenIdle, ReclaimOldPrepaintTiles'
+'enable-logging': 'stderr'
+'enable-low-end-device-mode': ''
+'enable-zero-copy': ''
+'force-dark-mode': ''
+'force-gpu-mem-available-mb': '64'
+'force-video-overlays': ''
+'gpu-rasterization-msaa-sample-count': '4'
+'hide-scrollbars': ''
+'https-enforcement': 'false'
+'ignore-gpu-blocklist': ''
+'js-flags': '--jitless'
+'no-sandbox': ''
+'no-zygote': ''
+'single-process': ''
+'url': 'http://10.0.2.2:33541/'
+'use-angle': 'gles-egl'
+'use-cmd-decoder': 'passthrough'
+'use-gl': 'angle'
+'v': '1'
+[5:/5:1007/225101.460000:WARNING:cobalt/common/features/starboard_features_initialization.cc:168] Optional kStarboardExtension 'kStarboardExtensionFeaturesName' is not present. No features or parameters have been pushed to Starboard.
+[5:/5:1007/225101.480000:INFO:base/threading/hang_watcher.cc:540] Freeze detection: HangWatcher initialized
+[5:/5:1007/225101.610000:WARNING:components/discardable_memory/service/discardable_shared_memory_manager.cc:193] Less than 64MB of free space in temporary directory for shared memory files: 0
+[5:Chrome_IOThread/5:1007/225101.720000:WARNING:cobalt/browser/cobalt_browser_main_parts.cc:255] Failed to initialize file-backed PMA for BrowserStabilityMetrics, falling back to 512 KB local memory.
+[5:CrBrowserMain/5:1007/225101.840000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:424] Cobalt Metrics Service initialized.
+[5:ThreadPoolForegroundWorker/4:1007/225101.920000:ERROR:net/dns/dns_config_service_linux.cc:352] DNS config (resolv.conf) watch failed to start.
+[5:ThreadPoolForegroundWorker/4:1007/225101.950000:ERROR:net/dns/dns_config_service_linux.cc:361] DNS nsswitch.conf watch failed to start.
+[5:ThreadPoolForegroundWorker/4:1007/225101.950000:ERROR:net/dns/dns_config_service_linux.cc:370] DNS hosts watch failed to start.
+[5:ThreadPoolForegroundWorker/4:1007/225101.980000:WARNING:net/dns/dns_config_service_linux.cc:431] Failed to read DnsConfig.
+[5:CrBrowserMain/5:1007/225102.140000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:435] Metrics Service is now running/recording.
+[5:CrBrowserMain/5:1007/225102.150000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MSM::InitializeMaybeAsync([this=0x8800428000])
+[5:CrBrowserMain/5:1007/225102.150000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MDM::MediaDevicesManager()
+[5:CrBrowserMain/5:1007/225102.180000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/225102.190000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MSM::MediaStreamManager([this=0x8800428000]))
+[5:CrBrowserMain/5:1007/225102.220000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/225102.250000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/225102.250000:ERROR:cobalt/browser/cobalt_content_browser_client.cc:793] The plaform does not implement (the required version of) the CrashHandler Starboard extension; not setting the user agent annotation
+[5:ThreadPoolForegroundWorker/3:1007/225102.290000:VERBOSE1:cobalt/browser/h5vcc_native_stability/native_stability_manager.cc:555] NativeStability extension is not supported on this platform.
+[5:CrBrowserMain/5:1007/225102.310000:WARNING:cobalt/shell/common/device_authentication.cc:136] Error retrieving certification scope required for device authentication.
+[5:CrBrowserMain/5:1007/225102.540000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/225102.590000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/225102.590000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:ThreadPoolForegroundWorker/3:1007/225102.870000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/225102.870000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Code Cache/js/index-dir/the-real-index": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/4:1007/225102.880000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/4:1007/225102.920000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Code Cache/wasm/index-dir/the-real-index": No such file or directory (2)
+[5:CrBrowserMain/5:1007/225103.240000:VERBOSE1:cobalt/browser/cobalt_content_browser_client.cc:480] NativeSplash: Observing main frame WebContents.
+[5:CrBrowserMain/5:1007/225103.270000:WARNING:cobalt/updater/updater_module.cc:115] UpdaterModule is not created yet, and cannot be retrieved by UpdaterModule::GetInstance().
+[5:CrBrowserMain/5:1007/225103.270000:INFO:cobalt/browser/cobalt_content_browser_client.cc:497] Evergreen Lite mode detected, disabling UpdaterModule.
+[5:CrBrowserMain/5:1007/225103.300000:VERBOSE1:cobalt/browser/cobalt_content_browser_client.cc:476] NativeSplash: Skip observing WebContents for kCobaltSplashMainFrameName.
+[5:CrBrowserMain/5:1007/225103.330000:INFO:cobalt/shell/browser/shell.cc:636] JS injection for filename: html_media_element_extension_on_java_bridge.js
+WINDOW DIAGNOSTIC width=00000320 height=00000258 windowed=0 query=00000000
+WINDOW DIAGNOSTIC acquire=00000001
+[5:CrBrowserMain/5:1007/225104.550000:INFO:cobalt/renderer/rasterizer/skia/skia/src/ports/SkFontStyleSet_cobalt.cc:615] Scanned font from file: DejaVu Sans(400, 5, [5:CrBrowserMain/5:1007/225104.550000:INFO:cobalt/renderer/rasterizer/skia/skia/src/ports/SkTypeface_cobalt.cc:138] Created static SkTypeface_CobaltStreamProvider: sans-serif(400, 5, [5:CrBrowserMain/5:1007/225104.580000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/225104.580000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/225104.580000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/225104.730000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/225105.340000:VERBOSE1:cobalt/shell/browser/shell.cc:657] NativeSplash: Loading splash screen WebContents.
+[5:CrBrowserMain/5:1007/225105.620000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:366] CobaltBrowserMainParts::StartStorageMigration started.
+[5:CrBrowserMain/5:1007/225105.620000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:477] Starting Pre-MainLoop Migration.
+[5:CrBrowserMain/5:1007/225105.620000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:384] Legacy storage was not found or failed to parse.
+[5:CrBrowserMain/5:1007/225105.620000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:527] Nothing to migrate.
+[5:CrBrowserMain/5:1007/225105.660000:WARNING:cobalt/browser/loader_app_metrics.cc:46] LoaderAppMetrics: Extension not found.
+[5:CrBrowserMain/5:1007/225105.700000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+[5:ThreadPoolForegroundWorker/3:1007/225105.750000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/TQxLw==/databases": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/4:1007/225105.760000:ERROR:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:179] Failed to delete legacy storage record.
+[5:ThreadPoolForegroundWorker/3:1007/225105.860000:WARNING:content/browser/btm/btm_database.cc:125] Failed to initialize the DIPS SQLite database.
+[5:NetworkService/16:1007/225106.020000:VERBOSE1:net/proxy_resolution/configured_proxy_resolution_service.cc:847] PAC support disabled because there is no system implementation
+[5:ThreadPoolForegroundWorker/3:1007/225106.160000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/225106.160000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/TQxLw==/Shared Dictionary/cache/index-dir/the-real-index": No such file or directory (2)
+[5:NetworkService/16:1007/225106.500000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/
+[5:CrBrowserMain/5:1007/225106.770000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:393] Migration complete. Proceeding with deferred launchShell.
+[5:Chrome_InProcRendererThread/18:1007/225106.940000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:134] HighestPmfReporter Constructor Finished! use_baseline: 1
+[5:Chrome_InProcRendererThread/18:1007/225106.940000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 0 delay=120s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.0to2min"
+[5:Chrome_InProcRendererThread/18:1007/225106.940000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 1 delay=240s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.2to4min"
+[5:Chrome_InProcRendererThread/18:1007/225106.940000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 2 delay=480s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.4to8min"
+[5:Chrome_InProcRendererThread/18:1007/225106.940000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 3 delay=960s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.8to16min"
+[5:ThreadPoolForegroundWorker/3:1007/225107.090000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/225107.090000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Cache/Cache_Data/index-dir/the-real-index": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225107.160000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Cache/Cache_Data/702ed9d8bae22583_0": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225107.160000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Cache/Cache_Data/702ed9d8bae22583_1": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225107.160000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/Cache/Cache_Data/702ed9d8bae22583_s": No such file or directory (2)
+[5:NetworkService/16:1007/225107.330000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 87: Error 92 (92)
+[5:Chrome_InProcRendererThread/18:1007/225107.480000:INFO:media/starboard/decoder_buffer_allocator.cc:91] Allocated decoder buffer pool on demand.
+[5:NetworkService/16:1007/225107.650000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 77: Error 92 (92)
+[5:Chrome_InProcGpuThread/11:1007/225121.130000:VERBOSE1:components/viz/service/main/viz_main_impl.cc:86] VizNullHypothesis is disabled (not a warning)
+[5:HangWatcher/1:1007/225121.530000:INFO:base/threading/hang_watcher.cc:1359] Freeze detection: Triggering DumpWithoutCrashing. Actionable: 1
+[5:HangWatcher/1:1007/225121.530000:INFO:base/threading/hang_watcher.cc:1483] Freeze detection: RecordHang() skipped due to reporting disabled.
+[5:Chrome_InProcRendererThread/18:1007/225125.470000:VERBOSE1:third_party/blink/renderer/bindings/core/v8/local_window_proxy.cc:264] A context is created NOT from snapshot
+[5:CrBrowserMain/5:1007/225126.110000:INFO:cobalt/browser/lifecycle/cobalt_lifecycle_manager.cc:271] Rebind: Proactively re-binding frame=0x88005f0000
+[5:CrBrowserMain/5:1007/225126.110000:INFO:cobalt/shell/browser/shell.cc:603] Navigated to http://10.0.2.2:33541/
+[5:Chrome_InProcRendererThread/18:1007/225126.200000:VERBOSE1:third_party/blink/renderer/bindings/core/v8/local_window_proxy.cc:264] A context is created NOT from snapshot
+[5:CrBrowserMain/5:1007/225126.440000:WARNING:cobalt/updater/updater_module.cc:115] UpdaterModule is not created yet, and cannot be retrieved by UpdaterModule::GetInstance().
+[5:Chrome_InProcRendererThread/18:1007/225126.870000:INFO:cobalt/renderer/cobalt_content_renderer_client.cc:216] Renderer received SbWindow handle: 0x1
+[5:Chrome_InProcRendererThread/18:1007/225126.900000:WARNING:third_party/blink/renderer/modules/cobalt/cobalt_lifecycle_controller.cc:57] CobaltLifecycleController receiver is ALREADY BOUND!
+[5:CrBrowserMain/5:1007/225126.930000:WARNING:cobalt/browser/lifecycle/cobalt_lifecycle_manager.cc:291] OnControllerDisconnect for frame=0x88005f0000
+[5:CrBrowserMain/5:1007/225128.500000:INFO:cobalt/shell/browser/h5vcc_scheme_url_loader_factory.cc:232] Fallback splash: splash.png
+[5:ThreadPoolForegroundWorker/3:1007/225128.530000:ERROR:storage/browser/quota/quota_database.cc:1061] Could not open the quota database, resetting.
+[5:ThreadPoolForegroundWorker/3:1007/225128.530000:VERBOSE1:storage/browser/quota/quota_database.cc:1281] Deleting existing quota data and starting over.
+[5:ThreadPoolForegroundWorker/3:1007/225128.530000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.530000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/WebStorage/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.560000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.560000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/WebStorage/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.560000:ERROR:storage/browser/quota/quota_database.cc:1061] Could not open the quota database, resetting.
+[5:ThreadPoolForegroundWorker/3:1007/225128.560000:VERBOSE1:storage/browser/quota/quota_database.cc:1281] Deleting existing quota data and starting over.
+[5:ThreadPoolForegroundWorker/3:1007/225128.580000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.580000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/WebStorage/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.580000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.580000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TQxLw==/WebStorage/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/225128.580000:ERROR:storage/browser/quota/quota_database.cc:1066] Failed to reset the quota database.
+[5:ThreadPoolForegroundWorker/3:1007/225128.610000:ERROR:storage/browser/quota/quota_database.cc:1066] Failed to reset the quota database.
+[5:CrBrowserMain/5:1007/225128.760000:ERROR:cobalt/shell/browser/h5vcc_scheme_url_loader_factory.cc:383] Did not find splash video from cache default, reason: 2
+[5:NetworkService/16:1007/225128.950000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=dom&value=Native%20DOM%2042&seq=1
+[5:CrBrowserMain/5:1007/225129.800000:VERBOSE1:cobalt/shell/browser/shell.cc:1224] NativeSplash: Main frame WebContents is loaded, splash screen elapsed: 750ms, remaining delay: 750ms.
+[5:NetworkService/16:1007/225130.460000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=1&seq=2
+[5:NetworkService/16:1007/225130.480000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 94: Error 92 (92)
+[5:CrBrowserMain/5:1007/225130.550000:VERBOSE1:cobalt/shell/browser/shell.cc:1254] NativeSplash: Switching to main frame WebContents.
+[5:NetworkService/16:1007/225131.010000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=2&seq=3
+[5:NetworkService/16:1007/225131.050000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 104: Error 92 (92)
+[5:NetworkService/16:1007/225142.330000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=geometry&value=%7B%22x%22%3A125.6484375%2C%22y%22%3A340.75%7D&seq=4
+[5:NetworkService/16:1007/225142.460000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 111: Error 92 (92)
+[5:NetworkService/16:1007/225142.460000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=3&seq=5
+[5:NetworkService/16:1007/225142.530000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225142.940000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=4&seq=6
+[5:NetworkService/16:1007/225142.970000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225143.960000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=5&seq=7
+[5:NetworkService/16:1007/225143.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225144.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=6&seq=8
+[5:NetworkService/16:1007/225144.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225145.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=7&seq=9
+[5:NetworkService/16:1007/225145.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225146.930000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=8&seq=10
+[5:NetworkService/16:1007/225146.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225147.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=9&seq=11
+[5:NetworkService/16:1007/225147.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225148.940000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=10&seq=12
+[5:NetworkService/16:1007/225148.970000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225149.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=11&seq=13
+[5:NetworkService/16:1007/225149.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225150.310000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=key&value=a&seq=14
+[5:NetworkService/16:1007/225150.340000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225150.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=12&seq=15
+[5:NetworkService/16:1007/225150.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225151.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=13&seq=16
+[5:NetworkService/16:1007/225151.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225152.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=14&seq=17
+[5:NetworkService/16:1007/225152.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225153.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=15&seq=18
+[5:NetworkService/16:1007/225153.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225154.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=16&seq=19
+[5:NetworkService/16:1007/225154.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225155.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=17&seq=20
+[5:NetworkService/16:1007/225155.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225156.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=18&seq=21
+[5:NetworkService/16:1007/225156.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225157.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=19&seq=22
+[5:NetworkService/16:1007/225157.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225158.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=20&seq=23
+[5:NetworkService/16:1007/225158.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225159.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=21&seq=24
+[5:NetworkService/16:1007/225159.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225200.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=22&seq=25
+[5:NetworkService/16:1007/225200.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225201.950000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=23&seq=26
+[5:NetworkService/16:1007/225202.000000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225202.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=24&seq=27
+[5:NetworkService/16:1007/225202.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225203.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=25&seq=28
+[5:NetworkService/16:1007/225203.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225204.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=26&seq=29
+[5:NetworkService/16:1007/225204.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225205.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=27&seq=30
+[5:NetworkService/16:1007/225205.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225206.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=28&seq=31
+[5:NetworkService/16:1007/225206.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225207.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=29&seq=32
+[5:NetworkService/16:1007/225207.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225208.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=30&seq=33
+[5:NetworkService/16:1007/225208.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225209.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=31&seq=34
+[5:NetworkService/16:1007/225209.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225210.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=32&seq=35
+[5:NetworkService/16:1007/225210.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225211.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=33&seq=36
+[5:NetworkService/16:1007/225211.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225212.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=34&seq=37
+[5:NetworkService/16:1007/225212.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225213.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=35&seq=38
+[5:NetworkService/16:1007/225213.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225214.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=36&seq=39
+[5:NetworkService/16:1007/225214.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225215.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=37&seq=40
+[5:NetworkService/16:1007/225215.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225216.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=38&seq=41
+[5:NetworkService/16:1007/225216.970000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225217.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=39&seq=42
+[5:NetworkService/16:1007/225217.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225218.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=40&seq=43
+[5:NetworkService/16:1007/225218.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225219.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=41&seq=44
+[5:NetworkService/16:1007/225219.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225220.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=42&seq=45
+[5:NetworkService/16:1007/225220.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225221.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=43&seq=46
+[5:NetworkService/16:1007/225221.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225222.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=44&seq=47
+[5:NetworkService/16:1007/225222.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225223.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=45&seq=48
+[5:NetworkService/16:1007/225223.970000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225224.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=46&seq=49
+[5:NetworkService/16:1007/225224.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225225.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=47&seq=50
+[5:NetworkService/16:1007/225225.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225226.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=48&seq=51
+[5:NetworkService/16:1007/225226.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225227.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=49&seq=52
+[5:NetworkService/16:1007/225227.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225228.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=50&seq=53
+[5:NetworkService/16:1007/225228.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 119: Error 92 (92)
+[5:NetworkService/16:1007/225229.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=51&seq=54
+[5:NetworkService/16:1007/225229.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225230.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=52&seq=55
+[5:NetworkService/16:1007/225230.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225231.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=53&seq=56
+[5:NetworkService/16:1007/225231.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225232.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=54&seq=57
+[5:NetworkService/16:1007/225232.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225233.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=55&seq=58
+[5:NetworkService/16:1007/225233.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225234.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=56&seq=59
+[5:NetworkService/16:1007/225234.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225235.930000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=57&seq=60
+[5:NetworkService/16:1007/225235.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 117: Error 92 (92)
+[5:NetworkService/16:1007/225236.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=58&seq=61
+[5:NetworkService/16:1007/225236.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 117: Error 92 (92)
+[5:NetworkService/16:1007/225237.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=59&seq=62
+[5:NetworkService/16:1007/225237.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225238.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=60&seq=63
+[5:NetworkService/16:1007/225238.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225239.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=61&seq=64
+[5:NetworkService/16:1007/225239.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225240.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=62&seq=65
+[5:NetworkService/16:1007/225240.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225241.920000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=63&seq=66
+[5:NetworkService/16:1007/225241.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225242.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=64&seq=67
+[5:NetworkService/16:1007/225242.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225243.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=65&seq=68
+[5:NetworkService/16:1007/225243.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225244.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=66&seq=69
+[5:NetworkService/16:1007/225244.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225245.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=67&seq=70
+[5:NetworkService/16:1007/225245.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225246.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=68&seq=71
+[5:NetworkService/16:1007/225246.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225247.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=69&seq=72
+[5:NetworkService/16:1007/225247.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225248.710000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=key&value=b&seq=73
+[5:NetworkService/16:1007/225248.760000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225249.000000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=70&seq=74
+[5:NetworkService/16:1007/225249.050000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225249.930000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=71&seq=75
+[5:NetworkService/16:1007/225249.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225250.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=72&seq=76
+[5:NetworkService/16:1007/225250.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225251.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=73&seq=77
+[5:NetworkService/16:1007/225251.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225252.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=74&seq=78
+[5:NetworkService/16:1007/225252.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225253.920000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=75&seq=79
+[5:NetworkService/16:1007/225253.990000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225254.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=76&seq=80
+[5:NetworkService/16:1007/225254.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225255.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=77&seq=81
+[5:NetworkService/16:1007/225255.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 110: Error 92 (92)
+[5:NetworkService/16:1007/225256.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=78&seq=82
+[5:NetworkService/16:1007/225256.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225257.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=79&seq=83
+[5:NetworkService/16:1007/225257.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225258.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=80&seq=84
+[5:NetworkService/16:1007/225258.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225259.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=81&seq=85
+[5:NetworkService/16:1007/225259.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225300.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=82&seq=86
+[5:NetworkService/16:1007/225300.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 118: Error 92 (92)
+[5:NetworkService/16:1007/225301.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=83&seq=87
+[5:NetworkService/16:1007/225301.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225302.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=84&seq=88
+[5:NetworkService/16:1007/225302.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225303.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=85&seq=89
+[5:NetworkService/16:1007/225303.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225304.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=86&seq=90
+[5:NetworkService/16:1007/225304.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225305.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=87&seq=91
+[5:NetworkService/16:1007/225305.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225306.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=88&seq=92
+[5:NetworkService/16:1007/225306.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225307.920000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=89&seq=93
+[5:NetworkService/16:1007/225307.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225308.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=90&seq=94
+[5:NetworkService/16:1007/225308.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225309.920000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=91&seq=95
+[5:NetworkService/16:1007/225309.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225310.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=92&seq=96
+[5:NetworkService/16:1007/225310.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225311.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=93&seq=97
+[5:NetworkService/16:1007/225311.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225312.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=94&seq=98
+[5:NetworkService/16:1007/225312.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225313.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=95&seq=99
+[5:NetworkService/16:1007/225313.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225314.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=96&seq=100
+[5:NetworkService/16:1007/225314.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225315.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=97&seq=101
+[5:NetworkService/16:1007/225315.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 116: Error 92 (92)
+[5:NetworkService/16:1007/225316.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=98&seq=102
+[5:NetworkService/16:1007/225316.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 116: Error 92 (92)
+[5:NetworkService/16:1007/225317.980000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=99&seq=103
+[5:NetworkService/16:1007/225318.020000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225318.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=100&seq=104
+[5:NetworkService/16:1007/225318.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225319.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=101&seq=105
+[5:NetworkService/16:1007/225319.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225320.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=102&seq=106
+[5:NetworkService/16:1007/225320.960000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225321.960000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=103&seq=107
+[5:NetworkService/16:1007/225321.990000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225322.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=104&seq=108
+[5:NetworkService/16:1007/225322.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 106: Error 92 (92)
+[5:NetworkService/16:1007/225323.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=105&seq=109
+[5:NetworkService/16:1007/225323.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 106: Error 92 (92)
+[5:NetworkService/16:1007/225324.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=106&seq=110
+[5:NetworkService/16:1007/225324.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 93: Error 92 (92)
+[5:NetworkService/16:1007/225325.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=107&seq=111
+[5:NetworkService/16:1007/225325.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 93: Error 92 (92)
+[5:Chrome_InProcRendererThread/18:1007/225326.240000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:235] UmaHistogramMemoryMB CALLED WITH: Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.0to2min, VAL: nan
+[5:NetworkService/16:1007/225326.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=108&seq=112
+[5:NetworkService/16:1007/225326.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 93: Error 92 (92)
+[5:NetworkService/16:1007/225327.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=109&seq=113
+[5:NetworkService/16:1007/225327.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225328.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=110&seq=114
+[5:NetworkService/16:1007/225328.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225329.700000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=key&value=c&seq=115
+[5:NetworkService/16:1007/225329.730000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225329.950000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=111&seq=116
+[5:NetworkService/16:1007/225330.040000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225330.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=112&seq=117
+[5:NetworkService/16:1007/225330.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225331.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=113&seq=118
+[5:NetworkService/16:1007/225331.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225332.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=114&seq=119
+[5:NetworkService/16:1007/225332.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 113: Error 92 (92)
+[5:NetworkService/16:1007/225333.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=115&seq=120
+[5:NetworkService/16:1007/225333.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225334.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=116&seq=121
+[5:NetworkService/16:1007/225334.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225335.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=117&seq=122
+[5:NetworkService/16:1007/225335.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225336.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=118&seq=123
+[5:NetworkService/16:1007/225336.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225337.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=119&seq=124
+[5:NetworkService/16:1007/225337.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225338.930000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=120&seq=125
+[5:NetworkService/16:1007/225338.980000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225339.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=121&seq=126
+[5:NetworkService/16:1007/225339.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225340.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=122&seq=127
+[5:NetworkService/16:1007/225340.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225341.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=123&seq=128
+[5:NetworkService/16:1007/225341.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225342.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=124&seq=129
+[5:NetworkService/16:1007/225342.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225343.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=125&seq=130
+[5:NetworkService/16:1007/225343.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225344.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=126&seq=131
+[5:NetworkService/16:1007/225344.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225345.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=127&seq=132
+[5:NetworkService/16:1007/225345.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225346.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=128&seq=133
+[5:NetworkService/16:1007/225346.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225347.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=129&seq=134
+[5:NetworkService/16:1007/225347.920000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225348.910000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=130&seq=135
+[5:NetworkService/16:1007/225348.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:NetworkService/16:1007/225349.900000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:33541/evidence?kind=timer&value=131&seq=136
+[5:NetworkService/16:1007/225349.930000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 117: Error 92 (92)
+ELF pair live: pages reclaimed; heap-before=409088 heap-after=454144
+ELF cancelled; all threads stopped
+myos> 

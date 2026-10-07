@@ -1,0 +1,10 @@
+$ openssl x509 -in /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-3p379730/public-test-ca.pem -subject_hash -noout
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.sock,server=on,wait=off -cpu max -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-3p379730/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 370295 (python3)
+EVIDENCE_BUNDLE /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-3p379730 requests 0 peak_concurrent_assets 0
+OBSERVATION ONLY: inspect actual native screenshot, TLS rejection errors, concurrency and cleanup; not full acceptance.
+Traceback (most recent call last):
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/test_cobalt_native_verified_tls.py", line 158, in <module>
+    time.sleep(.1)
+    ~~~~~~~~~~^^^^
+KeyboardInterrupt

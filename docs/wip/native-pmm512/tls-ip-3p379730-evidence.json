@@ -1,0 +1,44 @@
+{
+  "requests": [],
+  "peak_concurrent_assets": 0,
+  "visual": [
+    {
+      "elapsed": 6.112874912003463,
+      "blue_pixels": 0,
+      "frame": "frame-006.ppm"
+    },
+    {
+      "elapsed": 36.19638726999983,
+      "blue_pixels": 0,
+      "frame": "frame-036.ppm"
+    },
+    {
+      "elapsed": 66.29133184900275,
+      "blue_pixels": 0,
+      "frame": "frame-066.ppm"
+    },
+    {
+      "elapsed": 96.38905754299776,
+      "blue_pixels": 0,
+      "frame": "frame-096.ppm"
+    },
+    {
+      "elapsed": 126.39570361200458,
+      "blue_pixels": 0,
+      "frame": "frame-126.ppm"
+    },
+    {
+      "elapsed": 156.48933800300438,
+      "blue_pixels": 0,
+      "frame": "frame-156.ppm"
+    },
+    {
+      "elapsed": 186.57965695299936,
+      "blue_pixels": 0,
+      "frame": "frame-186.ppm"
+    }
+  ],
+  "inputs": [],
+  "test_root_sha256": "60d24d5fae8f9d8d6ba1903cf6f56656b34cfb3af55e11428c26dac08229acc9",
+  "test_root_asset": "ssl/certs/3da3f0bf.0"
+}
