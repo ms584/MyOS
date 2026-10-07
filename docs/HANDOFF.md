@@ -3,6 +3,31 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Image protection / near VM / actual V8 RWX blocker — 2026-10-07 19:01 +07
+
+Read PHASE331_IMAGE_VM_WIP.md for clean sources, exact commands and limits.
+Image scope51912 terminal0 BIOS/UEFI+whole ELF BIOS suite18:33;
+VM hint scope96474 terminal0 BIOS/UEFI+image scopes18:44. No promotion.
+Actual88327 now honors0x80629c0000 hint for512MiB, but still CodeRange fatal.
+Actual20936 terminal0 diagnostic18:56:04 startup-diagnostic-ayyb6bf7a
+shows next call mprotect(address,0x20000000,7): RWX is rejected by W^X.
+Do not fake success, silently drop execute/write, or skip engine assertions.
+Actual99662 terminal0 diagnostic19:02:52 startup-diagnostic-a2n4uh1_
+uses supported --js-flags=--jitless, passes CodeRange RWX blocker but
+VizCompositorTh fatal Check false immediate_crash.h193, first return
+0x800488CB58. HTTP0; inspect native compositor/GL surface factory next.
+This is genuine JS interpreter, not a host helper or skipped assertion;
+not accepted production configuration, WebAssembly support or web PASS.
+
+Full89407 FAILED18:54:47: fault-3 panic wait15s expired during PROCESS_TESTS
+boot. Original assertions reproduced in45265: error3/cr2 EXACT PASS14.02s.
+Both normal BIOS/UEFI restored. Full81590 retry19:00 with fault wait60s,
+the same budget as normal boot, retaining error/rip/cr2 checks. Preserve
+fs-full-fault-timeout-failure.log/status. image full56286 PID152518 and
+vm-hint full20782 PID160515 confirmed live18:56; pending != PASS.
+All three full processes confirmed live19:03: PID152518/160515/172267.
+Do not alter sources/build outputs in these frozen full trees.
+
 ## Font / resource limit / import boundaries — 2026-10-07 18:10 +07
 
 18:20 update: actual93505 omx0f5f9 terminal0 diagnostic on new clean
