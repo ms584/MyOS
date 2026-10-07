@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "../include/system-call.h"
+#include "../include/vm-file-call.h"
+#include "../include/fs-volume-call.h"
+#include "../include/thread-limit.h"
 
 #define SYS_VM_MAP 14u
 #define SYS_VM_UNMAP 15u
@@ -211,17 +214,25 @@ static int rounded(size_t length,size_t *result)
     *result=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
     return 1;
 }
+static int64_t file_mapping(int fd,uint64_t address,size_t length,int prot,int flags,uint64_t offset);
 void *mmap(void *address,size_t length,int prot,int flags,int fd,int64_t offset)
 {
     size_t bytes;int translated=vm_prot(prot);
     int allowed=MAP_SHARED|MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS|MAP_NORESERVE|MAP_STACK|MAP_FIXED_NOREPLACE;
     if(translated<0||!rounded(length,&bytes)||(flags&~allowed)||
-       ((!!(flags&MAP_PRIVATE))==(!!(flags&MAP_SHARED)))||!(flags&MAP_ANONYMOUS)||
-       fd!=-1||offset||((flags&(MAP_FIXED|MAP_FIXED_NOREPLACE))&&
+       ((!!(flags&MAP_PRIVATE))==(!!(flags&MAP_SHARED)))||
+       ((flags&MAP_ANONYMOUS)&&(fd!=-1||offset))||
+       (!(flags&MAP_ANONYMOUS)&&(offset<0||(offset&(PAGE_SIZE-1))))||
+       ((flags&(MAP_FIXED|MAP_FIXED_NOREPLACE))&&
        ((uintptr_t)address&(PAGE_SIZE-1)))){
         *__errno_location()=22;return (void *)(uintptr_t)-1;
     }
     uint64_t hint=(flags&(MAP_FIXED|MAP_FIXED_NOREPLACE))?(uint64_t)(uintptr_t)address:0;
+    if(!(flags&MAP_ANONYMOUS)){
+        int64_t result=file_mapping(fd,hint,length,translated,flags,(uint64_t)offset);
+        if(result<0){fail(result);return (void *)(uintptr_t)-1;}
+        return (void *)(uintptr_t)result;
+    }
     uint64_t syscall=(flags&MAP_FIXED)?SYS_VM_MAP_FIXED:SYS_VM_MAP;
     int64_t result=call3(syscall,hint,bytes,(unsigned)translated);
     if(result<0){fail(result);return (void *)(uintptr_t)-1;}
@@ -417,7 +428,7 @@ static void (**key_destructors(void))(void *)
 static void **key_values(void){return (void **)(uintptr_t)(self_page()+64);}
 static char *main_thread_name(void){return (char *)(uintptr_t)(RUNTIME_TLS_BASE+512);}
 static void clear_key_values(unsigned key)
-{for(unsigned i=0;i<=8;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
+{for(unsigned i=0;i<=MYOS_WORKER_LIMIT;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
 static struct thread_control *thread_control(uint64_t thread)
 {
     if(!thread||(thread&4095)||thread<0x8020000000ull||thread>=0x803f000000ull)return 0;
@@ -878,7 +889,7 @@ void *pthread_getspecific(void *raw_key)
 #define EPIPE 32
 #define ENOTSUP 95
 
-enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5,DESCRIPTOR_SOCKETPAIR=6,DESCRIPTOR_TCP=7 };
+enum descriptor_type { DESCRIPTOR_EVENT=1,DESCRIPTOR_PIPE=2,DESCRIPTOR_EPOLL=3,DESCRIPTOR_FILE=4,DESCRIPTOR_DIRECTORY=5,DESCRIPTOR_SOCKETPAIR=6,DESCRIPTOR_TCP=7,DESCRIPTOR_RANDOM=8 };
 struct tcp_address_abi { unsigned char ip[4];uint16_t port,reserved; };
 struct tcp_status_abi { uint32_t ready,available,error,state;struct tcp_address_abi local,peer; };
 struct sockaddr_in_abi { uint16_t family;unsigned char port[2],ip[4],padding[8]; };
@@ -1049,7 +1060,7 @@ static uint32_t object_ready(struct descriptor_object *object,unsigned access)
         if((!object->value.socketpair.readers[peer]&&!object->value.socketpair.writers[peer])||
            (object->value.socketpair.read_shutdown[peer]&&object->value.socketpair.write_shutdown[peer])||
            (object->value.socketpair.read_shutdown[side]&&object->value.socketpair.write_shutdown[side]))ready|=POLLHUP;
-    } else if(object->type==DESCRIPTOR_FILE||object->type==DESCRIPTOR_DIRECTORY){if(access&1)ready|=POLLIN;if(access&2)ready|=POLLOUT;}
+    } else if(object->type==DESCRIPTOR_FILE||object->type==DESCRIPTOR_DIRECTORY||object->type==DESCRIPTOR_RANDOM){if(access&1)ready|=POLLIN;if(access&2)ready|=POLLOUT;}
     else if(object->type==DESCRIPTOR_TCP){struct tcp_status_abi status;
         int64_t rc=call3(SYS_TCP_STATUS,object->value.tcp.handle,(uintptr_t)&status,0);
         ready=rc<0?POLLERR|POLLHUP:status.ready;}
@@ -1334,7 +1345,15 @@ int64_t read(int fd,void *buffer,size_t length)
     struct descriptor_object *object=reference.object;int64_t result=-1;
     if(object->type==DESCRIPTOR_SOCKETPAIR)return socketpair_io_ref(&reference,buffer,length,0,0);
     if(object->type==DESCRIPTOR_TCP)return tcp_io_ref(&reference,buffer,length,0,0);
-    if(object->type==DESCRIPTOR_EVENT){
+    if(object->type==DESCRIPTOR_RANDOM){
+        /* A bounded short read is legal. The kernel validates the entire
+         * returned region and fails closed if hardware entropy is unavailable.
+         * Never seed a PRNG from time or return placeholder bytes. */
+        if(length>INT64_MAX){set_error(EINVAL);goto done;}
+        size_t count=length>256?256:length;
+        int64_t rc=call3(51,3,(uintptr_t)buffer,count);
+        if(rc<0)fail(rc);else result=(int64_t)count;
+    } else if(object->type==DESCRIPTOR_EVENT){
         if(length!=8){set_error(EINVAL);goto done;}
         for(;;){spin_lock(&object->lock);uint64_t value=object->value.event.counter;
             if(value){uint64_t take=object->value.event.semaphore?1:value;
@@ -1558,6 +1577,23 @@ int ioctl_FIONREAD(int fd,int *available)
 #define MUSL_AT_REMOVEDIR 0x200
 
 struct fs_entry_abi { char name[32];uint32_t type,reserved;uint64_t size; };
+static int64_t file_mapping(int fd,uint64_t address,size_t length,int prot,int flags,uint64_t offset)
+{
+    struct descriptor_ref reference={0};
+    if(!descriptor_acquire(fd,&reference))return -EBADF;
+    int64_t result;
+    if(reference.object->type!=DESCRIPTOR_FILE)result=-ENOTSUP;
+    else if(!(reference.access&1))result=-13;
+    else if(flags&(MAP_STACK|MAP_NORESERVE))result=-ENOTSUP;
+    else {
+        struct vm_file_request request={address,length,offset,reference.object->value.file.kernel_fd,
+            (uint16_t)prot,(uint16_t)(((flags&MAP_FIXED)?VM_FILE_FIXED:0)|((flags&MAP_SHARED)?VM_FILE_SHARED:0))};
+        spin_lock(&reference.object->lock);
+        result=call3(MYOS_VM_FILE_CALL,(uintptr_t)&request,sizeof(request),0);
+        spin_unlock(&reference.object->lock);
+    }
+    object_release(reference.object);return result;
+}
 struct musl_stat_abi {
     int64_t dev,ino,nlink;uint32_t mode,uid,gid,pad;int64_t rdev,size,blksize,blocks;
     struct timespec atime,mtime,ctime;int64_t unused[3];
@@ -1630,6 +1666,18 @@ static void stat_convert(const struct fs_entry_abi *source,struct musl_stat_abi 
     target->size=(int64_t)source->size;target->blksize=4096;
     target->blocks=(int64_t)((source->size+511)/512);
 }
+static int random_device_path(const char *path)
+{
+    const char name[]="/dev/urandom";
+    size_t i=0;while(name[i]&&path[i]==name[i])++i;
+    return !name[i]&&!path[i];
+}
+static void random_device_stat(struct musl_stat_abi *target)
+{
+    for(size_t i=0;i<sizeof(*target);++i)((unsigned char *)target)[i]=0;
+    target->dev=2;target->ino=1;target->nlink=1;
+    target->mode=0020000|0444;target->rdev=1;target->blksize=256;
+}
 int openat(int directory,const char *path,int flags,...)
 {
     int access_mode=flags&MUSL_O_ACCMODE;if(access_mode==MUSL_O_PATH)return set_error(ENOTSUP);
@@ -1637,6 +1685,17 @@ int openat(int directory,const char *path,int flags,...)
     int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY;
     if(!access||(flags&~allowed)||((flags&MUSL_O_TRUNC)&&!(access&2)))return set_error(EINVAL);
     char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
+    if(random_device_path(normalized)){
+        if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
+        if(flags&MUSL_O_DIRECTORY)return set_error(20);
+        if(access!=1||flags&(MUSL_O_TRUNC|O_APPEND))return set_error(ENOTSUP);
+        struct descriptor_state *state=descriptor_state();
+        struct descriptor_object *object=descriptor_object(DESCRIPTOR_RANDOM);
+        if(!state||!object){if(object)free(object);return set_error(ENOMEM);}
+        spin_lock(&state->lock);int fd=descriptor_install_locked(state,object,1,(unsigned)flags);
+        spin_unlock(&state->lock);
+        if(fd<0){free(object);return set_error(24);}return fd;
+    }
     struct fs_entry_abi entry;int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
     if(!status&&entry.type==2){
         if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
@@ -1723,7 +1782,9 @@ int fcntl(int fd,int command,...)
 }
 int64_t lseek(int fd,int64_t offset,int whence)
 {
-    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||reference.object->type!=DESCRIPTOR_FILE){if(reference.object)object_release(reference.object);set_error(EBADF);return -1;}
+    struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)){set_error(EBADF);return -1;}
+    if(reference.object->type==DESCRIPTOR_RANDOM){object_release(reference.object);set_error(29);return -1;}
+    if(reference.object->type!=DESCRIPTOR_FILE){object_release(reference.object);set_error(EBADF);return -1;}
     spin_lock(&reference.object->lock);int64_t result=call3(SYS_FSEEK,(unsigned)reference.object->value.file.kernel_fd,(uint64_t)offset,(unsigned)whence);spin_unlock(&reference.object->lock);
     object_release(reference.object);if(result<0){fail(result);return -1;}return result;
 }
@@ -1757,6 +1818,7 @@ int fsync(int fd){struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)||r.o
 int fdatasync(int fd){return fsync(fd);}
 int fstat(int fd,struct musl_stat_abi *information)
 {if(!information)return set_error(EFAULT);struct descriptor_ref r={0};if(!descriptor_acquire(fd,&r)){return set_error(EBADF);}
+ if(r.object->type==DESCRIPTOR_RANDOM){random_device_stat(information);object_release(r.object);return 0;}
  struct fs_entry_abi entry;int64_t rc;
  if(r.object->type==DESCRIPTOR_FILE)rc=call3(SYS_FSTAT,(unsigned)r.object->value.file.kernel_fd,(uintptr_t)&entry,0);
  else if(r.object->type==DESCRIPTOR_DIRECTORY)rc=call3(SYS_STAT,(uintptr_t)r.object->value.directory.path,(uintptr_t)&entry,0);
@@ -1764,6 +1826,7 @@ int fstat(int fd,struct musl_stat_abi *information)
  object_release(r.object);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int fstatat(int directory,const char *path,struct musl_stat_abi *information,int flags)
 {if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);char normalized[128];if(runtime_path_at(directory,path,normalized))return -1;
+ if(random_device_path(normalized)){random_device_stat(information);return 0;}
  struct fs_entry_abi entry;int64_t rc=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int access(const char *path,int mode)
 {if(mode&~7)return set_error(EINVAL);struct musl_stat_abi info;if(fstatat(MUSL_AT_FDCWD,path,&info,0))return -1;
@@ -1773,6 +1836,14 @@ char *getcwd(char *buffer,size_t size)
 {if(!buffer){set_error(EFAULT);return 0;}if(size<2){set_error(34);return 0;}buffer[0]='/';buffer[1]=0;return buffer;}
 int mkdir(const char *path,uint32_t mode)
 {(void)mode;char normalized[128];if(runtime_path(path,normalized))return -1;int64_t rc=call3(SYS_MKDIR,(uintptr_t)normalized,0,0);return rc<0?fail(rc):0;}
+int statvfs(const char *path,struct fs_volume_info *information)
+{
+    if(!information)return set_error(EFAULT);char normalized[128];
+    if(runtime_path(path,normalized))return -1;
+    const char *query=random_device_path(normalized)?"/dev":normalized;
+    int64_t rc=call3(MYOS_FS_VOLUME_CALL,(uintptr_t)query,(uintptr_t)information,0);
+    return rc<0?fail(rc):0;
+}
 int isatty(int fd){if(fd==1||fd==2)return 1;struct descriptor_ref r={0};
  if(!descriptor_acquire(fd,&r)){set_error(EBADF);return 0;}object_release(r.object);set_error(ENOTTY);return 0;}
 long pathconf(const char *path,int name)
@@ -2059,12 +2130,14 @@ char *mkdtemp(char *template)
 
 struct musl_rlimit { uint64_t current,maximum; };
 struct musl_cpu_set { uint64_t bits[16]; };
-struct musl_utsname { char sysname[257],nodename[257],release[257],version[257],machine[257],domainname[257]; };
+/* Cobalt's pinned musl STARBOARD ABI has five 257-byte fields, no domainname. */
+struct musl_utsname { char sysname[257],nodename[257],release[257],version[257],machine[257]; };
+_Static_assert(sizeof(struct musl_utsname)==1285,"Cobalt STARBOARD utsname ABI");
 const int32_t kSbFileMaxName=31;
 const uint32_t kSbFileMaxPath=127;
 static const char file_separator[]="/";
 const char *const kSbFileSepString=file_separator;
-const uint32_t kSbMaxThreads=8;
+const uint32_t kSbMaxThreads=MYOS_THREAD_LIMIT;
 
 static void string_copy(char *destination,const char *source,size_t capacity)
 {
@@ -2087,7 +2160,7 @@ long sysconf(int name)
     case MUSL_SC_THREAD_DESTRUCTOR_ITERATIONS:return 4;
     case MUSL_SC_THREAD_KEYS_MAX:return THREAD_KEYS;
     case MUSL_SC_THREAD_STACK_MIN:return 16384;
-    case MUSL_SC_THREAD_THREADS_MAX:return 8;
+    case MUSL_SC_THREAD_THREADS_MAX:return MYOS_THREAD_LIMIT;
     case MUSL_SC_NPROCESSORS_CONF:case MUSL_SC_NPROCESSORS_ONLN:return 1;
     /* Only boot-map usable RAM managed by MyOS (currently below256MiB).
      * Available pages are an instantaneous unreserved PMM snapshot. */
@@ -2110,7 +2183,7 @@ int getrlimit(int resource,struct musl_rlimit *limit)
 {
     if(!limit)return set_error(EFAULT);
     if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){40,40};
-    else if(resource==MUSL_RLIMIT_NPROC)*limit=(struct musl_rlimit){8,8};
+    else if(resource==MUSL_RLIMIT_NPROC)*limit=(struct musl_rlimit){MYOS_USER_TASK_LIMIT,MYOS_USER_TASK_LIMIT};
     else if(resource==MUSL_RLIMIT_STACK){struct main_stack_info info;
         int64_t rc=call3(SYS_MAIN_STACK_INFO,(uintptr_t)&info,0,0);if(rc<0)return set_error((int)-rc);
         *limit=(struct musl_rlimit){info.length,info.length};}
@@ -2153,7 +2226,7 @@ int uname(struct musl_utsname *name)
     for(size_t i=0;i<sizeof(*name);++i)((unsigned char *)name)[i]=0;
     string_copy(name->sysname,"MyOS",257);string_copy(name->nodename,"myos",257);
     string_copy(name->release,"0.33",257);string_copy(name->version,"Phase 33.1",257);
-    string_copy(name->machine,"x86_64",257);string_copy(name->domainname,"local",257);return 0;
+    string_copy(name->machine,"x86_64",257);return 0;
 }
 
 /* Optional Starboard features are advertised as unavailable, never as dummy

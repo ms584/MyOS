@@ -32,6 +32,19 @@ void fs_test(void)
     check(fs_open(files,"/home/bad",FS_READ|FS_TRUNC)==-22,"invalid flags");
     check(fs_open(files,"/home/trailing/",FS_WRITE|FS_CREATE)==-20,"file trailing slash");
 #if PROCESS_TESTS
+    check(!fs_mkdir("/home/TEzLw=="),"Cobalt Base64 cache component");
+    a=fs_open(files,"/home/TEzLw==/Experiment Config",FS_READ|FS_WRITE|FS_CREATE);
+    check(a==3&&fs_write(files,a,"config",6)==6,"Cobalt config name with space");
+    check(!fs_close(files,a)&&!fs_stat("/home/TEzLw==/Experiment Config",&info)&&info.size==6,"Cobalt config stat");
+    check(fs_mkdir("/home/control\n")==-22&&fs_mkdir("/home/del\177")==-22&&fs_mkdir("/home/nonascii\200")==-22,"filename controls and non-ASCII rejected");
+    void *name_slots=kmalloc((size_t)FS_V1_SLOT_BYTES*FS_NODES);
+    check(name_slots&&fs_snapshot_export(name_slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX)&&fs_snapshot_valid(name_slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"extended names snapshot valid");
+    check(fs_snapshot_import(name_slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX)&&!fs_stat("/home/TEzLw==/Experiment Config",&info)&&info.size==6,"extended names snapshot restored");
+    struct fs_disk_meta *name_meta=(struct fs_disk_meta *)((uint8_t *)name_slots+FS_V1_SLOT_BYTES);
+    char original=name_meta->name[0];name_meta->name[0]='/';
+    check(!fs_snapshot_valid(name_slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"snapshot embedded separator rejected");name_meta->name[0]=original;
+    kfree(name_slots);
+    check(!fs_unlink("/home/TEzLw==/Experiment Config")&&!fs_unlink("/home/TEzLw=="),"Cobalt name cleanup");
     char longpath[FS_PATH+1];memset(longpath,'a',sizeof(longpath));longpath[0]='/';longpath[FS_PATH]=0;
     check(fs_mkdir(longpath)==-36,"path length bound");longpath[33]=0;
     check(fs_mkdir(longpath)==-36,"component length bound");

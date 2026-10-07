@@ -1,9 +1,37 @@
 /* Phase33.2 policy only. No demux, decoder, player or protected media support. */
 #include <stdint.h>
+#include <stddef.h>
 #include "starboard/configuration.h"
 #include "starboard/media.h"
 #include "starboard/system.h"
+#include "pcm-call.h"
+#include "system-call.h"
 _Static_assert(sizeof(int)==4&&sizeof(int64_t)==8,"pinned media LP64 ABI");
+_Static_assert(sizeof(SbMediaAudioConfiguration)==24&&offsetof(SbMediaAudioConfiguration,latency)==8&&offsetof(SbMediaAudioConfiguration,number_of_channels)==20,"pinned audio configuration ABI");
+
+static int query_audio(struct pcm_status *status)
+{
+    struct pcm_request request={PCM_QUERY,0,0,0,(uintptr_t)status};
+    register uint64_t result __asm__("rax")=MYOS_SYSTEM_CALL;
+    __asm__ volatile("int $0x80":"+a"(result):"D"((uint64_t)SYSTEM_AUDIO),"S"((uintptr_t)&request),"d"((uint64_t)0):"memory","cc");
+    return (int64_t)result<0?-1:0;
+}
+int SbMediaGetAudioOutputCount(void)
+{
+    struct pcm_status status;
+    return !query_audio(&status)&&status.channels&&status.sample_rate?1:0;
+}
+bool SbMediaGetAudioConfiguration(int index,SbMediaAudioConfiguration *out)
+{
+    if(index!=0||!out)return false;struct pcm_status status;
+    if(query_audio(&status)||!status.channels||!status.sample_rate)return false;
+    /* Actual native SB16 PCM bridge, currently mono. Do not advertise stereo
+     * or a measured latency that the driver does not provide. */
+    for(size_t i=0;i<sizeof(*out);++i)((unsigned char *)out)[i]=0;
+    out->connector=kSbMediaAudioConnectorAnalog;
+    out->coding_type=kSbMediaAudioCodingTypePcm;
+    out->number_of_channels=(int)status.channels;return true;
+}
 
 SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *key_system)
 {

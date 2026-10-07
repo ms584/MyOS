@@ -1,9 +1,11 @@
 #include <stddef.h>
 #include <stdint.h>
+#include "../include/thread-limit.h"
 
 struct musl_rlimit { uint64_t current,maximum; };
 struct musl_cpu_set { uint64_t bits[16]; };
-struct musl_utsname { char sysname[257],nodename[257],release[257],version[257],machine[257],domainname[257]; };
+struct musl_utsname { char sysname[257],nodename[257],release[257],version[257],machine[257]; };
+_Static_assert(sizeof(struct musl_utsname)==1285,"pinned Cobalt utsname size");
 
 extern int *__errno_location(void);
 extern int32_t getpid(void),gettid(void);
@@ -47,14 +49,14 @@ uint64_t _start(void)
     if(worker_tid<=0||worker_tid==pid)return 3;
 
     if(sysconf(30)!=4096||sysconf(2)!=100||sysconf(83)!=1||sysconf(84)!=1||
-       sysconf(74)!=32||sysconf(76)!=8)return 4;
+       sysconf(74)!=32||sysconf(76)!=MYOS_THREAD_LIMIT)return 4;
     *__errno_location()=0;if(sysconf(999)!=-1||*__errno_location()!=22)return 5;
     if(getauxval(6)!=4096||getauxval(17)!=100||getauxval(11)!=0)return 6;
     *__errno_location()=0;if(getauxval(999)!=0||*__errno_location()!=2)return 7;
 
     struct musl_rlimit limit;
     if(getrlimit(7,&limit)||limit.current!=40||limit.maximum!=40)return 8;
-    if(getrlimit(6,&limit)||limit.current!=8||limit.maximum!=8)return 9;
+    if(getrlimit(6,&limit)||limit.current!=MYOS_USER_TASK_LIMIT||limit.maximum!=MYOS_USER_TASK_LIMIT)return 9;
     if(getrlimit(3,&limit)||limit.current!=16384||limit.maximum!=16384)return 25;
     if(getrlimit(99,&limit)!=-1||*__errno_location()!=22)return 10;
 
@@ -69,9 +71,14 @@ uint64_t _start(void)
     char name[16];if(prctl(15,(void *)"system")||prctl(16,name)||!equal(name,"system"))return 17;
     if(prctl(15,(void *)"abcdefghijklmnopq")||prctl(16,name)||!equal(name,"abcdefghijklmno"))return 24;
     if(prctl(12345,(void *)0)!=-1||*__errno_location()!=22)return 18;
-    struct musl_utsname identity;if(uname(&identity)||!equal(identity.sysname,"MyOS")||
-       !equal(identity.machine,"x86_64")||!equal(identity.nodename,"myos"))return 19;
-    if(kSbFileMaxName!=31||kSbFileMaxPath!=127||kSbMaxThreads!=8||
+    struct { unsigned char before[16];struct musl_utsname identity;unsigned char after[300]; } guarded;
+    for(size_t i=0;i<sizeof(guarded);++i)((unsigned char *)&guarded)[i]=0xa5;
+    if(uname(&guarded.identity)||!equal(guarded.identity.sysname,"MyOS")||
+       !equal(guarded.identity.machine,"x86_64")||!equal(guarded.identity.nodename,"myos"))return 19;
+    for(size_t i=0;i<sizeof(guarded.before);++i)if(guarded.before[i]!=0xa5)return 25;
+    for(size_t i=0;i<sizeof(guarded.after);++i)if(guarded.after[i]!=0xa5)return 26;
+    if(uname(0)!=-1||*__errno_location()!=14)return 27;
+    if(kSbFileMaxName!=31||kSbFileMaxPath!=127||kSbMaxThreads!=MYOS_THREAD_LIMIT||
        !kSbFileSepString||kSbFileSepString[0]!='/'||kSbFileSepString[1])return 20;
     int metrics=7;if(SbDrmCreateSystem("com.example",0,(void *)1,(void *)1,(void *)1,(void *)1,(void *)1)||
        SbDrmIsServerCertificateUpdatable(0)||SbDrmGetMetrics(0,&metrics)||metrics)return 21;

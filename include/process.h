@@ -2,23 +2,29 @@
 #define MYOS_PROCESS_H
 #include "os.h"
 #include "fs.h"
+#include "thread-limit.h"
+#include "vm-area.h"
+#include "vm-file-call.h"
 
 #define USER_BASE 0x8000000000ull
 #define USER_DATA (USER_BASE + 0x1000)
 #define USER_STACK (USER_BASE + 0x3000)
-#define PROCESS_LIMIT 4
+#define PROCESS_LIMIT MYOS_PROCESS_LIMIT
 #define PROCESS_CODE_PAGES 16
 #define PROCESS_HEAP_PAGES 32
 #define PROCESS_PAGES (4 + PROCESS_CODE_PAGES + 2 + PROCESS_HEAP_PAGES)
 #define PROCESS_VM_BASE (USER_BASE + 0x20000000ull)
 #define PROCESS_VM_END  (USER_BASE + 0x3f000000ull)
+#define PROCESS_VM_HIGH_BASE (USER_BASE + 0x100000000ull)
+#define PROCESS_VM_HIGH_END (USER_BASE + 0x4100000000ull)
 #define PROCESS_RUNTIME_BASE PROCESS_VM_END
 #define PROCESS_RUNTIME_TLS_BASE (PROCESS_RUNTIME_BASE + 0x10000ull)
-#define PROCESS_ELF_TLS_BASE (PROCESS_RUNTIME_BASE + 0x20000ull)
+#define PROCESS_ELF_TLS_BASE (PROCESS_RUNTIME_BASE + 0x40000ull)
+_Static_assert(PROCESS_RUNTIME_TLS_BASE+(MYOS_THREAD_LIMIT+1ull)*PAGE_SIZE<=PROCESS_ELF_TLS_BASE,"runtime/native TLS separation including guard");
 #define PROCESS_PROT_READ 1u
 #define PROCESS_PROT_WRITE 2u
 #define PROCESS_PROT_EXEC 4u
-#define PROCESS_THREAD_LIMIT 8u
+#define PROCESS_THREAD_LIMIT MYOS_WORKER_LIMIT
 
 enum process_state { PROCESS_UNUSED, PROCESS_RUNNING, PROCESS_ZOMBIE, PROCESS_LOADING };
 enum process_thread_state { PROCESS_THREAD_UNUSED, PROCESS_THREAD_RUNNING, PROCESS_THREAD_ZOMBIE };
@@ -43,6 +49,7 @@ struct process {
     unsigned page_count,image_capacity;
     uintptr_t *vm_pages; /* Pages and page tables created by anonymous VM. */
     unsigned vm_page_count,vm_page_capacity;
+    struct vm_areas *vm_areas;
     void *kernel_stack;
     uintptr_t kernel_top;
     struct frame *frame;
@@ -83,9 +90,11 @@ bool process_install_tls(struct process *,const struct elf_plan *);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 int64_t process_vm_map(struct process *,uint64_t,size_t,unsigned);
 int64_t process_vm_map_fixed(struct process *,uint64_t,size_t,unsigned);
+int64_t process_vm_file(struct process *,const struct vm_file_request *);
 int process_vm_unmap(struct process *,uint64_t,size_t);
 int process_vm_protect(struct process *,uint64_t,size_t,unsigned);
 bool process_vm_mapped(struct process *,uint64_t,size_t);
+bool process_vm_resident(struct process *,uint64_t);
 int process_vm_advise(struct process *,uint64_t,size_t,unsigned);
 uint64_t process_errno_location(struct process *);
 bool process_user_access(struct process *,uint64_t,size_t,unsigned);

@@ -8,7 +8,7 @@ static bool snapshot_name(const char name[FS_NAME])
     size_t n=0;
     while(n<FS_NAME&&name[n]){
         unsigned char c=(unsigned char)name[n++];
-        if(!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'||c=='-'||c=='.'))return false;
+        if(!fs_name_byte(c))return false;
     }
     return n>0&&n<FS_NAME&&!(n==1&&name[0]=='.')&&
            !(n==2&&name[0]=='.'&&name[1]=='.');
@@ -20,10 +20,10 @@ bool fs_snapshot_export(void *slots,size_t stride,size_t max_file)
     if(!slots||!snapshot_shape(stride,max_file))return false;
     uint64_t flags=irq_save();
     for(unsigned i=0;i<FS_NODES;++i)
-        if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].type==FS_FILE&&nodes[i].size>max_file){irq_restore(flags);return false;}
+        if(nodes[i].used&&!nodes[i].unlinked&&!shared_namespace(i)&&nodes[i].type==FS_FILE&&nodes[i].size>max_file){irq_restore(flags);return false;}
     memset(slots,0,stride*FS_NODES);
     for(unsigned i=0;i<FS_NODES;++i){
-        if(!nodes[i].used||nodes[i].unlinked)continue;
+        if(!nodes[i].used||nodes[i].unlinked||shared_namespace(i))continue;
         struct fs_disk_meta *slot=snapshot_mut(slots,stride,i);
         slot->used=1;slot->parent=nodes[i].parent;slot->type=nodes[i].type;
         slot->size=(uint32_t)nodes[i].size;memcpy(slot->name,nodes[i].name,FS_NAME);
@@ -75,7 +75,7 @@ bool fs_snapshot_import(const void *slots,size_t stride,size_t max_file)
     }
     uint64_t flags=irq_save();
     for(unsigned i=0;i<FS_NODES;++i)if(nodes[i].references){irq_restore(flags);goto failed;}
-    for(unsigned i=0;i<FS_NODES;++i)kfree(nodes[i].data);
+    for(unsigned i=0;i<FS_NODES;++i)release_node_data(&nodes[i]);
     memset(nodes,0,sizeof(nodes));
     for(unsigned i=0;i<FS_NODES;++i){
         const struct fs_disk_meta *slot=snapshot_meta(slots,stride,i);

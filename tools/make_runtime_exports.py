@@ -61,6 +61,7 @@ wanted={'__errno_location','access','abort','signal','sigaction','raise','pause'
         'pthread_rwlock_rdlock','pthread_rwlock_unlock','pthread_rwlock_wrlock',
         'pthread_self','pthread_setname_np','pthread_setspecific','pthread_sigmask',
         'sem_destroy','sem_init','sem_post','sem_timedwait','sem_wait'}
+wanted.update({'statvfs','SbMediaGetAudioOutputCount','SbMediaGetAudioConfiguration'})
 symbols={}
 for line in subprocess.check_output(['nm','-g','--defined-only',str(elf)],text=True).splitlines():
     fields=line.split()

@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <pthread.h>
+#include "../include/thread-limit.h"
 extern int sem_init(void *,int,unsigned),sem_post(void *),sem_wait(void *),sem_destroy(void *);
 extern int *__errno_location(void),mincore(void *,size_t,unsigned char *);
 extern pthread_t pthread_self(void);
@@ -86,7 +87,7 @@ uint64_t _start(void)
     __asm__ volatile("call *%0"::"r"(target):"memory");
 #endif
 #if MODE == 3
-    print("native TLS guard ready\n");*(volatile char *)(uintptr_t)0x803f01ffff=1;
+    print("native TLS guard ready\n");*(volatile char *)(uintptr_t)(0x803f010000ull+(MYOS_WORKER_LIMIT+1ull)*4096)=1;
 #endif
     for(unsigned wave=0;wave<12;++wave){pthread_t workers[3];void *result;
         for(unsigned who=0;who<3;++who){errors[who]=99;

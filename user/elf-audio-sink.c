@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <time.h>
 #include "audio-sink-abi.h"
+#include "thread-limit.h"
 #ifndef TERMINATION_MODE
 #define TERMINATION_MODE 0
 #endif
@@ -56,11 +57,15 @@ int _start(void){
  }
  SbMediaAudioSampleType type=SAMPLE_FLOAT?kSbMediaAudioSampleTypeFloat32:kSbMediaAudioSampleTypeInt16Deprecated;
 #if EXPECT_AUDIO
- volatile unsigned stop=0;pthread_t slots[8];
- for(unsigned i=0;i<8;++i)if(pthread_create(&slots[i],0,occupy,(void *)&stop))return 16;
+ volatile unsigned stop=0;pthread_t slots[MYOS_WORKER_LIMIT];
+ pthread_attr_t occupancy_attr;
+ if(pthread_attr_init(&occupancy_attr)||pthread_attr_setstacksize(&occupancy_attr,65536))return 16;
+ for(unsigned i=0;i<MYOS_WORKER_LIMIT;++i)
+  if(pthread_create(&slots[i],&occupancy_attr,occupy,(void *)&stop))return 16;
+ if(pthread_attr_destroy(&occupancy_attr))return 16;
  if(SbAudioSinkCreate(1,11025,type,kSbMediaAudioFrameStorageTypeInterleaved,buffers,16384,update,consume,&c)||c.updates)return 17;
  __atomic_store_n(&stop,1,__ATOMIC_RELEASE);
- for(unsigned i=0;i<8;++i)if(pthread_join(slots[i],0))return 18;
+ for(unsigned i=0;i<MYOS_WORKER_LIMIT;++i)if(pthread_join(slots[i],0))return 18;
  for(unsigned invalid=1;invalid<=4;++invalid){
   c.malformed=invalid;c.updates=0;
   if(SbAudioSinkCreate(1,11025,type,kSbMediaAudioFrameStorageTypeInterleaved,buffers,16384,update,consume,&c)||!c.updates||c.consumed||c.error)return 19;

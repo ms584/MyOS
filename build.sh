@@ -71,6 +71,8 @@ ld -m elf_x86_64 --build-id=none -T user/app.ld -o build/wapcaplet.elf \
 objcopy -O binary build/wapcaplet.elf build/wapcaplet.bin
 python3 tools/pack_app.py build/wapcaplet.bin build/wapcaplet.app
 objects=()
+gcc "${flags[@]}" -c fs/shm-backing.c -o build/fs-shm-backing.o
+objects+=(build/fs-shm-backing.o)
 gcc "${flags[@]}" -c kernel/runtime-pack.c -o build/kernel-runtime-pack.o
 objects+=(build/kernel-runtime-pack.o)
 for source in net/dns.c net/dns-wire.c; do

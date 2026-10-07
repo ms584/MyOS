@@ -1,12 +1,12 @@
 # MyOS project state
-Updated:2026-10-07 13:53 +07. Native Cobalt acceptance; no33.3/push.
+Updated:2026-10-07 16:42 +07. Native Cobalt acceptance; no33.3/push.
 Repo /home/xytron404/myos, main; origin c33f49a fetched13:45; source eb31a69.
-Main four normal hashes unchanged13:22:25. Owner pushes only.
+Clean promotion95178 terminal0 16:37:48; normal hashes checked16:40. No push.
 ## Scope and measured progress
 - Phase33.1/33.2 OPEN: actual HTML+JS/DOM/timers, input, verified concurrent
   HTTPS, >=60s interaction, close/relaunch cleanup remain0/5 unproven.
-- Census13:48: main registered212/242,paired214/242,28 missing; clean private
-  215/217,25 missing. No abort probes; not semantic/actual browser acceptance.
+- Census16:39: main and clean private registered215/242,paired217/242,
+  25 missing. No abort probes; not semantic/actual browser acceptance.
 - Phase32/33 NOT PASSED; YouTube unproven. Do not start33.3.
 ## Live work / evidence
 - Old full68512 unrecoverable, NOT PASS; prior fulls interrupted by WSL.
@@ -40,8 +40,10 @@ Main four normal hashes unchanged13:22:25. Owner pushes only.
   Capacity32 scope51522 terminal0 13:22:57:BIOS16/64,UEFI64/256,TLS/teardown/
   uname PASS. Actual p2388a2x reaches Code Cache, traps missing rename;
   F_SETLK6=-EINVAL;0HTTP,heap325888->354560 not isolated. See UNAME_ABI_WIP.
-  New clean full93459 LIVE13:23:30, observed13:50 runtime assets; freeze cd.
-  shared-clean-full.status/logs; no terminal full PASS yet.
+  Full93459 FAILED13:54:20: audio fixture assumed8 slots; no runtime leak.
+  Correct shared-bound32 fixture BIOS PASS14:01:56. Rerun27417 terminal0
+  14:47:02: full + shared/capacity/volume/audio/uname BIOS/UEFI PASS;
+  audio sink UEFI PASS, normal private images restored, main hashes OK16:32.
 - Separate merged inode/shared/record-lock WIP host ASAN/UBSAN PASS13:43:
   real RAMFS rename/lifetime/locks;2000-step range oracle. Runtime/native not
   wired or proven, no export increase. PHASE332_FS_LIFETIME_WIP.md.
@@ -49,12 +51,13 @@ Main four normal hashes unchanged13:22:25. Owner pushes only.
 ## Foundation / limits
 - Clock/pthread/descriptors/signals/TLS tested; relevant PHASE331 docs.
 - Production TCP/full1701 PASS Oct5; PCM/IMPORT_BATCH_WIP docs hold scopes.
-- Main loader2modules/1PTTLS,8workers; PMM256MiB. Private shared maps only
+- Main loader2modules/1PTTLS,32workers; PMM256MiB. Shared maps only
   /dev/shm up to1MiB; mapped shrink EBUSY,no SIGBUS/COW/demand paging.
 - Main RAMFS64KiB; private shared maps cover actual Cobalt256KiB need.
 - activity.log bounded48MiB; NEVER read through run_logged.py.
 ## Next
-1. Poll SAME93459; freeze cd source/build until terminal; no full PASS yet.
+1. Clean cd source promoted: kernel/runtime cmp equal; production scopes all
+   PASS BIOS/UEFI, normal hashes preserved. Local source commit next.
 2. Wire tested inode/lock foundation into syscall/DIR lifetime, then
    FS10/player-decode15 contracts; no fabricated success imports.
 3. Promote nondiagnostic source only with full/scoped regression, restore

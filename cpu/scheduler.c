@@ -20,7 +20,9 @@ struct task {
 };
 static struct task tasks[TASKS];
 /* Kernel/IRQ code must remain -mgeneral-regs-only. */
-static unsigned char fp[TASKS][512] __attribute__((aligned(16)));
+/* FXSAVE requires16-byte alignment. Kernel kmalloc guarantees that alignment.
+ * Keep the BIOS kernel reservation unchanged as task capacity grows. */
+static unsigned char (*fp)[512];
 static void fp_reset(unsigned slot)
 {
     memset(fp[slot],0,512);
@@ -58,6 +60,7 @@ static _Noreturn void task_entry(void)
 
 void scheduler_init(void)
 {
+    fp=kmalloc(TASKS*sizeof(*fp));check(fp&& !((uintptr_t)fp&15),"scheduler FPU state allocation/alignment");
     fp_init();
     tasks[0].alive = true;
     current = 0;

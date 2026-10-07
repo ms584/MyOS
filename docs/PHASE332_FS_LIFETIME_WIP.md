@@ -4,8 +4,13 @@ Updated2026-10-07 13:50 +07. PRIVATE WIP, not in main builds. No new import
 claimed: main212registered/214strong paired of242,28missing; clean private
 215/217,25missing, census13:48:38. The census checks actual GLOBAL UND242,
 not the one additional WEAK symbol in audit names. No abort probes counted.
-Full baseline93459 is still LIVE: freeze cd-QJYMwG sources/build/images.
-The work below is staged separately and does not contaminate that regression.
+Full93459 failed audio-fixture8-slot assumption; fixed32 shared bound. Rerun
+27417 terminal0 14:47:02 full/scopes/normal restore PASS. Work below remains
+separate/unpromoted, not included in that regression or import census.
+Atomic unlinkat from renamed DIR inode ASAN/UBSAN6WZkbi PASS14:03:58:
+file/directory mode checks, invalid/non-directory fd, absolute ignores badfd,
+unlinked open inode lifetime, allocation-denied mutation and readonly assets.
+New fs-operation syscall include staged, not wired/native proven yet.
 
 ## Actual reason for this work
 

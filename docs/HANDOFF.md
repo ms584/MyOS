@@ -5,6 +5,28 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Inode/shared rename + record locks — 2026-10-07 13:53 +07
 
+Update16:42: production promotion95178 terminal0 16:37:48. Normal kernel and
+runtime binaries cmp equal to clean full-tested private source; copied only
+explicit nondiagnostic source list. Production statvfs/audio/shared/capacity/
+uname BIOS+UEFI and sink UEFI PASS. Normal images hashed and checked16:40;
+build/clean-prerequisites-*.log/status/normal.sha256. Reuse private full27417
+only for identical tested source/config. Main census16:39 registered215/242,
+strong paired217/242,25missing; actual Cobalt remains0/5. Next local source
+checkpoint then inode/DIR/record-lock integration in separate private tree.
+Auto-directory readonly open removes pre-stat/open type race; host dzveKU
+PASS16:36 incl merged shared/snapshot/locks. Native integration still unproven.
+
+Update16:34: full93459 terminal1 13:54:20, audio-sink fixture still saturated
+only8 workers despite new32 limit. Preserved pre-audio-bound-failure log/status;
+corrected fixture uses MYOS_WORKER_LIMIT and explicit64KiB worker stacks, keeps
+real exhaustion/no callback proof. Scoped BIOS32864 PASS14:01:56. Full rerun
+27417 terminal0 14:47:02: full system + shared/capacity/statvfs/audio outputs/
+uname BIOS+UEFI and sink UEFI PASS; normal private images restored. Main four
+hashes still unchanged16:32. No native Cobalt web acceptance claim. Next clean
+source promotion only, with source/binary equivalence and production scopes.
+Atomic inode-relative unlinkat host ASAN/UBSAN6WZkbi PASS14:03:58; new checked
+syscall include is staged only, not wired/native proven. Keep WIP separate.
+
 Previous turn8487d03 is progress, not acceptance completion. Full93459 still
 verified LIVE on SAME handle; observed13:50 at runtime-asset scopes. cd-QJYMwG
 source/build remains frozen. New code below is in independent host-unit trees

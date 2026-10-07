@@ -1,4 +1,5 @@
 #include "fs-snapshot.h"
+#include "shm-backing.h"
 #define FS_ASSET_NODE UINT32_MAX
 struct node {
     bool used, unlinked;
@@ -6,6 +7,7 @@ struct node {
     size_t size, capacity;
     char name[FS_NAME];
     char *data;
+    struct shm_backing *shared;
 };
 static struct node nodes[FS_NODES];
 
@@ -19,6 +21,21 @@ static int child(unsigned parent,const char *name)
     for (unsigned i=1;i<FS_NODES;++i)
         if (nodes[i].used && !nodes[i].unlinked && nodes[i].parent==parent && equal(nodes[i].name,name)) return (int)i;
     return -2;
+}
+static bool shared_namespace(unsigned index)
+{
+    for(unsigned depth=0;index&&depth<FS_NODES;++depth){
+        unsigned parent=nodes[index].parent;
+        if(equal(nodes[index].name,"shm")&&parent&&nodes[parent].parent==0&&
+           equal(nodes[parent].name,"dev"))return true;
+        index=parent;
+    }
+    return false;
+}
+static void release_node_data(struct node *node)
+{
+    kfree(node->data);node->data=0;
+    if(node->shared){shm_release(node->shared);kfree(node->shared);node->shared=0;}
 }
 
 /* Absolute paths only. Collapse '/', '.', and '..'; '..' at root stays root. */
@@ -38,7 +55,7 @@ static int resolve(const char *path,bool parent,char *leaf)
         while (path[pos] && path[pos]!='/') {
             if (size==FS_NAME-1) return -36;
             unsigned char c=path[pos++];
-            if (!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'||c=='-'||c=='.')) return -22;
+            if (!fs_name_byte(c)) return -22;
             name[size++]=(char)c;
         }
         name[size]=0;
@@ -65,10 +82,15 @@ static int create(const char *path,unsigned type)
     unsigned slot;
     for(slot=1;slot<FS_NODES;++slot)if(!nodes[slot].used)break;
     if(slot==FS_NODES)return -28;
-    char *data=0;
-    if(type==FS_FILE){data=kmalloc(PAGE_SIZE);if(!data)return -12;memset(data,0,PAGE_SIZE);}
+    char *data=0;struct shm_backing *shared=0;
+    if(type==FS_FILE){
+        if(shared_namespace((unsigned)parent)){
+            shared=kmalloc(sizeof(*shared));if(!shared)return -12;memset(shared,0,sizeof(*shared));
+        }else{data=kmalloc(PAGE_SIZE);if(!data)return -12;memset(data,0,PAGE_SIZE);}
+    }
     struct node *node=&nodes[slot];memset(node,0,sizeof(*node));
     node->used=true;node->parent=(unsigned)parent;node->type=type;node->data=data;node->capacity=data?PAGE_SIZE:0;
+    node->shared=shared;
     memcpy(node->name,name,FS_NAME);
     return (int)slot;
 }
@@ -117,7 +139,11 @@ int fs_open(struct fs_handle *table,const char *path,unsigned access)
     if(result<0)goto done;
     struct node *node=&nodes[result];
     if(node->type!=FS_FILE){result=-21;goto done;}
-    if(access&FS_TRUNC){node->size=0;memset(node->data,0,node->capacity);}
+    if(access&FS_TRUNC){
+        if(node->shared){int rc=shm_resize(node->shared,0);if(rc){result=rc;goto done;}}
+        else memset(node->data,0,node->capacity);
+        node->size=0;
+    }
     table[slot]=(struct fs_handle){(unsigned)result+1,access,0,{0,0}};
     ++node->references;result=(int)slot+3;
 done:
@@ -130,7 +156,7 @@ int fs_close(struct fs_handle *table,int fd)
     if(!file){irq_restore(flags);return -9;}
     if(file->node!=FS_ASSET_NODE){
         struct node *node=&nodes[file->node-1];
-        if(!--node->references&&node->unlinked){kfree(node->data);memset(node,0,sizeof(*node));}
+        if(!--node->references&&node->unlinked){release_node_data(node);memset(node,0,sizeof(*node));}
     }
     memset(file,0,sizeof(*file));irq_restore(flags);return 0;
 }
@@ -149,6 +175,8 @@ int64_t fs_read(struct fs_handle *table,int fd,void *buffer,size_t length)
         file->offset+=count;irq_restore(flags);return (int64_t)count;
     }
     struct node *node=&nodes[file->node-1];
+    if(node->shared){int64_t count=shm_read(node->shared,file->offset,buffer,length);
+        if(count>0)file->offset+=(size_t)count;irq_restore(flags);return count;}
     size_t count=file->offset>=node->size?0:node->size-file->offset;
     if(count>length)count=length;
     if(count)memcpy(buffer,node->data+file->offset,count);
@@ -159,8 +187,11 @@ int64_t fs_write(struct fs_handle *table,int fd,const void *buffer,size_t length
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file || !(file->flags&FS_WRITE)){irq_restore(flags);return -9;}
     if(file->node==FS_ASSET_NODE){irq_restore(flags);return -30;}
-    if(length>FS_FILE_MAX-file->offset){irq_restore(flags);return -28;}
     struct node *node=&nodes[file->node-1];
+    if(node->shared){int64_t count=shm_write(node->shared,file->offset,buffer,length);
+        if(count>0)file->offset+=(size_t)count;node->size=node->shared->size;
+        irq_restore(flags);return count;}
+    if(length>FS_FILE_MAX-file->offset){irq_restore(flags);return -28;}
     if(length){
         size_t needed=file->offset+length;
         if(needed>node->capacity){
@@ -194,7 +225,8 @@ int64_t fs_seek(struct fs_handle *table,int fd,int64_t offset,int whence)
         position=base-amount;
     } else {
         uint64_t amount=(uint64_t)offset;
-        uint64_t maximum=file->node==FS_ASSET_NODE?file->asset.size:FS_FILE_MAX;
+        uint64_t maximum=file->node==FS_ASSET_NODE?file->asset.size:
+            nodes[file->node-1].shared?SHM_MAX_BYTES:FS_FILE_MAX;
         if(base>maximum||amount>maximum-base){irq_restore(flags);return -22;}
         position=base+amount;
     }
@@ -210,11 +242,13 @@ int fs_fstat(struct fs_handle *table,int fd,struct fs_entry *result)
 }
 int fs_truncate(struct fs_handle *table,int fd,size_t length)
 {
-    if(length>FS_FILE_MAX)return -27;
     uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);
     if(!file||!(file->flags&FS_WRITE)){irq_restore(flags);return -9;}
     if(file->node==FS_ASSET_NODE){irq_restore(flags);return -30;}
     struct node *node=&nodes[file->node-1];
+    if(node->shared){int rc=shm_resize(node->shared,length);if(!rc)node->size=length;
+        irq_restore(flags);return rc;}
+    if(length>FS_FILE_MAX){irq_restore(flags);return -27;}
     if(length>node->capacity){size_t capacity=node->capacity;while(capacity<length)capacity*=2;
         char *grown=kmalloc(capacity);if(!grown){irq_restore(flags);return -12;}
         memset(grown,0,capacity);memcpy(grown,node->data,node->size);kfree(node->data);
@@ -232,7 +266,7 @@ int fs_unlink(const char *path)
     for(unsigned i=1;i<FS_NODES;++i)
         if(nodes[i].used && !nodes[i].unlinked && nodes[i].parent==(unsigned)result){result=-39;goto done;}
     if(nodes[result].references)nodes[result].unlinked=true;
-    else {kfree(nodes[result].data);memset(&nodes[result],0,sizeof(nodes[result]));}
+    else {release_node_data(&nodes[result]);memset(&nodes[result],0,sizeof(nodes[result]));}
     result=0;
 done:
     irq_restore(flags);return result;
@@ -241,6 +275,21 @@ static void entry(unsigned index,struct fs_entry *result)
 {
     memset(result,0,sizeof(*result));memcpy(result->name,nodes[index].name,FS_NAME);
     result->type=nodes[index].type;result->size=nodes[index].size;
+    if(nodes[index].shared)result->reserved=2;
+}
+int fs_shared_rights(struct fs_handle *table,int fd,unsigned *rights)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);int rc=-9;
+    if(file){rc=-95;if(file->node!=FS_ASSET_NODE&&nodes[file->node-1].shared){
+        *rights=file->flags&3u;rc=0;}}
+    irq_restore(flags);return rc;
+}
+uintptr_t fs_shared_page(struct fs_handle *table,int fd,size_t offset)
+{
+    uint64_t flags=irq_save();struct fs_handle *file=handle(table,fd);uintptr_t page=0;
+    if(file&&file->node!=FS_ASSET_NODE&&nodes[file->node-1].shared)
+        page=shm_acquire_page(nodes[file->node-1].shared,offset);
+    irq_restore(flags);return page;
 }
 int fs_stat(const char *path,struct fs_entry *result)
 {
@@ -279,6 +328,26 @@ done:
 unsigned fs_node_count(void)
 {
     unsigned count=0;for(unsigned i=0;i<FS_NODES;++i)if(nodes[i].used)++count;return count;
+}
+int fs_volume_stat(const char *path,struct fs_volume_info *result)
+{
+    if(!path||!result)return -14;
+    /* Assets are a separate immutable volume. Its aggregate allocation
+     * metadata is not exposed by this RAMFS query; do not invent it. */
+    if(equal(path,"/assets")||equal(path,"/assets/")||asset_name(path))return -95;
+    uint64_t flags=irq_save();int node=resolve(path,false,0);
+    if(node>=0){
+        unsigned used=fs_node_count();memset(result,0,sizeof(*result));
+        result->block_size=PAGE_SIZE;result->fragment_size=PAGE_SIZE;
+        /* RAMFS has no filesystem-wide block pool/quota. Zero block fields
+         * express that absence, not host free disk or guaranteed free RAM.
+         * Per-file65536 bound and dynamic kmalloc failures still apply. */
+        result->files=FS_NODES;result->files_free=FS_NODES-used;
+        result->files_available=result->files_free;result->filesystem_id=1;
+        result->flags=2; /* ST_NOSUID: RAMFS has no setuid executable modes. */
+        result->name_max=FS_NAME-1;
+    }
+    irq_restore(flags);return node<0?node:0;
 }
 void fs_init(void)
 {

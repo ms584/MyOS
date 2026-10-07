@@ -18,10 +18,16 @@ static void identity_shared_tests(void)
  struct fs_handle files[FS_HANDLES]={0};struct fs_entry entry;
  unsigned base_heap=heap_blocks,base_nodes=fs_node_count();assert(!live);
  assert(!fs_mkdir("/home/dir TEzLw=="));
+ int auto_dir=fs_open(files,"/home/dir TEzLw==",FS_READ|FS_AUTO_DIRECTORY);
+ assert(auto_dir>=3&&!fs_fstat(files,auto_dir,&entry)&&entry.type==FS_DIR);
+ assert(fs_open(files,"/home/dir TEzLw==",FS_WRITE|FS_AUTO_DIRECTORY)==-22);
+ assert(!fs_close(files,auto_dir));
  int dir=fs_open(files,"/home/dir TEzLw==",FS_READ|FS_DIRECTORY);assert(dir>=3);
  assert(fs_read(files,dir,0,0)==-21&&fs_seek(files,dir,0,0)==-29);
  int source=fs_open_at(files,dir,"source",FS_READ|FS_WRITE|FS_CREATE);assert(source>=3);
  assert(fs_write(files,source,"source",6)==6&&!fs_close(files,source));
+ int auto_file=fs_open(files,"/home/dir TEzLw==/source",FS_READ|FS_AUTO_DIRECTORY);
+ assert(auto_file>=3&&!fs_fstat(files,auto_file,&entry)&&entry.type==FS_FILE&&!fs_close(files,auto_file));
  deny_heap=true;assert(!fs_rename("/home/dir TEzLw==","/home/moved TEzLw=="));deny_heap=false;
  assert(fs_stat("/home/dir TEzLw==",&entry)==-2);
  assert(!fs_stat_at(files,dir,"source",&entry)&&entry.size==6);
@@ -38,7 +44,19 @@ static void identity_shared_tests(void)
  assert(fs_rename("/home/moved TEzLw==","/home/moved TEzLw==/child")==-22);
  assert(fs_rename("/","/home/root")==-16);
  assert(fs_rename("/assets/read-only","/home/nope")==-30);
- assert(!fs_close(files,dir)&&!fs_unlink("/home/moved TEzLw==/target")&&!fs_unlink("/home/moved TEzLw=="));
+ assert(fs_unlink_at(files,dir,"target",1)==-20);
+ assert(fs_unlink_at(files,dir,".",0)==-21);
+ assert(fs_unlink_at(files,dir,"target",2)==-22);
+ assert(fs_unlink_at(files,2,"target",0)==-9);
+ target=fs_open_at(files,dir,"target",FS_READ);assert(target>=3);
+ assert(fs_unlink_at(files,target,"target",0)==-20);
+ deny_heap=true;assert(!fs_unlink_at(files,dir,"target",0));deny_heap=false;
+ assert(fs_stat_at(files,dir,"target",&entry)==-2);
+ assert(!fs_fstat(files,target,&entry)&&entry.size==6&&!fs_close(files,target));
+ assert(!fs_close(files,dir));
+ assert(fs_unlink_at(files,2,"/home/moved TEzLw==",0)==-21);
+ assert(!fs_unlink_at(files,2,"/home/moved TEzLw==",1));
+ assert(fs_unlink_at(files,2,"/assets/read-only",0)==-30);
  /* A replaced empty directory's open handle retains its original inode. */
  assert(!fs_mkdir("/home/first")&&!fs_mkdir("/home/second"));
  dir=fs_open(files,"/home/second",FS_READ|FS_DIRECTORY);assert(dir>=3);

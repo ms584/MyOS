@@ -31,6 +31,7 @@ static void release(struct process *process)
     for(unsigned i=0;i<PROCESS_THREAD_LIMIT;++i)kfree(process->threads[i].kernel_stack);
     kfree(process->image_pages);
     kfree(process->vm_pages);
+    kfree(process->vm_areas);
     kfree(process->kernel_stack);
     kfree(process->tls_template);
     memset(process, 0, sizeof(*process));
@@ -324,7 +325,8 @@ bool process_image_readonly(struct process *p,uint64_t address,uint64_t size)
 static bool vm_range(uint64_t address,size_t length)
 {
     return length&&!(address&(PAGE_SIZE-1))&&!(length&(PAGE_SIZE-1))&&
-           address>=PROCESS_VM_BASE&&address<=PROCESS_VM_END-length;
+           ((length<=PROCESS_VM_END-PROCESS_VM_BASE&&address>=PROCESS_VM_BASE&&address<=PROCESS_VM_END-length)||
+            (length<=PROCESS_VM_HIGH_END-PROCESS_VM_HIGH_BASE&&address>=PROCESS_VM_HIGH_BASE&&address<=PROCESS_VM_HIGH_END-length));
 }
 static bool vm_track(struct process *p,uintptr_t page)
 {
@@ -367,20 +369,101 @@ static uint64_t *vm_leaf(struct process *p,uint64_t address,bool create)
     }
     return &table[(address>>12)&511];
 }
-static bool vm_free_at(struct process *p,uint64_t address)
+static void vm_flush(uint64_t address)
 {
-    uint64_t *entry=vm_leaf(p,address,false);return !entry||!(*entry&1);
+#ifdef PROCESS_VM_UNIT
+    (void)address; /* Host contract tests cannot execute privileged INVLPG. */
+#else
+    __asm__ volatile("invlpg (%0)"::"r"(address):"memory");
+#endif
 }
-static void vm_flush(uint64_t address){__asm__ volatile("invlpg (%0)"::"r"(address):"memory");}
+/* Skip absent page-table subtrees rather than walking billions of reserved
+ * pages. next is always greater than address and callers cap it at their end. */
+static uint64_t *vm_leaf_span(struct process *p,uint64_t address,uint64_t *next)
+{
+    uint64_t *table=(void *)p->root;
+    for(int shift=39;shift>=21;shift-=9){
+        uint64_t entry=table[(address>>shift)&511];
+        if((entry&5)!=5||(entry&128)){
+            *next=(address|( (1ull<<shift)-1))+1;return 0;
+        }
+        table=(void *)(uintptr_t)(entry&0x000ffffffffff000ull);
+    }
+    *next=address+PAGE_SIZE;return &table[(address>>12)&511];
+}
+static bool vm_owned(struct process *p,uintptr_t page)
+{
+    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page)return true;
+    return false;
+}
+static void vm_prune_path(struct process *p,uint64_t address)
+{
+    uint64_t *table=(void *)p->root,*parents[3];uintptr_t pages[3];
+    unsigned depth=0;
+    for(int shift=39;shift>=21;shift-=9){
+        uint64_t *entry=&table[(address>>shift)&511];
+        if((*entry&5)!=5||(*entry&128))break;
+        parents[depth]=entry;pages[depth]=*entry&0x000ffffffffff000ull;++depth;
+        table=(void *)pages[depth-1];
+    }
+    while(depth){--depth;uintptr_t page=pages[depth];
+        if(!vm_owned(p,page))break;bool empty=true;uint64_t *entries=(void *)page;
+        for(unsigned i=0;i<512;++i)if(entries[i]){empty=false;break;}
+        if(!empty)break;*parents[depth]=0;vm_forget(p,page);page_free(page);
+    }
+}
+static void vm_drop_pages(struct process *p,uint64_t address,size_t length,bool staged_only)
+{
+    uint64_t end=address+length;
+    for(uint64_t a=address;a<end;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(entry&&(*entry&1)&&(!staged_only||(*entry&(1ull<<9)))){
+            uintptr_t page=*entry&0x000ffffffffff000ull;
+            *entry=0;vm_flush(a);vm_forget(p,page);page_free(page);vm_prune_path(p,a);
+        }
+        a=next<end?next:end;
+    }
+}
+#define VM_FILE_PAGE (1ull<<10)
+#define VM_FILE_SHARED_PAGE (1ull<<11)
+static int vm_commit(struct process *p,uint64_t address,size_t length,unsigned prot)
+{
+    uint64_t end=address+length;
+    if(prot){
+        size_t resident=0;
+        for(uint64_t a=address;a<end;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+            if(entry&&(*entry&1))++resident;a=next<end?next:end;
+        }
+        size_t needed=length/PAGE_SIZE-resident;
+        if(needed>pages_free())return -12;
+        for(uint64_t a=address;a<end;a+=PAGE_SIZE){
+            uint64_t *entry=vm_leaf(p,a,true);
+            if(!entry){vm_drop_pages(p,address,length,true);vm_prune_path(p,a);return -12;}
+            if(*entry&1)continue;
+            uintptr_t page=vm_new_page(p);
+            if(!page){vm_drop_pages(p,address,length,true);vm_prune_path(p,a);return -12;}
+            /* Stage inaccessible pages until the whole commit succeeds.
+             * Rollback touches only new pages, never earlier contents/rights. */
+            *entry=page|1|NX|(1ull<<9);
+        }
+    }
+    for(uint64_t a=address;a<end;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(entry&&(*entry&1)){
+            uintptr_t page=*entry&0x000ffffffffff000ull;
+            uint64_t backing=*entry&(VM_FILE_PAGE|VM_FILE_SHARED_PAGE);
+            *entry=page|backing|1|((prot&PROCESS_PROT_READ)?4:0)|((prot&PROCESS_PROT_WRITE)?2:0)|
+                   ((prot&PROCESS_PROT_EXEC)?0:NX);vm_flush(a);
+        }
+        a=next<end?next:end;
+    }
+    return 0;
+}
 
 int process_vm_unmap(struct process *p,uint64_t address,size_t length)
 {
     if(!vm_range(address,length))return -22;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||!(*e&1))return -22;}
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
-        uint64_t *e=vm_leaf(p,a,false);uintptr_t page=(uintptr_t)(*e&0x000ffffffffff000ull);
-        *e=0;vm_flush(a);vm_forget(p,page);page_free(page);
-    }
+    if(!vm_areas_remove(p->vm_areas,address,address+length))return -12;
+    vm_drop_pages(p,address,length,false);
+    if(p->vm_areas&&!p->vm_areas->count){kfree(p->vm_areas);p->vm_areas=0;}
     return 0;
 }
 
@@ -388,39 +471,36 @@ int process_vm_protect(struct process *p,uint64_t address,size_t length,unsigned
 {
     if(!vm_range(address,length)||(prot&~7u)||
        ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){uint64_t *e=vm_leaf(p,a,false);if(!e||!(*e&1))return -22;}
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
-        uint64_t *e=vm_leaf(p,a,false),page=*e&0x000ffffffffff000ull;
-        *e=page|1|((prot&PROCESS_PROT_READ)?4:0)|((prot&PROCESS_PROT_WRITE)?2:0)|
-           ((prot&PROCESS_PROT_EXEC)?0:NX);vm_flush(a);
+    if(!vm_areas_cover(p->vm_areas,address,address+length))return -12;
+    /* Preflight mixed ranges before any permission changes. */
+    for(uint64_t a=address;a<address+length;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(entry&&(*entry&VM_FILE_PAGE)){
+            if(prot&PROCESS_PROT_EXEC)return -95;
+            if((prot&PROCESS_PROT_WRITE)&&(*entry&VM_FILE_SHARED_PAGE))return -13;
+        }
+        a=next<address+length?next:address+length;
     }
-    return 0;
+    return vm_commit(p,address,length,prot);
 }
 
 int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned prot)
 {
-    if(!length||length>PROCESS_VM_END-PROCESS_VM_BASE||length>SIZE_MAX-(PAGE_SIZE-1) ||
+    if(!length||length>PROCESS_VM_HIGH_END-PROCESS_VM_HIGH_BASE||length>SIZE_MAX-(PAGE_SIZE-1) ||
        (prot&~7u)||((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
     length=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
     uint64_t address=hint;
     if(hint){if(!vm_range(hint,length))return -22;
-        for(uint64_t a=hint;a<hint+length;a+=PAGE_SIZE)if(!vm_free_at(p,a))return -17;
+        if(vm_areas_overlap(p->vm_areas,hint,hint+length))return -17;
     }else{
-        size_t run=0;address=PROCESS_VM_BASE;
-        for(uint64_t a=PROCESS_VM_BASE;a<PROCESS_VM_END;a+=PAGE_SIZE){
-            if(vm_free_at(p,a)){run+=PAGE_SIZE;if(run==length){address=a+PAGE_SIZE-length;break;}}
-            else run=0;
-        }
-        if(run!=length)return -12;
+        address=vm_areas_gap(p->vm_areas,PROCESS_VM_BASE,PROCESS_VM_END,length);
+        if(!address)address=vm_areas_gap(p->vm_areas,PROCESS_VM_HIGH_BASE,PROCESS_VM_HIGH_END,length);
+        if(!address)return -12;
     }
-    size_t mapped=0;
-    for(;mapped<length;mapped+=PAGE_SIZE){
-        uint64_t *e=vm_leaf(p,address+mapped,true);if(!e||(*e&1))break;
-        uintptr_t page=vm_new_page(p);if(!page)break;
-        *e=page|1|((prot&PROCESS_PROT_READ)?4:0)|((prot&PROCESS_PROT_WRITE)?2:0)|
-           ((prot&PROCESS_PROT_EXEC)?0:NX);
-    }
-    if(mapped!=length){if(mapped)check(!process_vm_unmap(p,address,mapped),"VM rollback");return -12;}
+    if(!p->vm_areas){p->vm_areas=kmalloc(sizeof(*p->vm_areas));if(!p->vm_areas)return -12;
+        memset(p->vm_areas,0,sizeof(*p->vm_areas));}
+    if(!vm_areas_add(p->vm_areas,address,address+length))return -12;
+    int result=vm_commit(p,address,length,prot);
+    if(result){check(!process_vm_unmap(p,address,length),"VM reservation rollback");return result;}
     return (int64_t)address;
 }
 
@@ -428,21 +508,90 @@ int64_t process_vm_map_fixed(struct process *p,uint64_t address,size_t length,un
 {
     if(!vm_range(address,length)||(prot&~7u)||
        ((prot&PROCESS_PROT_WRITE)&&(prot&PROCESS_PROT_EXEC)))return -22;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
-        uint64_t *entry=vm_leaf(p,a,false);
-        if(entry&&(*entry&1)&&process_vm_unmap(p,a,PAGE_SIZE))return -22;
-    }
+    int result=process_vm_unmap(p,address,length);if(result)return result;
     return process_vm_map(p,address,length,prot);
 }
 
 bool process_vm_mapped(struct process *p,uint64_t address,size_t length)
 {
-    if(!vm_range(address,length))return false;
-    for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
-        uint64_t *entry=vm_leaf(p,a,false);
-        if(!entry||!(*entry&1))return false;
+    return vm_range(address,length)&&vm_areas_cover(p->vm_areas,address,address+length);
+}
+bool process_vm_resident(struct process *p,uint64_t address)
+{uint64_t *entry=vm_leaf(p,address,false);return entry&&(*entry&1);}
+
+static int64_t map_shared_backing(struct process *p,const struct vm_file_request *r,size_t length,unsigned rights)
+{
+    int64_t mapped=(r->flags&VM_FILE_FIXED)?
+        process_vm_map_fixed(p,r->address,length,PROCESS_PROT_READ):
+        process_vm_map(p,r->address,length,PROCESS_PROT_READ);
+    if(mapped<0)return mapped;
+    int error=0;
+    for(size_t offset=0;offset<length;offset+=PAGE_SIZE){
+        uint64_t *entry=vm_leaf(p,(uint64_t)mapped+offset,false);
+        uintptr_t shared=fs_shared_page(p->files,r->descriptor,(size_t)r->offset+offset);
+        if(!shared){error=-12;break;}
+        check(entry&&(*entry&1),"shared mapping staged leaf");
+        uintptr_t old=*entry&0x000ffffffffff000ull;bool tracked=false;
+        for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==old){
+            p->vm_pages[i]=shared;tracked=true;break;}
+        check(tracked,"shared mapping ownership ledger");
+        *entry=shared|1|4|NX|VM_FILE_PAGE|((rights&FS_WRITE)?0:VM_FILE_SHARED_PAGE);
+        vm_flush((uint64_t)mapped+offset);page_free(old);
     }
-    return true;
+    if(!error)error=process_vm_protect(p,(uint64_t)mapped,length,r->protection);
+    if(error){check(!process_vm_unmap(p,(uint64_t)mapped,length),"shared mapping rollback");return error;}
+    return mapped;
+}
+/* Immutable backing cannot change; readonly shared copies observe identical
+ * bytes. Private writable copies are owned and never written back. No mutable
+ * shared/COW/demand-SIGBUS claim. Atomic syscall on this single-CPU kernel. */
+int64_t process_vm_file(struct process *p,const struct vm_file_request *r)
+{
+    if(!r->length||r->length>SIZE_MAX-(PAGE_SIZE-1)||
+       (r->offset&(PAGE_SIZE-1))||r->offset>INT64_MAX||
+       (r->protection&~7u)||(r->flags&~(VM_FILE_FIXED|VM_FILE_SHARED)))return -22;
+    size_t length=(r->length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
+    if(r->address&&!vm_range(r->address,length))return -22;
+    if((r->flags&VM_FILE_FIXED)&&!r->address)return -22;
+    struct fs_entry info;int error=fs_fstat(p->files,r->descriptor,&info);
+    if(error)return error;
+    if(info.type!=FS_FILE||!(info.reserved&3))return -95;
+    if(r->protection&PROCESS_PROT_EXEC)return -95;
+    unsigned rights=0;
+    if(info.reserved&2){error=fs_shared_rights(p->files,r->descriptor,&rights);if(error)return error;
+        if(!(rights&FS_READ))return -13;
+        if((r->flags&VM_FILE_SHARED)&&(r->protection&PROCESS_PROT_WRITE)&&!(rights&FS_WRITE))return -13;
+    }else if((r->flags&VM_FILE_SHARED)&&(r->protection&PROCESS_PROT_WRITE))return -13;
+    /* Reject whole pages beyond EOF explicitly until SIGBUS is supported. */
+    if(r->offset>=info.size||info.size-r->offset>SIZE_MAX-(PAGE_SIZE-1))return -95;
+    uint64_t extent=info.size-r->offset;
+    if(length>((extent+PAGE_SIZE-1)&~(uint64_t)(PAGE_SIZE-1)))return -95;
+    if((info.reserved&2)&&(r->flags&VM_FILE_SHARED))return map_shared_backing(p,r,length,rights);
+    int64_t saved=fs_seek(p->files,r->descriptor,0,1);if(saved<0)return saved;
+    int64_t mapped=(r->flags&VM_FILE_FIXED)?
+        process_vm_map_fixed(p,r->address,length,PROCESS_PROT_READ):
+        process_vm_map(p,r->address,length,PROCESS_PROT_READ);
+    if(mapped<0)return mapped;
+    int64_t seek=fs_seek(p->files,r->descriptor,(int64_t)r->offset,0);
+    if(seek<0)error=(int)seek;
+    /* Final page includes real backing bytes past the unrounded request. */
+    size_t count=length<extent?length:(size_t)extent;
+    for(size_t done=0;!error&&done<count;){
+        uint64_t *entry=vm_leaf(p,(uint64_t)mapped+done,false);
+        if(!entry||!(*entry&1)){error=-12;break;}
+        size_t chunk=PAGE_SIZE;if(chunk>count-done)chunk=count-done;
+        int64_t read=fs_read(p->files,r->descriptor,(void *)(uintptr_t)(*entry&0x000ffffffffff000ull),chunk);
+        if(read!=(int64_t)chunk){error=read<0?(int)read:-5;break;}done+=chunk;
+    }
+    int64_t restored=fs_seek(p->files,r->descriptor,saved,0);
+    if(!error&&restored<0)error=(int)restored;
+    if(!error)error=process_vm_protect(p,(uint64_t)mapped,length,r->protection);
+    if(error){check(!process_vm_unmap(p,(uint64_t)mapped,length),"file VM rollback");return error;}
+    for(uint64_t a=(uint64_t)mapped;a<(uint64_t)mapped+length;a+=PAGE_SIZE){
+        uint64_t *entry=vm_leaf(p,a,false);
+        *entry|=VM_FILE_PAGE|((r->flags&VM_FILE_SHARED)?VM_FILE_SHARED_PAGE:0);
+    }
+    return mapped;
 }
 
 int process_vm_advise(struct process *p,uint64_t address,size_t length,unsigned advice)
@@ -450,9 +599,16 @@ int process_vm_advise(struct process *p,uint64_t address,size_t length,unsigned 
     if(!process_vm_mapped(p,address,length))return -12;
     if(advice!=0&&advice!=1&&advice!=2&&advice!=3&&advice!=4&&
        advice!=8&&advice!=16&&advice!=17)return -22;
-    if(advice==4||advice==8)for(uint64_t a=address;a<address+length;a+=PAGE_SIZE){
-        uint64_t *entry=vm_leaf(p,a,false);
-        memset((void *)(uintptr_t)(*entry&0x000ffffffffff000ull),0,PAGE_SIZE);
+    /* No anonymous zeroing of file data. Preflight before any mixed mutation. */
+    if(advice==4||advice==8)for(uint64_t a=address;a<address+length;){
+        uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(entry&&(*entry&VM_FILE_PAGE))return -95;
+        a=next<address+length?next:address+length;
+    }
+    if(advice==4||advice==8)for(uint64_t a=address;a<address+length;){
+        uint64_t next,*entry=vm_leaf_span(p,a,&next);
+        if(entry&&(*entry&1))memset((void *)(uintptr_t)(*entry&0x000ffffffffff000ull),0,PAGE_SIZE);
+        a=next<address+length?next:address+length;
     }
     return 0;
 }

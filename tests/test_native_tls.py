@@ -132,7 +132,11 @@ def main(uefi=False):
             output=long_command(vm,'elf live '+name)
             assert 'USER FAULT' in output and f'vector={vector} ' in output and 'native TLS finalizer PASS' not in output,output
             if name=='gd2':assert 'error=0x0000000000000015' in output,output
-            if name=='gd3':assert 'error=0x0000000000000006' in output and 'address=0x000000803F01FFFF' in output,output
+            if name=='gd3':
+                import re
+                workers=int(re.search(r'MYOS_WORKER_LIMIT\s+(\d+)u',Path('include/thread-limit.h').read_text()).group(1))
+                guard=0x803f010000+(workers+1)*4096
+                assert 'error=0x0000000000000006' in output and f'address=0x{guard:016X}' in output,output
             assert_live_resources(output)
         cancel_live(vm,'gd4','native TLS blocked cancel ready',timeout=15)
         if not uefi:

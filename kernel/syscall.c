@@ -241,6 +241,13 @@ static int64_t file_call(struct process *p,struct frame *f)
     }
     int ret=user_path(p,path,f->rdi);if(ret)return ret;
     switch(f->rax){
+    case SYS_FS_VOLUME: {
+        struct fs_volume_info volume;
+        if(f->rdx)return -22;
+        if(!writable_range(p,f->rsi,sizeof(volume)))return -14;
+        ret=fs_volume_stat(path,&volume);
+        if(!ret)copy_to_user(p,f->rsi,&volume,sizeof(volume));return ret;
+    }
     case SYS_FOPEN:
         if(f->rsi>31)return -22;
         return fs_open(p->files,path,(unsigned)f->rsi);
@@ -447,11 +454,19 @@ struct frame *syscall_dispatch(struct frame *frame)
         frame->rax=(uint64_t)process_vm_map(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
         break;
     case SYS_VM_UNMAP:
+    /* File request checked as a complete fixed-size user structure. */
         frame->rax=(uint64_t)process_vm_unmap(process,frame->rdi,(size_t)frame->rsi);
         break;
     case SYS_VM_PROTECT:
         frame->rax=(uint64_t)process_vm_protect(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
         break;
+    case SYS_VM_FILE: {
+        struct vm_file_request request;
+        if(frame->rsi!=sizeof(request)||frame->rdx)frame->rax=(uint64_t)-22;
+        else if(!copy_from_user(process,(void *)&request,frame->rdi,sizeof(request)))frame->rax=(uint64_t)-14;
+        else frame->rax=(uint64_t)process_vm_file(process,&request);
+        break;
+    }
     case SYS_THREAD_CREATE:
         frame->rax=(uint64_t)process_thread_create(process,frame->rdi,frame->rsi,
                                                    frame->rdx,frame->r10);
@@ -487,8 +502,10 @@ struct frame *syscall_dispatch(struct frame *frame)
         if(!process_vm_mapped(process,frame->rdi,length)){
             frame->rax=(uint64_t)-12;break;
         }
-        unsigned char resident=1;
-        for(size_t i=0;i<pages;++i)copy_to_user(process,frame->rdx+i,&resident,1);
+        for(size_t i=0;i<pages;++i){
+            unsigned char resident=process_vm_resident(process,frame->rdi+i*PAGE_SIZE)?1:0;
+            copy_to_user(process,frame->rdx+i,&resident,1);
+        }
         frame->rax=0;break;
     }
     case SYS_VM_ADVISE:
@@ -511,7 +528,7 @@ struct frame *syscall_dispatch(struct frame *frame)
     case SYS_FOPEN: case SYS_FREAD: case SYS_FWRITE: case SYS_FCLOSE:
     case SYS_FSEEK: case SYS_FSTAT: case SYS_FTRUNCATE:
     case SYS_FREAD_LARGE: case SYS_FWRITE_LARGE: case SYS_FSYNC:
-    case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT:
+    case SYS_MKDIR: case SYS_UNLINK: case SYS_READDIR: case SYS_STAT: case SYS_FS_VOLUME:
         frame->rax = (uint64_t)file_call(process,frame);
         break;
     case SYS_TCP_CREATE: case SYS_TCP_CONNECT: case SYS_TCP_STATUS:

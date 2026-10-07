@@ -7,6 +7,10 @@ static size_t heap_bytes;
 #define NX (1ull<<63)
 #define ADDR 0x000ffffffffff000ull
 static uint8_t available[MAX_PAGES/8],owned[MAX_PAGES/8];
+/* Allocated after heap bootstrap: a static128KiB table would violate the
+ * BIOS low-memory kernel reservation. Before then all owned frames have one
+ * exclusive reference, and page_retain is unavailable. */
+static uint16_t *references;
 static size_t free_count,total_count;
 static unsigned hint=256;
 struct e820 {uint64_t base,length;uint32_t type,attributes;} __attribute__((packed));
@@ -17,7 +21,7 @@ size_t pages_total(void){return total_count;}
 uintptr_t page_alloc(void){
     uint64_t f=irq_save();if(!free_count){irq_restore(f);return 0;}
     for(unsigned k=0;k<MAX_PAGES;++k){unsigned n=(hint+k)%MAX_PAGES;
-        if(bit(available,n)&&!bit(owned,n)){set(owned,n,true);--free_count;hint=(n+1)%MAX_PAGES;irq_restore(f);return (uintptr_t)n*PAGE_SIZE;}}
+        if(bit(available,n)&&!bit(owned,n)){set(owned,n,true);if(references)references[n]=1;--free_count;hint=(n+1)%MAX_PAGES;irq_restore(f);return (uintptr_t)n*PAGE_SIZE;}}
     panic("PMM count mismatch");
 }
 uintptr_t pages_alloc_contiguous(unsigned count){
@@ -27,7 +31,7 @@ uintptr_t pages_alloc_contiguous(unsigned count){
         bool free=true;
         for(unsigned i=0;i<count;++i)if(!bit(available,start+i)||bit(owned,start+i)){free=false;break;}
         if(!free)continue;
-        for(unsigned i=0;i<count;++i)set(owned,start+i,true);
+        for(unsigned i=0;i<count;++i){set(owned,start+i,true);if(references)references[start+i]=1;}
         free_count-=count;irq_restore(flags);return (uintptr_t)start*PAGE_SIZE;
     }
     irq_restore(flags);return 0;
@@ -35,7 +39,20 @@ uintptr_t pages_alloc_contiguous(unsigned count){
 void page_free(uintptr_t p){
     uint64_t f=irq_save();unsigned n=p/PAGE_SIZE;
     check(p<(uintptr_t)MAX_PAGES*PAGE_SIZE&&!(p%PAGE_SIZE)&&n<MAX_PAGES&&bit(available,n)&&bit(owned,n),"invalid/double page free");
-    set(owned,n,false);++free_count;irq_restore(f);
+    if(references)check(references[n]>0,"page ownership reference");
+    if(!references||!--references[n]){set(owned,n,false);++free_count;}irq_restore(f);
+}
+bool page_retain(uintptr_t p){
+    uint64_t flags=irq_save();unsigned n=p/PAGE_SIZE;
+    bool valid=references&&p<(uintptr_t)MAX_PAGES*PAGE_SIZE&&!(p%PAGE_SIZE)&&
+        bit(available,n)&&bit(owned,n)&&references[n]&&references[n]<UINT16_MAX;
+    if(valid)++references[n];irq_restore(flags);return valid;
+}
+unsigned page_references(uintptr_t p){
+    uint64_t flags=irq_save();unsigned n=p/PAGE_SIZE;
+    unsigned count=p<(uintptr_t)MAX_PAGES*PAGE_SIZE&&!(p%PAGE_SIZE)&&
+        bit(available,n)&&bit(owned,n)?(references?references[n]:1):0;
+    irq_restore(flags);return count;
 }
 static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<(1ull<<39)&&!(v%PAGE_SIZE);}
 bool vm_map(uintptr_t va,uintptr_t pa,uint64_t flags){
@@ -109,15 +126,21 @@ void memory_init(void){
     check(free_count>heap_bytes/PAGE_SIZE+512,"insufficient RAM");
     for(unsigned i=0;i<heap_bytes/PAGE_SIZE;++i){uintptr_t p=page_alloc();check(p&&vm_map(0x100000000ull+i*PAGE_SIZE,p,2|NX),"heap mapping");}
     heap=(struct block *)0x100000000ull;*heap=(struct block){heap_bytes-sizeof(*heap),0,0,1};
+    references=kmalloc(MAX_PAGES*sizeof(*references));check(references!=0,"PMM reference metadata");
+    for(unsigned n=0;n<MAX_PAGES;++n)references[n]=bit(owned,n)?1:0;
 }
 void memory_test(void){
     size_t before=pages_free();uintptr_t a=page_alloc(),b=page_alloc();check(a&&b&&a!=b&&a>=0x100000,"PMM allocation");
+    check(page_references(a)==1&&page_retain(a)&&page_references(a)==2,"PMM shared retain");
+    page_free(a);check(page_references(a)==1&&pages_free()==before-2,"PMM retained frame lifetime");
+    check(!page_retain(a+1)&&!page_references(a+1)&&!page_retain(0),"PMM invalid retain");
     uintptr_t va=0x200000000ull;check(vm_map(va,a,2|NX),"VM map");check(!vm_map(va,b,2|NX),"duplicate map");
     *(volatile uint64_t *)va=0x1122334455667788ull;check(*(volatile uint64_t *)a==0x1122334455667788ull,"VM alias");
     check(vm_translate(va+17)==a+17,"VM translation");check(vm_unmap(va)==a&&!vm_translate(va),"VM unmap");page_free(a);page_free(b);check(pages_free()==before,"page table reclaim");
     void *x=kmalloc(13),*y=kmalloc(5000);check(x&&y&&x!=y&&!((uintptr_t)x&15),"heap allocation");
     memset(x,0xab,13);memset(y,0xcd,5000);check(((uint8_t *)x)[12]==0xab&&((uint8_t *)y)[4999]==0xcd,"heap boundaries");
-    kfree(x);kfree(y);void *all=kmalloc(heap_bytes-sizeof(struct block));check(all==x,"heap coalescing");check(!kmalloc(1),"heap OOM");kfree(all);
+    kfree(x);kfree(y);size_t largest=0;for(struct block *b=heap;b;b=b->next)if(b->free&&b->size>largest)largest=b->size;
+    void *all=kmalloc(largest);check(all==x,"heap coalescing");check(!kmalloc(1),"heap OOM");kfree(all);
     uintptr_t list=0,p;size_t used=0;while((p=page_alloc())){*(uintptr_t *)p=list;list=p;++used;}
     check(used==before&&!page_alloc(),"PMM exhaustion");while(list){p=*(uintptr_t *)list;page_free(list);list=p;}check(pages_free()==before,"PMM recovery");
     print("PASS: PMM, paging, heap, exhaustion/recovery\n");

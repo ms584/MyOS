@@ -134,8 +134,9 @@ static int directory_base(struct fs_handle *table,int directory,const char *path
 }
 int fs_open_at(struct fs_handle *table,int directory,const char *path,unsigned access)
 {
-    if((access&~63u) || !(access&3) || ((access&FS_TRUNC)&&!(access&FS_WRITE)) ||
+    if((access&~127u) || !(access&3) || ((access&FS_TRUNC)&&!(access&FS_WRITE)) ||
        ((access&FS_EXCL)&&!(access&FS_CREATE))||
+       ((access&FS_AUTO_DIRECTORY)&&(access&(FS_WRITE|FS_CREATE|FS_TRUNC|FS_EXCL)))||
        ((access&FS_DIRECTORY)&&(access&(FS_WRITE|FS_CREATE|FS_TRUNC|FS_EXCL))))return -22;
     uint64_t flags=irq_save();int result=-24;unsigned slot;
     int base=directory_base(table,directory,path);if(base<0){result=base;goto done;}
@@ -160,7 +161,7 @@ int fs_open_at(struct fs_handle *table,int directory,const char *path,unsigned a
     if(result<0)goto done;
     struct node *node=&nodes[result];
     if(access&FS_DIRECTORY){if(node->type!=FS_DIR){result=-20;goto done;}}
-    else if(node->type!=FS_FILE){result=-21;goto done;}
+    else if(node->type!=FS_FILE&&!(access&FS_AUTO_DIRECTORY)){result=-21;goto done;}
     if(access&FS_TRUNC){
         if(node->shared){int rc=shm_resize(node->shared,0);if(rc){result=rc;goto done;}}
         else memset(node->data,0,node->capacity);
@@ -325,10 +326,16 @@ int fs_truncate(struct fs_handle *table,int fd,size_t length)
     else if(length<node->size)memset(node->data+length,0,node->size-length);
     node->size=length;irq_restore(flags);return 0;
 }
-int fs_unlink(const char *path)
+static int unlink_from(struct fs_handle *table,int directory,const char *path,unsigned mode)
 {
-    uint64_t flags=irq_save();int result=resolve(path,false,0);
+    uint64_t flags=irq_save();int result;
+    if(!path||!path[0]){result=-22;goto done;}
+    if(asset_name(path)){result=-30;goto done;}
+    result=directory_base(table,directory,path);if(result<0)goto done;
+    result=resolve_from(path,(unsigned)result,false,0);
     if(result<0)goto done;
+    if(mode==0&&nodes[result].type==FS_DIR){result=-21;goto done;}
+    if(mode==1&&nodes[result].type!=FS_DIR){result=-20;goto done;}
     if(!result || (nodes[result].type==FS_DIR&&nodes[result].references)){result=-16;goto done;}
     for(unsigned i=1;i<FS_NODES;++i)
         if(nodes[i].used && !nodes[i].unlinked && nodes[i].parent==(unsigned)result){result=-39;goto done;}
@@ -338,6 +345,13 @@ int fs_unlink(const char *path)
 done:
     irq_restore(flags);return result;
 }
+int fs_unlink_at(struct fs_handle *table,int directory,const char *path,unsigned remove_directory)
+{
+    if(remove_directory>1)return -22;
+    return unlink_from(table,directory,path,remove_directory);
+}
+int fs_unlink(const char *path)
+{return unlink_from(0,FS_AT_FDCWD,path,2);}
 static void entry(unsigned index,struct fs_entry *result)
 {
     memset(result,0,sizeof(*result));memcpy(result->name,nodes[index].name,FS_NAME);
