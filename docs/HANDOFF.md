@@ -3,7 +3,32 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
-## Native filesystem / CPU clocks — 2026-10-07 17:38 +07
+## Font / resource limit / import boundaries — 2026-10-07 18:10 +07
+
+Read PHASE332_IMPORT_CLOSURE_WIP.md for current source/evidence. Clean font
+scope82804 and data limit97660 BIOS/UEFI terminal0. Real separately licensed
+DejaVu fonts let genuine Cobalt pass the font CHECK. getrlimit(DATA2) reports
+absence of an independent quota, not unlimited RAM. Actual4747 n4c4pkkx
+terminal0 diagnostic: V8 mprotect on ELF image data0x8006235000 length4096
+fails EINVAL. HTTP0; five web gates remain unproven. Inspect loaded-image
+permission policy, not just anonymous VM. Do not relax W^X or RELRO blindly.
+
+User authorized binding completion before further browser fixes. Private
+player-unavailable-bI04LM added15 unavailable-media exports;94496 terminal0
+BIOS/UEFI and paired233/242. Never creates successful player/frame/callback;
+valid player lifecycle remains unimplemented33.3. Last9 POSIX services lack
+  kernel support; explicit ENOSYS exports1649 terminal0 18:10:40 BIOS/UEFI;
+  paired242/242 registered240,missing0; main remains217/242. Not semantic PASS.
+Do not label these24 boundaries full API semantics. No source promotion.
+Full76516 terminal1 18:11:19 old elf-system-path fixture requires argc1;
+launcher now legitimately supplies actual window-size argv (argc2 withoutURL).
+Preserved fs-full-old-argc-fixture-failure.log/status; full trap restored normal.
+Corrected fixture checks argc2, exact800x600 option, NULL sentinel, ownedpath,
+readonly argv rejection.89407 runs BIOS/UEFI then full in same FS/CPU/window
+tree, excludes new fonts/resource-limit/import boundaries. Do not mutate live
+source. Main normal images unchanged. This full failure is NOT PASS.
+
+## Native filesystem / CPU clocks — 2026-10-07 17:38 +07 (historical)
 
 Latest: full64642 terminal1 missing ignored audited contracts/window.h at
 test_native_ui; not PASS. fs-full-missing-pinned-header-failure.log/status

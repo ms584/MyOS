@@ -1,12 +1,15 @@
 # MyOS project state
-Updated:2026-10-07 17:39 +07. Native Cobalt acceptance; no33.3/push.
+Updated:2026-10-07 18:13 +07. Native Cobalt acceptance; no33.3/push.
 Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 ## Scope / measured bindings (NOT semantic or browser completion)
 - Phase33.1/33.2 OPEN: HTML+JS/DOM/timers, input, verified concurrent HTTPS,
   >=60s interaction, close/relaunch cleanup remain0/5 unproven.
-- Census17:12:21: main registered215/242,strong paired217/242,25missing;
+- Census17:40:02: main registered215/242,strong paired217/242,25missing;
   clean fs-native-VzEALo registered216/242,paired218/242,24missing (rename).
   Pinned GLOBAL UND242; hash-verified core/provider; no abort probes counted.
+- Private player-unavailable-bI04LM240registered/242paired,missing0;
+  closure1649 terminal0 18:10:40 BIOS/UEFI;15 unavailable-media+9 ENOSYS
+  boundaries, NOT functioning media/filesystem services. Main still217paired.
 - Phase32/33 NOT PASSED; YouTube unproven. Do not start33.3 or push.
 ## Main proven checkpoint
 - b34cf75 source16:41:57: shared VM/statvfs/audio outputs2/capacity32/
@@ -27,9 +30,10 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 - Host ASAN/UBSAN rename/shared/locks and independent2000-step oracle PASS;
   NOT native multi-process locking or F_SETLKW proof; F_SETLKW ENOTSUP.
 - Full64642 FAILED missing pinned contracts/window.h (not PASS), log/status
-  preserved. Provisioned immutable audited dependency; combined full76516
-  started17:37:14: fs-full.status RUNNING, SAME frozen fs-native-VzEALo now
-  includes CPU/window fixes. Full+scopes/normal restore pending; do not mutate.
+  preserved. Combined full76516 terminal1 18:11:19: old launcher fixture
+  hardcoded argc1 vs actual2. Failure/normal restore preserved. Corrected
+  fixture checks owned argv/path/readonly guards;89407 BIOS/UEFI then full
+  pending in SAME fs-native-VzEALo; no concurrent source mutation.
 - docs/PHASE332_FS_LIFETIME_WIP.md + docs/wip/phase332-fs-lifetime hold
   latest clean source, fixtures, command scripts and limits.
 ## Genuine Cobalt / next blocker
@@ -46,16 +50,22 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
   launcher argv adds actual display size; scope71491 BIOS/UEFI PASS17:36
   also validates executable path with new argv0 offset544 (old536 invalid).
   Actual24466 ld95w1k2 created800x600 handle1, then new CHECK; HTTP0.
-  Font init suspected from adjacent Font extension query; packaged fonts.xml
-  references absent .woff2 files, NOT yet proven sole cause.19318 wt0mhsip
-  terminal0 confirms same native window/fatal/HTTP0 after executable path fix.
+  Native font scope82804 BIOS/UEFI PASS; real separate DejaVu package/license,
+  guarded systemfont paths3/4. Actual1176 4eybvty6 passed font fatal, hit
+  getrlimit(DATA2). Native97660 BIOS/UEFI PASS; no independent data quota,
+  RLIM_INFINITY is NOT unlimited RAM; mmap/PMM retain ENOMEM limits.
+- Actual4747 n4c4pkkx terminal0 diagnostic18:01:36 passed prior blockers,
+  now V8 fails mprotect(core data0x8006235000,4096) EINVAL; HTTP0, no web PASS.
+  Address is ELF image data outside anonymous VM ranges; policy audit next.
 ## Bounds / next
 - Main32workers,2ELFmodules/1PTTLS,PMM256MiB; shared /dev/shm <=1MiB,
   mapped shrink EBUSY; no SIGBUS/COW/demand paging; normal RAMFS64KiB.
 - activity.log bounded48MiB; NEVER read through run_logged.py. Inspect same
   full/status and actual startup before edits. Preserve main
   normal images; fix essential clock/window/renderer contracts from evidence.
-- Private remaining FS9: chmod/fchmod/fchown/utimensat,symlink/readlink,
-  inotify3; player/decode15. Real semantics, not fake success imports.
+- POSIX9 chmod/fchmod/fchown/utimensat,symlink/readlink,inotify3 still lack
+  actual services; media15 has no player/codec. Binding closure != semantics.
+- WIP detail docs/PHASE332_IMPORT_CLOSURE_WIP.md; new font/limit/import work
+  excluded from frozen full76516. No promotion until required regressions.
 - Promote clean source only after regressions; update docs/local commit.
   Actual five web gates alone permit closure. No33.3/push.

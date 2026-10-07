@@ -1,0 +1,36 @@
+{
+  "font_package": "DejaVu fonts2.37 Ubuntu2.37-8build1",
+  "license": "Bitstream Vera/DejaVu, notice included LICENSE.txt",
+  "resources": [
+    {
+      "name": "DejaVuSans.ttf",
+      "bytes": 759720,
+      "sha256": "b4c632e3cdf9acc7f28758fb5a323c8524d7fc6660d46904d9b6cbe2809c419c",
+      "source": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    },
+    {
+      "name": "DejaVuSansMono.ttf",
+      "bytes": 343140,
+      "sha256": "a54dca07c76d6289e717e75e0a58c0128f6d7269ef3faf76417c9d7d3bba37ab",
+      "source": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
+    },
+    {
+      "name": "DejaVuSerif.ttf",
+      "bytes": 380660,
+      "sha256": "a52c2a69dfc93d0b511b98c1019a57eb3d6a62d328bdf1387f00851b02e3a315",
+      "source": "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"
+    },
+    {
+      "name": "LICENSE.txt",
+      "bytes": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9",
+      "source": "/usr/share/doc/fonts-dejavu-core/copyright"
+    },
+    {
+      "name": "fonts.xml",
+      "bytes": 907,
+      "sha256": "10474f4b185b06f7dfdeabdcf23d791c16e10624cf282f41f3a4decff821ea84",
+      "source": "/mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/platform-fonts-20261007.xml"
+    }
+  ]
+}
