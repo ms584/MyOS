@@ -3,6 +3,47 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## PMM512 continuation — 2026-10-08 05:03 +07
+
+No source promotion; main normal images/data disks unchanged, no push/33.3.
+Combined SHM8/direct full47797 confirmed live04:58 by its session, now native
+TLS/thread-services portion; NOT full PASS. Source frozen shm-8m-4hJG2I.
+GPU snapshot1891 terminal0, bundle0f114_3y: Chrome_InProcGpuThread tid11
+runnable in actual Mesa sp_find_cached_tile+0x48c (provider bias8006331000,
+RIP8006bc750c). Stack words are candidate pointers, not an unwound backtrace.
+Visual49946 terminal0 observation, bljhqeq7: genuine GET64.44s, DOM42 at127.17s,
+timers1..23 through180.16s. No cream fixture pixels in actual frames; no input
+sent. Real ftruncate2MiB, mmap36KiB and malloc32752 return ENOMEM; NULL+0x18
+page fault14 follows. QEMU512MiB was limited by PMM hard cap256MiB.
+
+New clean private pmm-512m-01MfM9 derives frozen combined SHM8/direct source.
+MAX_PAGES512MiB; bootstrap retains static256MiB bitmaps/heap setup. Heap-owned
+expanded bitmaps/ref metadata then discover actual upper E820 usable frames,
+excluding reserved holes. No fake RAM, demand paging, swap or rights changes.
+Boot identity mappings cover4GiB in both BIOS/UEFI. BSS7eaa8<80000 and kernel
+image256328 bytes in PROCESS_TESTS build pass existing linker/image guards.
+Focus28058 terminal0 at04:57:13: BIOS16/256/512 totals3808/65248/130784 pages;
+UEFI64/256/512 totals4315/53483/119003. Real exhaustive allocation/recovery,
+upper-frame alias/translation/ref retention/release all PASS. Full architectural
+regression for this PMM change remains required before promotion.
+Actual tree cobalt-closed-imports-xnVZeH rebuilt only memory.c after old visual
+job terminal proof. Visual95819 terminal0 observation04:59:33; n16qdlc8:
+GET67.58s only, no DOM/render/input. Fatal immediate_crash193 signal6 at /22;
+no allocation failures logged this run. Saved stack core offsets3469de1,
+33f5990,... lead to8-byte random reads. Disassembly3469cf0 caches a descriptor,
+346e1c0 calls imported read, 35aa2a3 calls imported openat for /dev/urandom.
+Stripped dynamic symbol fallback names (v8_Node_Print/unw...) are NOT actual
+function identification. Cached random read failure is a hypothesis pending
+errno evidence, not authority to bypass random/cert/fatal checks.
+Private runtime read-failure diagnostics18382 live05:02:34, same PMM512;
+cobalt-random-read-trace.status/log. Captures fd/length/result only, never bytes.
+No pause, screenshots every30s; only send PS/2 input after DOM AND actual fixture
+background visible. Terminal0 means observation completed, not web PASS.
+Next: inspect18382 handle and actual errno/frame/beacon evidence, then PMM512 full
+and affected regressions; controlled verified HTTPS with enforcement intact,
+input/scrolling/>=60s/close-relaunch gates still required. Keep goal active.
+Clean source/tests/runners + logs: docs/wip/native-pmm512. Diagnostics stay private.
+
 ## Renderer snapshot continuation — 2026-10-08 04:37 +07
 
 Local docs/evidence checkpoint5710d7b; no source promotion, no push.

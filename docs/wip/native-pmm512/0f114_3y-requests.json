@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/",
+    "elapsed": 67.16894360800507
+  },
+  {
+    "path": "/evidence?kind=dom&value=Native%20DOM%2042&seq=1",
+    "elapsed": 132.17113151800004
+  },
+  {
+    "path": "/evidence?kind=timer&value=1&seq=2",
+    "elapsed": 136.96973022300517
+  },
+  {
+    "path": "/evidence?kind=geometry&value=%7B%22x%22%3A125.6484375%2C%22y%22%3A340.75%7D&seq=3",
+    "elapsed": 138.54074963000312
+  },
+  {
+    "path": "/evidence?kind=timer&value=2&seq=4",
+    "elapsed": 139.58023463500285
+  },
+  {
+    "path": "/evidence?kind=timer&value=3&seq=5",
+    "elapsed": 142.66770355000335
+  },
+  {
+    "path": "/evidence?kind=timer&value=4&seq=6",
+    "elapsed": 143.69061875400075
+  },
+  {
+    "path": "/evidence?kind=timer&value=5&seq=7",
+    "elapsed": 145.83734737500345
+  },
+  {
+    "path": "/evidence?kind=timer&value=6&seq=8",
+    "elapsed": 195.79455877500004
+  },
+  {
+    "path": "/evidence?kind=timer&value=7&seq=9",
+    "elapsed": 196.5256937830054
+  }
+]

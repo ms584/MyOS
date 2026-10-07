@@ -1,0 +1,12 @@
+$ qemu-system-x86_64 -m 16 -display none -monitor none -serial file:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-16-bios.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/pmm-512m-01MfM9/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-16-bios.sock,server=on,wait=off -cpu max
+$ nm build/kernel.elf
+PASS actual managed pages/exhaustion/recovery/high-frame alias/refcount 16 BIOS 3808
+qemu-system-x86_64: terminating on signal 15 from pid 334577 (python3)
+$ qemu-system-x86_64 -m 256 -display none -monitor none -serial file:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-256-bios.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/pmm-512m-01MfM9/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-256-bios.sock,server=on,wait=off -cpu max
+$ nm build/kernel.elf
+PASS actual managed pages/exhaustion/recovery/high-frame alias/refcount 256 BIOS 65248
+qemu-system-x86_64: terminating on signal 15 from pid 334577 (python3)
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-512-bios.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/pmm-512m-01MfM9/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/pmm-512m-01MfM9/build/system-tests/pmm512-512-bios.sock,server=on,wait=off -cpu max
+$ nm build/kernel.elf
+PASS actual managed pages/exhaustion/recovery/high-frame alias/refcount 512 BIOS 130784
+qemu-system-x86_64: terminating on signal 15 from pid 334577 (python3)

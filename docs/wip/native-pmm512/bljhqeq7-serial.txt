@@ -1,0 +1,542 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 61175
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+User processes running: 1, 2 (Ring 3)
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+ATA PIO disk: 240031 sectors
+Storage: unrecognized data disk; RAM-only
+NIC: RTL8139 initialized
+Security: UTC 1791409446, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> net up
+Network: DHCP configured
+Network: RTL8139, IP 10.0.2.15 gateway 10.0.2.2 DNS 10.0.2.3
+myos> mkdir /dev/shm
+myos> elf pair-starboard cobalt_diag provider http://10.0.2.2:37537/
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x0000008006331000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: access
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18193 absolute=0 global=2 jump=55 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: pthread_mutex_trylock
+ELF platform: SbSystemGetExtension
+ELF platform: pthread_mutex_unlock
+ELF provider: SbGetEglInterface
+ELF provider: SbGetGlesInterface
+ELF platform: SbWindowDestroy
+ELF platform: SbWindowSetDefaultOptions
+ELF platform: SbWindowCreate
+ELF platform: SbWindowGetSize
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: pthread_getspecific
+ELF platform: SbSystemRaisePlatformError
+ELF platform: SbSystemRequestStop
+ELF platform: gettid
+ELF platform: read
+ELF platform: __errno_location
+ELF platform: close
+ELF platform: clock_gettime
+ELF platform: pthread_sigmask
+ELF platform: pthread_setspecific
+ELF platform: pthread_key_create
+ELF platform: write
+ELF platform: sched_yield
+ELF platform: free
+ELF platform: pthread_mutex_init
+ELF platform: pthread_cond_init
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_wait
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_cond_signal
+ELF platform: sem_init
+ELF platform: sem_timedwait
+ELF platform: sem_wait
+ELF platform: sem_post
+ELF platform: pthread_self
+ELF platform: pthread_getschedparam
+ELF platform: sysconf
+ELF platform: munmap
+ELF platform: mmap
+ELF platform: sigaction
+ELF platform: signal
+ELF platform: raise
+ELF platform: uname
+ELF platform: eventfd
+ELF platform: fstat
+ELF platform: fdatasync
+ELF platform: mkdir
+ELF platform: access
+ELF platform: opendir
+ELF platform: readdir
+ELF platform: geteuid
+ELF platform: chmod
+ELF platform: closedir
+ELF platform: mprotect
+ELF platform: madvise
+ELF platform: pipe
+ELF platform: fcntl
+ELF platform: mkstemp
+ELF platform: mkdtemp
+ELF platform: readlink
+ELF platform: posix_memalign
+ELF platform: prctl
+ELF platform: pthread_setname_np
+ELF platform: pthread_create
+ELF platform: poll
+ELF platform: dup
+ELF platform: isatty
+ELF platform: getpid
+ELF platform: pthread_key_delete
+ELF platform: pthread_getname_np
+ELF platform: fchmod
+ELF platform: writev
+ELF platform: ftruncate
+ELF platform: getaddrinfo
+ELF platform: freeaddrinfo
+ELF platform: socketpair
+ELF platform: socket
+ELF platform: setsockopt
+ELF platform: bind
+ELF platform: listen
+ELF platform: connect
+ELF platform: shutdown
+ELF platform: sendmsg
+ELF platform: recvmsg
+ELF platform: getsockname
+ELF platform: getsockopt
+ELF platform: accept
+ELF platform: realloc
+ELF platform: malloc
+ELF platform: gai_strerror
+ELF platform: getifaddrs
+ELF platform: freeifaddrs
+ELF platform: calloc
+ELF platform: sem_destroy
+ELF platform: pthread_mutex_destroy
+ELF platform: SbMicrophoneGetAvailable
+ELF platform: SbMicrophoneCreate
+ELF platform: SbMicrophoneOpen
+ELF platform: SbMicrophoneRead
+ELF platform: SbMicrophoneDestroy
+ELF platform: SbMediaCanPlayMimeAndKeySystem
+ELF platform: SbMediaCanChangeType
+ELF platform: SbMediaGetAudioOutputCount
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: SbMediaGetBufferAllocationUnit
+ELF platform: SbMediaGetAudioBufferBudget
+ELF platform: SbMediaGetBufferGarbageCollectionDurationThreshold
+ELF platform: SbMediaGetInitialBufferCapacity
+ELF platform: SbMediaIsBufferPoolAllocateOnDemand
+ELF platform: SbMediaGetVideoBufferBudget
+ELF platform: SbPlayerWriteEndOfStream
+ELF platform: SbPlayerGetMaximumNumberOfSamplesPerWrite
+ELF platform: SbPlayerCreate
+ELF platform: SbPlayerGetPreferredOutputMode
+ELF platform: SbPlayerDestroy
+ELF platform: SbPlayerSeek
+ELF platform: SbPlayerWriteSamples
+ELF platform: SbPlayerSetBounds
+ELF platform: SbPlayerSetPlaybackRate
+ELF platform: SbPlayerSetVolume
+ELF platform: SbPlayerGetInfo
+ELF platform: SbPlayerGetCurrentFrame
+ELF platform: SbPlayerGetAudioConfiguration
+ELF platform: SbDrmCreateSystem
+ELF platform: SbDrmDestroySystem
+ELF platform: SbDrmIsServerCertificateUpdatable
+ELF platform: SbDrmUpdateServerCertificate
+ELF platform: SbDrmGenerateSessionUpdateRequest
+ELF platform: SbDrmUpdateSession
+ELF platform: SbDrmCloseSession
+ELF platform: getuid
+ELF platform: pause
+ELF weak zero: _ZTHN2v88internal12trap_handler21g_thread_in_wasm_codeE
+ELF platform: malloc_usable_size
+ELF platform: pthread_kill
+ELF platform: getrlimit
+ELF platform: ioctl_FIONREAD
+ELF platform: inotify_add_watch
+ELF platform: inotify_rm_watch
+ELF platform: SbSpeechSynthesisIsSupported
+ELF platform: SbSpeechSynthesisSpeak
+ELF platform: SbSpeechSynthesisCancel
+ELF platform: SbSystemGetLocaleId
+ELF platform: SbTimeZoneGetName
+ELF platform: rename
+ELF platform: SbSystemGetProperty
+ELF platform: kSbFileMaxPath
+ELF platform: SbSystemGetPath
+ELF platform: SbWindowGetDiagonalSizeInInches
+ELF platform: SbSystemRequestConceal
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: SbSystemHasCapability
+ELF platform: SbSystemGetTotalCPUMemory
+ELF platform: SbSystemGetUsedGPUMemory
+ELF platform: SbAudioSinkDestroy
+ELF platform: SbAudioSinkIsAudioSampleTypeSupported
+ELF platform: SbAudioSinkGetMinBufferSizeInFrames
+ELF platform: SbAudioSinkGetNearestSupportedSampleFrequency
+ELF platform: SbAudioSinkCreate
+ELF platform: aligned_alloc
+ELF platform: pthread_cond_broadcast
+ELF platform: kSbFileSepString
+ELF platform: SbLog
+ELF platform: SbSystemGetLastError
+ELF platform: SbSystemGetErrorString
+ELF platform: SbLogRaw
+ELF platform: msync
+ELF platform: kSbMaxThreads
+ELF platform: lseek
+ELF platform: pread
+ELF platform: pwrite
+ELF platform: pthread_condattr_init
+ELF platform: pthread_condattr_setclock
+ELF platform: pthread_condattr_destroy
+ELF platform: pthread_cond_destroy
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_attr_init
+ELF platform: pthread_attr_setdetachstate
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_join
+ELF platform: pthread_detach
+ELF platform: setpriority
+ELF platform: sched_setscheduler
+ELF platform: mincore
+ELF platform: sched_getaffinity
+ELF platform: statvfs
+ELF platform: realpath
+ELF platform: getcwd
+ELF platform: pipe2
+ELF platform: symlink
+ELF platform: pathconf
+ELF platform: fstatat
+ELF platform: openat
+ELF platform: unlinkat
+ELF platform: fdopendir
+ELF platform: recv
+ELF platform: SbEventCancel
+ELF platform: SbEventSchedule
+ELF platform: SbSystemIsDebuggerAttached
+ELF platform: SbSystemBreakIntoDebugger
+ELF platform: epoll_create1
+ELF platform: epoll_ctl
+ELF platform: epoll_wait
+ELF platform: pthread_attr_getstacksize
+ELF platform: kSbFileMaxName
+ELF platform: fsync
+ELF platform: SbSystemGetStack
+ELF platform: SbSystemSymbolize
+ELF platform: pthread_once
+ELF platform: SbStorageOpenRecord
+ELF platform: SbStorageCloseRecord
+ELF platform: SbStorageGetRecordSize
+ELF platform: SbStorageReadRecord
+ELF platform: SbStorageDeleteRecord
+ELF platform: pthread_getattr_np
+ELF platform: pthread_attr_getstack
+ELF platform: send
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_rwlock_destroy
+ELF platform: SbSystemGetRandomUInt64
+ELF platform: inotify_init1
+ELF platform: getauxval
+ELF platform: readv
+ELF platform: utimensat
+ELF platform: clock_nanosleep
+ELF platform: if_indextoname
+ELF platform: getpeername
+ELF platform: recvmmsg
+ELF platform: sendto
+ELF platform: readdir_r
+ELF platform: pthread_mutexattr_settype
+ELF platform: fchown
+ELF platform: SbDecodeTargetRelease
+ELF platform: SbDrmGetMetrics
+ELF platform: SbDecodeTargetGetInfo
+ELF platform: SbSystemHideSplashScreen
+ELF platform: SbSystemNetworkIsDisconnected
+ELF platform: SbSystemSignWithCertificationSecretKey
+ELF relocations: relative=117653 absolute=20 global=17 jump=626 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+Starboard SABI: pinned x64 API 18 matched
+[1007/214413.070000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+[5:/5:1007/214414.930000:INFO:cobalt/media/audio/cobalt_audio_device_factory.cc:24] Register CobaltAudioDeviceFactory
+[5:/5:1007/214415.650000:INFO:cobalt/browser/cobalt_content_browser_client.cc:759] CobaltCommandLine: enable_features=[LimitImageDecodeCacheSize:mb/24, DefaultEnableANGLEValidation, SmallerInterestArea, ReclaimPrepaintTilesWhenIdle, ReclaimOldPrepaintTiles], disable_features=[Vulkan,MemoryCacheStrongReference], enable_h5vcc_settings=[]
+[5:/5:1007/214415.710000:INFO:cobalt/browser/cobalt_content_browser_client.cc:766] CobaltCommandLine: 'autoplay-policy': 'no-user-gesture-required'
+'cc-image-cache-limit-items': '0'
+'content-shell-host-window-size': '800x600'
+'disable-accelerated-video-decode': ''
+'disable-accelerated-video-encode': ''
+'disable-features': 'Vulkan,MemoryCacheStrongReference'
+'disable-gpu-shader-disk-cache': ''
+'disable-in-process-stack-traces': ''
+'disable-rgba-4444-textures': ''
+'enable-aggressive-domstorage-flushing': ''
+'enable-blink-features': 'PreciseMemoryInfo'
+'enable-features': 'LimitImageDecodeCacheSize:mb/24, DefaultEnableANGLEValidation, SmallerInterestArea, ReclaimPrepaintTilesWhenIdle, ReclaimOldPrepaintTiles'
+'enable-logging': 'stderr'
+'enable-low-end-device-mode': ''
+'enable-zero-copy': ''
+'force-dark-mode': ''
+'force-gpu-mem-available-mb': '64'
+'force-video-overlays': ''
+'gpu-rasterization-msaa-sample-count': '4'
+'hide-scrollbars': ''
+'https-enforcement': 'false'
+'ignore-gpu-blocklist': ''
+'js-flags': '--jitless'
+'no-sandbox': ''
+'no-zygote': ''
+'single-process': ''
+'url': 'http://10.0.2.2:37537/'
+'use-angle': 'gles-egl'
+'use-cmd-decoder': 'passthrough'
+'use-gl': 'angle'
+'v': '1'
+[5:/5:1007/214415.770000:WARNING:cobalt/common/features/starboard_features_initialization.cc:168] Optional kStarboardExtension 'kStarboardExtensionFeaturesName' is not present. No features or parameters have been pushed to Starboard.
+[5:/5:1007/214415.830000:INFO:base/threading/hang_watcher.cc:540] Freeze detection: HangWatcher initialized
+[5:/5:1007/214416.200000:WARNING:components/discardable_memory/service/discardable_shared_memory_manager.cc:193] Less than 64MB of free space in temporary directory for shared memory files: 0
+[5:Chrome_IOThread/5:1007/214416.460000:WARNING:cobalt/browser/cobalt_browser_main_parts.cc:255] Failed to initialize file-backed PMA for BrowserStabilityMetrics, falling back to 512 KB local memory.
+[5:CrBrowserMain/5:1007/214416.780000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:424] Cobalt Metrics Service initialized.
+[5:ThreadPoolForegroundWorker/3:1007/214417.140000:ERROR:net/dns/dns_config_service_linux.cc:352] DNS config (resolv.conf) watch failed to start.
+[5:ThreadPoolForegroundWorker/3:1007/214417.140000:ERROR:net/dns/dns_config_service_linux.cc:361] DNS nsswitch.conf watch failed to start.
+[5:ThreadPoolForegroundWorker/3:1007/214417.210000:ERROR:net/dns/dns_config_service_linux.cc:370] DNS hosts watch failed to start.
+[5:ThreadPoolForegroundWorker/3:1007/214417.370000:WARNING:net/dns/dns_config_service_linux.cc:431] Failed to read DnsConfig.
+[5:CrBrowserMain/5:1007/214417.570000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:435] Metrics Service is now running/recording.
+[5:CrBrowserMain/5:1007/214417.580000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MSM::InitializeMaybeAsync([this=0x8800428000])
+[5:CrBrowserMain/5:1007/214417.650000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/214417.660000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MDM::MediaDevicesManager()
+[5:CrBrowserMain/5:1007/214417.730000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/214417.730000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/214417.740000:VERBOSE1:content/browser/renderer_host/media/media_stream_manager.cc:1524] MSM::MediaStreamManager([this=0x8800428000]))
+[5:CrBrowserMain/5:1007/214417.810000:ERROR:cobalt/browser/cobalt_content_browser_client.cc:793] The plaform does not implement (the required version of) the CrashHandler Starboard extension; not setting the user agent annotation
+[5:CrBrowserMain/5:1007/214417.950000:WARNING:cobalt/shell/common/device_authentication.cc:136] Error retrieving certification scope required for device authentication.
+[5:ThreadPoolForegroundWorker/3:1007/214417.890000:VERBOSE1:cobalt/browser/h5vcc_native_stability/native_stability_manager.cc:555] NativeStability extension is not supported on this platform.
+[5:CrBrowserMain/5:1007/214418.640000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/214418.640000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/214418.720000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:ThreadPoolForegroundWorker/3:1007/214419.290000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/214419.290000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Code Cache/js/index-dir/the-real-index": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/4:1007/214419.300000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/4:1007/214419.390000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Code Cache/wasm/index-dir/the-real-index": No such file or directory (2)
+[5:CrBrowserMain/5:1007/214419.820000:VERBOSE1:cobalt/browser/cobalt_content_browser_client.cc:480] NativeSplash: Observing main frame WebContents.
+[5:CrBrowserMain/5:1007/214419.890000:WARNING:cobalt/updater/updater_module.cc:115] UpdaterModule is not created yet, and cannot be retrieved by UpdaterModule::GetInstance().
+[5:CrBrowserMain/5:1007/214419.890000:INFO:cobalt/browser/cobalt_content_browser_client.cc:497] Evergreen Lite mode detected, disabling UpdaterModule.
+[5:CrBrowserMain/5:1007/214420.030000:VERBOSE1:cobalt/browser/cobalt_content_browser_client.cc:476] NativeSplash: Skip observing WebContents for kCobaltSplashMainFrameName.
+[5:CrBrowserMain/5:1007/214420.030000:INFO:cobalt/shell/browser/shell.cc:636] JS injection for filename: html_media_element_extension_on_java_bridge.js
+WINDOW DIAGNOSTIC width=00000320 height=00000258 windowed=0 query=00000000
+WINDOW DIAGNOSTIC acquire=00000001
+[5:CrBrowserMain/5:1007/214422.960000:INFO:cobalt/renderer/rasterizer/skia/skia/src/ports/SkFontStyleSet_cobalt.cc:615] Scanned font from file: DejaVu Sans(400, 5, [5:CrBrowserMain/5:1007/214422.960000:INFO:cobalt/renderer/rasterizer/skia/skia/src/ports/SkTypeface_cobalt.cc:138] Created static SkTypeface_CobaltStreamProvider: sans-serif(400, 5, [5:CrBrowserMain/5:1007/214423.030000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/214423.030000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/214423.030000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:162] Failed to get installation manager extension, getting the installation path of the loaded library.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:191] Failed to get the Evergreen version. Defaulting to 1.0.0.
+[5:CrBrowserMain/5:1007/214423.380000:ERROR:cobalt/updater/util.cc:133] Failed to get Evergreen file type. Defaulting to FileTypeUnknown.
+[5:CrBrowserMain/5:1007/214424.800000:VERBOSE1:cobalt/shell/browser/shell.cc:657] NativeSplash: Loading splash screen WebContents.
+[5:CrBrowserMain/5:1007/214425.340000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:366] CobaltBrowserMainParts::StartStorageMigration started.
+[5:CrBrowserMain/5:1007/214425.340000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:477] Starting Pre-MainLoop Migration.
+[5:CrBrowserMain/5:1007/214425.420000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:384] Legacy storage was not found or failed to parse.
+[5:CrBrowserMain/5:1007/214425.420000:INFO:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:527] Nothing to migrate.
+[5:CrBrowserMain/5:1007/214425.500000:WARNING:cobalt/browser/loader_app_metrics.cc:46] LoaderAppMetrics: Extension not found.
+[5:CrBrowserMain/5:1007/214425.500000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+[5:ThreadPoolForegroundWorker/3:1007/214425.590000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/TM3Lw==/databases": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/4:1007/214425.600000:ERROR:cobalt/shell/browser/migrate_storage_record/migration_manager.cc:179] Failed to delete legacy storage record.
+[5:ThreadPoolForegroundWorker/3:1007/214425.760000:WARNING:content/browser/btm/btm_database.cc:125] Failed to initialize the DIPS SQLite database.
+[5:NetworkService/16:1007/214426.310000:VERBOSE1:net/proxy_resolution/configured_proxy_resolution_service.cc:847] PAC support disabled because there is no system implementation
+[5:ThreadPoolForegroundWorker/3:1007/214426.630000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/214426.630000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/TM3Lw==/Shared Dictionary/cache/index-dir/the-real-index": No such file or directory (2)
+[5:NetworkService/16:1007/214427.340000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/
+[5:Chrome_InProcRendererThread/18:1007/214427.530000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:134] HighestPmfReporter Constructor Finished! use_baseline: 1
+[5:Chrome_InProcRendererThread/18:1007/214427.530000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 0 delay=120s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.0to2min"
+[5:Chrome_InProcRendererThread/18:1007/214427.530000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 1 delay=240s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.2to4min"
+[5:Chrome_InProcRendererThread/18:1007/214427.530000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 2 delay=480s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.4to8min"
+[5:Chrome_InProcRendererThread/18:1007/214427.530000:ERROR:third_party/blink/renderer/controller/highest_pmf_reporter.cc:136]     Task 3 delay=960s, name="Memory.Experimental.Renderer.HighestPrivateMemoryFootprint.8to16min"
+[5:CrBrowserMain/5:1007/214427.590000:INFO:cobalt/browser/cobalt_browser_main_parts.cc:393] Migration complete. Proceeding with deferred launchShell.
+[5:ThreadPoolForegroundWorker/3:1007/214428.180000:VERBOSE1:net/disk_cache/simple/simple_index_file.cc:607] Simple Cache Index is being restored from disk.
+[5:ThreadPoolForegroundWorker/3:1007/214428.180000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Cache/Cache_Data/index-dir/the-real-index": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214428.180000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Cache/Cache_Data/f1635eb3cca71417_0": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214428.180000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Cache/Cache_Data/f1635eb3cca71417_1": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214428.180000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/Cache/Cache_Data/f1635eb3cca71417_s": No such file or directory (2)
+[5:NetworkService/16:1007/214428.430000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 87: Error 92 (92)
+[5:Chrome_InProcRendererThread/18:1007/214428.650000:INFO:media/starboard/decoder_buffer_allocator.cc:91] Allocated decoder buffer pool on demand.
+[5:NetworkService/16:1007/214428.850000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 88: Error 92 (92)
+[5:HangWatcher/1:1007/214446.040000:INFO:base/threading/hang_watcher.cc:1359] Freeze detection: Triggering DumpWithoutCrashing. Actionable: 1
+[5:HangWatcher/1:1007/214446.040000:INFO:base/threading/hang_watcher.cc:1483] Freeze detection: RecordHang() skipped due to reporting disabled.
+[5:CrBrowserMain/5:1007/214454.380000:WARNING:cobalt/browser/cobalt_web_contents_observer.cc:274] Did not handle platform error
+[5:Chrome_InProcGpuThread/11:1007/214511.300000:VERBOSE1:components/viz/service/main/viz_main_impl.cc:86] VizNullHypothesis is disabled (not a warning)
+[5:Chrome_InProcRendererThread/18:1007/214524.480000:VERBOSE1:third_party/blink/renderer/bindings/core/v8/local_window_proxy.cc:264] A context is created NOT from snapshot
+[5:CrBrowserMain/5:1007/214526.190000:INFO:cobalt/browser/lifecycle/cobalt_lifecycle_manager.cc:271] Rebind: Proactively re-binding frame=0x88005f0000
+[5:CrBrowserMain/5:1007/214526.190000:INFO:cobalt/shell/browser/shell.cc:603] Navigated to http://10.0.2.2:37537/
+[5:Chrome_InProcRendererThread/18:1007/214526.500000:VERBOSE1:third_party/blink/renderer/bindings/core/v8/local_window_proxy.cc:264] A context is created NOT from snapshot
+[5:CrBrowserMain/5:1007/214527.230000:WARNING:cobalt/updater/updater_module.cc:115] UpdaterModule is not created yet, and cannot be retrieved by UpdaterModule::GetInstance().
+[5:Chrome_InProcRendererThread/18:1007/214528.780000:INFO:cobalt/renderer/cobalt_content_renderer_client.cc:216] Renderer received SbWindow handle: 0x1
+[5:Chrome_InProcRendererThread/18:1007/214528.840000:WARNING:third_party/blink/renderer/modules/cobalt/cobalt_lifecycle_controller.cc:57] CobaltLifecycleController receiver is ALREADY BOUND!
+[5:CrBrowserMain/5:1007/214528.910000:WARNING:cobalt/browser/lifecycle/cobalt_lifecycle_manager.cc:291] OnControllerDisconnect for frame=0x88005f0000
+[5:NetworkService/16:1007/214531.160000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=dom&value=Native%20DOM%2042&seq=1
+[5:NetworkService/16:1007/214531.220000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 79: Error 92 (92)
+[5:CrBrowserMain/5:1007/214534.270000:INFO:cobalt/shell/browser/h5vcc_scheme_url_loader_factory.cc:232] Fallback splash: splash.png
+[5:ThreadPoolForegroundWorker/3:1007/214534.400000:ERROR:storage/browser/quota/quota_database.cc:1061] Could not open the quota database, resetting.
+[5:ThreadPoolForegroundWorker/3:1007/214534.400000:VERBOSE1:storage/browser/quota/quota_database.cc:1281] Deleting existing quota data and starting over.
+[5:ThreadPoolForegroundWorker/3:1007/214534.400000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.400000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/WebStorage/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.470000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.470000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/WebStorage/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.470000:ERROR:storage/browser/quota/quota_database.cc:1061] Could not open the quota database, resetting.
+[5:ThreadPoolForegroundWorker/3:1007/214534.540000:VERBOSE1:storage/browser/quota/quota_database.cc:1281] Deleting existing quota data and starting over.
+[5:ThreadPoolForegroundWorker/3:1007/214534.540000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.540000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/WebStorage/QuotaManager": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.540000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.540000:VERBOSE1:base/files/file_util_posix.cc:315] Cannot stat "/home/cobalt/cache/TM3Lw==/WebStorage/QuotaManager-journal": No such file or directory (2)
+[5:ThreadPoolForegroundWorker/3:1007/214534.610000:ERROR:storage/browser/quota/quota_database.cc:1066] Failed to reset the quota database.
+[5:ThreadPoolForegroundWorker/3:1007/214534.610000:ERROR:storage/browser/quota/quota_database.cc:1066] Failed to reset the quota database.
+[5:CrBrowserMain/5:1007/214535.040000:ERROR:cobalt/shell/browser/h5vcc_scheme_url_loader_factory.cc:383] Did not find splash video from cache default, reason: 2
+[5:NetworkService/16:1007/214535.590000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=1&seq=2
+[5:NetworkService/16:1007/214535.720000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 87: Error 92 (92)
+[5:NetworkService/16:1007/214536.830000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=geometry&value=%7B%22x%22%3A125.6484375%2C%22y%22%3A340.75%7D&seq=3
+[5:NetworkService/16:1007/214537.030000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 87: Error 92 (92)
+[5:NetworkService/16:1007/214537.710000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=2&seq=4
+[5:NetworkService/16:1007/214537.770000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 87: Error 92 (92)
+[5:CrBrowserMain/5:1007/214538.870000:VERBOSE1:cobalt/shell/browser/shell.cc:1224] NativeSplash: Main frame WebContents is loaded, splash screen elapsed: 1910ms, remaining delay: 0ms.
+[5:CrBrowserMain/5:1007/214538.870000:VERBOSE1:cobalt/shell/browser/shell.cc:1254] NativeSplash: Switching to main frame WebContents.
+[5:NetworkService/16:1007/214539.360000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=3&seq=5
+[5:NetworkService/16:1007/214539.520000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 106: Error 92 (92)
+[5:NetworkService/16:1007/214540.150000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=4&seq=6
+[5:NetworkService/16:1007/214540.230000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 105: Error 92 (92)
+[5:CrBrowserMain/5:1007/214554.440000:WARNING:cobalt/shell/browser/shell.cc:989] renderer unresponsive
+[5:NetworkService/16:1007/214600.820000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=5&seq=7
+[5:NetworkService/16:1007/214600.900000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 105: Error 92 (92)
+[5:NetworkService/16:1007/214600.980000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=6&seq=8
+[5:NetworkService/16:1007/214601.070000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 114: Error 92 (92)
+[5:NetworkService/16:1007/214601.980000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=7&seq=9
+[5:NetworkService/16:1007/214602.130000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 105: Error 92 (92)
+[5:NetworkService/16:1007/214602.940000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=8&seq=10
+[5:NetworkService/16:1007/214603.010000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 105: Error 92 (92)
+[5:NetworkService/16:1007/214603.780000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=9&seq=11
+[5:NetworkService/16:1007/214603.840000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 105: Error 92 (92)
+[5:NetworkService/16:1007/214604.790000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=10&seq=12
+[5:NetworkService/16:1007/214604.850000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214605.800000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=11&seq=13
+[5:NetworkService/16:1007/214605.860000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214606.930000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=12&seq=14
+[5:NetworkService/16:1007/214606.990000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214607.840000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=13&seq=15
+[5:NetworkService/16:1007/214607.900000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214608.780000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=14&seq=16
+[5:NetworkService/16:1007/214608.840000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214609.880000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=15&seq=17
+[5:NetworkService/16:1007/214609.940000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+[5:NetworkService/16:1007/214611.420000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=16&seq=18
+[5:NetworkService/16:1007/214611.490000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214612.340000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=17&seq=19
+[5:NetworkService/16:1007/214612.410000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214613.510000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=18&seq=20
+[5:NetworkService/16:1007/214613.630000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214614.180000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=19&seq=21
+[5:NetworkService/16:1007/214614.310000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214614.810000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=20&seq=22
+[5:NetworkService/16:1007/214614.870000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214615.790000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=21&seq=23
+[5:NetworkService/16:1007/214615.850000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214616.820000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=22&seq=24
+[5:NetworkService/16:1007/214616.950000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+[5:NetworkService/16:1007/214617.800000:VERBOSE1:net/base/network_delegate.cc:37] NetworkDelegate::NotifyBeforeURLRequest: http://10.0.2.2:37537/evidence?kind=timer&value=23&seq=25
+[5:NetworkService/16:1007/214617.860000:ERROR:net/socket/tcp_socket_posix.cc:73] Failed to set SO_KEEPALIVE on fd: 85: Error 92 (92)
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x000000000000006f 0x0000000000200000 0xfffffffffffffff4
+DIAGNOSTIC ALLOCATION map length/result/hint 0x0000000000009000 0xfffffffffffffff4 0x000000802cb30000
+DIAGNOSTIC ALLOCATION malloc size/errno/zero 0x0000000000007ff0 0x000000000000000c 0x0000000000000000
+USER FAULT pid=5 vector=14 error=0x0000000000000007 rip=0x000000800690833A address=0x0000000000000018
+DIAGNOSTIC fault rsp=0x0000008021AA87C0 rbp=0x0000000000000002
+ELF pair live: pages reclaimed; heap-before=327168 heap-after=368128
+error: invalid executable
+myos> 
