@@ -16,8 +16,15 @@ player-unavailable-bI04LM; PIT has no rate/UTC adjustment so raw4
 can truthfully use same100Hz ticks as monotonic1. Keep CPU2/3 separate; sleep4
 still unsupportedEINVAL. CPU fixture invalid-ID assertion changes4->99.
 Launcher89407 focused BIOS/UEFI PASS; full rerun live PID14048018:22.
-Actual21255 running after raw-clock fix in cobalt-closed-imports-xnVZeH,
-with no missing probes; capture terminal result before interpreting success.
+Actual21255 fkwy0hk5 terminal0 diagnostic18:23:19 after raw-clock fix in
+cobalt-closed-imports-xnVZeH:242bindings, no missing probes, passed RAW fatal;
+now repeats V8 protect-data-memory0x8006235000+4096 EINVAL. HTTP0. Next audit
+ELF data mapping rights ceiling versus anonymous VM range. Current image_leaf
+is loading-state-only; process_vm_protect accepts anonymous ranges only.
+RELRO process_image_readonly in elf-link.c264 must stay immutable. Do not
+permit image data execute, code write, RELRO write, foreign/unmapped pages or
+partial permission changes on rejected mixed ranges. Scope and full still
+required for any page-table change; full89407 frozen source stays untouched.
 
 Read PHASE332_IMPORT_CLOSURE_WIP.md for current source/evidence. Clean font
 scope82804 and data limit97660 BIOS/UEFI terminal0. Real separately licensed

@@ -1,5 +1,5 @@
 # MyOS project state
-Updated:2026-10-07 18:22 +07. Native Cobalt acceptance; no33.3/push.
+Updated:2026-10-07 18:24 +07. Native Cobalt acceptance; no33.3/push.
 Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 ## Scope / measured bindings (NOT semantic or browser completion)
 - Phase33.1/33.2 OPEN: HTML+JS/DOM/timers, input, verified concurrent HTTPS,
@@ -44,7 +44,8 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 - Actual93505 omx0f5f9 terminal0 18:16:42 with242bindings/no missing probes:
   Abseil sysinfo.cc248 clock_gettime EINVAL; pinned source selects RAW4.
   Raw-clock26614 terminal0 18:21 BIOS/UEFI+CPU scopes PASS100Hz/no precision
-  claim. Actual raw-clock21255 running in separate diagnostic tree; no web PASS.
+  claim. Actual21255 fkwy0hk5 terminal0 diagnostic18:23:19: raw fatal gone,
+  V8 image-data mprotect EINVAL remains; HTTP0, no web PASS.
 ## Bounds / next
 - Main32workers,2ELFmodules/1PTTLS,PMM256MiB; shared /dev/shm <=1MiB,
   mapped shrink EBUSY; no SIGBUS/COW/demand paging; normal RAMFS64KiB.

@@ -19,8 +19,14 @@ Main production source b34cf75; recovery docs039eda4. No new source promotion.
   CPU fixture invalid ID4 replaced99 since4 is now valid.
 - Launcher89407 corrected fixture BIOS/UEFI PASS, rerun full livePID140480
   18:22. No font/limit/import/raw-clock changes to its frozen source.
-- Actual21255 running after raw-clock fix in cobalt-closed-imports-xnVZeH,
-  no MyOSMissing probes. Terminal result still pending; no new web PASS.
+- Actual21255 fkwy0hk5 terminal0 diagnostic18:23:19 after raw-clock fix in
+  cobalt-closed-imports-xnVZeH:242 real bindings/no MyOSMissing probes, passed
+  RAW fatal; now V8 protect-data-memory0x8006235000+4096 EINVAL. HTTP0.
+  Diagnostic command exit0 is successful evidence capture, NOT a working web
+  engine. Need safe running-image rights changes; image_leaf currently only
+  permits loading-state and VM protection rejects image addresses. Retain
+  immutable RELRO from elf-link.c264, W^X, original segment-right ceilings,
+  atomic preflight of whole mixed/unmapped ranges and proper TLB invalidation.
 
 ## Source and evidence
 
