@@ -1,12 +1,12 @@
 # MyOS project state
-Updated:2026-10-07 13:24 +07. Native Cobalt acceptance; no33.3/push.
-Repo /home/xytron404/myos, main; origin c33f49a fetched13:00; source eb31a69.
+Updated:2026-10-07 13:53 +07. Native Cobalt acceptance; no33.3/push.
+Repo /home/xytron404/myos, main; origin c33f49a fetched13:45; source eb31a69.
 Main four normal hashes unchanged13:22:25. Owner pushes only.
 ## Scope and measured progress
 - Phase33.1/33.2 OPEN: actual HTML+JS/DOM/timers, input, verified concurrent
   HTTPS, >=60s interaction, close/relaunch cleanup remain0/5 unproven.
-- Production registered212/242,paired214/242,28 missing verified12:09.
-  Private statvfs/audio2 added/tested, not promoted; no count/fixture phase PASS.
+- Census13:48: main registered212/242,paired214/242,28 missing; clean private
+  215/217,25 missing. No abort probes; not semantic/actual browser acceptance.
 - Phase32/33 NOT PASSED; YouTube unproven. Do not start33.3.
 ## Live work / evidence
 - Old full68512 unrecoverable, NOT PASS; prior fulls interrupted by WSL.
@@ -15,9 +15,8 @@ Main four normal hashes unchanged13:22:25. Owner pushes only.
   normal-private UEFI restore,file-map BIOS/UEFI,sparse BIOS/noentropy/UEFI
   PASS; combined*.log/status/final.sha256. Main normal hashes unchanged.
   This full excludes statvfs/audio2/shared/capacity; cannot prove new batch.
-- Filename fix realRAMFS ASAN/UBSAN fn-M1RAJ4 PASS11:45:50: printableASCII
-  including Base64/spaced Cobalt names, invalid bytes/bounds, v1/v2 data
-  roundtrip/OOM rollback. Snapshot docs/wip/phase332-file-names.
+- Filename ASAN/UBSAN fn-M1RAJ4 PASS11:45:50: Base64/spaced names, invalid
+  bytes/bounds,v1/v2/OOM. Snapshot docs/wip/phase332-file-names.
 - Genuine Cobalt pinned core/provider +135 resources validated. Cache mkdir
   now succeeds; statvfs implemented real112-byte musl ABI/syscall58.
   RAMFS reports actual inode counts, no invented blockpool/quota/capacity.
@@ -41,20 +40,22 @@ Main four normal hashes unchanged13:22:25. Owner pushes only.
   Capacity32 scope51522 terminal0 13:22:57:BIOS16/64,UEFI64/256,TLS/teardown/
   uname PASS. Actual p2388a2x reaches Code Cache, traps missing rename;
   F_SETLK6=-EINVAL;0HTTP,heap325888->354560 not isolated. See UNAME_ABI_WIP.
-  New clean full93459 LIVE13:23:30:shared-clean-full.status/logs, freeze cd.
+  New clean full93459 LIVE13:23:30, observed13:50 runtime assets; freeze cd.
+  shared-clean-full.status/logs; no terminal full PASS yet.
+- Separate merged inode/shared/record-lock WIP host ASAN/UBSAN PASS13:43:
+  real RAMFS rename/lifetime/locks;2000-step range oracle. Runtime/native not
+  wired or proven, no export increase. PHASE332_FS_LIFETIME_WIP.md.
 
 ## Foundation / limits
 - Clock/pthread/descriptors/signals/TLS tested; relevant PHASE331 docs.
-- Production TCP/full1701 PASS Oct5; audio/media scopes in PHASE332_PCM_WIP.md
-  and PHASE332_IMPORT_BATCH_WIP.md; not actual browser acceptance.
+- Production TCP/full1701 PASS Oct5; PCM/IMPORT_BATCH_WIP docs hold scopes.
 - Main loader2modules/1PTTLS,8workers; PMM256MiB. Private shared maps only
   /dev/shm up to1MiB; mapped shrink EBUSY,no SIGBUS/COW/demand paging.
-- Inode/rename private:PHASE332_FS_IDENTITY_WIP.md. Main RAMFS64KiB files;
-  actual Cobalt needs at least256KiB shared backing, not just more exports.
+- Main RAMFS64KiB; private shared maps cover actual Cobalt256KiB need.
 - activity.log bounded48MiB; NEVER read through run_logged.py.
 ## Next
 1. Poll SAME93459; freeze cd source/build until terminal; no full PASS yet.
-2. Resolve rename + real inode-relative DIR lifecycle and record locks, then
+2. Wire tested inode/lock foundation into syscall/DIR lifetime, then
    FS10/player-decode15 contracts; no fabricated success imports.
 3. Promote nondiagnostic source only with full/scoped regression, restore
    normal images; update docs/local commit. Actual five gates before closure.

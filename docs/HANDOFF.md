@@ -3,6 +3,38 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Inode/shared rename + record locks — 2026-10-07 13:53 +07
+
+Previous turn8487d03 is progress, not acceptance completion. Full93459 still
+verified LIVE on SAME handle; observed13:50 at runtime-asset scopes. cd-QJYMwG
+source/build remains frozen. New code below is in independent host-unit trees
+and desktop staging, not compiled by main or that ongoing full regression.
+Fetched13:45 origin/main c33f49a unchanged; main checkpoint8487d03 only docs.
+Census13:48 actual GLOBAL UND242 (audit names contain one extra weak symbol):
+main212registered/214strong paired,28missing; clean private215/217,25missing.
+No abort thunks counted; static binding is NOT full API/actual browser proof.
+
+Merged inode prerequisite with current filename/statvfs/shared implementation,
+preserving snapshot formats and shared backing lifetime. Rename old/destination
+inodes and mapped frames remain distinct while old handles exist. Cross-/dev/shm
+rename or moving its ancestor rejects EXDEV, avoiding bogus persistence of
+page-backed data. ASAN/UBSAN2v52uh terminal0 13:32:21, exact resources.
+Real record-lock engine64 records uses inode + trusted kernel file-table owner;
+read sharing/write conflicts, split/coalesce/conversion, atomic ENOLCK/OOM,
+zero-length future EOF. Dynamic pool released at last lock, not permanent BSS.
+Independent2000-step oracle ASAN/UBSAN6Lh1HQ terminal0 13:41:13.
+Real RAMFS integration ASAN/UBSAN3kues4 terminal0 13:43:11: rename/replacement
+preserves lock identity, close-any-kernel-fd releases owner locks, offset/negative
+length/overflow/rights and exact heap/pages/nodes; original v1/v2 shared checks
+also PASS. Runtime dup-close hook still REQUIRED because dup shares one kernel
+handle. F_SETLKW explicitly ENOTSUP until real wait/wakeup/cancel semantics.
+No native syscall/runtime/Cobalt proof or new rename export yet. Next wire
+SYS56 into current SYS57/58 source, convert DIR adapters to inode lifetime,
+preserve immutable assets/root-relative traversal, then record-lock close hooks
+and scoped native multi-process tests. Do not expose rename with stale DIR paths.
+See PHASE332_FS_LIFETIME_WIP.md + docs/wip/phase332-fs-lifetime recovery inputs.
+All actual Cobalt gates still0/5; no Phase33.3/push/YouTube claim.
+
 ## Pinned uname ABI repair / capacity32 scope — 2026-10-07 13:24 +07
 
 Supersedes LIVE80030/80634 below. Main/origin c33f49a, fetch13:00 unchanged.
