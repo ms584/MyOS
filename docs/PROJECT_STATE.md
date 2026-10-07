@@ -1,5 +1,5 @@
 # MyOS project state
-Updated:2026-10-07 18:13 +07. Native Cobalt acceptance; no33.3/push.
+Updated:2026-10-07 18:22 +07. Native Cobalt acceptance; no33.3/push.
 Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 ## Scope / measured bindings (NOT semantic or browser completion)
 - Phase33.1/33.2 OPEN: HTML+JS/DOM/timers, input, verified concurrent HTTPS,
@@ -12,15 +12,9 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
   boundaries, NOT functioning media/filesystem services. Main still217paired.
 - Phase32/33 NOT PASSED; YouTube unproven. Do not start33.3 or push.
 ## Main proven checkpoint
-- b34cf75 source16:41:57: shared VM/statvfs/audio outputs2/capacity32/
-  guarded uname/filename bounds promoted clean, no diagnostics.
-- Private cd-QJYMwG full27417 terminal0 14:47:02: test_system.py plus
-  shared/capacity/statvfs/audio/uname BIOS+UEFI,sinkUEFI PASS; normal restored.
-- Production95178 terminal0 16:37:48: source/binary equivalence, affected
-  BIOS/UEFI scopes PASS; normal hashes checked16:40. Detailed logs
-  build/clean-prerequisites-*.log/status/normal.sha256; HANDOFF retains history.
-- Full93459 FAILED audio fixture8-slot assumption; corrected32-bound fixture
-  PASS. Old full68512 unrecoverable, NOT PASS. No interrupted PASS.
+- b34cf75 shared VM/statvfs/audio outputs2/cap32/uname/filename guards.
+  Full27417 terminal0; promotion95178 affected BIOS/UEFI/source equivalence
+  PASS; normal4 hashes checked18:14. HANDOFF retains failures/history/logs.
 ## Private filesystem slice (not promoted)
 - fs-native-VzEALo native44313 terminal0 16:44; runtime99309 terminal0
   16:54:24: BIOS gyf30f09/UEFI kki4aef6 PASS. Real inode DIR, atomic rename/
@@ -32,24 +26,14 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 - Full64642 FAILED missing pinned contracts/window.h (not PASS), log/status
   preserved. Combined full76516 terminal1 18:11:19: old launcher fixture
   hardcoded argc1 vs actual2. Failure/normal restore preserved. Corrected
-  fixture checks owned argv/path/readonly guards;89407 BIOS/UEFI then full
-  pending in SAME fs-native-VzEALo; no concurrent source mutation.
+  corrected89407 fixture BIOS/UEFI PASS; full rerun live PID14048018:22
+  in SAME fs-native-VzEALo; no concurrent source mutation.
 - docs/PHASE332_FS_LIFETIME_WIP.md + docs/wip/phase332-fs-lifetime hold
   latest clean source, fixtures, command scripts and limits.
 ## Genuine Cobalt / next blocker
-- fs-cobalt-diag-VQzrRc oo45o3f3/ru5x9dz8 stopped in Ozone window Show CHECK;
-  pinned source confirms SbWindowCreate then CHECK(valid). No assertion bypass.
-- h4mabvi1 hit worker Abseil sysinfo.cc248 clock_gettime EINVAL first;
-  HTTP requests0. Diagnostic24 missing traps are NEVER APIs.
-- CPU clock clean cpu-clock-HEdtNZ PTY21927 terminal0 17:18:
-  BIOS vn9sh7ap/UEFI co89of41 PASS busy/sleep/process/thread/worker reuse/
-  invalid guards/relaunch/exact resources. True100Hz scheduler samples,
-  not wall-clock aliases/nanosecond precision. Not promoted/full-tested.
-- Actual tcr_z7d5: CPU fatal gone; window requested1920x1080 vs actual800x600.
-  Pinned shell accepts --content-shell-host-window-size=WxH. Owned readonly
-  launcher argv adds actual display size; scope71491 BIOS/UEFI PASS17:36
-  also validates executable path with new argv0 offset544 (old536 invalid).
-  Actual24466 ld95w1k2 created800x600 handle1, then new CHECK; HTTP0.
+- CPU21927 BIOS/UEFI PASS real100Hz process/thread CPU accounting (not wall
+  aliases). Window71491 BIOS/UEFI PASS owned actual-size argv/path544/guards.
+  Actual Cobalt passed CPU/window blockers, handle1 with actual800x600.
   Native font scope82804 BIOS/UEFI PASS; real separate DejaVu package/license,
   guarded systemfont paths3/4. Actual1176 4eybvty6 passed font fatal, hit
   getrlimit(DATA2). Native97660 BIOS/UEFI PASS; no independent data quota,
@@ -57,6 +41,10 @@ Repo /home/xytron404/myos, main; production source b34cf75; origin c33f49a.
 - Actual4747 n4c4pkkx terminal0 diagnostic18:01:36 passed prior blockers,
   now V8 fails mprotect(core data0x8006235000,4096) EINVAL; HTTP0, no web PASS.
   Address is ELF image data outside anonymous VM ranges; policy audit next.
+- Actual93505 omx0f5f9 terminal0 18:16:42 with242bindings/no missing probes:
+  Abseil sysinfo.cc248 clock_gettime EINVAL; pinned source selects RAW4.
+  Raw-clock26614 terminal0 18:21 BIOS/UEFI+CPU scopes PASS100Hz/no precision
+  claim. Actual raw-clock21255 running in separate diagnostic tree; no web PASS.
 ## Bounds / next
 - Main32workers,2ELFmodules/1PTTLS,PMM256MiB; shared /dev/shm <=1MiB,
   mapped shrink EBUSY; no SIGBUS/COW/demand paging; normal RAMFS64KiB.

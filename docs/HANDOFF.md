@@ -5,6 +5,20 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Font / resource limit / import boundaries — 2026-10-07 18:10 +07
 
+18:20 update: actual93505 omx0f5f9 terminal0 diagnostic on new clean
+cobalt-closed-imports-xnVZeH has real242 bindings, NO MyOSMissing probes.
+HTTP0; alternate scheduling reaches Abseil sysinfo.cc248 RAW-clock EINVAL
+before renderer V8 protect failure. Sourcepin sysinfo.cc239-248 explicitly
+uses CLOCK_MONOTONIC_RAW4 when defined, not CPU-clock2/3. CPU accounting fix
+alone does NOT satisfy this call. New raw-clock26614 terminal0 18:21:04
+BIOS y8z9szg5/UEFI9eycpc89 plus CPU481932x9/scwgvvjf PASS on
+player-unavailable-bI04LM; PIT has no rate/UTC adjustment so raw4
+can truthfully use same100Hz ticks as monotonic1. Keep CPU2/3 separate; sleep4
+still unsupportedEINVAL. CPU fixture invalid-ID assertion changes4->99.
+Launcher89407 focused BIOS/UEFI PASS; full rerun live PID14048018:22.
+Actual21255 running after raw-clock fix in cobalt-closed-imports-xnVZeH,
+with no missing probes; capture terminal result before interpreting success.
+
 Read PHASE332_IMPORT_CLOSURE_WIP.md for current source/evidence. Clean font
 scope82804 and data limit97660 BIOS/UEFI terminal0. Real separately licensed
 DejaVu fonts let genuine Cobalt pass the font CHECK. getrlimit(DATA2) reports

@@ -3,6 +3,25 @@
 Updated2026-10-07 18:13 +07. NOT web acceptance, NOT Phase33.3, no push.
 Main production source b34cf75; recovery docs039eda4. No new source promotion.
 
+## Latest18:20: actual closed imports and raw-clock requirement
+
+- Actual93505 terminal0 diagnostic18:16:42, treecobalt-closed-imports-xnVZeH,
+  outputomx0f5f9:242 real bindings, no MyOSMissing probes linked. HTTP0.
+  Still fatal Abseil sysinfo.cc248 clock_gettime error22. This schedule stops
+  earlier than V8 image mprotect; do not claim either blocker resolved.
+- Pinned sysinfo.cc SHAe4fef0fc8eab5e1c109a194708f6f122d40a10fe11d828f4f622283fa459b69e
+  source239-248 selects CLOCK_MONOTONIC_RAW4 when defined. CPU2/3 fixes are
+  independently correct/tested, but do NOT implement RAW4.
+- New26614 terminal0 18:21:04 native raw clock BIOS y8z9szg5/UEFI9eycpc89
+  and CPU clock481932x9/scwgvvjf PASS, player-unavailable-bI04LM.
+  Implementation uses real unadjusted100Hz PIT, same epoch/ticks as monotonic1;
+  no nanosecond precision claim. clock_nanosleep4 remains unsupportedEINVAL.
+  CPU fixture invalid ID4 replaced99 since4 is now valid.
+- Launcher89407 corrected fixture BIOS/UEFI PASS, rerun full livePID140480
+  18:22. No font/limit/import/raw-clock changes to its frozen source.
+- Actual21255 running after raw-clock fix in cobalt-closed-imports-xnVZeH,
+  no MyOSMissing probes. Terminal result still pending; no new web PASS.
+
 ## Source and evidence
 
 - Clean `/home/xytron404/platform-fonts-01W7Ri`: real guarded systemfont
