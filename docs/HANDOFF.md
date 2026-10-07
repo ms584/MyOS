@@ -3,6 +3,57 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Native DOM/timers and shared-memory boundary — 2026-10-08 04:20 +07
+
+Five full web gates remain unproven, but genuine native Cobalt now runs JS/DOM
+and timers. Actual core/provider unchanged; no host DOM/JS, no assertion bypass.
+Bundle cobalt-closed-imports-xnVZeH/build/native-http-observation-56w0ub8_
+records GET73.28s, Native DOM42 at139.35s, timers142.23/143.28s. Terminated1
+because harness used QMP absolute mouse but PS/2 only has relative input.
+Corrected harness48713 terminal0 observation04:10:45, bundle2oau8607, records
+GET70.11s, DOM133.26s, genuine guest button geometry125.65/340.75 and timers,
+then ftruncate(fd92,0x401000) twice returns-27/EFBIG; GP13 allocator fatal.
+No key/click beacons, rendered page, >=60s, HTTPS or cleanup PASS. Screenshot
+final.png is actual guest fault/console, not a fabricated or successful page.
+
+Resource boundary96496 proved earlier ftruncate2MiB EFBIG causes native Mojo
+URL-body ERR_INSUFFICIENT_RESOURCES. Private2MiB scope22415 passed BIOS16/64
+and UEFI64/256, four exact-resource relaunches each. Full55973 remains live
+PID309507, source frozen with old server fixture. Capacity full89474 terminal1
+failed server status16: hardcoded32-fill/31-occupied after capacity grew64.
+Corrected server fixture derives sysconf(4)-64, keeps pending peer+EMFILE,
+echo/close-reuse/cancel/exact resources: focused BIOS/UEFI59630 PASS04:09.
+
+New private SHM8MiB tree shm-8m-4hJG2I (main unchanged) initially failed8MiB
+aliases on BIOS16/UEFI64. Fixture returned without unlinking named backing,
+so strict ELF page reclamation panicked. Added failure cleanup yields status32
+with exact pages/heap291072 restored. BIOS64 full8MiB aliases passed4 launches.
+UEFI64 free3279 pages vs BIOS64 free11991. Source map_shared_backing first
+allocates temporary anonymous pages for entire alias then substitutes frames;
+this avoidable second8MiB residency explains low-memory failure. New direct
+mapping reserves VA with prot0, creates page tables, acquires/tracks actual
+shared frames, and applies rights after all references exist. Partial failure
+uses same full unmap/ledger rollback. Scope68532 terminal0 at04:20:10: full8MiB
+aliases BIOS16/64+UEFI64/256,4 launches each, exact cleanup/rights/boundary PASS.
+New combined full47797 started04:21:41 in shm-8m-4hJG2I (corrected server too).
+Actual Cobalt73395 started04:21:27 in cobalt-closed-imports-xnVZeH; keeps private
+owned argv576/logging/jitless/HTTP override and now uses tested direct aliases8MiB.
+Full47797 pending. Cobalt73395 terminal0 observation04:25:15: bundleh74v3taq
+GET72.60s, DOM146.58s, geometry151.71s, timers1..6 through160.72s, then renderer
+unresponsive. Actual final.png displays packaged YouTube native splash only,
+NOT requested HTML or online video; dom-ready.png dark. No key/click beacons.
+Escape heap327168->368128; not exact cleanup PASS. New paused-thread diagnostic
+90323 starts04:26:45, snapshot at195s, not60s timing evidence. Host layout tool
+initially picked stale quoted work/process.h; fixed angle include with actual
+-Iinclude and renamed only kernel putchar declaration to avoid host stdio clash.
+Second compilation warned existing vm-area.h indentation; uses same explicit
+Wno-misleading-indentation as current fixture compiler. No kernel changes there.
+Inspect same live full/snapshot handles before restart.
+Main four normal SHA hashes verified04:20:41, unchanged. Full architecture needed.
+Keep diagnostic boot args and HTTP-only policy override OUT of production.
+No33.3/no push. Next: validate direct mappings, native render/input observation,
+then trusted HTTPS with enforcement intact, concurrency,60s,close/relaunch.
+
 ## Import/image promotion and HTTP-policy diagnosis — 2026-10-08 03:48 +07
 
 Production commit049576c. Fetch03:43 origin/main a746889 (ancestor,2 ahead/0

@@ -1,9 +1,10 @@
 # MyOS project state
-Updated: 2026-10-08 03:48 +07. Repo /home/xytron404/myos, main.
-Production049576c; origin/main a746889 fetched03:43; main2 ahead/0 behind.
+Updated: 2026-10-08 04:27 +07. Repo /home/xytron404/myos, main.
+Production049576c; prior docs0e9ef3a; origin/main a746889 fetched03:43.
 ## Scope / honest progress
 - Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
-  HTTPS, >=60s interaction and close/relaunch cleanup remain 0/5 unproven.
+  HTTPS, >=60s interaction and close/relaunch cleanup: 0/5 FULL gates proven.
+  Actual native JS/DOM arithmetic42 and timer beacons now proven separately.
 - Promoted normal runtime: registered240, strong paired242/242, missing0
   (Oct8 03:33 static census). Fifteen unavailable-media + nine POSIX ENOSYS
   exports are explicit boundaries, not functioning codecs/player/services.
@@ -13,13 +14,8 @@ Production049576c; origin/main a746889 fetched03:43; main2 ahead/0 behind.
   full test_system.py plus six affected scopes BIOS/UEFI, Oct7 19:24.
 - fs-native-VzEALo fs-full.status TERMINAL_EXIT=0 now verified terminal;
   previous fault timeout preserved; unchanged error/rip/cr2 assertions.
-- Main promotion10793 TERMINAL_EXIT=0 Oct8 03:31:47: kernel/runtime/BIOS
-  image binary-identical to full-tested candidate; eight affected scopes
-  BIOS/UEFI (image/raw/cpu/fonts/fs-unavailable/player-unavailable/fs-lifetime/
-  fs-identity). Four normal hashes OK03:32:04, data disks untouched.
-- Earlier promotion failures rolled back all nine normal/debug artifacts;
-  causes missing kernel/fs-operation-syscall.inc and exports generator.
-  Both inputs now copied from candidate; failure logs retained in build/.
+- Main promotion10793 terminal0: exact candidate binaries +8 scopes BIOS/UEFI.
+  Four normal hashes OK04:20:41; data disks untouched. Failure history HANDOFF.
 - Real DIR/rename/replaced-open lifetime/fd reuse/readonly assets/cleanup,
   CPU100Hz process/thread clocks, native window-size argv, licensed fonts,
   independent DATA quota query and RAW clock included. RAW4 aliases
@@ -33,31 +29,37 @@ Production049576c; origin/main a746889 fetched03:43; main2 ahead/0 behind.
 - fs-capacity-mL68fc scopes84723/52838 BIOS/UEFI PASS: kernel files32,
   runtime slots64, fd base64, NOFILE upper bound128, genuine nofollow in
   symlink-free namespaces, failed file installation closes kernel fd.
-- Capacity full76377 failed socketpair status34: fixture hardcoded31
-  occupied slots. Fixed to advertised bound minus fd base minus1; rollback,
-  EMFILE and untouched outputs still asserted. Retry89474 RUNNING03:27;
-  PID292474 verified live03:47; dynamic/lifecycle PASS; full still pending.
+- Capacity full89474 TERMINAL_EXIT=1: server fixture hardcoded31 slots,
+  exits16 after dynamic/lifecycle PASS. Advertised-bound fixture retains
+  EMFILE/pending peer/echo/cancel/reuse/exact cleanup: BIOS/UEFI PASS59630.
+- SHM2MiB scope22415 BIOS16/64+UEFI64/256 PASS. Full55973 RUNNING04:19,
+  PID309507; still frozen OLD server fixture, not a full PASS.
 ## Actual Cobalt evidence / immediate next
-- Genuine pinned core+Mesa provider started Blink contexts/navigation; previous
-  native-http-observation-av2317_9 has requests[], blank actual frame,
-  renderer unresponsive, escaped with heap327168->359936: NOT cleanup PASS.
-- Serial418 says HTTPS-only violation; pinned secure navigation throttle
-  rejects HTTP with ERR_BLOCKED_BY_CLIENT. Not native TCP failure proof.
-- Private HTTP46209 terminal0 observation03:33:34:44g31rq9 records genuine
-  GET / at67.39s, no DOM/timer/input beacons; pid5 GP13/error1A at80034A738C,
-  allocator caller80034692B7; heap327168->368128, NOT cleanup PASS.
-- HTTP diagnostics66177/24630 terminal0 observations: GET / again, no beacons,
-  escaped at deadline, not web PASS. First trace writer used wrong syscall
-  argument layout; second corrected, no negative allocation trace captured.
-- Owned-path/verbose diagnostic24755 RUNNING03:46:55, PID302454/QEMU302462
-  live03:47; private argv name576 now matches SYS_PATH checker (was544).
-  HTTP enforcement override remains private, NEVER verified HTTPS evidence.
+- Previous startup/HTTP failures retained in HANDOFF and native bundles.
+- Resource boundary96496: genuine ftruncate2MiB returns-27/EFBIG; native
+  Mojo URL body failed with ERR_INSUFFICIENT_RESOURCES. Private2MiB fixes it.
+- Native bundle56w0ub8_: GET73.28s, DOM139.35s, timers142.23/143.28s.
+  Terminal1 from harness absolute mouse unsupported; no input/60s proof.
+- Relative PS/2 probe48713 terminal0 observation04:10:45, bundle2oau8607:
+  GET70.11s, DOM133.26s, native geometry/timers; then ftruncate0x401000
+  EFBIG and user GP13. No key/click beacons; actual final screenshot fault.
+- SHM8MiB private shm-8m-4hJG2I: aliases fail BIOS16/UEFI64; fixture early
+  return left named backing, causing reclamation panic. Error cleanup fixes
+  panic, exact heap/pages restored; full-sized success fixed below.
+- Source map_shared_backing unnecessarily stages private pages before alias.
+  Direct reservation/reference fix68532 terminal0 at04:20:10: BIOS16/64 and
+  UEFI64/256, 4 launches each, real8MiB aliases/rights/exact cleanup PASS.
+  Combined full47797 started04:21:41; NOT full PASS, source frozen.
+  Cobalt73395 terminal0 observation04:25:15: h74v3taq shows real splash,
+  DOM146.58s/timers1..6, then renderer unresponsive. No input/HTML/60s PASS;
+  Escape heap327168->368128. Task snapshot90323 started04:26:45, diagnostic.
+  Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
   concurrent assets/certificate errors. Five web gates remain unproven.
 ## Artifacts / continuation
 - HANDOFF.md + PHASE331_IMAGE_VM_WIP.md + PHASE332_IMPORT_CLOSURE_WIP.md.
 - Main build/import-image-promotion-normal.sha256; private detailed logs.
-- Windows work/*20261008* preserves socketpair fix, HTTP-policy source audit,
-  scripts and census. No diagnostics promoted. No memory swap/COW/demand paging.
+- docs/wip/native-dom-shared-memory preserves actual beacons/logs and clean/
+  diagnostic slices. No diagnostics promoted. No swap/COW/demand paging.
 - PMM256MiB,32workers,2ELFmodules/1PTTLS; activity.log bounded48MiB.
   NEVER read activity.log through run_logged.py. Goal remains active.
