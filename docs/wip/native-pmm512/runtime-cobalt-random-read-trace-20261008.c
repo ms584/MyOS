@@ -1377,7 +1377,8 @@ int close(int fd){return close_checked(fd,0,0);}
 int64_t read(int fd,void *buffer,size_t length)
 {
     if(fd>=3&&fd<3+8){int64_t rc=call3(SYS_FREAD,(unsigned)fd,(uintptr_t)buffer,length);
-        if(rc<0){allocation_failure_trace("raw read fd/length/result",(unsigned)fd,length,(uint64_t)rc);fail(rc);return -1;}return rc;}
+        if(rc<=0||length==8)allocation_failure_trace("raw read fd/length/result",(unsigned)fd,length,(uint64_t)rc);
+        if(rc<0){fail(rc);return -1;}return rc;}
     if(!buffer&&length){set_error(EFAULT);return -1;}
     struct descriptor_ref reference={0};if(!descriptor_acquire(fd,&reference)||!(reference.access&1)){
         if(reference.object)object_release(reference.object);allocation_failure_trace("read invalid fd/length/access",(unsigned)fd,length,reference.access);set_error(EBADF);return -1;}
@@ -1425,7 +1426,9 @@ int64_t read(int fd,void *buffer,size_t length)
         spin_unlock(&object->lock);if(result<0){fail(result);result=-1;}
     } else if(object->type==DESCRIPTOR_DIRECTORY)set_error(21);
     else set_error(EBADF);
-done:object_release(object);return result;
+done:
+    if(length==8||(!result&&length))allocation_failure_trace("read fd/type/result",(unsigned)fd,object->type,(uint64_t)result);
+    object_release(object);return result;
 }
 int64_t write(int fd,const void *buffer,size_t length)
 {
@@ -1755,7 +1758,8 @@ static int runtime_open_base(int base,const char *normalized,int flags)
         if(!state||!object){if(object)free(object);return set_error(ENOMEM);}
         spin_lock(&state->lock);int fd=descriptor_install_locked(state,object,1,(unsigned)flags);
         spin_unlock(&state->lock);
-        if(fd<0){free(object);return set_error(24);}return fd;
+        if(fd<0){free(object);return set_error(24);}
+        allocation_failure_trace("random open fd/flags/base",(unsigned)fd,(unsigned)flags,(uint64_t)base);return fd;
     }
     unsigned myos=access;
     if(flags&MUSL_O_CREAT)myos|=4;if(flags&MUSL_O_TRUNC)myos|=8;if(flags&MUSL_O_EXCL)myos|=16;

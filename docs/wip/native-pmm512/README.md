@@ -19,7 +19,9 @@ release and page-table recovery. Counts recorded in pmm512-{bios,uefi}.log.
 Full regression pending. Native visual95819 terminal0 observation04:59:33,
 n16qdlc8: GET only; new signal6, no visible HTML/input. Cached random-file
 read failure suspected from actual disassembly, errno not yet known.
-Private diagnostic18382 running05:02:34; NOT accepted Cobalt.
+Negative-read18382 terminal0 observation05:04:35, same abort/no negative trace.
+Expanded EOF/result trace97279 live05:06:05 (l24t5y7t); genuine random8-byte
+reads observed. No acceptance. Full22674 queued behind verified old runner321159.
 
 memory-512m-20261008.c and test/runner are reproducible WIP sources, not proof
 of complete Cobalt or Phase33 closure. PROJECT_STATE/HANDOFF describe live jobs.

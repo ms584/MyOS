@@ -3,11 +3,12 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
-## PMM512 continuation — 2026-10-08 05:03 +07
+## PMM512 continuation — 2026-10-08 05:09 +07
 
 No source promotion; main normal images/data disks unchanged, no push/33.3.
 Combined SHM8/direct full47797 confirmed live04:58 by its session, now native
-TLS/thread-services portion; NOT full PASS. Source frozen shm-8m-4hJG2I.
+TLS/thread-services portion then test_system.py PASS05:07; affected BIOS/UEFI
+scopes still running, NOT overall full PASS. Source frozen shm-8m-4hJG2I.
 GPU snapshot1891 terminal0, bundle0f114_3y: Chrome_InProcGpuThread tid11
 runnable in actual Mesa sp_find_cached_tile+0x48c (provider bias8006331000,
 RIP8006bc750c). Stack words are candidate pointers, not an unwound backtrace.
@@ -35,11 +36,18 @@ no allocation failures logged this run. Saved stack core offsets3469de1,
 Stripped dynamic symbol fallback names (v8_Node_Print/unw...) are NOT actual
 function identification. Cached random read failure is a hypothesis pending
 errno evidence, not authority to bypass random/cert/fatal checks.
-Private runtime read-failure diagnostics18382 live05:02:34, same PMM512;
-cobalt-random-read-trace.status/log. Captures fd/length/result only, never bytes.
+Private negative-read diagnostic18382 terminal0 observation05:04:35, ymvkznsm:
+same fatal6 but no read-negative trace. Expanded EOF/result trace97279 live
+05:06:05, l24t5y7t; real random descriptors64/67 type8 return8 observed05:07.
+No final result yet. No random bytes logged. Actual core string at3ac371 is
+/dev/urandom; function labels remain stripped/unreliable. No speculative fix.
+PMM512 full22674 queued05:06:20 on exact verified live old runnerPID321159 and
+its command; do not restart queue. Once old whole runner exits, new clean tree
+runs mandatory test_system.py +11 BIOS/UEFI scopes including512MiB. Source
+frozen; normal image restore trap even on failure. Queue handle confirmedlive.
 No pause, screenshots every30s; only send PS/2 input after DOM AND actual fixture
 background visible. Terminal0 means observation completed, not web PASS.
-Next: inspect18382 handle and actual errno/frame/beacon evidence, then PMM512 full
+Next: inspect97279/47797/22674 handles and actual frame/beacon/resource evidence,
 and affected regressions; controlled verified HTTPS with enforcement intact,
 input/scrolling/>=60s/close-relaunch gates still required. Keep goal active.
 Clean source/tests/runners + logs: docs/wip/native-pmm512. Diagnostics stay private.

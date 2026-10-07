@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 05:03 +07. Repo /home/xytron404/myos, main.
+Updated: 2026-10-08 05:09 +07. Repo /home/xytron404/myos, main.
 Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 ## Scope / honest progress
 - Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
@@ -37,7 +37,7 @@ Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 - Source map_shared_backing unnecessarily stages private pages before alias.
   Direct reservation/reference fix68532 terminal0 at04:20:10: BIOS16/64 and
   UEFI64/256, 4 launches each, real8MiB aliases/rights/exact cleanup PASS.
-  Combined full47797 started04:21:41; NOT full PASS, source frozen.
+  Combined47797 test_system.py PASS05:07; affected scopes still live, NOT full PASS.
   Cobalt73395 terminal0 observation04:25:15: h74v3taq shows real splash,
   DOM146.58s/timers1..6, then renderer unresponsive. No input/HTML/60s PASS;
   Escape heap327168->368128. Stack1891 terminal0:0f114_3y, GPUtid11 runnable
@@ -48,10 +48,12 @@ Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
   Private pmm-512m-01MfM9 focus28058 terminal0: BIOS16/256/512 and
   UEFI64/256/512, real upper frames/refcounts/alias/exhaustion/recovery PASS.
   Metadata expands after heap bootstrap; BIOS BSS reservation unchanged.
-  PMM512 full pending. Visual95819 terminal0 observation04:59:33, n16qdlc8:
+  PMM512 full22674 queued on verified live runner321159 (avoid third QEMU).
+  Visual95819 terminal0 observation04:59:33, n16qdlc8:
   GET67.58s, no DOM/render/input; new abort6, cached random-file read suspect
-  from disassembly, not proven. Read-failure diagnostic18382 live05:02:34;
-  inspect same handle/log before mutation/restart, no fake entropy/fatal bypass.
+  from disassembly, not proven. Negative-read18382 terminal0:ymvkznsm, same
+  fatal/no read-negative traces. EOF/result trace97279 live05:06:05,l24t5y7t:
+  genuine random8-byte reads observed. Inspect handles; no entropy/fatal bypass.
   Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
   concurrent assets/certificate errors. Five web gates remain unproven.
