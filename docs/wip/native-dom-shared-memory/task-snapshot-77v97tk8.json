@@ -1,0 +1,605 @@
+{
+  "diagnostic_only": true,
+  "tasks": [
+    {
+      "slot": 0,
+      "alive": 1,
+      "frame": 584384,
+      "process": 0,
+      "thread": 0,
+      "blocked": 0,
+      "wait_address": 0,
+      "wait_deadline": 0,
+      "registers": {
+        "rip": 124861,
+        "rsp": 584560,
+        "rbp": 327728,
+        "rdi": 582,
+        "rsi": 0,
+        "rdx": 86,
+        "rax": 4294967295
+      }
+    },
+    {
+      "slot": 1,
+      "alive": 1,
+      "frame": 4295188384,
+      "process": 0,
+      "thread": 0,
+      "blocked": 0,
+      "wait_address": 0,
+      "wait_deadline": 0,
+      "registers": {
+        "rip": 263358,
+        "rsp": 4295188560,
+        "rbp": 1192964,
+        "rdi": 1192966,
+        "rsi": 1192965,
+        "rdx": 1192963,
+        "rax": 1192960
+      }
+    },
+    {
+      "slot": 2,
+      "alive": 1,
+      "frame": 4295204800,
+      "process": 0,
+      "thread": 0,
+      "blocked": 0,
+      "wait_address": 0,
+      "wait_deadline": 0,
+      "registers": {
+        "rip": 263340,
+        "rsp": 4295204976,
+        "rbp": 1192964,
+        "rdi": 1192966,
+        "rsi": 1192965,
+        "rdx": 1192963,
+        "rax": 1192960
+      }
+    },
+    {
+      "slot": 4,
+      "alive": 1,
+      "frame": 4295237680,
+      "process": 319232,
+      "thread": 0,
+      "blocked": 0,
+      "wait_address": 0,
+      "wait_deadline": 0,
+      "registers": {
+        "rip": 549755814172,
+        "rsp": 549755830264,
+        "rbp": 0,
+        "rdi": 0,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 1229801703532086340
+      }
+    },
+    {
+      "slot": 5,
+      "alive": 1,
+      "frame": 4295254096,
+      "process": 323480,
+      "thread": 0,
+      "blocked": 0,
+      "wait_address": 0,
+      "wait_deadline": 0,
+      "registers": {
+        "rip": 549755814172,
+        "rsp": 549755830264,
+        "rbp": 0,
+        "rdi": 0,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 12297848147757817309
+      }
+    },
+    {
+      "slot": 6,
+      "alive": 0,
+      "frame": 4295550160,
+      "process": 327728,
+      "thread": 0,
+      "blocked": 1,
+      "wait_address": 550812845720,
+      "wait_deadline": 15134,
+      "registers": {
+        "rip": 550812813559,
+        "rsp": 550024269584,
+        "rbp": 151340000,
+        "rdi": 550812845720,
+        "rsi": 721,
+        "rdx": 15134,
+        "rax": 0
+      },
+      "wait_bytes": "d102000000000000010000000000000000000000000000000000000000000000"
+    },
+    {
+      "slot": 7,
+      "alive": 0,
+      "frame": 4295603568,
+      "process": 327728,
+      "thread": 329400,
+      "blocked": 1,
+      "wait_address": 550299160016,
+      "wait_deadline": 15416,
+      "tid": 21474836481,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550299159688,
+        "rbp": 550299159872,
+        "rdi": 550299160016,
+        "rsi": 0,
+        "rdx": 15416,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 8,
+      "alive": 0,
+      "frame": 4295577344,
+      "process": 327728,
+      "thread": 329480,
+      "blocked": 1,
+      "wait_address": 550292688936,
+      "wait_deadline": 15893,
+      "tid": 21474836482,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550301256648,
+        "rbp": 15893,
+        "rdi": 550292688936,
+        "rsi": 1137,
+        "rdx": 15893,
+        "rax": 0
+      },
+      "wait_bytes": "7104000000000000202000208000000001000000010000000000080000000000"
+    },
+    {
+      "slot": 9,
+      "alive": 0,
+      "frame": 4295652784,
+      "process": 327728,
+      "thread": 329560,
+      "blocked": 1,
+      "wait_address": 550303353808,
+      "wait_deadline": 0,
+      "tid": 21474836483,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550303353528,
+        "rbp": 550303353664,
+        "rdi": 550303353808,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 10,
+      "alive": 0,
+      "frame": 4295669200,
+      "process": 327728,
+      "thread": 329640,
+      "blocked": 1,
+      "wait_address": 550305450960,
+      "wait_deadline": 0,
+      "tid": 21474836484,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550305450680,
+        "rbp": 550305450816,
+        "rdi": 550305450960,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 11,
+      "alive": 0,
+      "frame": 4295619984,
+      "process": 327728,
+      "thread": 329720,
+      "blocked": 1,
+      "wait_address": 550292688936,
+      "wait_deadline": 19428,
+      "tid": 21474836485,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550307548072,
+        "rbp": 19428,
+        "rdi": 550292688936,
+        "rsi": 1137,
+        "rdx": 19428,
+        "rax": 0
+      },
+      "wait_bytes": "7104000000000000202000208000000001000000010000000000080000000000"
+    },
+    {
+      "slot": 12,
+      "alive": 0,
+      "frame": 4295751184,
+      "process": 327728,
+      "thread": 329800,
+      "blocked": 1,
+      "wait_address": 550309645264,
+      "wait_deadline": 0,
+      "tid": 21474836486,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550309644984,
+        "rbp": 550309645120,
+        "rdi": 550309645264,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 13,
+      "alive": 0,
+      "frame": 4295767600,
+      "process": 327728,
+      "thread": 329880,
+      "blocked": 1,
+      "wait_address": 550311742528,
+      "wait_deadline": 0,
+      "tid": 21474836487,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550311742248,
+        "rbp": 550311742384,
+        "rdi": 550311742528,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 14,
+      "alive": 0,
+      "frame": 4295800448,
+      "process": 327728,
+      "thread": 329960,
+      "blocked": 1,
+      "wait_address": 550314363856,
+      "wait_deadline": 0,
+      "tid": 21474836488,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550314363576,
+        "rbp": 550314363712,
+        "rdi": 550314363856,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 15,
+      "alive": 0,
+      "frame": 4295816864,
+      "process": 327728,
+      "thread": 330040,
+      "blocked": 1,
+      "wait_address": 550316461008,
+      "wait_deadline": 0,
+      "tid": 21474836489,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550316460728,
+        "rbp": 550316460864,
+        "rdi": 550316461008,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 16,
+      "alive": 0,
+      "frame": 4295833280,
+      "process": 327728,
+      "thread": 330120,
+      "blocked": 1,
+      "wait_address": 550318558160,
+      "wait_deadline": 0,
+      "tid": 21474836490,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550318557880,
+        "rbp": 550318558016,
+        "rdi": 550318558160,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 17,
+      "alive": 1,
+      "frame": 4295849696,
+      "process": 327728,
+      "thread": 330200,
+      "blocked": 0,
+      "wait_address": 550320655424,
+      "wait_deadline": 0,
+      "tid": 21474836491,
+      "registers": {
+        "rip": 550812779288,
+        "rsp": 550320640152,
+        "rbp": 256,
+        "rdi": 0,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 550812889088
+      },
+      "wait_bytes": "20cdaa218000000050ccaa218000000078cbaa218000000000d0c50088000000"
+    },
+    {
+      "slot": 18,
+      "alive": 0,
+      "frame": 4295685616,
+      "process": 327728,
+      "thread": 330280,
+      "blocked": 1,
+      "wait_address": 584120993960,
+      "wait_deadline": 0,
+      "tid": 21474836492,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550322753240,
+        "rbp": 550322753376,
+        "rdi": 584120993960,
+        "rsi": 8,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "0800000000000000010000000100000000000000000000000000000000000000"
+    },
+    {
+      "slot": 19,
+      "alive": 0,
+      "frame": 4295702032,
+      "process": 327728,
+      "thread": 330360,
+      "blocked": 1,
+      "wait_address": 550292688936,
+      "wait_deadline": 21416,
+      "tid": 21474836493,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550324849560,
+        "rbp": 21416,
+        "rdi": 550292688936,
+        "rsi": 1137,
+        "rdx": 21416,
+        "rax": 0
+      },
+      "wait_bytes": "7104000000000000202000208000000001000000010000000000080000000000"
+    },
+    {
+      "slot": 20,
+      "alive": 0,
+      "frame": 4295718448,
+      "process": 327728,
+      "thread": 330440,
+      "blocked": 1,
+      "wait_address": 550326946880,
+      "wait_deadline": 0,
+      "tid": 21474836494,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550326946600,
+        "rbp": 550326946736,
+        "rdi": 550326946880,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 21,
+      "alive": 0,
+      "frame": 4296013648,
+      "process": 327728,
+      "thread": 330520,
+      "blocked": 1,
+      "wait_address": 550329044032,
+      "wait_deadline": 0,
+      "tid": 21474836495,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550329043752,
+        "rbp": 550329043888,
+        "rdi": 550329044032,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 22,
+      "alive": 0,
+      "frame": 4296030064,
+      "process": 327728,
+      "thread": 330600,
+      "blocked": 1,
+      "wait_address": 550292688936,
+      "wait_deadline": 16690,
+      "tid": 21474836496,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550333316072,
+        "rbp": 16690,
+        "rdi": 550292688936,
+        "rsi": 1137,
+        "rdx": 16690,
+        "rax": 0
+      },
+      "wait_bytes": "7104000000000000202000208000000001000000010000000000080000000000"
+    },
+    {
+      "slot": 23,
+      "alive": 0,
+      "frame": 4296046480,
+      "process": 327728,
+      "thread": 330680,
+      "blocked": 1,
+      "wait_address": 550341495760,
+      "wait_deadline": 0,
+      "tid": 21474836497,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550341495480,
+        "rbp": 550341495616,
+        "rdi": 550341495760,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 24,
+      "alive": 0,
+      "frame": 4295882544,
+      "process": 327728,
+      "thread": 330760,
+      "blocked": 1,
+      "wait_address": 550355361312,
+      "wait_deadline": 0,
+      "tid": 21474836498,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550355361032,
+        "rbp": 550355361168,
+        "rdi": 550355361312,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 25,
+      "alive": 0,
+      "frame": 4295898960,
+      "process": 327728,
+      "thread": 330840,
+      "blocked": 1,
+      "wait_address": 550292688936,
+      "wait_deadline": 19682,
+      "tid": 21474836499,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550357994392,
+        "rbp": 19682,
+        "rdi": 550292688936,
+        "rsi": 1137,
+        "rdx": 19682,
+        "rax": 0
+      },
+      "wait_bytes": "7104000000000000202000208000000001000000010000000000080000000000"
+    },
+    {
+      "slot": 26,
+      "alive": 0,
+      "frame": 4295935936,
+      "process": 327728,
+      "thread": 330920,
+      "blocked": 1,
+      "wait_address": 550360439760,
+      "wait_deadline": 0,
+      "tid": 21474836500,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550360439480,
+        "rbp": 550360439616,
+        "rdi": 550360439760,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 27,
+      "alive": 0,
+      "frame": 4295977056,
+      "process": 327728,
+      "thread": 331000,
+      "blocked": 1,
+      "wait_address": 550765572864,
+      "wait_deadline": 0,
+      "tid": 21474836501,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550765572584,
+        "rbp": 550765572720,
+        "rdi": 550765572864,
+        "rsi": 0,
+        "rdx": 0,
+        "rax": 0
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "slot": 28,
+      "alive": 1,
+      "frame": 4295993472,
+      "process": 327728,
+      "thread": 331080,
+      "blocked": 0,
+      "wait_address": 550331141200,
+      "wait_deadline": 14845,
+      "tid": 21474836502,
+      "registers": {
+        "rip": 550812778545,
+        "rsp": 550331140872,
+        "rbp": 550331141056,
+        "rdi": 550331141200,
+        "rsi": 0,
+        "rdx": 14845,
+        "rax": 18446744073709551506
+      },
+      "wait_bytes": "00000000000000000100000001000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "processes": [
+    {
+      "pid": 1,
+      "state": 1,
+      "root": 17879040,
+      "vm_page_count": 0,
+      "vm_areas": 0
+    },
+    {
+      "pid": 2,
+      "state": 1,
+      "root": 17907712,
+      "vm_page_count": 0,
+      "vm_areas": 0
+    },
+    {
+      "pid": 5,
+      "state": 1,
+      "root": 18010112,
+      "vm_page_count": 30368,
+      "vm_areas": 4295550480
+    }
+  ]
+}

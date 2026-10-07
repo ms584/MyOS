@@ -3,6 +3,27 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Renderer snapshot continuation — 2026-10-08 04:37 +07
+
+Local docs/evidence checkpoint5710d7b; no source promotion, no push.
+Full55973 terminal1 at04:33:32 on unchanged old server fixture as anticipated;
+normal restore trap ran. Combined direct-shared full47797 remains live in
+shm-8m-4hJG2I, has corrected socketpair+server fixtures, NOT full PASS.
+Task90323 terminal0 at04:30:18, bundlepsxh7el7; initial snapshot invalid for
+register diagnosis: kernel heap frames are VA0x100..., not physical addresses,
+and scheduler marks blocked tasks alive=false so helper omitted most threads.
+Corrected helper walks actual4-level root/page entries (also large mappings)
+and includes alive OR blocked tasks. Task54668 terminal0 at04:34:38, bundle
+77v97tk8: valid saved frames/wait cells. GPUtid0x50000000b is runnable at
+runtime803f000318 (syscall helper return; rax803f01b000 is TLS address), while
+most other Cobalt tasks are blocked. Serial /11: identifies Chrome_InProcGpuThread.
+This does NOT prove all-task deadlock, exact stalled function or full backtrace.
+New stack diagnostic1891 started04:36:17 with same kernel/core/provider;
+captures256 bytes from each saved user RSP and labels scanned return pointers
+as candidates only. Paused observation NOT a60s acceptance test. Inspect
+cobalt-direct-task.status/log and session1891 before restarting or mutating.
+Main four normal image hashes previously verified04:20:41; no builds on main.
+
 ## Native DOM/timers and shared-memory boundary — 2026-10-08 04:20 +07
 
 Five full web gates remain unproven, but genuine native Cobalt now runs JS/DOM

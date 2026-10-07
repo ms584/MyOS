@@ -7,6 +7,7 @@ cp "$stage/cobalt_task_snapshot_20261008.py" tests/cobalt_task_snapshot.py
 cp "$stage/test_cobalt_native_direct_task_probe_20261008.py" tests/test_cobalt_native_direct_task_probe.py
 gcc -m64 -std=c11 -Wall -Wextra -Werror -Wno-misleading-indentation -Iinclude "$stage/cobalt_task_layout_20261008.c" -o build/cobalt-task-layout
 printf 'RUNNING\n' >cobalt-direct-task.status
+test ! -f cobalt-direct-task.log || cp cobalt-direct-task.log cobalt-direct-task-first-layout.log
 trap 'printf "TERMINAL_EXIT=%s\n" "$?" >cobalt-direct-task.status' EXIT
 python3 tests/test_cobalt_native_direct_task_probe.py /home/xytron404/cd-QJYMwG/build/cobalt-resources-dwxalc2n /home/xytron404/platform-fonts-01W7Ri/build/platform-fonts-20261007 >cobalt-direct-task.log 2>&1
 tail -n 5 cobalt-direct-task.log

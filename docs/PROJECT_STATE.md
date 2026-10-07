@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 04:27 +07. Repo /home/xytron404/myos, main.
-Production049576c; prior docs0e9ef3a; origin/main a746889 fetched03:43.
+Updated: 2026-10-08 04:37 +07. Repo /home/xytron404/myos, main.
+Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 ## Scope / honest progress
 - Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
   HTTPS, >=60s interaction and close/relaunch cleanup: 0/5 FULL gates proven.
@@ -32,8 +32,8 @@ Production049576c; prior docs0e9ef3a; origin/main a746889 fetched03:43.
 - Capacity full89474 TERMINAL_EXIT=1: server fixture hardcoded31 slots,
   exits16 after dynamic/lifecycle PASS. Advertised-bound fixture retains
   EMFILE/pending peer/echo/cancel/reuse/exact cleanup: BIOS/UEFI PASS59630.
-- SHM2MiB scope22415 BIOS16/64+UEFI64/256 PASS. Full55973 RUNNING04:19,
-  PID309507; still frozen OLD server fixture, not a full PASS.
+- SHM2MiB scope22415 BIOS16/64+UEFI64/256 PASS. Full55973 TERMINAL_EXIT=1
+  at04:33:32 on OLD server fixture; normal BIOS/UEFI restored by trap.
 ## Actual Cobalt evidence / immediate next
 - Previous startup/HTTP failures retained in HANDOFF and native bundles.
 - Resource boundary96496: genuine ftruncate2MiB returns-27/EFBIG; native
@@ -52,7 +52,9 @@ Production049576c; prior docs0e9ef3a; origin/main a746889 fetched03:43.
   Combined full47797 started04:21:41; NOT full PASS, source frozen.
   Cobalt73395 terminal0 observation04:25:15: h74v3taq shows real splash,
   DOM146.58s/timers1..6, then renderer unresponsive. No input/HTML/60s PASS;
-  Escape heap327168->368128. Task snapshot90323 started04:26:45, diagnostic.
+  Escape heap327168->368128. Snapshot54668 terminal0:77v97tk8, GPUtid11
+  runnable, most tasks blocked; NOT all-task deadlock proof. New stack snapshot
+  1891 started04:36:17, diagnostic; inspect live handle before restart.
   Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
   concurrent assets/certificate errors. Five web gates remain unproven.
