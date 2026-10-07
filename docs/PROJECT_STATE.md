@@ -1,10 +1,10 @@
 # MyOS project state
-Updated: 2026-10-08 05:17 +07. Repo /home/xytron404/myos, main.
+Updated: 2026-10-08 05:37 +07. Repo /home/xytron404/myos, main.
 Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
 ## Scope / honest progress
-- Phase33.1/33.2 OPEN: native HTML+JS/DOM/timers, input, verified concurrent
-  HTTPS, >=60s interaction and close/relaunch cleanup: 0/5 FULL gates proven.
-  Actual native JS/DOM arithmetic42 and timer beacons now proven separately.
+- Phase33.1/33.2 OPEN: actual private native HTML+JS/DOM/timers and key/click
+  proven; verified concurrent HTTPS, scrolling, responsive>=60s and close/
+  relaunch cleanup still pending. Native screenshot/beacons below, not host DOM.
 - Promoted normal runtime: registered240, strong paired242/242, missing0
   (Oct8 03:33 static census). Fifteen unavailable-media + nine POSIX ENOSYS
   exports are explicit boundaries, not functioning codecs/player/services.
@@ -49,16 +49,20 @@ Production049576c; prior docs5710d7b; origin/main a746889 fetched03:43.
   UEFI64/256/512, real upper frames/refcounts/alias/exhaustion/recovery PASS.
   Metadata expands after heap bootstrap; BIOS BSS reservation unchanged.
   PMM512 full22674 now RUNNING, confirmed handle05:15; source frozen.
-  Visual95819 terminal0 observation04:59:33, n16qdlc8:
-  GET67.58s, no DOM/render/input; new abort6, cached random-file read suspect
-  from disassembly, not proven. Negative-read18382 terminal0:ymvkznsm, same
-  fatal/no read-negative traces. EOF97279 terminal0:l24t5y7t, same fatal.
-  Identity75223 terminal0 at05:15:16:fcp0dbb7, same fatal; random8-byte
-  success from OTHER pthread identities, no failing caller evidence yet.
-  Next capture fatal core cached-fd/flags and code bytes before any fix.
+  Fatal70034 terminal0:1tq1ipe3, actual code matches pinned core, cached fd67.
+  Found syscall.c readable_user_page stale256MiB bound; rejects upper callers
+  AND their diagnostic writes. New guard requires PMM owned frames, U/S+RW kept.
+  pmm-syscall-R4sQZZ focus14323 terminal0: old failure reproduced BIOS/UEFI;
+  fixed280MiB random/log/RO/NONE/preflight/relaunch/exact cleanup PASS both.
+  Full7014 queued behind live PMM22674; source frozen. Do NOT promote PMM alone.
+  Native25856 terminal0:hfcgru2i, GET65.57s, DOM42@125.57, key a@192.11,
+  click1@194.33, timers1..76 through255.93s. Actual HTML text/button displayed.
+  Final frame still Timer7/No input yet: visual refresh lag, NOT responsive PASS.
+  Escape all threads/pages reclaimed; heap491008->536064, cleanup not accepted.
+  Longer refresh80475 live05:35:55, repeated inputs after90/150s; inspect handle.
   Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
 - Need true DOM/render/input, trusted HTTPS with enforcement intact and
-  concurrent assets/certificate errors. Five web gates remain unproven.
+  concurrent assets/certificate errors, responsive updates and relaunch cleanup.
 ## Artifacts / continuation
 - HANDOFF.md + PHASE331_IMAGE_VM_WIP.md + PHASE332_IMPORT_CLOSURE_WIP.md.
 - Main build/import-image-promotion-normal.sha256; private detailed logs.

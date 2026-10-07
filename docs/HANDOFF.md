@@ -3,6 +3,50 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Native HTML/input and safe upper-frame syscalls — 2026-10-08 05:37 +07
+
+Goal active; no push, no33.3, no source promotion/main image changes.
+Fatal70034 terminal0 observation05:20:49,1tq1ipe3: failing kernel tid500000016,
+cached core fd67, flags0101, BoringSSL override0. Actual16-byte code samples
+3469cf0/3469dd5/346e205 match pinned core. It was not a mistaken code offset.
+Concrete mismatch: kernel/syscall.c readable_user_page rejects ANY physical
+page>=256MiB even with PMM512. Upper-frame caller random copyout AND diagnostic
+SYS_WRITE fail validation; absence of user-mode error trace is not absence of
+error. New clean syscall guard !page_references(physical) requires actual
+managed allocated frame at every visited entry. U/S at every level, write bits,
+canonical checks, huge-page rejection and whole-range preflight remain intact.
+
+Clean pmm-syscall-R4sQZZ differs from frozen PMM512 tree only syscall guard and
+new fixture/test. Focus14323 terminal0 at05:26:12: old guard fixture exits3
+(expected failure) on BIOS/UEFI. Fixed kernel: real280MiB resident mapping,
+random copyout on EVERY page, upper-buffer SYS_WRITE, RO/NONE/supervisor/cross-
+page atomic rejection; two full process relaunches with exact resources PASS
+both. PMM boot/exhaustion/upper refcounts also PASS BIOS16/256/512, UEFI64/256/512.
+PMM-only full22674 is live, source frozen, old256MiB syscall bound remains there.
+Do not promote PMM512 alone even if that full passes. New full7014 queued on
+verified exact live parent345602 (run_pmm512_full_20261008.sh), then runs mandatory
+test_system.py +6 affected scopes both firmware, normal restore trap. Inspect
+same handles before restart or mutation.
+
+Actual native25856 terminal0 observation05:31:07,hfcgru2i after safe-copy fix:
+GET65.57s, JS DOM Native DOM42 at125.57s, real guest geometry125.65/340.75.
+Actual cream frame186, final PNG genuine HTML heading/DOM42/Timer7/button.
+Host only served HTML and recorded guest requests; no host JS/DOM/rendering.
+Real PS/2 key a beacon192.11s, click1 beacon194.33s;76 timer beacons through
+255.93s (81 total requests). No fatal/ENOMEM; normal Escape all threads stopped
+and pages reclaimed, but heap491008->536064: not accepted cleanup, investigate
+persistent cache accounting/warm relaunch, not assume leak-free.
+Final screenshot Timer7/No input yet versus JS timer76/key/click indicates visual
+refresh lag; do not count timer beacons alone as responsive>=60s acceptance.
+New longer refresh80475 live05:35:55, same built kernel, no rebuild/source changes:
+180s after visible, second/third key+click at90/150s, screenshots each30s.
+Inspect frame sequence and actual callbacks; never restart on observation timeout.
+Drivers mouse currently three-byte PS/2 packets, no wheel support. Scrolling
+still needs genuine keyboard/page scroll or implementation/tested wheel path.
+Verified HTTPS/concurrent assets/cert failure and close/relaunch remain required.
+Diagnostic local HTTP policy override not verified HTTPS evidence.
+Evidence/clean sources: docs/wip/native-pmm512. Normal main four hashes OK05:17.
+
 ## PMM512 continuation — 2026-10-08 05:17 +07
 
 No source promotion; main normal images/data disks unchanged, no push/33.3.
