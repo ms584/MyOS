@@ -870,7 +870,7 @@ void *pthread_getspecific(void *raw_key)
 #define SYS_TCP_LISTEN 54u
 #define SYS_TCP_ACCEPT 55u
 #define FD_BASE 64
-#define FD_SLOTS 64u
+#define FD_SLOTS 128u
 #define PIPE_CAPACITY 4096u
 #define EPOLL_REGS 32u
 #define O_NONBLOCK 04000

@@ -4,6 +4,10 @@
 #include "fs-volume-call.h"
 #include "record-lock.h"
 #define FS_NODES 64
+/* Persistent inode/snapshot slots stay64 for on-disk compatibility.
+ * /dev/shm children use an independent bounded ephemeral pool. */
+#define FS_SHM_NODES 64
+#define FS_LIVE_NODES (FS_NODES+FS_SHM_NODES)
 #define FS_HANDLES 32
 #define FS_PATH 128
 #define FS_NAME 32

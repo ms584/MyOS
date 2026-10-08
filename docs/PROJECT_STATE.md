@@ -1,75 +1,60 @@
 # MyOS project state
-Updated: 2026-10-08 10:23 +07. /home/xytron404/myos, main.
-Source3a99d70, prior docseb0c775; origin/main a746889 fetched09:49:18.
+Updated: 2026-10-08 10:37 +07. /home/xytron404/myos, main.
+Source: SHM pool promotion over3a99d70; prior docs04bb16e.
+origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN, no33.3/no push; YouTube unproven.
-- Native HTML/JS/DOM42/timers/key/click and controlled verified HTTPS observed.
-  Three concurrent assets and wrong-host/expired/untrusted rejections observed.
-  NOT public Internet/DNS proof. Responsive>=60s/scrolling still NOT accepted.
-- Imports242/242, missing0;15 unavailable media +9 POSIX ENOSYS explicit.
-  Counts/fixtures are NOT complete API semantics or closure percentages.
-## Production baseline (unchanged this span)
-- Full retry2759 terminal0 06:42:30 +six affected scopes BIOS/UEFI passed.
-  Main promotion78188 terminal0 08:56:12; four normal binaries byte-identical.
-- PMM512MiB actual E820 frames/upper-frame syscall checks; direct8MiB SHM,
-  nonfixed mmap hints, kernel32/runtime64 handles, nofollow/EMFILE cleanup.
-  W^X/RELRO/user-pointer guards retained. No swap/demandpaging/COW.
-- Current normal hashes: build/pmm-syscall-promotion-normal.sha256.
-  Old import-image hashes superseded; owner data disks untouched.
-## Native HTTPS / relaunch evidence
-- CSP fixture fix77831 terminal0,c4sx6f02: actual external app.js,DOM42,
-  timer93,key/click,assets3/3 peak3,cert negatives3/3,0 invalid HTTP.
-  Final actual Timer77/Clicks1: visual backlog, NOT responsive acceptance.
-- Same-VM two-launch85764 terminal0,0dgifhbw: DOM/key a,b,c/click both;
-  pages exact/all threads stopped/shell returned. Second asset2 onerror;
-  native SHM creation ENOSPC. Heap409344->454400->450304, NOT full PASS.
-- Fixed VA-aware resource observer81191 terminal0 09:37:50,p1rh6c7a:
-  after1/before2/after2 heap454400 exact; no shared nodes after closes.
-  RAMFS cache capacity8192->53248 accounts45056; mount catalogue36608
-  explains initial before-loader heap372736 vs loader409344.
-- Earlier psoj5ki3 zero heap totals INVALID (physical read of virtual heap).
-  Raw evidence/analyzer retain limitation; never cite zeros as reclamation.
-## SHM inode constraint / private candidate
-- Exact kernel trace62739 terminal0 09:41:20,qpkptyt4: inode used64,
-  shared24/unlinked25 at ENOSPC. Active snapshot62 is post-failure race,
-  not exact occupancy at failure. File cache and SHM share original64 slots.
-- Private4-file fix: FS_NODES64 persistent/snapshot unchanged; separate64
-  /dev/shm child slots,128 live nodes, all live traversal/close/import checks.
-  Namespace statvfs quotas separate; snapshot still64 slots, no disk migration.
-- Focused filesystem PASS including both pools full, last-close/reuse,
-  snapshot rejects high pinned fd, closed ephemeral cleanup/exact resources.
-  First wrapper11944 exit2 wrong postcondition log filename, NOT suite failure;
-  retained status. Actual framebuffer-64M marker validated, then resumed full.
-- Full28032 RUNNING since09:43:23 in /home/xytron404/pmm-syscall-R4sQZZ;
-  mandatory test_system +shared_memory/statvfs/fs_runtime_lifetime BIOS/UEFI.
-  Restore trap active. Do NOT mutate candidate/restart while live.
-- Native pool91757 TERMINAL0 at09:52:32,cobalt-closed-imports-xnVZeH,
-  bundle25nzgz6j, two launches with idle VA-aware resource snapshots.
-  BOTH assets3/3/keys3/cert negatives3,0 invalid HTTP/SHM ENOSPC.
-  Click only second. Second EMFILE24 left3 named zero-size SHM nodes;
-  heap450304->499504 (+49200), NOT resource PASS. runtime_open_base opens
-  kernel inode BEFORE runtime descriptor installation: failure closes fd
-  but leaves created file. Private runtime now reserves BEFORE create/truncate.
-  Full suite runs concurrently: timing not isolated performance acceptance.
-## Descriptor reservation private slice
-- Before-fix native fixture reproduced orphan creation. Reserved slots exclude
-  all installers, remain EBADF until publication; every open error rolls back.
-- Basic99191 terminal0; concurrent90750 terminal0 10:08:53, BIOS/UEFI four
-  relaunches each: full table no-create/no-truncate,128 failed-open reuse,
-  four-thread contention with one free slot and exact resources PASS.
-- Native4031 terminal0 10:18:18,_sa4b_o9: shared0 after BOTH closes,
-  heap454400->450304 matches cache53248->49152; pages/threads reclaimed.
-  First assets2/3,second3/3,keys3/cert negatives3 both,0 invalid HTTP;
-  no click. Exact table64 full for FILE and TCP; NOT concurrency PASS.
-- Private128 slots adds exact installation high-water/type counters, logs
-  outside table lock. Same full-table/4-thread/relaunch BIOS+UEFI PASS.
-- Native32468 RUNNING since10:19:22: actual two HTTPS launches, mousemove
-  feedback positioning + PageDown/Up JS scrollbox. NOT default wheel proof.
-  Main runtime stays64; minimal clean reservation source staged for full test.
+- Actual HTML/app.js/DOM42/timers/key/click, controlled verified HTTPS,
+  three concurrent assets and wrong-host/expired/untrusted rejection observed.
+  NOT public Internet/DNS proof. Responsive>=60s/visual scrolling NOT accepted.
+- Imports242/242, missing0;15 media unavailable +9 POSIX ENOSYS explicit.
+  Counts/fixture PASS are NOT API completeness or phase percentages.
+## Production baseline
+- Full baseline2759 terminal0 +six affected scopes BIOS/UEFI passed;
+  PMM512MiB usable E820/upper-frame pointer guards/direct8MiB SHM/mmap hints.
+- SHM pool full28032 terminal0 10:28:23: full test_system +shared_memory,
+  statvfs,fs_runtime_lifetime BOTH BIOS/UEFI. Normal restore/hashes checked.
+- Promotion36207 terminal0 10:32:02: all tracked build/test inputs compared,
+  exactly4 pool changes; all4 normal binaries byte-identical to tested tree.
+- Separate64 /dev/shm child slots,128 live nodes, independent quotas;
+  persistent FS_NODES64/snapshot64/bank format unchanged, no disk migration.
+  Traversal/close/import checks cover128; pinned high fd blocks import.
+- Main kernel32/runtime64 handles; W^X/RELRO/user-pointer guards retained.
+  No swap/demandpaging/COW. Owner data disks untouched.
+- Current hashes build/shm-inode-pool-promotion-normal.sha256.
+  Older pmm/import-image normal hashes superseded by this promotion.
+## Native resource / input evidence
+- Exact former inode failure qpkptyt4 used64; resource observer VA-aware.
+  Earlier psoj5ki3 zero heap totals INVALID, raw evidence retained.
+- 25nzgz6j exposed EMFILE-created orphan files +49200 bytes. Runtime opened
+  kernel inode BEFORE runtime descriptor install; private reservation fixes it.
+- Basic/concurrent fixtures BIOS/UEFI4 launches each PASS: no create/truncate
+  on full table,128 ENOENT rollback/reuse,4 threads/one slot/exact resources.
+- Native4031 terminal0 10:18:18,_sa4b_o9: shared0 after BOTH closes;
+  heap454400->450304 matches cache53248->49152. Still table64 full/asset error.
+- Native32468 terminal0 10:28:43,5ar8fhwd: BOTH assets3/3,keys a/b/c plus
+  PageDown/Up,click1,JS scrollTop80->0,cert negatives3/3,0 invalid HTTP,
+  peak concurrent3; after1/before2/after2 heap450304 exact,shared0,pages/threads
+  reclaimed,shell returns. Actual TOP->MIDDLE seen; NOT default wheel proof.
+  Final Timer74 vs106 journal confirms visual backlog, not60s acceptance.
+- Runtime128 exact installation high-water >=68 (49 files,6 TCP,5 event,
+  5 epoll,3 random). No runtime-full trace, BUT kernel OPEN_AT Error24 still
+  causes SHM failures: fs_open_at only returns24 for full32 kernel handles.
+  All web callbacks do NOT negate these errors or visual/input latency.
+## Live private work (frozen while jobs run)
+- CPU59213 terminal0 10:33:57,f2o6dpzq,46 PIT100Hz metadata samples;
+  dominant tid(pid5,low11)=Chrome_InProcGpuThread confirmed in native log.
+  ~1.4..1.7 CPU seconds/3.1..3.6 guest seconds late intervals, not host CPU%.
+  Old observer omitted !alive/blocked tasks: blocked0 INVALID; CPU valid.
+- Combined94832 RUNNING since10:32:29 in pmm-syscall-R4sQZZ: clean reservation,
+  runtime128/kernel64 +exact capacity fixtures. Five scopes BOTH firmware then
+  mandatory full test_system, normal restore and identical final hashes.
+  Production has NONE of these pending runtime/capacity/diagnostic changes.
 ## Next
-- Inspect SAME live28032 handle; only promote after full+focus checks.
-  Inspect native32468; resolve capacity/scrolling/input and visual backlog;
-  prove >=60s interaction plus bounded warm relaunch on normal launcher.
-- Docs/wip/native-pmm512 holds source slices/runners/public evidence only.
-  No private TLS keys. No boot-retirement/verbose diagnostic launcher promoted.
+- Poll exact94832; do NOT restart on observation timeout/mutate live trees.
+- Inspect actual frames/input timing and CPU counters; fix latency and prove
+  >=60s responsive interaction/relaunch on normal launcher before phase closure.
+- Promote combined slice only after complete relevant/full evidence.
+- Detailed history/public evidence/runners: docs/wip/native-pmm512 +HANDOFF.
+  No private TLS keys or boot-retirement/verbose diagnostic launcher promoted.
 - activity.log bounded48MiB; NEVER read it through run_logged.py.

@@ -2,6 +2,47 @@
 #ifndef PROCESS_TESTS
 #define PROCESS_TESTS 0
 #endif
+#if PROCESS_TESTS
+static void shm_inode_pool_test(void)
+{
+    unsigned before=fs_node_count();size_t heap_before=heap_allocated(),pages_before=pages_free();
+    check(!fs_mkdir("/dev/shm"),"shared inode test root");
+    unsigned ordinary=0;char path[]="/home/p00";
+    for(unsigned i=0;i<FS_NODES;++i){
+        path[7]='0'+i/10;path[8]='0'+i%10;
+        int rc=fs_mkdir(path);if(rc==-28)break;
+        check(!rc,"persistent inode capacity create");++ordinary;
+    }
+    check(fs_node_count()==FS_NODES,"persistent pool full before SHM");
+    struct fs_handle files[FS_HANDLES]={0};char shared[]="/dev/shm/s00";
+    for(unsigned i=0;i<FS_SHM_NODES;++i){
+        shared[10]='0'+i/10;shared[11]='0'+i%10;
+        int fd=fs_open(files,shared,FS_READ|FS_WRITE|FS_CREATE);
+        check(fd==3&&!fs_close(files,fd),"SHM independent of full persistent pool");
+    }
+    check(fs_node_count()==FS_LIVE_NODES,"both inode pools full");
+    check(fs_open(files,"/dev/shm/extra",FS_WRITE|FS_CREATE)==-28&&
+          fs_mkdir("/home/extra")==-28,"independent inode exhaustion");
+    struct fs_volume_info root,shm;
+    check(!fs_volume_stat("/",&root)&&!fs_volume_stat("/dev/shm",&shm)&&
+          root.files==FS_NODES&&!root.files_free&&shm.files==FS_SHM_NODES&&
+          !shm.files_free&&root.filesystem_id!=shm.filesystem_id,"namespace inode statistics");
+    void *slots=kmalloc((size_t)FS_V1_SLOT_BYTES*FS_NODES);
+    check(slots&&fs_snapshot_export(slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX)&&
+          fs_snapshot_valid(slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"snapshot64 skips ephemeral pool");
+    int fd=fs_open(files,"/dev/shm/s00",FS_READ|FS_WRITE);
+    check(fd==3&&fs_write(files,fd,"x",1)==1&&!fs_unlink("/dev/shm/s00"),"unlinked high inode remains pinned");
+    check(!fs_snapshot_import(slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"snapshot import rejects high pinned inode");
+    check(!fs_close(files,fd)&&!fs_volume_stat("/dev/shm",&shm)&&shm.files_free==1,"last close frees high inode");
+    fd=fs_open(files,"/dev/shm/reused",FS_WRITE|FS_CREATE);
+    check(fd==3&&!fs_close(files,fd),"high inode reuse");
+    check(fs_snapshot_import(slots,FS_V1_SLOT_BYTES,FS_V1_FILE_MAX),"snapshot import releases closed ephemeral nodes");
+    kfree(slots);
+    for(unsigned i=0;i<ordinary;++i){path[7]='0'+i/10;path[8]='0'+i%10;check(!fs_unlink(path),"persistent pool cleanup");}
+    check(fs_node_count()==before&&heap_allocated()==heap_before&&pages_free()==pages_before,"inode pools exact resource recovery");
+    print("PASS: independent SHM inode pool, snapshot64 compatibility and exact resources\n");
+}
+#endif
 void fs_test(void)
 {
     unsigned before=fs_node_count();
@@ -70,6 +111,7 @@ void fs_test(void)
     while(allocated)kfree(allocations[--allocated]);
     a=fs_open(files,"/home/oom",FS_WRITE|FS_CREATE);check(a==3,"allocation recovery");
     fs_close_all(files);check(!fs_unlink("/home/oom"),"allocation recovery cleanup");
+    shm_inode_pool_test();
 #endif
     check(fs_node_count()==before,"filesystem resources restored");
     print("PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup\n");

@@ -1,0 +1,565 @@
+{
+  "diagnostic_only": true,
+  "label": "after-1",
+  "nodes": [
+    {
+      "index": 0,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "/",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 1,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "bin",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 2,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "home",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 3,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "etc",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 4,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "dev",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 5,
+      "parent": 3,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 23,
+      "capacity": 4096,
+      "name": "motd",
+      "data": 4295262336,
+      "shared": 0
+    },
+    {
+      "index": 6,
+      "parent": 1,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 115,
+      "capacity": 4096,
+      "name": "hello",
+      "data": 4295336128,
+      "shared": 0
+    },
+    {
+      "index": 7,
+      "parent": 4,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "shm",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 8,
+      "parent": 2,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "cobalt",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 9,
+      "parent": 8,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "tmp",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 10,
+      "parent": 8,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "cache",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 11,
+      "parent": 10,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "zczMDcv",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 12,
+      "parent": 11,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 86,
+      "capacity": 4096,
+      "name": "Variations",
+      "data": 4295639088,
+      "shared": 0
+    },
+    {
+      "index": 13,
+      "parent": 9,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "BrowserStabilityMetrics",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 14,
+      "parent": 8,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "zczMDcv",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 15,
+      "parent": 14,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "Local Storage",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 16,
+      "parent": 11,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 5,
+      "capacity": 4096,
+      "name": "migration_completed.txt",
+      "data": 4295821280,
+      "shared": 0
+    },
+    {
+      "index": 17,
+      "parent": 14,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "blob_storage",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 18,
+      "parent": 21,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "cache",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 19,
+      "parent": 11,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "Cache",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 20,
+      "parent": 19,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "Cache_Data",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 21,
+      "parent": 14,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "Shared Dictionary",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 22,
+      "parent": 11,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "Code Cache",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 23,
+      "parent": 22,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "js",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 24,
+      "parent": 23,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 24,
+      "capacity": 4096,
+      "name": "index",
+      "data": 4295710032,
+      "shared": 0
+    },
+    {
+      "index": 25,
+      "parent": 22,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "wasm",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 26,
+      "parent": 25,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 24,
+      "capacity": 4096,
+      "name": "index",
+      "data": 4295714160,
+      "shared": 0
+    },
+    {
+      "index": 27,
+      "parent": 23,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "index-dir",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 28,
+      "parent": 27,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 48,
+      "capacity": 4096,
+      "name": "the-real-index",
+      "data": 4295702272,
+      "shared": 0
+    },
+    {
+      "index": 29,
+      "parent": 25,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "index-dir",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 30,
+      "parent": 29,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 48,
+      "capacity": 4096,
+      "name": "the-real-index",
+      "data": 4295817152,
+      "shared": 0
+    },
+    {
+      "index": 31,
+      "parent": 18,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 24,
+      "capacity": 4096,
+      "name": "index",
+      "data": 4295825408,
+      "shared": 0
+    },
+    {
+      "index": 33,
+      "parent": 18,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "index-dir",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 34,
+      "parent": 33,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 48,
+      "capacity": 4096,
+      "name": "the-real-index",
+      "data": 4296001808,
+      "shared": 0
+    },
+    {
+      "index": 35,
+      "parent": 20,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 24,
+      "capacity": 4096,
+      "name": "index",
+      "data": 4296022352,
+      "shared": 0
+    },
+    {
+      "index": 36,
+      "parent": 37,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 48,
+      "capacity": 4096,
+      "name": "the-real-index",
+      "data": 4296026480,
+      "shared": 0
+    },
+    {
+      "index": 37,
+      "parent": 20,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "index-dir",
+      "data": 0,
+      "shared": 0
+    }
+  ],
+  "blocks": [
+    {
+      "address": 4294967328,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4294983744,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295000160,
+      "size": 262144,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295262336,
+      "size": 4096,
+      "ramfs_nodes": [
+        5
+      ]
+    },
+    {
+      "address": 4295266464,
+      "size": 69632,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295336128,
+      "size": 4096,
+      "ramfs_nodes": [
+        6
+      ]
+    },
+    {
+      "address": 4295340256,
+      "size": 36608,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295639088,
+      "size": 4096,
+      "ramfs_nodes": [
+        12
+      ]
+    },
+    {
+      "address": 4295702272,
+      "size": 4096,
+      "ramfs_nodes": [
+        28
+      ]
+    },
+    {
+      "address": 4295710032,
+      "size": 4096,
+      "ramfs_nodes": [
+        24
+      ]
+    },
+    {
+      "address": 4295714160,
+      "size": 4096,
+      "ramfs_nodes": [
+        26
+      ]
+    },
+    {
+      "address": 4295817152,
+      "size": 4096,
+      "ramfs_nodes": [
+        30
+      ]
+    },
+    {
+      "address": 4295821280,
+      "size": 4096,
+      "ramfs_nodes": [
+        16
+      ]
+    },
+    {
+      "address": 4295825408,
+      "size": 4096,
+      "ramfs_nodes": [
+        31
+      ]
+    },
+    {
+      "address": 4296001808,
+      "size": 4096,
+      "ramfs_nodes": [
+        34
+      ]
+    },
+    {
+      "address": 4296022352,
+      "size": 4096,
+      "ramfs_nodes": [
+        35
+      ]
+    },
+    {
+      "address": 4296026480,
+      "size": 4096,
+      "ramfs_nodes": [
+        36
+      ]
+    }
+  ],
+  "heap_virtual_translation": true,
+  "heap_observed": true,
+  "heap_allocated": 450304,
+  "ramfs_allocated": 49152
+}

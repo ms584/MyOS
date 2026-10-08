@@ -1,0 +1,14 @@
+8da2493f1ec814e26a9ea1b626fb4e4728ef1ad10dc05b06c03f163ae669d28a  /home/xytron404/pmm-syscall-R4sQZZ/shm-inode-pool-full.log
+PASS: selected suite; normal framebuffer image restored
+SCOPE shared_memory bios
+PASS native shared frames,256KiB+8MiB direct aliases,boundary atomicity,rights,unlink/close/exit,workers/relaunch/exact resources 64 BIOS /home/xytron404/pmm-syscall-R4sQZZ/build/shared-memory-zrmc9x4k
+SCOPE statvfs bios
+PASS native pinned statvfs ABI, real inode availability/unlink pin, error/whole-output validation, workers and exact resources /home/xytron404/pmm-syscall-R4sQZZ/build/statvfs-li2j58yf
+SCOPE fs_runtime_lifetime bios
+PASS native runtime DIR inode/rename/relative traversal/retained stream/close-reuse/typed fcntl whole-output guard/readonly assets/relaunch/exact resources; NOT blocking lock/actual Cobalt. /home/xytron404/pmm-syscall-R4sQZZ/build/fs-runtime-pkcs1a_6
+SCOPE shared_memory uefi
+PASS native shared frames,256KiB+8MiB direct aliases,boundary atomicity,rights,unlink/close/exit,workers/relaunch/exact resources 256 UEFI /home/xytron404/pmm-syscall-R4sQZZ/build/shared-memory-r4h_oeb_
+SCOPE statvfs uefi
+PASS native pinned statvfs ABI, real inode availability/unlink pin, error/whole-output validation, workers and exact resources /home/xytron404/pmm-syscall-R4sQZZ/build/statvfs-qyga7njq
+SCOPE fs_runtime_lifetime uefi
+PASS native runtime DIR inode/rename/relative traversal/retained stream/close-reuse/typed fcntl whole-output guard/readonly assets/relaunch/exact resources; NOT blocking lock/actual Cobalt. /home/xytron404/pmm-syscall-R4sQZZ/build/fs-runtime-j7cfoo3n

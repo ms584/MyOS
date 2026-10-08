@@ -9,7 +9,7 @@ struct node {
     char *data;
     struct shm_backing *shared;
 };
-static struct node nodes[FS_NODES];
+static struct node nodes[FS_LIVE_NODES];
 
 static bool equal(const char *a,const char *b)
 {
@@ -18,13 +18,13 @@ static bool equal(const char *a,const char *b)
 }
 static int child(unsigned parent,const char *name)
 {
-    for (unsigned i=1;i<FS_NODES;++i)
+    for (unsigned i=1;i<FS_LIVE_NODES;++i)
         if (nodes[i].used && !nodes[i].unlinked && nodes[i].parent==parent && equal(nodes[i].name,name)) return (int)i;
     return -2;
 }
 static bool shared_namespace(unsigned index)
 {
-    for(unsigned depth=0;index&&depth<FS_NODES;++depth){
+    for(unsigned depth=0;index&&depth<FS_LIVE_NODES;++depth){
         unsigned parent=nodes[index].parent;
         if(equal(nodes[index].name,"shm")&&parent&&nodes[parent].parent==0&&
            equal(nodes[parent].name,"dev"))return true;
@@ -46,7 +46,7 @@ static int resolve_from(const char *path,unsigned start,bool parent,char *leaf)
     while (length<FS_PATH && path[length]) ++length;
     if (length==FS_PATH) return -36;
     unsigned current=path[0]=='/'?0:start;
-    if(current>=FS_NODES||!nodes[current].used||nodes[current].unlinked)return -2;
+    if(current>=FS_LIVE_NODES||!nodes[current].used||nodes[current].unlinked)return -2;
     size_t pos=path[0]=='/';
     while (pos<length) {
         while (path[pos]=='/') ++pos;
@@ -82,9 +82,10 @@ static int create_from(const char *path,unsigned start,unsigned type)
     char name[FS_NAME]={0};int parent=resolve_from(path,start,true,name);
     if(parent<0)return parent;
     if(child((unsigned)parent,name)>=0)return -17;
-    unsigned slot;
-    for(slot=1;slot<FS_NODES;++slot)if(!nodes[slot].used)break;
-    if(slot==FS_NODES)return -28;
+    bool ephemeral=shared_namespace((unsigned)parent);
+    unsigned slot=ephemeral?FS_NODES:1,limit=ephemeral?FS_LIVE_NODES:FS_NODES;
+    for(;slot<limit;++slot)if(!nodes[slot].used)break;
+    if(slot==limit)return -28;
     char *data=0;struct shm_backing *shared=0;
     if(type==FS_FILE){
         if(shared_namespace((unsigned)parent)){
@@ -337,7 +338,7 @@ static int unlink_from(struct fs_handle *table,int directory,const char *path,un
     if(mode==0&&nodes[result].type==FS_DIR){result=-21;goto done;}
     if(mode==1&&nodes[result].type!=FS_DIR){result=-20;goto done;}
     if(!result || (nodes[result].type==FS_DIR&&nodes[result].references)){result=-16;goto done;}
-    for(unsigned i=1;i<FS_NODES;++i)
+    for(unsigned i=1;i<FS_LIVE_NODES;++i)
         if(nodes[i].used && !nodes[i].unlinked && nodes[i].parent==(unsigned)result){result=-39;goto done;}
     if(nodes[result].references)nodes[result].unlinked=true;
     else {release_node_data(&nodes[result]);memset(&nodes[result],0,sizeof(nodes[result]));}
@@ -399,10 +400,10 @@ static bool asset_path(const char *path)
 {return path&&(equal(path,"/assets")||equal(path,"/assets/")||asset_name(path));}
 static bool contains_shared_namespace(unsigned source)
 {
-    for(unsigned i=1;i<FS_NODES;++i){
+    for(unsigned i=1;i<FS_LIVE_NODES;++i){
         if(!nodes[i].used||nodes[i].unlinked||(!nodes[i].shared&&!shared_namespace(i)))continue;
         unsigned index=i;
-        for(unsigned depth=0;index&&depth<FS_NODES;++depth){
+        for(unsigned depth=0;index&&depth<FS_LIVE_NODES;++depth){
             if(index==source)return true;index=nodes[index].parent;
         }
     }
@@ -435,14 +436,14 @@ int fs_rename_at(struct fs_handle *table,int old_directory,const char *old_path,
     if(nodes[source].type==FS_DIR){
         unsigned ancestor=(unsigned)parent;
         for(unsigned depth=0;;++depth){
-            if(ancestor==(unsigned)source||depth>=FS_NODES){result=-22;goto done;}
+            if(ancestor==(unsigned)source||depth>=FS_LIVE_NODES){result=-22;goto done;}
             if(!ancestor)break;ancestor=nodes[ancestor].parent;
         }
     }
     if(destination>=0){
         if(nodes[source].type==FS_DIR&&nodes[destination].type!=FS_DIR){result=-20;goto done;}
         if(nodes[source].type!=FS_DIR&&nodes[destination].type==FS_DIR){result=-21;goto done;}
-        if(nodes[destination].type==FS_DIR)for(unsigned i=1;i<FS_NODES;++i)
+        if(nodes[destination].type==FS_DIR)for(unsigned i=1;i<FS_LIVE_NODES;++i)
             if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)destination){result=-39;goto done;}
     }
     /* No allocation or failing operation after validation. Replaced open
@@ -471,7 +472,7 @@ int fs_list(const char *path,unsigned position,struct fs_entry *result)
     uint64_t flags=irq_save();int node=resolve(path,false,0),ret=0;
     if(node<0){ret=node;goto done;}
     if(nodes[node].type!=FS_DIR){ret=-20;goto done;}
-    for(unsigned i=1;i<FS_NODES;++i)if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)node){
+    for(unsigned i=1;i<FS_LIVE_NODES;++i)if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)node){
         if(!position--){entry(i,result);ret=1;break;}
     }
 done:
@@ -484,14 +485,14 @@ int fs_list_at(struct fs_handle *table,int directory,const char *path,unsigned p
     if(node>=0)node=resolve_from(path,(unsigned)node,false,0);
     if(node<0){ret=node;goto done;}
     if(nodes[node].type!=FS_DIR){ret=-20;goto done;}
-    for(unsigned i=1;i<FS_NODES;++i)if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)node)
+    for(unsigned i=1;i<FS_LIVE_NODES;++i)if(nodes[i].used&&!nodes[i].unlinked&&nodes[i].parent==(unsigned)node)
         if(!position--){entry(i,result);ret=1;break;}
 done:
     irq_restore(flags);return ret;
 }
 unsigned fs_node_count(void)
 {
-    unsigned count=0;for(unsigned i=0;i<FS_NODES;++i)if(nodes[i].used)++count;return count;
+    unsigned count=0;for(unsigned i=0;i<FS_LIVE_NODES;++i)if(nodes[i].used)++count;return count;
 }
 int fs_volume_stat(const char *path,struct fs_volume_info *result)
 {
@@ -501,13 +502,16 @@ int fs_volume_stat(const char *path,struct fs_volume_info *result)
     if(equal(path,"/assets")||equal(path,"/assets/")||asset_name(path))return -95;
     uint64_t flags=irq_save();int node=resolve(path,false,0);
     if(node>=0){
-        unsigned used=fs_node_count();memset(result,0,sizeof(*result));
+        bool ephemeral=shared_namespace((unsigned)node);
+        unsigned used=0,start=ephemeral?FS_NODES:0,limit=ephemeral?FS_LIVE_NODES:FS_NODES;
+        for(unsigned i=start;i<limit;++i)if(nodes[i].used)++used;
+        memset(result,0,sizeof(*result));
         result->block_size=PAGE_SIZE;result->fragment_size=PAGE_SIZE;
         /* RAMFS has no filesystem-wide block pool/quota. Zero block fields
          * express that absence, not host free disk or guaranteed free RAM.
          * Per-file65536 bound and dynamic kmalloc failures still apply. */
-        result->files=FS_NODES;result->files_free=FS_NODES-used;
-        result->files_available=result->files_free;result->filesystem_id=1;
+        result->files=limit-start;result->files_free=result->files-used;
+        result->files_available=result->files_free;result->filesystem_id=ephemeral?2:1;
         result->flags=2; /* ST_NOSUID: RAMFS has no setuid executable modes. */
         result->name_max=FS_NAME-1;
     }

@@ -74,8 +74,8 @@ bool fs_snapshot_import(const void *slots,size_t stride,size_t max_file)
         if(slot->size)memcpy(fresh[i],(const uint8_t *)slot+STORAGE_SECTOR_SIZE,slot->size);
     }
     uint64_t flags=irq_save();
-    for(unsigned i=0;i<FS_NODES;++i)if(nodes[i].references){irq_restore(flags);goto failed;}
-    for(unsigned i=0;i<FS_NODES;++i)release_node_data(&nodes[i]);
+    for(unsigned i=0;i<FS_LIVE_NODES;++i)if(nodes[i].references){irq_restore(flags);goto failed;}
+    for(unsigned i=0;i<FS_LIVE_NODES;++i)release_node_data(&nodes[i]);
     memset(nodes,0,sizeof(nodes));
     for(unsigned i=0;i<FS_NODES;++i){
         const struct fs_disk_meta *slot=snapshot_meta(slots,stride,i);

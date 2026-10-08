@@ -139,7 +139,7 @@ Object.keys(bad).forEach(function(name){var i=new Image();images.push(i);i.onloa
 disk=out/'assets.img';create(disk,specs)
 for server in servers:
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();threads.append(thread)
-vm=None;visual=[];inputs=[];launches=[];samples=[]
+vm=None;visual=[];inputs=[];launches=[];samples=[];cpu_observer=None
 resource_diagnostic=os.environ.get('MYOS_TLS_RESOURCE_DIAGNOSTIC')=='1'
 resource_accounting=resource_diagnostic or os.environ.get('MYOS_TLS_RESOURCE_ACCOUNTING')=='1'
 def observe_launch(launch):
@@ -151,10 +151,12 @@ def observe_launch(launch):
     diagnostic=os.environ.get('MYOS_TLS_TASK_SNAPSHOT')=='1'
     deadline=time.monotonic()+(210 if diagnostic else 600)
     last=-10;visible=None;sent=False;snapshot=False;repeated=set();last_sample=-2;inode_captured=False
-    pointer_requested=False;pointer_seen=-1;mouse_last=0;click_down=None;click_attempts=0
+    pointer_requested=False;pointer_seen=-1;mouse_last=0;click_down=None;click_attempts=0;last_cpu=-10
     from PIL import Image
     while time.monotonic()<deadline:
         elapsed=time.monotonic()-launch_start;content=vm.log.read_text()[offset:]
+        if cpu_observer is not None and elapsed-last_cpu>=5:
+            last_cpu=elapsed;cpu_observer.capture(launch,elapsed)
         if resource_diagnostic and elapsed-last_sample>=2:
             last_sample=elapsed
             registers=vm.command('human-monitor-command',{'command-line':'info registers'})
@@ -233,13 +235,16 @@ def observe_launch(launch):
 try:
     vm=VM('native-verified-tls',ram=512,nic=True,asset_disk=disk,cpu='max')
     vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
+    if os.environ.get('MYOS_TLS_CPU_ACCOUNTING')=='1':
+        from cobalt_cpu_observer import Observer
+        cpu_observer=Observer(vm,out)
     for launch in range(1,1+int(os.environ.get('MYOS_TLS_LAUNCHES','1'))):
         observe_launch(launch)
 finally:
     if vm:
         (out/'serial.txt').write_text(vm.log.read_text());vm.close()
     summary=dict(requests=records,peak_concurrent_assets=peak,visual=visual,inputs=inputs,launches=launches,
-        diagnostic_only=resource_diagnostic,cpu_samples=samples,
+        diagnostic_only=resource_diagnostic or cpu_observer is not None,cpu_samples=samples,
         test_root_sha256=hashlib.sha256(ca_file.read_bytes()).hexdigest(),test_root_asset='ssl/certs/'+ca_hash+'.0')
     (out/'evidence.json').write_text(json.dumps(summary,indent=2))
     for server in servers:server.shutdown();server.server_close()

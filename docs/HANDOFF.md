@@ -3,6 +3,68 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## CPU observer result and limitations — 2026-10-08 10:37 +07
+
+CPU59213 TERMINAL0 10:33:57,f2o6dpzq,46 read-only metadata samples.
+Process CPU charges valid, dominant tid21474836491(pid5/low11); actual native
+log names it Chrome_InProcGpuThread. Late intervals GPU charged~1.4..1.7 seconds
+per3.1..3.6 guest PIT seconds; NOT host CPU usage or exact exclusive renderer
+time (includes that task's kernel services). NetworkService low16 follows.
+This supports profiling the actual GPU/render path next, not speculative memcpy
+or scheduler rewrites. Old observer omitted !alive/blocked tasks, so blocked0
+counts INVALID, not proof no sleeping threads. CPU counters unaffected; analyzer
+now marks blocked=null for old evidence. Corrected future observer includes
+alive OR blocked and explicit blocked_task_coverage flag. Retain old rawdata.
+Actual32468 frames inspected: launch1 frame222 Timer58/Keyb/ScrollTOP; final
+Timer74/KeyPageDown/ScrollMIDDLE. Genuine visual down-scroll, but not visual
+up-scroll yet; final journal timer106 demonstrates backlog. No60s responsive PASS.
+
+## SHM pool promoted; native input/relaunch observed, kernel handles next — 2026-10-08 10:34 +07
+
+Full28032 TERMINAL0 at10:28:23: full test_system.py plus shared_memory/statvfs/
+fs_runtime_lifetime BOTH BIOS/UEFI, normal BIOS+UEFI images restored/hashes good.
+Final 'PASS: selected suite' is test_system.py's generic success message;
+actual runner invokes no --suite. Promotion36207 TERMINAL0 10:32:02: compared
+ALL tracked build/test inputs against candidate; exactly include/fs.h,fs/ramfs.c,
+fs/snapshot-impl.inc,fs/fs-test.c differ. Only those4 promoted, normal4 binaries
+byte-identical. Current hashes build/shm-inode-pool-promotion-normal.sha256;
+older pmm/import-image hashes superseded. Main handles still32/runtime64.
+Owner disks untouched/no private diagnostic launcher promoted/no push/no33.3.
+Full log retained pmm-syscall-R4sQZZ/shm-inode-pool-full.log; SHA and scope
+summaries in docs/wip/native-pmm512/shm-inode-pool-verified-summary.txt.
+
+Native32468 TERMINAL0 at10:28:43,bundle5ar8fhwd. BOTH actual launches DOM42,
+app.js,assets3/3,peak concurrent3,keys a/b/c/PageDown/PageUp,click1,cert negatives
+3/3,0 invalid HTTP. Pointer progresses to126,341 then genuine click callback.
+JS keyboard scrolling80->0 reported both; still need visual frames, NOT wheel.
+After1/before2/after2 heap450304 exact,shared0/unlinked0,cache49152, both pages
+reclaimed/all threads stopped/shell returned. Latency/normal-launcher unresolved.
+
+FD128 exact peak >=68:49 FILE,6 TCP,5 EVENT,5 EPOLL,3 RANDOM. No runtime-full
+trace; actual7 SHM OPEN_AT errors still-24 fromkernel. fs/ramfs.c141..144
+fs_open_at returns24 ONLY when all32 kernel handles occupied before create.
+Files49 includes dup slots, not49 separate kernel opens. Thus kernel handle
+cap is next proven constraint; don't claim healthy engine from asset callbacks.
+
+Combined94832 LIVE since10:32:29 in pmm-syscall-R4sQZZ AFTER oldfull/promotion
+terminal success. Clean reservation+runtime128+kernel64, system ceiling192,
+exact64 kernel/128 runtime fill/failure/reuse and4-thread one-slot contention.
+Five scopes(fs_capacity,fs_runtime_lifetime,statvfs,shared_memory,server) BOTH
+firmware before mandatory full test_system. Restore trap/final4 hashes must
+match prefocus binaries. Source/build FROZEN; don't rerun oldfull28032.
+
+CPU59213 LIVE since10:29:58 in cobalt-closed-imports-xnVZeH. Guest binaries
+remain kernel32/runtime128 from32468; only host layout/helper/optional observer
+added after native terminal. Actual process.h layout process4248/thread80x32,
+task80x136. Samples PIT100Hz cpu_nanos perprocess/main/thread and task blocked/
+deadline every5s, no VM stop/stack/payload/key capture. Reads non-atomic; guest
+tick range recorded. NOT host CPU%, observer run diagnostic_only=true.
+Initial layout compile hit existing header misleading-indentation-Werror;
+matched normal build's -Wno-misleading-indentation, no guest changes/assertion
+weakening. Failed compile remains in activity log before job status.
+Inspect CPU deltas/frames for visual backlog. Next kernel64 native trial only
+after CPU59213 terminal and combined prefocus PASS. No KVM authority received.
+
 ## Reservation removes orphan SHM; measured table exhaustion remains — 2026-10-08 10:23 +07
 
 Main source still3a99d70, prior docs eb0c775, no push/no33.3. Previous turn was
