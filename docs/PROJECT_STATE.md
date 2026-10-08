@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 10:10 +07. /home/xytron404/myos, main.
-Source3a99d70, prior docs54a3fc2; origin/main a746889 fetched09:49:18.
+Updated: 2026-10-08 10:23 +07. /home/xytron404/myos, main.
+Source3a99d70, prior docseb0c775; origin/main a746889 fetched09:49:18.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN, no33.3/no push; YouTube unproven.
 - Native HTML/JS/DOM42/timers/key/click and controlled verified HTTPS observed.
@@ -57,11 +57,18 @@ Source3a99d70, prior docs54a3fc2; origin/main a746889 fetched09:49:18.
 - Basic99191 terminal0; concurrent90750 terminal0 10:08:53, BIOS/UEFI four
   relaunches each: full table no-create/no-truncate,128 failed-open reuse,
   four-thread contention with one free slot and exact resources PASS.
-- Native4031 RUNNING since10:09:36, two HTTPS launches/resource accounting.
-  Not accepted yet; runtime/full combined candidate NOT promoted.
+- Native4031 terminal0 10:18:18,_sa4b_o9: shared0 after BOTH closes,
+  heap454400->450304 matches cache53248->49152; pages/threads reclaimed.
+  First assets2/3,second3/3,keys3/cert negatives3 both,0 invalid HTTP;
+  no click. Exact table64 full for FILE and TCP; NOT concurrency PASS.
+- Private128 slots adds exact installation high-water/type counters, logs
+  outside table lock. Same full-table/4-thread/relaunch BIOS+UEFI PASS.
+- Native32468 RUNNING since10:19:22: actual two HTTPS launches, mousemove
+  feedback positioning + PageDown/Up JS scrollbox. NOT default wheel proof.
+  Main runtime stays64; minimal clean reservation source staged for full test.
 ## Next
 - Inspect SAME live28032 handle; only promote after full+focus checks.
-  Inspect native4031; fix mouse-feedback delivery, scrolling and visual backlog;
+  Inspect native32468; resolve capacity/scrolling/input and visual backlog;
   prove >=60s interaction plus bounded warm relaunch on normal launcher.
 - Docs/wip/native-pmm512 holds source slices/runners/public evidence only.
   No private TLS keys. No boot-retirement/verbose diagnostic launcher promoted.

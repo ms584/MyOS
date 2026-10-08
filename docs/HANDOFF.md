@@ -3,6 +3,49 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Reservation removes orphan SHM; measured table exhaustion remains — 2026-10-08 10:23 +07
+
+Main source still3a99d70, prior docs eb0c775, no push/no33.3. Previous turn was
+progress: regression reproduction + minimal runtime reservation and both-firmware
+adversarial tests. This turn native4031 TERMINAL0 10:18:18, _sa4b_o9. Actual
+two HTTPS launches: DOM42,104/107 timers,keys a/b/c,cert negatives3/3 each,
+0 invalid HTTP; NO clicks. Assets first2/3 (asset2 onerror), second3/3.
+Both shell/pages/threads reclaimed; VA-aware metadata shared0/unlinked0 after
+BOTH closes. Heap454400->450304 exactly follows RAMFS capacity53248->49152.
+No49200-byte orphan growth: reservation fix worked in actual engine, but NOT
+full resource/concurrency/responsiveness acceptance. Final actual screenshot
+Timer89/Keyc vs107 timer requests confirms visual backlog still present.
+Serial exact common installer full64 for type4 FILE at first asset failure,
+type7 TCP on second CreatePlatformSocket Error24. Need more than64 slots;
+this is observed capacity exhaustion, not speculative RAM or permission issue.
+
+Private profile trial: FD_SLOTS128, same advertised ceilings derive192 through
+sysconf/getrlimit. Common installer records exact occupied+reserved high-water
+and type histogram under lock; close exports immutable local copy AFTER unlock.
+No payloads/keys captured, no descriptor-policy bypass. Extended fixture now
+derives slots from pinned _SC_OPEN_MAX4 minusFD_BASE64, bounded <=128 slots;
+it exercises actual full table and one-slot contention at either capacity.
+128-slot BIOS/UEFI each4 relaunches/exact resources PASS (10:19..10:20).
+Do NOT promote128 until actual peak/capacity behavior and combined regression.
+
+Native32468 LIVE since10:19:22 in same private cobalt-closed-imports-xnVZeH,
+status/log cobalt-fd128-interactive.*, actual fixture starts after both scopes.
+New fixture test_cobalt_native_interactive_tls.py requests genuine mousemove
+DOM client coordinates, moves max32 units only after feedback, then presses
+and releases with>=200ms interval. No synthetic DOM click/position override.
+Adds fixed-bottom overflow scrollbox and real PageDown/Up key -> explicit JS
+scrollTop updates; 'keyboard-js-scroll' report is NOT default wheel support.
+Still observation-only exit0; inspect callbacks, frames, freshness and cleanup.
+Source/build FROZEN while this VM lives. Last full28032 at10:21 storage/rebuild,
+still live in separate pmm-syscall-R4sQZZ; no source mutation/restart.
+
+Clean main-only reservation source platform-runtime-reservation-clean-20261008.c
+has reviewed minimal diff (no diagnostic/launcher/boot changes). Use it when
+preparing combined full checkpoint after pool full/focus terminal success.
+cpu/scheduler.c214..222 provides PIT100Hz cpu_nanos process/thread accounting;
+use actual counters/guest tick deltas if profiling, not periodic RIP % estimates.
+KVM permission question still unanswered; don't change groups/settings.
+
 ## Atomic runtime reservation tested; actual relaunch pending — 2026-10-08 10:10 +07
 
 Main source/images remain unchanged; docs prior HEAD54a3fc2, no push/no33.3.

@@ -58,20 +58,24 @@ int _start(void)
   * handles. Failed open must not create an inode or truncate existing data. */
  int kept=openat(AT_FDCWD,"/home/runtime-reserve-kept",O_RDWR|O_CREAT|O_EXCL,0600);
  CHECK(kept>=0&&write(kept,"preserved",9)==9&&!close(kept));
- int copies[64];copies[0]=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(copies[0]>=0);
- for(unsigned i=1;i<64;++i){copies[i]=dup(copies[0]);CHECK(copies[i]>=0);}
+ /* Pinned musl _SC_OPEN_MAX=4 is a descriptor-number ceiling. Runtime
+  * descriptors begin at64; exercise every supported slot, not a guessed cap. */
+ long ceiling=sysconf(4);CHECK(ceiling>64&&ceiling<=192);
+ unsigned slots=(unsigned)ceiling-64,last=slots-1;
+ int copies[128];copies[0]=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(copies[0]>=0);
+ for(unsigned i=1;i<slots;++i){copies[i]=dup(copies[0]);CHECK(copies[i]>=0);}
  CHECK(openat(AT_FDCWD,"/home/runtime-reserve-new",O_RDWR|O_CREAT|O_EXCL,0600)==-1&&errno==24);
  CHECK(fstatat(AT_FDCWD,"/home/runtime-reserve-new",&st,0)==-1&&errno==2);
  CHECK(openat(AT_FDCWD,"/home/runtime-reserve-kept",O_WRONLY|O_TRUNC)==-1&&errno==24);
  CHECK(!fstatat(AT_FDCWD,"/home/runtime-reserve-kept",&st,0)&&st.st_size==9);
- CHECK(!close(copies[63]));
+ CHECK(!close(copies[last]));
  for(unsigned i=0;i<128;++i)
   CHECK(openat(AT_FDCWD,"/home/runtime-reserve-missing",O_RDONLY)==-1&&errno==2);
- kept=openat(AT_FDCWD,"/home/runtime-reserve-kept",O_RDONLY);CHECK(kept==copies[63]);
+ kept=openat(AT_FDCWD,"/home/runtime-reserve-kept",O_RDONLY);CHECK(kept==copies[last]);
  CHECK(read(kept,buffer,sizeof(buffer))==9&&!differs(buffer,"preserved",9)&&!close(kept));
  kept=openat(AT_FDCWD,"/home/runtime-reserve-new",O_RDWR|O_CREAT|O_EXCL,0600);
- CHECK(kept==copies[63]&&!close(kept));
- /* Four threads compete with dup/random installers for the only free slot.
+ CHECK(kept==copies[last]&&!close(kept));
+ /* Four threads compete for the only free slot after dup filled the rest.
   * Private names let each failed open prove absence without path races. */
  pthread_t threads[4];
  for(unsigned i=0;i<4;++i)CHECK(!pthread_create(&threads[i],0,reservation_worker,(void *)(uintptr_t)i));
@@ -80,8 +84,8 @@ int _start(void)
  __atomic_store_n(&workers_go,1,__ATOMIC_RELEASE);
  for(unsigned i=0;i<4;++i){void *result=(void *)1;CHECK(!pthread_join(threads[i],&result)&&!result);}
  CHECK(__atomic_load_n(&worker_opens,__ATOMIC_RELAXED)>0);
- kept=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(kept==copies[63]&&!close(kept));
- for(unsigned i=0;i<63;++i)CHECK(!close(copies[i]));
+ kept=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(kept==copies[last]&&!close(kept));
+ for(unsigned i=0;i<last;++i)CHECK(!close(copies[i]));
  CHECK(!unlinkat(AT_FDCWD,"/home/runtime-reserve-new",0));
  CHECK(!unlinkat(AT_FDCWD,"/home/runtime-reserve-kept",0));
  SbLogRaw("native runtime EMFILE no-create/no-truncate, rollback and concurrent publication PASS\n");
