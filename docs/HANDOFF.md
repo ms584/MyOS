@@ -3,6 +3,38 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Indexed VM ownership experiment — 2026-10-08 15:14 +07
+
+Main source unchanged79f4639; no push/no33.3. New vm-ledger.h replaces linear
+vm_track/vm_forget/vm_owned internals with indexed MULTISET. One allocation:
+uintptr_t dense pages[capacity],unsigned links[capacity],buckets[2*capacity].
+20B/slot vs8B, no struct/BSS fields. Chained hash uses dense index+1,zero sentinel;
+duplicates are valid per-alias retained references,not deduplicated. Swap-removal
+updates moved entry by INDEX rather than matching physical frame. Grow allocates,
+copies/reindexes fully before publishing; OOM leaves old ledger byte-identical.
+Caller retains existing IRQ exclusion. Hash expected chain lookup,not worst-case
+constant time. Release still loops live dense entries and frees one allocation.
+
+Host2F39vt ASan/UBSan PASS15:08:39: collisions/duplicates/swap removal/20000 model
+steps/growth OOM rollback/65536 pages/no heap leak. Initial host compile failed
+existing putchar signature and vm-area.h indentation diagnostics; isolated host
+header pragma/macro fixed,no production warning suppression. Actual current
+process.c host RBjrXm PASS15:13:08 for anonymous commit fault injection and
+immutable file partial-read/allocation rollback/offset/rights. First immutable
+link attempt lacked new mutable SHM hooks; added assert-unreachable host hooks
+for immutable-only fixture,NOT a mutable SHM simulation or production stub.
+
+10751 LIVE15:13,native oeki2uua: only process source/helper change,baseline
+provider55f087; no GS/wordcopy. Native runner restores original private process,
+removes only newly-created include/vm-ledger.h,and restores4 normal hashes.
+18146 LIVE15:12,clean R4sQZZ: exact production-derived process/helper changes;
+normal BOTH builds,VM hint/shared-memory/named-lifetime BOTH firmware PASS;
+full test_system underway. Frozen trees until terminal. Main normal untouched.
+Frame192 actual DOM42/Timer100/Keyc/ScrollMIDDLE/cert3/3; no responsiveness PASS
+or speedup claim (other regression VM concurrent). Need finalframes/close then
+controlled comparison and clean promotion audit. Authoritative next stage state
+work/PROJECT_STATE_VM_LEDGER_20261008.md replaces prior SHM_PROMOTED stage file.
+
 ## Atomic current-PC diagnostic live — 2026-10-08 14:57 +07
 
 Final update15:05:56212 TERMINAL0 15:02:32,timrxrfo.157 paused register samples;
