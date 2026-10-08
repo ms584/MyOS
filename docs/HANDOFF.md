@@ -5,6 +5,28 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Indexed VM ownership experiment — 2026-10-08 15:14 +07
 
+Update15:20:10751 TERMINAL0 15:17:39,oeki2uua. Actual2 launches202.343/222.500s,
+315requests,assets3 concurrent,14 input events. First final Timer107/PageUp/TOP/
+DOM42/cert3/3; both clean pages/aliases/SHM0/shell,heap450304 RAMFS49152.
+Original private process restored,new helper removed,normal4 hashes allOK.
+No controlled speedup/60s responsiveness claim. Region changes sampled10s;
+event HTTP receipt includes network queue,not visual latency.
+
+18146 TERMINAL1 15:14:18: full failed test_desktop.py95 after WINDOW CLOSE1,
+old pixel32/50/75 instead58/43/67. Serial ends WINDOW CLOSE1 without subsequent
+DESKTOP FRAME; GUI marker emitted AFTER gfx_present, so .05s host sleep is not
+a frame fence. Saved failed-first-full.log/failed-desktop-serial.log/image.
+Only test change: replace that sleep with wait for WINDOW CLOSE1\nDESKTOP FRAME\n;
+pixel assertion unchanged,no GUI/kernel workaround. Focused --suite desktop
+retry PASS incl low-memory/VGA.65645 LIVE15:19 full retry,normal/hash pending.
+VM hint/shared-memory/named lifetime both firmware had passed before fullfailure.
+
+54571 LIVE15:19 private combo trial: indexed ownership PLUS earlier GS errno
+fastpath, no wordcopy/provider changes. Four experimental inputs process/runtime/
+scheduler/helper, oracle BIOS/UEFI before2 actual launches. Runner backs/restores
+original3 files,removes newly-created helper,restoresnormal4 hashes. Frozen until
+terminal; this does NOT authorize production GS or skip full architecture tests.
+
 Main source unchanged79f4639; no push/no33.3. New vm-ledger.h replaces linear
 vm_track/vm_forget/vm_owned internals with indexed MULTISET. One allocation:
 uintptr_t dense pages[capacity],unsigned links[capacity],buckets[2*capacity].

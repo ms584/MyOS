@@ -1,0 +1,24 @@
+[
+  {
+    "launch": 1,
+    "elapsed": 202.34294360000058,
+    "request_start": 0,
+    "request_end": 165,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  },
+  {
+    "launch": 2,
+    "elapsed": 222.49962018799852,
+    "request_start": 165,
+    "request_end": 315,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=450304 heap-after=450304",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  }
+]

@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 15:14 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 15:20 +07. /home/xytron404/myos,main.
 Production source79f4639; latest evidence7ca7706. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
@@ -40,13 +40,17 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   grow OOM rollback,65536 pages,no heap leak. Actual process.c anonymous commit
   and immutable file-map rollback/rights tests PASS15:13:08. Immutable harness
   shared hooks assert unreachable; mutable SHM tested natively,not simulated.
-- Native10751 LIVE15:13,private oeki2uua,baseline provider,two actual launches;
-  first frame192 shows DOM42/Timer100/Keyc/MIDDLE,not responsiveness acceptance.
-  Runner restores original process/header absence/normal4 hashes at terminal.
-- Clean18146 LIVE15:12,R4sQZZ: VM hint/shared/lifetime BOTH firmware PASS;
-  mandatory full test_system running;normal restore/hash pending. Do not mutate.
+- Native10751 terminal0 15:17:39,oeki2uua:2 launches202.34/222.50s,315requests,
+  peakassets3,14inputs,final Timer107/PageUp/TOP; both clean closes/SHM0/shell.
+  Original process/header absence/normal4 hashes restored; no speedup claim.
+- Clean18146 terminal1: desktop snapshot before presentation marker; preserved.
+  VM hint/shared/lifetime BOTH firmware PASS. Close-frame fence fixes host-test
+  .05s assumption,unchanged pixel assertion. Focused desktop retry PASS;65645
+  LIVE15:19 mandatory full retry; normal/hash pending. No promotion.
+- Combo54571 LIVE15:19: indexed ledger+GS errno,oracle BOTH then2 native launches.
+  No source/image mutation in main. Do not mutate either live candidate.
 ## Next
-- Poll10751/18146 exact handles; never restart on observation timeout.
+- Poll65645/54571 exact handles; never restart on observation timeout.
   Inspect actual final input/visual timing/close,then audit and promote only with
   required evidence. Controlled comparison needed before speedup claim.
 - /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,
