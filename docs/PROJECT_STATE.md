@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 14:00 +07. /home/xytron404/myos,main.
-Source descriptor/heap/queue promotion over369aa1a; prior docs7f527ea.
+Updated: 2026-10-08 14:15 +07. /home/xytron404/myos,main.
+Source c04ff93 descriptor/heap/queue promotion; prior evidence7f527ea.
 origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -49,11 +49,16 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
   closes pages126671 exact/SHM0/aliases0/shell. Heap450304/454400/454400 tracks
   RAMFS cache49152/53248/53248; full accounting regression still pending.
   Cobalt must STILL show temporary SHM0/unlinked0; no full accounting suite yet.
-- Clean accounting84234 LIVE14:00,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/elf.c
+- Clean accounting84234 LIVE14:14,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/elf.c
   beyond promoted source. Builds, named-lifetime/shared-memory both firmware,
-  mandatory full system,normal restore/final4 hashes. Main remains frozen.
+  focused BOTH firmware PASS; mandatory full still running,normal hashes pending.
+- Present timing87369 LIVE14:14,private native xslpu938:24 completed800x600
+  frames,median stripe TSC64850838 vs gap33809396435; median sampled fraction
+ 0.001895,NOT CPU%/time guarantee. Gap includes userspace/scheduling/waits;
+  no basis for kernel-copy bottleneck claim. Diagnostic-only,not acceptance.
+  EGL glFinish/present split source prepared but NOT compiled/run yet.
 ## Next
-- Poll84234 exact handle; do not mutate candidate/restart on observation timeout.
+- Poll84234/87369 exact handles; do not mutate/restart on observation timeout.
 - Inspect close/page/SHM metadata and actual frames/input latency; prove
   >=60s responsive interaction/relaunch on normal launcher before closure.
 - Accounting needs relevant/full evidence before promotion. Fix actual latency

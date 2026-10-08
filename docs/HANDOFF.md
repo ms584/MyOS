@@ -3,6 +3,32 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Native present timing narrows latency search — 2026-10-08 14:15 +07
+
+87369 LIVE verified14:14,private native xslpu938. No production source/image
+change. Kernel-only diagnostic records raw LFENCE/RDTSC before/after present
+stripe copy and gap since previous completion (excluding own serial logging).
+24 completed800x600 frames observed: median stripe64850838 TSC,max94224174,
+median gap33809396435,median present/(gap+present)0.0018949178731976345.
+NOT CPU cycles,CPU%,instructions,hostwall time,or complete renderer latency.
+Prevalidation occurs before timestamp and lies in preceding gap. Gap includes
+all userspace draw,glFinish,scheduling/waits and host execution; cannot attribute
+glFinish from this alone. Evidence argues against prematurely optimizing stripe
+copy as the dominant cause. Active instrumentation is diagnostic_only=true.
+Native close/restore pending; runner restores private syscall.c and normal
+BIOS/UEFI builds at exit. Do NOT mutate native while active.
+
+Prepared platform-egl-timing-20261008.c splits before glFinish/after glFinish/
+after MyOSUiPresent and interframe gap, rawTSC only. NOT compiled or executed;
+requires copied baseline provider archive replacing only platform-egl-driver.o,
+exact compiler command from archive parent compile.log, othermembers byte/hash
+checks, unchanged baselineprovider, export/relocation/import validation, then
+focused native renderer checks and actual Cobalt. Do not use nearest export PCs
+as timing or remove glFinish (CPU-owned framebuffer synchronization required).
+84234 clean accounting full still LIVE14:14; focused named-lifetime/shared-memory
+BOTH firmware PASS,mandatory suite progressed beyond release probes. No full
+PASS or accounting promotion yet. Main remains normal c04ff93.
+
 ## Descriptor slice promoted; clean accounting full live — 2026-10-08 14:00 +07
 
 97035 TERMINAL0 13:57:44: exact9-file audited capacity/heap/queue slice copied
