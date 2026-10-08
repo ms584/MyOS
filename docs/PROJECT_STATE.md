@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 16:09 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 16:21 +07. /home/xytron404/myos,main.
 Production source79f4639; prior evidence01f33ea. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
@@ -65,14 +65,17 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 - Raw48518 TERMINAL0 16:05:33,l6rv5ms8:158 atomic PCs,pause0.314s. Matching
   ELF rebuilt pc-symbols-RtA49E,full image978d15ab...byte-identical.55 post-HLT
   idle,54 exact syscall-entry,6 provider memcpy;NOT CPU%/task attribution.
--98465 LIVE16:09: wordcopy-vs-baseline visual A/B,same frozen kernel/runtime/
-  HTML/TLS/markers,one launch each;no concurrent regression/profiler. Pending.
+-98465 TERMINAL0 16:15:50: wordcopy00pgvbhu vs baselinepet83cqv,same frozen
+  image/runtime/workload,no concurrent regression/profiler; one launch each.
+  Wordcopy visible keys16.24..24.65s,baseline20.36..26.65s (b superseded).
+  Both clean closes,assets3. Still far from responsive; no acceptance/promotion.
 ## Next
-- Poll98465; no source/build mutation during A/B. Keep tests/working main intact.
-  Inspect actual final input/visual timing/close,then audit and promote only with
-  required evidence. Controlled comparison needed before speedup claim.
-- /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,
-  no system change,nested KVM unproven. Not a blocker to code work.
+- Owner authorized KVM group change: usermod -a -G kvm xytron40416:15:10.
+  Fresh non-root session group991/access OK; API12/createVM OK16:18:17.
+  Unchanged normal image KVM boot to shell PASS16:19:32,query-kvm enabled.
+  No QEMU root/no WSL restart.63295 LIVE16:19:48,k4zzj9e7: two native launches
+  with explicit -accel kvm -cpu host; no TCG fallback,baseline renderer unchanged.
+  Inspect visible latency/HTTPS/input/relaunch cleanup; no acceptance yet.
 - Integrate audited native launcher and prove60s responsive/relaunch acceptance
   before closure. Detailed evidence in HANDOFF and docs/wip/native-pmm512.
 - activity.log bounded48MiB; NEVER read through run_logged.py. No private keys.

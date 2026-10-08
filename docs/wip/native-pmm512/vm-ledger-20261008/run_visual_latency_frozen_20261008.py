@@ -7,6 +7,9 @@ import hashlib, os, runpy, sys, struct, tempfile, types
 root=Path.cwd()
 sys.path.insert(0,str(root/'tests'))
 import test_system
+if os.environ.get('MYOS_TLS_EXPLICIT_KVM') == '1':
+    from qemu_kvm_optin_20261008 import install
+    install()
 image=root/'build/gs-errno-3p9yxzo0/frozen.img'
 expected='a782ade73f9242c9b288da979b169d05aca76ce267bc6b9e929030424e4f37fc'
 if len(sys.argv)==4:

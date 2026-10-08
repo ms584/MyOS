@@ -1,0 +1,158 @@
+{
+  "inputs": [
+    {
+      "input": {
+        "launch": 1,
+        "elapsed": 80.22065584499796,
+        "key": "a",
+        "click": false
+      },
+      "code": 1,
+      "acknowledged": true,
+      "upper_seconds": 24.653566772001795,
+      "lower_seconds": 23.616463378013577,
+      "first_frame": "launch-1-frame-104.png"
+    },
+    {
+      "input": {
+        "launch": 1,
+        "elapsed": 115.13919391500531,
+        "key": "b",
+        "click": false
+      },
+      "code": 2,
+      "acknowledged": true,
+      "upper_seconds": 18.48419688300055,
+      "lower_seconds": 17.44904894499632,
+      "first_frame": "launch-1-frame-133.png"
+    },
+    {
+      "input": {
+        "launch": 1,
+        "elapsed": 135.1647797600017,
+        "key": "pgdn",
+        "click": false
+      },
+      "code": 3,
+      "acknowledged": true,
+      "upper_seconds": 21.004129171007662,
+      "lower_seconds": 19.97587824999937,
+      "first_frame": "launch-1-frame-156.png"
+    },
+    {
+      "input": {
+        "launch": 1,
+        "elapsed": 150.15486940799747,
+        "key": "c",
+        "click": false
+      },
+      "code": 4,
+      "acknowledged": true,
+      "upper_seconds": 17.27248050000344,
+      "lower_seconds": 16.2395476840029,
+      "first_frame": "launch-1-frame-167.png"
+    },
+    {
+      "input": {
+        "launch": 1,
+        "elapsed": 165.18820447300095,
+        "key": "pgup",
+        "click": false
+      },
+      "code": 5,
+      "acknowledged": true,
+      "upper_seconds": 18.665438260009978,
+      "lower_seconds": 17.632248756999616,
+      "first_frame": "launch-1-frame-183.png"
+    }
+  ],
+  "clocks": [
+    {
+      "launch": 1,
+      "visible_changes": [
+        {
+          "elapsed": 83.26960066400352,
+          "clock": 3
+        },
+        {
+          "elapsed": 90.45782479600166,
+          "clock": 5
+        },
+        {
+          "elapsed": 99.72894513999927,
+          "clock": 6
+        },
+        {
+          "elapsed": 104.86825031699846,
+          "clock": 14
+        },
+        {
+          "elapsed": 111.0281455009972,
+          "clock": 21
+        },
+        {
+          "elapsed": 117.17913922600565,
+          "clock": 29
+        },
+        {
+          "elapsed": 123.33883670200885,
+          "clock": 35
+        },
+        {
+          "elapsed": 128.46961578600167,
+          "clock": 41
+        },
+        {
+          "elapsed": 133.61704609800654,
+          "clock": 47
+        },
+        {
+          "elapsed": 139.75966534500185,
+          "clock": 53
+        },
+        {
+          "elapsed": 145.92762611100625,
+          "clock": 58
+        },
+        {
+          "elapsed": 151.04051502600487,
+          "clock": 64
+        },
+        {
+          "elapsed": 156.16277183100465,
+          "clock": 69
+        },
+        {
+          "elapsed": 161.28710801299894,
+          "clock": 75
+        },
+        {
+          "elapsed": 167.42013950800174,
+          "clock": 81
+        },
+        {
+          "elapsed": 172.54662998800632,
+          "clock": 86
+        },
+        {
+          "elapsed": 178.7137030419981,
+          "clock": 91
+        },
+        {
+          "elapsed": 183.84729993200745,
+          "clock": 96
+        },
+        {
+          "elapsed": 189.9993414930068,
+          "clock": 102
+        },
+        {
+          "elapsed": 195.1252701850026,
+          "clock": 108
+        }
+      ],
+      "longest_observed_plateau_seconds": 9.278361044009216
+    }
+  ],
+  "caveat": "Sampled visible DOM markers; bounds include host input/screenshot overhead. Concurrent regression may affect timing. Not automatic phase acceptance."
+}

@@ -3,6 +3,26 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Non-root KVM experiment — 2026-10-08 16:21 +07
+
+Owner explicitly authorized adding xytron404 to group kvm. Appended16:15:10;
+fresh session groups includes991(kvm),device readable/writable. Non-root ioctl
+KVM_GET_API_VERSION=12 and KVM_CREATE_VM succeed16:18:17. Normal unchanged
+main image boot to shell PASS16:19:32; QMP query-kvm enabled/present true.
+No WSL restart, no root QEMU. Opt-in work/qemu_kvm_optin_20261008.py appends
+-accel kvm and replaces test CPU max with host; never silently falls back.
+63295 LIVE16:19:48,bundle native-verified-tls-k4zzj9e7: two native launches,
+same frozen image978d15ab/runtime08945598 and original provider84sokh6g.
+No source/build mutation. Original HTML/TLS/concurrency/input workload and
+120s post-visible observation retained. Results pending,not phase acceptance.
+
+98465 ended0 16:15:50. Wordcopy00pgvbhu163requests,baselinepet83cqv161requests,
+both peakassets3 and clean kernel close/shell. Same frozen guest/runtime and1s
+pixel sampling,no profiler/concurrent regression. Wordcopy visible key bounds
+16.24..24.65s,baseline20.36..26.65s; baseline b marker superseded,not proven lost.
+Longest timer plateau9.28/8.22s. One launch each is not statistical performance
+proof; still unacceptable responsiveness. Neither provider nor VM/GS promoted.
+
 ## Full ledger regression and matched raw PCs — 2026-10-08 16:09 +07
 
 65645 TERMINAL0 16:03:22: complete test_system.py retry PASS,trap normal builds
