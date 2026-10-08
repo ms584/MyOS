@@ -3,6 +3,29 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Kernel64 native close intermittently fails; preserve assertions — 2026-10-08 11:14 +07
+
+Native3584 TERMINAL1,ea4fz47_: exact capacity4 launches BOTH firmware passed;
+actual core assets3/3, concurrent3,cert negatives3/3,keys/click/JS scroll both,
+NO SHM/EMFILE trace (previous seven Error24 absent), but close PANIC:
+ELF pair live pages. No second launch. Do not promote or weaken assertion.
+Diagnostic18313 TERMINAL0,kl2lr4fs: ONLY adds before/after counts before same
+assertion, and failed-close RAMFS/heap snapshot on PANIC. Close pages126671
+before=after,shared0/unlinked0,heap454400/cache53248. One clean close cannot
+disprove the intermittent failure. Actual final screenshot KeyPageUp/ScrollTOP
+adds visual up-scroll proof, but Timer69 vs journal remains renderer backlog.
+Repeat59939 verified LIVE11:14,d7rcp12k, same binaries, three launches. First
+close exact pages/heap454400/cache53248; second running. Keep tree frozen.
+If PANIC, read resources-failed-close-N.json and DIAGNOSTIC pair close counts;
+distinguish named SHM backing retention from untracked/retained frame leak.
+
+Prepared host-only saved GPU interrupt-frame observer and layout/analyzer;
+NOT run yet. run_cobalt_gpu_frames refuses live native VM and requires repeat
+terminal. Compiles new process layout. Saved PCs stale/non-atomic, only stable
+PIT32 candidates; never label nearest symbol in stripped core or infer CPU%.
+Use actual provider bias and containing sized symbols. No speculative renderer
+optimization yet. Mandatory full79953 still LIVE11:14; normal main unchanged.
+
 ## Kernel handle capacity: low-memory regression and heap-table retry — 2026-10-08 10:54 +07
 
 Combined94832 TERMINAL1 at10:36:16 after all five affected BIOS/UEFI scopes

@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 10:54 +07. /home/xytron404/myos, main.
+Updated: 2026-10-08 11:14 +07. /home/xytron404/myos, main.
 Source: SHM pool promotion over3a99d70; prior docs04bb16e.
 origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
 ## Goal / acceptance
@@ -48,14 +48,20 @@ origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
   Old observer omitted !alive/blocked tasks: blocked0 INVALID; CPU valid.
 - Combined94832 terminal1 10:36:16: five scopes BOTH firmware PASS, full build
   failed low-memory linker bound. Original failure preserved; normal restored.
-- Heap retry79953 LIVE verified10:54, pmm-syscall-R4sQZZ: per-process bounded
+- Heap retry79953 LIVE verified11:14, pmm-syscall-R4sQZZ: per-process bounded
   file table on heap, allocated before publication/freed on reap/failed load.
   Keeps linker bound; five scopes BOTH firmware PASS; full system RUNNING.
-- Native3584 LIVE verified10:54, cobalt-closed-imports-xnVZeH: kernel64/runtime128
-  +heap table, capacity tests BOTH firmware then actual two-launch HTTPS/input.
+- Native3584 terminal1,ea4fz47_: kernel64/runtime128 focused BOTH firmware PASS;
+  actual assets3/3/input/cert3/3/no SHM Error24, BUT close PANIC live pages.
+- Diagnostic18313 terminal0,kl2lr4fs: pages126671 exact,shared0/unlinked0;
+  actual final KeyPageUp/ScrollTOP. Not a fix: only adds before/after logging.
+- Repeat59939 LIVE verified11:14,d7rcp12k: three-launch retry, first close
+  pages exact/heap454400/cache53248, second underway. Failure metadata enabled.
   Production has NONE of these pending runtime/capacity/heap/diagnostic changes.
 ## Next
-- Poll79953/3584; do NOT restart on observation timeout/mutate live trees.
+- Poll79953/59939; do NOT restart on observation timeout/mutate live trees.
+- Diagnose intermittent pages panic; saved GPU frame observer prepared only,
+  never run/mutate native until repeat terminal. It is NOT CPU% evidence.
 - Inspect actual frames/input timing and CPU counters; fix latency and prove
   >=60s responsive interaction/relaunch on normal launcher before phase closure.
 - Promote combined slice only after complete relevant/full evidence.
