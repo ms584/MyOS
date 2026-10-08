@@ -3,6 +3,15 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## PCM after queue relocation — 2026-10-08 11:34 +07
+
+PCM BIOS/UEFI both PASS: genuine SB16/IRQ/pointer/flush/explicit and automatic
+exit/relaunch/no-device/exact resources, bundles pcm-gwqeiwia/pcm-p_46b_hh.
+Full retry28044 still LIVE, no complete regression or source promotion claim.
+Three actual Cobalt launches d7rcp12k each assets3/3/cert negatives3/3,keys
+a/b/c/PageDown/PageUp,click1,JS scroll both; zero invalid HTTP. Input/HTTPS
+callbacks do not prove timely visible rendering or erase earlier close PANIC.
+
 ## Fault3 low-memory reproduced; software queue relocation in regression — 2026-10-08 11:33 +07
 
 Heap79953 TERMINAL1 at11:26:12: full reached fault_test(3), build failed same

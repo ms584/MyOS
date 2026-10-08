@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 11:33 +07. /home/xytron404/myos, main.
+Updated: 2026-10-08 11:34 +07. /home/xytron404/myos, main.
 Source: SHM pool promotion over3a99d70; prior docs04bb16e.
 origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
 ## Goal / acceptance
@@ -54,7 +54,8 @@ origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
 - Queue retry28044 LIVE verified11:33,pmm-syscall-R4sQZZ: same descriptor slice
   +SB16 software queue64KiB on heap after device validation/before IRQ enable;
   DMA reservation/capacity unchanged, no33.3. Fault builds0..6 all PASS,
-  fault3 __bss_end0x70e90. PCM BOTH firmware then full system/normal hashes.
+  fault3 __bss_end0x70e90. PCM BOTH firmware PASS; full system RUNNING,
+  normal restore/final4 hashes still pending. Source NOT promoted.
 - Native3584 terminal1,ea4fz47_: kernel64/runtime128 focused BOTH firmware PASS;
   actual assets3/3/input/cert3/3/no SHM Error24, BUT close PANIC live pages.
 - Diagnostic18313 terminal0,kl2lr4fs: pages126671 exact,shared0/unlinked0;
