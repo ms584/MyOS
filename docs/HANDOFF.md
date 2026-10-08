@@ -3,6 +3,33 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Visible latency measured — 2026-10-08 15:45 +07
+
+35904 TERMINAL0 15:44:31,bz7q6fof:193.145s,164requests,assets3,normal shell
+close with kernel pages-reclaimed/all-threads-stopped; NOT acceptance.
+Actual PNG marker bounds input a26.84..27.88s,b21.54..22.57s,
+PageDown21.00..22.04s,c25.50..26.54s,PageUp23.90..24.94s.
+16visible timer transitions; longest sampled plateau9.24s. Screenshot083
+visually inspected: actual Timer3 and correct bit pattern. HTTP timer already19
+while screen3,so receipt/timers alone are not visible responsiveness proof.
+Full regression ran concurrently: no controlled speedup/isolated load claim.
+Marker tiny fixed DOM nodes added opt-in; original page/workload retained.
+Source present path inspected: EGL glFinish->MyOSUiPresent->SYS_UI_PRESENT,
+kernel row64pixel chunks->native_ui_draw->gfx_present,not an asynchronous kernel
+frame queue. Renderer work/upstream backlog remains next investigation,not a
+proven cause. No speculative renderer option/ABI change made.
+
+First20261 jmrtsdcc TERMINAL0 but NO Cobalt execution/requests: frozen kernel
+rejected auto-packaged baseline runtime build identity before engine entry.
+Preserve failure,never call fixture exit0 a web PASS. Retry extracts ONLY runtime
+extent from previously successful mrm5_amc/assets.img,v2 header offset32,size
+bounded; hash0894559856c82bc77f40084a292ccff3a8ff8d11426d65bb097affc461c1e95b.
+Frozen image hash unchanged a782ade7...; loader build identity guard intact.
+Host nm capture used current kernel.elf rather than frozen matching ELF:
+EXCLUDE its resource-address values from this observation. Kernel serial close
+checks are valid; future host inventory needs frozen symbol pin too.
+65645 PID582523 verified LIVE15:45 full retry resolver phase; do not mutate.
+
 ## GS/ledger follow-up and visible latency — 2026-10-08 15:39 +07
 
 54571 TERMINAL0 15:30:51,mrm5_amc:2 launches192.2956/222.4357s,

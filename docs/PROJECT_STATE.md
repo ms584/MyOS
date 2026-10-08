@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 15:39 +07. /home/xytron404/myos,main.
-Production source79f4639; prior evidence3e4585c. Owner pushes only.
+Updated: 2026-10-08 15:45 +07. /home/xytron404/myos,main.
+Production source79f4639; prior evidenceb99b520. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -46,7 +46,7 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 - Clean18146 terminal1: desktop snapshot before presentation marker; preserved.
   VM hint/shared/lifetime BOTH firmware PASS. Close-frame fence fixes host-test
   .05s assumption,unchanged pixel assertion. Focused desktop retry PASS;65645
-  LIVE15:38 PID582523 verified: full retry now ELF emutls; normal/hash pending.
+  LIVE15:45 PID582523 verified: full retry now resolver; normal/hash pending.
 - Combo54571 TERMINAL0 15:30:51: ledger+GS,oracle BOTH,2 native launches
   192.30/222.44s,310requests,assets3,14inputs; both clean closes/SHM0/shell.
   Original3 sources restored/helper removed/normal4 hashes OK. No latency PASS.
@@ -54,12 +54,14 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   BIOS/UEFI: custom FS magic preserved,errno independent,reuse/exact cleanup.
 - Frozen SAME combo images10136 terminal0 15:30:03: existing native TLS and
   cross-signal tests BOTH firmware PASS;16 signal launches each. No promotion.
-- Visual latency20261 LIVE15:38,jmrtsdcc,pinned combo BIOS a782ade7...;
-  JS input/timer color bits read from real PNG pixels every1s. Added opt-in
-  marker only,original HTML/TLS workload retained. No automatic acceptance;
-  concurrent full regression may affect timing. Main normal4 hashes OK15:38.
+- Visual20261 ended before execution: frozen image/auto-runtime identity mismatch.
+  Retry35904 terminal0 15:44:31,bz7q6fof; exact runtime from successful combo
+  asset extent,no identity bypass. Actual JS markers read from PNG every1s:
+  key->visible21.00..27.88s,frame plateau<=9.24s;164requests,assets3,clean close.
+  No responsiveness PASS. Full regression concurrent; not controlled speedup.
+  Frozen-kernel nm metadata unverified: exclude host resource capture values.
 ## Next
-- Poll65645/PID582523 and20261 exact handles; never restart on timeout.
+- Poll65645/PID582523 exact handle; never restart on observation timeout.
   Inspect actual final input/visual timing/close,then audit and promote only with
   required evidence. Controlled comparison needed before speedup claim.
 - /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,

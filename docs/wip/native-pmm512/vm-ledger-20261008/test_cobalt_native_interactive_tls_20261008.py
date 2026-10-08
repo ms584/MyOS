@@ -155,7 +155,11 @@ document.onkeydown=function(e){originalKey(e);var code={a:1,b:2,PageDown:3,c:4,P
 document.getElementById('button').onclick=function(e){originalClick(e);visibleBits('ack',128+clicks);report('visual-ack',128+clicks);};
 setInterval(function(){visibleBits('clock',ticks&255);},1000);
 '''
-disk=out/'assets.img';create(disk,specs)
+runtime_override=os.environ.get('MYOS_TLS_FROZEN_RUNTIME')
+if runtime_override:
+    runtime_override=Path(runtime_override).resolve()
+    assert runtime_override.is_relative_to((ROOT/'build').resolve())
+disk=out/'assets.img';create(disk,specs,runtime=runtime_override or 'auto')
 for server in servers:
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();threads.append(thread)
 vm=None;visual=[];inputs=[];launches=[];samples=[];cpu_observer=None;gpu_observer=None

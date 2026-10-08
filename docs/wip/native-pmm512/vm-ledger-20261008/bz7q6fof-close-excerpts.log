@@ -1,0 +1,3 @@
+ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304
+ELF cancelled; all threads stopped
