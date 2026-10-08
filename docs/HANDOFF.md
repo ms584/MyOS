@@ -3,6 +3,38 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Fault3 low-memory reproduced; software queue relocation in regression — 2026-10-08 11:33 +07
+
+Heap79953 TERMINAL1 at11:26:12: full reached fault_test(3), build failed same
+low-memory assertion. Normal BIOS/UEFI restore completed. Specific reproduction
+13467 TERMINAL0 retains fault3-inspect-kernel.map: .bss ends0x80eb0, 3760 bytes
+over0x80000. Largest static item is SB16 software queue65536; remaining four
+global file tables also grow with64 handles. Do not shrink descriptor capacity
+or move stack/DMA bounds. Main production still normal SHM-pool baseline.
+
+Candidate retry28044 verified LIVE11:33,pmm-syscall-R4sQZZ: only additional
+drivers/sb16.c change: software queue pointer, allocate64KiB after valid SB16
+IRQ5/DMA1 checks and before publishing present/unmasking IRQ. No allocation in
+IRQ, no device => no queue allocation, allocation failure => unavailable false.
+Queue retained for driver lifetime. Hardware DMA buffer remains boot_state.dma;
+capacity/format/lease/playback semantics unchanged, NOT Phase33.3 media work.
+All PROCESS_TESTS TEST_CASE0..6 builds now pass; fault3 bss_end0x70e90. Runner
+then PCM BOTH BIOS/UEFI (test genuinely honors --uefi), mandatory full system,
+normal BIOS/UEFI restore and same final4 hashes. Still pending; no promotion.
+
+Native repeat59939 TERMINAL0 at11:21:44,d7rcp12k:3 closes all pages exact,
+shared0/unlinked0/shell. Heap454400,458496,454400 exactly tracks RAMFS cache
+53248,57344,53248, no accumulation in this observed set. Does NOT explain or
+invalidate earlier intermittent live-pages PANIC. Full scope closure remains open.
+
+GPU61286 TERMINAL0 at11:26:30,nwbhbfv1; same guest binaries, host observer only.
+158 saved-frame samples,76 stable PIT32. Contained PCs in runtime errno/call3,
+provider memcpy, softpipe TGSI/blend/format paths. These are stale saved context
+locations, NOT CPU percentages/function time; syscall-return bias possible.
+No errno/string/scheduler optimization implemented. Exact provider containing
+symbols only, core stripped => offsets, never nearest export. Observer perturbs
+timing; diagnostic_only=true. Clean close/pages,shared0,heap450304/cache49152.
+
 ## Kernel64 native close intermittently fails; preserve assertions — 2026-10-08 11:14 +07
 
 Native3584 TERMINAL1,ea4fz47_: exact capacity4 launches BOTH firmware passed;

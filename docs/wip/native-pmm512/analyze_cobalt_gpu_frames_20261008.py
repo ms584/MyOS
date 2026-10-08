@@ -4,9 +4,17 @@ from collections import Counter
 import json,re,subprocess,sys
 
 root=Path('/home/xytron404/cobalt-closed-imports-xnVZeH')
-bundle=root/'build'/sys.argv[1]
+name=sys.argv[1] if len(sys.argv)>1 else 'auto'
+if name=='auto':
+ matches=re.findall(r'native-verified-tls-([a-zA-Z0-9_]+)',(root/'cobalt-gpu-frames.log').read_text())
+ assert matches,'missing live evidence bundle'
+ name='native-verified-tls-'+matches[-1]
+bundle=root/'build'/name
+print('bundle',bundle)
 records=json.loads((bundle/'gpu-saved-frames.json').read_text())
-serial=(bundle/'serial.txt').read_text()
+serial_file=bundle/'serial.txt'
+if not serial_file.exists():serial_file=root/'build/system-tests/native-verified-tls.log'
+serial=serial_file.read_text()
 match=re.search(r'ELF pair provider bias: (0x[0-9a-fA-F]+)',serial)
 assert match,'missing actual provider bias'
 provider_bias=int(match[1],16)
@@ -21,7 +29,8 @@ for name,path,bias in (
   fields=line.split()
   if len(fields)!=4 or fields[2] not in ('t','T','w','W'):continue
   address,size=int(fields[0],16),int(fields[1],16)
-  if size:entries.append((address+bias,address+bias+size,fields[3]))
+  relocation=0 if name=='runtime' and address>=bias else bias
+  if size:entries.append((address+relocation,address+relocation+size,fields[3]))
  tables.append((name,entries))
 counts=Counter();unmapped=Counter();selected=[]
 for item in records:
