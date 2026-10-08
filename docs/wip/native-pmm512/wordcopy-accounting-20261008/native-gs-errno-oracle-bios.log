@@ -1,0 +1,16 @@
+$ gcc -print-file-name=include
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Wall -Wextra -Werror -Wno-misleading-indentation -DWITH_TLS=0 -c /mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/elf-gs-errno-20261008.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case0.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case0.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case0.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Wall -Wextra -Werror -Wno-misleading-indentation -DWITH_TLS=1 -c /mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/elf-gs-errno-20261008.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case1.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case1.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/case1.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-errno.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/frozen.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-errno.sock,server=on,wait=off -cpu max -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er/assets.img,if=ide,index=1
+PASS GS errno oracle/no-TLS-or-ELF-TLS/48worker-reuse False 0 0
+GS errno raw TSC direct/syscall 000000000020ed46 000000000bb5c0e9
+PASS GS errno oracle/no-TLS-or-ELF-TLS/48worker-reuse False 0 1
+GS errno raw TSC direct/syscall 0000000000210846 000000000c0ba912
+PASS GS errno oracle/no-TLS-or-ELF-TLS/48worker-reuse False 1 0
+GS errno raw TSC direct/syscall 0000000001ad8b05 0000000009ad37ac
+PASS GS errno oracle/no-TLS-or-ELF-TLS/48worker-reuse False 1 1
+GS errno raw TSC direct/syscall 000000000020aa34 000000000b9d1b7a
+qemu-system-x86_64: terminating on signal 15 from pid 554378 (python3)
+EVIDENCE /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-gw2__2er

@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 14:28 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 14:46 +07. /home/xytron404/myos,main.
 Source c04ff93 descriptor/heap/queue promotion; prior evidence7f527ea.
 Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
 ## Goal / acceptance
@@ -44,23 +44,26 @@ Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
 - Retry20750 current MAIN8MiB fixture: BIOS16/64 and UEFI64/256 all PASS,
  4 launches each.20750 terminal0 12:10:51,bog4_ll4:3 actual baseline-provider
   closes pages126671 exact/SHM0/aliases0/shell. Heap450304/454400/454400 tracks
-  RAMFS cache49152/53248/53248; full accounting regression still pending.
-  Cobalt must STILL show temporary SHM0/unlinked0; no full accounting suite yet.
-- Clean accounting84234 LIVE14:14,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/elf.c
-  beyond promoted source. Builds, named-lifetime/shared-memory both firmware,
-  focused BOTH firmware PASS; mandatory full still running,normal hashes pending.
+  RAMFS cache49152/53248/53248. Cobalt must STILL show temporary SHM0/unlinked0.
+- Clean accounting84234 TERMINAL0 14:44:36,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/
+  elf.c beyond promoted source. Named-lifetime/shared-memory BOTH firmware PASS;
+  mandatory full system PASS,normal restore and all4 hashes OK. Not promoted yet.
 - Present87369 terminal0 14:19:39,xslpu938:kernel print OVERWROTE FRAMEBUFFER,
   no input sent,max blue6400; diagnostic interval evidence NOT normal behavior.
 - EGL69157 terminal0 14:25:29,7bhyj38q: serial-only;17 frames,gap median31067261820
   TSC vs finish211669836/present102904983. Actual PageUp/ScrollTOP/Timer87;
   input7,cert3/3,concurrent3,close pages/SHM0. Not60s responsiveness acceptance.
-- Errno count46612 LIVE14:27,private native: serial-only count all user threads
-  between presents with same timed provider. Do not infer GPU-only CPU cost.
+- Errno46612 terminal0 14:31:49: all-thread calls between presents ~5k..302k,
+  startup~682k; NOT CPU attribution. Original private kernel/4 hashes restored.
+- GS fastpath3238 LIVE14:45: BIOS/UEFI no-TLS+ELF-TLS oracle/isolation/preemption/
+  48worker reuse PASS; thread services PASS. Actual Cobalt two-launch run live.
+  GS slot index at errno-page padding4,FS untouched. Failed offset56 trial hit
+  owned launcher frame; retained,restored. No native speedup established yet.
 ## Next
-- Poll84234/46612 exact handles; do not mutate/restart on observation timeout.
+- Poll3238 exact handle; do not mutate/restart on observation timeout.
 - Inspect close/page/SHM metadata and actual frames/input latency; prove
   >=60s responsive interaction/relaunch on normal launcher before closure.
-- Accounting needs relevant/full evidence before promotion. Fix actual latency
+- Audit clean accounting slice/fixtures before promotion. Fix actual latency
   and normal production launcher integration; source capacity alone is not5/5.
 - Detailed public logs/sources/runners: docs/wip/native-pmm512 and HANDOFF.
   No private TLS keys,boot retirement or verbose private launcher promoted.

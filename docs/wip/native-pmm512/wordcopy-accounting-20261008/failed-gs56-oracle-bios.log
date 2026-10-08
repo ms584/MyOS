@@ -1,0 +1,27 @@
+$ gcc -print-file-name=include
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Wall -Wextra -Werror -Wno-misleading-indentation -DWITH_TLS=0 -c /mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/elf-gs-errno-20261008.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case0.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case0.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case0.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Wall -Wextra -Werror -Wno-misleading-indentation -DWITH_TLS=1 -c /mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/elf-gs-errno-20261008.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case1.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case1.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/case1.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-errno.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/frozen.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-errno.sock,server=on,wait=off -cpu max -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-errno-dyfe9skr/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 548519 (python3)
+Traceback (most recent call last):
+  File "/mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/test_gs_errno_20261008.py", line 28, in <module>
+    assert 'GS errno oracle/isolation/preemption/48-worker-reuse PASS' in result,result
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: elf live case0
+ELF staged pages: 15
+ELF platform: pthread_create
+ELF platform: SbLogRaw
+ELF platform: __errno_location
+ELF platform: sched_yield
+ELF platform: pthread_join
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+GS errno failed: main_location==oracle()
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373248 heap-after=373248
+ELF exited with status 40
+myos> 

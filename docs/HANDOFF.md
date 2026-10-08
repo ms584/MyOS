@@ -3,6 +3,31 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## GS errno experiment and clean accounting full result — 2026-10-08 14:46 +07
+
+84234 TERMINAL0 14:44:36. Clean resident-accounting candidate R4sQZZ completed
+mandatory test_system, named-lifetime and shared-memory BOTH firmware focused
+checks. Normal BIOS/UEFI restored; all4 clean-resident-accounting-normal.sha256
+hashes independently rechecked OK14:44:53. Exact3 accounting source files beyond
+promoted baseline; not yet promoted. Need audit and durable fixture integration.
+
+46612 TERMINAL0 14:31:49, all-thread errno-call counter between frames measured
+~5k..302k, startup~682k. This establishes traffic, NOT per-function CPU cost.
+Original private syscall source and normal4 binary hashes restored.
+GS fastpath3238 LIVE14:45: BIOS/UEFI each no-TLS and ELF-TLS twice PASS; oracle
+compares direct errno pointer with syscall24, checks isolation/preemption and
+48 worker slot reuses. Existing thread-services PASS. Actual baseline-provider
+Cobalt two-launch run started, native responsiveness/close still pending.
+Scheduler sets IA32_GS_BASE to current runtime errno page; kernel tasks GS0.
+Runtime reads uint32 slot index at page+4, derives existing runtime-page address;
+ELF FS/TCB untouched. SYS24 retained as oracle. Experimental only, not main.
+First76059 trial failed14:37:06: GS56 self-pointer collides with elf-start.asm
+and elf-pair-start.asm launcher frame at offset56. Oracle caught this before
+Cobalt. Sources/log preserved as failed-gs56-*; baseline4 hashes restored.
+Retry moves index to padding4..7. Microbenchmark rawTSC is NOT Cobalt speedup.
+Need signal/custom-FS/multiprocess/full architectural coverage before promotion,
+and actual visible input/60s/relaunch evidence. No acceptance or33.3 change.
+
 ## Serial-only EGL timing and framebuffer diagnostic error — 2026-10-08 14:28 +07
 
 Revalidated remote main ls-remote14:21:53 =>08d90f7 matches local thenHEAD;
