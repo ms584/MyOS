@@ -3,6 +3,42 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Native HTTPS two-launch regression and resource diagnosis — 2026-10-08 09:31 +07
+
+Baseline source3a99d70/docs5648c41, goal ACTIVE, no push/no33.3. All new jobs
+terminal; no candidate VM remains live. Production four normal hashes checked.
+Relaunch85764 terminal0 09:26:20, bundle0dgifhbw: same VM two real Cobalt launches,
+236 requests/peak3; each DOM42,3 keys a/b/c,click1,3 cert negatives,0 invalid HTTP.
+Actual first final frame Timer83/Keyc/Rejected3/3; repeated input is displayed
+but latency remains. Both Escape closes reach shell, pages exact and all threads
+stopped. Heap409344->454400->450304: no monotonic growth in this two-run sample.
+CRITICAL second launch /asset/2 reports onerror; native logs repeatedly fail
+Creating shared memory in /dev/shm/... Error28. Do NOT call relaunch/concurrency
+fully accepted. First launch assets3/3, second2/3; retain failure evidence.
+
+Resource profile31842 terminal0 09:29:23,psoj5ki3, diagnostic-only short run.
+Native serial delta40960; valid identity-mapped RAMFS metadata before8/after37
+nodes, ordinary capacity8192->49152 (+40960),10 new cache/index files; no shared
+nodes after close. This accounts for that run's retained heap as filesystem data,
+not unreclaimed user pages. Full warm accounting still needs multiple runs and
+explicit persistent-file bounds. IMPORTANT observer's heap walker followed
+4GiB VIRTUAL heap pointers with pmemsave PHYSICAL reads, yielding INVALID zero
+heap totals. Raw evidence preserved, analyzer explicitly flags invalid fields;
+never cite those zeros as PASS. Fix VA translation before reusing heap walker.
+65 asynchronous RIP samples are diagnostic biased observations, not CPU-time
+percentages; core stripped function identity not inferred. No profile result
+justifies speculative memcpy/scheduler changes yet.
+
+Next concrete slice: inspect active RAMFS inode occupancy on first SHM ENOSPC.
+Pinned platform_shared_memory_region_posix.cc232 fails before sizing/mapping,
+CreateAndOpenFd temporary file; runtime mkstemp forwards openat errors; kernel
+fs_open_at/create_from returns28 when FS_NODES64 exhausted (handle cap returns24).
+Persistent cache directories/files consume nodes and unlinked-open SHM also
+retains nodes until last descriptor closes. Confirm active occupancy/ownership,
+then fix the actual constraint/lifetime with bounded BIOS/UEFI/full regression;
+do NOT merely suppress logging or disable /dev/shm. Visual latency/scrolling and
+>=60s responsiveness remain unaccepted. No production source mutation this span.
+
 ## Actual native HTTPS/JS/input/concurrency, CSP cause fixed — 2026-10-08 09:16 +07
 
 Source baseline3a99d70, goal ACTIVE, phases OPEN, no33.3/no push. This section

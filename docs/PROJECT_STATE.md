@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 09:16 +07. Repo /home/xytron404/myos, main.
+Updated: 2026-10-08 09:31 +07. Repo /home/xytron404/myos, main.
 Source baseline3a99d70; origin/main a746889 fetched03:43; no push.
 ## Scope and honest status
 - Phase33.1/33.2 OPEN. Actual native HTML/JS/DOM/timers/key/click observed;
@@ -54,10 +54,19 @@ Source baseline3a99d70; origin/main a746889 fetched03:43; no push.
 - Real final screenshot: DOM42,Timer77,Clicks1,Rejected certificates3/3.
   Timer93 in journal: visual lag remains, not responsive60s acceptance.
   Escape: pages reclaimed/all threads stopped, heap409344->450304 (+40960).
-  No relaunch proof yet. Controlled disposable CA/DNS map, NOT public Internet.
+  Controlled disposable CA/DNS map, NOT public Internet.
+- Relaunch85764 terminal0 at09:26:20,0dgifhbw: SAME VM two launches, DOM42,
+  a/b/c and click each; both return shell/pages exact/all threads stopped.
+  Heap409344->454400->450304; not monotonically growing in these two runs.
+  Second launch asset2 onerror, shared-memory creation ENOSPC: NOT full PASS.
+- Resource diagnostic31842 terminal0 at09:29:23,psoj5ki3: RAMFS regular-file
+  capacity8192->49152 (+40960), matching serial heap delta exactly; cache/index
+  files persist,0 shared nodes after close. Initial heap walker totals0 INVALID
+  (read4GiB virtual heap as physical); use valid identity-mapped node metadata
+  and kernel serial totals, never claim its zero as reclamation proof.
 ## Next and artifacts
-- Diagnose visual backlog; repeat input/scroll with timed actual frames and
-  warm close/relaunch accounting. CSP failure/fix is public evidence below.
+- Diagnose SHM create ENOSPC (RAMFS64 nodes/open-create path), then visual
+  backlog/scrolling. Capture active inode occupancy before changing limits.
 - Resolve visual latency/PS2 motion, scrolling, >=60s responsiveness and warm
   close/relaunch resources. Do not close phases on imports/fixture results.
 - HANDOFF.md; docs/wip/native-pmm512 preserves slices/logs/actual screenshots.

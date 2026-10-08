@@ -7,7 +7,7 @@ in the private build directory and must never be copied into evidence commits.
 """
 from pathlib import Path
 import base64, datetime, hashlib, http.server, ipaddress, json, os
-import ssl, subprocess, sys, tempfile, threading, time, urllib.parse
+import ssl, subprocess, sys, tempfile, threading, time, urllib.parse, re
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -134,17 +134,26 @@ Object.keys(bad).forEach(function(name){var i=new Image();images.push(i);i.onloa
 disk=out/'assets.img';create(disk,specs)
 for server in servers:
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();threads.append(thread)
-vm=None;visual=[];inputs=[]
-try:
-    vm=VM('native-verified-tls',ram=512,nic=True,asset_disk=disk,cpu='max')
-    vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
+vm=None;visual=[];inputs=[];launches=[];samples=[]
+resource_diagnostic=os.environ.get('MYOS_TLS_RESOURCE_DIAGNOSTIC')=='1'
+def observe_launch(launch):
+    if resource_diagnostic:
+        from cobalt_native_resource_inventory import capture
+        capture(vm,out,'before-%d'%launch)
+    launch_start=time.monotonic();request_start=len(records)
     offset=len(vm.log.read_text());type_text(vm,'elf pair-starboard cobalt_diag provider https://cobalt.example.com:'+str(servers[0].server_port)+'/\n')
     diagnostic=os.environ.get('MYOS_TLS_TASK_SNAPSHOT')=='1'
     deadline=time.monotonic()+(210 if diagnostic else 600)
-    last=-30;visible=None;sent=False;snapshot=False
+    last=-10;visible=None;sent=False;snapshot=False;repeated=set();last_sample=-2
     from PIL import Image
     while time.monotonic()<deadline:
-        elapsed=time.monotonic()-began;content=vm.log.read_text()[offset:]
+        elapsed=time.monotonic()-launch_start;content=vm.log.read_text()[offset:]
+        if resource_diagnostic and elapsed-last_sample>=2:
+            last_sample=elapsed
+            registers=vm.command('human-monitor-command',{'command-line':'info registers'})
+            match=re.search(r'RIP=([0-9a-fA-F]+)',registers)
+            assert match,'QEMU register format changed'
+            samples.append(dict(launch=launch,elapsed=elapsed,rip=int(match[1],16)))
         if 'PANIC' in content or content.endswith('myos> '):break
         if diagnostic and elapsed>=150 and not snapshot:
             from cobalt_task_snapshot import capture
@@ -152,14 +161,14 @@ try:
             print('Paused task snapshot is diagnostic only, NEVER responsive/timing acceptance',flush=True)
         if 'DidFinishNavigation:' in content and 'net::ERR_' in content:
             print('Native HTTPS initial navigation failed; preserving evidence, not waiting for nonexistent DOM',flush=True);break
-        if elapsed-last>=30:
-            last=elapsed;frame=out/('frame-%03d.ppm'%elapsed)
+        if elapsed-last>=10:
+            last=elapsed;frame=out/('launch-%d-frame-%03d.ppm'%(launch,elapsed))
             vm.command('screendump',{'filename':str(frame)})
             picture=Image.open(frame).convert('RGB')
             blue=sum(n for n,c in picture.getcolors(480000) if c==(216,240,255))
-            visual.append(dict(elapsed=elapsed,blue_pixels=blue,frame=frame.name))
+            visual.append(dict(launch=launch,elapsed=elapsed,blue_pixels=blue,frame=frame.name))
             if blue>=10000 and visible is None:visible=time.monotonic()
-        geometries=[r for r in records if 'kind=geometry&' in r['path']]
+        geometries=[r for r in records[request_start:] if 'kind=geometry&' in r['path']]
         if visible is not None and time.monotonic()-visible>=5 and not sent and geometries:
             target=json.loads(urllib.parse.parse_qs(urllib.parse.urlsplit(geometries[-1]['path']).query)['value'][0])
             assert 0<=target['x']<800 and 0<=target['y']<600
@@ -172,17 +181,39 @@ try:
                 while remaining:
                     step=min(100,remaining);motion(axis,step);remaining-=step
             for down in (True,False):vm.command('input-send-event',{'events':[{'type':'btn','data':{'down':down,'button':'left'}}]})
-            sent=True;inputs.append(dict(elapsed=elapsed,key='a',click=True))
-        if visible is not None and time.monotonic()-visible>=120:break
+            sent=True;inputs.append(dict(launch=launch,elapsed=elapsed,key='a',click=True))
+        if visible is not None and sent:
+            for delay,keycode in ((40,'b'),(75,'c')):
+                if time.monotonic()-visible>=delay and keycode not in repeated:
+                    vm.key(keycode);repeated.add(keycode)
+                    inputs.append(dict(launch=launch,elapsed=elapsed,key=keycode,click=False))
+        if visible is not None and time.monotonic()-visible>=(40 if resource_diagnostic else 120):break
         time.sleep(.1)
-    vm.command('screendump',{'filename':str(out/'final.ppm')})
+    vm.command('screendump',{'filename':str(out/('launch-%d-final.ppm'%launch))})
     if not vm.log.read_text().endswith('myos> '):
         vm.key('esc');end=time.monotonic()+20
         while time.monotonic()<end and not vm.log.read_text().endswith('myos> '):time.sleep(.1)
+    tail=vm.log.read_text()[offset:]
+    cleanup=[line for line in tail.splitlines() if 'pages reclaimed' in line or 'all threads stopped' in line]
+    result=dict(launch=launch,elapsed=time.monotonic()-launch_start,
+        request_start=request_start,request_end=len(records),cleanup=cleanup,
+        shell_returned=vm.log.read_text().endswith('myos> '))
+    launches.append(result)
+    (out/'launches.json').write_text(json.dumps(launches,indent=2))
+    print('LAUNCH_OBSERVATION',json.dumps(result),flush=True)
+    assert result['shell_returned'],'close did not return to shell; cannot safely relaunch'
+    if resource_diagnostic:
+        capture(vm,out,'after-%d'%launch)
+try:
+    vm=VM('native-verified-tls',ram=512,nic=True,asset_disk=disk,cpu='max')
+    vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
+    for launch in range(1,1+int(os.environ.get('MYOS_TLS_LAUNCHES','1'))):
+        observe_launch(launch)
 finally:
     if vm:
         (out/'serial.txt').write_text(vm.log.read_text());vm.close()
-    summary=dict(requests=records,peak_concurrent_assets=peak,visual=visual,inputs=inputs,
+    summary=dict(requests=records,peak_concurrent_assets=peak,visual=visual,inputs=inputs,launches=launches,
+        diagnostic_only=resource_diagnostic,cpu_samples=samples,
         test_root_sha256=hashlib.sha256(ca_file.read_bytes()).hexdigest(),test_root_asset='ssl/certs/'+ca_hash+'.0')
     (out/'evidence.json').write_text(json.dumps(summary,indent=2))
     for server in servers:server.shutdown();server.server_close()
