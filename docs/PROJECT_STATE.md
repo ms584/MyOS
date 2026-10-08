@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 09:51 +07. /home/xytron404/myos, main.
+Updated: 2026-10-08 09:55 +07. /home/xytron404/myos, main.
 Source3a99d70, docs6f743f5; origin/main a746889 fetched09:49:18, unchanged.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN, no33.3/no push; YouTube unproven.
@@ -43,13 +43,16 @@ Source3a99d70, docs6f743f5; origin/main a746889 fetched09:49:18, unchanged.
 - Full28032 RUNNING since09:43:23 in /home/xytron404/pmm-syscall-R4sQZZ;
   mandatory test_system +shared_memory/statvfs/fs_runtime_lifetime BIOS/UEFI.
   Restore trap active. Do NOT mutate candidate/restart while live.
-- Native pool91757 RUNNING since09:43:46,cobalt-closed-imports-xnVZeH,
+- Native pool91757 TERMINAL0 at09:52:32,cobalt-closed-imports-xnVZeH,
   bundle25nzgz6j, two launches with idle VA-aware resource snapshots.
-  First assets3/3/keys3/cert negatives3,0 SHM ENOSPC; NO click callback.
-  Second live at09:48; inspect final evidence, don't infer PASS from exit0.
+  BOTH assets3/3/keys3/cert negatives3,0 invalid HTTP/SHM ENOSPC.
+  Click only second. Second EMFILE24 left3 named zero-size SHM nodes;
+  heap450304->499504 (+49200), NOT resource PASS. runtime_open_base opens
+  kernel inode BEFORE runtime descriptor installation: failure closes fd
+  but leaves created file. Reserve runtime fd before create/truncate next.
   Full suite runs concurrently: timing not isolated performance acceptance.
 ## Next
-- Inspect SAME live28032/91757 handles; only promote after full+focus checks.
+- Inspect SAME live28032 handle; only promote after full+focus checks.
   Then fix actual mouse-feedback delivery, scrolling and visual backlog;
   prove >=60s interaction plus bounded warm relaunch on normal launcher.
 - Docs/wip/native-pmm512 holds source slices/runners/public evidence only.

@@ -3,6 +3,32 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Pool fixes ENOSPC, reveals runtime EMFILE creation side effects — 2026-10-08 09:55 +07
+
+Native91757 now TERMINAL0 09:52:32, bundle25nzgz6j. Full28032 still live at09:54
+in release-reboot; don't mutate/restart that candidate. Source/main unchanged.
+Both actual launches HTML/app.js/DOM42,assets3/3,keys a,b,c,cert negatives3/3,
+0 invalid HTTP and NO SHM ENOSPC. Click callback only second, not first.
+Both shell/pages exact/all threads stopped, but second heap450304->499504.
+Correct VA-aware metadata: three NEW named /dev/shm files (indices90..92),
+references0/unlinked=false/size0, each shm_backing16400 bytes, sum49200 matches
+heap growth exactly; cache capacity49152 unchanged. These are NOT cache files
+or a reclaimed resource PASS. Names exactly match native EMFILE24 creation
+failures .org.chromium.Chromium.Ch9I6z / Ch9JrN / Ch9Jsp.
+
+Code evidence user/platform-runtime.c runtime_open_base1747 opens/creates inode,
+then installs runtime descriptor1771. On full runtime table1772 closes native
+fd/free object and returns24, leaving a newly created named inode. Kernel
+fs_open_at checks handle capacity BEFORE create, so kernel32 exhaustion cannot
+explain created orphan paths with O_CREAT|O_EXCL. Fix reservation of a runtime
+slot BEFORE any create/truncate side effect, with rollback on every failure
+and reserved-slot exclusion in shared installation; do not race pre-stat/unlink
+or delete another thread's path as cleanup. Test full runtime table using dup
+without exhausting kernel handles, O_EXCL creation absence, O_TRUNC preserved
+content, failure/reuse and concurrent open/cancel. Then measure actual FD peak
+before any capacity expansion. Do NOT edit full28032's frozen tree; use actual
+terminal candidate/staging for the next slice. Main promotion remains pending.
+
 ## Confirmed inode exhaustion; private pool regression live — 2026-10-08 09:51 +07
 
 Goal ACTIVE, source3a99d70/docs6f743f5, no push/no33.3. origin/main a746889
