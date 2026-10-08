@@ -3,6 +3,19 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Atomic current-PC diagnostic live — 2026-10-08 14:57 +07
+
+75906 LIVE verified14:56; private native baseline provider,elym0zbf,one launch.
+Original GS runtime/process/scheduler already restored. Observer replacement only,
+runner trap restores original saved-frame observer; no production source/build
+change. Each sample QMP stop/query-status,current CPU RIP/CS/CR3 plus scheduler
+current task/thread id under paused VM,then finally cont. Samples begin after
+visible page with random .45..95s spacing. Kernel metadata only,no app payloads.
+This avoids stale saved interrupt PCs; pause costs recorded,not CPU percentages
+or responsiveness acceptance. Analyzer uses containing defined symbol ranges,
+never nearest export in stripped Cobalt. Do not mutate private tree while live.
+Owner optional KVM group question unanswered as of14:57; no system change.
+
 ## Accounting promoted; GS native result and emulator access — 2026-10-08 14:54 +07
 
 53593 TERMINAL0 14:51:10: audited all tracked non-doc inputs in completed clean
