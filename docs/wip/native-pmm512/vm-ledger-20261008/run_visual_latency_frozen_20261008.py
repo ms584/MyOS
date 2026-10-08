@@ -3,7 +3,7 @@
 No kernel builds or guest source changes. This is observation, not acceptance.
 """
 from pathlib import Path
-import hashlib, os, runpy, sys, struct, tempfile
+import hashlib, os, runpy, sys, struct, tempfile, types
 root=Path.cwd()
 sys.path.insert(0,str(root/'tests'))
 import test_system
@@ -36,6 +36,11 @@ class FrozenVM(OriginalVM):
         kwargs['boot_image']=image
         super().__init__(*args,**kwargs)
 test_system.VM=FrozenVM
+if os.environ.get('MYOS_TLS_RAW_PC')=='1':
+    observer=runpy.run_path(str(Path(__file__).with_name('cobalt_raw_pc_observer_20261008.py')))['Observer']
+    module=types.ModuleType('cobalt_gpu_frame_observer');module.Observer=observer
+    sys.modules[module.__name__]=module
+    os.environ['MYOS_TLS_GPU_FRAMES']='1'
 os.environ['MYOS_TLS_VISUAL_LATENCY']='1'
 # Current kernel.elf is not the frozen image's matching ELF. Do not read
 # kernel-private inventory by addresses obtained from an unrelated nm output.

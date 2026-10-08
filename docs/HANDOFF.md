@@ -3,6 +3,45 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Full ledger regression and matched raw PCs — 2026-10-08 16:09 +07
+
+65645 TERMINAL0 16:03:22: complete test_system.py retry PASS,trap normal builds
+BIOS/UEFI and all4 clean-vm-ledger-normal.sha256 entries OK16:04:51. No source
+promotion. Read-only audit490 inputs vs main01f33ea PASS: expected process.c,
+new vm-ledger.h and desktop close-frame fence only. First audit reported2missing
+named-SHM files: runner actually used work staging driver/fixture explicitly.
+C fixture byte-identical to main; driver differs only docstring,root/stage path,
+import order,fixture filename (full diff reviewed and strict normalization).
+No driver assertion difference. Preserve first audit; no full-suite completion
+claimed by audit itself. Full test normal kernel252256B493sectors.
+
+68071 TERMINAL0 16:00:59,291_00v5:194.10/222.22s,320requests,assets3,
+both closes kernel own page/thread checks and shell. First input b not sampled
+visibly (click129 superseded marker); not proof lost keyboard delivery.
+Other key visible bounds first19.69..27.68s,second14.24..22.79s. Frame plateaus
+8.22/9.26s. Still unacceptable backlog; no controlled speedup or promotion.
+
+48518 TERMINAL0 16:05:33,l6rv5ms8:203.58s,164requests,assets3,clean close.
+Raw actual CPU PCs paused atomically,NO task/frame/kernel-private memory reads.
+Observer finally-cont mock test PASS including malformed CS/query-status.
+158samples,totalpause0.314s. Separate build pc-symbols-RtA49E reproduced FULL
+frozen image SHA978d15ab...byte-for-byte; kernel ELF d1b39ae922475991de36554d2a4c7c2c94f9fe7b61ecccfadc597a1b51187b0b;
+runtime ELF07a1014a92f379780578b70d3e38c3adf98c0926ae2fb197c79ea9abed37c388.
+55PCs at21fc9 are AFTER sti;hlt in load_pair,NOT launcher CPU busy work!
+54 at40e4d exact zero-sized syscall_entry label,not containing-function timing.
+6provider memcpy,5blend_fallback; provider disassembly confirms memcpy byte
+loop. Containing symbols only; no nearest-symbol guesses,CPU% or task claims.
+Initial analyzer provider_path appended provider.so twice; fixed schema usage,
+not guest failure. Cobalt source HTTP lookup failed; cached compositor audit
+source used instead; do not claim a new upstream behavior from failed fetch.
+
+98465 LIVE16:09: run_visible_wordcopy_ab_20261008.sh; wordcopy-gam1qb5p versus
+baseline84sokh6g on identical frozen978d15ab/runtime08945598/HTTPS page/markers.
+One launch each,NO raw profiler and NO concurrent regression. Existing wordcopy
+host guard/correctness and provider staging evidence reused,not rerun. Changes
+only provider primitives.o; not imported into production. No latency result yet.
+Normal main4 manifest hashes OK16:08. No33.3/no push; acceptance still open.
+
 ## Batched page-table prune experiment — 2026-10-08 15:54 +07
 
 Code-backed candidate: vm_drop_pages formerly vm_prune_path after each4KiB

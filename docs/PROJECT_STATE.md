@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 15:54 +07. /home/xytron404/myos,main.
-Production source79f4639; prior evidence591abf9. Owner pushes only.
+Updated: 2026-10-08 16:09 +07. /home/xytron404/myos,main.
+Production source79f4639; prior evidence01f33ea. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -41,7 +41,8 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 - Clean18146 terminal1: desktop snapshot before presentation marker; preserved.
   VM hint/shared/lifetime BOTH firmware PASS. Close-frame fence fixes host-test
   .05s assumption,unchanged pixel assertion. Focused desktop retry PASS;65645
-  LIVE15:54 PID582523 verified: full retry now native TLS; normal/hash pending.
+  Retry65645 TERMINAL0 16:03:22; normal BIOS/UEFI4 hashes match. Input audit490
+  PASS: only process/helper/desktop fence; external named fixture path reviewed.
 - Combo54571 TERMINAL0 15:30:51: ledger+GS,oracle BOTH,2 native launches
   192.30/222.44s,310requests,assets3,14inputs; both clean closes/SHM0/shell.
   Original3 sources restored/helper removed/normal4 hashes OK. No latency PASS.
@@ -59,10 +60,15 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   free/TLB flush retained. Host fdOARl ASan/UBSan cross-boundary partial unmap,
   failure rollback/rights/exact cleanup PASS. Shared+named BOTH firmware PASS.
   First runners stopped on missing fixture then host import; images restored.
- 68071/PID599171 LIVE15:54,291_00v5:2 native launches on pinned978d15ab...;
-  runtime08945598...,no rebuild/unmatched inventory; no speedup claim yet.
+ 68071 TERMINAL0 16:00:59,291_00v5:2 launches194.10/222.22s,320requests,
+  assets3,both clean closes;key->visible14.24..27.68s,still backlog. No promotion.
+- Raw48518 TERMINAL0 16:05:33,l6rv5ms8:158 atomic PCs,pause0.314s. Matching
+  ELF rebuilt pc-symbols-RtA49E,full image978d15ab...byte-identical.55 post-HLT
+  idle,54 exact syscall-entry,6 provider memcpy;NOT CPU%/task attribution.
+-98465 LIVE16:09: wordcopy-vs-baseline visual A/B,same frozen kernel/runtime/
+  HTML/TLS/markers,one launch each;no concurrent regression/profiler. Pending.
 ## Next
-- Poll65645/PID582523 and68071/PID599171; never restart on observation timeout.
+- Poll98465; no source/build mutation during A/B. Keep tests/working main intact.
   Inspect actual final input/visual timing/close,then audit and promote only with
   required evidence. Controlled comparison needed before speedup claim.
 - /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,

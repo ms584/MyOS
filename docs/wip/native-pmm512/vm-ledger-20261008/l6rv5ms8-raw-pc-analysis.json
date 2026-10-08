@@ -1,0 +1,180 @@
+{
+  "provider_base": "0x8006331000",
+  "provider_sha256": "55f0875c70997cafc085b0e6151d3a3a6bae88d3c5cc8c87fd50d67f6b326475",
+  "samples": 158,
+  "pause_seconds": 0.3138678079121746,
+  "containing_symbol_counts": [
+    [
+      "kernel: post-HLT launcher idle boundary (not busy work)",
+      55
+    ],
+    [
+      "kernel exact label only: syscall_entry",
+      54
+    ],
+    [
+      "user: unclassified (stripped core/gap)",
+      13
+    ],
+    [
+      "provider: memcpy",
+      6
+    ],
+    [
+      "provider: blend_fallback",
+      5
+    ],
+    [
+      "kernel: memset.isra.0",
+      5
+    ],
+    [
+      "provider: exec_tex",
+      2
+    ],
+    [
+      "provider: util_format_z24_unorm_s8_uint_as_r8g8b8a8_pack_rgba_float",
+      2
+    ],
+    [
+      "provider: wrap_nearest_clamp_to_edge",
+      2
+    ],
+    [
+      "provider: tgsi_exec_machine_run",
+      2
+    ],
+    [
+      "provider: util_format_r8g8b8a8_unorm_unpack_rgba_float",
+      2
+    ],
+    [
+      "runtime: descriptor_install_from_locked",
+      1
+    ],
+    [
+      "kernel: vm_drop_pages",
+      1
+    ],
+    [
+      "kernel: page_references",
+      1
+    ],
+    [
+      "provider: exec_vector_unary",
+      1
+    ],
+    [
+      "runtime: allocate",
+      1
+    ],
+    [
+      "provider: depth_test_quads_fallback",
+      1
+    ],
+    [
+      "runtime: pthread_mutex_trylock",
+      1
+    ],
+    [
+      "provider: exec_instruction",
+      1
+    ],
+    [
+      "provider: rebase_colors",
+      1
+    ],
+    [
+      "provider: pipe_get_tile_rgba",
+      1
+    ]
+  ],
+  "matched_elf_hashes": {
+    "myos-current.img": "978d15abe933379c1dd5a9a89fde59f08fe306d1a79a60bad41a06f70cca1313",
+    "kernel.elf": "d1b39ae922475991de36554d2a4c7c2c94f9fe7b61ecccfadc597a1b51187b0b",
+    "platform-runtime.elf": "07a1014a92f379780578b70d3e38c3adf98c0926ae2fb197c79ea9abed37c388"
+  },
+  "most_common_raw_pcs": [
+    {
+      "rip": "0x21fc9",
+      "count": 55
+    },
+    {
+      "rip": "0x40e4d",
+      "count": 54
+    },
+    {
+      "rip": "0x10a79",
+      "count": 5
+    },
+    {
+      "rip": "0x8006bc7506",
+      "count": 4
+    },
+    {
+      "rip": "0x8006bb74e0",
+      "count": 2
+    },
+    {
+      "rip": "0x8006b1bfff",
+      "count": 2
+    },
+    {
+      "rip": "0x8006bc750c",
+      "count": 2
+    },
+    {
+      "rip": "0x8006894f26",
+      "count": 2
+    },
+    {
+      "rip": "0x8006ba8f20",
+      "count": 1
+    },
+    {
+      "rip": "0x803f00054a",
+      "count": 1
+    },
+    {
+      "rip": "0x8006b13b3a",
+      "count": 1
+    },
+    {
+      "rip": "0x800688e873",
+      "count": 1
+    },
+    {
+      "rip": "0x1206f",
+      "count": 1
+    },
+    {
+      "rip": "0x120e3",
+      "count": 1
+    },
+    {
+      "rip": "0x80063b40a0",
+      "count": 1
+    },
+    {
+      "rip": "0x8006b12001",
+      "count": 1
+    },
+    {
+      "rip": "0x80055bb454",
+      "count": 1
+    },
+    {
+      "rip": "0x8006ba941e",
+      "count": 1
+    },
+    {
+      "rip": "0x80014710de",
+      "count": 1
+    },
+    {
+      "rip": "0x8003415313",
+      "count": 1
+    }
+  ],
+  "warning": "QMP/TCG sampling is biased. Not CPU percentages; no task/thread attribution; no nearest-symbol fallback."
+}
