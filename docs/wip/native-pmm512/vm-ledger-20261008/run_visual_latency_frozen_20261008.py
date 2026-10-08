@@ -9,6 +9,11 @@ sys.path.insert(0,str(root/'tests'))
 import test_system
 image=root/'build/gs-errno-3p9yxzo0/frozen.img'
 expected='a782ade73f9242c9b288da979b169d05aca76ce267bc6b9e929030424e4f37fc'
+if len(sys.argv)==4:
+    image=Path(sys.argv[2]).resolve();expected=sys.argv[3]
+    assert image.is_relative_to((root/'build').resolve())
+    assert len(expected)==64 and all(c in '0123456789abcdef' for c in expected)
+else:assert len(sys.argv)==2
 assert hashlib.sha256(image.read_bytes()).hexdigest()==expected
 # Extract only the exact packaged runtime from the successful combo launch,
 # never its CA keys. Loader still verifies its embedded build identity.
@@ -32,8 +37,10 @@ class FrozenVM(OriginalVM):
         super().__init__(*args,**kwargs)
 test_system.VM=FrozenVM
 os.environ['MYOS_TLS_VISUAL_LATENCY']='1'
-os.environ['MYOS_TLS_RESOURCE_ACCOUNTING']='1'
-os.environ['MYOS_TLS_LAUNCHES']='1'
+# Current kernel.elf is not the frozen image's matching ELF. Do not read
+# kernel-private inventory by addresses obtained from an unrelated nm output.
+os.environ['MYOS_TLS_RESOURCE_ACCOUNTING']='0'
+os.environ.setdefault('MYOS_TLS_LAUNCHES','1')
 print('FROZEN_IMAGE',image,expected,flush=True)
 script=Path(sys.argv[1])
 sys.argv=[str(script),'/home/xytron404/cd-QJYMwG/build/cobalt-resources-dwxalc2n',

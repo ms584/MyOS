@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 15:45 +07. /home/xytron404/myos,main.
-Production source79f4639; prior evidenceb99b520. Owner pushes only.
+Updated: 2026-10-08 15:54 +07. /home/xytron404/myos,main.
+Production source79f4639; prior evidence591abf9. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -24,13 +24,8 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   build/resident-accounting-promotion-normal.sha256; all4 hashes OK,normal images.
 ## Experiments (NOT production)
 - Native launcher/boot retirement/resolver/verbose profiling NOT promoted.
-  Wordcopy and GS errno fastpath did not establish native latency acceptance.
-  GS3238 both firmware oracle/thread tests and2 native closes PASS; restored.
-- Serial EGL timing puts long interval before glFinish/present; not function
-  CPU attribution. Kernel print diagnostic damaged framebuffer,preserved failure.
-- Atomic56212 timrxrfo terminal0:157 paused CPU PCs,vm_forget34/prune23; noCPU%.
-  Task/tid invalid due same-name current symbol; registers valid. Final Keyc/
-  MIDDLE despite PageUp => backlog. Sources/evidence/disassembly in WIP docs.
+  Wordcopy/GS did not establish latency acceptance; diagnostics in HANDOFF.
+  Atomic56212 PCs suggest VM forget/prune work,not CPU percentages.
 ## Indexed VM ownership trial
 - Expected bucket-chain lookup replaces repeated whole-ledger scans; dense
   pages + links +2*capacity buckets in ONE heap allocation,20B/slot vs8B before.
@@ -46,7 +41,7 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 - Clean18146 terminal1: desktop snapshot before presentation marker; preserved.
   VM hint/shared/lifetime BOTH firmware PASS. Close-frame fence fixes host-test
   .05s assumption,unchanged pixel assertion. Focused desktop retry PASS;65645
-  LIVE15:45 PID582523 verified: full retry now resolver; normal/hash pending.
+  LIVE15:54 PID582523 verified: full retry now native TLS; normal/hash pending.
 - Combo54571 TERMINAL0 15:30:51: ledger+GS,oracle BOTH,2 native launches
   192.30/222.44s,310requests,assets3,14inputs; both clean closes/SHM0/shell.
   Original3 sources restored/helper removed/normal4 hashes OK. No latency PASS.
@@ -60,8 +55,14 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   key->visible21.00..27.88s,frame plateau<=9.24s;164requests,assets3,clean close.
   No responsiveness PASS. Full regression concurrent; not controlled speedup.
   Frozen-kernel nm metadata unverified: exclude host resource capture values.
+- Batched prune: defer empty-table scan until crossing2MiB/end; immediate data
+  free/TLB flush retained. Host fdOARl ASan/UBSan cross-boundary partial unmap,
+  failure rollback/rights/exact cleanup PASS. Shared+named BOTH firmware PASS.
+  First runners stopped on missing fixture then host import; images restored.
+ 68071/PID599171 LIVE15:54,291_00v5:2 native launches on pinned978d15ab...;
+  runtime08945598...,no rebuild/unmatched inventory; no speedup claim yet.
 ## Next
-- Poll65645/PID582523 exact handle; never restart on observation timeout.
+- Poll65645/PID582523 and68071/PID599171; never restart on observation timeout.
   Inspect actual final input/visual timing/close,then audit and promote only with
   required evidence. Controlled comparison needed before speedup claim.
 - /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,

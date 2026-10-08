@@ -3,6 +3,36 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Batched page-table prune experiment — 2026-10-08 15:54 +07
+
+Code-backed candidate: vm_drop_pages formerly vm_prune_path after each4KiB
+page; prune repeatedly scans up to512 entries to discover table not empty.
+Experimental change batches only empty-table pruning until exiting2MiB span
+or function end. Data frame release/ledger forget/TLB invalidation immediate.
+staged_only rollback still honors existing mappings and calls final prune for
+failed allocation path. No allocation,rights,accounting/ABI change in this slice.
+GS+indexed ledger retained identical to preceding measured experiment.
+Host actual process source fdOARl ASan/UBSan PASS15:48:11: existing commit/file
+failure tests plus1026-page crossing multiple leaf tables,partial middle unmap,
+preserved edge contents,failure injection510/511/512/513/514/515/1020,exact cleanup.
+
+18660 TERMINAL2: shared-memory BIOS16/64,UEFI64/256 PASS,then private tree
+lacked test_named_shm_lifetime.py/fixture; trap restored3sources/helper absence
+and5normal hashes including runtime.mrt. Copied only missing public fixtures.
+74735 TERMINAL1 15:53:14: shared tests BOTH again PASS; named12launches EACH
+firmware PASS6va16v40/59ot95yo; then host staging script import test_shell failed.
+Trap restoredsources/helper absence/5normal hashes. No Cobalt result from these
+failed runners. Runner now has PYTHONPATH tests and preflight fixture checks.
+
+68071/PID599171 verified LIVE15:54: frozen BIOS from successful named test,
+978d15abe933379c1dd5a9a89fde59f08fe306d1a79a60bad41a06f70cca1313;
+runtime same08945598...from successful GS combo extent,guard unchanged.
+291_00v5 two-launch visual experiment; NO source/build mutation in private tree,
+host inventory disabled because matching frozen kernel ELF not retained.
+Kernel serial own cleanup checks still available. Never restart solely on
+observation timeout. Full65645 PID582523 LIVE15:54 native TLS; no promotion.
+Main normal4 hashes allOK15:54. No speedup/acceptance claim until real images.
+
 ## Visible latency measured — 2026-10-08 15:45 +07
 
 35904 TERMINAL0 15:44:31,bz7q6fof:193.145s,164requests,assets3,normal shell

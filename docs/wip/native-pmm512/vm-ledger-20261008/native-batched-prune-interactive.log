@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/test_cobalt_native_interactive_tls_20261008.py", line 16, in <module>
+    from test_shell import command, type_text
+ModuleNotFoundError: No module named 'test_shell'
