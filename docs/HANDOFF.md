@@ -3,6 +3,53 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Confirmed inode exhaustion; private pool regression live — 2026-10-08 09:51 +07
+
+Goal ACTIVE, source3a99d70/docs6f743f5, no push/no33.3. origin/main a746889
+fetched09:49:18 unchanged. Production source/images untouched this span.
+Inode observer81191 terminal0 09:37:50,p1rh6c7a: fixed virtual heap walker.
+Before1 heap372736, after1/before2/after2 heap454400 exact. Loader baseline409344
+includes36608 immutable asset catalogue; persistent RAMFS capacity8192->53248
+accounts45056 remainder. No shared nodes after either close; pages exact.
+The old psoj5ki3 heap0 remains invalid and explicitly retained, not rewritten.
+Post-error active inode snapshot62 can race releases: NOT exact failure count.
+
+Instrumented actual kernel trace62739 terminal0 09:41:20,qpkptyt4 shows exactly
+used64/shared24/unlinked25 inside create_from returning28. Cause verified, not
+speculative RAM/FD exhaustion. Persistence11..13 reviewed before extension.
+Four-file private fix keeps FS_NODES64/snapshot bank layout unchanged, dedicates
+64 additional bounded slots to /dev/shm children; child/path/list/rename/close
+walk all128; import checks references/releases all128 but reads ONLY64 disk
+slots. Root namespace and SHM quota stats separate; no snapshot migration,
+no dropping unlinked-open lifetime guarantees, original W^X unchanged.
+Kernel focused test fills both pools, checks separate ENOSPC/stats, exports
+valid64-slot snapshot, rejects import with high pinned unlinked fd, reuses after
+last close and releases closed ephemeral nodes on import, exact heap/pages.
+Focused filesystem suite PASS. Wrapper11944 exit2 only from wrong filesystem.log
+postcondition path; failure status retained, real framebuffer-64M marker checked.
+No assertions weakened. Resume28032 now actual FULL test_system running since
+09:43:23 in pmm-syscall-R4sQZZ, followed by shared_memory/statvfs/fs_runtime_lifetime
+both BIOS/UEFI; trap restores normal BIOS/UEFI on any failure. Source FROZEN.
+
+Independent actual Cobalt pool91757 live since09:43:46 in cobalt-closed-imports-
+xnVZeH, bundle25nzgz6j. SAME four source changes, normal512MiB+existing private
+launcher/boot retirement/traces. Two real HTTPS launches, idle VA-aware before/
+after accounting; NOT shortened diagnostic run. First assets3/3,109 timers,
+keys a,b,c,3 cert negatives,0 invalid HTTP and no SHM ENOSPC; NO click callback.
+After1 heap450304/before2 same. Second still live at09:48, verify final journal,
+actual frames and resource results before any claim. Full regression VM runs
+concurrently, so timing comparisons are not isolated performance evidence.
+Poll exact28032/91757 handles; do not restart from a timeout or status file alone.
+Do not edit either candidate while its VM/build suite lives. Main normal hashes
+remain pmm-syscall-promotion-normal.sha256; do NOT check old candidate hashes
+after source mutation. Preserve owner data disks/untracked import-image logs.
+
+Next: finish full/focus; compare four promoted slices and normal binary hashes
+before promotion. Then real mouse-feedback positioning (current blind relative
+move intermittently misses click), scrolling and visual backlog; >=60s timely
+displayed interactions and bounded warm relaunch remain required. KVM group
+permission answer still absent; no group/settings modifications authorized.
+
 ## Native HTTPS two-launch regression and resource diagnosis — 2026-10-08 09:31 +07
 
 Baseline source3a99d70/docs5648c41, goal ACTIVE, no push/no33.3. All new jobs

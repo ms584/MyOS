@@ -11,7 +11,10 @@ for file in sorted(root.glob('resources-*.json')):
     # Kernel static metadata is identity-mapped. Heap pointers are virtual
     # 0x100000000: the first observer wrongly read those as physical addresses.
     # Its zero heap totals MUST NOT be used as resource-reclamation evidence.
-    print('INVALID_HEAP_TOTAL: first observer lacks virtual-to-physical translation')
+    if not data.get('heap_virtual_translation'):
+        print('INVALID_HEAP_TOTAL: first observer lacks virtual-to-physical translation')
+    else:
+        print('HEAP',data['heap_allocated'],'observed',data.get('heap_observed'))
     for node in nodes:
         if node['data'] or node['shared']:
             print('NODE',node)

@@ -136,15 +136,16 @@ for server in servers:
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();threads.append(thread)
 vm=None;visual=[];inputs=[];launches=[];samples=[]
 resource_diagnostic=os.environ.get('MYOS_TLS_RESOURCE_DIAGNOSTIC')=='1'
+resource_accounting=resource_diagnostic or os.environ.get('MYOS_TLS_RESOURCE_ACCOUNTING')=='1'
 def observe_launch(launch):
-    if resource_diagnostic:
+    if resource_accounting:
         from cobalt_native_resource_inventory import capture
         capture(vm,out,'before-%d'%launch)
     launch_start=time.monotonic();request_start=len(records)
     offset=len(vm.log.read_text());type_text(vm,'elf pair-starboard cobalt_diag provider https://cobalt.example.com:'+str(servers[0].server_port)+'/\n')
     diagnostic=os.environ.get('MYOS_TLS_TASK_SNAPSHOT')=='1'
     deadline=time.monotonic()+(210 if diagnostic else 600)
-    last=-10;visible=None;sent=False;snapshot=False;repeated=set();last_sample=-2
+    last=-10;visible=None;sent=False;snapshot=False;repeated=set();last_sample=-2;inode_captured=False
     from PIL import Image
     while time.monotonic()<deadline:
         elapsed=time.monotonic()-launch_start;content=vm.log.read_text()[offset:]
@@ -155,6 +156,9 @@ def observe_launch(launch):
             assert match,'QEMU register format changed'
             samples.append(dict(launch=launch,elapsed=elapsed,rip=int(match[1],16)))
         if 'PANIC' in content or content.endswith('myos> '):break
+        if resource_diagnostic and not inode_captured and 'Creating shared memory in' in content and 'failed: Error 28' in content:
+            capture(vm,out,'active-enospc-%d'%launch,include_heap=False)
+            inode_captured=True
         if diagnostic and elapsed>=150 and not snapshot:
             from cobalt_task_snapshot import capture
             capture(vm,out);snapshot=True
@@ -202,7 +206,7 @@ def observe_launch(launch):
     (out/'launches.json').write_text(json.dumps(launches,indent=2))
     print('LAUNCH_OBSERVATION',json.dumps(result),flush=True)
     assert result['shell_returned'],'close did not return to shell; cannot safely relaunch'
-    if resource_diagnostic:
+    if resource_accounting:
         capture(vm,out,'after-%d'%launch)
 try:
     vm=VM('native-verified-tls',ram=512,nic=True,asset_disk=disk,cpu='max')

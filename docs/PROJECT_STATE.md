@@ -1,74 +1,57 @@
 # MyOS project state
-Updated: 2026-10-08 09:31 +07. Repo /home/xytron404/myos, main.
-Source baseline3a99d70; origin/main a746889 fetched03:43; no push.
-## Scope and honest status
-- Phase33.1/33.2 OPEN. Actual native HTML/JS/DOM/timers/key/click observed;
-  trusted HTTPS/concurrent assets/cert negatives now observed in private WIP.
-  Responsive>=60s, scrolling/relaunch cleanup NOT accepted. No33.3/no push;
-  YouTube unproven, Phase32/33 NOT PASSED.
-- Strong paired imports242/242, registered240; missing0. Fifteen unavailable
-  media +nine POSIX ENOSYS are explicit boundaries, NOT complete API semantics.
-## Newly promoted full-tested runtime
-- pmm-syscall-R4sQZZ full retry2759 TERMINAL_EXIT=0 at06:42:30. Mandatory
-  test_system.py +six affected scopes BOTH BIOS/UEFI, normal restored.
-- Main promotion78188 TERMINAL_EXIT=0 at08:56:12. Reviewed13 changed tracked
-  inputs, copied exact candidate/new focused fixtures; FOUR normal binaries
-  byte-identical to full-tested candidate. No diagnostic/boot experiment copied.
-- PMM max512MiB (actual E820 usable pages only), metadata expanded after heap
-  bootstrap; BIOS BSS unchanged. No swap, demand paging or COW.
-- Safe syscall copy validates PMM-owned frames instead of stale256MiB cap.
-  U/S, RW, canonical/range preflight retained. Actual280MiB per-page random/log,
-  RO/NONE/supervisor/cross-page rejection/two-launch exact resources PASS both.
-- Shared backing8MiB, direct reference aliases without temporary private pages;
-  near-image best-effort mmap hints/pool, fixed/NOREPLACE protections preserved.
-- Kernel32 file handles/runtime64 slots; advertised NOFILE128 upper bound.
-  O_NOFOLLOW correct for symlink-free namespaces; EMFILE closes kernel handle.
-  Server/socketpair fixtures use advertised limits, not old hardcoded counts.
-- Prior combined SHM8/direct full47797+10 scopes BOTH firmware PASS. Old22674
-  missing ABI cache and7014 missing core failures retained, NOT rewritten PASS.
-- Hash entry: build/pmm-syscall-promotion-normal.sha256. Previous import-image
-  promotion hashes are historical and superseded. Data disks untouched.
-## Actual native Cobalt / private WIP
-- hfcgru2i/n693w3zt show actual HTML/DOM42, timers, key/click. Long refresh final
-  Timer96/Clicks2 versus156 timers/click3: substantial visual lag remains.
-- Private normal boot-probe retirement keeps PROCESS_TESTS=1 stress unchanged.
-  BIOS/UEFI focus: counters run then stop, PIT/shell live, pages exact.
-  c3sthg1e DOM74.62s/background95s vs126.49/186s, keys a/b/c, NO clicks this run;
-  final Timer114 vs131. Heap409088->454144; warm cache/relaunch accounting pending.
-  Retirement NOT promoted; CPU-clock runner lacked its test file, NOT CPU PASS.
-- Native TLS IP attempt3p379730: ERR_CERT_NON_UNIQUE_NAME,0HTTP, stopped only
-  after actual navigation failure. DNS SAN fixture uses enforcement=true,
-  public test CA through actual hashed cert assets, DNS-only host mapping.
-- TLS58269 terminal0 observation06:11:15,duv0icq3: ONE valid HTTPS GET55.86s;
-  no /app.js, DOM, blue pixels or concurrent assets. NOT HTTPS acceptance.
-- TLS snapshot91255 terminal0 observation08:56:48,cb5eie3f: one GET54.01s.
-  At150s all user tasks blocked (some timed), kernel boot task runnable;
-  snapshot is not proof of deadlock or responsive timing. Pages/threads stop;
-  heap409344->450304, cleanup still unaccepted. Keys never recorded/committed.
-- TCP trace46944 terminal0; verbose18956 terminal0 showed actual Cobalt cancels
-  navigation on missing CSP header, NOT a proven TLS/readiness deadlock.
-- CSP fixture-only fix77831 terminal0 at09:15:04, bundle c4sx6f02: actual
-  native HTTPS HTML/external app.js/DOM42,93 timer beacons, key a/click1;
-  three assets loaded, peak concurrent3, three certificate-error beacons,
-  ZERO HTTP on wrong-host/expired/untrusted servers. No TLS/CSP bypass.
-- Real final screenshot: DOM42,Timer77,Clicks1,Rejected certificates3/3.
-  Timer93 in journal: visual lag remains, not responsive60s acceptance.
-  Escape: pages reclaimed/all threads stopped, heap409344->450304 (+40960).
-  Controlled disposable CA/DNS map, NOT public Internet.
-- Relaunch85764 terminal0 at09:26:20,0dgifhbw: SAME VM two launches, DOM42,
-  a/b/c and click each; both return shell/pages exact/all threads stopped.
-  Heap409344->454400->450304; not monotonically growing in these two runs.
-  Second launch asset2 onerror, shared-memory creation ENOSPC: NOT full PASS.
-- Resource diagnostic31842 terminal0 at09:29:23,psoj5ki3: RAMFS regular-file
-  capacity8192->49152 (+40960), matching serial heap delta exactly; cache/index
-  files persist,0 shared nodes after close. Initial heap walker totals0 INVALID
-  (read4GiB virtual heap as physical); use valid identity-mapped node metadata
-  and kernel serial totals, never claim its zero as reclamation proof.
-## Next and artifacts
-- Diagnose SHM create ENOSPC (RAMFS64 nodes/open-create path), then visual
-  backlog/scrolling. Capture active inode occupancy before changing limits.
-- Resolve visual latency/PS2 motion, scrolling, >=60s responsiveness and warm
-  close/relaunch resources. Do not close phases on imports/fixture results.
-- HANDOFF.md; docs/wip/native-pmm512 preserves slices/logs/actual screenshots.
-  Private TLS keys stay in private build dirs; never copy whole TLS bundles.
-- activity.log bounded48MiB; NEVER read it through run_logged.py. Goal ACTIVE.
+Updated: 2026-10-08 09:51 +07. /home/xytron404/myos, main.
+Source3a99d70, docs6f743f5; origin/main a746889 fetched09:49:18, unchanged.
+## Goal / acceptance
+- Goal ACTIVE; Phase33.1/33.2 OPEN, no33.3/no push; YouTube unproven.
+- Native HTML/JS/DOM42/timers/key/click and controlled verified HTTPS observed.
+  Three concurrent assets and wrong-host/expired/untrusted rejections observed.
+  NOT public Internet/DNS proof. Responsive>=60s/scrolling still NOT accepted.
+- Imports242/242, missing0;15 unavailable media +9 POSIX ENOSYS explicit.
+  Counts/fixtures are NOT complete API semantics or closure percentages.
+## Production baseline (unchanged this span)
+- Full retry2759 terminal0 06:42:30 +six affected scopes BIOS/UEFI passed.
+  Main promotion78188 terminal0 08:56:12; four normal binaries byte-identical.
+- PMM512MiB actual E820 frames/upper-frame syscall checks; direct8MiB SHM,
+  nonfixed mmap hints, kernel32/runtime64 handles, nofollow/EMFILE cleanup.
+  W^X/RELRO/user-pointer guards retained. No swap/demandpaging/COW.
+- Current normal hashes: build/pmm-syscall-promotion-normal.sha256.
+  Old import-image hashes superseded; owner data disks untouched.
+## Native HTTPS / relaunch evidence
+- CSP fixture fix77831 terminal0,c4sx6f02: actual external app.js,DOM42,
+  timer93,key/click,assets3/3 peak3,cert negatives3/3,0 invalid HTTP.
+  Final actual Timer77/Clicks1: visual backlog, NOT responsive acceptance.
+- Same-VM two-launch85764 terminal0,0dgifhbw: DOM/key a,b,c/click both;
+  pages exact/all threads stopped/shell returned. Second asset2 onerror;
+  native SHM creation ENOSPC. Heap409344->454400->450304, NOT full PASS.
+- Fixed VA-aware resource observer81191 terminal0 09:37:50,p1rh6c7a:
+  after1/before2/after2 heap454400 exact; no shared nodes after closes.
+  RAMFS cache capacity8192->53248 accounts45056; mount catalogue36608
+  explains initial before-loader heap372736 vs loader409344.
+- Earlier psoj5ki3 zero heap totals INVALID (physical read of virtual heap).
+  Raw evidence/analyzer retain limitation; never cite zeros as reclamation.
+## SHM inode constraint / private candidate
+- Exact kernel trace62739 terminal0 09:41:20,qpkptyt4: inode used64,
+  shared24/unlinked25 at ENOSPC. Active snapshot62 is post-failure race,
+  not exact occupancy at failure. File cache and SHM share original64 slots.
+- Private4-file fix: FS_NODES64 persistent/snapshot unchanged; separate64
+  /dev/shm child slots,128 live nodes, all live traversal/close/import checks.
+  Namespace statvfs quotas separate; snapshot still64 slots, no disk migration.
+- Focused filesystem PASS including both pools full, last-close/reuse,
+  snapshot rejects high pinned fd, closed ephemeral cleanup/exact resources.
+  First wrapper11944 exit2 wrong postcondition log filename, NOT suite failure;
+  retained status. Actual framebuffer-64M marker validated, then resumed full.
+- Full28032 RUNNING since09:43:23 in /home/xytron404/pmm-syscall-R4sQZZ;
+  mandatory test_system +shared_memory/statvfs/fs_runtime_lifetime BIOS/UEFI.
+  Restore trap active. Do NOT mutate candidate/restart while live.
+- Native pool91757 RUNNING since09:43:46,cobalt-closed-imports-xnVZeH,
+  bundle25nzgz6j, two launches with idle VA-aware resource snapshots.
+  First assets3/3/keys3/cert negatives3,0 SHM ENOSPC; NO click callback.
+  Second live at09:48; inspect final evidence, don't infer PASS from exit0.
+  Full suite runs concurrently: timing not isolated performance acceptance.
+## Next
+- Inspect SAME live28032/91757 handles; only promote after full+focus checks.
+  Then fix actual mouse-feedback delivery, scrolling and visual backlog;
+  prove >=60s interaction plus bounded warm relaunch on normal launcher.
+- Docs/wip/native-pmm512 holds source slices/runners/public evidence only.
+  No private TLS keys. No boot-retirement/verbose diagnostic launcher promoted.
+- activity.log bounded48MiB; NEVER read it through run_logged.py.
