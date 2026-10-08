@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 09:55 +07. /home/xytron404/myos, main.
-Source3a99d70, docs6f743f5; origin/main a746889 fetched09:49:18, unchanged.
+Updated: 2026-10-08 10:10 +07. /home/xytron404/myos, main.
+Source3a99d70, prior docs54a3fc2; origin/main a746889 fetched09:49:18.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN, no33.3/no push; YouTube unproven.
 - Native HTML/JS/DOM42/timers/key/click and controlled verified HTTPS observed.
@@ -49,11 +49,19 @@ Source3a99d70, docs6f743f5; origin/main a746889 fetched09:49:18, unchanged.
   Click only second. Second EMFILE24 left3 named zero-size SHM nodes;
   heap450304->499504 (+49200), NOT resource PASS. runtime_open_base opens
   kernel inode BEFORE runtime descriptor installation: failure closes fd
-  but leaves created file. Reserve runtime fd before create/truncate next.
+  but leaves created file. Private runtime now reserves BEFORE create/truncate.
   Full suite runs concurrently: timing not isolated performance acceptance.
+## Descriptor reservation private slice
+- Before-fix native fixture reproduced orphan creation. Reserved slots exclude
+  all installers, remain EBADF until publication; every open error rolls back.
+- Basic99191 terminal0; concurrent90750 terminal0 10:08:53, BIOS/UEFI four
+  relaunches each: full table no-create/no-truncate,128 failed-open reuse,
+  four-thread contention with one free slot and exact resources PASS.
+- Native4031 RUNNING since10:09:36, two HTTPS launches/resource accounting.
+  Not accepted yet; runtime/full combined candidate NOT promoted.
 ## Next
 - Inspect SAME live28032 handle; only promote after full+focus checks.
-  Then fix actual mouse-feedback delivery, scrolling and visual backlog;
+  Inspect native4031; fix mouse-feedback delivery, scrolling and visual backlog;
   prove >=60s interaction plus bounded warm relaunch on normal launcher.
 - Docs/wip/native-pmm512 holds source slices/runners/public evidence only.
   No private TLS keys. No boot-retirement/verbose diagnostic launcher promoted.

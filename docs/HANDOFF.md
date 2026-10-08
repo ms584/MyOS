@@ -3,6 +3,42 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Atomic runtime reservation tested; actual relaunch pending — 2026-10-08 10:10 +07
+
+Main source/images remain unchanged; docs prior HEAD54a3fc2, no push/no33.3.
+Previous status-only turn yielded no implementation; this turn reproduces and
+fixes the actual EMFILE side effect in the terminal private native tree ONLY.
+platform-runtime-reservation-20261008.c adds reserved flag to existing24-byte
+slot padding. Common installers skip reservations; acquire/close still see
+EBADF because object is absent. Allocate object/state and reserve before the
+kernel open; release reservation/object on every kernel/asset/fstat failure.
+Publication clears reservation and installs under one table lock. No table
+lock crosses allocation/syscall; no race-prone pre-stat/unlink cleanup.
+
+Native baseline regression fails exactly at absence of newly created path,
+before new runtime is installed. Basic99191 terminal0, BIOS and UEFI each four
+relaunches/exact resources. Extended90750 terminal0 10:08:53: 64 runtime slots
+filled using urandom dup without kernel handle exhaustion; O_EXCL failure
+creates no path; O_TRUNC preserves9 bytes;128 ENOENT rollback/reuse attempts;
+four real pthreads contend for one remaining slot with private filenames;
+each firmware four launches and resource checks. Actual serial marker count4
+both. First setup failure lacked copied test file; second fixture mistakenly
+used unexported nanosleep. Both retained; corrected to existing exported
+clock_nanosleep, NOT adding fake imports or weakening assertions.
+
+Native4031 LIVE since10:09:36 runs actual two verified HTTPS Cobalt launches
+with same VA-aware idle accounting, status/log cobalt-runtime-reservation.*
+in /home/xytron404/cobalt-closed-imports-xnVZeH. No guest builds/source mutations
+while running. No conclusion yet about real EMFILE heap growth or capacity.
+Independent full28032 remains live in /home/xytron404/pmm-syscall-R4sQZZ,
+last10:09 DNS PASS then cross-signal. Do NOT mutate/restart that tree.
+Private runtime contains earlier diagnostic trace/launcher dependencies:
+do NOT copy whole runtime into main. Extract minimal reservation diff against
+main, then run combined architectural/full regression before promotion.
+Normal production hashes remain build/pmm-syscall-promotion-normal.sha256.
+Scrolling, reliable mouse feedback, visual latency/60s and normal launcher
+remain unaccepted. Poll exact live handles; no restart on observation timeout.
+
 ## Pool fixes ENOSPC, reveals runtime EMFILE creation side effects — 2026-10-08 09:55 +07
 
 Native91757 now TERMINAL0 09:52:32, bundle25nzgz6j. Full28032 still live at09:54
