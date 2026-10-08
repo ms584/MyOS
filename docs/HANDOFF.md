@@ -5,6 +5,45 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Non-root KVM experiment — 2026-10-08 16:21 +07
 
+Final ATA native observation66375 TERMINAL0 16:38:49. ia30b2lw: two launches
+215.5446/215.9497s,total315requests,peak concurrent assets3. First actual visible
+95.3845/95.7511s;120s post-visible window each (~119.7s sampled PNG span).
+All10 keys a/b/PageDown/c/PageUp visible upper bounds0.590..1.312s at1s sampling;
+timer plateau max2.040s. Real JS events each: DOM42,click1,scroll80 then0,
+three asset-ok and wrong-host/expired/untrusted rejection. All HTTP records on
+valid server,fixture terminal assertions pass. Both close shell,threads stopped,
+free126671->126671,SHM backing0->0,aliases0->0. Heap409344->450304->450304
+bounded resident cache. Final actual PNG second Timer123/Key PageUp/ScrollTOP.
+Read-only source audit655 files vs byte-identical native baseline: only ata.c.
+Runtime remains08945598,renderer remains55f0875c. No concurrent VM/regression
+during this candidate observation. Older scalar baseline overlapped short build/
+asset checks: do not claim statistically controlled startup speedup factor.
+Host private RAM-peak inventory excluded (frozen wrapper disabled it); still
+required before final acceptance. Production native launcher integration and
+integrated full regression pending. NO phase closure,NO33.3,NO push.
+
+Update16:34:63295 first launch first actual visible583.39s,first a ack<=1.015s,
+only19 visible seconds before600s absolute observation limit.51requests/assets3,
+clean close602.12s with exact resident pages/SHM/aliases and shell. Second
+launch intentionally SIGINT Python61224916:30:44 (finally saved JSON/serial and
+terminated QEMU); terminal-2/Windows1,NOT acceptance or a guest crash.
+
+ATA trial root /home/xytron404/ata-rep-read-S8iLch derives byte-identical matched
+symbol root pc-symbols-RtA49E; only drivers/ata.c read transfer changed from256
+scalar INW to CLD/REP INSW256words. Same sector/status checks,IRQ exclusion,
+write guards,PIO/notDMA. Kernel image9858e435b9035cf0081b7cba6a7150956c73e8c6bfc2b1919ee4a55505d1ccc9;
+runtime08945598 unchanged. Asset-v2/v1 fixtures KVM BIOS40112 terminal0 16:27:27,
+UEFI89858 terminal0 16:29:16: large/random resource I/O,readonly disk hash,
+four relaunches/exact resources PASS. First UEFI build57071 missing font from
+isolated source copy; assets copied then retry PASS. No runtime/kernel fallback.
+
+1060 first native ATA attempt stopped at host provider-root guard before VM;
+preserved native-ata-rep-kvm.log. Pinned core/provider/report/audit copied into
+trial build root,guard unchanged.66375 LIVE16:31:32,ia30b2lw,two KVM launches,
+native-ata-rep-kvm-retry.log; no concurrent VM/regression during native trial.
+Actual screenshot launch1frame099: native HTTPS DOM42,Timer7,cert rejects3/3.
+Still await120s actual responsive input and two closes. No source promoted.
+
 Owner explicitly authorized adding xytron404 to group kvm. Appended16:15:10;
 fresh session groups includes991(kvm),device readable/writable. Non-root ioctl
 KVM_GET_API_VERSION=12 and KVM_CREATE_VM succeed16:18:17. Normal unchanged
