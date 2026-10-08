@@ -55,7 +55,7 @@ uint64_t _start(void)
     *__errno_location()=0;if(getauxval(999)!=0||*__errno_location()!=2)return 7;
 
     struct musl_rlimit limit;
-    if(sysconf(4)!=128||getrlimit(7,&limit)||limit.current!=128||limit.maximum!=128)return 8;
+    if(sysconf(4)!=192||getrlimit(7,&limit)||limit.current!=192||limit.maximum!=192)return 8;
     if(getrlimit(6,&limit)||limit.current!=MYOS_USER_TASK_LIMIT||limit.maximum!=MYOS_USER_TASK_LIMIT)return 9;
     if(getrlimit(3,&limit)||limit.current!=16384||limit.maximum!=16384)return 25;
     if(getrlimit(99,&limit)!=-1||*__errno_location()!=22)return 10;

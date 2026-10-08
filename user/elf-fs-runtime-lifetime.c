@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <pthread.h>
+#include <time.h>
 static void fill(void *raw,unsigned char value,size_t length)
 {unsigned char *p=raw;for(size_t i=0;i<length;++i)p[i]=value;}
 static int differs(const void *a,const void *b,size_t length)
@@ -28,9 +30,65 @@ extern int closedir(void *);
 struct flock_abi {int16_t type,whence;uint32_t padding;int64_t start,length;int32_t pid;uint32_t tail;};
 _Static_assert(sizeof(struct flock_abi)==32&&offsetof(struct flock_abi,start)==8&&offsetof(struct flock_abi,pid)==24,"pinned flock ABI");
 #define CHECK(x) do{if(!(x)){SbLogRaw("native FS runtime failure: " #x "\n");return __LINE__;}}while(0)
+static volatile unsigned workers_ready,workers_go,worker_opens;
+static void *reservation_worker(void *argument)
+{
+ char path[]="/home/runtime-race-0";path[sizeof(path)-2]+=(char)(uintptr_t)argument;
+ struct timespec delay={0,1000000};struct stat st;
+ __atomic_add_fetch(&workers_ready,1,__ATOMIC_RELEASE);
+ while(!__atomic_load_n(&workers_go,__ATOMIC_ACQUIRE))clock_nanosleep(CLOCK_MONOTONIC,0,&delay,0);
+ for(unsigned i=0;i<32;++i){
+  int fd=openat(AT_FDCWD,path,O_RDWR|O_CREAT|O_EXCL,0600);
+  if(fd<0){
+   if(errno!=24)return (void *)(uintptr_t)__LINE__;
+   if(fstatat(AT_FDCWD,path,&st,0)!=-1||errno!=2)return (void *)(uintptr_t)__LINE__;
+  }else{
+   __atomic_add_fetch(&worker_opens,1,__ATOMIC_RELAXED);
+   clock_nanosleep(CLOCK_MONOTONIC,0,&delay,0);
+   if(write(fd,"x",1)!=1||close(fd)||unlinkat(AT_FDCWD,path,0))return (void *)(uintptr_t)__LINE__;
+  }
+  clock_nanosleep(CLOCK_MONOTONIC,0,&delay,0);
+ }
+ return 0;
+}
 int _start(void)
 {
  struct stat st;char buffer[16]={0};
+ /* Fill only the runtime table: duplicates of urandom consume no RAMFS
+  * handles. Failed open must not create an inode or truncate existing data. */
+ int kept=openat(AT_FDCWD,"/home/runtime-reserve-kept",O_RDWR|O_CREAT|O_EXCL,0600);
+ CHECK(kept>=0&&write(kept,"preserved",9)==9&&!close(kept));
+ /* Pinned musl _SC_OPEN_MAX=4 is a descriptor-number ceiling. Runtime
+  * descriptors begin at64; exercise every supported slot, not a guessed cap. */
+ long ceiling=sysconf(4);CHECK(ceiling>64&&ceiling<=192);
+ unsigned slots=(unsigned)ceiling-64,last=slots-1;
+ int copies[128];copies[0]=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(copies[0]>=0);
+ for(unsigned i=1;i<slots;++i){copies[i]=dup(copies[0]);CHECK(copies[i]>=0);}
+ CHECK(openat(AT_FDCWD,"/home/runtime-reserve-new",O_RDWR|O_CREAT|O_EXCL,0600)==-1&&errno==24);
+ CHECK(fstatat(AT_FDCWD,"/home/runtime-reserve-new",&st,0)==-1&&errno==2);
+ CHECK(openat(AT_FDCWD,"/home/runtime-reserve-kept",O_WRONLY|O_TRUNC)==-1&&errno==24);
+ CHECK(!fstatat(AT_FDCWD,"/home/runtime-reserve-kept",&st,0)&&st.st_size==9);
+ CHECK(!close(copies[last]));
+ for(unsigned i=0;i<128;++i)
+  CHECK(openat(AT_FDCWD,"/home/runtime-reserve-missing",O_RDONLY)==-1&&errno==2);
+ kept=openat(AT_FDCWD,"/home/runtime-reserve-kept",O_RDONLY);CHECK(kept==copies[last]);
+ CHECK(read(kept,buffer,sizeof(buffer))==9&&!differs(buffer,"preserved",9)&&!close(kept));
+ kept=openat(AT_FDCWD,"/home/runtime-reserve-new",O_RDWR|O_CREAT|O_EXCL,0600);
+ CHECK(kept==copies[last]&&!close(kept));
+ /* Four threads compete for the only free slot after dup filled the rest.
+  * Private names let each failed open prove absence without path races. */
+ pthread_t threads[4];
+ for(unsigned i=0;i<4;++i)CHECK(!pthread_create(&threads[i],0,reservation_worker,(void *)(uintptr_t)i));
+ struct timespec delay={0,1000000};
+ while(__atomic_load_n(&workers_ready,__ATOMIC_ACQUIRE)!=4)clock_nanosleep(CLOCK_MONOTONIC,0,&delay,0);
+ __atomic_store_n(&workers_go,1,__ATOMIC_RELEASE);
+ for(unsigned i=0;i<4;++i){void *result=(void *)1;CHECK(!pthread_join(threads[i],&result)&&!result);}
+ CHECK(__atomic_load_n(&worker_opens,__ATOMIC_RELAXED)>0);
+ kept=openat(AT_FDCWD,"/dev/urandom",O_RDONLY);CHECK(kept==copies[last]&&!close(kept));
+ for(unsigned i=0;i<last;++i)CHECK(!close(copies[i]));
+ CHECK(!unlinkat(AT_FDCWD,"/home/runtime-reserve-new",0));
+ CHECK(!unlinkat(AT_FDCWD,"/home/runtime-reserve-kept",0));
+ SbLogRaw("native runtime EMFILE no-create/no-truncate, rollback and concurrent publication PASS\n");
  CHECK(!mkdir("/home/runtime-src",0777));
  int dir=openat(AT_FDCWD,"/home/runtime-src",O_RDONLY|O_DIRECTORY);CHECK(dir>=0);
  int file=openat(dir,"file",O_RDWR|O_CREAT|O_EXCL,0600);CHECK(file>=0&&write(file,"source",6)==6);

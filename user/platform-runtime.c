@@ -870,7 +870,7 @@ void *pthread_getspecific(void *raw_key)
 #define SYS_TCP_LISTEN 54u
 #define SYS_TCP_ACCEPT 55u
 #define FD_BASE 64
-#define FD_SLOTS 64u
+#define FD_SLOTS 128u
 #define PIPE_CAPACITY 4096u
 #define EPOLL_REGS 32u
 #define O_NONBLOCK 04000
@@ -930,7 +930,7 @@ struct descriptor_object {
 };
 struct descriptor_slot {
     struct descriptor_object *object;
-    uint32_t generation,access,flags;
+    uint32_t generation,access,flags,reserved;
 };
 static int64_t runtime_record_call(int kernel_fd,unsigned command,void *lock)
 {
@@ -996,7 +996,7 @@ static int descriptor_install_from_locked(struct descriptor_state *state,
                                           unsigned access,unsigned flags,
                                           unsigned first)
 {
-    for(unsigned i=first;i<FD_SLOTS;++i)if(!state->slots[i].object){
+    for(unsigned i=first;i<FD_SLOTS;++i)if(!state->slots[i].object&&!state->slots[i].reserved){
         struct descriptor_slot *slot=&state->slots[i];
         if(!object->references)object->status_flags=flags&(O_APPEND|O_NONBLOCK);
         if(!slot->generation)slot->generation=1;
@@ -1010,6 +1010,23 @@ static int descriptor_install_locked(struct descriptor_state *state,
                                      struct descriptor_object *object,
                                      unsigned access,unsigned flags)
 {return descriptor_install_from_locked(state,object,access,flags,0);}
+/* An unpublished reservation owns a slot, not an open description. All
+ * installers skip it; acquire/close still see EBADF. Never hold the table
+ * lock over allocation or a kernel call. This prevents EMFILE from creating
+ * files or truncating existing files before publication can succeed. */
+static int descriptor_reserve(struct descriptor_state *state)
+{
+    spin_lock(&state->lock);
+    for(unsigned i=0;i<FD_SLOTS;++i)
+        if(!state->slots[i].object&&!state->slots[i].reserved){
+            state->slots[i].reserved=1;spin_unlock(&state->lock);return (int)i;
+        }
+    spin_unlock(&state->lock);return -1;
+}
+static void descriptor_unreserve(struct descriptor_state *state,unsigned index)
+{
+    spin_lock(&state->lock);state->slots[index].reserved=0;spin_unlock(&state->lock);
+}
 static int descriptor_acquire(int fd,struct descriptor_ref *reference)
 {
     struct descriptor_state *state=descriptor_state();
@@ -1743,33 +1760,43 @@ static int runtime_open_base(int base,const char *normalized,int flags)
     if(flags&MUSL_O_CREAT)myos|=4;if(flags&MUSL_O_TRUNC)myos|=8;if(flags&MUSL_O_EXCL)myos|=16;
     if(flags&MUSL_O_DIRECTORY)myos|=32;
     else if(access==1&&!(flags&(MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC)))myos|=64;
+    struct descriptor_state *state=descriptor_state();
+    struct descriptor_object *object=descriptor_object(DESCRIPTOR_FILE);
+    if(!state||!object){if(object)free(object);return set_error(ENOMEM);}
+    int reserved=descriptor_reserve(state);
+    if(reserved<0){free(object);return set_error(24);}
     /* One kernel operation chooses and pins the inode; no stale pre-stat path. */
     int64_t kernel=runtime_fs_at(FS_CALL_OPEN_AT,base,normalized,myos,0,0,0);
+    int64_t error=kernel;
     struct fs_entry_abi entry;int adapter=0;
     if(kernel<0){
         /* Asset namespace is immutable; a path adapter is safe here only. */
-        if(base!=MUSL_AT_FDCWD||!immutable_asset_path(normalized))return fail(kernel);
+        if(base!=MUSL_AT_FDCWD||!immutable_asset_path(normalized))goto open_failed;
         int64_t status=call3(SYS_STAT,(uintptr_t)normalized,(uintptr_t)&entry,0);
-        if(status<0||entry.type!=2)return fail(kernel);
-        if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
-        if(access!=1||flags&MUSL_O_TRUNC)return set_error(21);
+        if(status<0||entry.type!=2)goto open_failed;
+        if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL)){error=-EEXIST;goto open_failed;}
+        if(access!=1||flags&MUSL_O_TRUNC){error=-21;goto open_failed;}
         kernel=0;adapter=1;
     }else{
         int64_t status=call3(SYS_FSTAT,(unsigned)kernel,(uintptr_t)&entry,0);
-        if(status<0){(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);return fail(status);}
+        if(status<0){error=status;goto open_failed;}
         if(entry.type==2&&base==MUSL_AT_FDCWD&&normalized[0]=='/'&&!normalized[1])adapter=1;
     }
-    struct descriptor_state *state=descriptor_state();
-    struct descriptor_object *object=descriptor_object(entry.type==2?DESCRIPTOR_DIRECTORY:DESCRIPTOR_FILE);
-    if(!state||!object){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);if(object)free(object);return set_error(ENOMEM);}
+    object->type=entry.type==2?DESCRIPTOR_DIRECTORY:DESCRIPTOR_FILE;
     if(entry.type==2){
         object->value.directory.kernel_fd=(int32_t)kernel;object->value.directory.adapter=(unsigned)adapter;
         if(adapter){size_t i=0;for(;normalized[i]&&i<127;++i)object->value.directory.path[i]=normalized[i];
             object->value.directory.path[i]=0;}
     }else object->value.file.kernel_fd=(int32_t)kernel;
     spin_lock(&state->lock);
-    int fd=descriptor_install_locked(state,object,access,(unsigned)flags);spin_unlock(&state->lock);
-    if(fd<0){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(24);}return fd;
+    /* Only this call can release its reservation. Under the same lock the
+     * reserved slot is therefore guaranteed to be the first available slot. */
+    state->slots[reserved].reserved=0;
+    int fd=descriptor_install_from_locked(state,object,access,(unsigned)flags,(unsigned)reserved);
+    spin_unlock(&state->lock);return fd;
+open_failed:
+    if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);
+    descriptor_unreserve(state,(unsigned)reserved);free(object);return fail(error);
 }
 int openat(int directory,const char *path,int flags,...)
 {

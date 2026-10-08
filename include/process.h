@@ -67,7 +67,7 @@ struct process {
     bool exited;
     bool main_thread_exited;
     int32_t exit_status;
-    struct fs_handle files[FS_HANDLES];
+    struct fs_handle *files; /* Process-owned bounded table; freed on reap. */
     struct process_thread threads[PROCESS_THREAD_LIMIT];
     uint64_t next_tid;
     struct process_signal *signals;

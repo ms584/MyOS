@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 13:55 +07. /home/xytron404/myos,main.
-Source SHM pool promotion369aa1a over3a99d70; prior docs85f598c.
+Updated: 2026-10-08 14:00 +07. /home/xytron404/myos,main.
+Source descriptor/heap/queue promotion over369aa1a; prior docs7f527ea.
 origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -13,12 +13,12 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 ## Production baseline
 - Full2759 and full SHM-pool28032 terminal0; affected scopes BOTH firmware PASS.
   Promotion36207 compared all tracked inputs,exactly4 pool changes; normal
- 4 binaries byte-identical to tested tree. Main kernel32/runtime64 handles.
+ 4 binaries byte-identical to tested tree. New kernel64/runtime128 below.
 - PMM512MiB E820,upper-frame pointer guards,direct8MiB SHM,mmap hints;
   SHM64 separate child slots,live128; persistent64/snapshot bank unchanged.
   W^X/RELRO intact; no swap/demandpaging/COW; owner disks untouched.
-- Normal hashes build/shm-inode-pool-promotion-normal.sha256 supersede old ones.
-## Pending descriptor/heap/queue slice (not production)
+- Normal hashes build/descriptor-promotion-normal.sha256 supersede SHM-pool hashes.
+## Promoted descriptor/heap/queue slice
 - Reservation fixes reproduced EMFILE orphan files; basic/concurrent4 launches
   BOTH firmware PASS. Runtime128 peak>=68; kernel32 still EMFILE on native.
 - Kernel64 removes SHM Error24;3584 close PANIC remains unexplained. Later
@@ -27,6 +27,9 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 - Retry28044 TERMINAL0 12:16,pmm-syscall-R4sQZZ: process filetable heap+SB16
   softwarequeue heap;DMA/capacity unchanged. Fault0..6 builds/PCM BOTH PASS;
   fault3 bss0x70e90. Full system PASS,normal restore/final4 hashes all OK.
+- Main promotion97035 terminal0 13:57:44: audited exact9 build/test changes;
+  normal BIOS/UEFI build4 hashes match tested tree. No private launcher,
+  renderer/provider,boot retirement or accounting implementation promoted.
 - CPU59213 names dominant Chrome_InProcGpuThread. GPU61286 saved frame PCs
   include errno/memcpy/softpipe,NOT function time attribution; details HANDOFF.
 ## Private experiments (not production)
@@ -46,13 +49,15 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
   closes pages126671 exact/SHM0/aliases0/shell. Heap450304/454400/454400 tracks
   RAMFS cache49152/53248/53248; full accounting regression still pending.
   Cobalt must STILL show temporary SHM0/unlinked0; no full accounting suite yet.
+- Clean accounting84234 LIVE14:00,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/elf.c
+  beyond promoted source. Builds, named-lifetime/shared-memory both firmware,
+  mandatory full system,normal restore/final4 hashes. Main remains frozen.
 ## Next
-- Both former jobs terminal; promote only audited9-file capacity slice after
-  main build matches tested hashes. Run clean accounting full in candidate.
+- Poll84234 exact handle; do not mutate candidate/restart on observation timeout.
 - Inspect close/page/SHM metadata and actual frames/input latency; prove
   >=60s responsive interaction/relaunch on normal launcher before closure.
-- Accounting needs relevant/full regression; combined capacity slice needs
-  complete full/normal-hash evidence before main promotion.
+- Accounting needs relevant/full evidence before promotion. Fix actual latency
+  and normal production launcher integration; source capacity alone is not5/5.
 - Detailed public logs/sources/runners: docs/wip/native-pmm512 and HANDOFF.
   No private TLS keys,boot retirement or verbose private launcher promoted.
 - activity.log bounded48MiB; NEVER read it through run_logged.py.

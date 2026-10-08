@@ -24,7 +24,8 @@ struct process *process_find(uint64_t pid)
 
 static void release(struct process *process)
 {
-    fs_close_all(process->files);
+    if(process->files)fs_close_all(process->files);
+    kfree(process->files);
     /* Only detached, noncurrent address spaces may reach this function. */
     process_signal_release(process);
     for (unsigned i = 0; i < process->page_count; ++i) if(process->image_pages?process->image_pages[i]:process->pages[i])page_free(process->image_pages?process->image_pages[i]:process->pages[i]);
@@ -46,6 +47,11 @@ static uint64_t create_image(const void *image,size_t image_size,uint64_t mode,u
         if (processes[i].state == PROCESS_UNUSED) { process = &processes[i]; break; }
     if (!process) { irq_restore(flags); return 0; }
     if(!image || !image_size || image_size>PROCESS_CODE_PAGES*PAGE_SIZE){irq_restore(flags);return 0;}
+    /* Keep growing file capacity out of the BIOS-reserved kernel BSS.
+     * Allocate before publication; release() handles all partial failures. */
+    process->files=kmalloc(FS_HANDLES*sizeof(*process->files));
+    if(!process->files)goto failed;
+    memset(process->files,0,FS_HANDLES*sizeof(*process->files));
     unsigned code_pages=loaded?(unsigned)((image_size+PAGE_SIZE-1)/PAGE_SIZE):1u;
     unsigned required=4+code_pages+2+(loaded?PROCESS_HEAP_PAGES:0);
     for (unsigned i = 0; i < required; ++i) {
@@ -214,6 +220,9 @@ static struct process *stage_images(const struct elf_source *const sources[],con
             capacity+=(unsigned)(((s->address%PAGE_SIZE)+s->memsz+4095)/PAGE_SIZE);
         }
     }
+    p->files=kmalloc(FS_HANDLES*sizeof(*p->files));
+    if(!p->files)goto failed;
+    memset(p->files,0,FS_HANDLES*sizeof(*p->files));
     p->image_pages=kmalloc((size_t)capacity*sizeof(uintptr_t));
     if(!p->image_pages)goto failed;
     p->image_capacity=capacity;

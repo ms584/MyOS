@@ -1,0 +1,4 @@
+a825e4cb5a8d24da6ea3c87b59c14657a62c0fdbdf65b2816ac3fe8cfc3157c4  build/kernel.bin
+d638b452edf1df854c4467d0643a366078becb83ea9e3df95244c022358815eb  build/platform-runtime.bin
+5aeac4d5e33083ea55d6a8736720941edc0c97999a293a077aaf1de2dcf2f1c3  build/myos-current.img
+f62a38177bdf80650ebf723e3368322c9a55cfa0ba030033460b1cae1db607bc  build/myos-uefi.img

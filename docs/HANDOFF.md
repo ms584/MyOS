@@ -3,6 +3,27 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Descriptor slice promoted; clean accounting full live — 2026-10-08 14:00 +07
+
+97035 TERMINAL0 13:57:44: exact9-file audited capacity/heap/queue slice copied
+to main,normal BIOS/UEFI rebuilt; all4 SHA256 byte-identical to completed
+28044 tested candidate. New normal manifest build/descriptor-promotion-normal.sha256
+supersedes SHM-pool manifest. Kernel64/runtime128/ceiling192, pre-open reserved
+slot prevents full-table create/truncate; unpublished reservations invisible,
+all installers skip,rollback releases; no tablelock over syscall/allocation.
+Per-process FS table heap allocated before publication,released all failure/
+reap paths; SB16 softwarequeue heap after valid device,beforeIRQ,hardwareDMA
+unchanged. Includes capacity/runtime/system fixtures; no private launcher,
+boot retirement,renderer,wordcopy or resident-accounting production change.
+
+84234 LIVE14:00 runs clean accounting in former candidateR4sQZZ,now terminal
+full previous job. Exact3 files beyond promoted baseline: include/fs.h,
+fs/ramfs.c,kernel/elf.c. Clean ELF derived from production, NOT private native
+loader diagnostic changes. Named-lifetime fixtures BOTH firmware, production
+shared-memory BOTH firmware,mandatory test_system,normal restore/samehashes.
+First runner setup failed before build on helper path tools/ vs tests/; fixed
+path,no test PASS falsely claimed. Do not mutate live tree. Main stays normal.
+
 ## Completed background tests — 2026-10-08 13:55 +07
 
 After temporary approval-review usage limit reset, revalidated exact handles:

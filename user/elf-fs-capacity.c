@@ -33,7 +33,7 @@ int _start(void)
  struct stat st;char buffer[16]={0};
  extern long sysconf(int);struct limit_abi {uint64_t current,maximum;};
  extern int getrlimit(int,struct limit_abi *);struct limit_abi limit;
- CHECK(sysconf(4)==128&&!getrlimit(7,&limit)&&limit.current==128&&limit.maximum==128);
+ CHECK(sysconf(4)==192&&!getrlimit(7,&limit)&&limit.current==192&&limit.maximum==192);
  CHECK(!fstatat(AT_FDCWD,"/etc/motd",&st,0x100)&&S_ISREG(st.st_mode));
  fill(&st,0xa5,sizeof(st));struct stat unchanged=st;
  CHECK(fstatat(AT_FDCWD,"/etc/motd",&st,0x101)==-1&&errno==22&&!differs(&st,&unchanged,sizeof(st)));
@@ -92,21 +92,21 @@ int _start(void)
  /* Exact kernel handle capacity, independent offsets, full failure and reuse.
   * All descriptors are closed before return; lifecycle checker also compares
   * physical pages, heap and remaining processes over four launches. */
- int handles[32];for(unsigned i=0;i<32;++i){
+ int handles[64];for(unsigned i=0;i<64;++i){
   handles[i]=openat(AT_FDCWD,"/etc/motd",O_RDONLY|0x20000);CHECK(handles[i]>=0);
  }
  CHECK(openat(AT_FDCWD,"/etc/motd",O_RDONLY)==-1&&errno==24);
- for(unsigned i=0;i<32;++i)CHECK(read(handles[i],buffer,1)==1);
+ for(unsigned i=0;i<64;++i)CHECK(read(handles[i],buffer,1)==1);
  int released=handles[7];CHECK(!close(released));
  handles[7]=openat(AT_FDCWD,"/etc/motd",O_RDONLY);CHECK(handles[7]==released);
- for(unsigned i=0;i<32;++i)CHECK(!close(handles[i]));
- /* Fill runtime slots using genuine eventfd objects. A failed file install
-  * must close its just-created kernel handle and return EMFILE, not ENOSPC. */
- extern int eventfd(unsigned int,int);int events[64];
- for(unsigned i=0;i<64;++i){events[i]=eventfd(0,0);CHECK(events[i]>=0);}
+ for(unsigned i=0;i<64;++i)CHECK(!close(handles[i]));
+ /* Fill all128 runtime slots using genuine eventfd objects. Failed open
+  * must reserve before creating a kernel handle and return EMFILE. */
+ extern int eventfd(unsigned int,int);int events[128];
+ for(unsigned i=0;i<128;++i){events[i]=eventfd(0,0);CHECK(events[i]>=0);}
  CHECK(openat(AT_FDCWD,"/etc/motd",O_RDONLY)==-1&&errno==24);
- for(unsigned i=0;i<64;++i)CHECK(!close(events[i]));
+ for(unsigned i=0;i<128;++i)CHECK(!close(events[i]));
  readonly=openat(AT_FDCWD,"/etc/motd",O_RDONLY);CHECK(readonly>=0&&!close(readonly));
- SbLogRaw("native nofollow and32 kernel/64 runtime descriptor capacity/recovery PASS\n");
+ SbLogRaw("native nofollow and64 kernel/128 runtime descriptor capacity/recovery PASS\n");
  SbLogRaw("native runtime inode DIR/rename/open replacement/stream close-reuse/unlinkat/typed fcntl guards/root-assets PASS\n");return 88;
 }

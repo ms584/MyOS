@@ -24,7 +24,7 @@ try:
  for launch in range(4):
   result=long_command(vm,'elf live runtime')
   assert 'native runtime inode DIR/' in result and 'ELF exited with status 88' in result,result
-  assert 'native nofollow and32 kernel/64 runtime descriptor capacity/recovery PASS' in result,result
+  assert 'native nofollow and64 kernel/128 runtime descriptor capacity/recovery PASS' in result,result
   assert_live_resources(result)
 finally:vm.close()
 print('PASS native runtime DIR inode/rename/relative traversal/retained stream/close-reuse/typed fcntl whole-output guard/readonly assets/relaunch/exact resources; NOT blocking lock/actual Cobalt.',out,flush=True)

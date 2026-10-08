@@ -9,7 +9,10 @@
 #define QUEUE_BYTES 65536u
 #define DSP 0x220u
 
-static uint8_t queue[QUEUE_BYTES];
+/* Software staging only, not ISA DMA storage. Allocate for the driver's
+ * lifetime after heap initialization and device validation, before IRQ5 is
+ * enabled. Keep the 64KiB capacity without consuming BIOS low-memory BSS. */
+static uint8_t *queue;
 static size_t head,tail,used;
 static uint64_t irq_count,underrun_count;
 static unsigned volume=100,completed_half;
@@ -67,6 +70,11 @@ bool audio_init(void){
     /* Reject a differently configured card; we program only IRQ5/DMA1. */
     outb(DSP+4,0x80);if(!(inb(DSP+5)&2))return false;
     outb(DSP+4,0x81);if(!(inb(DSP+5)&2))return false;
+    if(!queue){
+        queue=kmalloc(QUEUE_BYTES);
+        if(!queue)return false;
+        memset(queue,0,QUEUE_BYTES);
+    }
     present=true;
     outb(0x21,inb(0x21)&~(1u<<5));
     return true;
