@@ -1,4 +1,22 @@
-# Phase 33.1 — native runtime groundwork (in progress)
+# Phase 33.1 — native runtime
+
+## Current status — 2026-10-08
+
+The coupled Phase33.1/33.2 native web gate PASSED on the documented QEMU/KVM
+profile. Full regression82911 and production promotion76944 exited0; source
+commit9aece1e and normal artifacts match the tested candidate. MyOS runs pinned Cobalt HTML/JavaScript/DOM,
+timers,input and controlled verified HTTPS with concurrent assets,more than60s
+interactive operation,two launches and checked resource recovery. This is native
+MyOS execution,not just resolved imports or a platform fixture.
+See [native web evidence and limits](PHASE33_NATIVE_WEB_ACCEPTANCE.md) and
+[PROJECT_STATE.md](PROJECT_STATE.md) for the current authoritative checkpoint.
+No YouTube/Rickroll or Phase33.3 completion is claimed.
+
+## Historical first-slice baseline
+
+The following limits and counts describe the original implementation,not the
+current candidate. Its statements that Cobalt cannot start are superseded by
+the current evidence above; they are retained to explain the original slice.
 
 The next runtime continuation now supplies tested anonymous VM, Ring 3
 threads, FS-base TLS and atomic wait/wake primitives. See

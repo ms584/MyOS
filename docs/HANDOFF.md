@@ -3,7 +3,40 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
-## Clean native integration — 2026-10-08 19:13 +07
+## Final native web handoff — 2026-10-08 20:23 +07
+
+Production source9aece1e. Coupled Phase33.1/33.2 native web gate PASSED for
+QEMU512MiB/non-root KVM/softpipe/jitless JS,not complete POSIX or arbitrary sites.
+Actual two-launch Cobalt HTML/JS/DOM/timers,input,verified controlled HTTPS with
+three simultaneous assets,three cert negatives,>60s and cleanup evidence below.
+No Phase33.3 started; Phase32/33 overall/YouTube/Rickroll remain NOT PASSED.
+
+Full82911 terminal0 20:18:35:complete default test_system.py,not suffix. Ten
+focused B/U GS/customFS/shared/named lifetime/executable-path runs reused on
+unchanged source. Main promotion76944 terminal0 20:20:04; all790 source inputs
+match candidate,all5 normal kernel/runtime/packed runtime/BIOS/UEFI artifacts
+byte-identical. Source commit9aece1e. No live VM/test job; owner disks untouched.
+Public416PNG archive6602600bytes replays successfully20:20:39 from committed
+JSON/serial/PNG only; no keys/full asset disks. See PHASE33_NATIVE_WEB_ACCEPTANCE.md
+and docs/wip/native-pmm512/integration-20261008/{main-normal.sha256,
+main-source-identity.json,public-replay-verification.json,regression/}.
+
+Limit: native Cobalt run is BIOS,KVM512MiB tested configuration,not minimumRAM
+or real hardware. First visible91..103s;10 sampled key ACK bounds<=1.328s include
+1s image sampling. No TCG responsiveness/public Internet/DNS/YouTube claim.
+Imports242/242 do not imply all semantics;15 media unavailable+9 POSIX ENOSYS.
+Heap after warm closes450304->450304; frames/SHM/aliases exact. PMM sampled peak
+279449600bytes includes kernel/residents,excludes reserved heap,not RSS/exactpeak.
+
+Reproduce native execution using the native report's pinned-resource command.
+Review public recording with `python3 tools/run_logged.py -- bash
+docs/wip/native-pmm512/integration-20261008/review_public_native_20261008.sh`.
+This latter command rechecks recorded pixels only,not a new engine run.
+No automatic next phase or push. Owner reviews/pushes local commits manually.
+The chronological integration notes below are historical; pending statements
+are superseded by this final handoff,not deleted from the evidence record.
+
+## Clean native integration chronology — 2026-10-08 19:13 +07
 
 Root /home/xytron404/native-integrated-XZBHuo derives from main48181ed,not old
 private tree. Explicit `elf cobalt CORE PROVIDER URL [HOST=IPv4]` removes name
@@ -61,6 +94,20 @@ Pending native requirement-by-requirement report is docs/PHASE33_NATIVE_WEB_ACCE
 Promotion runner in integration-20261008/promote_integrated_native_20261008.sh
 requires both terminal0 statuses,unchanged audited16 source hashes and clean
 non-documentation tracked tree; builds main/checks5 artifact hashes before success.
+19:41:82911 still LIVE; no new failure,normal GUI/basic-app checks progressing.
+Promotion script now also rehashes all786/790 baseline/candidate source inputs
+and requires exact prior difference map/counts; tracked source roots must be
+clean (documentation edits are allowed). No production source was promoted.
+19:53:82911 passed prior missing-emutls host compile point; dynamic ELF guest
+running (blocked-worker marker observed). Still no full PASS. PHASE331.md and
+PHASE332.md now separate actual candidate evidence from historical not-executable
+statements; both explicitly remain OPEN pending full regression/promotion.
+19:57:82911 still LIVE; upstream compiler-rt emutls growth/weak TLS/isolation/
+worker reclaim PASS,also >60s blocked-worker cancellation/relaunch/resources.
+Storage commit/reboot and Starboard storage checks progressing; no full PASS yet.
+20:03:82911 still LIVE; storage,TCP concurrent/options,UI/events and launcher
+now passed. Asset-format host sanitizer checks progressing; do not count these
+host checks as native acceptance. Complete full suite and promotion still pending.
 
 ## Non-root KVM experiment — 2026-10-08 16:21 +07
 

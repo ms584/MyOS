@@ -1,7 +1,10 @@
 # Phase 33.1–33.2: native web acceptance, 2026-10-08
 
-Status: native web evidence PASS; integrated full regression and main promotion
-are still pending. This report does not yet close either phase.
+Status: Phase33.1/33.2 native web gate PASSED on the tested QEMU/KVM profile.
+Complete system regression82911 exited0 at20:18:35; main promotion76944 exited0
+at20:20:04. Source commit9aece1e and all five normal artifacts are byte-identical
+to the tested candidate. This closes the coupled native web gate,not Phase32/33
+overall,YouTube/Rickroll,complete POSIX or media. No Phase33.3 work was started.
 
 ## What actually ran
 
@@ -57,18 +60,21 @@ The route parser rejects malformed hostname/IP syntax and is ASan/UBSan tested.
 It changes only destination lookup, never certificate hostname/trust validation.
 GS/custom-FS thread reuse, shared-memory rights/rollback, named-SHM lifetime and
 executable-path checks passed both BIOS and UEFI. Integrated full system
-regression is currently running with unchanged default TCG, not KVM. Native web
+regression passed with unchanged default TCG, not KVM. Native web
 acceptance above is BIOS; it does not imply a native Cobalt UEFI run.
-Main source promotion and byte-identical normal BIOS/UEFI/runtime artifacts
-must be verified before final closure.
+The complete default `tests/test_system.py` retry passed,and normal BIOS/UEFI/
+runtime artifacts were restored. All790 promoted source inputs match the tested
+candidate. Five normal artifact hashes match exactly after main rebuild; see
+`wip/native-pmm512/integration-20261008/main-normal.sha256`,
+`main-source-identity.json` and `regression/integrated-regression.status`.
 
 First full attempt 12681 exited1 at19:34:45: its isolated tree omitted the pinned
 compiler-rt source needed by a host-compiled emutls fixture. The emutls guest did
 not execute on this attempt. All five normal artifact hashes were restored.
 The three pinned test-only files were copied from main, audit scope expanded
 from783 to786 inputs, all16 prior changed-file hashes remained identical and the
-failed compiler command then passed. Retry82911 runs the entire default system
-suite again; the ten already-passed focused BIOS/UEFI runs remain valid.
+failed compiler command then passed. Retry82911 ran the entire default system
+suite again and exited0; the ten already-passed focused BIOS/UEFI runs remain valid.
 
 Runtime foundations are documented separately, with their historical test
 identities and explicit unsupported behavior: `PHASE331_PTHREAD.md` (pinned ABI,
@@ -110,6 +116,13 @@ The actual shell launch is `elf cobalt CORE PROVIDER URL [HOST=IPv4]` with
 already packaged engine/provider/resources/fonts/CA. This is not a standalone
 browser icon or automatic asset download. The test prints the exact fixture
 URL/port; do not reuse an expired fixture URL after its host servers stop.
+
+For an offline review without the private test bundle,run the committed
+`docs/wip/native-pmm512/integration-20261008/review_public_native_20261008.sh`
+through `tools/run_logged.py`. It extracts only the public PNG archive into a
+fresh build directory,copies public JSON/serial evidence and reruns the pixel
+verifier. This passed at20:20:39 on all416 archived frames (archive6602600bytes).
+It reviews a recorded native run,not a new engine execution or performance test.
 
 ## Explicitly not claimed
 

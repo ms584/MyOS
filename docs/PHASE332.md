@@ -1,5 +1,22 @@
 # Phase 33.2 — staged dynamic ELF loader
 
+## Current status — 2026-10-08
+
+The coupled Phase33.1/33.2 native web gate PASSED on the documented QEMU/KVM
+profile. Full regression82911 and production promotion76944 exited0; source
+commit9aece1e and normal artifacts match the tested candidate. MyOS executes pinned Cobalt and renders actual
+HTML/JavaScript/DOM with input,timers,controlled verified HTTPS/concurrent assets,
+over60s interaction and two checked close/relaunch cycles. Import resolution is
+not the acceptance criterion. See [native evidence](PHASE33_NATIVE_WEB_ACCEPTANCE.md)
+and [PROJECT_STATE.md](PROJECT_STATE.md) for exact configuration,results and limits.
+Phase32/33 overall and YouTube/Rickroll remain unproven; no Phase33.3 work started.
+
+## Historical loader-slice baseline
+
+The following sixty-two-import/not-executable statements and implementation
+limits are the original slice history,not a current native-execution status.
+The linked current report supersedes those status/count statements only.
+
 The process runtime now has the VM/thread/TLS/wait foundation described in
 [PHASE331_RUNTIME.md](PHASE331_RUNTIME.md). The dynamic linker now has an exact allowlisted resolver for sixty-two tested
 allocator, VM, errno, pthread and semaphore bindings. The other platform/Starboard imports remain unresolved, so
