@@ -1,0 +1,13 @@
+[
+  {
+    "launch": 1,
+    "elapsed": 232.5335524839902,
+    "request_start": 0,
+    "request_end": 135,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  }
+]

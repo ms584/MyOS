@@ -1,0 +1,891 @@
+{
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "elapsed": 51.024884513011784
+    },
+    {
+      "server": "valid",
+      "path": "/app.js",
+      "elapsed": 65.95153341100377
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=dom&value=42&seq=1",
+      "elapsed": 69.1583248720126
+    },
+    {
+      "server": "valid",
+      "path": "/asset/0",
+      "elapsed": 69.58972358000756
+    },
+    {
+      "server": "valid",
+      "path": "/asset/1",
+      "elapsed": 70.20095478900475
+    },
+    {
+      "server": "valid",
+      "path": "/asset/2",
+      "elapsed": 70.22110518900445
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=certificate-rejected&value=wrong-host&seq=8",
+      "elapsed": 70.66891679601395
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=1&seq=9",
+      "elapsed": 71.40930820800713
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=certificate-rejected&value=expired&seq=10",
+      "elapsed": 71.49132520900457
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=certificate-rejected&value=untrusted&seq=11",
+      "elapsed": 71.53881461000128
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=2&seq=12",
+      "elapsed": 73.74297554400982
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=geometry&value=%7B%22x%22%3A125.6484375%2C%22y%22%3A340.75%7D&seq=13",
+      "elapsed": 74.542463056001
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=3&seq=14",
+      "elapsed": 75.94196407801064
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=asset-ok&value=0&seq=15",
+      "elapsed": 76.63090458900842
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=asset-ok&value=2&seq=16",
+      "elapsed": 76.92642469301063
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=asset-ok&value=1&seq=17",
+      "elapsed": 76.95076909400814
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=4&seq=18",
+      "elapsed": 78.22878979200323
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=5&seq=19",
+      "elapsed": 79.34778268400987
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=6&seq=20",
+      "elapsed": 93.1889066050062
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A0%2C%22y%22%3A0%2C%22seq%22%3A1%7D&seq=21",
+      "elapsed": 93.58992930800014
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=7&seq=22",
+      "elapsed": 94.68067812200752
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=8&seq=23",
+      "elapsed": 96.01142614000128
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=9&seq=24",
+      "elapsed": 97.57173146000423
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=10&seq=25",
+      "elapsed": 98.93945877700753
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=11&seq=26",
+      "elapsed": 100.32937179500004
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=12&seq=27",
+      "elapsed": 101.75042941200081
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=13&seq=28",
+      "elapsed": 103.04882722400362
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=14&seq=29",
+      "elapsed": 104.38942513700749
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=15&seq=30",
+      "elapsed": 105.76085415000853
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=16&seq=31",
+      "elapsed": 107.180204564007
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=17&seq=32",
+      "elapsed": 108.51066327599983
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=18&seq=33",
+      "elapsed": 109.91242365400831
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=19&seq=34",
+      "elapsed": 111.23145558701071
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=20&seq=35",
+      "elapsed": 112.56073761900188
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=21&seq=36",
+      "elapsed": 113.97255724800925
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=22&seq=37",
+      "elapsed": 115.3297488780081
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=23&seq=38",
+      "elapsed": 117.1623814850027
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=24&seq=39",
+      "elapsed": 118.26673667201248
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=25&seq=40",
+      "elapsed": 119.50276566701359
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=26&seq=41",
+      "elapsed": 120.94856706100109
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=a&seq=42",
+      "elapsed": 121.85099825701036
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=27&seq=43",
+      "elapsed": 122.72674615301366
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=28&seq=44",
+      "elapsed": 124.1502818470035
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=29&seq=45",
+      "elapsed": 125.53304573100468
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=30&seq=46",
+      "elapsed": 127.0081860430073
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A433%2C%22y%22%3A332%2C%22seq%22%3A2%7D&seq=47",
+      "elapsed": 127.34850762301357
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=31&seq=48",
+      "elapsed": 128.79366183800448
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=32&seq=49",
+      "elapsed": 130.18822215500404
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=33&seq=50",
+      "elapsed": 131.61500787000114
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=34&seq=51",
+      "elapsed": 133.01756228700106
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=35&seq=52",
+      "elapsed": 134.42150704900268
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A401%2C%22y%22%3A341%2C%22seq%22%3A3%7D&seq=53",
+      "elapsed": 135.34486043300421
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=36&seq=54",
+      "elapsed": 136.23887941701105
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=37&seq=55",
+      "elapsed": 137.73505699100497
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=38&seq=56",
+      "elapsed": 139.0797811680095
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A369%2C%22y%22%3A341%2C%22seq%22%3A4%7D&seq=57",
+      "elapsed": 139.66264815701288
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=39&seq=58",
+      "elapsed": 140.93086433500866
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=40&seq=59",
+      "elapsed": 142.3175963040121
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=41&seq=60",
+      "elapsed": 143.72011316900898
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=42&seq=61",
+      "elapsed": 145.1758815330104
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=43&seq=62",
+      "elapsed": 146.54865089899977
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A337%2C%22y%22%3A341%2C%22seq%22%3A5%7D&seq=63",
+      "elapsed": 147.5339439750096
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=44&seq=64",
+      "elapsed": 148.4552508520137
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=45&seq=65",
+      "elapsed": 149.90786922701227
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=46&seq=66",
+      "elapsed": 151.36219352300395
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A305%2C%22y%22%3A341%2C%22seq%22%3A6%7D&seq=67",
+      "elapsed": 152.26740822099964
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=47&seq=68",
+      "elapsed": 153.1414076180081
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=48&seq=69",
+      "elapsed": 154.60859121401154
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=49&seq=70",
+      "elapsed": 156.32773641000676
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=b&seq=71",
+      "elapsed": 157.03289810800925
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A273%2C%22y%22%3A341%2C%22seq%22%3A7%7D&seq=72",
+      "elapsed": 157.63373800599948
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=50&seq=73",
+      "elapsed": 158.38123160500254
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=51&seq=74",
+      "elapsed": 159.76571220101323
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=52&seq=75",
+      "elapsed": 161.21629099801066
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A241%2C%22y%22%3A341%2C%22seq%22%3A8%7D&seq=76",
+      "elapsed": 161.26889859800576
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=53&seq=77",
+      "elapsed": 162.88638079400698
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=54&seq=78",
+      "elapsed": 164.27367889000743
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=55&seq=79",
+      "elapsed": 165.63457498500065
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=56&seq=80",
+      "elapsed": 167.12230766701396
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A209%2C%22y%22%3A341%2C%22seq%22%3A9%7D&seq=81",
+      "elapsed": 167.90974975800782
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=57&seq=82",
+      "elapsed": 168.78346644701378
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=58&seq=83",
+      "elapsed": 170.17708753100305
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=59&seq=84",
+      "elapsed": 171.55945421500655
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=60&seq=85",
+      "elapsed": 172.9568429980136
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=61&seq=86",
+      "elapsed": 174.3111347350059
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=62&seq=87",
+      "elapsed": 175.6759154320025
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A177%2C%22y%22%3A341%2C%22seq%22%3A10%7D&seq=88",
+      "elapsed": 176.2080625580129
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=PageDown&seq=89",
+      "elapsed": 176.96261686900107
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=keyboard-js-scroll&value=80&seq=90",
+      "elapsed": 177.03038003400434
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A145%2C%22y%22%3A341%2C%22seq%22%3A11%7D&seq=91",
+      "elapsed": 178.11460817600891
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=63&seq=92",
+      "elapsed": 178.79209662700305
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=64&seq=93",
+      "elapsed": 180.14301186200464
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pointer&value=%7B%22x%22%3A126%2C%22y%22%3A341%2C%22seq%22%3A12%7D&seq=94",
+      "elapsed": 180.1732090620062
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=click&value=1&seq=95",
+      "elapsed": 180.89950895401125
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=65&seq=96",
+      "elapsed": 182.26270032700268
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=66&seq=97",
+      "elapsed": 183.64666208901326
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=67&seq=98",
+      "elapsed": 185.02253465200192
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=68&seq=99",
+      "elapsed": 186.4151800150139
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=69&seq=100",
+      "elapsed": 187.82074897701386
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=70&seq=101",
+      "elapsed": 189.22864983900217
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=71&seq=102",
+      "elapsed": 190.60277711501112
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=c&seq=103",
+      "elapsed": 191.8254427840002
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=72&seq=104",
+      "elapsed": 192.20795441200607
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=73&seq=105",
+      "elapsed": 193.81497090900666
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=74&seq=106",
+      "elapsed": 195.21015224599978
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=75&seq=107",
+      "elapsed": 196.5964163840108
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=76&seq=108",
+      "elapsed": 198.00210139800038
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=77&seq=109",
+      "elapsed": 199.40936073601188
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=78&seq=110",
+      "elapsed": 200.8034829750104
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=79&seq=111",
+      "elapsed": 202.1864707150089
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=80&seq=112",
+      "elapsed": 203.5600713550084
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=81&seq=113",
+      "elapsed": 204.99449349200586
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=82&seq=114",
+      "elapsed": 206.39016102401365
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=PageUp&seq=115",
+      "elapsed": 207.13194748600654
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=keyboard-js-scroll&value=0&seq=116",
+      "elapsed": 207.15546238500974
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=83&seq=117",
+      "elapsed": 208.57392781200178
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=84&seq=118",
+      "elapsed": 209.95805204100907
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=85&seq=119",
+      "elapsed": 211.36269226900185
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=86&seq=120",
+      "elapsed": 212.7759206960036
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=87&seq=121",
+      "elapsed": 214.17098963800527
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=88&seq=122",
+      "elapsed": 215.5754209930019
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=89&seq=123",
+      "elapsed": 217.06705354500446
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=90&seq=124",
+      "elapsed": 218.47859420000168
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=91&seq=125",
+      "elapsed": 219.9256304540031
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=92&seq=126",
+      "elapsed": 221.3190360090084
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=93&seq=127",
+      "elapsed": 222.77275301801274
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=94&seq=128",
+      "elapsed": 224.17621473400504
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=95&seq=129",
+      "elapsed": 225.572214550004
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=96&seq=130",
+      "elapsed": 227.0081294660049
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=97&seq=131",
+      "elapsed": 228.37110678201134
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=98&seq=132",
+      "elapsed": 229.7850148580037
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=99&seq=133",
+      "elapsed": 231.1509179679997
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=100&seq=134",
+      "elapsed": 232.55630808700516
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=101&seq=135",
+      "elapsed": 234.02685352100525
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=timer&value=102&seq=136",
+      "elapsed": 235.35792242300522
+    }
+  ],
+  "peak_concurrent_assets": 3,
+  "visual": [
+    {
+      "launch": 1,
+      "elapsed": 1.967141092987731,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-001.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 12.004466301994398,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-012.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 22.039576309995027,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-022.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 32.071165708999615,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-032.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 42.106424023993895,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-042.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 52.14389393199235,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-052.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 62.192074277001666,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-062.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 72.23456212900055,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-072.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 82.27840027899947,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-082.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 92.32249588999548,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-092.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 102.37139630099409,
+      "blue_pixels": 0,
+      "frame": "launch-1-frame-102.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 112.41631265499745,
+      "blue_pixels": 434459,
+      "frame": "launch-1-frame-112.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 122.4802423039946,
+      "blue_pixels": 434398,
+      "frame": "launch-1-frame-122.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 132.57464334998804,
+      "blue_pixels": 434398,
+      "frame": "launch-1-frame-132.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 142.58782863499073,
+      "blue_pixels": 434245,
+      "frame": "launch-1-frame-142.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 152.68124925099255,
+      "blue_pixels": 435174,
+      "frame": "launch-1-frame-152.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 162.76116181199905,
+      "blue_pixels": 435261,
+      "frame": "launch-1-frame-162.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 172.80632717799745,
+      "blue_pixels": 435261,
+      "frame": "launch-1-frame-172.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 182.80863934099034,
+      "blue_pixels": 435170,
+      "frame": "launch-1-frame-182.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 192.90323322699987,
+      "blue_pixels": 435141,
+      "frame": "launch-1-frame-192.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 202.904344028997,
+      "blue_pixels": 433465,
+      "frame": "launch-1-frame-202.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 212.9741258839931,
+      "blue_pixels": 434606,
+      "frame": "launch-1-frame-212.ppm"
+    },
+    {
+      "launch": 1,
+      "elapsed": 222.9762200119876,
+      "blue_pixels": 434606,
+      "frame": "launch-1-frame-222.ppm"
+    }
+  ],
+  "inputs": [
+    {
+      "launch": 1,
+      "elapsed": 117.498921099992,
+      "key": "a",
+      "click": false
+    },
+    {
+      "launch": 1,
+      "elapsed": 152.4987021519919,
+      "key": "b",
+      "click": false
+    },
+    {
+      "launch": 1,
+      "elapsed": 172.4225776749954,
+      "key": "pgdn",
+      "click": false
+    },
+    {
+      "launch": 1,
+      "elapsed": 175.97417570499238,
+      "mouse": "press",
+      "pointer": {
+        "x": 126,
+        "y": 341,
+        "seq": 12
+      },
+      "target": {
+        "x": 125.6484375,
+        "y": 340.75
+      }
+    },
+    {
+      "launch": 1,
+      "elapsed": 176.17574670299655,
+      "mouse": "release"
+    },
+    {
+      "launch": 1,
+      "elapsed": 187.4990587469947,
+      "key": "c",
+      "click": false
+    },
+    {
+      "launch": 1,
+      "elapsed": 202.50715274999675,
+      "key": "pgup",
+      "click": false
+    }
+  ],
+  "launches": [
+    {
+      "launch": 1,
+      "elapsed": 232.5335524839902,
+      "request_start": 0,
+      "request_end": 135,
+      "cleanup": [
+        "ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304",
+        "ELF cancelled; all threads stopped"
+      ],
+      "shell_returned": true
+    }
+  ],
+  "core_sha256": "fd8bbf7c60d4906a72e4f4ec89bc51c7dbc9bdd83fd1e4c1cd14a8eb3a8b730a",
+  "provider_sha256": "55f0875c70997cafc085b0e6151d3a3a6bae88d3c5cc8c87fd50d67f6b326475",
+  "provider_path": "/home/xytron404/myos/build/renderer-provider-evaluation/provider-84sokh6g/provider.so",
+  "diagnostic_only": true,
+  "cpu_samples": [],
+  "test_root_sha256": "72a004e337fbdf3d0bfd3048eb14f0500f676735ffcccdc215e12814d4ce6dbb",
+  "test_root_asset": "ssl/certs/3da3f0bf.0"
+}

@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 14:59 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 15:05 +07. /home/xytron404/myos,main.
 Production source79f4639 resident accounting; prior descriptor/heap/queue c04ff93.
 Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
 ## Goal / acceptance
@@ -64,12 +64,13 @@ Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
   GS slot index at errno-page padding4,FS untouched. Failed offset56 trial hit
   owned launcher frame; retained,restored. No native speedup established yet.
 ## Next
-- Atomic-PC75906 terminal1: QEMU CS register spacing parser error,not guest
-  crash; failed log preserved. Retry56212 LIVE14:58,private baseline provider.
-  Paused current
-  CPU RIP/CS/CR3+kernel thread metadata,not stale frames; diagnostic perturbation,
-  NOT acceptance/CPU%. Poll exact handle; map containing symbols only.
-  GS still experimental,needs clean/full coverage.
+- Atomic56212 terminal0 15:02:32,timrxrfo:157 paused CPU PCs,vm_forget34/
+  vm_prune_path23; source uses linear ownership lookup per freed page.
+  NOT CPU%. Thread/task metadata INVALID: same-name current symbol collision;
+  registers valid,exclude tid. Earlier CS parser failure retained. Final
+  Timer80/Keyc/MIDDLE after PageUp => visible backlog,not acceptance.
+  Next: indexed VM ownership experiment incl duplicate shared frames, OOM
+  rollback/reap/low-memory bounds; relevant+full before promotion. GS still WIP.
 - Inspect close/page/SHM metadata and actual frames/input latency; prove
   >=60s responsive interaction/relaunch on normal launcher before closure.
 - KVM device exists but user open EACCES; awaiting owner choice before system

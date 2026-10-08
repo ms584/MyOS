@@ -1,0 +1,24 @@
+
+/home/xytron404/cobalt-closed-imports-xnVZeH/build/kernel.elf:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000119c2 <vm_forget>:
+   119c2:	8b 87 e0 01 00 00    	mov    0x1e0(%rdi),%eax
+   119c8:	49 89 f0             	mov    %rsi,%r8
+   119cb:	31 d2                	xor    %edx,%edx
+   119cd:	39 c2                	cmp    %eax,%edx
+   119cf:	73 23                	jae    119f4 <vm_forget+0x32>
+   119d1:	48 8b b7 d8 01 00 00 	mov    0x1d8(%rdi),%rsi
+   119d8:	48 8d 0c d6          	lea    (%rsi,%rdx,8),%rcx
+   119dc:	48 ff c2             	inc    %rdx
+   119df:	4c 39 01             	cmp    %r8,(%rcx)
+   119e2:	75 e9                	jne    119cd <vm_forget+0xb>
+   119e4:	ff c8                	dec    %eax
+   119e6:	89 87 e0 01 00 00    	mov    %eax,0x1e0(%rdi)
+   119ec:	48 8b 04 c6          	mov    (%rsi,%rax,8),%rax
+   119f0:	48 89 01             	mov    %rax,(%rcx)
+   119f3:	c3                   	ret
+   119f4:	bf e3 0f 04 00       	mov    $0x40fe3,%edi
+   119f9:	e8 31 fa ff ff       	call   1142f <panic>

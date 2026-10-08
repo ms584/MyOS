@@ -1,0 +1,11 @@
+
+/home/xytron404/cobalt-closed-imports-xnVZeH/build/kernel.elf:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000103b1 <scheduler_current_thread>:
+   103b1:	8b 05 a9 e2 04 00    	mov    0x4e2a9(%rip),%eax        # 5e660 <current.lto_priv.0>
+   103b7:	48 6b c0 50          	imul   $0x50,%rax,%rax
+   103bb:	48 8b 80 08 bc 05 00 	mov    0x5bc08(%rax),%rax
+   103c2:	c3                   	ret

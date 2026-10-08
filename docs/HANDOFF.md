@@ -5,6 +5,26 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Atomic current-PC diagnostic live — 2026-10-08 14:57 +07
 
+Final update15:05:56212 TERMINAL0 15:02:32,timrxrfo.157 paused register samples;
+containing symbols vm_forget34,vm_prune_path23,load_pair30,blend_fallback8;
+36 exact syscall_entry address matches (asm has no symbol size). Not CPU%:
+QMP/TCG boundaries and pauses perturb/bias sampling. Total pause1.578s.
+Task/tid metadata INVALID: nm has unrelated 192-byte current plus scheduler
+4-byte current.lto_priv.0; symbols() exact name selected unrelated variable.
+Disassembly scheduler_current_thread proves 0x5e660 current.lto_priv.0; exclude
+all task/tid values,do not claim GPU attribution. Raw paused RIP/CS/CR3 unaffected.
+Next observer must bind unique matching SIZE4 current,verify disassembly first.
+Actual final image Timer80/Keyc/ScrollMIDDLE despite PageUp journal; input7,
+peakassets3,135requests,232.534s,close pages/SHM0/shell/heap450304 cache49152.
+Original observer restored; normal production manifest stillall4OK.
+New code-backed latency candidate: memory/process.c vm_forget and vm_owned
+linear-scan vm_pages; vm_drop_pages calls forget+prune perpage and prune calls
+vm_owned. Design indexed live ownership, preserve duplicate SHM frame references,
+swap removal,reap and allocation-failure atomic rollback. Do not assume unique
+physical frames: shared aliases can appear multiple times. Test host invariants/
+OOM+nativeVM/shared/lifetime/low-memory+mandatoryfull before promotion. No fix
+implemented yet, no proven timing improvement. No live jobs after56212 exit.
+
 Update14:59:75906 terminal1 14:57:22,first sample CS parser expected CS= but
 QEMU prints spacing before '='. finally cont executed; harness terminated VM.
 This is instrumentation failure,NOT Cobalt crash or close/reclamation evidence.
