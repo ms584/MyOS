@@ -40,12 +40,27 @@ wrong-sized/nonidentity symbols rejected). RAMFS metadata/helper reads match ELF
 Read-only source audit783 baseline files:16 expected changes only; first audit
 mistakenly expected identical existing resource helper to change,now asserts
 byte identity explicitly; preserve first JSON. Source/WIP files remain unpromoted.
-12681 LIVE19:12:40:GS errno/customFS,shared,named lifetime,system executable path
-BOTH BIOS/UEFI then full test_system.py. Existing pinned contract headers copied
+12681 terminal1 19:34:45:GS errno/customFS,shared,named lifetime,executable path
+BOTH BIOS/UEFI completed. Full stopped during host emutls fixture compilation:
+isolated root omitted third_party/compiler-rt/emutls.c. No guest emutls execution
+on this attempt; not a guest crash. All5 normal hashes restored exact. Restored
+three pinned compiler-rt files from main,expanded source audit783->786,asserted
+all16 previous changed-file hashes identical; original failed gcc command PASS.
+Preserved first log/status and before-dependency audit. Builder/audit scripts now
+include third_party.82911 LIVE19:36:20 runs complete test_system.py again (not
+suffix); integrated-full-system-retry.log; reuses ten already-passed focused runs.
+Not full PASS. Full regression retains default TCG; only native Cobalt acceptance
+uses explicit non-root KVM. Existing pinned contract headers copied
 before test; private keys never copied. Manifest5 binaries checked before and
 restore trap will rebuild normal BIOS/UEFI/check equality. Do not edit/build root
-while this handle live; inspect terminal result/failure before retry.
+while82911 live; inspect terminal result/failure before retry.
 Main production source79f4639/normal images untouched. No push/33.3/closure.
+Remote rechecked/fetched19:31:05:origin/main01f33ea is an ancestor of local
+b09a115; local ahead4,no incoming source changes. No push or merge performed.
+Pending native requirement-by-requirement report is docs/PHASE33_NATIVE_WEB_ACCEPTANCE.md.
+Promotion runner in integration-20261008/promote_integrated_native_20261008.sh
+requires both terminal0 statuses,unchanged audited16 source hashes and clean
+non-documentation tracked tree; builds main/checks5 artifact hashes before success.
 
 ## Non-root KVM experiment — 2026-10-08 16:21 +07
 

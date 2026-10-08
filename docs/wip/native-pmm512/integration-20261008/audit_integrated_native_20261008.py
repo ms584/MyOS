@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib,json
 baseline=Path('/home/xytron404/myos')
 trial=Path('/home/xytron404/native-integrated-XZBHuo')
-roots='boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor tests'.split()
+roots='boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor third_party tests'.split()
 expected=set('''drivers/ata.c memory/process.c include/vm-ledger.h include/elf-launch.h
 include/os.h include/elf.h kernel/elf.c kernel/syscall.c kernel/kernel.c
 cpu/scheduler.c user/process-test.c user/platform-runtime.c shell/shell.c

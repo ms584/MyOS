@@ -6,7 +6,7 @@ trial=${1:-}
 if test -z "$trial"; then
 trial=$(mktemp -d /home/xytron404/native-integrated-XXXXXX)
 printf 'INTEGRATED_NATIVE_ROOT %s\n' "$trial"
-for name in AGENTS.md build.sh boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor assets tests; do cp -a "$base/$name" "$trial/$name"; done
+for name in AGENTS.md build.sh boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor third_party assets tests; do cp -a "$base/$name" "$trial/$name"; done
 mkdir -p "$trial/build" "$trial/docs"
 cp "$base"/build/*.h "$trial/build/"
 cp "$base"/docs/*.md "$base"/docs/*.json "$trial/docs/"
