@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 14:57 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 14:59 +07. /home/xytron404/myos,main.
 Production source79f4639 resident accounting; prior descriptor/heap/queue c04ff93.
 Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
 ## Goal / acceptance
@@ -64,7 +64,9 @@ Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
   GS slot index at errno-page padding4,FS untouched. Failed offset56 trial hit
   owned launcher frame; retained,restored. No native speedup established yet.
 ## Next
-- Atomic-PC75906 LIVE14:56,private baseline provider elym0zbf. Paused current
+- Atomic-PC75906 terminal1: QEMU CS register spacing parser error,not guest
+  crash; failed log preserved. Retry56212 LIVE14:58,private baseline provider.
+  Paused current
   CPU RIP/CS/CR3+kernel thread metadata,not stale frames; diagnostic perturbation,
   NOT acceptance/CPU%. Poll exact handle; map containing symbols only.
   GS still experimental,needs clean/full coverage.

@@ -1,0 +1,23 @@
+$ openssl x509 -in /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-elym0zbf/public-test-ca.pem -subject_hash -noout
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.sock,server=on,wait=off -cpu max -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-elym0zbf/assets.img,if=ide,index=1
+$ nm build/kernel.elf
+$ build/cobalt-gpu-frame-layout
+$ nm -S build/kernel.elf
+RESOURCE_METADATA before-1 372736 RAMFS 8192
+qemu-system-x86_64: terminating on signal 15 from pid 566501 (python3)
+EVIDENCE_BUNDLE /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-elym0zbf requests 22 peak_concurrent_assets 3
+OBSERVATION ONLY: inspect actual native screenshot, TLS rejection errors, concurrency and cleanup; not full acceptance.
+Traceback (most recent call last):
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/test_cobalt_native_interactive_tls.py", line 253, in <module>
+    observe_launch(launch)
+    ~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/test_cobalt_native_interactive_tls.py", line 165, in observe_launch
+    gpu_observer.capture(launch,elapsed)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/cobalt_gpu_frame_observer.py", line 46, in capture
+    row=dict(launch=launch,elapsed=elapsed,rip=reg('RIP'),cs=reg('CS'),cr3=cr3,
+                                                             ~~~^^^^^^
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/cobalt_gpu_frame_observer.py", line 22, in reg
+    assert match,('missing register',name)
+           ^^^^^
+AssertionError: ('missing register', 'CS')

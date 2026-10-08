@@ -5,6 +5,12 @@ this document retains historical context and may describe earlier checkpoints.
 
 ## Atomic current-PC diagnostic live — 2026-10-08 14:57 +07
 
+Update14:59:75906 terminal1 14:57:22,first sample CS parser expected CS= but
+QEMU prints spacing before '='. finally cont executed; harness terminated VM.
+This is instrumentation failure,NOT Cobalt crash or close/reclamation evidence.
+Preserved failed-atomic-cs-format.log. Regex now allows whitespace before '=';
+retry56212 LIVE14:58:33. No kernel/runtime/image changes or test bypass.
+
 75906 LIVE verified14:56; private native baseline provider,elym0zbf,one launch.
 Original GS runtime/process/scheduler already restored. Observer replacement only,
 runner trap restores original saved-frame observer; no production source/build

@@ -18,7 +18,7 @@ class Observer:
    assert not self.vm.command('query-status')['running']
    registers=self.vm.command('human-monitor-command',{'command-line':'info registers'})
    def reg(name):
-    match=re.search(r'\b'+name+r'=\s*([0-9a-fA-F]+)',registers)
+    match=re.search(r'\b'+name+r'\s*=\s*([0-9a-fA-F]+)',registers)
     assert match,('missing register',name)
     return int(match[1],16)
    cr3=reg('CR3')&0x000ffffffffff000
