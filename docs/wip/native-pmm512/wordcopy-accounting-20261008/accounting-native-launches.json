@@ -1,0 +1,35 @@
+[
+  {
+    "launch": 1,
+    "elapsed": 222.4405604469939,
+    "request_start": 0,
+    "request_end": 130,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  },
+  {
+    "launch": 2,
+    "elapsed": 272.6474450079986,
+    "request_start": 130,
+    "request_end": 264,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=450304 heap-after=454400",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  },
+  {
+    "launch": 3,
+    "elapsed": 242.82136425899807,
+    "request_start": 264,
+    "request_end": 385,
+    "cleanup": [
+      "ELF pair live: pages reclaimed; heap-before=454400 heap-after=454400",
+      "ELF cancelled; all threads stopped"
+    ],
+    "shell_returned": true
+  }
+]

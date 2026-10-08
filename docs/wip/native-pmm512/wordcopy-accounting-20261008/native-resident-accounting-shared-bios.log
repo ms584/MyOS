@@ -1,0 +1,35 @@
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Iuser/sdk -Wall -Wextra -Werror -Wno-misleading-indentation -c user/elf-shared-memory.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/shared-memory-eg6cd6t_/fixture.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/shared-memory-eg6cd6t_/fixture.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/shared-memory-eg6cd6t_/fixture.o
+$ qemu-system-x86_64 -m 16 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/shared-memory-16.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/shared-memory-16.sock,server=on,wait=off -cpu max -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/shared-memory-eg6cd6t_/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 500793 (python3)
+Traceback (most recent call last):
+  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/test_shared_memory.py", line 24, in <module>
+    assert 'native shared memory coherence/lifetime/rights/workers PASS' in result,result
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: elf live shm
+ELF staged pages: 14
+ELF platform: pthread_create
+ELF platform: munmap
+ELF platform: ftruncate
+ELF platform: lseek
+ELF platform: mmap
+ELF platform: write
+ELF platform: unlinkat
+ELF platform: msync
+ELF platform: pread
+ELF platform: __errno_location
+ELF platform: openat
+ELF platform: mprotect
+ELF platform: pthread_join
+ELF platform: mkdir
+ELF platform: pwrite
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=16 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+DIAGNOSTIC ALLOCATION ftruncate fd/bytes/result 0x0000000000000040 0x0000000000000004 0xfffffffffffffff0
+ELF resident: free-before=2781 free-after=2524 shm-before=0 shm-after=257 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=372992 heap-after=389392
+ELF exited with status 8
+myos> 

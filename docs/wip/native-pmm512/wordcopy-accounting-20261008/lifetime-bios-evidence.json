@@ -1,0 +1,151 @@
+{
+  "records": [
+    {
+      "iteration": 0,
+      "case": 0,
+      "values": [
+        11991,
+        11990,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 0,
+      "case": 1,
+      "values": [
+        11990,
+        11990,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 0,
+      "case": 2,
+      "values": [
+        11990,
+        11991,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 0,
+      "case": 3,
+      "values": [
+        11991,
+        11991,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 1,
+      "case": 0,
+      "values": [
+        11991,
+        11990,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 1,
+      "case": 1,
+      "values": [
+        11990,
+        11990,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 1,
+      "case": 2,
+      "values": [
+        11990,
+        11991,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 1,
+      "case": 3,
+      "values": [
+        11991,
+        11991,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "case": 0,
+      "values": [
+        11991,
+        11990,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "case": 1,
+      "values": [
+        11990,
+        11990,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "case": 2,
+      "values": [
+        11990,
+        11991,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "case": 3,
+      "values": [
+        11991,
+        11991,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "baseline_pages": 11991,
+  "uefi": false,
+  "normal_image_sha256": "934cc8606723eb6ef25cb226faf4840b8d3c53a7cd33b164bde0f15d9fcced58"
+}

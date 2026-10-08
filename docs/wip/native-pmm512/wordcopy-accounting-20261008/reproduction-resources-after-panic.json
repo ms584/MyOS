@@ -1,0 +1,191 @@
+{
+  "diagnostic_only": true,
+  "label": "after-panic",
+  "nodes": [
+    {
+      "index": 0,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "/",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 1,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "bin",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 2,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "home",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 3,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "etc",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 4,
+      "parent": 0,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "dev",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 5,
+      "parent": 3,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 23,
+      "capacity": 4096,
+      "name": "motd",
+      "data": 4295262336,
+      "shared": 0
+    },
+    {
+      "index": 6,
+      "parent": 1,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 115,
+      "capacity": 4096,
+      "name": "hello",
+      "data": 4295418208,
+      "shared": 0
+    },
+    {
+      "index": 7,
+      "parent": 4,
+      "kind": 2,
+      "references": 0,
+      "unlinked": false,
+      "size": 0,
+      "capacity": 0,
+      "name": "shm",
+      "data": 0,
+      "shared": 0
+    },
+    {
+      "index": 64,
+      "parent": 7,
+      "kind": 1,
+      "references": 0,
+      "unlinked": false,
+      "size": 4096,
+      "capacity": 0,
+      "name": "creator-exit-shm",
+      "data": 0,
+      "shared": 4295440128
+    }
+  ],
+  "blocks": [
+    {
+      "address": 4294967328,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4294983744,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295000160,
+      "size": 262144,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295262336,
+      "size": 4096,
+      "ramfs_nodes": [
+        5
+      ]
+    },
+    {
+      "address": 4295266464,
+      "size": 69632,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295336128,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295352544,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295368960,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295385376,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295401792,
+      "size": 16384,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295418208,
+      "size": 4096,
+      "ramfs_nodes": [
+        6
+      ]
+    },
+    {
+      "address": 4295422336,
+      "size": 256,
+      "ramfs_nodes": []
+    },
+    {
+      "address": 4295440128,
+      "size": 16400,
+      "ramfs_nodes": [
+        64
+      ]
+    }
+  ],
+  "heap_virtual_translation": true,
+  "heap_observed": true,
+  "heap_allocated": 471312,
+  "ramfs_allocated": 24592
+}

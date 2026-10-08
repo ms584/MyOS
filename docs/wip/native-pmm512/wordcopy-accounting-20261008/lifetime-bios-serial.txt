@@ -1,0 +1,237 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 11991
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 2048 sectors
+Storage: unrecognized data disk; RAM-only
+Security: UTC 1791435381, RDRAND unavailable, HTTPS blocked
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> mkdir /dev/shm
+myos> mem
+Free physical pages: 11991
+myos> elf live stage0
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: write
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11990 shm-before=0 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage1
+ELF staged pages: 14
+ELF platform: mmap
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=4 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11990 shm-before=1 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage2
+ELF staged pages: 14
+ELF platform: unlinkat
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11991 shm-before=1 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> elf live stage3
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: mmap
+ELF platform: write
+ELF platform: unlinkat
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=7 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> elf live stage0
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: write
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11990 shm-before=0 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage1
+ELF staged pages: 14
+ELF platform: mmap
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=4 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11990 shm-before=1 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage2
+ELF staged pages: 14
+ELF platform: unlinkat
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11991 shm-before=1 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> elf live stage3
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: mmap
+ELF platform: write
+ELF platform: unlinkat
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=7 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> elf live stage0
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: write
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11990 shm-before=0 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage1
+ELF staged pages: 14
+ELF platform: mmap
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=4 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11990 shm-before=1 shm-after=1 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=390160
+ELF exited with status 88
+myos> mem
+Free physical pages: 11990
+myos> elf live stage2
+ELF staged pages: 14
+ELF platform: unlinkat
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=5 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11990 free-after=11991 shm-before=1 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=390160 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> elf live stage3
+ELF staged pages: 14
+ELF platform: ftruncate
+ELF platform: mmap
+ELF platform: write
+ELF platform: unlinkat
+ELF platform: SbLogRaw
+ELF platform: openat
+ELF platform: close
+ELF relocations: relative=0 absolute=0 global=0 jump=7 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+named SHM creator/alias/unlink lifetime stage PASS
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373760 heap-after=373760
+ELF exited with status 88
+myos> mem
+Free physical pages: 11991
+myos> 

@@ -3,6 +3,64 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Completed background tests — 2026-10-08 13:55 +07
+
+After temporary approval-review usage limit reset, revalidated exact handles:
+28044 TERMINAL0 12:16:00,full test_system PASS,normal4 hashes all OK.
+20750 TERMINAL0 12:10:51,bog4_ll4,three actual baseline-provider launches:
+each free126671->126671,SHM0->0,aliases0->0,shell; heap450304/454400/454400
+tracks RAMFS cache49152/53248/53248. Native elapsed222.44/272.65/242.82s.
+No60s responsiveness acceptance just from callback journal/exit0.
+Main source still unchanged at85f598c. Audited all tracked non-doc inputs:
+exact9 changed build/test files (plus missing candidate.gitignore/.gitattributes,
+not build inputs). Preparing exact capacity/heap/queue promotion, NOT native
+launcher/wordcopy/accounting changes. Clean accounting needs mandatoryfull.
+
+## Named SHM accounting and wordcopy experiment — 2026-10-08 11:59 +07
+
+Main source unchanged, normal images unchanged. No push/no33.3. Previous
+status-only turn was no progress; revalidated both live handles before work.
+73116 TERMINAL0 at11:52:04,wordcopy native bundle b7lanazn. Only primitives.o
+in a copied provider archive replaced; all other members and baseline inputs
+hash-checked unchanged. Copy/move/fill guard-page/overlap/alignment ASan/UBSan
+host checks PASS. Baseline AND trial UEFI64 staging expected OOM/rollback PASS;
+UEFI256 both staging/TLS/RELRO/discard PASS (NOT engine execution).
+Actual native512 two launches222.52s/262.60s: assets3/3,concurrent3,keys/click,
+certificate negatives3/3 observed; exact close pages/shell both, after1/before2/
+after2 heap454400/cache53248. First blue102.32s/142.47s not complete-frame
+latency. Final2 screenshot Timer80/KeyC/ScrollMIDDLE despite later PageUp report:
+render backlog persists. No controlled speedup measurement or60s acceptance.
+Provider SHA559d00eefd767c3e8a16d7347c80ec1a488e8f6817d740079c63258f65d80e92;
+core fd8bbf7c60d4906a72e4f4ec89bc51c7dbc9bdd83fd1e4c1cd14a8eb3a8b730a.
+
+Minimal named-SHM reproduction named-shm-exit-v_blkmb3 TERMINAL0 at11:46:11:
+production elf live creates named4KiB backing,ftruncate,closes fd,no mmap or
+unlink,returns88. PANIC ELF page reclamation: free11977->11976, node64 used,
+references0/unlinkedfalse/size4096. This is intentional filesystem residency,
+not private process leakage. This reproduction does NOT establish the cause
+of earlier native ea4fz47_ failure, whose failed-close resource capture lacks.
+
+Private accounting fix adds fs_shared_account for unique resident SHM frames
+and extra PMM alias references; atomic snapshots compare free+backing and
+aliases before/after successful execution/reap. Failed-load/staging checks
+stay strict. Named and unlinked pinned backing both counted. Cobalt acceptance
+still independently requires temporary SHM/unlinked0, so retained named files
+are not silently declared cleaned. No ABI/W^X/pointer-check change.
+
+20408 TERMINAL1 at11:56:48: both firmware builds PASS; named lifetime fixtures
+12 launches EACH BIOS/UEFI PASS: create/persist, reopen/writable alias left for
+reap, reopen/read/unlink recovers one exact frame, unlinked alias final-owner
+exit recovers all. Final SHM/unlinked0. Then old PRIVATE shared-memory fixture
+failed at expected1MiB ceiling although current source supports8MiB; retained
+failed log. Exact diff confirms stale fixture, not allocator failure.
+20750 LIVE11:59: current MAIN shared-memory fixture+driver (8MiB boundary
+plus actual8MiB duplicated aliases) BIOS16/64 AND UEFI64/256 all PASS,4 launches
+each. Now running3 actual baseline
+provider launches with accounting. Runner resume_native_resident_accounting.
+Do not mutate private tree while live. No full accounting regression yet.
+28044 full combined descriptor/heap/queue suite verified LIVE11:55, advanced
+through TCP and launcher scopes; no complete regression or promotion claimed.
+
 ## PCM after queue relocation — 2026-10-08 11:34 +07
 
 PCM BIOS/UEFI both PASS: genuine SB16/IRQ/pointer/flush/explicit and automatic
