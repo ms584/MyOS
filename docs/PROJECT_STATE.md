@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 15:20 +07. /home/xytron404/myos,main.
-Production source79f4639; latest evidence7ca7706. Owner pushes only.
+Updated: 2026-10-08 15:39 +07. /home/xytron404/myos,main.
+Production source79f4639; prior evidence3e4585c. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -46,11 +46,20 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 - Clean18146 terminal1: desktop snapshot before presentation marker; preserved.
   VM hint/shared/lifetime BOTH firmware PASS. Close-frame fence fixes host-test
   .05s assumption,unchanged pixel assertion. Focused desktop retry PASS;65645
-  LIVE15:19 mandatory full retry; normal/hash pending. No promotion.
-- Combo54571 LIVE15:19: indexed ledger+GS errno,oracle BOTH then2 native launches.
-  No source/image mutation in main. Do not mutate either live candidate.
+  LIVE15:38 PID582523 verified: full retry now ELF emutls; normal/hash pending.
+- Combo54571 TERMINAL0 15:30:51: ledger+GS,oracle BOTH,2 native launches
+  192.30/222.44s,310requests,assets3,14inputs; both clean closes/SHM0/shell.
+  Original3 sources restored/helper removed/normal4 hashes OK. No latency PASS.
+- Custom-FS GS test14461 terminal0 15:26:24,24 workers/launch,2 launches EACH
+  BIOS/UEFI: custom FS magic preserved,errno independent,reuse/exact cleanup.
+- Frozen SAME combo images10136 terminal0 15:30:03: existing native TLS and
+  cross-signal tests BOTH firmware PASS;16 signal launches each. No promotion.
+- Visual latency20261 LIVE15:38,jmrtsdcc,pinned combo BIOS a782ade7...;
+  JS input/timer color bits read from real PNG pixels every1s. Added opt-in
+  marker only,original HTML/TLS workload retained. No automatic acceptance;
+  concurrent full regression may affect timing. Main normal4 hashes OK15:38.
 ## Next
-- Poll65645/54571 exact handles; never restart on observation timeout.
+- Poll65645/PID582523 and20261 exact handles; never restart on timeout.
   Inspect actual final input/visual timing/close,then audit and promote only with
   required evidence. Controlled comparison needed before speedup claim.
 - /dev/kvm read-only probe EACCES,user outside group kvm; owner choice pending,

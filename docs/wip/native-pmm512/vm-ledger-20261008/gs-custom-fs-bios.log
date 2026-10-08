@@ -1,0 +1,9 @@
+$ gcc -print-file-name=include
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Wall -Wextra -Werror -c /mnt/c/Users/Xytron/Documents/Codex/2026-09-30/myos-checkpoint-9f58024-home-xytron404-myos-2/work/elf-gs-custom-fs-20261008.c -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/fixture.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/fixture.so /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/fixture.o
+$ readelf -lW /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/fixture.so
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-custom-fs.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/frozen.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/gs-custom-fs.sock,server=on,wait=off -cpu max -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el/assets.img,if=ide,index=1
+PASS GS custom FS8 concurrent/24worker reuse/relaunch/resources False 0
+PASS GS custom FS8 concurrent/24worker reuse/relaunch/resources False 1
+qemu-system-x86_64: terminating on signal 15 from pid 584732 (python3)
+EVIDENCE /home/xytron404/cobalt-closed-imports-xnVZeH/build/gs-custom-fs-qgjrw8el

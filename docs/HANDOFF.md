@@ -3,6 +3,38 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## GS/ledger follow-up and visible latency — 2026-10-08 15:39 +07
+
+54571 TERMINAL0 15:30:51,mrm5_amc:2 launches192.2956/222.4357s,
+310requests,peakassets3,14inputs; final Timer104/PageUp/TOP/DOM42/cert3/3.
+Both closes exact pages/aliases/SHM0/shell. Heap450304/cache49152 then
+470800/cache69648 (bounded cache delta20496,not identical heap counts).
+Original3 sources restored,helper removed,normal4 baseline hashes OK.
+Does not prove a speedup or responsive>=60s.
+
+14461 TERMINAL0 15:26:24: elf-gs-custom-fs fixture has no PT_TLS; raw SYS17
+sets non-TCB FS magic,24 workers/launch across3reuse waves,2 launches BOTH
+firmware. Independent errno,FS unchanged across300 yields,rawjoin,status93,
+unmap/exact cleanup PASS. Frozen BIOS a782ade73f9242c9b288da979b169d05aca76ce267bc6b9e929030424e4f37fc;
+UEFI2d066ebebb5f0e65c383f5d2b63c40ad91186eca7b4b1843314ae2367f693671.
+10136 TERMINAL0 15:30:03: SAME image hashes existing test_native_tls and
+test_cross_signal BOTH firmware PASS,16signal launches each; original assertions
+unchanged,only VM boot_image redirected. No guest code/build mutation.
+Clean production-derived GS runtime/scheduler/process+ledger sources staged,
+not compiled/full-tested/promoted yet. Never promote private diagnostic runtime.
+
+65645 full retry process582523 verified LIVE15:38 at ELF emutls. Clean tree
+R4sQZZ remains frozen until terminal; main normal4 hashes OK15:38.
+20261 visual-latency experiment LIVE15:38,jmrtsdcc: pinned BIOS combo image,
+opt-in DOM markers input codes a1,b2,PageDown3,c4,PageUp5,click128+count,
+clock ticks modulo256. JS changes marker CSS; screenshots sample exact black/
+white pixels and magenta presence sentinel every1s,lossless PNG. Host never
+paints guest acknowledgement. Original DOM/timers/TLS/CSP/negative/concurrency
+workload retained. First observed pixel gives latency bounds,not HTTP journal.
+Concurrent regression may perturb timing; do not claim controlled speedup.
+Stage run_visual_latency_frozen_20261008.py /analyze_visual_latency_20261008.py;
+results pending; no private keys copied. All acceptance gates remain open.
+
 ## Indexed VM ownership experiment — 2026-10-08 15:14 +07
 
 Update15:20:10751 TERMINAL0 15:17:39,oeki2uua. Actual2 launches202.343/222.500s,
