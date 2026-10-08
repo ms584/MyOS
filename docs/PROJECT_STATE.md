@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 10:37 +07. /home/xytron404/myos, main.
+Updated: 2026-10-08 10:54 +07. /home/xytron404/myos, main.
 Source: SHM pool promotion over3a99d70; prior docs04bb16e.
 origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
 ## Goal / acceptance
@@ -46,12 +46,16 @@ origin/main a746889 fetched09:49:18, unchanged; owner pushes only.
   dominant tid(pid5,low11)=Chrome_InProcGpuThread confirmed in native log.
   ~1.4..1.7 CPU seconds/3.1..3.6 guest seconds late intervals, not host CPU%.
   Old observer omitted !alive/blocked tasks: blocked0 INVALID; CPU valid.
-- Combined94832 RUNNING since10:32:29 in pmm-syscall-R4sQZZ: clean reservation,
-  runtime128/kernel64 +exact capacity fixtures. Five scopes BOTH firmware then
-  mandatory full test_system, normal restore and identical final hashes.
-  Production has NONE of these pending runtime/capacity/diagnostic changes.
+- Combined94832 terminal1 10:36:16: five scopes BOTH firmware PASS, full build
+  failed low-memory linker bound. Original failure preserved; normal restored.
+- Heap retry79953 LIVE verified10:54, pmm-syscall-R4sQZZ: per-process bounded
+  file table on heap, allocated before publication/freed on reap/failed load.
+  Keeps linker bound; five scopes BOTH firmware PASS; full system RUNNING.
+- Native3584 LIVE verified10:54, cobalt-closed-imports-xnVZeH: kernel64/runtime128
+  +heap table, capacity tests BOTH firmware then actual two-launch HTTPS/input.
+  Production has NONE of these pending runtime/capacity/heap/diagnostic changes.
 ## Next
-- Poll exact94832; do NOT restart on observation timeout/mutate live trees.
+- Poll79953/3584; do NOT restart on observation timeout/mutate live trees.
 - Inspect actual frames/input timing and CPU counters; fix latency and prove
   >=60s responsive interaction/relaunch on normal launcher before phase closure.
 - Promote combined slice only after complete relevant/full evidence.

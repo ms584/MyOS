@@ -3,6 +3,29 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Kernel handle capacity: low-memory regression and heap-table retry — 2026-10-08 10:54 +07
+
+Combined94832 TERMINAL1 at10:36:16 after all five affected BIOS/UEFI scopes
+passed. Full PROCESS_TESTS build hit linker ASSERT __bss_end<0x80000; increasing
+embedded file tables32->64 expanded static processes[4]. This is a real full
+regression, not an optional test failure. Original descriptor-capacity-full.log
+preserved as descriptor-capacity-lowmem-failure.log/status in candidate root.
+Normal BIOS/UEFI restore trap completed. Do not expand boot reservation bounds.
+
+Retry79953 verified LIVE10:54 in pmm-syscall-R4sQZZ: process.files pointer,
+bounded FS_HANDLES allocation before process publication in both create_image
+and stage_images, null-safe close/free in release for reap and partial failures.
+Immediate process exit/kill still closes handles. All five focused scopes BOTH
+BIOS/UEFI passed; full system still RUNNING. No full PASS or promotion yet.
+
+Native3584 verified LIVE10:54 in cobalt-closed-imports-xnVZeH. Only after prior
+CPU/native jobs terminal and new focused tests passed: kernel64/runtime128,
+same heap-table ownership fix, preserving private diagnostic process code.
+Runner capacity BIOS/UEFI then actual two-launch HTTPS/input/cleanup. Do not
+mutate either live tree. CPU observer disabled here; old process layout is stale
+after heap table change and must be recompiled before future CPU observation.
+Main remains369aa1a and normal SHM-pool hashes; owner disks untouched/no push.
+
 ## CPU observer result and limitations — 2026-10-08 10:37 +07
 
 CPU59213 TERMINAL0 10:33:57,f2o6dpzq,46 read-only metadata samples.
