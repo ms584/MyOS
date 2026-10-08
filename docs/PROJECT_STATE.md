@@ -1,10 +1,11 @@
 # MyOS project state
-Updated: 2026-10-08 09:00 +07. Repo /home/xytron404/myos, main.
-Previous source049576c; docs5670e0d; origin/main a746889 fetched03:43.
+Updated: 2026-10-08 09:16 +07. Repo /home/xytron404/myos, main.
+Source baseline3a99d70; origin/main a746889 fetched03:43; no push.
 ## Scope and honest status
 - Phase33.1/33.2 OPEN. Actual native HTML/JS/DOM/timers/key/click observed;
-  responsive>=60s, scrolling, verified concurrent HTTPS and relaunch cleanup
-  NOT accepted. No33.3, no push; YouTube unproven, Phase32/33 NOT PASSED.
+  trusted HTTPS/concurrent assets/cert negatives now observed in private WIP.
+  Responsive>=60s, scrolling/relaunch cleanup NOT accepted. No33.3/no push;
+  YouTube unproven, Phase32/33 NOT PASSED.
 - Strong paired imports242/242, registered240; missing0. Fifteen unavailable
   media +nine POSIX ENOSYS are explicit boundaries, NOT complete API semantics.
 ## Newly promoted full-tested runtime
@@ -44,12 +45,19 @@ Previous source049576c; docs5670e0d; origin/main a746889 fetched03:43.
   At150s all user tasks blocked (some timed), kernel boot task runnable;
   snapshot is not proof of deadlock or responsive timing. Pages/threads stop;
   heap409344->450304, cleanup still unaccepted. Keys never recorded/committed.
-- New private TCP metadata trace46944 started08:58:51; source frozen while live.
-  Logs sizes/results only, no payload/keys, no altered return/errno behaviour.
-  Inspect same handle/log, not blind restart. Task snapshot diagnostic-only.
+- TCP trace46944 terminal0; verbose18956 terminal0 showed actual Cobalt cancels
+  navigation on missing CSP header, NOT a proven TLS/readiness deadlock.
+- CSP fixture-only fix77831 terminal0 at09:15:04, bundle c4sx6f02: actual
+  native HTTPS HTML/external app.js/DOM42,93 timer beacons, key a/click1;
+  three assets loaded, peak concurrent3, three certificate-error beacons,
+  ZERO HTTP on wrong-host/expired/untrusted servers. No TLS/CSP bypass.
+- Real final screenshot: DOM42,Timer77,Clicks1,Rejected certificates3/3.
+  Timer93 in journal: visual lag remains, not responsive60s acceptance.
+  Escape: pages reclaimed/all threads stopped, heap409344->450304 (+40960).
+  No relaunch proof yet. Controlled disposable CA/DNS map, NOT public Internet.
 ## Next and artifacts
-- Diagnose TLS response/readiness stop after first GET; prove genuine trusted
-  HTML/JS, all cert failure cases, concurrent assets and real displayed input.
+- Diagnose visual backlog; repeat input/scroll with timed actual frames and
+  warm close/relaunch accounting. CSP failure/fix is public evidence below.
 - Resolve visual latency/PS2 motion, scrolling, >=60s responsiveness and warm
   close/relaunch resources. Do not close phases on imports/fixture results.
 - HANDOFF.md; docs/wip/native-pmm512 preserves slices/logs/actual screenshots.

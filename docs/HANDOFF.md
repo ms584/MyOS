@@ -3,6 +3,39 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Actual native HTTPS/JS/input/concurrency, CSP cause fixed — 2026-10-08 09:16 +07
+
+Source baseline3a99d70, goal ACTIVE, phases OPEN, no33.3/no push. This section
+supersedes older RUNNING descriptions. TCP46944 and verbose18956 terminal0;
+actual Cobalt log states navigation canceled due to missing CSP headers.
+Pinned upstream cobalt/browser/cobalt_secure_navigation_throttle.cc inspected
+in full; SHA256 8a1d6697f55c91fe39bb1a1c4a22f975539b22a21c6ace21f214fe7ec70ed7cb.
+Added fixture Content-Security-Policy: default/script self, inline styles only,
+images self and HTTPS cobalt.example.com:* for alternate-port cert negatives.
+No CSP/HTTPS enforcement disable, no TLS verifier changes, no guest rebuild.
+
+CSP run77831 terminal0 at09:15:04, native-verified-tls-c4sx6f02:108 real HTTP
+requests, external app.js,DOM42,93 timers,key a/click1; three delayed assets
+loaded with measured peak concurrent3. All wrong-host/expired/untrusted images
+reported certificate-rejected; invalid servers received ZERO HTTP. Final actual
+frame inspected: HTTPS DOM42,Timer77,Clicks1,Rejected certificates3/3.
+This establishes controlled trusted native HTTPS/JS/concurrent request behavior,
+NOT public Internet/public CA/external DNS proof. Native engine did all JS/DOM,
+TLS verification and Mesa rendering; host only served static bytes.
+
+Visual timer77 vs journal93 shows significant backlog; NOT responsive>=60s PASS.
+Input was sent only once, no scrolling or repeated launch yet. Escape reached
+shell, pages reclaimed/all threads stopped, heap409344->450304 (+40960).
+Must distinguish warm resource/cache delta from leak using a same-VM relaunch,
+and demonstrate timely displayed input/scroll over >=60s before phase closure.
+KVM read-only access probe denied for xytron404; permission question pending.
+Do NOT change user groups/settings without explicit approval; TCG work can proceed.
+
+Evidence/scripts under docs/wip/native-pmm512: tls-c4sx6f02-{evidence.json,
+serial.txt,request-events.jsonl}, actual PNG frames, CSP fixture/runner/summary.
+Private keys NEVER copied. Main normal four hashes still checked at checkpoint;
+production diagnostics/boot-probe experiments remain unpromoted.
+
 ## Full-tested PMM/SHM/runtime promoted, TLS response diagnosis — 2026-10-08 09:00 +07
 
 Goal ACTIVE, phases OPEN, no push/no33.3. Approval usage limit cleared08:52;

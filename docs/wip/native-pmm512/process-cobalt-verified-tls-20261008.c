@@ -884,9 +884,10 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
         if(start->url)while(u<=1024&&start->url[u])++u;
         if(!n||n>64||u>1024){irq_restore(f);return false;}
         uint64_t base=USER_BASE+ELF_BOOT_OFFSET;
-        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+576),*url=name+n+1;
-        memcpy(name,start->name,n+1);args[0]=base+576;
-        for(unsigned i=1;i<8;++i)args[i]=0;
+        /* PRIVATE: nine pointer slots retain NULL after eight arguments. */
+        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+592),*url=name+n+1;
+        memcpy(name,start->name,n+1);args[0]=base+592;
+        for(unsigned i=1;i<9;++i)args[i]=0;
         p->frame->rdi=1;p->frame->rsi=base+512;
         if(start->url){memcpy(url,"--url=",6);memcpy(url+6,start->url,u+1);
             args[1]=base+(uint64_t)(url-(char *)boot);p->frame->rdi=2;
@@ -924,12 +925,14 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
                 memcpy(verbose,verbose_switch,sizeof(verbose_switch));
                 args[p->frame->rdi++]=base+(uint64_t)(verbose-(char *)boot);
                 char *detail=verbose+sizeof(verbose_switch);
-                /* DNS destination mapping only: the engine still verifies
-                 * certificate chain, validity and cobalt.example.com SAN.
-                 * Replaces verbosity to retain seven argv entries + NULL. */
-                static const char detail_switch[]="--host-resolver-rules=MAP cobalt.example.com 10.0.2.2";
+                static const char detail_switch[]="--v=1";
                 memcpy(detail,detail_switch,sizeof(detail_switch));
                 args[p->frame->rdi++]=base+(uint64_t)(detail-(char *)boot);
+                /* DNS destination mapping only; no certificate bypass. */
+                char *route=detail+sizeof(detail_switch);
+                static const char route_switch[]="--host-resolver-rules=MAP cobalt.example.com 10.0.2.2";
+                memcpy(route,route_switch,sizeof(route_switch));
+                args[p->frame->rdi++]=base+(uint64_t)(route-(char *)boot);
             }
         }
         p->frame->rcx=start->handler;p->frame->r8=start->preflight;p->frame->r9=start->sabi;

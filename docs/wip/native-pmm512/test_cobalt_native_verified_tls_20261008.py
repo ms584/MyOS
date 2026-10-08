@@ -82,6 +82,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body=page if self.path=='/' else script if self.path=='/app.js' else gif if asset or self.path=='/probe' else b''
             mime='text/html' if self.path=='/' else 'application/javascript' if self.path=='/app.js' else 'image/gif' if asset or self.path=='/probe' else 'text/plain'
             self.send_response(200);self.send_header('Content-Type',mime)
+            # Cobalt enforces CSP on navigation. Permit only fixture content;
+            # alternate HTTPS ports are needed for real certificate negatives.
+            self.send_header('Content-Security-Policy',
+                "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+                "img-src 'self' https://cobalt.example.com:*")
             self.send_header('Content-Length',str(len(body)));self.send_header('Cache-Control','no-store')
             self.end_headers();self.wfile.write(body)
         except (BrokenPipeError,ConnectionResetError,ssl.SSLError):pass
