@@ -1,6 +1,6 @@
 # MyOS project state
-Updated: 2026-10-08 16:40 +07. /home/xytron404/myos,main.
-Production source79f4639; documentation checkpointf34228c. Owner pushes only.
+Updated: 2026-10-08 19:13 +07. /home/xytron404/myos,main.
+Production source79f4639; prior evidence48181ed. Owner pushes only.
 Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
 ## Acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
@@ -44,16 +44,30 @@ Remote main08d90f7 observed14:21:53; tracking origin/main may be stale.
   REP INSW,unchanged status/IRQ/write guards. Image9858e435...,runtime08945598.
   Asset-v2/v1 KVM BIOS40112 and UEFI89858 terminal0: large/readonly/relaunch/
   exact resources PASS. Missing isolated font fixed before UEFI retry.
--66375 TERMINAL0 16:38:49,ia30b2lw:2 launches215.54/215.95s,315requests,
-  assets3;first visible95.38/95.75s,120s observation each. All10 keys visible
-  <=1.312s;click/scroll,timers,cert negatives and both closes/resident exact PASS.
-  Heap409344->450304->450304 bounded cache. Audit655 inputs: only ATA differs
-  from matched native baseline. Host RAM-peak inventory NOT captured yet.
+-66375 TERMINAL0 16:38:49,ia30b2lw: private native2launches,315requests,
+  keys<=1.312s,click/scroll/TLS negatives/120s each/both exact closes observed.
+## Clean integration (NOT main source yet)
+- Root /home/xytron404/native-integrated-XZBHuo; clean production-derived source,
+  no private diagnostics/name magic. Explicit elf cobalt CORE PROVIDER URL
+  [HOST=IPv4]; jitless JS/W^X,HTTPS enforced; optional routing never trust bypass.
+  Shared argv9slots/name584; legacy pair-starboard counts unchanged. All elf_start
+  constructors memset full struct. Host route ASan/UBSan and BIOS/UEFI builds PASS.
+-88404 TERMINAL0 19:11:07,h35djree:clean native2launches222.03/211.34s,
+  marker spans118.78/119.69s;all10 keys<=1.328s. DOM42,timers,click/scroll,
+  asset concurrency3,cert rejects3/3 each,both closes/resident exact PASS.
+  PNG-rechecking verifier PASS19:12:08; heap450304->450304 after warm close.
+  PMM sampled peak279449600bytes,420samples,pause3.349s;not exact peak/RSS,
+  includes kernel/residents,excludes reserved heap backing. Before/after exact.
+- Audit783 baseline inputs: only16 expected changes. Existing resource helper
+  unchanged (first audit expected it changed;preserved corrected audit). Observer
+  host safety3 tests PASS; no guest payload reads. Manifest5 images exact.
+-12681 LIVE19:12:40:GS/custom-FS/shared/named lifetime/executable path BOTH
+  firmware,then complete test_system.py. Logs integrated-*.log/status in root.
+  No source/build edits there while running. Approval quota recovered19:03;
+  earlier blocked launch never executed. Normal main images untouched.
 ## Next
-- Banked native KVM evidence is NOT an integrated production/phase PASS.
-- Audit native launcher before integration: private nine-argv layout/owned
-  executable path,controlled DNS mapping,jitless and verbose diagnostics are NOT
-  yet production. Preserve verifier/W^X; do not copy private diagnostics blindly.
+- Poll12681 exact handle;inspect failures before retry. Native candidate pass
+  alone does not close phases. Promote only exact audited/regression-tested code.
 - Run required integrated regression,restore normal images,update docs/commit
   before closure. Detailed evidence in HANDOFF and docs/wip/native-pmm512.
 - activity.log bounded48MiB; NEVER read through run_logged.py. No private keys.

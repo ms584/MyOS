@@ -3,6 +3,50 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Clean native integration — 2026-10-08 19:13 +07
+
+Root /home/xytron404/native-integrated-XZBHuo derives from main48181ed,not old
+private tree. Explicit `elf cobalt CORE PROVIDER URL [HOST=IPv4]` removes name
+magic; interpreter-only JS preserves W^X,HTTPS explicitly enforced,optional
+bounded hostname/IP routing never bypasses trust/identity.9argv slots,owned
+name584 shared with executable-path validation; legacy launcher counts retained.
+elf-link prepare memset initializes all new optional fields. Clean runtime has
+only GS fastpath,not allocation/FD/TCP/window/signal debug tracing. Also clean
+VM ledger/batched prune,REP INSW,normal boot probe retirement,desktop frame fence.
+Route host ASan/UBSan and normal BIOS/UEFI builds passed16:48:54. Initial host
+warning and unit wrong expected offset592 fixed; actual shared9slots=>584.
+Approval-review quota blocked first native command BEFORE execution at~16:50;
+no workaround. Recovered19:03; active goal preserved.
+
+88404 TERMINAL0 19:11:07,h35djree:2 native KVM launches222.028/211.340s.
+First marker-visible102.931/91.129s,observed PNG spans118.779/119.693s;
+120s post-visible host windows. All10 key ACK sampled upper bounds<=1.328s.
+Actual DOM42/timer>=60/click1/keyboard scroll80->0/assets3 concurrency and
+wrong-host/expired/untrusted rejects3/3 each. Both close threads/pages/SHM/aliases
+exact and shell; warmed kernel heap450304 both closes. Actual second final PNG
+Timer122/KeyPageUp/ScrollTOP. verify_native_web_bundle rechecks all marker PNG
+pixels,inputs,JS events,cert-server HTTP exclusion,60s,cleanup and warm heap;
+PASS19:12:08.2s key evidence bound includes1s image sampling,not instantaneous
+latency. This verifies native web subset,NOT final phase/regression/promotion.
+
+PMM observer matches kernel ELF/normal image identity,pauses only for two low
+counters and finally resumes.420samples,279449600bytes sampled PMM allocation
+peak,3.3493s total pause. Counts include kernel/residents,exclude heap backing
+reserved outside PMM,not per-process RSS/not exact peak. Four before/after
+boundaries all free126671/total130784,allocated16846848bytes. Host observer safety
+3 tests PASS (invalid counter/status/read errors always continue,ambiguous/
+wrong-sized/nonidentity symbols rejected). RAMFS metadata/helper reads match ELF.
+
+Read-only source audit783 baseline files:16 expected changes only; first audit
+mistakenly expected identical existing resource helper to change,now asserts
+byte identity explicitly; preserve first JSON. Source/WIP files remain unpromoted.
+12681 LIVE19:12:40:GS errno/customFS,shared,named lifetime,system executable path
+BOTH BIOS/UEFI then full test_system.py. Existing pinned contract headers copied
+before test; private keys never copied. Manifest5 binaries checked before and
+restore trap will rebuild normal BIOS/UEFI/check equality. Do not edit/build root
+while this handle live; inspect terminal result/failure before retry.
+Main production source79f4639/normal images untouched. No push/33.3/closure.
+
 ## Non-root KVM experiment — 2026-10-08 16:21 +07
 
 Final ATA native observation66375 TERMINAL0 16:38:49. ia30b2lw: two launches

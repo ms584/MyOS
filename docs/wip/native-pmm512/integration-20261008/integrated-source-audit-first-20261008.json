@@ -1,0 +1,76 @@
+{
+  "baseline": "/home/xytron404/myos",
+  "trial": "/home/xytron404/native-integrated-XZBHuo",
+  "baseline_inputs": 783,
+  "trial_inputs": 787,
+  "changes": {
+    "kernel/elf.c": [
+      "f42e7c52c601a646a98e26f017174c48da2e0214f7861af4a7f965e49dbfb3a3",
+      "577d9b3552447f0842b1defb3e866c886da7b1c9a0354365635d7a13e924e2f3"
+    ],
+    "user/process-test.c": [
+      "49a41f049866969eb4d063233f7368c6c353c2e7d7f19d80fcdc5f60dcdf444d",
+      "a136949d9d8c62138f783a02708a152861070796a90fd504e146b69c53a0a29a"
+    ],
+    "kernel/kernel.c": [
+      "e29f340ecd80aaad67d2a6f2680ef095d0c1fcaa7f9a678b27cd302a5f149056",
+      "aaa73ca6d7b203671d9195129df95a15bc4d4b933b11c60d03d3ca60b6f73d5d"
+    ],
+    "user/platform-runtime.c": [
+      "3f71424bc899bb79c43bc5bdcd7b4103d78e99940467b20cd00c2bac1db85147",
+      "c116375abf07d7443f75892a33f92b64a581e7e3bd8614a21ab1f5aec7dad697"
+    ],
+    "include/vm-ledger.h": [
+      null,
+      "d16ef332add3221d8fd5692ec2fae8042bf5d09c599a884f5882316e5ac3b194"
+    ],
+    "drivers/ata.c": [
+      "712ec6b702831f03fb2c1905625855ce99c6612e265779e50d5f7d338ed3e03a",
+      "20a6360b32abdbd3e0c1daac4772d5339e5c2d72a014f08d79e6584a7a903c43"
+    ],
+    "memory/process.c": [
+      "f5f1329a9a36252d280527289b689d7ac4b7c0e79f8d8f98e560858bd5b78bc8",
+      "5d15cdc2bf71a0a8bb5631282dc049dbc6bf55f9306e0a7a01831d2378d2cc3c"
+    ],
+    "cpu/scheduler.c": [
+      "5bc6031e4dd8cea50f957880bb6f0942685a240c6ee94035618031f9f1faf932",
+      "7ad2e39ce8c68d73fd373ca4516971550058dfb93af14fb387f7379c01279d32"
+    ],
+    "include/elf.h": [
+      "28e97d38b57f51ebd55ca68c0e23e4f7f1f1d963581798b866b702995c4c4519",
+      "ff940b892b9ff5d731b5fed070675eb8a98ef0d3d760018ae288770d9e9df22d"
+    ],
+    "tests/cobalt_pmm_observer.py": [
+      null,
+      "d8447dc284e42748483e4c0b1a50201df0c20de4a2eda5e3d801efce46da091a"
+    ],
+    "shell/shell.c": [
+      "91c23050f071221d57e9455cda71edbb7ffc25b8b0c01c862a904b868ef3f7d3",
+      "58c640c3e4c44226920b409cc57ce8ed8377380fc37629c1e0aef1093d02fdca"
+    ],
+    "include/elf-launch.h": [
+      null,
+      "47ac90c5876982aed96bcf2ab56792b12d27f1bb7c19318ef21d673177a25896"
+    ],
+    "kernel/syscall.c": [
+      "fc3c9627b3997a9714badb531c198ad5014132bd605174d023f0c157ba2e7140",
+      "d8d36a413e5810fae4896812f4adc92c0f23e72e3bb051bbb58315a2e45472eb"
+    ],
+    "tests/test_desktop.py": [
+      "33e43a91964959bf99354db8805f155dca90c19ca9911a609b00c98abc39b6b5",
+      "ea49c549d8e4c68ec3a679d007efed55b7b9661a7d7608451943546bdf317c00"
+    ],
+    "tests/test_cobalt_native_acceptance.py": [
+      null,
+      "31407c99ce2811c2e1679040158b7f77a1e286a8dc7a1eaf3a3d48698a24f638"
+    ],
+    "include/os.h": [
+      "eeeb2567feb9e9be10dacacfe79f027a7652f3deadab2c8b05ec8a994a2aa8cf",
+      "3161de6b75bf0b130af950e16ad15fd58a112142dde0d39dd6536737169f4f6f"
+    ]
+  },
+  "unexpected": [],
+  "missing_expected": [
+    "tests/cobalt_native_resource_inventory.py"
+  ]
+}

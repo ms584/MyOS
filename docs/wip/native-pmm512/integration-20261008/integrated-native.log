@@ -1,0 +1,17 @@
+$ openssl x509 -in /home/xytron404/native-integrated-XZBHuo/build/native-verified-tls-h35djree/public-test-ca.pem -subject_hash -noout
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '512', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/native-integrated-XZBHuo/build/system-tests/native-verified-tls.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/native-integrated-XZBHuo/build/myos-current.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/native-integrated-XZBHuo/build/system-tests/native-verified-tls.sock,server=on,wait=off', '-cpu', 'host', '-nic', 'user,model=rtl8139', '-drive', 'format=raw,file=/home/xytron404/native-integrated-XZBHuo/build/native-verified-tls-h35djree/assets.img,if=ide,index=1', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/native-integrated-XZBHuo/build/system-tests/native-verified-tls.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/native-integrated-XZBHuo/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/native-integrated-XZBHuo/build/system-tests/native-verified-tls.sock,server=on,wait=off -cpu host -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/native-integrated-XZBHuo/build/native-verified-tls-h35djree/assets.img,if=ide,index=1 -accel kvm
+$ nm -S build/kernel.elf
+$ nm -S build/kernel.elf
+RESOURCE_METADATA before-1 372736 RAMFS 8192
+LAUNCH_OBSERVATION {"launch": 1, "elapsed": 222.02799214801053, "request_start": 0, "request_end": 160, "cleanup": ["ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304", "ELF cancelled; all threads stopped"], "shell_returned": true}
+$ nm -S build/kernel.elf
+RESOURCE_METADATA after-1 450304 RAMFS 49152
+$ nm -S build/kernel.elf
+RESOURCE_METADATA before-2 450304 RAMFS 49152
+LAUNCH_OBSERVATION {"launch": 2, "elapsed": 211.33939952400397, "request_start": 160, "request_end": 313, "cleanup": ["ELF pair live: pages reclaimed; heap-before=450304 heap-after=450304", "ELF cancelled; all threads stopped"], "shell_returned": true}
+$ nm -S build/kernel.elf
+RESOURCE_METADATA after-2 450304 RAMFS 49152
+qemu-system-x86_64: terminating on signal 15 from pid 645978 (python3)
+EVIDENCE_BUNDLE /home/xytron404/native-integrated-XZBHuo/build/native-verified-tls-h35djree requests 313 peak_concurrent_assets 3
+OBSERVATION ONLY: inspect actual native screenshot, TLS rejection errors, concurrency and cleanup; not full acceptance.
