@@ -1,0 +1,126 @@
+{
+  "summary": {
+    "records": 17,
+    "median_tsc": {
+      "gap_tsc": 31067261820,
+      "finish_tsc": 211669836,
+      "present_tsc": 102904983
+    },
+    "median_sampled_interval_fractions": {
+      "gap_tsc": 0.990861660792378,
+      "finish_tsc": 0.006336727234709171,
+      "present_tsc": 0.003030597673561979
+    },
+    "caveats": [
+      "Raw guest TSC intervals, not CPU cycles/utilization or performance percentages",
+      "Other VM full regression runs concurrently; host scheduling affects all intervals",
+      "Gap includes GL calls, Cobalt work, scheduling and waits; not exclusively drawing",
+      "EGL logging is serial-only after native window ownership; diagnostic work perturbs execution",
+      "Completed frames only; no native responsiveness acceptance"
+    ]
+  },
+  "rows": [
+    {
+      "frame": 1,
+      "gap_tsc": 0,
+      "finish_tsc": 686510348,
+      "present_tsc": 127152062
+    },
+    {
+      "frame": 2,
+      "gap_tsc": 265357417,
+      "finish_tsc": 554127123,
+      "present_tsc": 121846115
+    },
+    {
+      "frame": 3,
+      "gap_tsc": 5154963481,
+      "finish_tsc": 954499612,
+      "present_tsc": 203842172
+    },
+    {
+      "frame": 4,
+      "gap_tsc": 87771774,
+      "finish_tsc": 787589568,
+      "present_tsc": 134398775
+    },
+    {
+      "frame": 5,
+      "gap_tsc": 2236325423,
+      "finish_tsc": 692788422,
+      "present_tsc": 102904983
+    },
+    {
+      "frame": 6,
+      "gap_tsc": 66769867202,
+      "finish_tsc": 242072791,
+      "present_tsc": 95492941
+    },
+    {
+      "frame": 7,
+      "gap_tsc": 12407436737,
+      "finish_tsc": 397581974,
+      "present_tsc": 102958996
+    },
+    {
+      "frame": 8,
+      "gap_tsc": 50548422687,
+      "finish_tsc": 402062049,
+      "present_tsc": 144618334
+    },
+    {
+      "frame": 9,
+      "gap_tsc": 39023046921,
+      "finish_tsc": 211669836,
+      "present_tsc": 157972105
+    },
+    {
+      "frame": 10,
+      "gap_tsc": 31067261820,
+      "finish_tsc": 204168545,
+      "present_tsc": 65693716
+    },
+    {
+      "frame": 11,
+      "gap_tsc": 40394930860,
+      "finish_tsc": 201458184,
+      "present_tsc": 98171194
+    },
+    {
+      "frame": 12,
+      "gap_tsc": 35893046844,
+      "finish_tsc": 192632028,
+      "present_tsc": 98901404
+    },
+    {
+      "frame": 13,
+      "gap_tsc": 44942942707,
+      "finish_tsc": 191051656,
+      "present_tsc": 70901072
+    },
+    {
+      "frame": 14,
+      "gap_tsc": 33474976757,
+      "finish_tsc": 211376443,
+      "present_tsc": 87582051
+    },
+    {
+      "frame": 15,
+      "gap_tsc": 31246728729,
+      "finish_tsc": 202425652,
+      "present_tsc": 106451064
+    },
+    {
+      "frame": 16,
+      "gap_tsc": 29219418755,
+      "finish_tsc": 161304756,
+      "present_tsc": 78851336
+    },
+    {
+      "frame": 17,
+      "gap_tsc": 28772290215,
+      "finish_tsc": 164380418,
+      "present_tsc": 93792192
+    }
+  ]
+}

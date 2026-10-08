@@ -1,7 +1,7 @@
 # MyOS project state
-Updated: 2026-10-08 14:15 +07. /home/xytron404/myos,main.
+Updated: 2026-10-08 14:28 +07. /home/xytron404/myos,main.
 Source c04ff93 descriptor/heap/queue promotion; prior evidence7f527ea.
-origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
+Remote main08d90f7 observed ls-remote14:21:53; owner pushes only.
 ## Goal / acceptance
 - Goal ACTIVE; Phase33.1/33.2 OPEN,no33.3/no push; YouTube unproven.
 - Actual HTML/app.js/DOM42/timers/keys/click and controlled verified HTTPS,
@@ -33,11 +33,8 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 - CPU59213 names dominant Chrome_InProcGpuThread. GPU61286 saved frame PCs
   include errno/memcpy/softpipe,NOT function time attribution; details HANDOFF.
 ## Private experiments (not production)
-- Wordcopy73116 terminal0 11:52:04,b7lanazn: host guarded ASan/UBSan PASS;
-  baseline/trial UEFI64 expected OOM rollback,UEFI256 staging PASS.
-  Two native closes exact pages;heap454400/cache53248 after1/before2/after2.
-  Assets/input/TLS observed,BUT final2 KeyC/ScrollMIDDLE/Timer80 lags PageUp.
-  No measured speedup/60s acceptance; experimental provider NOT promoted.
+- Wordcopy73116 terminal0,b7lanazn: host correctness/staging/two native closes
+  PASS,visual backlog remains; no measured speedup/60s/provider promotion.
 - Minimal named-SHM exit reproduces production PANIC: legitimate named4KiB
   backing remains,fd closed,no aliases. Raw free-page equality is incorrect;
   NOT proven cause of earlier Cobalt panic. Original evidence retained.
@@ -52,13 +49,15 @@ origin/main a746889 fetched09:49:18 unchanged; owner pushes only.
 - Clean accounting84234 LIVE14:14,pmm-syscall-R4sQZZ,only fs.h/ramfs.c/elf.c
   beyond promoted source. Builds, named-lifetime/shared-memory both firmware,
   focused BOTH firmware PASS; mandatory full still running,normal hashes pending.
-- Present timing87369 LIVE14:14,private native xslpu938:24 completed800x600
-  frames,median stripe TSC64850838 vs gap33809396435; median sampled fraction
- 0.001895,NOT CPU%/time guarantee. Gap includes userspace/scheduling/waits;
-  no basis for kernel-copy bottleneck claim. Diagnostic-only,not acceptance.
-  EGL glFinish/present split source prepared but NOT compiled/run yet.
+- Present87369 terminal0 14:19:39,xslpu938:kernel print OVERWROTE FRAMEBUFFER,
+  no input sent,max blue6400; diagnostic interval evidence NOT normal behavior.
+- EGL69157 terminal0 14:25:29,7bhyj38q: serial-only;17 frames,gap median31067261820
+  TSC vs finish211669836/present102904983. Actual PageUp/ScrollTOP/Timer87;
+  input7,cert3/3,concurrent3,close pages/SHM0. Not60s responsiveness acceptance.
+- Errno count46612 LIVE14:27,private native: serial-only count all user threads
+  between presents with same timed provider. Do not infer GPU-only CPU cost.
 ## Next
-- Poll84234/87369 exact handles; do not mutate/restart on observation timeout.
+- Poll84234/46612 exact handles; do not mutate/restart on observation timeout.
 - Inspect close/page/SHM metadata and actual frames/input latency; prove
   >=60s responsive interaction/relaunch on normal launcher before closure.
 - Accounting needs relevant/full evidence before promotion. Fix actual latency

@@ -3,6 +3,43 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Serial-only EGL timing and framebuffer diagnostic error — 2026-10-08 14:28 +07
+
+Revalidated remote main ls-remote14:21:53 =>08d90f7 matches local thenHEAD;
+owner pushed, agent did NOT push. Tracking origin/main remains stale untilfetch.
+87369 TERMINAL0 14:19:39,xslpu938: actual launch ran602.05s,369requests,close
+pages/threads/shell;heap470800/cache69648. BUT diagnostic kernel print draws
+console onto active framebuffer: final screenshot is diagnostic text,maxblue6400,
+inputs0. This was instrumentation damage, not valid normal interaction evidence.
+Earlier interval ratios only describe instrumented workload, do not claimnormal
+performance. Private syscall restored and BOTH normal builds completed at exit.
+Preserve failed visual evidence; no acceptance inferred from exit0.
+
+EGL timing provider built from copied baseline archive, exactly one member
+platform-egl-driver.o replaced; compile replays actual archive compile.log
+command and original osmesa compile-command cwd. All other members/hash inputs
+unchanged, no wrappers/hostlibs/NEEDED/TEXTREL; runtime imports,exports,relocations,
+TLS/RX/RW validated. ProviderSHA93a38da5ba7ea9f3d7697db25df8000b68b016253d6898508ec2176a0f438246.
+SbLogRaw routes serial-only while native_ui_owns, unlike kernel print above.
+69157 TERMINAL0 14:25:29,7bhyj38q: UEFI256 staging PASS,actual512 one launch
+252.58s,input7,DOM42,cert3/3,assets3/concurrent3. Actual final PageUp/ScrollTOP/
+Timer87; clean pages126671 exact,SHM0/unlinked0,heap450304/cache49152.
+17 EGL frames: median rawTSC gap31067261820,finish211669836,present102904983;
+median interval fractions gap.99086/finish.00634/present.00303 (NOT CPU%).
+Gap includes GL commands,Cobalt work,scheduling/waits/host execution; fullother
+VM runs concurrently. Do not attribute solely GL draw or claim controlledspeedup.
+glFinish retained, no gameplay/media/Phase33.3 implementation change.
+
+46612 LIVE14:27,private native, adds all-thread SYS_ERRNO_LOCATION count between
+actual presentations using serial_put ONLY, same EGL diagnostic provider.
+Counter has no thread attribution/CPUtime claim; first interval includes startup.
+Runner restores original private syscall.c plus BIOS/UEFI normal builds at exit.
+Do not mutate private native while live.84234 clean accounting full stilllive;
+next actions: quantify errno traffic before considering an ABI fastpath, or
+instrument specific GL operations if count does not explain long gap. Existing
+FS-based ELF TCB is private, no-TLS/custom-FS paths mean blindly reading FS:32
+in global errno is UNSAFE; no such optimization implemented.
+
 ## Native present timing narrows latency search — 2026-10-08 14:15 +07
 
 87369 LIVE verified14:14,private native xslpu938. No production source/image
