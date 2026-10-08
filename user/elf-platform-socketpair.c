@@ -18,6 +18,7 @@ extern int64_t send(int,const void *,size_t,int),recv(int,void *,size_t,int);
 extern int64_t read(int,void *,size_t),write(int,const void *,size_t);
 extern int *__errno_location(void),ioctl_FIONREAD(int,int *),poll(struct pollfd *,uint64_t,int32_t);
 extern int eventfd(unsigned,int),epoll_create1(int),epoll_ctl(int,int,int,struct epoll_event *);
+extern int64_t sysconf(int);
 extern int epoll_wait(int,struct epoll_event *,int,int);
 extern int pthread_create(uint64_t *,const void *,void *(*)(void *),void *),pthread_join(uint64_t,void **);
 extern int clock_nanosleep(int,int,const struct timespec *,struct timespec *);
@@ -88,11 +89,16 @@ uint64_t _start(void)
     if(blocked_result!=0||close(fd[0])||close(fd[1]))return 32;
 
     /* Second-slot failure must roll back the first install and heap allocation. */
-    int occupied[31];for(unsigned i=0;i<31;++i){occupied[i]=eventfd(0,0);if(occupied[i]<0)return 33;}
+    /* Runtime-managed descriptors start at 64. Keep exactly one slot free,
+       using the advertised upper-exclusive fd bound, not an old slot count. */
+    int64_t open_max=sysconf(4);
+    if(open_max<=65||open_max>192)return 33;
+    unsigned count=(unsigned)(open_max-64-1);
+    int occupied[127];for(unsigned i=0;i<count;++i){occupied[i]=eventfd(0,0);if(occupied[i]<0)return 33;}
     int unchanged[2]={-7,-8};
     if(socketpair(1,1,0,unchanged)!=-1||*__errno_location()!=24||unchanged[0]!=-7||unchanged[1]!=-8)return 34;
-    if(close(occupied[30])||socketpair(1,1,0,fd)||close(fd[0])||close(fd[1]))return 35;
-    for(unsigned i=0;i<30;++i)if(close(occupied[i]))return 36;
+    if(close(occupied[count-1])||socketpair(1,1,0,fd)||close(fd[0])||close(fd[1]))return 35;
+    for(unsigned i=0;i<count-1;++i)if(close(occupied[i]))return 36;
     for(unsigned i=0;i<64;++i)if(socketpair(1,1,0,fd)||close(fd[0])||close(fd[1]))return 37;
 
     if(socketpair(1,1,0,fd)||write(fd[0],buffer,4096)!=4096||start_waiter(&thread,fd[0],1))return 41;

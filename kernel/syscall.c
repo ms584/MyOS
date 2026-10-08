@@ -28,7 +28,10 @@ static uintptr_t readable_user_page(struct process *process, uintptr_t address, 
         if ((entry & 5) != 5 || (writable && !(entry & 2))) return 0;
         if (shift > 12 && (entry & 128)) return 0;
         uintptr_t physical = entry & PAGE_ADDRESS;
-        if (!physical || physical >= 256ull * 1024 * 1024) return 0;
+        /* PMM validates the actual managed, allocated frame, including page
+         * tables. A stale256MiB limit rejects legitimate upper-RAM callers.
+         * U/S and write permissions above remain mandatory at every level. */
+        if (!physical || !page_references(physical)) return 0;
         if (shift == 12) return physical;
         table = (uint64_t *)physical;
     }
@@ -464,6 +467,9 @@ struct frame *syscall_dispatch(struct frame *frame)
         return schedule(frame);
     case SYS_VM_MAP:
         frame->rax=(uint64_t)process_vm_map(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
+        break;
+    case SYS_VM_MAP_HINT:
+        frame->rax=(uint64_t)process_vm_map_hint(process,frame->rdi,(size_t)frame->rsi,(unsigned)frame->rdx);
         break;
     case SYS_VM_UNMAP:
     /* File request checked as a complete fixed-size user structure. */

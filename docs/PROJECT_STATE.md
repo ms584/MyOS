@@ -1,62 +1,57 @@
 # MyOS project state
-Updated: 2026-10-08 06:02 +07. Repo /home/xytron404/myos, main.
-Production049576c; checkpoint8433367; origin/main a746889 fetched03:43.
-## Scope / honest progress
-- Phase33.1/33.2 OPEN: actual private native HTML+JS/DOM/timers and key/click
-  proven; verified concurrent HTTPS, scrolling, responsive>=60s and close/
-  relaunch cleanup still pending. Native screenshot/beacons below, not host DOM.
-- Promoted normal runtime: registered240, strong paired242/242, missing0
-  (Oct8 03:33 static census). Fifteen unavailable-media + nine POSIX ENOSYS
-  exports are explicit boundaries, not functioning codecs/player/services.
-- No33.3, no push. Phase32/33 NOT PASSED; YouTube playback unproven.
-## Clean source / regression evidence
-- Image-protect full+six scopes BIOS/UEFI and fs-native full terminal0;
-  previous fault timeout preserved; unchanged error/rip/cr2 assertions.
-- Main promotion10793 terminal0: exact candidate binaries +8 scopes BIOS/UEFI.
-  Four normal hashes OK04:20:41; data disks untouched. Failure history HANDOFF.
-- Real DIR/rename/replaced-open lifetime/fd reuse/readonly assets/cleanup,
-  CPU100Hz process/thread clocks, native window-size argv, licensed fonts,
-  independent DATA quota query and RAW clock included (100Hz PIT; sleep4 EINVAL).
-- Image mprotect preserves original rights/RELRO/W^X; see image VM WIP doc.
-## Private next slices, NOT promoted / not PASS
-- VM near-hint focused BIOS/UEFI PASS; old full fault timeout retained in HANDOFF.
-- fs-capacity-mL68fc scopes84723/52838 BIOS/UEFI PASS: kernel files32,
-  runtime slots64, fd base64, NOFILE upper bound128, genuine nofollow in
-  symlink-free namespaces, failed file installation closes kernel fd.
-- Server fixture59630 BIOS/UEFI PASS; old hardcoded-bound failures in HANDOFF.
-## Actual Cobalt evidence / immediate next
-- Old failures/source limits in HANDOFF. Direct8MiB SHM focused PASS four
-  launches/rights/exact cleanup; combined47797 full+10 scopes BIOS/UEFI PASS.
-  Private PMM512 focus28058 PASS BIOS16/256/512+UEFI64/256/512, upper-frame
-  aliases/refcounts/exhaustion/recovery; bootstrap BIOS BSS unchanged.
-  PMM512 full22674 TERMINAL_EXIT=1: missing cached ABI window.h, not PASS.
-  Found syscall.c readable_user_page stale256MiB bound; rejects upper callers
-  AND their diagnostic writes. New guard requires PMM owned frames, U/S+RW kept.
-  pmm-syscall-R4sQZZ focus14323 terminal0: old failure reproduced BIOS/UEFI;
-  fixed280MiB random/log/RO/NONE/preflight/relaunch/exact cleanup PASS both.
-  Full7014 TERMINAL_EXIT=1: missing cached pinned libcobalt.so at launcher test;
-  normal restored. Failure preserved, core hash verified/cache seeded. Retry2759
-  started05:58:08 with identical source/assertions; source frozen, not PASS.
-  Native25856:hfcgru2i actual HTML/DOM42/key/click/76timers; screenshots preserved.
-  Refresh80475 terminal0:n693w3zt,165 requests,156 timers and key/click x3.
-  Final actual frame Timer96/Clicks2 versus timer156/click3: visual lag remains.
-  Private normal-image boot CPU probes run forever. New retirement slice keeps
-  PROCESS_TESTS=1 stress unchanged; normal tasks/demos reclaimed after checks.
-  BIOS/UEFI focus PASS: counters stop, PIT/shell alive, process pages exact.
-  Runner79005 terminal2: private clone lacks test_cpu_clock.py; not CPU PASS.
-  Separate native47709 terminal0:c3sthg1e, GET52.68/DOM74.62/visible95s versus
-  old64.81/126.49/186s. Keys a/b/c proven, NO click beacons this run. Final
-  Timer114/Keyc versus131 timers; heap409088->454144, still not accepted cleanup.
-  TLS27590 stopped after proven ERR_CERT_NON_UNIQUE_NAME for IP URL;0 HTTP
-  requests, bundle3p379730. Not a TLS PASS. New58269 live06:00:52 uses DNS SAN
-  cobalt.example.com + documented DNS-only host mapping, enforcement=true.
-  Native trusted/negative cert/concurrent asset results pending. No verifier bypass.
-  Diagnostics/HTTP policy override private, NEVER verified HTTPS evidence.
-- Need true DOM/render/input, trusted HTTPS with enforcement intact and
-  concurrent assets/certificate errors, responsive updates and relaunch cleanup.
-## Artifacts / continuation
-- HANDOFF.md + image/import WIP docs; build/import-image-promotion-normal.sha256.
-- docs/wip/native-dom-shared-memory preserves actual beacons/logs and clean/
-  diagnostic slices. No diagnostics promoted; no swap/COW/demand paging.
-- PMM256MiB,32workers,2ELFmodules/1PTTLS; activity.log bounded48MiB.
-  NEVER read activity.log through run_logged.py. Goal remains active.
+Updated: 2026-10-08 09:00 +07. Repo /home/xytron404/myos, main.
+Previous source049576c; docs5670e0d; origin/main a746889 fetched03:43.
+## Scope and honest status
+- Phase33.1/33.2 OPEN. Actual native HTML/JS/DOM/timers/key/click observed;
+  responsive>=60s, scrolling, verified concurrent HTTPS and relaunch cleanup
+  NOT accepted. No33.3, no push; YouTube unproven, Phase32/33 NOT PASSED.
+- Strong paired imports242/242, registered240; missing0. Fifteen unavailable
+  media +nine POSIX ENOSYS are explicit boundaries, NOT complete API semantics.
+## Newly promoted full-tested runtime
+- pmm-syscall-R4sQZZ full retry2759 TERMINAL_EXIT=0 at06:42:30. Mandatory
+  test_system.py +six affected scopes BOTH BIOS/UEFI, normal restored.
+- Main promotion78188 TERMINAL_EXIT=0 at08:56:12. Reviewed13 changed tracked
+  inputs, copied exact candidate/new focused fixtures; FOUR normal binaries
+  byte-identical to full-tested candidate. No diagnostic/boot experiment copied.
+- PMM max512MiB (actual E820 usable pages only), metadata expanded after heap
+  bootstrap; BIOS BSS unchanged. No swap, demand paging or COW.
+- Safe syscall copy validates PMM-owned frames instead of stale256MiB cap.
+  U/S, RW, canonical/range preflight retained. Actual280MiB per-page random/log,
+  RO/NONE/supervisor/cross-page rejection/two-launch exact resources PASS both.
+- Shared backing8MiB, direct reference aliases without temporary private pages;
+  near-image best-effort mmap hints/pool, fixed/NOREPLACE protections preserved.
+- Kernel32 file handles/runtime64 slots; advertised NOFILE128 upper bound.
+  O_NOFOLLOW correct for symlink-free namespaces; EMFILE closes kernel handle.
+  Server/socketpair fixtures use advertised limits, not old hardcoded counts.
+- Prior combined SHM8/direct full47797+10 scopes BOTH firmware PASS. Old22674
+  missing ABI cache and7014 missing core failures retained, NOT rewritten PASS.
+- Hash entry: build/pmm-syscall-promotion-normal.sha256. Previous import-image
+  promotion hashes are historical and superseded. Data disks untouched.
+## Actual native Cobalt / private WIP
+- hfcgru2i/n693w3zt show actual HTML/DOM42, timers, key/click. Long refresh final
+  Timer96/Clicks2 versus156 timers/click3: substantial visual lag remains.
+- Private normal boot-probe retirement keeps PROCESS_TESTS=1 stress unchanged.
+  BIOS/UEFI focus: counters run then stop, PIT/shell live, pages exact.
+  c3sthg1e DOM74.62s/background95s vs126.49/186s, keys a/b/c, NO clicks this run;
+  final Timer114 vs131. Heap409088->454144; warm cache/relaunch accounting pending.
+  Retirement NOT promoted; CPU-clock runner lacked its test file, NOT CPU PASS.
+- Native TLS IP attempt3p379730: ERR_CERT_NON_UNIQUE_NAME,0HTTP, stopped only
+  after actual navigation failure. DNS SAN fixture uses enforcement=true,
+  public test CA through actual hashed cert assets, DNS-only host mapping.
+- TLS58269 terminal0 observation06:11:15,duv0icq3: ONE valid HTTPS GET55.86s;
+  no /app.js, DOM, blue pixels or concurrent assets. NOT HTTPS acceptance.
+- TLS snapshot91255 terminal0 observation08:56:48,cb5eie3f: one GET54.01s.
+  At150s all user tasks blocked (some timed), kernel boot task runnable;
+  snapshot is not proof of deadlock or responsive timing. Pages/threads stop;
+  heap409344->450304, cleanup still unaccepted. Keys never recorded/committed.
+- New private TCP metadata trace46944 started08:58:51; source frozen while live.
+  Logs sizes/results only, no payload/keys, no altered return/errno behaviour.
+  Inspect same handle/log, not blind restart. Task snapshot diagnostic-only.
+## Next and artifacts
+- Diagnose TLS response/readiness stop after first GET; prove genuine trusted
+  HTML/JS, all cert failure cases, concurrent assets and real displayed input.
+- Resolve visual latency/PS2 motion, scrolling, >=60s responsiveness and warm
+  close/relaunch resources. Do not close phases on imports/fixture results.
+- HANDOFF.md; docs/wip/native-pmm512 preserves slices/logs/actual screenshots.
+  Private TLS keys stay in private build dirs; never copy whole TLS bundles.
+- activity.log bounded48MiB; NEVER read it through run_logged.py. Goal ACTIVE.

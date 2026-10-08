@@ -1,7 +1,9 @@
 #ifndef MYOS_SHM_BACKING_H
 #define MYOS_SHM_BACKING_H
 #include "os.h"
-#define SHM_MAX_BYTES (1024u*1024u)
+/* Native Cobalt uses 2MiB network bodies and a measured 4MiB+4KiB region.
+ * This is a bounded resident backing, not demand paging or unlimited RAM. */
+#define SHM_MAX_BYTES (8u*1024u*1024u)
 #define SHM_MAX_PAGES (SHM_MAX_BYTES/PAGE_SIZE)
 /* Each live slot owns one PMM reference. Each mapped alias owns another.
  * The inode may die before its mapped frames, with no dependency on a name. */

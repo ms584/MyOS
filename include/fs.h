@@ -4,7 +4,7 @@
 #include "fs-volume-call.h"
 #include "record-lock.h"
 #define FS_NODES 64
-#define FS_HANDLES 8
+#define FS_HANDLES 32
 #define FS_PATH 128
 #define FS_NAME 32
 /* Bounded printable ASCII components, not a full POSIX/UTF-8 namespace.

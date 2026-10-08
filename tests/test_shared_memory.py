@@ -23,7 +23,8 @@ for ram in ((64,256) if uefi else (16,64)):
    result=long_command(vm,'elf live shm',timeout=90)
    assert 'native shared memory coherence/lifetime/rights/workers PASS' in result,result
    assert 'ELF exited with status 92' in result,result
+   assert 'native8MiB aliases/boundary PASS' in result,result
    assert_live_resources(result)
  finally:vm.close()
- print('PASS native real shared frames,256KiB,fd/alias I/O coherence,read-only ceiling/private copy,unlink/close/exit lifetime,workers/relaunch/exact resources',ram,'UEFI' if uefi else 'BIOS',out,flush=True)
+ print('PASS native shared frames,256KiB+8MiB direct aliases,boundary atomicity,rights,unlink/close/exit,workers/relaunch/exact resources',ram,'UEFI' if uefi else 'BIOS',out,flush=True)
 assert hashlib.sha256(disk.read_bytes()).hexdigest()==before

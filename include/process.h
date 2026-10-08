@@ -15,6 +15,9 @@
 #define PROCESS_PAGES (4 + PROCESS_CODE_PAGES + 2 + PROCESS_HEAP_PAGES)
 #define PROCESS_VM_BASE (USER_BASE + 0x20000000ull)
 #define PROCESS_VM_END  (USER_BASE + 0x3f000000ull)
+/* Near-image VM pool, above all loader/runtime/TLS/stack reservations. */
+#define PROCESS_VM_MID_BASE (USER_BASE + 0x40000000ull)
+#define PROCESS_VM_MID_END  (USER_BASE + 0x100000000ull)
 #define PROCESS_VM_HIGH_BASE (USER_BASE + 0x100000000ull)
 #define PROCESS_VM_HIGH_END (USER_BASE + 0x4100000000ull)
 #define PROCESS_RUNTIME_BASE PROCESS_VM_END
@@ -91,6 +94,7 @@ bool process_map_runtime(struct process *);
 bool process_install_tls(struct process *,const struct elf_plan *);
 uint64_t process_create_elf(const struct elf_source *,const struct elf_plan *);
 int64_t process_vm_map(struct process *,uint64_t,size_t,unsigned);
+int64_t process_vm_map_hint(struct process *,uint64_t,size_t,unsigned);
 int64_t process_vm_map_fixed(struct process *,uint64_t,size_t,unsigned);
 int64_t process_vm_file(struct process *,const struct vm_file_request *);
 int process_vm_unmap(struct process *,uint64_t,size_t);

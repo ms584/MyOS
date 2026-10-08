@@ -15,6 +15,7 @@ extern int pthread_create(uint64_t *,const void *,void *(*)(void *),void *),pthr
 extern int clock_nanosleep(int,int,const struct timespec *,struct timespec *);
 extern int pthread_kill(uint64_t,int),epoll_create1(int),epoll_ctl(int,int,int,const struct epoll_event *);
 extern int epoll_wait(int,struct epoll_event *,int,int);
+extern long sysconf(int);
 static void message(const char *s){size_t n=0;while(s[n])++n;write(1,s,n);}
 static int waiting_fd,waiting_result,waiting_error;
 static volatile unsigned entered;
@@ -52,9 +53,10 @@ uint64_t _start(void)
  int ep=epoll_create1(0);struct epoll_event ev={1,1234},seen={0};
  if(ep<0||epoll_ctl(ep,1,fd,&ev)||epoll_wait(ep,&seen,1,1000)!=1||!(seen.events&1)||seen.data!=1234||close(ep))return 32;
  /* Table exhaustion must not consume the pending peer. */
- int filled[32],count=0;
- while(count<32){int n=eventfd(0,0);if(n<0)break;filled[count++]=n;}
- if(count!=31||accept(fd,0,0)!=-1||*__errno_location()!=24)return 16;
+ long open_max=sysconf(4);if(open_max<=65||open_max>192)return 16;
+ int capacity=(int)open_max-64,filled[128],count=0;
+ while(count<capacity){int n=eventfd(0,0);if(n<0)break;filled[count++]=n;}
+ if(count!=capacity-1||accept(fd,0,0)!=-1||*__errno_location()!=24)return 16;
  if(close(filled[--count]))return 17;
  unsigned char truncated[4]={0,0,0,0xa5};length=3;
  int first=accept(fd,truncated,&length);

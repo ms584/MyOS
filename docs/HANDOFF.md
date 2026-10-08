@@ -3,6 +3,53 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Full-tested PMM/SHM/runtime promoted, TLS response diagnosis — 2026-10-08 09:00 +07
+
+Goal ACTIVE, phases OPEN, no push/no33.3. Approval usage limit cleared08:52;
+previous denied command never executed. Existing job polling had preserved
+terminal results; no restarts based on observation timeout.
+
+Safe-pointer full retry2759 TERMINAL_EXIT=0 at06:42:30. Inspected actual
+pmm-syscall-full.status, full test_system.py final PASS/normal restore, focused
+PMM512 BIOS, syscall UEFI and server UEFI summaries; runner set-e covers six
+affected scopes BOTH firmware. All four candidate normal hashes OK08:53:26.
+Compared ALL tracked build/test inputs with candidate: exactly13 changes,
+reviewed memory/process/runtime/headers and existing advertised-limit fixtures.
+Read persistence baseline docs11..13 before promotion. Main promotion78188
+terminal0 at08:56:12: normal kernel/runtime/BIOS/UEFI images byte-identical to
+full-tested candidate, no extra full rerun necessary for identical binaries.
+New clean PMM/syscall/hint/FS-capacity fixtures copied as well. NO actual-Cobalt
+diagnostics, host mapping, logging or boot-probe retirement entered main.
+PMM512 managed usable frames, upper-frame syscall ownership guard, direct8MiB
+SHM aliasing, near-image nonfixed mmap hints, kernel32/runtime64 file handles,
+symlink-free nofollow and EMFILE cleanup now promoted. Prior original-rights/
+RELRO/W^X checks unchanged. Old main import-image normal hashes superseded by
+build/pmm-syscall-promotion-normal.sha256. Owner data disks untouched.
+
+TLS58269 terminal0 observation06:11:15,duv0icq3: genuine Cobalt issued ONE
+valid HTTPS GET at55.8567s with enforcement=true, actual test CA through normal
+hashed cert store and DNS SAN cobalt.example.com. No app.js/DOM/blue pixels,
+concurrency0, no certificate-negative probes reached. Exit0 is observation only:
+the script guards against invalid acceptance but does NOT require positive DOM.
+Do NOT mark HTTPS/concurrent/cert failure gates passed from this result.
+TLS task snapshot91255 terminal0 observation08:56:48,cb5eie3f: same first GET
+54.0113s, no further HTTP. At150s all user tasks blocked, some on timed waits;
+kernel slot0 runnable. This does not establish deadlock (deadlines/ticks not
+jointly sampled). Pause is diagnostic-only, never responsiveness evidence.
+addr2line core lacks precise symbols (misleading nearest _v8_internal_Node_Print);
+do NOT treat these as actual unwound function names. Raw stack candidates are
+not full backtraces. Cleanup pages/threads stops, heap409344->450304 remains open.
+
+New TCP I/O trace46944 private root cobalt-closed-imports-xnVZeH started08:58:51:
+same pinned core/provider/CA fixture, diagnostic210s+snapshot150s. Runtime trace
+uses fixed stack logger on non-EAGAIN send/recv, records handle/requested length/
+actual result ONLY, no TLS plaintext, keys or altered API return/errno. Source
+frozen while running. Inspect sizes vs host response, network readiness and
+SSL completion before next edit. Current fixture journals actual requests live.
+Never commit *.private-key.pem/whole TLS directories. Explicit public evidence
+only. Boot retirement remains private/no full-PASS; mouse clicks absent in its
+last run, visual latency and warm relaunch accounting still required.
+
 ## Boot CPU probes and actual TLS policy — 2026-10-08 06:02 +07
 
 Goal active; production source/main images unchanged. No push/no33.3.

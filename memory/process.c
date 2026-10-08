@@ -337,6 +337,7 @@ static bool vm_range(uint64_t address,size_t length)
 {
     return length&&!(address&(PAGE_SIZE-1))&&!(length&(PAGE_SIZE-1))&&
            ((length<=PROCESS_VM_END-PROCESS_VM_BASE&&address>=PROCESS_VM_BASE&&address<=PROCESS_VM_END-length)||
+            (length<=PROCESS_VM_MID_END-PROCESS_VM_MID_BASE&&address>=PROCESS_VM_MID_BASE&&address<=PROCESS_VM_MID_END-length)||
             (length<=PROCESS_VM_HIGH_END-PROCESS_VM_HIGH_BASE&&address>=PROCESS_VM_HIGH_BASE&&address<=PROCESS_VM_HIGH_END-length));
 }
 static bool vm_track(struct process *p,uintptr_t page)
@@ -524,6 +525,7 @@ int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned pr
         if(vm_areas_overlap(p->vm_areas,hint,hint+length))return -17;
     }else{
         address=vm_areas_gap(p->vm_areas,PROCESS_VM_BASE,PROCESS_VM_END,length);
+        if(!address)address=vm_areas_gap(p->vm_areas,PROCESS_VM_MID_BASE,PROCESS_VM_MID_END,length);
         if(!address)address=vm_areas_gap(p->vm_areas,PROCESS_VM_HIGH_BASE,PROCESS_VM_HIGH_END,length);
         if(!address)return -12;
     }
@@ -535,6 +537,17 @@ int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned pr
     return (int64_t)address;
 }
 
+int64_t process_vm_map_hint(struct process *p,uint64_t hint,size_t length,unsigned prot)
+{
+    if(!length||length>SIZE_MAX-(PAGE_SIZE-1))return -22;
+    size_t bytes=(length+PAGE_SIZE-1)&~(size_t)(PAGE_SIZE-1);
+    hint&=~(uint64_t)(PAGE_SIZE-1);
+    /* Nonfixed hints are best effort, never replacement. Unusable/colliding
+     * hints fall back to bounded pools. Exact/NOREPLACE use the old syscall. */
+    if(hint&&vm_range(hint,bytes)&&!vm_areas_overlap(p->vm_areas,hint,hint+bytes))
+        return process_vm_map(p,hint,length,prot);
+    return process_vm_map(p,0,length,prot);
+}
 int64_t process_vm_map_fixed(struct process *p,uint64_t address,size_t length,unsigned prot)
 {
     if(!vm_range(address,length)||(prot&~7u)||
@@ -552,22 +565,23 @@ bool process_vm_resident(struct process *p,uint64_t address)
 
 static int64_t map_shared_backing(struct process *p,const struct vm_file_request *r,size_t length,unsigned rights)
 {
+    /* Reserve VA only. A shared alias must not require a temporary private
+     * copy of every backing frame before installing the real references. */
     int64_t mapped=(r->flags&VM_FILE_FIXED)?
-        process_vm_map_fixed(p,r->address,length,PROCESS_PROT_READ):
-        process_vm_map(p,r->address,length,PROCESS_PROT_READ);
+        process_vm_map_fixed(p,r->address,length,0):
+        process_vm_map(p,r->address,length,0);
     if(mapped<0)return mapped;
     int error=0;
     for(size_t offset=0;offset<length;offset+=PAGE_SIZE){
-        uint64_t *entry=vm_leaf(p,(uint64_t)mapped+offset,false);
+        uint64_t *entry=vm_leaf(p,(uint64_t)mapped+offset,true);
+        if(!entry){error=-12;break;}
         uintptr_t shared=fs_shared_page(p->files,r->descriptor,(size_t)r->offset+offset);
         if(!shared){error=-12;break;}
-        check(entry&&(*entry&1),"shared mapping staged leaf");
-        uintptr_t old=*entry&0x000ffffffffff000ull;bool tracked=false;
-        for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==old){
-            p->vm_pages[i]=shared;tracked=true;break;}
-        check(tracked,"shared mapping ownership ledger");
-        *entry=shared|1|4|NX|VM_FILE_PAGE|((rights&FS_WRITE)?0:VM_FILE_SHARED_PAGE);
-        vm_flush((uint64_t)mapped+offset);page_free(old);
+        check(!(*entry&1),"shared mapping reserved leaf");
+        if(!vm_track(p,shared)){page_free(shared);error=-12;break;}
+        /* Inaccessible until all references exist and protection succeeds. */
+        *entry=shared|1|NX|VM_FILE_PAGE|((rights&FS_WRITE)?0:VM_FILE_SHARED_PAGE);
+        vm_flush((uint64_t)mapped+offset);
     }
     if(!error)error=process_vm_protect(p,(uint64_t)mapped,length,r->protection);
     if(error){check(!process_vm_unmap(p,(uint64_t)mapped,length),"shared mapping rollback");return error;}

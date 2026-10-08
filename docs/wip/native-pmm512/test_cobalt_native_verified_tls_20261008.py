@@ -70,7 +70,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         global active,peak
         asset=self.path.startswith('/asset/')
         with lock:
-            records.append(dict(server=self.server.label,path=self.path,elapsed=time.monotonic()-began))
+            event=dict(server=self.server.label,path=self.path,elapsed=time.monotonic()-began)
+            records.append(event)
+            # Host observation only; make long-running real guest progress
+            # inspectable without attaching to or changing the guest engine.
+            with (out/'request-events.jsonl').open('a') as journal:
+                journal.write(json.dumps(event)+'\n')
             if asset:active+=1;peak=max(peak,active)
         try:
             if asset:time.sleep(2)
@@ -129,11 +134,17 @@ try:
     vm=VM('native-verified-tls',ram=512,nic=True,asset_disk=disk,cpu='max')
     vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
     offset=len(vm.log.read_text());type_text(vm,'elf pair-starboard cobalt_diag provider https://cobalt.example.com:'+str(servers[0].server_port)+'/\n')
-    deadline=time.monotonic()+600;last=-30;visible=None;sent=False
+    diagnostic=os.environ.get('MYOS_TLS_TASK_SNAPSHOT')=='1'
+    deadline=time.monotonic()+(210 if diagnostic else 600)
+    last=-30;visible=None;sent=False;snapshot=False
     from PIL import Image
     while time.monotonic()<deadline:
         elapsed=time.monotonic()-began;content=vm.log.read_text()[offset:]
         if 'PANIC' in content or content.endswith('myos> '):break
+        if diagnostic and elapsed>=150 and not snapshot:
+            from cobalt_task_snapshot import capture
+            capture(vm,out);snapshot=True
+            print('Paused task snapshot is diagnostic only, NEVER responsive/timing acceptance',flush=True)
         if 'DidFinishNavigation:' in content and 'net::ERR_' in content:
             print('Native HTTPS initial navigation failed; preserving evidence, not waiting for nonexistent DOM',flush=True);break
         if elapsed-last>=30:

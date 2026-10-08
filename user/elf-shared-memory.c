@@ -1,10 +1,11 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <pthread.h>
-extern int mkdir(const char *,unsigned),unlinkat(int,const char *,int),openat(int,const char *,int,...),close(int),ftruncate(int,int64_t),mprotect(void *,size_t,int),munmap(void *,size_t),msync(void *,size_t,int),*__errno_location(void);
+extern int mkdir(const char *,unsigned),unlinkat(int,const char *,int),openat(int,const char *,int,...),close(int),dup(int),ftruncate(int,int64_t),mprotect(void *,size_t,int),munmap(void *,size_t),msync(void *,size_t,int),*__errno_location(void);
 extern void *mmap(void *,size_t,int,int,int,int64_t);
 extern int64_t write(int,const void *,size_t),pread(int,void *,size_t,int64_t),pwrite(int,const void *,size_t,int64_t),lseek(int,int64_t,int);
 #define BAD ((void *)(uintptr_t)-1)
+#define SHARED_LIMIT (8u*1024u*1024u)
 static void *worker(void *argument)
 {
  char path[]="/dev/shm/worker0";path[15]=(char)('0'+(uintptr_t)argument);
@@ -25,7 +26,7 @@ int _start(void)
  for(unsigned i=0;i<262144;i+=4096){if(a[i]||b[i])return 4;a[i]=(unsigned char)(i/4096+1);if(b[i]!=a[i])return 5;}
  unsigned char byte=0;if(pread(fd,&byte,1,4096)!=1||byte!=2||pwrite(fd,"Z",1,4096)!=1||a[4096]!='Z'||b[4096]!='Z')return 6;
  if(ftruncate(fd,4)!=-1||*__errno_location()!=16)return 7;
- if(ftruncate(fd,1048577)!=-1||*__errno_location()!=27)return 8;
+ if(ftruncate(fd,SHARED_LIMIT+1)!=-1||*__errno_location()!=27)return 8;
  int ro=openat(-100,path,0,0);if(ro<0)return 9;
  unsigned char *read_only=mmap(0,4096,1,1,ro,0);if(read_only==BAD)return 10;
  if(mprotect(read_only,4096,3)!=-1||*__errno_location()!=13)return 11;
@@ -42,10 +43,37 @@ int _start(void)
  if(munmap(a,262144)||b[4096]!='Z'||munmap(b,262144)||munmap(offset,4096)||munmap(read_only,4096)||munmap(private,4096))return 22;
  pthread_t threads[4];for(uintptr_t i=0;i<4;++i)if(pthread_create(&threads[i],0,worker,(void *)i))return 23;
  for(unsigned i=0;i<4;++i){void *result;if(pthread_join(threads[i],&result)||result)return 24;}
+ /* Genuine Mojo-sized resident shared backing: duplicate descriptors and two
+  * aliases retain the same frames, even after unlink and both fd closes. */
+ const char *large_path="/dev/shm/native-region-8m";
+ fd=openat(-100,large_path,2|0100|0200,0600);
+ if(fd<0)return 30;
+ if(ftruncate(fd,SHARED_LIMIT)){
+  const char failed[]="shared backing allocation failed before aliases\n";write(1,failed,sizeof(failed)-1);
+  unlinkat(-100,large_path,0);close(fd);return 30;
+ }
+ int duplicate=dup(fd);if(duplicate<0)return 31;
+ a=mmap(0,SHARED_LIMIT,3,1,fd,0);b=mmap(0,SHARED_LIMIT,3,1,duplicate,0);
+ if(a==BAD||b==BAD){
+  const char failed[]="shared alias allocation failed\n";write(1,failed,sizeof(failed)-1);
+  unlinkat(-100,large_path,0);close(fd);close(duplicate);
+  if(a!=BAD)munmap(a,SHARED_LIMIT);if(b!=BAD)munmap(b,SHARED_LIMIT);
+  return 32;
+ }
+ for(unsigned i=0;i<SHARED_LIMIT;i+=4096){
+  if(a[i]||b[i])return 33;a[i]=(unsigned char)(i/4096+1);
+  if(b[i]!=a[i])return 34;
+ }
+ a[SHARED_LIMIT-1]=0x6b;
+ if(b[SHARED_LIMIT-1]!=0x6b||pread(duplicate,&byte,1,SHARED_LIMIT-1)!=1||byte!=0x6b)return 35;
+ if(ftruncate(fd,SHARED_LIMIT+1)!=-1||*__errno_location()!=27||
+    a[SHARED_LIMIT-1]!=0x6b||b[SHARED_LIMIT-1]!=0x6b)return 36;
+ if(unlinkat(-100,large_path,0)||close(fd)||close(duplicate)||b[SHARED_LIMIT-1]!=0x6b)return 37;
+ if(munmap(a,SHARED_LIMIT)||b[SHARED_LIMIT-1]!=0x6b||munmap(b,SHARED_LIMIT))return 38;
  fd=openat(-100,"/dev/shm/deferred-exit",2|0100|0200,0600);if(fd<0||ftruncate(fd,4))return 25;
  unsigned char *tail=mmap(0,4,3,1,fd,0);if(tail==BAD)return 26;tail[0]=0x4a;
  if(close(fd)||unlinkat(-100,"/dev/shm/deferred-exit",0)||tail[0]!=0x4a)return 27;
  /* Intentionally leave this unlinked alias for process-stop reclamation. */
- const char message[]="native shared memory coherence/lifetime/rights/workers PASS\n";
+ const char message[]="native shared memory coherence/lifetime/rights/workers PASS; native8MiB aliases/boundary PASS\n";
  write(1,message,sizeof(message)-1);return 92;
 }

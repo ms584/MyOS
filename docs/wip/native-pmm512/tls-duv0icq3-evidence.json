@@ -1,0 +1,115 @@
+{
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "elapsed": 55.85674395500246
+    }
+  ],
+  "peak_concurrent_assets": 0,
+  "visual": [
+    {
+      "elapsed": 6.439203704001557,
+      "blue_pixels": 0,
+      "frame": "frame-006.ppm"
+    },
+    {
+      "elapsed": 36.5272541939994,
+      "blue_pixels": 0,
+      "frame": "frame-036.ppm"
+    },
+    {
+      "elapsed": 66.62658727600501,
+      "blue_pixels": 0,
+      "frame": "frame-066.ppm"
+    },
+    {
+      "elapsed": 96.71920991100342,
+      "blue_pixels": 0,
+      "frame": "frame-096.ppm"
+    },
+    {
+      "elapsed": 126.8136927960004,
+      "blue_pixels": 0,
+      "frame": "frame-126.ppm"
+    },
+    {
+      "elapsed": 156.91063230000145,
+      "blue_pixels": 0,
+      "frame": "frame-156.ppm"
+    },
+    {
+      "elapsed": 187.0038985420033,
+      "blue_pixels": 0,
+      "frame": "frame-187.ppm"
+    },
+    {
+      "elapsed": 217.09714294600417,
+      "blue_pixels": 0,
+      "frame": "frame-217.ppm"
+    },
+    {
+      "elapsed": 247.18382601600024,
+      "blue_pixels": 0,
+      "frame": "frame-247.ppm"
+    },
+    {
+      "elapsed": 277.2756333310026,
+      "blue_pixels": 0,
+      "frame": "frame-277.ppm"
+    },
+    {
+      "elapsed": 307.3649997750035,
+      "blue_pixels": 0,
+      "frame": "frame-307.ppm"
+    },
+    {
+      "elapsed": 337.4558806560017,
+      "blue_pixels": 0,
+      "frame": "frame-337.ppm"
+    },
+    {
+      "elapsed": 367.5424772520055,
+      "blue_pixels": 0,
+      "frame": "frame-367.ppm"
+    },
+    {
+      "elapsed": 397.6319669220029,
+      "blue_pixels": 0,
+      "frame": "frame-397.ppm"
+    },
+    {
+      "elapsed": 427.7246702320044,
+      "blue_pixels": 0,
+      "frame": "frame-427.ppm"
+    },
+    {
+      "elapsed": 457.81764462100546,
+      "blue_pixels": 0,
+      "frame": "frame-457.ppm"
+    },
+    {
+      "elapsed": 487.910023455006,
+      "blue_pixels": 0,
+      "frame": "frame-487.ppm"
+    },
+    {
+      "elapsed": 517.9984507590052,
+      "blue_pixels": 0,
+      "frame": "frame-517.ppm"
+    },
+    {
+      "elapsed": 548.0898301260095,
+      "blue_pixels": 0,
+      "frame": "frame-548.ppm"
+    },
+    {
+      "elapsed": 578.1781651709971,
+      "blue_pixels": 0,
+      "frame": "frame-578.ppm"
+    }
+  ],
+  "inputs": [],
+  "test_root_sha256": "a26f426bb1e8097acfac8db24f6984ecb0a9b3470fb80bdf5e7ada0c44f6483f",
+  "test_root_asset": "ssl/certs/3da3f0bf.0"
+}

@@ -9,6 +9,7 @@
 #include "../include/fs-operation-call.h"
 
 #define SYS_VM_MAP 14u
+#define SYS_VM_MAP_HINT 59u
 #define SYS_VM_UNMAP 15u
 #define SYS_VM_PROTECT 16u
 #define SYS_VM_QUERY 22u
@@ -234,7 +235,9 @@ void *mmap(void *address,size_t length,int prot,int flags,int fd,int64_t offset)
         if(result<0){fail(result);return (void *)(uintptr_t)-1;}
         return (void *)(uintptr_t)result;
     }
-    uint64_t syscall=(flags&MAP_FIXED)?SYS_VM_MAP_FIXED:SYS_VM_MAP;
+    uint64_t syscall=(flags&MAP_FIXED)?SYS_VM_MAP_FIXED:
+        (flags&MAP_FIXED_NOREPLACE)?SYS_VM_MAP:SYS_VM_MAP_HINT;
+    if(syscall==SYS_VM_MAP_HINT)hint=(uint64_t)(uintptr_t)address;
     int64_t result=call3(syscall,hint,bytes,(unsigned)translated);
     if(result<0){fail(result);return (void *)(uintptr_t)-1;}
     return (void *)(uintptr_t)result;
@@ -867,7 +870,7 @@ void *pthread_getspecific(void *raw_key)
 #define SYS_TCP_LISTEN 54u
 #define SYS_TCP_ACCEPT 55u
 #define FD_BASE 64
-#define FD_SLOTS 32u
+#define FD_SLOTS 64u
 #define PIPE_CAPACITY 4096u
 #define EPOLL_REGS 32u
 #define O_NONBLOCK 04000
@@ -1720,7 +1723,10 @@ static int runtime_open_base(int base,const char *normalized,int flags)
 {
     int access_mode=flags&MUSL_O_ACCMODE;if(access_mode==MUSL_O_PATH)return set_error(ENOTSUP);
     unsigned access=access_mode==0?1:access_mode==1?2:access_mode==2?3:0;
-    int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY;
+    /* There are no symlink nodes in RAMFS or immutable assets. Resolving an
+     * existing file/directory therefore satisfies O_NOFOLLOW without following
+     * anything; this must be revisited when actual symlinks are implemented. */
+    int allowed=3|MUSL_O_CREAT|MUSL_O_EXCL|MUSL_O_TRUNC|O_APPEND|O_NONBLOCK|O_CLOEXEC|MUSL_O_DIRECTORY|0x20000;
     if(!access||(flags&~allowed)||((flags&MUSL_O_TRUNC)&&!(access&2)))return set_error(EINVAL);
     if(base==MUSL_AT_FDCWD&&random_device_path(normalized)){
         if((flags&(MUSL_O_CREAT|MUSL_O_EXCL))==(MUSL_O_CREAT|MUSL_O_EXCL))return set_error(EEXIST);
@@ -1763,7 +1769,7 @@ static int runtime_open_base(int base,const char *normalized,int flags)
     }else object->value.file.kernel_fd=(int32_t)kernel;
     spin_lock(&state->lock);
     int fd=descriptor_install_locked(state,object,access,(unsigned)flags);spin_unlock(&state->lock);
-    if(fd<0){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(ENOSPC);}return fd;
+    if(fd<0){if(kernel>0)(void)call3(SYS_FCLOSE,(unsigned)kernel,0,0);free(object);return set_error(24);}return fd;
 }
 int openat(int directory,const char *path,int flags,...)
 {
@@ -1894,7 +1900,9 @@ int fstat(int fd,struct musl_stat_abi *information)
  object_release(r.object);if(rc<0)return fail(rc);stat_convert(&entry,information);return 0;}
 int fstatat(int directory,const char *path,struct musl_stat_abi *information,int flags)
 {
- if(flags)return set_error(EINVAL);if(!information)return set_error(EFAULT);
+ /* AT_SYMLINK_NOFOLLOW is equivalent here because neither namespace has
+  * symlinks. Reject every other flag rather than silently ignoring it. */
+ if(flags&~0x100)return set_error(EINVAL);if(!information)return set_error(EFAULT);
  struct descriptor_ref reference={0};char normalized[128];int base;
  int result=runtime_resolve_at(directory,path,normalized,&reference,&base);
  if(!result){
@@ -2243,7 +2251,7 @@ long sysconf(int name)
 {
     switch(name){
     case MUSL_SC_CLK_TCK:return 100;
-    case MUSL_SC_OPEN_MAX:return 40;
+    case MUSL_SC_OPEN_MAX:return FD_BASE+FD_SLOTS;
     case MUSL_SC_VERSION:return 200809;
     case MUSL_SC_PAGESIZE:return PAGE_SIZE;
     case MUSL_SC_THREADS:case MUSL_SC_MONOTONIC_CLOCK:
@@ -2273,7 +2281,7 @@ unsigned long getauxval(unsigned long type)
 int getrlimit(int resource,struct musl_rlimit *limit)
 {
     if(!limit)return set_error(EFAULT);
-    if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){40,40};
+    if(resource==MUSL_RLIMIT_NOFILE)*limit=(struct musl_rlimit){FD_BASE+FD_SLOTS,FD_BASE+FD_SLOTS};
     /* There is no independently imposed data-segment rlimit in MyOS.
      * RLIM_INFINITY describes that policy, NOT available physical RAM or a
      * promise to satisfy allocations. PMM/VM/layout bounds still yield ENOMEM. */
