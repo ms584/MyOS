@@ -60,17 +60,18 @@ static void execute(char *line){
     char *arg=word(&rest);
     if(equal(cmd,"assets")){if(arg)print("usage: assets\n");else asset_list();return;}
     if(equal(cmd,"elf")){
-        if(arg&&(equal(arg,"pair-link")||equal(arg,"pair-live")||equal(arg,"pair-starboard"))){
-            bool run=!equal(arg,"pair-link"),starboard=equal(arg,"pair-starboard");
+        if(arg&&(equal(arg,"pair-link")||equal(arg,"pair-live")||equal(arg,"pair-starboard")||equal(arg,"cobalt"))){
+            bool browser=equal(arg,"cobalt"),run=!equal(arg,"pair-link"),starboard=equal(arg,"pair-starboard")||browser;
             char *core_name=word(&rest),*provider_name=word(&rest);
             char *url=word(&rest);
-            if(!core_name||!provider_name||(url&&!starboard)||word(&rest)){
-                print("usage: elf pair-link|pair-live CORE PROVIDER; elf pair-starboard CORE PROVIDER [URL]\n");return;}
+            char *mapping=browser?word(&rest):0;
+            if(!core_name||!provider_name||(url&&!starboard)||(browser&&!url)||word(&rest)){
+                print("usage: elf pair-link|pair-live CORE PROVIDER; elf pair-starboard CORE PROVIDER [URL]; elf cobalt CORE PROVIDER URL [HOST=IPv4]\n");return;}
             struct asset_file core,provider;int rc=asset_open(core_name,&core);
             if(!rc)rc=asset_open(provider_name,&provider);
             if(!rc){struct elf_source sources[]={{&core,core.size,asset_read},{&provider,provider.size,asset_read}};
                 int32_t status=0;
-                rc=run?elf_live_pair(&sources[0],&sources[1],starboard?core_name:0,url,&status):elf_link_pair(&sources[0],&sources[1]);
+                rc=browser?elf_cobalt(&sources[0],&sources[1],core_name,url,mapping,&status):run?elf_live_pair(&sources[0],&sources[1],starboard?core_name:0,url,&status):elf_link_pair(&sources[0],&sources[1]);
                 if(run&&!rc){print("ELF exited with status ");if(status<0){putchar('-');decimal(-(int64_t)status);}else decimal(status);print("\n");}}
             if(rc==-125)print("ELF cancelled; all threads stopped\n");
             else if(rc==-95)print("ELF: unsupported runtime feature; not executed\n");else if(rc)error(rc);

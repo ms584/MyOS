@@ -1,4 +1,5 @@
 #include "syscall.h"
+#include "elf-launch.h"
 #include "fs-operation-call.h"
 #include "security.h"
 #include "storage.h"
@@ -127,7 +128,7 @@ static int system_path(struct process *p,struct frame *f)
         /* The loader's read-only owned argv0 identifies the actual asset, not
          * a guessed /proc/self/exe or hard-coded libcobalt filename. */
         uint64_t name,boot=USER_BASE+ELF_BOOT_OFFSET;
-        if(!copy_from_user(p,(void *)&name,boot+512,8)||name!=boot+544)return -2;
+        if(!copy_from_user(p,(void *)&name,boot+ELF_ARGV_OFFSET,8)||name!=boot+ELF_NAME_OFFSET)return -2;
         memcpy(executable,"/assets/",8);unsigned i=0;
         for(;i<=64;++i){char c;if(!copy_from_user(p,&c,name+i,1))return -14;
             executable[8+i]=c;if(!c)break;}

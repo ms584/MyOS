@@ -1,5 +1,9 @@
 #include "boot.h"
 #include "process.h"
+#include "elf-launch.h"
+_Static_assert(ELF_NAME_OFFSET+65+1031+80+32+32+ELF_HOST_RULE_SIZE<=4096,
+               "owned native launcher arguments fit boot page");
+#include "vm-ledger.h"
 #include "elf.h"
 #include "runtime-pack.h"
 #include "native-ui.h"
@@ -310,9 +314,13 @@ bool process_map_runtime(struct process *p)
     }
     kfree(raw);
     /* One private errno page for the main task and every possible worker. */
-    for(unsigned i=0;i<=PROCESS_THREAD_LIMIT;++i)
-        if(!elf_map_page(p,capacity,PROCESS_RUNTIME_TLS_BASE+(uint64_t)i*PAGE_SIZE,6))
-            return false;
+    for(unsigned i=0;i<=PROCESS_THREAD_LIMIT;++i){
+        uint64_t address=PROCESS_RUNTIME_TLS_BASE+(uint64_t)i*PAGE_SIZE;
+        uintptr_t page=elf_map_page(p,capacity,address,6);
+        if(!page)return false;
+        /* errno0..3; GS slot index padding4..7; launcher owns offset56. */
+        *(uint32_t *)(page+4)=i;
+    }
     return true;
 }
 
@@ -349,31 +357,12 @@ static bool vm_range(uint64_t address,size_t length)
             (length<=PROCESS_VM_MID_END-PROCESS_VM_MID_BASE&&address>=PROCESS_VM_MID_BASE&&address<=PROCESS_VM_MID_END-length)||
             (length<=PROCESS_VM_HIGH_END-PROCESS_VM_HIGH_BASE&&address>=PROCESS_VM_HIGH_BASE&&address<=PROCESS_VM_HIGH_END-length));
 }
-static bool vm_track(struct process *p,uintptr_t page)
-{
-    if(p->vm_page_count==p->vm_page_capacity){
-        unsigned capacity=p->vm_page_capacity?p->vm_page_capacity*2:32;
-        uintptr_t *pages=kmalloc((size_t)capacity*sizeof(*pages));
-        if(!pages)return false;
-        if(p->vm_pages)memcpy(pages,p->vm_pages,(size_t)p->vm_page_count*sizeof(*pages));
-        kfree(p->vm_pages);p->vm_pages=pages;p->vm_page_capacity=capacity;
-    }
-    p->vm_pages[p->vm_page_count++]=page;return true;
-}
 static uintptr_t vm_new_page(struct process *p)
 {
     uintptr_t page=page_alloc();
     if(!page)return 0;
     if(!vm_track(p,page)){page_free(page);return 0;}
     memset((void *)page,0,PAGE_SIZE);return page;
-}
-static void vm_forget(struct process *p,uintptr_t page)
-{
-    /* Track live owned pages, not the entire allocation history. Swap removal
-     * preserves ownership and keeps churn from growing the ledger forever. */
-    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page){
-        p->vm_pages[i]=p->vm_pages[--p->vm_page_count];return;}
-    panic("untracked process VM page");
 }
 static uint64_t *vm_leaf(struct process *p,uint64_t address,bool create)
 {
@@ -412,11 +401,6 @@ static uint64_t *vm_leaf_span(struct process *p,uint64_t address,uint64_t *next)
     }
     *next=address+PAGE_SIZE;return &table[(address>>12)&511];
 }
-static bool vm_owned(struct process *p,uintptr_t page)
-{
-    for(unsigned i=0;i<p->vm_page_count;++i)if(p->vm_pages[i]==page)return true;
-    return false;
-}
 static void vm_prune_path(struct process *p,uint64_t address)
 {
     uint64_t *table=(void *)p->root,*parents[3];uintptr_t pages[3];
@@ -435,13 +419,21 @@ static void vm_prune_path(struct process *p,uint64_t address)
 }
 static void vm_drop_pages(struct process *p,uint64_t address,size_t length,bool staged_only)
 {
-    uint64_t end=address+length;
+    uint64_t end=address+length,last_removed=0;bool pending_prune=false;
     for(uint64_t a=address;a<end;){uint64_t next,*entry=vm_leaf_span(p,a,&next);
         if(entry&&(*entry&1)&&(!staged_only||(*entry&(1ull<<9)))){
             uintptr_t page=*entry&0x000ffffffffff000ull;
-            *entry=0;vm_flush(a);vm_forget(p,page);page_free(page);vm_prune_path(p,a);
+            *entry=0;vm_flush(a);vm_forget(p,page);page_free(page);
+            last_removed=a;pending_prune=true;
         }
         a=next<end?next:end;
+        /* A leaf table covers 2 MiB. It cannot become empty until the last
+         * removed leaf in this span, so avoid rescanning it after every page.
+         * Data-page release/TLB invalidation stay immediate; prune before
+         * crossing the span (or returning), including staged rollback. */
+        if(pending_prune&&(a==end||(a>>21)!=(last_removed>>21))){
+            vm_prune_path(p,last_removed);pending_prune=false;
+        }
     }
 }
 #define VM_FILE_PAGE (1ull<<10)
@@ -886,8 +878,9 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
         if(start->url)while(u<=1024&&start->url[u])++u;
         if(!n||n>64||u>1024){irq_restore(f);return false;}
         uint64_t base=USER_BASE+ELF_BOOT_OFFSET;
-        uint64_t *args=(void *)(boot+512);char *name=(void *)(boot+544),*url=name+n+1;
-        memcpy(name,start->name,n+1);args[0]=base+544;args[1]=args[2]=args[3]=0;
+        uint64_t *args=(void *)(boot+ELF_ARGV_OFFSET);char *name=(void *)(boot+ELF_NAME_OFFSET),*url=name+n+1;
+        memcpy(name,start->name,n+1);args[0]=base+ELF_NAME_OFFSET;
+        for(unsigned i=1;i<ELF_ARGV_SLOTS;++i)args[i]=0;
         p->frame->rdi=1;p->frame->rsi=base+512;
         if(start->url){memcpy(url,"--url=",6);memcpy(url+6,start->url,u+1);
             args[1]=base+(uint64_t)(url-(char *)boot);p->frame->rdi=2;
@@ -904,6 +897,22 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
             char *end=window_dimension(option+sizeof(prefix)-1,display.width);
             *end++='x';end=window_dimension(end,display.height);*end=0;
             args[p->frame->rdi++]=base+(uint64_t)(option-(char *)boot);
+            if(start->native_browser){
+                /* Explicit native Cobalt profile: interpreter-only JS keeps
+                 * W^X intact. HTTPS remains enforced, including test routes. */
+                static const char js[]="--js-flags=--jitless";
+                static const char https[]="--https-enforcement=true";
+                char *next=end+1;memcpy(next,js,sizeof(js));
+                args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);
+                next+=sizeof(js);memcpy(next,https,sizeof(https));
+                args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);
+                next+=sizeof(https);
+                if(start->host_mapping){
+                    if(!elf_host_rule(start->host_mapping,next,ELF_HOST_RULE_SIZE)){
+                        irq_restore(f);return false;}
+                    args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);
+                }
+            }
         }
         p->frame->rcx=start->handler;p->frame->r8=start->preflight;p->frame->r9=start->sabi;
     }

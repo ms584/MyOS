@@ -15,6 +15,7 @@
 #define SYS_VM_QUERY 22u
 #define SYS_VM_ADVISE 23u
 #define SYS_ERRNO_LOCATION 24u
+#define RUNTIME_TLS_BASE 0x803f010000ull
 #define SYS_VM_MAP_FIXED 25u
 #define PROT_RW 3u
 #define PAGE_SIZE 4096u
@@ -195,7 +196,11 @@ int posix_memalign(void **result,size_t alignment,size_t size)
 
 int *__errno_location(void)
 {
-    return (int *)(uintptr_t)call3(SYS_ERRNO_LOCATION,0,0,0);
+    /* GS identifies the private runtime page; FS belongs to ELF/custom TLS.
+     * errno0..3, slot-index padding4..7; launcher frame56 remains untouched. */
+    uint32_t slot;
+    __asm__ volatile("movl %%gs:4,%0":"=r"(slot)::"memory");
+    return (int *)(uintptr_t)(RUNTIME_TLS_BASE+((uint64_t)slot<<12));
 }
 static int fail(int64_t error)
 {
@@ -307,7 +312,6 @@ int msync(void *address,size_t length,int flags)
 #define SYS_GETTID 28u
 #define SYS_MAIN_STACK_INFO 48u
 #define SYS_SIGNAL 49u
-#define RUNTIME_TLS_BASE 0x803f010000ull
 #define THREAD_STACK_SIZE (1024u*1024u)
 struct main_stack_info { uint64_t base,length,guard_base,guard_length; };
 #define THREAD_MAGIC 0x4d594f5350544852ull

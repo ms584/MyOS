@@ -67,8 +67,14 @@ bool ata_read(uint32_t lba,void *buffer)
     if(ok){
         select_sector(lba);outb(ATA_COMMAND,0x20);
         ok=wait_status(true);
-        if(ok){uint8_t *bytes=buffer;
-            for(unsigned i=0;i<256;++i){uint16_t value=inw(ATA_DATA);bytes[2*i]=(uint8_t)value;bytes[2*i+1]=(uint8_t)(value>>8);}
+        if(ok){void *destination=buffer;size_t words=256;
+            /* One sector, still PIO and still under the same IRQ exclusion.
+             * String I/O permits the hypervisor to batch the transfer instead
+             * of handling 256 independent IN instructions. No DMA or change
+             * to sector boundaries, status checks or write authorization. */
+            __asm__ volatile("cld; rep insw"
+                : "+D"(destination), "+c"(words) : "d"((uint16_t)ATA_DATA)
+                : "memory", "cc");
             delay_400ns();
         }
     }

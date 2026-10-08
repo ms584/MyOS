@@ -11,6 +11,9 @@
 #ifndef TEST_CASE
 #define TEST_CASE 0
 #endif
+#ifndef PROCESS_TESTS
+#define PROCESS_TESTS 0
+#endif
 extern _Noreturn void context_probe(volatile uint64_t *);
 static void worker_a(void){context_probe(&task_counts[0]);}
 static void worker_b(void){context_probe(&task_counts[1]);}
@@ -42,6 +45,10 @@ void kernel_main(void){
     process_test();
     syscall_test();
     fs_user_test();
+#if !PROCESS_TESTS
+    scheduler_finish_boot_tests();
+    print("PASS: boot kernel probes retired\n");
+#endif
 #if TEST_CASE == 1
     __asm__ volatile(".global fault_site\nfault_site: ud2");
 #elif TEST_CASE == 2

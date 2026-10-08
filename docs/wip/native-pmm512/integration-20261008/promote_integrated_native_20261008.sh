@@ -6,7 +6,7 @@ test "$(cat "$trial/integrated-regression.status")" = TERMINAL_EXIT=0
 test "$(cat "$trial/integrated-native.status")" = TERMINAL_EXIT=0
 (cd "$trial" && sha256sum -c integrated-normal.sha256)
 # Refuse an overlapping owner change or any drift from the audited inputs.
-git diff --quiet -- . ':(exclude)docs/PROJECT_STATE.md' ':(exclude)docs/HANDOFF.md'
+git diff --quiet -- boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor third_party tests build.sh
 git diff --cached --quiet
 python3 - <<'PY'
 from pathlib import Path
@@ -15,6 +15,19 @@ root=Path.cwd(); trial=Path('/home/xytron404/native-integrated-XZBHuo')
 audit=json.loads((root/'build/integrated-source-audit-20261008.json').read_text())
 assert not audit['unexpected'] and not audit['missing_expected']
 assert len(audit['changes'])==16
+roots='boot cpu memory include kernel drivers fs net gui video audio user shell security tools vendor third_party tests'.split()
+def inventory(directory):
+    result={}
+    for name in roots:
+        for path in (directory/name).rglob('*'):
+            if path.is_file() and '__pycache__' not in path.parts:
+                result[str(path.relative_to(directory))]=hashlib.sha256(path.read_bytes()).hexdigest()
+    result['build.sh']=hashlib.sha256((directory/'build.sh').read_bytes()).hexdigest()
+    return result
+old,new=inventory(root),inventory(trial)
+actual={name:[old.get(name),new.get(name)] for name in old.keys()|new.keys() if old.get(name)!=new.get(name)}
+assert actual==audit['changes'], 'Source drifted since the recorded integration audit'
+assert len(old)==audit['baseline_inputs'] and len(new)==audit['trial_inputs']
 for name,(old,new) in audit['changes'].items():
     target=root/name; source=trial/name
     assert (hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else None)==old,name

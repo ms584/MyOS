@@ -1,4 +1,5 @@
 #include "elf.h"
+#include "elf-launch.h"
 #include "process.h"
 struct resident_snapshot { size_t free_pages;struct fs_resident_account shared; };
 static struct resident_snapshot resident_snapshot(void)
@@ -182,7 +183,7 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
 int elf_run(const struct elf_source *s,int32_t *status){return load_image(s,status,true,false,0,0);}
 int elf_live(const struct elf_source *s,int32_t *status){return load_image(s,status,true,true,0,0);}
 int elf_link(const struct elf_source *s){return load_image(s,0,false,false,0,0);}
-static int load_pair(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,int32_t *status)
+static int load_pair(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,const char *mapping,bool browser,int32_t *status)
 {
     struct elf_plan plans[2];int rc=elf_plan_read(core,&plans[0]);if(rc)return rc;
     if(!plans[0].dynamic)return -95;
@@ -211,7 +212,8 @@ static int load_pair(const struct elf_source *core,const struct elf_source *prov
     print("ELF pair provider bias: ");hex(plans[1].load_bias);print("\n");
     struct elf_start starts[2];rc=status?elf_prepare_pair_execution(p,owners,starts,name!=0):elf_prepare_pair(p,owners,starts);
     if(status&&!rc){
-        starts[0].name=name;starts[0].url=url;uint64_t pid=p->pid;
+        starts[0].name=name;starts[0].url=url;starts[0].host_mapping=mapping;
+        starts[0].native_browser=browser;uint64_t pid=p->pid;
         if(!process_start_elf_pair(p,starts))rc=-12;
         else{
             bool cancelled=false;print("ELF pair live: started; Escape stops all threads\n");
@@ -235,8 +237,12 @@ static int load_pair(const struct elf_source *core,const struct elf_source *prov
     print("ELF pair images released; not executed\n");return rc;
 }
 int elf_link_pair(const struct elf_source *core,const struct elf_source *provider)
-{return load_pair(core,provider,0,0,0);}
+{return load_pair(core,provider,0,0,0,false,0);}
 int elf_live_pair(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,int32_t *status)
-{if(!status)return -22;return load_pair(core,provider,name,url,status);}
+{if(!status)return -22;return load_pair(core,provider,name,url,0,false,status);}
+int elf_cobalt(const struct elf_source *core,const struct elf_source *provider,const char *name,const char *url,const char *mapping,int32_t *status)
+{if(!status||!name||!url)return -22;char rule[ELF_HOST_RULE_SIZE];
+ if(!elf_host_rule(mapping,rule,sizeof(rule)))return -22;
+ return load_pair(core,provider,name,url,mapping,true,status);}
 int elf_starboard(const struct elf_source *s,const char *name,const char *url,int32_t *status)
 {if(!name)return -22;return load_image(s,status,true,true,name,url);}

@@ -140,7 +140,12 @@ void process_test(void)
     check(first && second, "restart user demos");
     print("PASS: process kill/reap, capacity, PID and resource reuse\n");
 #else
-    (void)initial_pages;
+    check(process_kill(first)&&process_reap(first),"boot first process cleanup");
+    check(process_kill(second)&&process_reap(second),"boot second process cleanup");
+    check(pages_free()==initial_pages,"boot process pages recovered");
+    print("PASS: boot user probes retired and pages recovered\n");
 #endif
+#if PROCESS_TESTS
     print("User processes running: "); decimal(first); print(", "); decimal(second); print(" (Ring 3)\n");
+#endif
 }

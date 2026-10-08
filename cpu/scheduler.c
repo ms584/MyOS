@@ -194,6 +194,17 @@ unsigned scheduler_wake(struct process *process,uint64_t address,unsigned count)
 
 void scheduler_start(void) { enabled = true; }
 
+/* Normal boot probes have already proved register/preemption preservation.
+ * Retire them from the boot task; test images intentionally retain probes. */
+void scheduler_finish_boot_tests(void)
+{
+    uint64_t flags=irq_save();
+    check(current==0,"boot probe cleanup from boot task");
+    for(unsigned i=1;i<KERNEL_TASKS;++i){void *stack=tasks[i].stack;
+        memset(&tasks[i],0,sizeof(tasks[i]));fp_reset(i);if(stack)kfree(stack);}
+    irq_restore(flags);
+}
+
 bool scheduler_interrupt(struct process *process,struct process_thread *thread)
 {
     for(unsigned i=KERNEL_TASKS;i<TASKS;++i){
@@ -244,6 +255,11 @@ struct frame *schedule(struct frame *frame)
         uint64_t fs=tasks[next].fs_base;
         __asm__ volatile("wrmsr"::"c"(0xc0000100u),"a"((uint32_t)fs),
                          "d"((uint32_t)(fs>>32)):"memory");
+        /* Runtime GS identity is separate from ELF/custom FS. Kernel tasks
+         * clear it; the kernel never dereferences user-controlled GS data. */
+        uint64_t gs=process?process_errno_location(process):0;
+        __asm__ volatile("wrmsr"::"c"(0xc0000101u),"a"((uint32_t)gs),
+                         "d"((uint32_t)(gs>>32)):"memory");
         /* All roots share supervisor-only kernel/heap mappings at PML4[0]. */
         __asm__ volatile ("mov %0,%%cr3" : : "r"(root) : "memory");
         return tasks[next].frame;

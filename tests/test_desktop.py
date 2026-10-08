@@ -90,7 +90,9 @@ def exercise(text=False):
         assert pixel(232,132)==(0x11,0x1a,0x2c),pixel(232,132)
         assert pixel(300,180)==(0x27,0x6b,0x8a),pixel(300,180)
         move_to(vm,addresses,590,175);button(vm,True);wait_count(vm,'WINDOW CLOSE 1',1);button(vm,False)
-        time.sleep(.05)
+        # The close marker precedes redraw; host sleep is not a presentation
+        # fence under QEMU load. Keep the pixel assertion after actual present.
+        wait_count(vm,'WINDOW CLOSE 1\nDESKTOP FRAME\n',1)
         pixel=shot(vm,'desktop-close.ppm')
         assert pixel(540,230)==(0x3a,0x2b,0x43),pixel(540,230)
         move_to(vm,addresses,580,195);button(vm,True);wait_count(vm,'WINDOW CLOSE 2',1);button(vm,False)
