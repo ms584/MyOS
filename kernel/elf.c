@@ -1,5 +1,26 @@
 #include "elf.h"
 #include "process.h"
+struct resident_snapshot { size_t free_pages;struct fs_resident_account shared; };
+static struct resident_snapshot resident_snapshot(void)
+{
+    uint64_t flags=irq_save();struct resident_snapshot state;
+    state.free_pages=pages_free();fs_shared_account(&state.shared);
+    irq_restore(flags);return state;
+}
+static void resident_reclaimed(struct resident_snapshot before,const char *message)
+{
+    struct resident_snapshot after=resident_snapshot();
+    /* Named files may survive creator exit. Process mappings must not. */
+    print("ELF resident: free-before=");decimal(before.free_pages);
+    print(" free-after=");decimal(after.free_pages);
+    print(" shm-before=");decimal(before.shared.backing_pages);
+    print(" shm-after=");decimal(after.shared.backing_pages);
+    print(" aliases-before=");decimal(before.shared.alias_references);
+    print(" aliases-after=");decimal(after.shared.alias_references);print("\n");
+    check(after.shared.alias_references==before.shared.alias_references,
+          "ELF shared alias reclamation");
+    check(after.free_pages+after.shared.backing_pages==before.free_pages+before.shared.backing_pages,message);
+}
 struct ehdr { uint8_t ident[16];uint16_t type,machine;uint32_t version;
     uint64_t entry,phoff,shoff;uint32_t flags;uint16_t ehsize,phentsize,phnum,shentsize,shnum,shstrndx; };
 struct phdr { uint32_t type,flags;uint64_t offset,vaddr,paddr,filesz,memsz,align; };
@@ -122,7 +143,8 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
         n=0;if(url){while(url[n]&&n<=1024)++n;if(!n||n>1024)return -22;}
         plan.stack_pages=ELF_STARBOARD_STACK_PAGES;
     }else if(run&&!elf_executable(&plan,plan.entry))return -95;
-    size_t before=pages_free(),heap_before=heap_allocated();
+    struct resident_snapshot resident_before=resident_snapshot();
+    size_t before=resident_before.free_pages,heap_before=heap_allocated();
     struct process *p=process_stage_elf(s,&plan);
     if(!p){check(pages_free()==before,"ELF failed-load page reclamation");
         if(live)check(heap_allocated()==heap_before,"ELF live failed-load heap reclamation");return -12;}
@@ -149,7 +171,7 @@ static int load_image(const struct elf_source *s,int32_t *status,bool run,bool l
     else if(p->exited){*status=p->exit_status;result=0;}
     else result=-8;
     check(process_reap(pid),"ELF process reap");
-    check(pages_free()==before,"ELF page reclamation");
+    resident_reclaimed(resident_before,"ELF page reclamation");
     if(live){
         /* Applications may legitimately grow persistent RAMFS state. Report
          * the global heap count; controlled fixtures assert a zero delta. */
@@ -181,7 +203,8 @@ static int load_pair(const struct elf_source *core,const struct elf_source *prov
     }
     const struct elf_source *sources[]={core,provider};
     const struct elf_plan *owners[]={&plans[0],&plans[1]};
-    size_t before=pages_free(),heap_before=heap_allocated();
+    struct resident_snapshot resident_before=resident_snapshot();
+    size_t before=resident_before.free_pages,heap_before=heap_allocated();
     struct process *p=process_stage_elf_pair(sources,owners);
     if(!p){check(pages_free()==before,"ELF pair failed-load pages");
         check(heap_allocated()==heap_before,"ELF pair failed-load heap");return -12;}
@@ -201,7 +224,7 @@ static int load_pair(const struct elf_source *core,const struct elf_source *prov
             else if(p->exited)*status=p->exit_status;
             else rc=-8;
             check(process_reap(pid),"ELF pair process reap");
-            check(pages_free()==before,"ELF pair live pages");
+            resident_reclaimed(resident_before,"ELF pair live pages");
             print("ELF pair live: pages reclaimed; heap-before=");decimal(heap_before);
             print(" heap-after=");decimal(heap_allocated());print("\n");return rc;
         }

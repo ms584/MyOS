@@ -50,6 +50,10 @@ int fs_truncate(struct fs_handle *,int,size_t);
  * caller; writable mapping ceiling follows the original descriptor access. */
 int fs_shared_rights(struct fs_handle *,int,unsigned *);
 uintptr_t fs_shared_page(struct fs_handle *,int,size_t);
+/* Kernel-only resident ownership accounting. Inodes own one reference per
+ * backing frame; aliases count additional PMM references, not duplicate frames. */
+struct fs_resident_account { size_t backing_pages,alias_references; };
+void fs_shared_account(struct fs_resident_account *);
 unsigned fs_node_count(void);
 void fs_test(void);
 void fs_user_test(void);

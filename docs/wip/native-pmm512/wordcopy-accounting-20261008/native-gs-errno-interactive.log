@@ -1,0 +1,15 @@
+$ openssl x509 -in /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-s13v6zh2/public-test-ca.pem -subject_hash -noout
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/native-verified-tls.sock,server=on,wait=off -cpu max -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-s13v6zh2/assets.img,if=ide,index=1
+$ nm -S build/kernel.elf
+RESOURCE_METADATA before-1 372736 RAMFS 8192
+LAUNCH_OBSERVATION {"launch": 1, "elapsed": 212.4802043610107, "request_start": 0, "request_end": 122, "cleanup": ["ELF pair live: pages reclaimed; heap-before=409344 heap-after=450304", "ELF cancelled; all threads stopped"], "shell_returned": true}
+$ nm -S build/kernel.elf
+RESOURCE_METADATA after-1 450304 RAMFS 49152
+$ nm -S build/kernel.elf
+RESOURCE_METADATA before-2 450304 RAMFS 49152
+LAUNCH_OBSERVATION {"launch": 2, "elapsed": 232.48480293000466, "request_start": 122, "request_end": 233, "cleanup": ["ELF pair live: pages reclaimed; heap-before=450304 heap-after=450304", "ELF cancelled; all threads stopped"], "shell_returned": true}
+$ nm -S build/kernel.elf
+RESOURCE_METADATA after-2 450304 RAMFS 49152
+qemu-system-x86_64: terminating on signal 15 from pid 557713 (python3)
+EVIDENCE_BUNDLE /home/xytron404/cobalt-closed-imports-xnVZeH/build/native-verified-tls-s13v6zh2 requests 233 peak_concurrent_assets 3
+OBSERVATION ONLY: inspect actual native screenshot, TLS rejection errors, concurrency and cleanup; not full acceptance.

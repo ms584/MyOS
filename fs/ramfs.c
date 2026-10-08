@@ -11,6 +11,24 @@ struct node {
 };
 static struct node nodes[FS_LIVE_NODES];
 
+void fs_shared_account(struct fs_resident_account *result)
+{
+    uint64_t flags=irq_save();
+    *result=(struct fs_resident_account){0};
+    for(unsigned i=0;i<FS_LIVE_NODES;++i){
+        const struct shm_backing *backing=nodes[i].used?nodes[i].shared:0;
+        if(!backing)continue;
+        check(backing->size<=SHM_MAX_BYTES,"shared accounting size");
+        size_t count=(backing->size+PAGE_SIZE-1)/PAGE_SIZE;
+        for(size_t page=0;page<count;++page){
+            unsigned references=page_references(backing->pages[page]);
+            check(backing->pages[page]&&references,"shared accounting ownership");
+            ++result->backing_pages;result->alias_references+=references-1;
+        }
+    }
+    irq_restore(flags);
+}
+
 static bool equal(const char *a,const char *b)
 {
     while (*a && *a==*b) { ++a; ++b; }

@@ -3,6 +3,30 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Accounting promoted; GS native result and emulator access — 2026-10-08 14:54 +07
+
+53593 TERMINAL0 14:51:10: audited all tracked non-doc inputs in completed clean
+candidate vs main, only include/fs.h/fs/ramfs.c/kernel/elf.c differ (candidate
+lacks .gitattributes/.gitignore,not build inputs). Copied exact3 sources, normal
+BIOS/UEFI build4 hashes match full-tested candidate. New main tests:
+tests/test_named_shm_lifetime.py,user/elf-named-shm-lifetime.c plus diagnostic
+tests/cobalt_native_resource_inventory.py; standalone12 launches EACH firmware
+PASS after integration. Named backing persists across creator exit; writable
+aliases reclaimed even without munmap; unlink recovers exact pages/no SHM nodes.
+No persistence format/driver/rights change. New normal manifest
+build/resident-accounting-promotion-normal.sha256 supersedes descriptor manifest.
+
+3238 TERMINAL0 14:51:55: native GS experiment s13v6zh2 actual2 launches
+212.480/232.485s,233 requests,peak assets3. Visible first final DOM42/Timer73/
+PageUp/TOP/cert3/3; both closes free+SHM/aliases/shell,heap450304 RAMFS49152.
+Private3 original sources and normal4 hashes restored. GS not promoted.
+10s frame samples show timer/input region changes but visual stalls remain;
+input journal is NOT visual latency. No controlled speedup or60s acceptance.
+Read-only probe14:53:39: /dev/kvm exists API not readable (EACCES), user not
+group kvm. QEMU lists tcg,mshv,kvm. Owner asked asynchronously for optional group
+authorization; no system change performed. KVM availability/acceleration NOT
+proven. Continue native latency diagnosis even if owner declines/no answer.
+
 ## GS errno experiment and clean accounting full result — 2026-10-08 14:46 +07
 
 84234 TERMINAL0 14:44:36. Clean resident-accounting candidate R4sQZZ completed
