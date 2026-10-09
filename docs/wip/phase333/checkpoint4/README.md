@@ -60,3 +60,5 @@ Conservative accounting will add the entire16MiB reserved kernel heap and
 provider mapped PT_LOAD pages to observed PMM incremental peak; this covers
 underlay allocations and preload cost but sampling is not an exact high-water
 bound. Final budget acceptance must state these limits or add allocation bounds.
+
+Controlled-start engine RAM run completed (native-verified-tls-3m2wb57o):126 samples at0.5s, observed PMM increase19939328 bytes. Verified media provider mapped-page delta372736 bytes above the identical renderer baseline. Adding the entire16MiB reserved kernel heap is overly conservative and exceeds32MiB; actual incremental kernel allocation must still be bounded/measured. This is not RAM acceptance. EOS/restart/stop completed again, max sync54352us. Safe records:checkpoint4/engine-ram/.

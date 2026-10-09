@@ -1,0 +1,20 @@
+{
+  "sampled_pmm_increment": 19939328,
+  "baseline_free_pages": 64988,
+  "minimum_free_pages": 60120,
+  "samples": 126,
+  "reserved_kernel_heap_allowance": 16777216,
+  "budget": 33554432,
+  "phase_passed": false,
+  "provider_mapped_pages": 15917056,
+  "renderer_baseline_mapped_pages": 15544320,
+  "media_provider_increment": 372736,
+  "sampled_media_plus_code": 20312064,
+  "conservative_with_entire_reserved_heap": 37089280,
+  "limitations": [
+    "Physical page samples every0.5s are not exact allocation high-water.",
+    "Entire renderer provider already exists in baseline; only verified media mapped-page delta added.",
+    "Whole16MiB kernel heap allowance exceeds budget; need actual incremental heap bound or measurement.",
+    "Do not claim RAM acceptance yet."
+  ]
+}

@@ -1,5 +1,5 @@
-Updated:2026-10-09 14:05 +07. /home/xytron404/myos,main.
-Baseline:3d3f76f local player/underlay checkpoint;origin/main158f360 ancestor.
+Updated:2026-10-09 14:09 +07. /home/xytron404/myos,main.
+Baseline:7932a01 local normal replay/lifecycle checkpoint;origin/main158f360 ancestor.
 No push. Preserve owner untracked promotion logs/status/audit files.
 
 ## Scope and prerequisite
@@ -46,7 +46,7 @@ Current normal hashes:checkpoint4/regression-and-normal-images.json.
 Frozen normal images:build/media-evaluation/underlay-normal-final-20261009/.
 Fault-only artifacts:build/media-evaluation/fault-register-image/,not acceptance.
 Stage memory/process.c source restored;its build artifacts remain diagnostic.
-Controlled-start engine RAM/lifecycle VM ACTIVE:exec28422,
-cobalt-native-ram-lifecycle1.log. Do not restart on observation timeout.
-Next:measure RAM,resolve PCM held samples/earlier GP,adversarial streaming. Goal remains active.
+Controlled-start engine RAM/lifecycle DONE:126 samples,PMM+19939328B.
+Media code delta372736B;kernel incremental heap bound pending,not RAM PASS.
+No active VM. Next:kernel heap bound,PCM held samples/earlier GP,stream faults. Goal remains active.
 Guide:PHASE333.md;handoff:HANDOFF.md;safe evidence:wip/phase333/checkpoint4/.
