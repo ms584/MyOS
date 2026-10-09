@@ -37,6 +37,9 @@ static pthread_mutex_t mu=PTHREAD_MUTEX_INITIALIZER;
 static SbPlayer player;static SbWindow window;
 static int requested[2],ticket=1,failed,ended,stop_readers,preroll,initialized;
 static unsigned allocated,released,packets[2];
+#ifdef MYOS_TEST_VIDEO_GAP
+static int video_gap_done;
+#endif
 static int64_t seek_to;
 static pthread_t readers[2];
 static const SbGlesInterface *gl;
@@ -75,6 +78,18 @@ static int packet(void *context,int kind,const unsigned char *data,size_t n,int6
   if(stamp<track->skip||(kind==1&&!key))return 0;track->started=1;
  }
  if(wait_request(type))return 1;
+#ifdef MYOS_TEST_VIDEO_GAP
+ if(type==kSbMediaTypeVideo&&!video_gap_done&&stamp>=8000000){
+  video_gap_done=1;lognum("native VIDEO_GAP begin pts=",stamp);
+  sleep_ms(1200);SbPlayerInfo before={0};SbPlayerGetInfo(player,&before);
+  sleep_ms(600);SbPlayerInfo after={0};SbPlayerGetInfo(player,&after);
+  lognum("native VIDEO_GAP held-before=",before.current_media_timestamp);
+  lognum("native VIDEO_GAP held-after=",after.current_media_timestamp);
+  if(after.current_media_timestamp-before.current_media_timestamp>100000)
+   return bad("native VIDEO_GAP audio advanced while video withheld");
+  SbLogRaw("native VIDEO_GAP held clock PASS; feeder restored\n");
+ }
+#endif
  void *copy=malloc(n);if(!copy)return bad("native fixture packet allocation failure");
  memcpy(copy,data,n);SbPlayerSampleInfo sample={0};
  sample.type=type;sample.buffer=copy;sample.buffer_size=(int)n;sample.timestamp=stamp;

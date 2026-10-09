@@ -1,5 +1,41 @@
 Updated:2026-10-10 00:18 +07. /home/xytron404/myos,main.
 
+### 2026-10-10 02:50 +07 — checkpoint9 bounded video rebuffer/latency candidate; online pending
+Actual DMA-clock YouTube session i5btk98n (3321ad0/provider-aq_aruje) failed:
+Auto360p max432751/820536us; selected144p first max1067997us after buffered video
+ended318.8s while audio reached320.001s; reopen144p max120365us.
+Both native pauses held hardware position/consumed/presented counters; movie ROI
+above fading controls changed0 pixels in both. Both desktop window/input checks,
+shell and exact257743 pages passed; all5 normal hashes unchanged. Archive:
+docs/wip/phase334/checkpoint8/dma-online-sync-failed/. Failed outliers remain evidence.
+
+Provider candidate0w_9xkyk exact source5edf3ad7411... now selects frames using measured
+synchronous presentation high-water plus10ms, clamped40..90ms; post-display sync
+still uses actual SB16 consumed, with no gate relaxation or hidden outliers.
+Audio source stops feeding before decoded video headroom falls<=100ms. Sink alone
+owns FLUSH, acknowledgement and replay of unconsumed PCM. Rebuffer waits for aligned
+current video and>=200ms future video (or EOS), then resumes. Sixteen fixed slots,
+<=4video/<=8audio input batch and all existing codec/ring limits remain unchanged.
+Seek resets rebuffer; pause and EOS preserve existing contracts.
+
+Native video-only gap mz1iy1ih PASS: real audio clock held7846129us over600ms while
+video was withheld; video feeding restored, rebuffer pause/resume observed, controls,
+seek/EOS/reopen and exact pages/heap/SHM/aliases. Actual max39979us, failures0,
+increment9400320bytes. Evidence: docs/wip/phase334/checkpoint9/video-gap-native/.
+Fresh Cobalt HTTPS/MSE standard j366lvss PASS observation:36.6s moving pixels,
+39.9284s native PCM, expected four tones, actual max39947us, corrupted/starvations0,
+clock failures0, resident exact. Dropped7 disclosed, not prior strict no-drop gate.
+Controlled native HTTP403 _39cuotb error/restart/pages PASS; not live YouTube expiry.
+Archives: checkpoint9/cobalt-standard and cobalt-http403.
+
+Default VP8 provider rebuilt exact41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696.
+Architecture/kernel/MRT/images unchanged from full PASS checkpoint6 at02:03:53,
+normal/pair BIOS/UEFI final0 and all5 exact at02:05:33. New isolated VP9 branch has
+focused/Cobalt tests above and still requires actual public controls/recovery proof.
+Signed-URL actual expiry remains unverified; no fabricated/altered tokens or clock.
+Phase33.4 ACTIVE/INCOMPLETE. No Phase33.5/parent33/Rickroll acceptance. Local commits only.
+
+
 ### 2026-10-10 02:25 +07 — checkpoint8 native Cobalt standard/HTTP403 verified
 Fresh provider-aq_aruje native Cobalt HTTPS/MSE standard observation ended at40s:
 36.6s captured moving fixture,39.9347s native PCM, four expected tones, actual

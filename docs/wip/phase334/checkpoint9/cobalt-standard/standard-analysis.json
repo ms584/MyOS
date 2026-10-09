@@ -1,0 +1,143 @@
+{
+  "phase_passed": false,
+  "native_standard_observation": true,
+  "motion_span_seconds": 36.6,
+  "audio_seconds": 39.92843537414966,
+  "visible_frames": [
+    {
+      "elapsed": 89.41055128399967,
+      "frame": 47,
+      "path": "media-089.png"
+    },
+    {
+      "elapsed": 91.44039751200035,
+      "frame": 77,
+      "path": "media-091.png"
+    },
+    {
+      "elapsed": 93.46784864000074,
+      "frame": 108,
+      "path": "media-093.png"
+    },
+    {
+      "elapsed": 95.49398327699964,
+      "frame": 138,
+      "path": "media-095.png"
+    },
+    {
+      "elapsed": 97.5211394959988,
+      "frame": 169,
+      "path": "media-097.png"
+    },
+    {
+      "elapsed": 99.55100718299946,
+      "frame": 199,
+      "path": "media-099.png"
+    },
+    {
+      "elapsed": 101.58066124499965,
+      "frame": 229,
+      "path": "media-101.png"
+    },
+    {
+      "elapsed": 103.6113174940001,
+      "frame": 260,
+      "path": "media-103.png"
+    },
+    {
+      "elapsed": 105.65112163099911,
+      "frame": 291,
+      "path": "media-105.png"
+    },
+    {
+      "elapsed": 107.68128758500097,
+      "frame": 321,
+      "path": "media-107.png"
+    },
+    {
+      "elapsed": 109.71222523899996,
+      "frame": 351,
+      "path": "media-109.png"
+    },
+    {
+      "elapsed": 111.7463891059997,
+      "frame": 382,
+      "path": "media-111.png"
+    },
+    {
+      "elapsed": 113.77793942099743,
+      "frame": 412,
+      "path": "media-113.png"
+    },
+    {
+      "elapsed": 115.81137203599792,
+      "frame": 443,
+      "path": "media-115.png"
+    },
+    {
+      "elapsed": 117.84249919699869,
+      "frame": 473,
+      "path": "media-117.png"
+    },
+    {
+      "elapsed": 119.87894673600022,
+      "frame": 504,
+      "path": "media-119.png"
+    },
+    {
+      "elapsed": 121.91421849700055,
+      "frame": 534,
+      "path": "media-121.png"
+    },
+    {
+      "elapsed": 123.94821645800039,
+      "frame": 565,
+      "path": "media-123.png"
+    },
+    {
+      "elapsed": 125.98355011899912,
+      "frame": 596,
+      "path": "media-125.png"
+    }
+  ],
+  "tones": [
+    {
+      "second": 5,
+      "rms": 55.20365510919513,
+      "crossings": 440,
+      "expected": 440
+    },
+    {
+      "second": 15,
+      "rms": 55.16854817269522,
+      "crossings": 660,
+      "expected": 660
+    },
+    {
+      "second": 25,
+      "rms": 55.38504673068846,
+      "crossings": 880,
+      "expected": 880
+    },
+    {
+      "second": 35,
+      "rms": 55.06317213138077,
+      "crossings": 550,
+      "expected": 550
+    }
+  ],
+  "metrics": [
+    {
+      "presented": 597,
+      "sync-samples": 596,
+      "max-sync-us": 39947,
+      "decoded": 600,
+      "dropped": 7,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ],
+  "hardware_clock_failures": 0,
+  "resident_exact": true,
+  "strict_original_no_drop_gate": false
+}

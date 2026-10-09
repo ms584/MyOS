@@ -63,6 +63,7 @@ struct SbPlayerPrivate {
 #ifdef MYOS_MEDIA_VP9
  unsigned decoded_format_logged;
  unsigned native_hardware_clock_reads,native_hardware_clock_failures,native_hardware_ack_lag_frames;
+ int native_rebuffering;unsigned native_rebuffers;int64_t native_presentation_max_us;
 #endif
 #ifdef MYOS_MEDIA_TRACE
  int64_t diagnostic_decode_max_us,diagnostic_present_max_us,diagnostic_wake_max_us;
@@ -125,10 +126,41 @@ static int64_t clock_locked(SbPlayer p){
 #endif
  return p->wall_media+(p->presenting&&p->rate==1.0?now_us()-p->wall_anchor:0);
 }
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+static int64_t native_frame_due_locked(SbPlayer p){
+ int64_t lead=10000;
+ if(p->native_video&&p->has_audio&&p->presenting&&p->rate==1.0&&!p->native_rebuffering){
+  /* Predict synchronous presentation latency, bounded40..90ms.
+   * Actual SB16 clock and post-display error remain unchanged. */
+  lead=p->native_presentation_max_us+10000;
+  if(lead<40000)lead=40000;
+  if(lead>90000)lead=90000;
+ }
+ return clock_locked(p)+lead;
+}
+#endif
 static void source_status(int *frames,int *offset,bool *playing,bool *eos,void *context){
  SbPlayer p=context;pthread_mutex_lock(&p->mutex);
  *frames=(int)p->pcm_count;*offset=(int)p->pcm_read;
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ /* Sink alone owns FLUSH/acknowledgement and replay of unconsumed PCM. */
+ if(p->native_video&&p->has_video&&p->presenting&&p->rate==1.0&&
+    !p->seek_pending&&!p->stop&&!p->failed&&!p->pending[kSbMediaTypeVideo].eos){
+  int64_t clock=clock_locked(p);
+  int64_t latest=p->video_count?p->frames[(p->video_read+p->video_count-1)%VIDEO_SLOTS].time:
+                  p->have_current?p->current.time:INT64_MIN;
+  if(!p->native_rebuffering&&latest<=clock+100000){
+   p->native_rebuffering=1;++p->native_rebuffers;
+   char detail[192];snprintf(detail,sizeof(detail),
+    "MEDIA rebuffer pause clock=%lld latest-video=%lld vq=%u pcm=%u\n",
+    (long long)clock,(long long)latest,p->video_count,p->pcm_count);SbLogRaw(detail);
+  }
+ }
+#endif
  *playing=p->presenting&&p->rate==1.0&&!p->seek_pending&&!p->stop&&!p->failed;
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ if(p->native_rebuffering)*playing=false;
+#endif
  *eos=p->pending[kSbMediaTypeAudio].eos&&!p->pending[kSbMediaTypeAudio].full;
  unsigned starved=*playing&&!*eos&&!*frames;
  if(starved&&!p->source_starved)++p->source_starvations;
@@ -293,8 +325,8 @@ static void *player_worker(void *context){
    SbLogRaw(counters);
 #ifdef MYOS_MEDIA_VP9
    {char hardware[160];snprintf(hardware,sizeof(hardware),
-    "MEDIA hardware-clock reads=%u failures=%u max-ack-lag-frames=%u\n",
-    p->native_hardware_clock_reads,p->native_hardware_clock_failures,p->native_hardware_ack_lag_frames);SbLogRaw(hardware);}
+    "MEDIA hardware-clock reads=%u failures=%u max-ack-lag-frames=%u presentation-max-us=%lld rebuffers=%u\n",
+    p->native_hardware_clock_reads,p->native_hardware_clock_failures,p->native_hardware_ack_lag_frames,(long long)p->native_presentation_max_us,p->native_rebuffers);SbLogRaw(hardware);}
 #endif
 #endif
   }
@@ -312,6 +344,9 @@ static void *player_worker(void *context){
    p->pcm_read=p->pcm_count=p->resample_phase=0;p->consumed=0;p->audio_anchor_set=0;
    p->video_read=p->video_count=p->have_current=0;p->duration=0;p->wall_media=p->seek_time;p->wall_anchor=now_us();
    p->last_audio_pts=p->last_video_pts=INT64_MIN;p->failed=0;
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   p->native_rebuffering=0;
+#endif
    pthread_mutex_unlock(&p->mutex);
    if(!error)error=create_sink(p);
    pthread_mutex_lock(&p->mutex);
@@ -340,7 +375,7 @@ static void *player_worker(void *context){
     unsigned budget=i==kSbMediaTypeAudio?AUDIO_BATCH:VIDEO_BATCH;
     while(pending->full&&budget--){
      if(i==kSbMediaTypeVideo){
-      int64_t due=clock_locked(p)+10000;
+      int64_t due=native_frame_due_locked(p);
       while(p->video_count&&(!p->have_current||p->frames[p->video_read].time<=due)){
        if(p->have_current&&p->generation!=p->rendered_generation)++p->dropped_video;
        p->current=p->frames[p->video_read];p->have_current=1;++p->generation;
@@ -364,8 +399,13 @@ static void *player_worker(void *context){
     if(error){p->failed=1;notify_error=1;break;}
    }
 #endif
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   int64_t frame_due=native_frame_due_locked(p);
+#else
    int64_t clock=clock_locked(p);
-   while(p->video_count&&(!p->have_current||p->frames[p->video_read].time<=clock+10000)){
+   int64_t frame_due=clock+10000;
+#endif
+   while(p->video_count&&(!p->have_current||p->frames[p->video_read].time<=frame_due)){
     if(p->have_current&&p->generation!=p->rendered_generation)++p->dropped_video;
     p->current=p->frames[p->video_read];p->have_current=1;++p->generation;
     p->video_read=(p->video_read+1)%VIDEO_SLOTS;--p->video_count;
@@ -380,6 +420,15 @@ static void *player_worker(void *context){
     int64_t ahead=p->video_count?p->frames[(p->video_read+p->video_count-1)%VIDEO_SLOTS].time-anchor:0;
     aligned_preroll=p->have_current&&p->current.time>=anchor-50000&&
      (ahead>=200000||p->pending[kSbMediaTypeVideo].eos);
+   }
+#endif
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   if(p->native_rebuffering&&aligned_preroll&&
+      (p->pcm_count>=2205||p->pending[kSbMediaTypeAudio].eos)){
+    p->native_rebuffering=0;
+    char detail[160];snprintf(detail,sizeof(detail),
+     "MEDIA rebuffer resume clock=%lld pts=%lld vq=%u pcm=%u\n",
+     (long long)clock_locked(p),(long long)p->current.time,p->video_count,p->pcm_count);SbLogRaw(detail);
    }
 #endif
    if(!p->presenting&&
@@ -412,14 +461,19 @@ static void *player_worker(void *context){
    if(p->failed||!p->bounds_width||!p->bounds_height){
     if(p->video_shown){media_video_clear(p->video_window);p->video_shown=0;}
    }else if(p->have_current&&(p->generation!=p->shown_generation||p->bounds_revision!=p->shown_bounds)){
-#ifdef MYOS_MEDIA_TRACE
+#if defined(MYOS_MEDIA_VP9) || defined(MYOS_MEDIA_TRACE)
     int64_t diagnostic_present_start=now_us();
 #endif
     int rc=media_video_set(p->video_window,p->current.rgba,p->current.width,p->current.height,
      p->bounds_x,p->bounds_y,p->bounds_width,p->bounds_height,p->current.time);
-#ifdef MYOS_MEDIA_TRACE
+#if defined(MYOS_MEDIA_VP9) || defined(MYOS_MEDIA_TRACE)
     int64_t diagnostic_present_duration=now_us()-diagnostic_present_start;
+#ifdef MYOS_MEDIA_VP9
+    if(diagnostic_present_duration>p->native_presentation_max_us)p->native_presentation_max_us=diagnostic_present_duration;
+#endif
+#ifdef MYOS_MEDIA_TRACE
     if(diagnostic_present_duration>p->diagnostic_present_max_us)p->diagnostic_present_max_us=diagnostic_present_duration;
+#endif
 #endif
     if(rc){p->failed=1;notify_error=1;}
     else {

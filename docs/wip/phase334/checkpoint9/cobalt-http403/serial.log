@@ -1,0 +1,505 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM frames above256MiB, alias and retained lifetime
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 126679
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 241379 sectors
+Storage: unrecognized data disk; RAM-only
+NIC: RTL8139 initialized
+Audio: SB16 initialized
+Security: UTC 1791575159, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> net up
+Network: DHCP configured
+Network: RTL8139, IP 10.0.2.15 gateway 10.0.2.2 DNS 10.0.2.3
+myos> mkdir /dev/shm
+myos> mem
+Free physical pages: 126671
+myos> elf cobalt cobalt provider https://cobalt.example.com:45375/ cobalt.example.com=10.0.2.2
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x0000008006331000
+ELF platform: sysconf
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18496 absolute=0 global=2 jump=64 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: pthread_mutex_trylock
+ELF platform: SbSystemGetExtension
+ELF platform: pthread_mutex_unlock
+ELF provider: SbGetEglInterface
+ELF provider: SbGetGlesInterface
+ELF platform: SbWindowDestroy
+ELF platform: SbWindowSetDefaultOptions
+ELF platform: SbWindowCreate
+ELF platform: SbWindowGetSize
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: pthread_getspecific
+ELF platform: SbSystemRaisePlatformError
+ELF platform: SbSystemRequestStop
+ELF platform: gettid
+ELF platform: read
+ELF platform: __errno_location
+ELF platform: close
+ELF platform: clock_gettime
+ELF platform: pthread_sigmask
+ELF platform: pthread_setspecific
+ELF platform: pthread_key_create
+ELF platform: write
+ELF platform: sched_yield
+ELF platform: free
+ELF platform: pthread_mutex_init
+ELF platform: pthread_cond_init
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_wait
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_cond_signal
+ELF platform: sem_init
+ELF platform: sem_timedwait
+ELF platform: sem_wait
+ELF platform: sem_post
+ELF platform: pthread_self
+ELF platform: pthread_getschedparam
+ELF platform: sysconf
+ELF platform: munmap
+ELF platform: mmap
+ELF platform: sigaction
+ELF platform: signal
+ELF platform: raise
+ELF platform: uname
+ELF platform: eventfd
+ELF platform: fstat
+ELF platform: fdatasync
+ELF platform: mkdir
+ELF platform: access
+ELF platform: opendir
+ELF platform: readdir
+ELF platform: geteuid
+ELF platform: chmod
+ELF platform: closedir
+ELF platform: mprotect
+ELF platform: madvise
+ELF platform: pipe
+ELF platform: fcntl
+ELF platform: mkstemp
+ELF platform: mkdtemp
+ELF platform: readlink
+ELF platform: posix_memalign
+ELF platform: prctl
+ELF platform: pthread_setname_np
+ELF platform: pthread_create
+ELF platform: poll
+ELF platform: dup
+ELF platform: isatty
+ELF platform: getpid
+ELF platform: pthread_key_delete
+ELF platform: pthread_getname_np
+ELF platform: fchmod
+ELF platform: writev
+ELF platform: ftruncate
+ELF platform: getaddrinfo
+ELF platform: freeaddrinfo
+ELF platform: socketpair
+ELF platform: socket
+ELF platform: setsockopt
+ELF platform: bind
+ELF platform: listen
+ELF platform: connect
+ELF platform: shutdown
+ELF platform: sendmsg
+ELF platform: recvmsg
+ELF platform: getsockname
+ELF platform: getsockopt
+ELF platform: accept
+ELF platform: realloc
+ELF platform: malloc
+ELF platform: gai_strerror
+ELF platform: getifaddrs
+ELF platform: freeifaddrs
+ELF platform: calloc
+ELF platform: sem_destroy
+ELF platform: pthread_mutex_destroy
+ELF platform: SbMicrophoneGetAvailable
+ELF platform: SbMicrophoneCreate
+ELF platform: SbMicrophoneOpen
+ELF platform: SbMicrophoneRead
+ELF platform: SbMicrophoneDestroy
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbMediaCanChangeType
+ELF platform: SbMediaGetAudioOutputCount
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: SbMediaGetBufferAllocationUnit
+ELF platform: SbMediaGetAudioBufferBudget
+ELF platform: SbMediaGetBufferGarbageCollectionDurationThreshold
+ELF platform: SbMediaGetInitialBufferCapacity
+ELF platform: SbMediaIsBufferPoolAllocateOnDemand
+ELF platform: SbMediaGetVideoBufferBudget
+ELF provider: SbPlayerWriteEndOfStream
+ELF provider: SbPlayerGetMaximumNumberOfSamplesPerWrite
+ELF provider: SbPlayerCreate
+ELF provider: SbPlayerGetPreferredOutputMode
+ELF provider: SbPlayerDestroy
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerWriteSamples
+ELF provider: SbPlayerSetBounds
+ELF provider: SbPlayerSetPlaybackRate
+ELF provider: SbPlayerSetVolume
+ELF provider: SbPlayerGetInfo
+ELF provider: SbPlayerGetCurrentFrame
+ELF provider: SbPlayerGetAudioConfiguration
+ELF platform: SbDrmCreateSystem
+ELF platform: SbDrmDestroySystem
+ELF platform: SbDrmIsServerCertificateUpdatable
+ELF platform: SbDrmUpdateServerCertificate
+ELF platform: SbDrmGenerateSessionUpdateRequest
+ELF platform: SbDrmUpdateSession
+ELF platform: SbDrmCloseSession
+ELF platform: getuid
+ELF platform: pause
+ELF weak zero: _ZTHN2v88internal12trap_handler21g_thread_in_wasm_codeE
+ELF platform: malloc_usable_size
+ELF platform: pthread_kill
+ELF platform: getrlimit
+ELF platform: ioctl_FIONREAD
+ELF platform: inotify_add_watch
+ELF platform: inotify_rm_watch
+ELF platform: SbSpeechSynthesisIsSupported
+ELF platform: SbSpeechSynthesisSpeak
+ELF platform: SbSpeechSynthesisCancel
+ELF platform: SbSystemGetLocaleId
+ELF platform: SbTimeZoneGetName
+ELF platform: rename
+ELF platform: SbSystemGetProperty
+ELF platform: kSbFileMaxPath
+ELF platform: SbSystemGetPath
+ELF platform: SbWindowGetDiagonalSizeInInches
+ELF platform: SbSystemRequestConceal
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: SbSystemHasCapability
+ELF platform: SbSystemGetTotalCPUMemory
+ELF platform: SbSystemGetUsedGPUMemory
+ELF platform: SbAudioSinkDestroy
+ELF platform: SbAudioSinkIsAudioSampleTypeSupported
+ELF platform: SbAudioSinkGetMinBufferSizeInFrames
+ELF platform: SbAudioSinkGetNearestSupportedSampleFrequency
+ELF platform: SbAudioSinkCreate
+ELF platform: aligned_alloc
+ELF platform: pthread_cond_broadcast
+ELF platform: kSbFileSepString
+ELF platform: SbLog
+ELF platform: SbSystemGetLastError
+ELF platform: SbSystemGetErrorString
+ELF platform: SbLogRaw
+ELF platform: msync
+ELF platform: kSbMaxThreads
+ELF platform: lseek
+ELF platform: pread
+ELF platform: pwrite
+ELF platform: pthread_condattr_init
+ELF platform: pthread_condattr_setclock
+ELF platform: pthread_condattr_destroy
+ELF platform: pthread_cond_destroy
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_attr_init
+ELF platform: pthread_attr_setdetachstate
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_join
+ELF platform: pthread_detach
+ELF platform: setpriority
+ELF platform: sched_setscheduler
+ELF platform: mincore
+ELF platform: sched_getaffinity
+ELF platform: statvfs
+ELF platform: realpath
+ELF platform: getcwd
+ELF platform: pipe2
+ELF platform: symlink
+ELF platform: pathconf
+ELF platform: fstatat
+ELF platform: openat
+ELF platform: unlinkat
+ELF platform: fdopendir
+ELF platform: recv
+ELF platform: SbEventCancel
+ELF platform: SbEventSchedule
+ELF platform: SbSystemIsDebuggerAttached
+ELF platform: SbSystemBreakIntoDebugger
+ELF platform: epoll_create1
+ELF platform: epoll_ctl
+ELF platform: epoll_wait
+ELF platform: pthread_attr_getstacksize
+ELF platform: kSbFileMaxName
+ELF platform: fsync
+ELF platform: SbSystemGetStack
+ELF platform: SbSystemSymbolize
+ELF platform: pthread_once
+ELF platform: SbStorageOpenRecord
+ELF platform: SbStorageCloseRecord
+ELF platform: SbStorageGetRecordSize
+ELF platform: SbStorageReadRecord
+ELF platform: SbStorageDeleteRecord
+ELF platform: pthread_getattr_np
+ELF platform: pthread_attr_getstack
+ELF platform: send
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_rwlock_destroy
+ELF platform: SbSystemGetRandomUInt64
+ELF platform: inotify_init1
+ELF platform: getauxval
+ELF platform: readv
+ELF platform: utimensat
+ELF platform: clock_nanosleep
+ELF platform: if_indextoname
+ELF platform: getpeername
+ELF platform: recvmmsg
+ELF platform: sendto
+ELF platform: readdir_r
+ELF platform: pthread_mutexattr_settype
+ELF platform: fchown
+ELF provider: SbDecodeTargetRelease
+ELF platform: SbDrmGetMetrics
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: SbSystemHideSplashScreen
+ELF platform: SbSystemNetworkIsDisconnected
+ELF platform: SbSystemSignWithCertificationSecretKey
+ELF relocations: relative=117653 absolute=20 global=17 jump=626 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+Starboard SABI: pinned x64 API 18 matched
+[1009/194652.440000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp8, opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp8, opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp8, opus" encrypted=0 support=2
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA create entered
+MEDIA create success
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA seek ticket=3 target-us=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA decoded codec=7 source=160x90 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA bounds z=0 x=16 y=157 width=320 height=180
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA bounds z=1 x=16 y=182 width=320 height=180
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10681 consumed=17763 video=15 rate=1 audio-last=2560000 video-last=2600000 req=0,0 full=2,4
+MEDIA metrics mono-us=88130000 position-us=1621398 presented=21 sync-samples=21 max-sync-us=39464 decoded=40 dropped=4 corrupted=0 starvations=0 consumed=17763 rate=1 ram-query-bytes=272089088 decode-max-us=0 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=405 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10933 consumed=30741 video=16 rate=1 audio-last=3760000 video-last=3867000 req=0,0 full=1,1
+MEDIA metrics mono-us=89290000 position-us=2788382 presented=39 sync-samples=39 max-sync-us=39888 decoded=59 dropped=4 corrupted=0 starvations=0 consumed=30741 rate=1 ram-query-bytes=272265216 decode-max-us=0 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=820 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11064 consumed=43620 video=16 rate=1 audio-last=4940000 video-last=5000000 req=0,0 full=1,0
+MEDIA metrics mono-us=90460000 position-us=3956545 presented=56 sync-samples=56 max-sync-us=39888 decoded=76 dropped=4 corrupted=0 starvations=0 consumed=43620 rate=1 ram-query-bytes=272334848 decode-max-us=0 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=1230 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11138 consumed=56335 video=16 rate=1 audio-last=6100000 video-last=6200000 req=0,0 full=1,2
+MEDIA metrics mono-us=91620000 position-us=5119992 presented=74 sync-samples=74 max-sync-us=39888 decoded=94 dropped=4 corrupted=0 starvations=0 consumed=56335 rate=1 ram-query-bytes=272441344 decode-max-us=0 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=1643 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10987 consumed=69495 video=16 rate=1 audio-last=7280000 video-last=7400000 req=0,0 full=1,0
+MEDIA metrics mono-us=92810000 position-us=6313552 presented=92 sync-samples=92 max-sync-us=39888 decoded=112 dropped=4 corrupted=0 starvations=0 consumed=69495 rate=1 ram-query-bytes=271069184 decode-max-us=20000 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=2058 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10658 consumed=84157 video=16 rate=1 audio-last=8580000 video-last=8667000 req=0,0 full=2,1
+MEDIA metrics mono-us=94140000 position-us=7633370 presented=111 sync-samples=111 max-sync-us=39888 decoded=131 dropped=4 corrupted=0 starvations=0 consumed=84157 rate=1 ram-query-bytes=272080896 decode-max-us=20000 present-max-us=30000 wake-max-us=20000
+MEDIA bounds z=2 x=16 y=157 width=320 height=180
+MEDIA hardware-clock reads=2473 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA bounds z=3 x=16 y=182 width=320 height=180
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11014 consumed=98354 video=16 rate=1 audio-last=9900000 video-last=10000000 req=0,0 full=1,1
+MEDIA metrics mono-us=95430000 position-us=8931148 presented=133 sync-samples=133 max-sync-us=39888 decoded=151 dropped=4 corrupted=0 starvations=0 consumed=98354 rate=1 ram-query-bytes=273022976 decode-max-us=20000 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=2888 failures=0 max-ack-lag-frames=560 presentation-max-us=30000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA native metrics presented=142 sync-samples=142 max-sync-us=39888 decoded=160 dropped=4 corrupted=0 source-starvations=0
+MEDIA capability mime=video/webm; codecs="vp8, opus" encrypted=0 support=2
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA create entered
+MEDIA create success
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA seek ticket=3 target-us=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA decoded codec=7 source=160x90 presentation=160x90
+MEDIA bounds z=4 x=16 y=157 width=320 height=180
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA bounds z=5 x=16 y=182 width=320 height=180
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11072 consumed=12742 video=16 rate=1 audio-last=2140000 video-last=2200000 req=0,0 full=1,2
+MEDIA metrics mono-us=97850000 position-us=1176046 presented=19 sync-samples=15 max-sync-us=39555 decoded=34 dropped=0 corrupted=0 starvations=0 consumed=12742 rate=1 ram-query-bytes=273465344 decode-max-us=0 present-max-us=0 wake-max-us=20000
+MEDIA hardware-clock reads=397 failures=0 max-ack-lag-frames=262 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11111 consumed=27035 video=16 rate=1 audio-last=3440000 video-last=3533000 req=0,0 full=1,2
+MEDIA metrics mono-us=99130000 position-us=2452327 presented=39 sync-samples=35 max-sync-us=39736 decoded=54 dropped=0 corrupted=0 starvations=0 consumed=27035 rate=1 ram-query-bytes=272629760 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=811 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11182 consumed=39753 video=16 rate=1 audio-last=4600000 video-last=4667000 req=0,0 full=1,1
+MEDIA metrics mono-us=100290000 position-us=3615865 presented=56 sync-samples=52 max-sync-us=39736 decoded=71 dropped=0 corrupted=0 starvations=0 consumed=39753 rate=1 ram-query-bytes=272744448 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=1224 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11150 consumed=52574 video=16 rate=1 audio-last=5760000 video-last=5800000 req=0,0 full=1,0
+MEDIA metrics mono-us=101450000 position-us=4779039 presented=73 sync-samples=69 max-sync-us=39766 decoded=88 dropped=0 corrupted=0 starvations=0 consumed=52574 rate=1 ram-query-bytes=272809984 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=1630 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11076 consumed=65217 video=16 rate=1 audio-last=6900000 video-last=7000000 req=0,0 full=1,2
+MEDIA metrics mono-us=102590000 position-us=5915547 presented=91 sync-samples=87 max-sync-us=39766 decoded=106 dropped=0 corrupted=0 starvations=0 consumed=65217 rate=1 ram-query-bytes=272961536 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=2041 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11042 consumed=77819 video=16 rate=1 audio-last=8040000 video-last=8133000 req=0,0 full=1,1
+MEDIA metrics mono-us=103740000 position-us=7068654 presented=108 sync-samples=104 max-sync-us=39766 decoded=123 dropped=0 corrupted=0 starvations=0 consumed=77819 rate=1 ram-query-bytes=272240640 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=2452 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10715 consumed=90715 video=16 rate=1 audio-last=9180000 video-last=9267000 req=0,0 full=2,0
+MEDIA metrics mono-us=104910000 position-us=8238359 presented=125 sync-samples=121 max-sync-us=39917 decoded=140 dropped=0 corrupted=0 starvations=0 consumed=90715 rate=1 ram-query-bytes=272310272 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=2861 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10959 consumed=104362 video=16 rate=1 audio-last=10440000 video-last=10533000 req=0,0 full=1,1
+MEDIA metrics mono-us=106140000 position-us=9466114 presented=144 sync-samples=140 max-sync-us=39917 decoded=159 dropped=0 corrupted=0 starvations=0 consumed=104362 rate=1 ram-query-bytes=272314368 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=3276 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11097 consumed=117013 video=16 rate=1 audio-last=11600000 video-last=11667000 req=0,0 full=1,0
+MEDIA metrics mono-us=107290000 position-us=10613779 presented=161 sync-samples=157 max-sync-us=39917 decoded=176 dropped=0 corrupted=0 starvations=0 consumed=117013 rate=1 ram-query-bytes=272351232 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=3684 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10985 consumed=129694 video=16 rate=1 audio-last=12740000 video-last=12800000 req=0,0 full=1,3
+MEDIA metrics mono-us=108440000 position-us=11763983 presented=178 sync-samples=174 max-sync-us=39917 decoded=193 dropped=0 corrupted=0 starvations=0 consumed=129694 rate=1 ram-query-bytes=272531456 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=4095 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11174 consumed=142294 video=16 rate=1 audio-last=13900000 video-last=14000000 req=0,0 full=1,1
+MEDIA metrics mono-us=109590000 position-us=12916636 presented=196 sync-samples=192 max-sync-us=39917 decoded=211 dropped=0 corrupted=0 starvations=0 consumed=142294 rate=1 ram-query-bytes=272592896 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=4508 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11069 consumed=155408 video=15 rate=1 audio-last=15080000 video-last=15133000 req=0,1 full=1,0
+MEDIA metrics mono-us=110780000 position-us=14106114 presented=214 sync-samples=210 max-sync-us=39917 decoded=228 dropped=0 corrupted=0 starvations=0 consumed=155408 rate=1 ram-query-bytes=272650240 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=4918 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10785 consumed=169804 video=16 rate=1 audio-last=16360000 video-last=16467000 req=0,0 full=2,0
+MEDIA metrics mono-us=112080000 position-us=15401806 presented=233 sync-samples=229 max-sync-us=39917 decoded=248 dropped=0 corrupted=0 starvations=0 consumed=169804 rate=1 ram-query-bytes=273014784 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=5337 failures=0 max-ack-lag-frames=449 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA capability mime=video/webm encrypted=0 support=1
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=11284 consumed=182756 video=16 rate=1 audio-last=17580000 video-last=17667000 req=1,0 full=0,2
+MEDIA metrics mono-us=113260000 position-us=16586749 presented=251 sync-samples=247 max-sync-us=39947 decoded=266 dropped=0 corrupted=0 starvations=0 consumed=182756 rate=1 ram-query-bytes=273055744 decode-max-us=0 present-max-us=20000 wake-max-us=20000
+MEDIA hardware-clock reads=5751 failures=0 max-ack-lag-frames=556 presentation-max-us=20000 rebuffers=0
+MEDIA capability mime=video/webm encrypted=0 support=1
+MEDIA native metrics presented=265 sync-samples=261 max-sync-us=39947 decoded=280 dropped=0 corrupted=0 source-starvations=0
+ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=786176 heap-after=847616
+ELF cancelled; all threads stopped
+myos> mem
+Free physical pages: 126671
+myos> 

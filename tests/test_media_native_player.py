@@ -9,6 +9,8 @@ from test_shell import type_text
 base=ROOT/'build/media-evaluation'
 vp9='--vp9' in sys.argv
 underlay='--underlay' in sys.argv
+video_gap='--video-gap' in sys.argv
+assert not video_gap or (vp9 and underlay), 'video-gap requires native VP9 underlay'
 provider=Path(sys.argv[sys.argv.index('--provider')+1]).resolve()
 report=json.loads((provider/'report.json').read_text())
 digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
@@ -23,7 +25,7 @@ for name in ('media-webm','elf-media-player'):
  subprocess.run([str(cc),'-std=c11','-O2','-Wall','-Wextra','-Werror',
  '-Wno-misleading-indentation','-I'+str(out/'include'),'-I'+str(provider/'include'),
  '-Iuser','-Iinclude','-Iuser/starboard-media/include','-Iuser/starboard-system/include',
- *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
+ *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),*(['-DMYOS_TEST_VIDEO_GAP=1'] if video_gap else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
 archives=[]
 support=json.loads((ROOT/'build/renderer-provider-evaluation/provider-84sokh6g/report.json').read_text())
 for item in support['inputs']:
@@ -115,3 +117,9 @@ assert len({x['pixels_sha256'] for x in visual})>=12,visual
 evidence['visual']=visual
 (out/'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
 print('PASS native standard asset player checkpoint; NOT Cobalt/HTTPS acceptance',out,flush=True)
+
+if video_gap:
+ assert 'native VIDEO_GAP held clock PASS; feeder restored' in output, 'Video-only gap did not hold actual audio clock'
+ assert 'MEDIA rebuffer pause ' in output and 'MEDIA rebuffer resume ' in output, 'Native rebuffer transition not observed'
+ (out/'video-gap-result.json').write_text(json.dumps(dict(native_video_only_gap=True,audio_hardware_clock_held=True,feed_restored=True,phase_passed=False),indent=2)+chr(10))
+ print('PASS native video-only gap: actual audio held, feeding restored, controls/EOS/resources passed; not phase acceptance')
