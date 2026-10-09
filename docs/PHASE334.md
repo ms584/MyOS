@@ -1,4 +1,25 @@
 # Phase33.4 actual YouTube integration
+
+### 2026-10-10 02:25 +07 — checkpoint8 native Cobalt standard/HTTP403 verified
+Fresh provider-aq_aruje native Cobalt HTTPS/MSE standard observation ended at40s:
+36.6s captured moving fixture,39.9347s native PCM, four expected tones, actual
+PCM_STATUS sync max39266us, clock failures0, corrupted0/starvations0.
+Dropped counter8 is preserved/disclosed; this trace observation is not a silent
+replacement for the prior strict no-drop Phase33.3 acceptance.
+Evidence: docs/wip/phase334/checkpoint8/cobalt-standard/.
+
+Controlled one-shot HTTP403 caused actual native JavaScript fetch-error403.
+Native N input restarted a new generation and later playing; X/ESC returned to
+shell with exact physical pages126671, SHM0 and aliases0. Evidence:
+docs/wip/phase334/checkpoint8/cobalt-http403/.
+Both sessions preserve all5 current normal hashes. Isolated lab fixture/CA only;
+no host production fetch/decoder, no guest heap dump, no signed URL manipulation.
+This verifies HTTP-error/restart behavior, NOT live YouTube URL expiry.
+Full regression remains the checkpoint6 terminal0 at02:03:53 with normal/pair
+BIOS/UEFI final0 at02:05:33. Actual DMA-clock public YouTube controls and network
+recovery remain pending. Phase33.4 INCOMPLETE; no Phase33.5/33/Rickroll acceptance.
+No push; owner pushes manually.
+
 Status: IN PROGRESS, NOT PASSED. Started 2026-10-09 +07.
 Baseline main7f4336da8a590c2df68977cc07d50d36c1ccc31c. Local work only; no push.
 Phase32/33 and Rickroll/33.5 remain NOT PASSED.

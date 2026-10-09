@@ -1,0 +1,148 @@
+{
+  "phase_passed": false,
+  "standard_media_observation": true,
+  "provider_sha256": "33b7a38e8282f319c5f2da029ed994b1ba1be5d7c96d8e3b7c7901c8d504bf61",
+  "motion_span_seconds": 36.6,
+  "visible_frames": [
+    {
+      "elapsed": 87.40091555300023,
+      "frame": 49,
+      "path": "media-087.png"
+    },
+    {
+      "elapsed": 89.42777459499848,
+      "frame": 80,
+      "path": "media-089.png"
+    },
+    {
+      "elapsed": 91.45399116800036,
+      "frame": 110,
+      "path": "media-091.png"
+    },
+    {
+      "elapsed": 93.48441014099808,
+      "frame": 140,
+      "path": "media-093.png"
+    },
+    {
+      "elapsed": 95.51763631399808,
+      "frame": 171,
+      "path": "media-095.png"
+    },
+    {
+      "elapsed": 97.54688636699939,
+      "frame": 201,
+      "path": "media-097.png"
+    },
+    {
+      "elapsed": 99.57641911500104,
+      "frame": 232,
+      "path": "media-099.png"
+    },
+    {
+      "elapsed": 101.60682726400046,
+      "frame": 262,
+      "path": "media-101.png"
+    },
+    {
+      "elapsed": 103.6385492119989,
+      "frame": 293,
+      "path": "media-103.png"
+    },
+    {
+      "elapsed": 105.67336675999832,
+      "frame": 323,
+      "path": "media-105.png"
+    },
+    {
+      "elapsed": 107.70619180599897,
+      "frame": 354,
+      "path": "media-107.png"
+    },
+    {
+      "elapsed": 109.73689515200022,
+      "frame": 384,
+      "path": "media-109.png"
+    },
+    {
+      "elapsed": 111.76683669799968,
+      "frame": 415,
+      "path": "media-111.png"
+    },
+    {
+      "elapsed": 113.79812703000061,
+      "frame": 445,
+      "path": "media-113.png"
+    },
+    {
+      "elapsed": 115.83371045599779,
+      "frame": 476,
+      "path": "media-115.png"
+    },
+    {
+      "elapsed": 117.87020868200125,
+      "frame": 506,
+      "path": "media-117.png"
+    },
+    {
+      "elapsed": 119.90202930799933,
+      "frame": 1,
+      "path": "media-119.png"
+    },
+    {
+      "elapsed": 121.93724667900096,
+      "frame": 567,
+      "path": "media-121.png"
+    },
+    {
+      "elapsed": 123.97600553400116,
+      "frame": 598,
+      "path": "media-123.png"
+    }
+  ],
+  "tones": [
+    {
+      "second": 5,
+      "rms": 55.20365510919513,
+      "crossings": 440,
+      "expected": 440
+    },
+    {
+      "second": 15,
+      "rms": 55.16854817269522,
+      "crossings": 660,
+      "expected": 660
+    },
+    {
+      "second": 25,
+      "rms": 55.38504673068846,
+      "crossings": 880,
+      "expected": 880
+    },
+    {
+      "second": 35,
+      "rms": 55.06317213138077,
+      "crossings": 550,
+      "expected": 550
+    }
+  ],
+  "metrics": [
+    {
+      "presented": 596,
+      "sync-samples": 595,
+      "max-sync-us": 39266,
+      "decoded": 600,
+      "dropped": 8,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ],
+  "shell_checks": [
+    {
+      "launch": 0,
+      "output": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "timing": "actual native PCM_STATUS in opt-in VP9-built provider, including standard VP8 codec",
+  "dropped_frames_must_be_disclosed": true
+}

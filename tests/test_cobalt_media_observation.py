@@ -84,7 +84,7 @@ if ram_diagnostic:
  script=script.replace(b'begin();\nsetInterval',b"report('media-ready','awaiting B');\nsetInterval")
  script=script.replace(b"if(e.key=='n')begin();",b"if(e.key=='n'||e.key=='b')begin();")
 fault_mode=os.environ.get('MYOS_MEDIA_FAULT','')
-assert fault_mode in ('','stall','truncate','corrupt','close','oom')
+assert fault_mode in ('','stall','truncate','corrupt','close','oom','http403')
 fault_injections=[]
 if fault_mode=='oom':
  script=script.replace(b"if(e.key=='p')v.pause();",b'''if(e.key=='o'){
@@ -111,8 +111,13 @@ def do_GET(self):
     if start>end:self.send_error(416);return
    inject=False
    with lock:
-    if fault_mode in ('stall','truncate','corrupt') and not fault_injections and (fault_mode=='corrupt' or start>=131072):
+    if fault_mode in ('stall','truncate','corrupt','http403') and not fault_injections and (fault_mode=='corrupt' or start>=131072):
      inject=True;fault_injections.append(dict(mode=fault_mode,start=start,elapsed=time.monotonic()-began))
+   # A controlled HTTP response path, not a forged YouTube URL/signature and
+   # not evidence that a live production media URL expired.
+   if inject and fault_mode=='http403':
+    self.send_response(403);self.send_header('Content-Length','0')
+    self.send_header('Cache-Control','no-store');self.end_headers();return
    if inject and fault_mode=='stall':time.sleep(8)
    self.send_response(206 if request else 200)
    self.send_header('Content-Type','video/webm');self.send_header('Accept-Ranges','bytes')
@@ -233,10 +238,12 @@ def sample_ram(launch,label):
    row['pmm_interval_min_free_pages']=min([free,last_free]+minima)
   pressure_previous[launch]=(tick,free)
  ram_samples.append(row);return row
+fault_shell_before=None
 vm=None;frames=[];inputs=[];shell_checks=[];started=time.monotonic();playing=None;sent=set()
 try:
  vm=VM('cobalt-media-native',ram=512,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
  vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
+ if fault_mode=='http403':fault_shell_before=command(vm,'mem','Free physical pages: ')
  repeats=int(os.environ.get('MYOS_MEDIA_REPEATS','1'));assert 1<=repeats<=3
  lifecycle=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1'
  continuous=os.environ.get('MYOS_MEDIA_CONTINUOUS')=='1'
@@ -313,6 +320,22 @@ finally:
  for thread in threads:thread.join(timeout=2)
  assert hashlib.sha256(boot.read_bytes()).hexdigest()==boot_hash
  (out/'evidence.json').write_text(json.dumps(dict(phase_passed=False,observation_only=True,diagnostic_trace=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),
- continuous_playback=continuous,fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
+ continuous_playback=continuous,fault_shell_before=fault_shell_before,fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
  fixture_sha256=metadata['sha256'],boot_sha256=boot_hash,runtime_sha256=runtime_hash,elapsed=time.monotonic()-started),indent=2)+'\n')
  print('EVIDENCE_BUNDLE',out,'NOT automatic phase acceptance',flush=True)
+
+
+if fault_mode=='http403':
+ events=[urllib.parse.parse_qs(urllib.parse.urlsplit(r['path']).query) for r in records if r['path'].startswith('/evidence?')]
+ denied=[event for event in events if event.get('kind')==['fetch-error'] and event.get('value')==['403']]
+ assert len(fault_injections)==1 and denied, 'Native JS did not report the controlled HTTP403'
+ first_error=min(int(event['seq'][0]) for event in denied)
+ resumed=[event for event in events if event.get('kind')==['playing'] and int(event['seq'][0])>first_error]
+ assert resumed and any(item.get('key')=='n' for item in inputs), 'Native input did not restart playback after HTTP403'
+ assert shell_checks and all(row['output']==fault_shell_before for row in shell_checks), 'Shell/physical pages did not recover after HTTP403'
+ resident=re.findall(r'ELF resident: free-before=(\d+) free-after=(\d+) shm-before=(\d+) shm-after=(\d+) aliases-before=(\d+) aliases-after=(\d+)',(out/'serial.log').read_text())
+ assert resident and all(row[0]==row[1] and row[2]==row[3] and row[4]==row[5] for row in resident), 'Native Cobalt resident pages/SHM/aliases were not reclaimed'
+ (out/'http403-result.json').write_text(json.dumps(dict(
+  controlled_http403_native_error_restart=True,live_youtube_url_expiry_proved=False,
+  phase_passed=False,shell_recovered=True,physical_pages_exact=True),indent=2)+chr(10))
+ print('PASS controlled native HTTP403 error reporting, restart and shell/pages recovery; NOT live YouTube expiry or phase acceptance',flush=True)
