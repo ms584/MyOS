@@ -1,5 +1,5 @@
-Updated:2026-10-09 15:20 +07. /home/xytron404/myos,main.
-Baseline:091f300 local checkpoint5 worker-join/heap fix; no push.
+Updated:2026-10-09 15:25 +07. /home/xytron404/myos,main.
+Baseline:b13dae5 local checkpoint5 HTTPS fault recovery; no push.
 Goal Phase33.3 ACTIVE; no push; preserve owner promotion logs/status/audits.
 
 ## Scope
@@ -41,7 +41,11 @@ Truncate/corrupt native HTTPS errors detected, fresh stream recovery/stop passed
 PMM/SHM/aliases exact. Escape during playback also exact; partial cold profile
 heap+40960B needs warm close/relaunch owner attribution.
 Erroneous shell loop lost fault mode and is excluded; corrected Python loop DONE.
-Playing OOM ArrayBuffer pressure ACTIVE session53496,cobalt-playing-oom1.log.
+Playing OOM DONE:240MiB buffers, RangeError, PMM64 freepages.
+Mesa IR constructor null-fault at provider4afd40; PMM/SHM/aliases reclaimed,
+shell returned; partial profile+40960B. No graceful engine OOM recovery claim.
+Explicit mem/relaunch/heap-owner OOM repeat ACTIVE session72974,
+cobalt-playing-oom-relaunch2.log. First log:cobalt-playing-oom1.log.
 Native PCM666 long constant runs byte129, near zero; voiced periods near source.
 Next investigate real starvation/single-packet callback delivery cadence.
 Final UEFI/checks/normal-image restoration afterfull6 pending.

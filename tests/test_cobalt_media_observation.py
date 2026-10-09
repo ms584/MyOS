@@ -216,7 +216,7 @@ def sample_ram(launch,label):
  row=dict(launch=launch,elapsed=time.monotonic()-started,label=label,free_pages=free)
  for name,address in ram_extra_symbols.items():row[name]=__import__('struct').unpack('<Q',vm.memory(address,8))[0]
  ram_samples.append(row);return row
-vm=None;frames=[];inputs=[];started=time.monotonic();playing=None;sent=set()
+vm=None;frames=[];inputs=[];shell_checks=[];started=time.monotonic();playing=None;sent=set()
 try:
  vm=VM('cobalt-media-native',ram=512,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
  vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
@@ -276,6 +276,7 @@ try:
   type_text(vm,'\x1b') if False else vm.key('esc')
   try:
    vm.wait('myos> ',timeout=15)
+   shell_checks.append(dict(launch=launch,output=command(vm,'mem','Free physical pages: ')))
    if heap_diagnostic:
     heap_snapshot('after'+suffix)
     time.sleep(3);heap_snapshot('after-3s'+suffix)
@@ -287,6 +288,6 @@ finally:
  for thread in threads:thread.join(timeout=2)
  assert hashlib.sha256(boot.read_bytes()).hexdigest()==boot_hash
  (out/'evidence.json').write_text(json.dumps(dict(phase_passed=False,observation_only=True,diagnostic_trace=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),
- fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
+ fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
  fixture_sha256=metadata['sha256'],boot_sha256=boot_hash,runtime_sha256=runtime_hash,elapsed=time.monotonic()-started),indent=2)+'\n')
  print('EVIDENCE_BUNDLE',out,'NOT automatic phase acceptance',flush=True)

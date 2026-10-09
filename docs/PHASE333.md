@@ -344,3 +344,9 @@ Escape during active playback returned PMM/SHM/aliases and stopped every thread.
 Cold partial profile retention40960B needs warm-close confirmation. OOM mode
 allocates/touches bounded ArrayBuffers from native guest JS during playback;
 its result is pending. None of this closes the unresolved audio/RAM/final checks.
+
+First native during-playback OOM observed:240MiB JS buffers touched, allocation
+RangeError, PMM minimum64 pages. Mesa IR then null-faulted; kernel reclaimed
+PMM/SHM/aliases and returned shell. Graceful engine recovery is not proved;
+explicit shell command/relaunch/retained-profile checks are running. Safe
+records:checkpoint5/engine-oom.json and serial. This remains an open limit.

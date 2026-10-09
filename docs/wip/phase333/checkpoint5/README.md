@@ -74,3 +74,12 @@ byte129, one LSB from zero, rather than a held nonzero tone. Selected voiced
 periods remain consistent with source tones at this sample rate; zeros reduce
 whole-window crossing counts. See pcm-gap-analysis.json. This supports real
 starvation as the next investigation; it does not prove a pipeline fix.
+
+Native JS pressure run allocated/touched251658240B (240MiB) during actual
+playback, then reported RangeError:Array buffer allocation failed. Matching
+kernel PMM fell to64 free pages: real guest memory exhaustion, not a mocked
+allocator. The renderer subsequently faulted at provider offset4afd40 in Mesa
+ir_dereference_variable constructor, writing through null at0x10. PMM/SHM/
+aliases reclaimed exactly; cold profile heap+40960B; kernel returned toshell.
+This is NOT graceful engine OOM recovery. Explicit shell mem and two-launch
+OOM/relaunch/heap-owner verification is ACTIVE. Do not infer pass from exit0.

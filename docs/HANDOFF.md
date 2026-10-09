@@ -3535,3 +3535,8 @@ playing also reclaimed PMM/SHM/aliases; partial cold profile40960B needs warm
 confirmation. All666 native PCM long runs are near-zero byte129, suggesting
 real starvation rather than nonzero held tone. OOM ArrayBuffer guest pressure
 run active; full6 still active; neither pending result is passed.
+
+Native during-playback JS OOM is real (240MiB allocated, PMM64 pages, RangeError).
+Mesa IR constructor null-fault at provider4afd40 followed; process resources
+reclaimed and shell returned. No graceful engine OOM claim. Two-launch repeat
+with explicit mem command and private heap/inode ownership snapshots ACTIVE.
