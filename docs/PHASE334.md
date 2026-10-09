@@ -118,3 +118,15 @@ SbPlayerBridge invalid mode, zero PCM. online-small-bound-frontend-failed.
 Next quality selection through real native PS/2 UI, no payload/capability bypass.
 Full default regression started21:58:23, running; normal BIOS restore + UEFI and
 final launcher checks queued. Phase33.4/33.5/Rickroll/parent remain NOT PASSED.
+
+## Checkpoint4 diagnostic candidate — 2026-10-09 23:29 +07
+Still NOT PASSED. See PROJECT_STATE.md / checkpoint4. Original40-worker
+full suite passed22:39:10 and normal5 hashes restored; PMM1024 candidate
+requires a new full suite. Native E8201024 focused low/high BIOS/UEFI
+passed. Quiet512 quality144p trial failed with V8 allocation failure/int3
+after only3s metrics; stored failed evidence, no30s pass. Quiet1GiB real
+YouTube moves video with same-session PCM, closes/reopens, and buffers
+through native NIC loss until120s media exhaustion. Automatic recovery
+not yet verified.360p and144p sync outliers still violate100ms candidate
+budget. Scoped decode/presentation/wakeup timing instrumentation is
+diagnostic only; no performance policy change or broad RAM capture.

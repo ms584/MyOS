@@ -3,7 +3,7 @@
 #define MIN_HEAP_BYTES (4u*1024u*1024u)
 #define MAX_HEAP_BYTES (16u*1024u*1024u)
 static size_t heap_bytes;
-#define MAX_PAGES (512u*1024u*1024u/PAGE_SIZE)
+#define MAX_PAGES (1024u*1024u*1024u/PAGE_SIZE)
 #define BOOTSTRAP_PAGES (256u*1024u*1024u/PAGE_SIZE)
 #define NX (1ull<<63)
 #define ADDR 0x000ffffffffff000ull
@@ -190,7 +190,8 @@ void memory_test(void){
         *(volatile uint64_t *)(va+16)=0x512512abcdef1234ull;
         check(*(volatile uint64_t *)(high+16)==0x512512abcdef1234ull&&vm_translate(va+16)==high+16,"PMM high alias");
         check(vm_unmap(va)==high,"PMM high unmap");page_free(high);check(page_references(high)==1,"PMM high release");
-        print("PASS: PMM frames above256MiB, alias and retained lifetime\n");}
+        print("PASS: PMM frames above256MiB, alias and retained lifetime\n");
+        if(high>=512u*1024u*1024u)print("PASS: PMM frames above512MiB, alias and retained lifetime\n");}
     /* The probe tables are free now; include them in the exhaustion list. */
     while((p=page_alloc())){*(uintptr_t *)p=list;list=p;++used;}
     check(used==before&&!page_alloc(),"PMM exhaustion");while(list){p=*(uintptr_t *)list;page_free(list);list=p;}check(pages_free()==before,"PMM recovery");

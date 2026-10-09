@@ -2,7 +2,7 @@
 No host page/media fetching, fixture CA, proxy, decoder, or credentials.
 """
 from pathlib import Path
-import argparse, datetime, hashlib, json, os, shutil, subprocess, sys, tempfile, time, wave
+import argparse, datetime, hashlib, json, os, re, shutil, subprocess, sys, tempfile, time, wave
 from PIL import Image
 from test_system import ROOT, VM
 from test_shell import command, type_text
@@ -19,6 +19,7 @@ def main():
     p.add_argument('--url',action='append',required=True)
     p.add_argument('--engine-trace',action='store_true',help='Native opt-in engine stderr/VLOG only; no memory extraction or TLS overrides')
     p.add_argument('--identity',type=Path,default=ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json')
+    p.add_argument('--memory-mib',type=int,choices=(512,1024),default=512,help='Actual QEMU physical RAM; native E820/PMM, no invented memory')
     p.add_argument('--seconds',type=int,default=300)
     p.add_argument('--input',action='append',default=[],help='Timed native key: seconds:qcode')
     p.add_argument('--actions',type=Path,help='Optional local JSON native key/text/click actions; no page scripting')
@@ -71,10 +72,10 @@ def main():
     evidence=dict(phase_passed=False,observation_only=True,date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=7))).isoformat(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,
-        urls=a.url,qemu=qemu,launches=[],engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
+        urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
     vm=None;observer=None
     try:
-        vm=VM('phase334-public',ram=512,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
+        vm=VM('phase334-public',ram=a.memory_mib,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
         if a.ram:
             from cobalt_pmm_observer import Observer
             observer=Observer(vm)
@@ -102,6 +103,7 @@ def main():
                     actions=json.loads(a.actions.read_text())
                     assert isinstance(actions,list) and len(actions)<=40
                     for action in actions:
+                        if 'launch' in action and int(action['launch'])!=n:continue
                         ident=str(action['id'])
                         if ident in action_sent or elapsed<float(action.get('at',0)):continue
                         kind=action['type']
@@ -126,6 +128,14 @@ def main():
                         elif kind=='key':
                             assert action['key'] in ('spc','tab','ret','left','right','up','down','k','j','l','f','m')
                             vm.key(action['key'])
+                        elif kind=='link':
+                            assert isinstance(action['up'],bool)
+                            network=vm.command('human-monitor-command',{'command-line':'info network'})
+                            names=re.findall(r'^([^ :\n]+):.*type=nic',network,re.M)
+                            assert len(names)==1, 'Expected one isolated VM NIC'
+                            vm.command('set_link',{'name':names[0],'up':action['up']})
+                        elif kind=='close':
+                            vm.key('esc')
                         else:raise ValueError('Unsupported native action')
                         action_sent.add(ident);row['inputs'].append(dict(action=action,elapsed=elapsed))
                 if 'USER FAULT' in content or 'PANIC' in content or content.endswith('myos> '):break

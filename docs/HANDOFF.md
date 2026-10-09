@@ -3,6 +3,25 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+
+## Phase33.4 checkpoint4 candidate — 2026-10-09 23:35 +07
+
+Read PROJECT_STATE.md. Prior40-worker full passed with exact normal5 hashes.
+E820-limited PMM1024 focused BIOS/UEFI low/high RAM passed; new full started
+23:34:56 (session43374), normal restoration and final checks queued.
+Real1GiB YouTube session ryky58y7 played, pause/resume/seek, close/reopen
+actually exercised. Native WAV838.257s including silence,488 audible1s bins.
+NOT PASSED:360p max621ms and manually selected144p max367ms sync.
+144p selection visible; new144p source dimensions were not logged, do not
+invent them. Logger fixed for packets without first display frame nextcandidate.
+Native NIC down/up exhausted buffer120s; no playback recovery before close.
+Both closes return shell, exactPMM/SHM/aliases; cold heap retention grows
+and bounded repeated reopen still unverified. All native frames, WAV, redacted
+serial, actions, exactprovider/sources archived checkpoint4. Scoped diagnostic
+decode/present/wakeup metrics added; native fixture passed, no host media path.
+Next:finish mandatory full suite/normalrestore/localcommit, diagnose sync and
+network recovery from native timing/logs. No33.4/33.5 closure or push.
+
 ## Phase33.4 checkpoint3 - 2026-10-09 21:43 +07
 
 NOT PASSED, goal active. PROJECT_STATE.md / PHASE334_EXPERIMENT_GUIDE.md /

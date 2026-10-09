@@ -1,0 +1,25 @@
+{
+  "phase_passed": false,
+  "focused_pmm_passed": true,
+  "date": "2026-10-09T23:07:57+07:00",
+  "bios_mib": [
+    16,
+    256,
+    512,
+    1024
+  ],
+  "uefi_mib": [
+    64,
+    256,
+    512,
+    1024
+  ],
+  "bios1024_managed_pages": 261856,
+  "uefi1024_managed_pages": 250075,
+  "full_regression_for_pmm1024": "pending",
+  "source_hashes": {
+    "memory/memory.c": "9303e7ab8f27527cba25d153d7d154d6b42a94dc5f5ea517ef46881ebc86e7b1",
+    "memory/process.c": "f379780958bae6f4c63996a5365db570319a0b74c002c658addba5a7e29a0cdb",
+    "tests/test_pmm_512m.py": "9cfdc88e01d01a3385ae1ea05937bf26df536f5b6d522d2898303c3fafc72df2"
+  }
+}

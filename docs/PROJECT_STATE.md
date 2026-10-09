@@ -1,4 +1,4 @@
-Updated:2026-10-09 22:16 +07. /home/xytron404/myos,main.
+Updated:2026-10-09 23:16 +07. /home/xytron404/myos,main.
 Phase33.4 owner-authorized; goal ACTIVE, NOT PASSED. No push.
 Preserve owner untracked promotion logs/status/audits.
 
@@ -35,10 +35,11 @@ No DOM scripting, authentication/CSP/TLS bypass or invented credentials.
 
 40-worker saturation/EAGAIN/native TLS/reuse/exact cleanup BIOS+UEFI PASS21:44:05.
 Opt-in cobalt-trace stderr/v1 launcher focused BIOS+UEFI PASS21:27:34.
-NEW full default tests/test_system.py started21:58:23, currently running
-(session74664), log build/phase334-checkpoint3-full-regression.log.
-It restores normal BIOS; queued UEFI build/final launcher/pair checks afterward.
-Do not mutate normal images or run acceptance VMs concurrently.
+40-worker full default tests/test_system.py PASS22:39:10. Normal BIOS/UEFI
+restored; final launcher and corrected paired-provider BIOS/UEFI checks PASS.
+All5 worker40 normal hashes matched. See checkpoint3/regression/result.json.
+The wrapper had exit2 only from omitted --provider in the first final pair
+invocation; corrected pair checks passed22:41:11. No full-suite failure.
 Normal40 identity before full suite:workers40-normal-identity.json in checkpoint3.
 Full result/final normal restoration/local checkpoint follow-up pending.
 
@@ -47,3 +48,53 @@ Scoped logs replace it; published serial URL queries/data payloads redacted
 and validated. Raw logs private under build.
 All33.4 final timing/sync/search/reopen/network-loss/timeout/expiry/recovery/
 focused/full gates still require acceptance. No33.5/Rickroll/parent closure.
+
+## Next candidate: native memory evidence, no acceptance yet
+Quiet512MiB quality-selection trial oy7zonr5 reached native VP9 256x144
+after PS/2 Quality144p selection. Only3s metrics, max23.364ms, no30s
+visible playback. V8 allocation-failure GC then int3 USERFAULT at318s;
+owned-page scalar near514MB is not RSS or proof of precise OOM cause.
+Shell/PMM/SHM/alias recovery observed; second launch did not play.
+New real PMM ceiling1024MiB preserves E820 validity and low-RAM behavior.
+Focused BIOS16/256/512/1024 and UEFI64/256/512/1024 passed23:07:57;
+1024 counts261856 BIOS/250075 UEFI and native high-frame alias/refcount
+exercise passed. Scalar VM commit/reservation ENOMEM diagnostics added.
+New architectural full regression REQUIRED and pending.
+VP9 advertised cap restored640x360 to match actual decoder; low-bound
+frontend failure retained. Quiet1024MiB native watch trial ryky58y7 started
+23:15:51, provider-1xdywgbz with scoped metrics, no engine VLOG/heap capture.
+Normal identity build/phase334-pmm1g-normal-identity.json. Goal ACTIVE.
+
+23:29 update:1GiB online trial ryky58y7 launch1 actually played360p then
+144p256x144, native same-session sound; both pause/resume/seek attempted.
+Still NOT PASSED:360p max621368us,144p max367026us sync. Actual first
+close returned shell, PMM257743 exactly restored,SHM/aliases0. Reopen
+played; guest NIC down150s, buffer exhausted at media120s with spinner
+consumed1323000 fixed and starvation1. Recovery after NIC up pending.
+Exact online provider/source hashes preserved checkpoint4/sources.
+Native fixture provider-1xdywgbz PASS23:17:50 sync9.987ms exactcleanup;
+latency diagnostic provider-c_8x6eci PASS23:26:31 sync<10ms. Further
+wakeup-delay diagnostic provider-vf14cy_w built only, no online evidence yet.
+Default VP8 rebuilt with matching --native-underlay flags remains41901a13;
+a without-underlay build has a different legitimate configuration/hash.
+
+23:35 final online1GiB observation ryky58y7 terminal0 at23:34:07;
+observation-only, NOT acceptance. Native audio WAV9241782frames at11025
+monoU8 (838.257s including silence),488 one-second RMS>1 bins.
+Each close PMM257743 exact,SHM/aliases0; cold kernel heap grows131088B
+then73728B, bounded retention across many reopens not yet proven.
+Guest linkdown150.082s/up500.083s, source starvation at media120s;
+seek after restore attempted567.265s, no recovery by close590.058s.
+Public snapshot checkpoint4/online1g-sync-recovery-failed.
+New full default tests/test_system.py started23:34:56, session43374;
+no shared-image mutation/acceptance VMs until complete. Normal1GiB
+identity verification queued after UEFI/final launcher/pair tests.
+Latest scoped-latency provider-g95ow499 fixture passed23:32:34 (9.987ms
+max sync,8.71MB increment,exactcleanup). Format logger nextcandidate
+corrected to record first actual decoded image even if codec packet1
+has no display frame; no false144p source-dimension claim from old log.
+
+23:37 source-only network audit confirms actual RTL8139 carrier query
+in SbSystemNetworkIsDisconnected; no evidence for replacing it yet.
+First-image diagnostic provider-w7xacfv8 compiled; default native-underlay
+provider-qfd9o94e still exact41901a13. No shared-image mutation duringfull.

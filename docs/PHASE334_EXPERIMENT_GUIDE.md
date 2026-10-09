@@ -124,3 +124,17 @@ The small320x240 capability experiment exposes a frontend assumption:
 rejecting640x360 probe makes this version omit dimensions and choose unsupported
 streams. Manual native quality selection must be evaluated; never claim success
 from capability responses or key delivery alone.
+
+## Checkpoint4 candidate: actual1GiB diagnostic profile
+New native PMM1024 ceiling is E820-constrained; QEMU --memory-mib1024
+must be explicit. Defaults remain512. Focused low/high RAM BIOS/UEFI passed,
+new full regression pending. Native process owned-page byte counters are
+not RSS; --ram uses read-only PMM counters with brief pauses and is diagnostic.
+Use --provider DIRECTORY (not provider.so). --actions JSON accepts native
+click/text/key, per-launch close, and isolated virtual NIC link up/down.
+No DOM scripting or guest heap capture. Current actions recorded under build;
+quality is selected through visible YouTube Settings/Quality144p menu.
+No engine --engine-trace for performance comparison; scoped media trace remains
+diagnostic and cannot alone establish acceptance. Native1GiB trial changes
+both memory envelope and stream-capability profile, so no isolated causality
+claim. Codec guard/advertised maximum640x360@30; downscaled presentation160x90.

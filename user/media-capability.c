@@ -74,8 +74,8 @@ SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *k
    }
   }
 #ifdef MYOS_MEDIA_VP9
-  else if(match(name,name_end,"width")){if(!number(value,last,320,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,160,0);}
-  else if(match(name,name_end,"height")){if(!number(value,last,240,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,90,0);}
+  else if(match(name,name_end,"width")){if(!number(value,last,640,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,160,0);}
+  else if(match(name,name_end,"height")){if(!number(value,last,360,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,90,0);}
   else if(match(name,name_end,"framerate")){if(!number(value,last,30,1))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,15,1);}
 #else
   else if(match(name,name_end,"width")){if(!number(value,last,160,0))return kSbMediaSupportTypeNotSupported;}

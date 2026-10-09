@@ -7,6 +7,9 @@
 #if defined(MYOS_MEDIA_TRACE) || defined(MYOS_MEDIA_NATIVE_UNDERLAY)
 #include <stdio.h>
 #include "starboard/log.h"
+#ifdef MYOS_MEDIA_TRACE
+#include "starboard/system.h"
+#endif
 #endif
 #ifdef MYOS_MEDIA_TRACE
 #define MEDIA_TRACE(s) SbLogRaw(s)
@@ -53,6 +56,12 @@ struct SbPlayerPrivate {
  int native_video,bounds_x,bounds_y,bounds_width,bounds_height,video_shown;
  uint64_t video_window;unsigned bounds_revision,shown_bounds,shown_generation;
  unsigned native_presented,native_sync_samples;int64_t native_max_sync;
+#ifdef MYOS_MEDIA_VP9
+ unsigned decoded_format_logged;
+#endif
+#ifdef MYOS_MEDIA_TRACE
+ int64_t diagnostic_decode_max_us,diagnostic_present_max_us,diagnostic_wake_max_us;
+#endif
 #endif
 #ifdef MYOS_MEDIA_TRACE
  unsigned trace_ticks;
@@ -145,6 +154,9 @@ static int reset_decoders(SbPlayer p){
 }
 static unsigned char clamp(int value){return value<0?0:value>255?255:(unsigned char)value;}
 static int decode_video_locked(SbPlayer p,const SbPlayerSampleInfo *s){
+#if defined(MYOS_MEDIA_TRACE) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ int64_t diagnostic_start=now_us();
+#endif
  const unsigned char *data=s->buffer;unsigned bytes=(unsigned)s->buffer_size;
  if(!bytes)return -1;
  #ifdef MYOS_MEDIA_VP9
@@ -178,7 +190,7 @@ static int decode_video_locked(SbPlayer p,const SbPlayerSampleInfo *s){
 #endif
 #ifdef MYOS_MEDIA_VP9
 #ifdef MYOS_MEDIA_NATIVE_UNDERLAY
-  if(p->total_video==1){char message[160];
+  if(!p->decoded_format_logged){p->decoded_format_logged=1;char message[160];
    snprintf(message,sizeof(message),"MEDIA decoded codec=%d source=%ux%u presentation=%dx%d\n",
             (int)p->video_codec,image->d_w,image->d_h,f->width,f->height);SbLogRaw(message);}
 #endif
@@ -201,6 +213,10 @@ static int decode_video_locked(SbPlayer p,const SbPlayerSampleInfo *s){
   }
   ++p->video_count;
  }
+#if defined(MYOS_MEDIA_TRACE) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ int64_t duration=now_us()-diagnostic_start;
+ if(duration>p->diagnostic_decode_max_us)p->diagnostic_decode_max_us=duration;
+#endif
  return 0;
 }
 static int decode_audio_locked(SbPlayer p,const SbPlayerSampleInfo *s){
@@ -240,6 +256,14 @@ static void *player_worker(void *context){
    p->ticket,p->seek_pending,p->presenting,p->failed,p->pcm_count,(unsigned long long)p->consumed,p->video_count,(int)p->rate,
    (long long)p->last_audio_pts,(long long)p->last_video_pts,p->pending[0].requested,p->pending[1].requested,p->pending[0].full,p->pending[1].full);
    SbLogRaw(trace);
+#ifdef MYOS_MEDIA_NATIVE_UNDERLAY
+   char counters[512];snprintf(counters,sizeof(counters),
+    "MEDIA metrics mono-us=%lld position-us=%lld presented=%u sync-samples=%u max-sync-us=%lld decoded=%u dropped=%u corrupted=%u starvations=%u consumed=%llu rate=%d ram-query-bytes=%lld decode-max-us=%lld present-max-us=%lld wake-max-us=%lld\n",
+    (long long)now_us(),(long long)clock_locked(p),p->native_presented,p->native_sync_samples,
+    (long long)p->native_max_sync,p->total_video,p->dropped_video,p->corrupted_video,p->source_starvations,
+    (unsigned long long)p->consumed,(int)p->rate,(long long)SbSystemGetUsedCPUMemory(), (long long)p->diagnostic_decode_max_us, (long long)p->diagnostic_present_max_us, (long long)p->diagnostic_wake_max_us);
+   SbLogRaw(counters);
+#endif
   }
 #endif
   if(p->seek_pending){
@@ -304,8 +328,15 @@ static void *player_worker(void *context){
    if(p->failed||!p->bounds_width||!p->bounds_height){
     if(p->video_shown){media_video_clear(p->video_window);p->video_shown=0;}
    }else if(p->have_current&&(p->generation!=p->shown_generation||p->bounds_revision!=p->shown_bounds)){
+#ifdef MYOS_MEDIA_TRACE
+    int64_t diagnostic_present_start=now_us();
+#endif
     int rc=media_video_set(p->video_window,p->current.rgba,p->current.width,p->current.height,
      p->bounds_x,p->bounds_y,p->bounds_width,p->bounds_height,p->current.time);
+#ifdef MYOS_MEDIA_TRACE
+    int64_t diagnostic_present_duration=now_us()-diagnostic_present_start;
+    if(diagnostic_present_duration>p->diagnostic_present_max_us)p->diagnostic_present_max_us=diagnostic_present_duration;
+#endif
     if(rc){p->failed=1;notify_error=1;}
     else {
      p->shown_generation=p->rendered_generation=p->generation;p->shown_bounds=p->bounds_revision;p->video_shown=1;
@@ -330,7 +361,14 @@ static void *player_worker(void *context){
   if(notify_present)report_status(p,kSbPlayerStatePresenting,ticket);
   if(notify_end)report_status(p,kSbPlayerStateEndOfStream,ticket);
   for(int i=0;i<2;++i)if(request[i])p->decoder(p,p->context,(SbMediaType)i,kSbPlayerDecoderStateNeedsData,ticket);
+#if defined(MYOS_MEDIA_TRACE) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  int64_t diagnostic_sleep_start=now_us();
+#endif
   clock_nanosleep(CLOCK_MONOTONIC,0,&interval,0);
+#if defined(MYOS_MEDIA_TRACE) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  int64_t diagnostic_wake_delay=now_us()-diagnostic_sleep_start-interval.tv_nsec/1000;
+  if(diagnostic_wake_delay>p->diagnostic_wake_max_us)p->diagnostic_wake_max_us=diagnostic_wake_delay;
+#endif
  }
 #ifdef MYOS_MEDIA_NATIVE_UNDERLAY
  if(p->native_video&&p->has_video)media_video_clear(p->video_window);
