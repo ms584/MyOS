@@ -1,0 +1,335 @@
+{
+  "fault_mode": "stall",
+  "fault_injections": [
+    {
+      "mode": "stall",
+      "start": 131072,
+      "elapsed": 121.30124555799921
+    }
+  ],
+  "inputs": [
+    {
+      "launch": 0,
+      "key": "b",
+      "elapsed": 111.0067235940005
+    },
+    {
+      "launch": 0,
+      "key": "x",
+      "elapsed": 144.64115870200112
+    }
+  ],
+  "provider_sha256": "234c88171fecf12d572b6d6b778f0655fa743dc275df7ae975975bb89e25eede",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "boot_sha256": "04756805107f83aad3078fc207916f4dd60c2c362756e187a06c060dcb14770d",
+  "runtime_sha256": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c",
+  "events": [
+    {
+      "elapsed": 108.30078945200148,
+      "kind": "canplay",
+      "value": "probably",
+      "seq": "1"
+    },
+    {
+      "elapsed": 108.30097295200176,
+      "kind": "mse",
+      "value": "true",
+      "seq": "2"
+    },
+    {
+      "elapsed": 108.34912255100062,
+      "kind": "media-ready",
+      "value": "awaiting B",
+      "seq": "3"
+    },
+    {
+      "elapsed": 109.29998144500132,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0",
+      "seq": "4"
+    },
+    {
+      "elapsed": 110.3002349390008,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0",
+      "seq": "5"
+    },
+    {
+      "elapsed": 111.30050833199857,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0",
+      "seq": "6"
+    },
+    {
+      "elapsed": 111.51011603000006,
+      "kind": "key",
+      "value": "b",
+      "seq": "7"
+    },
+    {
+      "elapsed": 111.51037283000187,
+      "kind": "stopped",
+      "value": "1",
+      "seq": "8"
+    },
+    {
+      "elapsed": 111.51068872999895,
+      "kind": "started",
+      "value": "1",
+      "seq": "9"
+    },
+    {
+      "elapsed": 112.08005952700114,
+      "kind": "sourceopen",
+      "value": "generation=1",
+      "seq": "10"
+    },
+    {
+      "elapsed": 112.08027192699956,
+      "kind": "waiting",
+      "value": "0 generation=1",
+      "seq": "11"
+    },
+    {
+      "elapsed": 112.27096732499922,
+      "kind": "loadedmetadata",
+      "value": "0 generation=1",
+      "seq": "12"
+    },
+    {
+      "elapsed": 112.3600199249995,
+      "kind": "clock",
+      "value": "0 paused=false ready=1 width=160 height=90 generation=1",
+      "seq": "13"
+    },
+    {
+      "elapsed": 112.88994282099884,
+      "kind": "loadeddata",
+      "value": "0.250083 generation=1",
+      "seq": "14"
+    },
+    {
+      "elapsed": 112.89013022099971,
+      "kind": "playing",
+      "value": "0.250083 generation=1",
+      "seq": "15"
+    },
+    {
+      "elapsed": 113.31979331800176,
+      "kind": "clock",
+      "value": "0.400083 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "16"
+    },
+    {
+      "elapsed": 114.30100791199948,
+      "kind": "clock",
+      "value": "0.995094 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "17"
+    },
+    {
+      "elapsed": 115.30077670500032,
+      "kind": "clock",
+      "value": "1.805457 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "18"
+    },
+    {
+      "elapsed": 116.30029859800197,
+      "kind": "clock",
+      "value": "2.6726 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "19"
+    },
+    {
+      "elapsed": 117.30048538999836,
+      "kind": "clock",
+      "value": "3.521647 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "20"
+    },
+    {
+      "elapsed": 118.3005663820004,
+      "kind": "clock",
+      "value": "4.372463 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "21"
+    },
+    {
+      "elapsed": 119.30039017400122,
+      "kind": "clock",
+      "value": "5.214572 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "22"
+    },
+    {
+      "elapsed": 120.30025426599968,
+      "kind": "clock",
+      "value": "6.065389 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "23"
+    },
+    {
+      "elapsed": 121.30049945800056,
+      "kind": "clock",
+      "value": "6.910559 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "24"
+    },
+    {
+      "elapsed": 122.30026695000197,
+      "kind": "clock",
+      "value": "7.761647 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "25"
+    },
+    {
+      "elapsed": 123.30032264200054,
+      "kind": "clock",
+      "value": "8.61303 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "26"
+    },
+    {
+      "elapsed": 124.3004510339997,
+      "kind": "clock",
+      "value": "9.463643 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "27"
+    },
+    {
+      "elapsed": 125.30025732500144,
+      "kind": "clock",
+      "value": "10.288677 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "28"
+    },
+    {
+      "elapsed": 126.30074701500052,
+      "kind": "clock",
+      "value": "11.14099 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "29"
+    },
+    {
+      "elapsed": 127.30034980599885,
+      "kind": "clock",
+      "value": "11.970083 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "30"
+    },
+    {
+      "elapsed": 128.3006691970004,
+      "kind": "clock",
+      "value": "12.130083 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "31"
+    },
+    {
+      "elapsed": 129.30013708800107,
+      "kind": "clock",
+      "value": "12.130083 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "32"
+    },
+    {
+      "elapsed": 130.3003306790015,
+      "kind": "clock",
+      "value": "12.44337 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "33"
+    },
+    {
+      "elapsed": 131.30091866899966,
+      "kind": "clock",
+      "value": "13.279742 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "34"
+    },
+    {
+      "elapsed": 132.30055165299927,
+      "kind": "clock",
+      "value": "14.15142 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "35"
+    },
+    {
+      "elapsed": 133.30032961300094,
+      "kind": "clock",
+      "value": "15.006341 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "36"
+    },
+    {
+      "elapsed": 134.3008160729987,
+      "kind": "clock",
+      "value": "15.83142 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "37"
+    },
+    {
+      "elapsed": 135.30124063200128,
+      "kind": "clock",
+      "value": "16.634232 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "38"
+    },
+    {
+      "elapsed": 136.3011127919999,
+      "kind": "clock",
+      "value": "17.449992 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "39"
+    },
+    {
+      "elapsed": 137.30082105199835,
+      "kind": "clock",
+      "value": "18.26557 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "40"
+    },
+    {
+      "elapsed": 138.30074711199995,
+      "kind": "clock",
+      "value": "19.113507 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "41"
+    },
+    {
+      "elapsed": 139.3014467710018,
+      "kind": "clock",
+      "value": "19.905593 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "42"
+    },
+    {
+      "elapsed": 140.30083073900096,
+      "kind": "clock",
+      "value": "20.742327 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "43"
+    },
+    {
+      "elapsed": 141.30057013899932,
+      "kind": "clock",
+      "value": "21.574323 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "44"
+    },
+    {
+      "elapsed": 142.30096733900064,
+      "kind": "clock",
+      "value": "22.40235 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "45"
+    },
+    {
+      "elapsed": 143.30104743899938,
+      "kind": "clock",
+      "value": "23.26523 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "46"
+    },
+    {
+      "elapsed": 144.30060783899899,
+      "kind": "clock",
+      "value": "24.1004 paused=false ready=4 width=160 height=90 generation=1",
+      "seq": "47"
+    },
+    {
+      "elapsed": 145.10414423900147,
+      "kind": "key",
+      "value": "x",
+      "seq": "48"
+    },
+    {
+      "elapsed": 145.10443333900184,
+      "kind": "stopped",
+      "value": "2",
+      "seq": "49"
+    },
+    {
+      "elapsed": 145.33007923900004,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=2",
+      "seq": "50"
+    },
+    {
+      "elapsed": 146.30056133900143,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=2",
+      "seq": "51"
+    }
+  ],
+  "phase_passed": false
+}

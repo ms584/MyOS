@@ -83,6 +83,9 @@ ram_diagnostic=os.environ.get('MYOS_MEDIA_RAM_DIAGNOSTIC')=='1'
 if ram_diagnostic:
  script=script.replace(b'begin();\nsetInterval',b"report('media-ready','awaiting B');\nsetInterval")
  script=script.replace(b"if(e.key=='n')begin();",b"if(e.key=='n'||e.key=='b')begin();")
+fault_mode=os.environ.get('MYOS_MEDIA_FAULT','')
+assert fault_mode in ('','stall','truncate','corrupt','close')
+fault_injections=[]
 def do_GET(self):
  event=dict(server=self.server.label,path=self.path,range=self.headers.get('Range'),elapsed=time.monotonic()-began)
  with lock:
@@ -96,6 +99,11 @@ def do_GET(self):
     if not match:self.send_error(416);return
     start=int(match[1]);end=min(end,int(match[2]) if match[2] else end)
     if start>end:self.send_error(416);return
+   inject=False
+   with lock:
+    if fault_mode in ('stall','truncate','corrupt') and not fault_injections and (fault_mode=='corrupt' or start>=131072):
+     inject=True;fault_injections.append(dict(mode=fault_mode,start=start,elapsed=time.monotonic()-began))
+   if inject and fault_mode=='stall':time.sleep(8)
    self.send_response(206 if request else 200)
    self.send_header('Content-Type','video/webm');self.send_header('Accept-Ranges','bytes')
    self.send_header('Content-Length',str(end-start+1))
@@ -104,7 +112,12 @@ def do_GET(self):
    with media.open('rb') as f:
     f.seek(start);remain=end-start+1
     while remain:
-     chunk=f.read(min(4096,remain));self.wfile.write(chunk);self.wfile.flush();remain-=len(chunk);time.sleep(.01)
+     chunk=f.read(min(4096,remain))
+     if inject and fault_mode=='corrupt':chunk=bytes(len(chunk))
+     if inject and fault_mode=='truncate':
+      self.wfile.write(chunk[:max(1,len(chunk)//2)]);self.wfile.flush()
+      self.close_connection=True;return
+     self.wfile.write(chunk);self.wfile.flush();remain-=len(chunk);time.sleep(.01)
    return
   body=page if self.path=='/' else script if self.path=='/app.js' else gif
   self.send_response(200);self.send_header('Content-Type','text/html' if self.path=='/' else 'application/javascript' if self.path=='/app.js' else 'image/gif')
@@ -126,11 +139,16 @@ for server in servers:
 sys.path.insert(0,str(ROOT/'docs/wip/native-pmm512/kvm-ata-20261008'))
 from qemu_kvm_optin_20261008 import install
 install()
-if os.environ.get('MYOS_MEDIA_QEMU_INTERRUPTS')=='1':
+native_pcm_capture=os.environ.get('MYOS_MEDIA_NATIVE_PCM_CAPTURE')=='1'
+if os.environ.get('MYOS_MEDIA_QEMU_INTERRUPTS')=='1' or native_pcm_capture:
  original_popen=subprocess.Popen
  def diagnostic_popen(args,*positional,**kwargs):
   if isinstance(args,list) and args and Path(args[0]).name=='qemu-system-x86_64':
-   args=[*args,'-d','int','-D',str(out/'private-qemu-interrupts.log')]
+   args=list(args)
+   if native_pcm_capture:
+    index=args.index('-audiodev')+1
+    args[index]+=',out.frequency=11025,out.channels=1,out.format=u8'
+   if os.environ.get('MYOS_MEDIA_QEMU_INTERRUPTS')=='1':args+=[ '-d','int','-D',str(out/'private-qemu-interrupts.log')]
   return original_popen(args,*positional,**kwargs)
  subprocess.Popen=diagnostic_popen
 heap_diagnostic=os.environ.get('MYOS_MEDIA_HEAP_DIAGNOSTIC')=='1'
@@ -175,13 +193,18 @@ def heap_snapshot(label):
  (out/('heap-'+label+'.json')).write_text(json.dumps(blocks,indent=2)+'\n')
  return blocks
 ram_samples=[];ram_baselines=[]
-ram_symbol=None
+ram_symbol=None;ram_extra_symbols={}
 if ram_diagnostic:
  from test_system import parse_symbols
- ram_symbol=parse_symbols(subprocess.check_output(['nm',os.environ['MYOS_MEDIA_KERNEL_ELF']],text=True))['free_count']
+ ram_symbols=parse_symbols(subprocess.check_output(['nm',os.environ['MYOS_MEDIA_KERNEL_ELF']],text=True))
+ ram_symbol=ram_symbols['free_count']
+ for name in ('heap_live_bytes','heap_runtime_peak_bytes','irq_count','underrun_count','consumed_frames'):
+  # parse_symbols already adds an alias only for a unique LTO owner.
+  if name in ram_symbols:ram_extra_symbols[name]=ram_symbols[name]
 def sample_ram(launch,label):
  free=__import__('struct').unpack('<Q',vm.memory(ram_symbol,8))[0]
  row=dict(launch=launch,elapsed=time.monotonic()-started,label=label,free_pages=free)
+ for name,address in ram_extra_symbols.items():row[name]=__import__('struct').unpack('<Q',vm.memory(address,8))[0]
  ram_samples.append(row);return row
 vm=None;frames=[];inputs=[];started=time.monotonic();playing=None;sent=set()
 try:
@@ -190,7 +213,7 @@ try:
  repeats=int(os.environ.get('MYOS_MEDIA_REPEATS','1'));assert 1<=repeats<=3
  lifecycle=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1'
  for launch in range(repeats):
-  sent=set();playing=None;ended_at=None;restarted_at=None;record_start=len(records);suffix='' if not launch else '-launch'+str(launch)
+  sent=set();playing=None;fault_seen=None;recovery_at=None;ended_at=None;restarted_at=None;record_start=len(records);suffix='' if not launch else '-launch'+str(launch)
   if heap_diagnostic:heap_snapshot('before'+suffix)
   offset=len(vm.log.read_text());type_text(vm,'elf cobalt cobalt provider https://cobalt.example.com:'+str(servers[0].server_port)+'/ cobalt.example.com=10.0.2.2\n')
   deadline=time.monotonic()+300;next_frame=0;next_ram=0;gate_at=None;baseline=None
@@ -210,10 +233,20 @@ try:
    if ram_diagnostic and baseline and elapsed>=next_ram:
     sample_ram(launch,'active');next_ram=elapsed+.5
    if any(o.get('kind')==['playing'] for o in observations) and playing is None:playing=time.monotonic()
-   if any(o.get('kind')==['error'] for o in observations):print('ENGINE MEDIA ERROR; preserving failed evidence',flush=True);break
+   errors=[o for o in observations if o.get('kind',[''])[0] in ('error','fetch-error','append-error','sourcebuffer-error')]
+   if fault_mode:
+    if errors and fault_seen is None:fault_seen=time.monotonic()
+    if fault_seen and time.monotonic()-fault_seen>=2 and recovery_at is None:
+     vm.key('n');recovery_at=time.monotonic();inputs.append(dict(launch=launch,key='n',elapsed=elapsed))
+    if recovery_at and time.monotonic()-recovery_at>=18:
+     vm.key('x');inputs.append(dict(launch=launch,key='x',elapsed=elapsed));time.sleep(2);break
+    if fault_mode=='close' and playing and time.monotonic()-playing>=8:break
+    if fault_mode=='stall' and playing and time.monotonic()-playing>=32:
+     vm.key('x');inputs.append(dict(launch=launch,key='x',elapsed=elapsed));time.sleep(2);break
+   elif errors:print('ENGINE MEDIA ERROR; preserving failed evidence',flush=True);break
    if playing:
     delta=time.monotonic()-playing
-    for when,key in (((6,'p'),(9,'r'),(15,'s')) if lifecycle else ((6,'p'),(9,'r'),(15,'s'),(44,'x'))):
+    for when,key in (() if fault_mode else ((6,'p'),(9,'r'),(15,'s')) if lifecycle else ((6,'p'),(9,'r'),(15,'s'),(44,'x'))):
      if delta>=when and key not in sent:
       vm.key(key);sent.add(key);inputs.append(dict(launch=launch,key=key,elapsed=elapsed))
     if lifecycle:
@@ -240,6 +273,6 @@ finally:
  for thread in threads:thread.join(timeout=2)
  assert hashlib.sha256(boot.read_bytes()).hexdigest()==boot_hash
  (out/'evidence.json').write_text(json.dumps(dict(phase_passed=False,observation_only=True,diagnostic_trace=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),
- ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
+ fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
  fixture_sha256=metadata['sha256'],boot_sha256=boot_hash,runtime_sha256=runtime_hash,elapsed=time.monotonic()-started),indent=2)+'\n')
  print('EVIDENCE_BUNDLE',out,'NOT automatic phase acceptance',flush=True)

@@ -94,9 +94,14 @@ uintptr_t vm_unmap(uintptr_t va){
 }
 struct block {size_t size;struct block *next,*prev;uint64_t free;};
 static struct block *heap;
+/* Kernel allocation high-water includes actual rounded block capacity.
+ * Read-only diagnostic symbols: no guest control or budget bypass. */
+static size_t heap_live_bytes;
+static volatile size_t heap_runtime_peak_bytes;
 size_t heap_allocated(void){
     uint64_t flags=irq_save();size_t bytes=0;
     for(struct block *b=heap;b;b=b->next)if(!b->free)bytes+=b->size;
+    check(bytes==heap_live_bytes,"heap accounting mismatch");
     irq_restore(flags);return bytes;
 }
 void *kmalloc(size_t size){
@@ -104,12 +109,16 @@ void *kmalloc(size_t size){
     size=(size+15)&~15ull;uint64_t f=irq_save();
     for(struct block *b=heap;b;b=b->next)if(b->free&&b->size>=size){
         if(b->size>=size+sizeof(*b)+16){struct block *n=(struct block *)((char *)(b+1)+size);*n=(struct block){b->size-size-sizeof(*b),b->next,b,1};if(n->next)n->next->prev=n;b->next=n;b->size=size;}
-        b->free=0;irq_restore(f);return b+1;
+        b->free=0;heap_live_bytes+=b->size;
+        if(heap_live_bytes>heap_runtime_peak_bytes)heap_runtime_peak_bytes=heap_live_bytes;
+        irq_restore(f);return b+1;
     }irq_restore(f);return 0;
 }
 void kfree(void *p){
     if(!p)return;uint64_t f=irq_save();struct block *b=heap;while(b&&(void *)(b+1)!=p)b=b->next;
-    check(b&&!b->free,"invalid/double heap free");b->free=1;
+    check(b&&!b->free,"invalid/double heap free");
+    check(heap_live_bytes>=b->size,"heap accounting underflow");
+    heap_live_bytes-=b->size;b->free=1;
     if(b->next&&b->next->free){struct block *n=b->next;b->size+=sizeof(*n)+n->size;b->next=n->next;if(b->next)b->next->prev=b;}
     if(b->prev&&b->prev->free){struct block *prev=b->prev;prev->size+=sizeof(*b)+b->size;prev->next=b->next;if(b->next)b->next->prev=prev;}
     irq_restore(f);
@@ -146,6 +155,7 @@ void memory_init(void){
     for(unsigned n=0;n<MAX_PAGES;++n)references[n]=bit(owned,n)?1:0;
 }
 void memory_test(void){
+    size_t heap_before=heap_allocated();
     size_t before=pages_free();uintptr_t a=page_alloc(),b=page_alloc();check(a&&b&&a!=b&&a>=0x100000,"PMM allocation");
     check(page_references(a)==1&&page_retain(a)&&page_references(a)==2,"PMM shared retain");
     page_free(a);check(page_references(a)==1&&pages_free()==before-2,"PMM retained frame lifetime");
@@ -172,5 +182,9 @@ void memory_test(void){
     /* The probe tables are free now; include them in the exhaustion list. */
     while((p=page_alloc())){*(uintptr_t *)p=list;list=p;++used;}
     check(used==before&&!page_alloc(),"PMM exhaustion");while(list){p=*(uintptr_t *)list;page_free(list);list=p;}check(pages_free()==before,"PMM recovery");
+    check(heap_allocated()==heap_before,"heap accounting recovery");
+    /* Start runtime high-water only after deliberate whole-heap boot OOM.
+     * It still includes every later kernel allocation, not only media. */
+    heap_runtime_peak_bytes=heap_live_bytes;
     print("PASS: PMM, paging, heap, exhaustion/recovery\n");
 }

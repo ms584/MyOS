@@ -3516,3 +3516,15 @@ underlay allocations and preload cost but sampling is not an exact high-water
 bound. Final budget acceptance must state these limits or add allocation bounds.
 
 Controlled-start engine RAM run completed (native-verified-tls-3m2wb57o):126 samples at0.5s, observed PMM increase19939328 bytes. Verified media provider mapped-page delta372736 bytes above the identical renderer baseline. Adding the entire16MiB reserved kernel heap is overly conservative and exceeds32MiB; actual incremental kernel allocation must still be bounded/measured. This is not RAM acceptance. EOS/restart/stop completed again, max sync54352us. Safe records:checkpoint4/engine-ram/.
+
+Phase33.3 checkpoint5 (2026-10-09): MRT join/getattr/detach previously rejected
+MID/HIGH thread mappings, allowing Destroyed callback after Cobalt context
+release. Restricted-range+resident guard fix promoted after focused guest
+before/after tests. Three matched normal engine lifecycle launches completed,
+max sync53.234ms; PMM/SHM/aliases reclaimed, warm heap exact. Allocator heap
+accounting full regression5 PASS14:58:06; new MRT full regression6 ACTIVE.
+Sampled accounted RAM peak28024848B, PMM short-peak bound pending. Native PCM
+still has held samples/hardware underruns; audio continuity remains OPEN.
+HTTPS8s stall recovered/stopped/reclaimed. Truncate/corrupt/close observations
+running. See docs/wip/phase333/checkpoint5/README.md and PROJECT_STATE.md.
+No33.4/YouTube or whole33.3 pass. No push.

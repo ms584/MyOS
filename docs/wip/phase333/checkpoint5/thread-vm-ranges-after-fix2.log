@@ -1,0 +1,9 @@
+
+[2026-10-09T14:52:12.323138+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_thread_vm_ranges.py --boot-image build/media-evaluation/heap-thread-fix-candidate/myos-current.img --runtime build/media-evaluation/heap-thread-fix-candidate/platform-runtime.mrt
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -c user/elf-thread-vm-ranges.c -o /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z/ranges.o
+$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z/ranges.so /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z/ranges.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/thread-vm-ranges.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z/boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/thread-vm-ranges.sock,server=on,wait=off -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z/assets.img,if=ide,index=1
+PASS real guest middle/high mmap pthread lifecycle and resources /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-5aavqu9z
+qemu-system-x86_64: terminating on signal 15 from pid 129339 (python3)
+[2026-10-09T14:52:18.607436+07:00] exit=0

@@ -439,9 +439,13 @@ static void clear_key_values(unsigned key)
 {for(unsigned i=0;i<=MYOS_WORKER_LIMIT;++i)*(void **)(uintptr_t)(RUNTIME_TLS_BASE+i*4096+64+key*8)=0;}
 static struct thread_control *thread_control(uint64_t thread)
 {
-    if(!thread||(thread&4095)||thread<0x8020000000ull||thread>=0x803f000000ull)return 0;
+    /* Thread stacks may be allocated from any kernel anonymous VM pool.
+     * The gap containing runtime/TLS remains excluded. */
+    bool allowed=(thread>=0x8020000000ull&&thread<0x803f000000ull)||
+                 (thread>=0x8040000000ull&&thread<0xc100000000ull);
+    if(!thread||(thread&4095)||!allowed)return 0;
     unsigned char resident;
-    if(call3(SYS_VM_QUERY,thread,PAGE_SIZE,(uintptr_t)&resident)<0)return 0;
+    if(call3(SYS_VM_QUERY,thread,PAGE_SIZE,(uintptr_t)&resident)<0||!resident)return 0;
     struct thread_control *control=(void *)(uintptr_t)thread;
     return control->magic==THREAD_MAGIC?control:0;
 }

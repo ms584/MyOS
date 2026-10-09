@@ -284,6 +284,7 @@ def main():
             native_tls_exercise()
             from test_thread_services import main as thread_services_exercise
             thread_services_exercise()
+            subprocess.run([sys.executable, "tests/test_thread_vm_ranges.py", "--boot-image", str(ROOT/"build/myos-current.img"), "--runtime", str(ROOT/"build/platform-runtime.mrt")],check=True)
         if args.suite in ('all','storage'):
             from test_storage import exercise
             exercise()

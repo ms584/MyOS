@@ -317,3 +317,22 @@ underlay allocations and preload cost but sampling is not an exact high-water
 bound. Final budget acceptance must state these limits or add allocation bounds.
 
 Controlled-start engine RAM run completed (native-verified-tls-3m2wb57o):126 samples at0.5s, observed PMM increase19939328 bytes. Verified media provider mapped-page delta372736 bytes above the identical renderer baseline. Adding the entire16MiB reserved kernel heap is overly conservative and exceeds32MiB; actual incremental kernel allocation must still be bounded/measured. This is not RAM acceptance. EOS/restart/stop completed again, max sync54352us. Safe records:checkpoint4/engine-ram/.
+
+## Checkpoint5: thread join range fix and heap measurement (2026-10-09)
+
+See [checkpoint5](wip/phase333/checkpoint5/README.md). Expanded mmap worker
+handles are now accepted by MRT join/detach/getattr, with resident-page guards.
+Old rejection and fixed MID/HIGH lifecycles are exercised in MyOS; the latter
+is included in full regression. Three matched normal-image engine launches
+completed controls/EOS/restart with max sync53.234ms and all PMM/SHM/aliases
+reclaimed. Heap accounting has an independently verified live counter and
+runtime high-water. Sampled accounted engine RAM peaks28024848B under32MiB;
+PMM short-peak bound is still pending. Native-format QEMU PCM capture retained
+held samples and hardware underruns: sound continuity remains OPEN.
+HTTPS8s stall recovered and stop/cleanup worked. Other adverse engine cases
+and final regression6/UEFI/image restoration are pending, not passed.
+
+Run byte-only adverse observations with MYOS_MEDIA_FAULT=stall|truncate|corrupt|close,
+matching frozen MYOS_MEDIA_BOOT_IMAGE/MYOS_MEDIA_RUNTIME_PATH/provider/resources.
+All decoding/rendering/playback remain native. These runners save evidence;
+exit0 does not automatically mean any phase or adverse case passed.
