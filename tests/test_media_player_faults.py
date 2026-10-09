@@ -1,6 +1,6 @@
 """Native player corrupt packet/OOM/lifecycle tests; not HTTPS fault closure."""
 from pathlib import Path
-import hashlib,json,subprocess,sys,tempfile,shutil,re
+import hashlib,json,subprocess,sys,tempfile,shutil,re,os
 from test_system import ROOT,VM
 from test_elf_dynamic import long_command
 sys.path.insert(0,str(ROOT/'tools'))
@@ -14,8 +14,9 @@ subprocess.run([str(base/'target-cc'),'-std=c11','-O2','-Wall','-Wextra','-Werro
  '-Iuser','-Iinclude','-I'+str(provider/'include'),'-Iuser/starboard-media/include','-Iuser/starboard-system/include',
  '-c','user/elf-media-player-faults.c','-o',str(obj)],check=True)
 subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-z','noexecstack','-e','_start','-o',str(lib),str(obj)],check=True)
-disk=out/'assets.img';create(disk,['faults='+str(lib),'provider='+str(provider/'provider.so')])
-boot=out/'boot.img';shutil.copyfile(base/'optin-dma-normal/myos-current.img',boot)
+runtime=Path(os.environ.get('MYOS_MEDIA_RUNTIME_PATH',str(ROOT/'build/platform-runtime.mrt')))
+disk=out/'assets.img';create(disk,['faults='+str(lib),'provider='+str(provider/'provider.so')],runtime=runtime)
+boot=out/'boot.img';shutil.copyfile(Path(os.environ.get('MYOS_MEDIA_BOOT_IMAGE',str(base/'optin-dma-normal/myos-current.img'))),boot)
 before=digest(boot)
 sys.path.insert(0,str(ROOT/'docs/wip/native-pmm512/kvm-ata-20261008'))
 from qemu_kvm_optin_20261008 import install

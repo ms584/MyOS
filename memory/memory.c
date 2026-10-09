@@ -17,6 +17,18 @@ static unsigned managed_pages=BOOTSTRAP_PAGES;
  * exclusive reference, and page_retain is unavailable. */
 static uint16_t *references;
 static size_t free_count,total_count;
+/* Bounded allocation history: every successful PMM allocation records its
+ * low-water for the current10ms tick.512 slots retain5.12s, allowing an
+ * external read-only observer to recover short peaks between polls.
+ * No reset/control API and no allocation policy change. */
+struct pmm_pressure_sample {uint64_t tick_tag,free_pages;};
+static volatile struct pmm_pressure_sample pmm_pressure_history[512];
+static void pmm_note_allocation(void){
+    uint64_t tag=ticks+1;
+    volatile struct pmm_pressure_sample *sample=&pmm_pressure_history[(tag-1)&511];
+    if(sample->tick_tag!=tag){sample->free_pages=free_count;sample->tick_tag=tag;}
+    else if(free_count<sample->free_pages)sample->free_pages=free_count;
+}
 static unsigned hint=256;
 struct e820 {uint64_t base,length;uint32_t type,attributes;} __attribute__((packed));
 static bool bit(uint8_t *b,unsigned n){return (b[n/8]>>(n%8))&1;}
@@ -26,7 +38,7 @@ size_t pages_total(void){return total_count;}
 uintptr_t page_alloc(void){
     uint64_t f=irq_save();if(!free_count){irq_restore(f);return 0;}
     for(unsigned k=0;k<managed_pages;++k){unsigned n=(hint+k)%managed_pages;
-        if(bit(available,n)&&!bit(owned,n)){set(owned,n,true);if(references)references[n]=1;--free_count;hint=(n+1)%managed_pages;irq_restore(f);return (uintptr_t)n*PAGE_SIZE;}}
+        if(bit(available,n)&&!bit(owned,n)){set(owned,n,true);if(references)references[n]=1;--free_count;pmm_note_allocation();hint=(n+1)%managed_pages;irq_restore(f);return (uintptr_t)n*PAGE_SIZE;}}
     panic("PMM count mismatch");
 }
 uintptr_t pages_alloc_contiguous(unsigned count){
@@ -37,7 +49,7 @@ uintptr_t pages_alloc_contiguous(unsigned count){
         for(unsigned i=0;i<count;++i)if(!bit(available,start+i)||bit(owned,start+i)){free=false;break;}
         if(!free)continue;
         for(unsigned i=0;i<count;++i){set(owned,start+i,true);if(references)references[start+i]=1;}
-        free_count-=count;irq_restore(flags);return (uintptr_t)start*PAGE_SIZE;
+        free_count-=count;pmm_note_allocation();irq_restore(flags);return (uintptr_t)start*PAGE_SIZE;
     }
     irq_restore(flags);return 0;
 }

@@ -1,0 +1,16 @@
+[
+  {
+    "before_pages": 11991,
+    "after_pages": 11991,
+    "min_free_pages": 7828,
+    "start_tick": 263,
+    "end_tick": 325
+  },
+  {
+    "before_pages": 11991,
+    "after_pages": 11991,
+    "min_free_pages": 7828,
+    "start_tick": 325,
+    "end_tick": 380
+  }
+]

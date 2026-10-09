@@ -1,0 +1,151 @@
+{
+  "isolated_player_source": false,
+  "player_source_sha256": "45ba1f0f017b48f01d0bcd092275075119d683e1ccd6048e9d2a6db89948375c",
+  "experimental_native_underlay": true,
+  "diagnostic_punchout": false,
+  "diagnostic_trace": false,
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "bytes": 16776528,
+  "renderer_provider_sha256": "55f0875c70997cafc085b0e6151d3a3a6bae88d3c5cc8c87fd50d67f6b326475",
+  "media_abi": 1,
+  "paired_exit_abi": 1,
+  "target_only": true,
+  "native_player_executed": false,
+  "cobalt_media_executed": false,
+  "inputs": [
+    {
+      "path": "/home/xytron404/myos/build/egl-core-evaluation/core-0ky0zq6u/libmyos-egl-core.a",
+      "sha256": "42998db48b155d15d9058e222cd32a06edfd79449d01b5fae2b977c07cc71352"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/gallium/frontends/osmesa/libosmesa_st.a",
+      "sha256": "f123bf984292d77b9a81665f60a259d4fb34568ffd8e4e3b02d0eca87e27024c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/mapi/glapi/libglapi_bridge.a",
+      "sha256": "526a128a5f6ae1206d583bb6fb2d2fff6e5cd1d8243e61c446ebed32aa70acef"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/mesa/libmesa.a",
+      "sha256": "582f54ec04c5e25bb25f13330b786efd23c30a50e10a32f073c59d4a63c48881"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/mesa/libmesa_sse41.a",
+      "sha256": "f1c289ded38bc990408784e172fe328c0c9b9f554292aa26a33670f967d28acd"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/compiler/glsl/libglsl.a",
+      "sha256": "327668dfe000fa865e4d68b39471b375f5043fa1cf5415675817b57b9a6ac2e5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/compiler/glsl/glcpp/libglcpp.a",
+      "sha256": "22bb26f445afa780eabec691795a265ae504be77386ad7b9580a81183f5cb2a3"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/util/libmesa_util.a",
+      "sha256": "de67158ce4eae88592e314c0bc43e3cb6a5d42ee4408bc7da74ffd7f4edb4e37"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/util/libmesa_util_sse41.a",
+      "sha256": "a2d0078f1a76a537ad4e21bc2055bc04f346aeb6e65ec5d272de2ef5e691fad2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/util/blake3/libblake3.a",
+      "sha256": "a2f171aac7a9f4163dc9d055cd0b056b6069e7018fcb7787cb4bb6ae34dbf598"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/c11/impl/libmesa_util_c11.a",
+      "sha256": "b6a25889f4753f5fff357b1942f130edb24cf8ffd116145e123692d4810cd690"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/compiler/nir/libnir.a",
+      "sha256": "9f22ac4283033842716949dc7e3bb4ab1aaad4774313cb1e87f418f18ccc0a69"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/compiler/libcompiler.a",
+      "sha256": "501cdb0d139ccb919560b58d666a9c0eecafe01443a3639eb1e0a133ef8876ad"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/compiler/spirv/libvtn.a",
+      "sha256": "85f03e1569dcd33d19b9e116c3841adc7e85f3bc05ba88a98252d1c5bbd708da"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/gallium/auxiliary/libgallium.a",
+      "sha256": "bfb6d1f79fdc3128183f7339d5b467c93c5b1db7df884d0fa816e00a690dd0f4"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/gallium/winsys/sw/null/libws_null.a",
+      "sha256": "720b18abcce61ed1862f48e105cd5ae8063848de788c043c2dcd16ad975ece3a"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/mapi/shared-glapi/libglapi.a",
+      "sha256": "291a5fd2863b5cad532ac0ef5ffbd9a2be1957d488020291cab8d55e22b054eb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/gallium/drivers/softpipe/libsoftpipe.a",
+      "sha256": "6171b6c13a6d05d63b891c3df6045e843090e5df903315d92bf8efd8b0159b5f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/cxx-container-evaluation/sdk-fduxdr2t/libmyos-cxx-containers.a",
+      "sha256": "88bf3ce40e0c62333d622077c9b2751c1d3efb4deef83c2136cad2d6175dd7bb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/math-evaluation/target-9zfl2mt4/libmyos-math.a",
+      "sha256": "0895389b011dd3ca1a86f2e6747b2e92b2abc43de9f254d9322836414c13a931"
+    },
+    {
+      "path": "/home/xytron404/myos/build/format-evaluation/sdk-zvno7i_y/libmyos-format.a",
+      "sha256": "92a0bdf8f608f496119afa2a3d6c7417703efd2c63912b388024648067598df4"
+    },
+    {
+      "path": "/home/xytron404/myos/build/sort-evaluation/sdk-asm5nl86/libmyos-sort.a",
+      "sha256": "42e06b62f1ac36fddd4d05eef599c5f70dfc68ff8ce638d987e642dac0279a6c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/scan-evaluation/sdk-nwh90sv4/libmyos-scan.a",
+      "sha256": "dd33b88cc936470253fb5c989d5bce5f6aa3a1902b68bc3741205cf9c54404d9"
+    },
+    {
+      "path": "/home/xytron404/myos/build/time-evaluation/sdk-c09l02xb/libmyos-calendar.a",
+      "sha256": "0b71b0c2d7f3a910079986a2ae8805c87a413eab619ac5f1f75a17fc19d4d908"
+    },
+    {
+      "path": "/home/xytron404/myos/build/jump-evaluation/sdk-hne27ysc/libmyos-jump.a",
+      "sha256": "7be6b53af50138bfadef4795dab1085d56ea067c10fd6d9369e2394feebec136"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/vpx-target/libvpx.a",
+      "sha256": "c9b5ac98f41c515468835bb922016d15c97b80d75ffefc3a0d24c863bd428455"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/opus-target/libopus.a",
+      "sha256": "ccbbe4d9fa1325e72bd2110ffb7acb6f82d09c98660d417df968431a4854b6ef"
+    }
+  ],
+  "linked_objects": [
+    {
+      "path": "/home/xytron404/myos/build/native-renderer-evaluation/native-21xnvj1n/finalize.o",
+      "sha256": "99f356620d116c9267a63289d1ba9b41c749137ba05da742e0739f208b084984"
+    },
+    {
+      "path": "/home/xytron404/myos/build/native-renderer-evaluation/native-21xnvj1n/environment.o",
+      "sha256": "3932879172e2b83feb6fb3ca0b73fe0de3ed9f0d991a035214f11be3add0d033"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-provider-evaluation/provider-84sokh6g/paired-exit.o",
+      "sha256": "2daa9599c523ff7f3bec3b62411f1f4f41b04d198d72a50fc3789aa956d2e9af"
+    },
+    {
+      "path": "/home/xytron404/myos/build/renderer-evaluation/target-config-snob6k4x/build/src/gallium/targets/osmesa/libOSMesa.so.8.0.0.p/osmesa_target.c.o",
+      "sha256": "e11839745065fbed12d090ba0767539f35a575f0957695271d8d7925ea66846d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/provider-i8xbwfmz/media-player.o",
+      "sha256": "253ed62562dd8d92df9dff3eb7479e0d96a445adebd507bb69e1e73722bfd2af"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/provider-i8xbwfmz/media-capability.o",
+      "sha256": "a417e8407492ef2c9c5b2d9ec2149a2b09c23601621307da60e3ea0c913bcc97"
+    }
+  ]
+}

@@ -3540,3 +3540,17 @@ Native during-playback JS OOM is real (240MiB allocated, PMM64 pages, RangeError
 Mesa IR constructor null-fault at provider4afd40 followed; process resources
 reclaimed and shell returned. No graceful engine OOM claim. Two-launch repeat
 with explicit mem command and private heap/inode ownership snapshots ACTIVE.
+
+## Checkpoint6 continuation, 2026-10-09 16:16 +07
+Phase33.3 remains OPEN. Production bounded audio8/video4 batches passed focused
+ownership/seek/destroy/guest exhaustion recovery. Actual native Cobalt HTTPS
+continuous40s:600decoded,no drops,max17.890ms; same-session moving binary frame
+IDs37.4s at14.948fps and native PCM40.062s, steady tones after preroll.
+New read-only PMM512tick allocation lowwater retains short peaks; transient
+guest16MiB allocate/free proof passed twice. Complete observation coverage gives
+conservative media bound27103200B under32MiB including heap/provider delta.
+See wip/phase333/checkpoint6/. First asset run120.959ms FAILED and retained;
+same-source rerun87.883ms passed. Host contention is possible, not proved.
+Full6 and prior UEFI focused tests passed. Full7 for new PMM history and
+production lifecycle3launches ACTIVE. Final adverse/relaunch/image restoration
+and local commits pending. No33.4/YouTube, no push.

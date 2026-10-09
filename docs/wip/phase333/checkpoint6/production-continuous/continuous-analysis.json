@@ -1,0 +1,205 @@
+{
+  "continuous_session_passed": true,
+  "whole_phase_passed": false,
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "boot_sha256": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+  "runtime_sha256": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "metrics": {
+    "presented": 603,
+    "sync-samples": 598,
+    "max-sync-us": 17890,
+    "decoded": 600,
+    "dropped": 0,
+    "corrupted": 0,
+    "source-starvations": 0
+  },
+  "visible_frames": [
+    {
+      "elapsed": 116.11702858400167,
+      "frame": 38,
+      "path": "media-116.png",
+      "sha256": "a00fb27e1a7549d86625e1989679c0111ab686788ad166ea5b260da5cc74146a"
+    },
+    {
+      "elapsed": 118.20718255000247,
+      "frame": 69,
+      "path": "media-118.png",
+      "sha256": "00c125cb308c23c6c67cd2b9ce28e22ab9497d8604d0d401834a4ee301b08f16"
+    },
+    {
+      "elapsed": 120.29555091800285,
+      "frame": 101,
+      "path": "media-120.png",
+      "sha256": "f12353762c00cc707a386ea28ec9536524b42ebf89cc1129efe2bf5a52e5bcd8"
+    },
+    {
+      "elapsed": 122.38627087900022,
+      "frame": 132,
+      "path": "media-122.png",
+      "sha256": "cc34a07682cc2b7832b0ccaeac8cb30ea64d249cabce1ab4e362ef7de46f2b0d"
+    },
+    {
+      "elapsed": 124.48139484000058,
+      "frame": 163,
+      "path": "media-124.png",
+      "sha256": "657c026bb9d0d5445b64cd17f22a6a1d7118fbdff2b7b4e14d1647f03f57c32a"
+    },
+    {
+      "elapsed": 126.56522956800109,
+      "frame": 195,
+      "path": "media-126.png",
+      "sha256": "6876799b38a450fd5bd3cf93114167fc7451e58b1122b8a12e238b6776862e59"
+    },
+    {
+      "elapsed": 128.65455078800005,
+      "frame": 226,
+      "path": "media-128.png",
+      "sha256": "6a4804cb8e5a07993bef66ba9ab7dd902b453063b75d1ca613214327c80fd934"
+    },
+    {
+      "elapsed": 130.74749460699968,
+      "frame": 258,
+      "path": "media-130.png",
+      "sha256": "81400039de50d275628c7f3a721443bb9e67467e164dfc751f007aa350d7a3dd"
+    },
+    {
+      "elapsed": 132.84634662499957,
+      "frame": 289,
+      "path": "media-132.png",
+      "sha256": "78dc166715b74b4d5d6cc96570cbcc966c311d4aa953164ec7b559c4526f89cf"
+    },
+    {
+      "elapsed": 134.93399074600165,
+      "frame": 320,
+      "path": "media-134.png",
+      "sha256": "d0293232c517c0b12689433890e7bff2bcef4a653fe73543fefdf88a5a370e21"
+    },
+    {
+      "elapsed": 137.02554326600148,
+      "frame": 352,
+      "path": "media-137.png",
+      "sha256": "c4d8ddd8f532e21deeb6411f5bbed7d156d6a251e3b31c84c5ac4875248b0908"
+    },
+    {
+      "elapsed": 139.10917648599934,
+      "frame": 383,
+      "path": "media-139.png",
+      "sha256": "46dadb5cd1ddce431155a2872984027314645a376b632b2391566df3c80bc138"
+    },
+    {
+      "elapsed": 141.20850910599984,
+      "frame": 415,
+      "path": "media-141.png",
+      "sha256": "a134e03d03cc1cafe00cf76de039ebe993c0b2c0f677139eacd5a2911cf6c3f0"
+    },
+    {
+      "elapsed": 143.2925884310025,
+      "frame": 446,
+      "path": "media-143.png",
+      "sha256": "6869924f4cefd797535dfb9e8699036384d35968761a7cd7b16df04569a62665"
+    },
+    {
+      "elapsed": 145.30156356299995,
+      "frame": 476,
+      "path": "media-145.png",
+      "sha256": "844c03ca25c6b32b7c230fac96ee74f2adc81663dfc99b3e3de87d2fe2e5f406"
+    },
+    {
+      "elapsed": 147.38940819500203,
+      "frame": 507,
+      "path": "media-147.png",
+      "sha256": "b67a3b7d9a1d3817d7ff22d33ecb37312899ca85e7707306ce2b26277856b65f"
+    },
+    {
+      "elapsed": 149.48897492900142,
+      "frame": 539,
+      "path": "media-149.png",
+      "sha256": "8eb1172696570b16d971c173ae1539159278f63977760c792931b1859d8e028a"
+    },
+    {
+      "elapsed": 151.56809467300263,
+      "frame": 570,
+      "path": "media-151.png",
+      "sha256": "7e97c80478515dbe25b13ffb38b5bf744ab294aee0212294f4263a37f0cf904f"
+    },
+    {
+      "elapsed": 153.64799551300166,
+      "frame": 599,
+      "path": "media-153.png",
+      "sha256": "fecc97848bdb05d8f27d32b52a8d3c91bbce597f1467625bbc79d9a14516c013"
+    }
+  ],
+  "visible_motion_span_seconds": 37.4,
+  "measured_visible_fps": 14.947656452904178,
+  "audio_sha256": "179b4a98376dcf1837cf6e9543e81202b862d852337f3a84f40db5ab3c4756e7",
+  "audio_seconds": 40.06204081632653,
+  "audio_tones": [
+    {
+      "second": 5,
+      "rms_u8": 55.20365510919513,
+      "positive_crossings": 440,
+      "expected_hz": 440
+    },
+    {
+      "second": 15,
+      "rms_u8": 55.16854817269522,
+      "positive_crossings": 660,
+      "expected_hz": 660
+    },
+    {
+      "second": 25,
+      "rms_u8": 55.38504673068846,
+      "positive_crossings": 879,
+      "expected_hz": 880
+    },
+    {
+      "second": 35,
+      "rms_u8": 55.06317213138077,
+      "positive_crossings": 550,
+      "expected_hz": 550
+    }
+  ],
+  "pcm_constant_gaps": [
+    {
+      "second": 0.2,
+      "duration": 0.07863945578231292,
+      "value": 129
+    },
+    {
+      "second": 0.35863945578231293,
+      "duration": 0.012879818594104309,
+      "value": 129
+    },
+    {
+      "second": 0.4314739229024943,
+      "duration": 0.03292517006802721,
+      "value": 129
+    }
+  ],
+  "ram": {
+    "physical_peak_increment_bytes": 26124288,
+    "conservative_heap_increment_bytes": 606176,
+    "preloaded_media_provider_delta_bytes": 372736,
+    "total_bound_bytes": 27103200,
+    "budget_bytes": 33554432,
+    "history_rows": 85,
+    "max_history_gap_ticks": 230
+  },
+  "resource_rows": [
+    [
+      "126671",
+      "126671",
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "shell_checks": [
+    {
+      "launch": 0,
+      "output": "Free physical pages: 126671\nmyos> "
+    }
+  ]
+}

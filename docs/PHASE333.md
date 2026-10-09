@@ -1,6 +1,6 @@
 # Phase 33.3 - standard media
-Updated 2026-10-09 09:55 +07. Status: OPEN; native player checkpoint passes,
-real Cobalt visual playback is NOT passed.
+Updated 2026-10-09 16:16 +07. Status: OPEN; production continuous native
+Cobalt video/audio/sync/RAM session passes; final lifecycle/fault/regression pending.
 Baseline main 158f360 / production source 9aece1e. No Phase33.4 work.
 
 ## Prerequisite audit
@@ -350,3 +350,24 @@ RangeError, PMM minimum64 pages. Mesa IR then null-faulted; kernel reclaimed
 PMM/SHM/aliases and returned shell. Graceful engine recovery is not proved;
 explicit shell command/relaunch/retained-profile checks are running. Safe
 records:checkpoint5/engine-oom.json and serial. This remains an open limit.
+
+## Checkpoint6: continuous production media and PMM highwater
+See [checkpoint6](wip/phase333/checkpoint6/README.md). Bounded audio8/video4
+sample batches eliminate steady SB16 held samples in the measured production
+session. Native Cobalt verified HTTPS/MSE plays40s,600decoded/no drops,
+max17.890ms A/V error; captured binary frame IDs show37.4s at14.948fps.
+Same-session40.062s native PCM has correct tone windows and no constant gaps
+after preroll. Actual PMM lowwater history covers every allocation between
+read-only snapshots; conservative total media RAM27103200B vs33554432B budget.
+This supersedes earlier pending continuous-session audio/RAM observations only.
+Latest production asset rerun passes87.883ms; first120.959ms failure retained.
+Whole Phase33.3 remains OPEN pending latest controls/adverse/full7/final images.
+
+Controlled continuous replay (frozen matching BIOS/kernel/MRT required):
+    MYOS_RENDERER_PROVIDER_PATH=/absolute/provider-directory MYOS_MEDIA_BOOT_IMAGE=/absolute/myos-current.img MYOS_MEDIA_RUNTIME_PATH=/absolute/platform-runtime.mrt MYOS_MEDIA_KERNEL_ELF=/absolute/kernel.elf MYOS_MEDIA_NATIVE_PCM_CAPTURE=1 MYOS_MEDIA_RAM_DIAGNOSTIC=1 MYOS_MEDIA_CONTINUOUS=1 python3 tools/run_logged.py -- python3 tests/test_cobalt_media_observation.py /absolute/cobalt-resources /absolute/platform-fonts
+    python3 tools/run_logged.py -- python3 tools/analyze_media_session.py build/native-verified-tls-yzub9bzc --provider build/media-evaluation/provider-i8xbwfmz/provider.so --renderer build/renderer-provider-evaluation/provider-84sokh6g/provider.so
+Transient PMM proof:
+    python3 tools/run_logged.py -- python3 tests/test_pmm_pressure_history.py --image-dir build/media-evaluation/pmm-history-normal-20261009
+Use fresh emitted bundle/provider paths for new runs. An observation exit0 alone
+is not acceptance. Do not run multiple Cobalt/media acceptance VMs simultaneously.
+No Phase33.4/YouTube claim; owner pushes manually.

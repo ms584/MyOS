@@ -31,10 +31,12 @@
 #define PCM_CAP 32768
 #define PCM_RATE 11025
 #define MAX_PACKET (256*1024)
+#define AUDIO_BATCH 8
+#define VIDEO_BATCH 4
 #define TARGET_LIMIT 8
 const uint64_t MyOSMediaProviderAbi=MYOS_MEDIA_PROVIDER_VERSION;
 struct frame {int width,height;int64_t time;unsigned char rgba[PIXELS];};
-struct pending {SbPlayerSampleInfo sample;int full,requested,eos;};
+struct pending {SbPlayerSampleInfo samples[AUDIO_BATCH];unsigned read;int full,requested,eos;};
 struct SbPlayerPrivate {
  pthread_mutex_t mutex;pthread_t worker;unsigned published,closing,stop;
  SbPlayerDeallocateSampleFunc deallocate;SbPlayerDecoderStatusFunc decoder;
@@ -107,11 +109,15 @@ static int create_sink(SbPlayer p){
  return 0;
 }
 static void release_pending(SbPlayer p){
- const void *buffers[2]={0,0};
+ const void *buffers[2*AUDIO_BATCH];unsigned count=0;
  pthread_mutex_lock(&p->mutex);
- for(int i=0;i<2;++i){if(p->pending[i].full)buffers[i]=p->pending[i].sample.buffer;p->pending[i]=(struct pending){0};}
+ for(int i=0;i<2;++i){
+  struct pending *pending=&p->pending[i];
+  while(pending->full){buffers[count++]=pending->samples[pending->read++].buffer;--pending->full;}
+  *pending=(struct pending){0};
+ }
  pthread_mutex_unlock(&p->mutex);
- for(int i=0;i<2;++i)if(buffers[i])p->deallocate(p,p->context,buffers[i]);
+ for(unsigned i=0;i<count;++i)p->deallocate(p,p->context,buffers[i]);
 }
 static int reset_decoders(SbPlayer p){
  if(p->video_initialized){vpx_codec_destroy(&p->video);p->video_initialized=0;}
@@ -225,9 +231,9 @@ static void *player_worker(void *context){
    for(int i=0;i<2;++i)if(p->pending[i].full){
     struct pending *pending=&p->pending[i];
     if((i==kSbMediaTypeAudio&&PCM_CAP-p->pcm_count<1400)||(i==kSbMediaTypeVideo&&p->video_count==VIDEO_SLOTS))continue;
-    int error=i==kSbMediaTypeAudio?decode_audio_locked(p,&pending->sample):decode_video_locked(p,&pending->sample);
-    if(pending->sample.timestamp>p->duration)p->duration=pending->sample.timestamp;
-    deallocate[i]=pending->sample.buffer;pending->full=0;
+    int error=i==kSbMediaTypeAudio?decode_audio_locked(p,&pending->samples[pending->read]):decode_video_locked(p,&pending->samples[pending->read]);
+    if(pending->samples[pending->read].timestamp>p->duration)p->duration=pending->samples[pending->read].timestamp;
+    deallocate[i]=pending->samples[pending->read++].buffer;--pending->full;
     if(error){p->failed=1;notify_error=1;break;}
    }
    int64_t clock=clock_locked(p);
@@ -246,7 +252,7 @@ static void *player_worker(void *context){
    }
    for(int i=0;i<2;++i){
     struct pending *pending=&p->pending[i];int enabled=i==0?p->has_audio:p->has_video;
-    int room=i==0?PCM_CAP-p->pcm_count>=1400:p->video_count<VIDEO_SLOTS;
+    int room=i==0?PCM_CAP-p->pcm_count>=AUDIO_BATCH*1400:p->video_count<VIDEO_SLOTS;
     if(enabled&&!pending->full&&!pending->eos&&!pending->requested&&room&&!p->failed){
      pending->requested=1;request[i]=1;
     }
@@ -265,7 +271,13 @@ static void *player_worker(void *context){
      ++p->native_presented;
      if(p->has_audio&&p->presenting&&p->rate==1.0&&p->consumed>2205){
       int64_t delta=p->current.time-clock_locked(p);if(delta<0)delta=-delta;
-      if(delta>p->native_max_sync)p->native_max_sync=delta;++p->native_sync_samples;
+      if(delta>p->native_max_sync){
+       p->native_max_sync=delta;
+       if(delta>100000){char detail[240];snprintf(detail,sizeof(detail),
+        "MEDIA sync-outlier pts=%lld clock=%lld delta=%lld pcm=%u vq=%u consumed=%llu audio-last=%lld video-last=%lld\n",
+        (long long)p->current.time,(long long)clock_locked(p),(long long)delta,p->pcm_count,p->video_count,
+        (unsigned long long)p->consumed,(long long)p->last_audio_pts,(long long)p->last_video_pts);SbLogRaw(detail);}
+      }++p->native_sync_samples;
      }
     }
    }
@@ -379,18 +391,27 @@ void SbPlayerSeek(SbPlayer handle,int64_t time,int ticket){
 void SbPlayerWriteSamples(SbPlayer handle,SbMediaType type,const SbPlayerSampleInfo *s,int count){
  SbPlayer p=lock_player(handle);if(!p)return;
  int enabled=type==kSbMediaTypeAudio?p->has_audio:type==kSbMediaTypeVideo?p->has_video:0;
- if(!enabled||count!=1||!s||s->type!=type||!s->buffer||s->buffer_size<=0||s->buffer_size>MAX_PACKET||
-    s->drm_info||s->side_data_count||p->pending[type].full||!p->pending[type].requested||p->seek_pending){
-  p->error_pending=1;
-  const void *rejected=s&&count>0?s->buffer:0;
-  SbPlayerDeallocateSampleFunc callback=p->deallocate;void *context=p->context;
-  unlock_player(p);if(rejected)callback(handle,context,rejected);return;
+ int limit=type==kSbMediaTypeAudio?AUDIO_BATCH:VIDEO_BATCH;
+ int invalid=!enabled||count<1||count>limit||!s||p->seek_pending;
+ if(!invalid)invalid=p->pending[type].full||!p->pending[type].requested;
+ if(!invalid)for(int i=0;i<count;++i){
+  if(s[i].type!=type||!s[i].buffer||s[i].buffer_size<=0||s[i].buffer_size>MAX_PACKET||
+     s[i].drm_info||s[i].side_data_count){invalid=1;break;}
  }
- p->pending[type].sample=*s;p->pending[type].full=1;p->pending[type].requested=0;unlock_player(p);
+ if(invalid){
+  p->error_pending=1;
+  const void *rejected[AUDIO_BATCH];unsigned n=0;
+  if(s&&count>0){int bounded=count>AUDIO_BATCH?1:count;for(int i=0;i<bounded;++i)if(s[i].buffer)rejected[n++]=s[i].buffer;}
+  SbPlayerDeallocateSampleFunc callback=p->deallocate;void *context=p->context;
+  unlock_player(p);for(unsigned i=0;i<n;++i)callback(handle,context,rejected[i]);return;
+ }
+ struct pending *pending=&p->pending[type];
+ for(int i=0;i<count;++i)pending->samples[i]=s[i];
+ pending->read=0;pending->full=count;pending->requested=0;unlock_player(p);
 }
 int SbPlayerGetMaximumNumberOfSamplesPerWrite(SbPlayer handle,SbMediaType type){
  SbPlayer p=lock_player(handle);if(!p)return 0;int valid=type==0?p->has_audio:type==1?p->has_video:0;
- unlock_player(p);return valid?1:0;
+ unlock_player(p);return valid?(type==kSbMediaTypeAudio?AUDIO_BATCH:VIDEO_BATCH):0;
 }
 void SbPlayerWriteEndOfStream(SbPlayer handle,SbMediaType type){
  SbPlayer p=lock_player(handle);if(!p)return;

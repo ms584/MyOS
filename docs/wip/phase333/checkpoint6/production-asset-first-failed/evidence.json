@@ -1,0 +1,152 @@
+{
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": false,
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "core_sha256": "80da74520f9555be80772770ec7a79ee68ab02168b41e3391d8fb136e054319c",
+  "boot_sha256": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-000.ppm",
+      "host_monotonic": 29049.823537606,
+      "sha256": "3abb6f8d0e814acdb564f3176330e4cef21b97afea92ec2535269592aa7ddc8b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-001.ppm",
+      "host_monotonic": 29051.839311852,
+      "sha256": "3abb6f8d0e814acdb564f3176330e4cef21b97afea92ec2535269592aa7ddc8b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-002.ppm",
+      "host_monotonic": 29053.853349711,
+      "sha256": "3abb6f8d0e814acdb564f3176330e4cef21b97afea92ec2535269592aa7ddc8b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-003.ppm",
+      "host_monotonic": 29055.868375271,
+      "sha256": "3abb6f8d0e814acdb564f3176330e4cef21b97afea92ec2535269592aa7ddc8b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-004.ppm",
+      "host_monotonic": 29057.88222663,
+      "sha256": "3abb6f8d0e814acdb564f3176330e4cef21b97afea92ec2535269592aa7ddc8b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-005.ppm",
+      "host_monotonic": 29059.895763959,
+      "sha256": "25953e0ea3df1b71f3f6ea38b3b522a8e48f47f26cffc96b9ccf08d57a331a20"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-006.ppm",
+      "host_monotonic": 29061.912930301,
+      "sha256": "0cbdffa1ed920ddf6613070b364a5532741a4c07f5b2d619f0f30be2e6c4309b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-007.ppm",
+      "host_monotonic": 29063.927183343,
+      "sha256": "8bdb33c80ae74c61e382b12a0f7d8102a5285385a27e6f5fff41148c72e03b4e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-008.ppm",
+      "host_monotonic": 29065.942239985,
+      "sha256": "9cd75b74bee6e8f2443356f167039d9ba0d27fd490c35a1d36c44dc4189ae4a4"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-009.ppm",
+      "host_monotonic": 29067.958128263,
+      "sha256": "faca4e630cb878bda6202da7e319399b97357a9606535500e9f4e6499fe02678"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-010.ppm",
+      "host_monotonic": 29069.97533143,
+      "sha256": "1f493af8c22ff6b3819e3cec22f3d3e3bc0170c936856e815da8154cae9d3f06"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-011.ppm",
+      "host_monotonic": 29071.992678698,
+      "sha256": "dc2da296b674b0af0c6855f70f8ca2ecdcffa6bc1b9b63d328ef28414490dc76"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-012.ppm",
+      "host_monotonic": 29074.009960165,
+      "sha256": "dc2da296b674b0af0c6855f70f8ca2ecdcffa6bc1b9b63d328ef28414490dc76"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-013.ppm",
+      "host_monotonic": 29076.023621831,
+      "sha256": "dc2da296b674b0af0c6855f70f8ca2ecdcffa6bc1b9b63d328ef28414490dc76"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-014.ppm",
+      "host_monotonic": 29078.036964995,
+      "sha256": "dc2da296b674b0af0c6855f70f8ca2ecdcffa6bc1b9b63d328ef28414490dc76"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-015.ppm",
+      "host_monotonic": 29080.053862459,
+      "sha256": "b0d210595d78728b36ac8330284a101439940f4b0e7142052b3eaa6a4c059110"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-016.ppm",
+      "host_monotonic": 29082.067371322,
+      "sha256": "e896c9047fedb8e7b0651c1737b7d9d269ab43e6278ed33ffcec0d122f8a949a"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-017.ppm",
+      "host_monotonic": 29084.081475352,
+      "sha256": "789a2f18f8c027534cef6e3dd6bca709eaa4a4d83e446cf783ca6360293412ae"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-018.ppm",
+      "host_monotonic": 29086.097956914,
+      "sha256": "1827ae203d7f89b101ab026117782dc13fecbff1650a387564a08521a37bf79a"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-019.ppm",
+      "host_monotonic": 29088.112842376,
+      "sha256": "78e620a0175e9ef8c856c0a4a73813053077e03178130039ba5419b0eb22a8e2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-020.ppm",
+      "host_monotonic": 29090.126983338,
+      "sha256": "eabfbb7bec2966a097032b52e620a3e048ff49f60ffae4bee1a6caf5312bcb5c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-021.ppm",
+      "host_monotonic": 29092.140136581,
+      "sha256": "588222e5c6f6c68c731a93caee298e6835ae7f8e7c679b5b6b39629d55001998"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-022.ppm",
+      "host_monotonic": 29094.152737214,
+      "sha256": "c56cd9108cd352724debaa64f5fd55ae2f0e32ffab6b0fd58b03db7db0a28fed"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-023.ppm",
+      "host_monotonic": 29096.165837748,
+      "sha256": "ce7e56da46eba06e7a833ba51c73aa5629937b6c312bf15cc2d494dac6c33d5d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-024.ppm",
+      "host_monotonic": 29098.180339882,
+      "sha256": "6046154b80ddab2e86ba698ee3b30bbf6c8fa7b50761e8b0c581143279dd22f5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-025.ppm",
+      "host_monotonic": 29100.194724158,
+      "sha256": "0e992af20b00ba26559f73f54982a12c767f6b2f3da426886e01c80e6c8b1859"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-026.ppm",
+      "host_monotonic": 29102.207633777,
+      "sha256": "708c1a2ab7a8eef966056df9eada382454ac43b16f986ae37d46676ebda2a9a7"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-6yjqckmt/frame-027.ppm",
+      "host_monotonic": 29104.221079696,
+      "sha256": "f5222fb503e8b7bedd20712fef7982eac8c0e4b1d37aa280cbf691182a304d3a"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000C000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF platform: SbWindowCreate\nELF provider: SbDecodeTargetRelease\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nnative player state=2\nnative media position-us=1000324\nnative media position-us=2065721\nnative media position-us=3006492\nnative media position-us=4058646\nnative PAUSE position=5042047\nnative media position-us=5042047\nnative RESUME\nnative media position-us=6129485\nnative media position-us=7002229\nnative media position-us=8066265\nnative media position-us=9065449\nnative SEEK to=15000000\nnative media position-us=10018737\nnative media position-us=15000000\nnative player state=1\nnative player state=2\nnative media position-us=16024028\nnative media position-us=17010695\nnative media position-us=18044346\nnative media position-us=19032917\nnative media position-us=20037543\nnative media position-us=21022395\nnative media position-us=22036364\nnative media position-us=23004436\nnative media position-us=24059584\nnative media position-us=25044799\nnative media position-us=26049878\nnative media position-us=27054232\nnative media position-us=28007157\nnative media position-us=29040717\nnative media position-us=30034187\nnative media position-us=31016228\nnative media position-us=32010151\nnative media position-us=33037634\nnative media position-us=34044255\nnative media position-us=35051330\nnative media position-us=36005887\nnative media position-us=37045706\nnative media position-us=38044073\nnative media position-us=39020037\nnative player state=3\nnative player state=4\nnative retained textures/player destroy/capacity PASS\nnative rendered textures=570\nnative presented A-V max-us=120959\nnative presented A-V samples=528\nnative sample allocated=2379\nnative sample released=2379\nnative player state=0\nnative player state=1\nnative player state=2\nnative player state=4\nnative RAM process baseline-bytes=56508416\nnative RAM process sampled-peak-bytes=66686976\nnative RAM player increment-bytes=10178560\nnative RAM PMM increment-bytes=10178560\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=439040 heap-after=439040\nELF exited with status 7\nmyos> "
+}

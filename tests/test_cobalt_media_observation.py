@@ -203,11 +203,13 @@ def heap_snapshot(label):
  (out/('heap-'+label+'.json')).write_text(json.dumps(blocks,indent=2)+'\n')
  return blocks
 ram_samples=[];ram_baselines=[]
-ram_symbol=None;ram_extra_symbols={}
+ram_symbol=None;ram_extra_symbols={};pressure_symbol=None;pressure_ticks_symbol=None;pressure_previous={}
 if ram_diagnostic:
  from test_system import parse_symbols
  ram_symbols=parse_symbols(subprocess.check_output(['nm',os.environ['MYOS_MEDIA_KERNEL_ELF']],text=True))
  ram_symbol=ram_symbols['free_count']
+ pressure_symbol=ram_symbols.get('pmm_pressure_history')
+ if pressure_symbol:pressure_ticks_symbol=ram_symbols['ticks']
  for name in ('heap_live_bytes','heap_runtime_peak_bytes','irq_count','underrun_count','consumed_frames'):
   # parse_symbols already adds an alias only for a unique LTO owner.
   if name in ram_symbols:ram_extra_symbols[name]=ram_symbols[name]
@@ -215,6 +217,21 @@ def sample_ram(launch,label):
  free=__import__('struct').unpack('<Q',vm.memory(ram_symbol,8))[0]
  row=dict(launch=launch,elapsed=time.monotonic()-started,label=label,free_pages=free)
  for name,address in ram_extra_symbols.items():row[name]=__import__('struct').unpack('<Q',vm.memory(address,8))[0]
+ if pressure_symbol:
+  # Keep the previous snapshot START tick: allocations concurrent with the
+  # history read remain covered by the overlapping next snapshot.
+  tick=__import__('struct').unpack('<Q',vm.memory(pressure_ticks_symbol,8))[0]
+  values=__import__('struct').unpack('<'+'QQ'*512,vm.memory(pressure_symbol,8192))
+  end_tick=__import__('struct').unpack('<Q',vm.memory(pressure_ticks_symbol,8))[0]
+  previous=pressure_previous.get(launch)
+  row['pmm_history_tick']=tick
+  if previous is not None:
+   last_tick,last_free=previous
+   row['pmm_history_coverage_ticks']=end_tick-last_tick
+   row['pmm_history_complete']=0<=end_tick-last_tick<512
+   minima=[values[i+1] for i in range(0,len(values),2) if last_tick+1<=values[i]<=end_tick+1]
+   row['pmm_interval_min_free_pages']=min([free,last_free]+minima)
+  pressure_previous[launch]=(tick,free)
  ram_samples.append(row);return row
 vm=None;frames=[];inputs=[];shell_checks=[];started=time.monotonic();playing=None;sent=set()
 try:
@@ -222,6 +239,8 @@ try:
  vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
  repeats=int(os.environ.get('MYOS_MEDIA_REPEATS','1'));assert 1<=repeats<=3
  lifecycle=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1'
+ continuous=os.environ.get('MYOS_MEDIA_CONTINUOUS')=='1'
+ assert not (continuous and (lifecycle or fault_mode))
  for launch in range(repeats):
   sent=set();playing=None;fault_seen=None;recovery_at=None;ended_at=None;restarted_at=None;record_start=len(records);suffix='' if not launch else '-launch'+str(launch)
   if heap_diagnostic:heap_snapshot('before'+suffix)
@@ -260,10 +279,15 @@ try:
    elif errors:print('ENGINE MEDIA ERROR; preserving failed evidence',flush=True);break
    if playing:
     delta=time.monotonic()-playing
-    for when,key in (() if fault_mode else ((6,'p'),(9,'r'),(15,'s')) if lifecycle else ((6,'p'),(9,'r'),(15,'s'),(44,'x'))):
+    for when,key in (() if fault_mode or continuous else ((6,'p'),(9,'r'),(15,'s')) if lifecycle else ((6,'p'),(9,'r'),(15,'s'),(44,'x'))):
      if delta>=when and key not in sent:
       vm.key(key);sent.add(key);inputs.append(dict(launch=launch,key=key,elapsed=elapsed))
-    if lifecycle:
+    if continuous:
+     if ended_at is None and any(o.get('kind')==['ended'] for o in observations):ended_at=time.monotonic()
+     if ended_at and time.monotonic()-ended_at>=2:
+      vm.key('x');inputs.append(dict(launch=launch,key='x',elapsed=elapsed));time.sleep(2);break
+     if delta>=65:break
+    elif lifecycle:
      if ended_at is None and any(o.get('kind')==['ended'] for o in observations):ended_at=time.monotonic()
      if ended_at and time.monotonic()-ended_at>=2 and 'n' not in sent:
       vm.key('n');sent.add('n');restarted_at=time.monotonic();inputs.append(dict(launch=launch,key='n',elapsed=elapsed))
@@ -276,6 +300,7 @@ try:
   type_text(vm,'\x1b') if False else vm.key('esc')
   try:
    vm.wait('myos> ',timeout=15)
+   if ram_diagnostic and baseline:sample_ram(launch,'after-process-exit')
    shell_checks.append(dict(launch=launch,output=command(vm,'mem','Free physical pages: ')))
    if heap_diagnostic:
     heap_snapshot('after'+suffix)
@@ -288,6 +313,6 @@ finally:
  for thread in threads:thread.join(timeout=2)
  assert hashlib.sha256(boot.read_bytes()).hexdigest()==boot_hash
  (out/'evidence.json').write_text(json.dumps(dict(phase_passed=False,observation_only=True,diagnostic_trace=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),
- fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
+ continuous_playback=continuous,fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
  fixture_sha256=metadata['sha256'],boot_sha256=boot_hash,runtime_sha256=runtime_hash,elapsed=time.monotonic()-started),indent=2)+'\n')
  print('EVIDENCE_BUNDLE',out,'NOT automatic phase acceptance',flush=True)

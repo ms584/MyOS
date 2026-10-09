@@ -41,12 +41,18 @@ static void *run(void *unused){
   current=SbPlayerCreate(0,&param,dealloc,decoder,status,error,0,0);if(!current)return (void *)2;
   SbPlayerSeek(current,0,41);SbPlayerSeek(current,1000000,42);SbPlayerSeek(current,0,43);
   if(wait_value(&needs[type])){SbPlayerDestroy(current);return (void *)3;}
-  unsigned char *buffer=malloc(1);if(!buffer){SbPlayerDestroy(current);return (void *)4;}
-  buffer[0]=type==0?0xff:0;
-  SbPlayerSampleInfo sample={0};sample.type=(SbMediaType)type;sample.buffer=buffer;sample.buffer_size=1;
-  SbPlayerWriteSamples(current,(SbMediaType)type,&sample,1);
+  int count=SbPlayerGetMaximumNumberOfSamplesPerWrite(current,(SbMediaType)type);
+  if(count<1||count>8){SbPlayerDestroy(current);return (void *)4;}
+  SbPlayerSampleInfo samples[8]={{0}};
+  for(int i=0;i<count;++i){
+   unsigned char *buffer=malloc(1);
+   if(!buffer){for(int j=0;j<i;++j)free((void *)samples[j].buffer);SbPlayerDestroy(current);return (void *)4;}
+   buffer[0]=type==0?0xff:0;
+   samples[i].type=(SbMediaType)type;samples[i].buffer=buffer;samples[i].buffer_size=1;
+  }
+  SbPlayerWriteSamples(current,(SbMediaType)type,samples,count);
   if(wait_value(&errors)){SbPlayerDestroy(current);return (void *)5;}
-  SbPlayerDestroy(current);if(freed!=1||errors!=1)return (void *)6;
+  SbPlayerDestroy(current);if(freed!=count||errors!=1)return (void *)6;
   SbLogRaw(type==0?"native Opus corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n":"native VP8 corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n");
  }
  /* Exhaust real guest pages, then verify Create fails closed and recovers

@@ -1,58 +1,54 @@
-Updated:2026-10-09 15:25 +07. /home/xytron404/myos,main.
-Baseline:b13dae5 local checkpoint5 HTTPS fault recovery; no push.
-Goal Phase33.3 ACTIVE; no push; preserve owner promotion logs/status/audits.
+Updated:2026-10-09 16:21 +07. /home/xytron404/myos,main.
+Baseline:aabb6f4 local checkpoint5 engine OOM isolation; no push.
+Goal Phase33.3 ACTIVE. No33.4/YouTube. Preserve owner promotion logs.
 
-## Scope
-Phase33.1/33.2 real native Cobalt HTTPS/JS/DOM/input prerequisite PASSED:
-PHASE33_NATIVE_WEB_ACCEPTANCE.md. No imports-based acceptance.
-Phase33.3 OPEN. No33.4/YouTube work/pass.
-Pinned WebM/VP8/libvpx1.15.2/Opus1.5.2/licenses:PHASE333.md.
-Asset160x90@15fps40s; QEMU512MiB/KVM/RTL8139/SB16,softpipe,jitlessJS.
-Original gates:A/V<=100ms afterpreroll, incremental media<=32MiB.
+Phase33.1/33.2 native Cobalt HTTPS/JS/DOM/input prerequisite PASSED:
+PHASE33_NATIVE_WEB_ACCEPTANCE.md. Phase33.3 OPEN.
+WebM/VP8/libvpx1.15.2/Opus1.5.2 pinned licenses:PHASE333.md.
+Original gates160x90@15fps, >=30s, A/V<=100ms, media RAM<=32MiB.
 
-## Checkpoint5 source and evidence
-MRT thread_control rejected MID/HIGH stack handles; join could return before
-Destroyed callback, then Cobalt context freed. Diagnostic caller stack identifies
-PlayerStatusCB from native Destroyed callback. Restricted VM-range fix and
-resident-page guard now in user/platform-runtime.c.
-Old focused helper rejection and fixed MID/HIGH join/detach/getattr/guard/
-relaunch exact resources PASS. Added tests/test_thread_vm_ranges.py tofullsuite.
-memory/memory.c tracks exact rounded live heap +runtime highwater; existing
-heap walk verifies counter equality; boot deliberate OOM followed by reset.
-Three real engine controls/EOS40/fresh MSE restart/stop launches completed:
-547/138,547/141,545/132 presentations;max sync53.234ms; noGP/panic.
-All PMM/SHM/aliases reclaimed; heap+61440 cold profile,+4096 then exact540416.
-Frozen candidate and production BIOS/kernel/MRT hashes IDENTICAL:
-build/media-evaluation/thread-fix-normal-20261009/;checkpoint5/normal-identity.json.
-Same-session PNGs/WAV,metrics/samples/safe serial:checkpoint5/.
-Sampled accounted engine RAM28024848/20652048/18800672B under32MiB.
-PMM sampled0.5s; short-peak allocation bound still pending,notRAMacceptance.
-Native-format11025monoU8capture still heldsamples52.88ms;hardware underruns
-273/269/292. Sound continuity/pitch gate OPEN; source-starvations0 insufficient.
-Verified HTTPS8s range stall recovered,stop/responsiveness/PMM/SHM/aliases exact.
-Cold profile heap+61440 asabove. Corrupt/truncate/close observations added.
+Latest checkpoint (uncommitted production promotion)
+Bounded audio8/video4 sample batches fix steady PCM starvation while keeping
+PCM/video output queues and worker stack bounded. Exact sample ownership and
+seek/destroy release tests passed isolated provider-4czki0s5.
+Isolated continuous40s native HTTPS/Cobalt:600decoded,no drops,max47.491ms.
+Same-session native11025monoU8 WAV40.042s, no held-sample gaps after0.372s.
+Prior audio8/video1 candidate FAIL324.012ms preserved; not acceptance.
+Production provider-i8xbwfmz continuous40s PASS600/no drops/max17.890ms.
+Binary frame IDs show37.4s motion at14.948fps, steady native PCM afterpreroll.
+Exact history total RAM bound27103200B <32MiB; checkpoint6 records safe evidence.
+Asset firstrun FAIL120.959ms retained; identical rerun PASS87.883ms and controls.
+Production full-batch faults PASS twice with exact resources.
 
-## Active jobs and regression
-Full regression5 PASS terminal0 14:58:06 normalBIOSrestored, OLD MRT+heapcounter.
-Full regression6 ACTIVE since15:00,logbuild/media-evaluation/phase333-full-regression6.log.
-PID/session must be checked live before waiting; do not restart ontimeout.
-Root build outputs now belong tofull6; do not rebuild/mutate architecture source.
-Truncate/corrupt native HTTPS errors detected, fresh stream recovery/stop passed;
-PMM/SHM/aliases exact. Escape during playback also exact; partial cold profile
-heap+40960B needs warm close/relaunch owner attribution.
-Erroneous shell loop lost fault mode and is excluded; corrected Python loop DONE.
-Playing OOM DONE:240MiB buffers, RangeError, PMM64 freepages.
-Mesa IR constructor null-fault at provider4afd40; PMM/SHM/aliases reclaimed,
-shell returned; partial profile+40960B. No graceful engine OOM recovery claim.
-Explicit mem/relaunch/heap-owner OOM repeat ACTIVE session72974,
-cobalt-playing-oom-relaunch2.log. First log:cobalt-playing-oom1.log.
-Native PCM666 long constant runs byte129, near zero; voiced periods near source.
-Next investigate real starvation/single-packet callback delivery cadence.
-Final UEFI/checks/normal-image restoration afterfull6 pending.
+Read-only PMM allocation history512x10ms captures short peaks without polling
+loss. Native transient16MiB allocate/free focused test PASS twice, physical
+pages exactly restored; history retained >=16MiB peaks after freeing.
+tests/test_pmm_pressure_history.py, user/elf-pmm-pressure.c.
+Observer overlaps history snapshots; analyzer rejects retention coverage gaps.
+Frozen matching normal BIOS/kernel/MRT:
+build/media-evaluation/pmm-history-normal-20261009/identity.json.
 
-## Next gates
-Diagnose audio held samples/hardware underruns; exact PMM highwater/bound.
-Inspect actual guest during-playback OOM result, warm close/relaunch heap.
-Finish focused+full regression/UEFI, restore normal images, update evidence/guide,
-localcommit only. Nativefixturefaults do not substitute forenginefaults.
-References:PHASE333.md,HANDOFF.md,wip/phase333/checkpoint5/README.md.
+Regression and active jobs (verified dispatched16:09)
+Full6 PASS15:44:02; normalBIOS restored, prior kernel without PMM history.
+MID/HIGH pthread UEFI and native-underlay UEFI focused PASS15:40/15:47.
+Full7 ACTIVE session75674,phase333-full-regression7.log, latest PMM history.
+Root build outputs belong full7; do not rebuild or change architecture sources.
+Production continuous/RAM DONE, native-verified-tls-yzub9bzc.
+Lifecycle3 ACTIVE session96038, native-verified-tls-vctxpm9q;
+first launch controls/EOS/restart/stop done, max44.890ms, exact PMM/SHM/aliases.
+Adverse queue session95116 waits live lifecycle PID165185, then runs serial
+stall/truncate/corrupt/close2/OOM2;production-adverse-jobs.log.
+Both sessions must be polled/checked live, not restarted from timeouts.
+
+OOM limitation
+Real playing OOM/relaunch twice: MyOS shell mem responds after both faults,
+PMM/SHM/aliases exact; retained heap maps to linked refs0 profile/cache files.
+Engine faults under OOM; no graceful engine OOM recovery claim.
+Checkpoint5 includes initial safe evidence; stronger repeats pending packaging.
+Raw heaps/TLS keys remain private.
+
+Remaining
+Verify remaining production controls/relaunch and HTTPS adverse proofs.
+Finish full7 and normal BIOS/UEFI restoration plus appropriate focused checks.
+Publish checkpoint6 safe evidence, guide/handoff and local commits; no push.
+References:PHASE333.md,HANDOFF.md,wip/phase333/checkpoint6/README.md.
