@@ -3657,3 +3657,9 @@ SbPlayerBridge invalid mode, zero PCM. online-small-bound-frontend-failed.
 Next quality selection through real native PS/2 UI, no payload/capability bypass.
 Full default regression started21:58:23, running; normal BIOS restore + UEFI and
 final launcher checks queued. Phase33.4/33.5/Rickroll/parent remain NOT PASSED.
+
+Checkpoint4 completion2026-10-10 00:17 +07: new PMM1024 full default
+system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
+passed, all5 normal identities exact, runner exit0. Evidence:
+wip/phase334/checkpoint4/regression. Earlier running/pending statements
+above are historical. YouTube performance/recovery acceptance still open.

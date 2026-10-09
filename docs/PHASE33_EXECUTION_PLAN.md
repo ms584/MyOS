@@ -11,7 +11,10 @@ the real native engine smoke; neither phase closes on symbol counts alone.
 The historical planning baseline below is retained. Native33.1/33.2 was accepted
 on2026-10-08 (PHASE33_NATIVE_WEB_ACCEPTANCE.md). Standard-media33.3 is now
 accepted on its declared MyOS/QEMU profile (PHASE333_ACCEPTANCE.md).
-The owner scoped this task through33.3 only. No33.4/33.5 work or acceptance.
+That earlier task stopped at33.3. On2026-10-09 the owner explicitly authorized
+Phase33.4 only. PROJECT_STATE.md/PHASE334.md are current: real native public
+YouTube playback is observed, but sync/network-recovery and remaining gates
+are NOT PASSED. No33.5, Rickroll or parent Phase33 acceptance is claimed.
 
 ## Verified starting point and uncertainty
 

@@ -138,3 +138,9 @@ No engine --engine-trace for performance comparison; scoped media trace remains
 diagnostic and cannot alone establish acceptance. Native1GiB trial changes
 both memory envelope and stream-capability profile, so no isolated causality
 claim. Codec guard/advertised maximum640x360@30; downscaled presentation160x90.
+
+Checkpoint4 completion2026-10-10 00:17 +07: new PMM1024 full default
+system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
+passed, all5 normal identities exact, runner exit0. Evidence:
+wip/phase334/checkpoint4/regression. Earlier running/pending statements
+above are historical. YouTube performance/recovery acceptance still open.

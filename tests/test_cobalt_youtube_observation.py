@@ -12,6 +12,21 @@ from make_asset_disk import create
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
+def native_click(vm,x,y,button='left'):
+    assert button in ('left','right')
+    # Clamp the actual PS/2 cursor to the top-left, then
+    # move in bounded deltas; never read DOM/guest heaps.
+    for _ in range(8):
+        vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':'x','value':-120}},{'type':'rel','data':{'axis':'y','value':-100}}]})
+        time.sleep(.03)
+    for axis,value in [('x',x),('y',y)]:
+        while value:
+            step=min(value,100);value-=step
+            vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':step}}]});time.sleep(.03)
+    time.sleep(.2)
+    for down in (True,False):
+        vm.command('input-send-event',{'events':[{'type':'btn','data':{'down':down,'button':button}}]});time.sleep(.1)
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('resources',type=Path);p.add_argument('fonts',type=Path)
@@ -23,6 +38,7 @@ def main():
     p.add_argument('--seconds',type=int,default=300)
     p.add_argument('--input',action='append',default=[],help='Timed native key: seconds:qcode')
     p.add_argument('--actions',type=Path,help='Optional local JSON native key/text/click actions; no page scripting')
+    p.add_argument('--desktop-check',action='store_true',help='Native desktop window/input smoke after each player close')
     p.add_argument('--ram',action='store_true',help='Read-only sampled PMM; includes brief QMP pauses')
     a=p.parse_args()
     assert 30<=a.seconds<=600
@@ -110,18 +126,7 @@ def main():
                         if kind=='click':
                             x,y=int(action['x']),int(action['y'])
                             assert 0<=x<800 and 0<=y<600
-                            # Clamp the actual PS/2 cursor to the top-left, then
-                            # move in bounded deltas; never read DOM/guest heaps.
-                            for _ in range(8):
-                                vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':'x','value':-120}},{'type':'rel','data':{'axis':'y','value':-100}}]})
-                                time.sleep(.03)
-                            for axis,value in [('x',x),('y',y)]:
-                                while value:
-                                    step=min(value,100);value-=step
-                                    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':step}}]});time.sleep(.03)
-                            time.sleep(.2)
-                            for down in (True,False):
-                                vm.command('input-send-event',{'events':[{'type':'btn','data':{'down':down,'button':'left'}}]});time.sleep(.1)
+                            native_click(vm,x,y,action.get('button','left'))
                         elif kind=='text':
                             text=action['text'];assert isinstance(text,str) and len(text)<=64 and all(ord(c)<128 for c in text)
                             type_text(vm,text)
@@ -148,6 +153,27 @@ def main():
             row['shell_returned']=vm.log.read_text().endswith('myos> ')
             if row['shell_returned']:
                 row['after']=command(vm,'mem','Free physical pages: ')
+                if a.desktop_check:
+                    desktop_offset=len(vm.log.read_text())
+                    type_text(vm,'desktop'+chr(10))
+                    end=time.monotonic()+30
+                    while 'DESKTOP READY' not in vm.log.read_text()[desktop_offset:] and time.monotonic()<end:time.sleep(.1)
+                    assert 'DESKTOP READY' in vm.log.read_text()[desktop_offset:], 'Desktop did not start after player close'
+                    native_click(vm,80,105)
+                    presented='WINDOW OPEN 1'+chr(10)+'DESKTOP FRAME'+chr(10)
+                    end=time.monotonic()+10
+                    while presented not in vm.log.read_text()[desktop_offset:] and time.monotonic()<end:time.sleep(.1)
+                    assert presented in vm.log.read_text()[desktop_offset:], 'Desktop input did not present a window after player close'
+                    ppm=out/('desktop-after-launch-%d.ppm'%n)
+                    vm.command('screendump',{'filename':str(ppm)})
+                    png=ppm.with_suffix('.png');Image.open(ppm).save(png);ppm.unlink()
+                    vm.key('q')
+                    end=time.monotonic()+10
+                    while not vm.log.read_text().endswith('myos> ') and time.monotonic()<end:time.sleep(.1)
+                    assert vm.log.read_text().endswith('myos> '), 'Desktop did not return to shell'
+                    row['desktop_after_close']=dict(window_opened=True,shell_returned=True,path=png.name)
+                    row['after_desktop']=command(vm,'mem','Free physical pages: ')
+
                 if observer:observer.capture(n,time.monotonic()-started,'after')
             (out/'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
             print('PUBLIC_OBSERVATION',json.dumps({k:v for k,v in row.items() if k!='frames'}),flush=True)

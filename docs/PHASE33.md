@@ -5,6 +5,20 @@ close Phase 33 until a person can watch the real online Rickroll video with
 sound inside MyOS running in QEMU. Phase 32's broader YouTube work remains
 open and is a prerequisite, not evidence that this gate has passed.
 
+## Current checkpoint — 2026-10-09
+
+Native33.1/33.2 and standard-media33.3 prerequisites were verified before the
+owner-authorized33.4 work. Cobalt now runs HTTPS, JavaScript/DOM/input and native
+media in MyOS. Real public YouTube BBB playback has moving video and same-session
+SB16 audio; direct native pause/resume/seek and close/reopen have been exercised.
+This is partial33.4 progress, not Rickroll acceptance. Latest1GiB candidate has
+sync outliers beyond100ms and fails playback recovery after actual NIC loss.
+Search/select, expiry/error handling, bounded repeated reopen and final accepted
+profile still need proof. See PHASE334.md, PROJECT_STATE.md and checkpoint4.
+The PMM1024 architectural full regression passed2026-10-10 00:15:27;
+normal BIOS/UEFI and all5 hashes were restored and verified00:17:06.
+Do not close33.4,33.5 or this parent gate from partial online playback.
+
 ## Required demonstration
 
 1. Boot the normal MyOS build in QEMU, open the MyOS browser, and reach
@@ -55,7 +69,7 @@ with its RTL8139 NIC and SB16 audio device, run `net up`, then type
 `video net HOST PORT /clip.myv`. The TLS certificate must validate for HOST.
 This command cannot play a YouTube URL.
 
-## Current gate
+## Historical initial gate — 2026-09-28
 
 MyOS fetched 1,344,776 bytes from the watch URL over verified HTTPS in a
 QEMU probe on 2026-09-28. This proves transport only. The current Browser
@@ -100,3 +114,9 @@ restricted loader scope and the still-open native-engine gate.
 See [PHASE33_EXECUTION_PLAN.md](PHASE33_EXECUTION_PLAN.md) for the next-session
 sequence, runtime/engine gates, standard-media stage (33.3), YouTube integration
 (33.4), and final Rickroll acceptance (33.5). This is planning, not completion.
+
+Checkpoint4 completion2026-10-10 00:17 +07: new PMM1024 full default
+system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
+passed, all5 normal identities exact, runner exit0. Evidence:
+wip/phase334/checkpoint4/regression. Earlier running/pending statements
+above are historical. YouTube performance/recovery acceptance still open.

@@ -1,4 +1,4 @@
-Updated:2026-10-09 23:16 +07. /home/xytron404/myos,main.
+Updated:2026-10-10 00:18 +07. /home/xytron404/myos,main.
 Phase33.4 owner-authorized; goal ACTIVE, NOT PASSED. No push.
 Preserve owner untracked promotion logs/status/audits.
 
@@ -98,3 +98,25 @@ has no display frame; no false144p source-dimension claim from old log.
 in SbSystemNetworkIsDisconnected; no evidence for replacing it yet.
 First-image diagnostic provider-w7xacfv8 compiled; default native-underlay
 provider-qfd9o94e still exact41901a13. No shared-image mutation duringfull.
+
+## Authoritative checkpoint4 regression completion
+Full default tests/test_system.py PASS2026-10-10 00:15:27.
+UEFI normal rebuild, final launcherUEFI and paired-provider BIOS/UEFI all
+exit0; runner terminal0 at00:17:06. All5 normal hashes exactly match
+pmm1g-normal-identity.json, default VP8 native-underlay remains41901a13.
+See checkpoint4/regression/result.json and compressed full logs.
+No33.4 acceptance: sync/network recovery remain failed.
+New latency/quality/Stats/search/desktop observation provider-w7xacfv8
+started00:18, no shared-image changes while it runs. Goal ACTIVE.
+
+00:25 authoritative new issue: x9u7dks0 observation terminal0 00:24:28.
+Native VM reserve ENOMEM areas256/limit256 repeatedly, RAM still available.
+Diagnostic console spam corrupts webpage rendering; no timing acceptance.
+Native decoded144p source now256x144 is actually logged. Scoped durations
+include decode60ms/present120ms/wakeup110ms; contaminated by errors.
+Both closes return shell; native desktop window opens/presents via mouse
+and quits to shell; PMM257743 identical after both desktop checks.
+Evidence checkpoint5/area256-failed. Need bounded VM area capacity increase,
+full-table/reuse native focused coverage, serial-only rate-limited scalar
+ENOMEM diagnostics, then new architectural full suite. No shared images
+mutated during completed observation. Currentnormal5 remain verified.

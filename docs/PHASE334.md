@@ -130,3 +130,9 @@ through native NIC loss until120s media exhaustion. Automatic recovery
 not yet verified.360p and144p sync outliers still violate100ms candidate
 budget. Scoped decode/presentation/wakeup timing instrumentation is
 diagnostic only; no performance policy change or broad RAM capture.
+
+Checkpoint4 completion2026-10-10 00:17 +07: new PMM1024 full default
+system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
+passed, all5 normal identities exact, runner exit0. Evidence:
+wip/phase334/checkpoint4/regression. Earlier running/pending statements
+above are historical. YouTube performance/recovery acceptance still open.
