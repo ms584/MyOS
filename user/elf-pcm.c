@@ -62,6 +62,33 @@ int _start(void){
  if(invoke(&request)||status.consumed<before_pause||status.consumed>24576||status.queued||status.dma_frames)return 28;
  uint64_t paused=status.consumed;
  if(clock_nanosleep(1,0,&sleep,0)||invoke(&request)||status.consumed!=paused)return 29;
+ /* Opt-in DMA geometry has strict bounds and cannot change queued/running
+  * leases. Default clients above retain the original16KiB start threshold. */
+ request=(struct pcm_request){PCM_CONFIGURE,0,0,512,0};if(invoke(&request)!=-22)return 30;
+ request.length=1024;request.buffer=(uintptr_t)samples;if(invoke(&request)!=-22)return 31;
+ request.buffer=0;request.result=(uintptr_t)&status;if(invoke(&request)!=-22)return 32;
+ request.result=0;if(invoke(&request))return 33;
+ request=(struct pcm_request){PCM_QUEUE,0,(uintptr_t)samples,512,0};if(invoke(&request))return 34;
+ request=(struct pcm_request){PCM_CONFIGURE,0,0,8192,0};if(invoke(&request)!=-16)return 35;
+ request=(struct pcm_request){PCM_FLUSH,0,0,0,0};if(invoke(&request))return 36;
+ request=(struct pcm_request){PCM_QUEUE,0,(uintptr_t)samples,2048,0};if(invoke(&request))return 37;
+ request=(struct pcm_request){PCM_CONFIGURE,0,0,8192,0};if(invoke(&request)!=-16)return 38;
+ request=(struct pcm_request){PCM_STATUS,0,0,0,(uintptr_t)&status};waits=0;
+ do{if(invoke(&request)||status.consumed>paused+2048)return 39;
+  if(status.consumed==paused+2048)break;
+  if(clock_nanosleep(1,0,&sleep,0))return 40;
+ }while(++waits<100);
+ if(status.consumed!=paused+2048||status.queued||status.dma_frames)return 41;
+ request=(struct pcm_request){PCM_FLUSH,0,0,0,0};if(invoke(&request))return 42;
+ request=(struct pcm_request){PCM_CONFIGURE,0,0,8192,0};if(invoke(&request))return 43;
+ request=(struct pcm_request){PCM_RELEASE,0,0,0,0};if(invoke(&request))return 44;
+ request=(struct pcm_request){PCM_CONFIGURE,0,0,1024,0};if(invoke(&request)!=-9)return 45;
+ request=(struct pcm_request){PCM_ACQUIRE,0,0,0,(uintptr_t)&status};if(invoke(&request))return 46;
+ request=(struct pcm_request){PCM_QUEUE,0,(uintptr_t)samples,2048,0};if(invoke(&request))return 47;
+ request=(struct pcm_request){PCM_STATUS,0,0,0,(uintptr_t)&status};
+ if(invoke(&request)||status.queued!=2048||status.dma_frames||status.consumed)return 48;
+ request=(struct pcm_request){PCM_FLUSH,0,0,0,0};if(invoke(&request))return 49;
+ SbLogRaw("native PCM opt-in geometry/bounds/busy/lease/default-reset PASS\n");
  if(munmap(pages,8192))return 19;
 #if LEAK_AUDIO
  SbLogRaw("native PCM owned IRQ/flush/pointer PASS; automatic process cleanup required\n");

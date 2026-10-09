@@ -395,7 +395,8 @@ static int64_t ui_call(struct process *p,struct frame *f)
             if(!copy_from_user(p,(char *)ui_row,request.pixels+(uint64_t)y*request.stride+x*4,count*4))return -14;
             if(request.format==NATIVE_UI_RGBA8)
                 for(uint32_t i=0;i<count;++i){uint32_t pixel=ui_row[i];
-                    ui_row[i]=((pixel&255)<<16)|(pixel&0xff00)|((pixel>>16)&255);}
+                    ui_row[i]=(pixel&0xff000000)|((pixel&255)<<16)|(pixel&0xff00)|((pixel>>16)&255);}
+            else for(uint32_t i=0;i<count;++i)ui_row[i]|=0xff000000;
             row.width=row.stride=count;
             int result=native_ui_draw(p,f->rdi,&row,request.x+(int)x,request.y+(int)y);
             if(result)return result;
@@ -404,6 +405,9 @@ static int64_t ui_call(struct process *p,struct frame *f)
     }
     return 0;
 }
+
+
+#include "native-video-syscall.inc"
 
 struct frame *syscall_dispatch(struct frame *frame)
 {
@@ -414,6 +418,7 @@ struct frame *syscall_dispatch(struct frame *frame)
     }
     process_cleanup_detached(process);
     switch (frame->rax) {
+    case MYOS_NATIVE_VIDEO_SYSCALL:frame->rax=(uint64_t)native_video_call(process,frame);break;
     case SYS_DNS:frame->rax=(uint64_t)dns_call(process,frame);break;
     case SYS_SYSTEM:frame->rax=(uint64_t)system_call(process,frame);break;
     case SYS_MEMORY_INFO:

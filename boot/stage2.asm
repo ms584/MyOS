@@ -3,6 +3,11 @@ org 0x8000
 %ifndef KERNEL_SECTORS
 %error KERNEL_SECTORS required
 %endif
+; The image starts at0x10000. The linked kernel+BSS must end below
+; the0x80000 initial stack; the development image is capped at288KiB.
+%if KERNEL_SECTORS < 1 || KERNEL_SECTORS > 576
+%error Kernel sector count exceeds the audited development image envelope
+%endif
 start:
     cli
     xor ax,ax

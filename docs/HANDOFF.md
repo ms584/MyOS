@@ -3384,3 +3384,60 @@ Starboard storage, TCP concurrency, renderer/input bridge, HTML/JavaScript/DOM,
 or verified HTTPS acceptance. Keep Phases 33.1/33.2 open and do not start 33.3.
 Next: continue the Starboard storage/runtime and concurrent TCP dependencies,
 then implement the real Evergreen launcher and renderer/input path.
+
+
+## Phase33.3 continuation checkpoint  2026-10-09 09:55 +07
+Phase remains OPEN. Native standard WebM/VP8/Opus player fixture now passes
+>30seconds moving frames+actual SB16 sound,controls/EOS/restart and exact
+cleanup. Latest native readback A/V max84043us vs100000us target; RAM budget
+not measured. Extended opt-in DMA focused tests pass BIOS+UEFI.
+Actual Cobalt verified HTTPS/MSE metadata/clock/controls work but video is
+BLACK. Diagnostic trace identifies a GPU context failure: missing
+GL_ANGLE_robust_client_memory in raw Mesa, no frame pulls. Do not count DOM
+events/imports/native fixture as engine visual acceptance. Validating decoder
+diagnostic is in progress in a separate frozen image; normal source restored.
+Full phase333-full-regression2.log suite is running, not yet PASS.
+See PHASE333.md, PROJECT_STATE.md and wip/phase333/checkpoint2/ for evidence,
+limits,reproduction and remaining engine/network/RAM/final image gates.
+No33.4/YouTube claim and no push.
+
+## Checkpoint3: actual engine video, still OPEN (2026-10-09 10:36 +07)
+The supported Starboard punch-out output activates Cobalt's Viz underlay.
+Native syscall60 copies a bounded160x90 RGBA frame, composites it beneath
+premultiplied UI alpha and clears it on seek/stop/owner exit. No ANGLE extension
+is falsely advertised. Decode-to-texture remains available to the native fixture.
+Both real engine sessions now show changing decoded frames and output SB16 PCM
+from the same MyOS session over ordinarily verified HTTPS/MSE. First run has22
+distinct video crops and40.60s captured audio. This supersedes the black-image
+observation above, without retroactively passing it.
+
+Guest pixel contract tests passed before and after skip-unchanged composition:
+opaque occlusion/alpha, full bad-frame rejection, timestamp order/reset, moves,
+hide/show, cancel/fault/relaunch and exact fixture resources. Host ASan/UBSan
+state-machine checks also passed. The engine still leaves61440bytes of kernel
+heap after exit; source, cause and repeatability need investigation. Captured
+tone windows show real-time quality needs measurement. Neither sync nor complete
+engine cleanup is passed. New provider aggregate presentation/audio-consumption
+metrics compile successfully; a non-trace run is next.
+
+Native asset-only accounted sampled media RAM is12636160bytes, including codec/
+provider preloaded image delta and fixture stack. Engine/MSE/compositor32MiB
+budget remains unmeasured. Existing PCM and media-provider ABI tests passed both
+BIOS and UEFI. Safe evidence is in wip/phase333/checkpoint3/.
+
+Full regression2 terminal1 at the final memory boot assertions: preceding
+helpers restore PROCESS_TESTS=0, while boot_test requires process-probe markers.
+The harness explicitly rebuilds the instrumented image before that group;
+no assertion is removed. Focused memory suite passed. Full regression3 runs
+against promoted native underlay architecture; final full PASS and normal
+BIOS/UEFI restoration remain required. Do not build root concurrently.
+No Phase33.4/YouTube claim and no push.
+
+Full regression3 stopped at build, NOT PASS: instrumented kernel264524bytes
+exceeds the historical256KiB script cap. Normal kernel is256352bytes.
+The development cap is now288KiB (576sectors), also enforced in stage2 NASM.
+Physical safety is unchanged: load starts0x10000, maximum file ends0x58000;
+linker still requires all kernel+BSS below0x80000 stack and0x90000 DMA.
+Floppy CHS/BIOS EDD sector reads use bounded destination segments, with no
+wrap at this envelope. Full regression4 and normal BIOS/UEFI builds are pending.
+No media sync/RAM acceptance threshold changed.

@@ -1,0 +1,16 @@
+{
+  "boot_sha256": "a91ceb10654d80f26ded0859ef88358dceaf4da98241a1db27f7566c86b208aa",
+  "runtime_sha256": "f5d414273b811fee3b281baa110c09b84743cad67c78c06faefe8965297e1dde",
+  "shots": [
+    "0-blend.png",
+    "0-clear.png",
+    "0-move.png",
+    "0-show.png",
+    "1-blend.png",
+    "2-blend.png",
+    "3-blend.png",
+    "3-clear.png",
+    "3-move.png",
+    "3-show.png"
+  ]
+}

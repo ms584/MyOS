@@ -6,6 +6,8 @@
 #define DMA_BUFFER ((uint8_t *)(uintptr_t)boot_state.dma)
 #define DMA_BYTES MYOS_SB16_DMA_BYTES
 #define HALF 8192u
+#define STREAM_HALF 1024u
+_Static_assert(STREAM_HALF*2<=DMA_BYTES,"stream DMA fits reserved buffer");
 #define QUEUE_BYTES 65536u
 #define DSP 0x220u
 
@@ -19,16 +21,20 @@ static unsigned volume=100,completed_half;
 static bool present,running,mute;
 static uint64_t stream_owner,consumed_frames,reported_frames;
 static unsigned dma_frames[2];
+/* Native Starboard streams must start within Cobalt's local write horizon.
+ * Keep the established app audio DMA profile; a leased stream programs a
+ * 2048-byte ring (two1024-byte halves,~93ms each at11025Hz). */
+static unsigned active_half=HALF,active_dma_bytes=DMA_BYTES;
 
 static bool dsp_write(uint8_t value){
     for(unsigned i=0;i<100000;++i)if(!(inb(DSP+0x0c)&0x80)){outb(DSP+0x0c,value);return true;}
     return false;
 }
 static void refill(unsigned half){
-    uint8_t *out=DMA_BUFFER+half*HALF;
+    uint8_t *out=DMA_BUFFER+half*active_half;
     bool gap=false;
     unsigned frames=0;
-    for(unsigned i=0;i<HALF;++i){
+    for(unsigned i=0;i<active_half;++i){
         uint8_t sample=128;
         if(used){sample=queue[tail];tail=(tail+1)%QUEUE_BYTES;--used;++frames;}
         else gap=true;
@@ -43,7 +49,7 @@ static void dma_start(void){
     outb(0x0a,5);           /* mask channel 1 */
     outb(0x0c,0);           /* reset address/count flip-flop */
     outb(0x02,address&255);outb(0x02,(address>>8)&255);
-    outb(0x03,(DMA_BYTES-1)&255);outb(0x03,(DMA_BYTES-1)>>8);
+    outb(0x03,(active_dma_bytes-1)&255);outb(0x03,(active_dma_bytes-1)>>8);
     outb(0x83,address>>16); /* address page */
     outb(0x0b,0x59);        /* single, auto-init, memory-to-device, channel 1 */
     outb(0x0a,1);           /* unmask */
@@ -90,7 +96,7 @@ static bool start_internal(void){
     dma_start();
     bool ok=dsp_write(0x41)&&dsp_write(11025>>8)&&dsp_write(11025&255)&&
             dsp_write(0xd1)&&dsp_write(0xc6)&&dsp_write(0)&&
-            dsp_write((HALF-1)&255)&&dsp_write((HALF-1)>>8);
+            dsp_write((active_half-1)&255)&&dsp_write((active_half-1)>>8);
     if(!ok){outb(0x0a,5);tail=saved_tail;used=saved_used;
         dma_frames[0]=dma_frames[1]=0;return false;}
     running=true;return true;
@@ -126,8 +132,8 @@ static uint64_t played_snapshot(bool restart){
     if(running){
         outb(0x0a,5);outb(0x0c,0);
         unsigned remaining=inb(0x03);remaining|=(unsigned)inb(0x03)<<8;
-        if(remaining<DMA_BYTES){
-            unsigned cursor=DMA_BYTES-1-remaining,half=cursor/HALF,partial=cursor%HALF;
+        if(remaining<active_dma_bytes){
+            unsigned cursor=active_dma_bytes-1-remaining,half=cursor/active_half,partial=cursor%active_half;
             if(half!=completed_half)played+=dma_frames[completed_half];
             if(partial>dma_frames[half])partial=dma_frames[half];
             played+=partial;
@@ -157,14 +163,15 @@ int audio_stream_acquire(uint64_t owner){
     if(!owner)result=-22;
     else if(!present)result=-19;
     else if(stream_owner||used||dma_frames[0]||dma_frames[1])result=-16;
-    else {stop_internal();stream_owner=owner;consumed_frames=reported_frames=0;}
+    else {stop_internal();active_half=HALF;active_dma_bytes=DMA_BYTES;
+        stream_owner=owner;consumed_frames=reported_frames=0;}
     irq_restore(flags);return result;
 }
 int audio_stream_queue(uint64_t owner,const uint8_t *pcm,size_t count){
     uint64_t flags=irq_save();int result;
     if(!owner||owner!=stream_owner)result=-9;
     else if(!pcm||!count||count>QUEUE_BYTES)result=-22;
-    else result=queue_internal(pcm,count,used+count>=DMA_BYTES)?0:-11;
+    else result=queue_internal(pcm,count,used+count>=active_dma_bytes)?0:-11;
     irq_restore(flags);return result;
 }
 int audio_stream_status(uint64_t owner,struct audio_stream_status *status){
@@ -181,7 +188,8 @@ int audio_stream_status(uint64_t owner,struct audio_stream_status *status){
     irq_restore(flags);return result;
 }
 void audio_stream_release(uint64_t owner){
-    uint64_t flags=irq_save();if(owner&&owner==stream_owner){stop_internal();stream_owner=0;consumed_frames=reported_frames=0;}
+    uint64_t flags=irq_save();if(owner&&owner==stream_owner){stop_internal();stream_owner=0;active_half=HALF;active_dma_bytes=DMA_BYTES;
+        consumed_frames=reported_frames=0;}
     irq_restore(flags);
 }
 int audio_stream_flush(uint64_t owner){
@@ -192,6 +200,14 @@ int audio_stream_flush(uint64_t owner){
 int audio_stream_start(uint64_t owner){
     uint64_t flags=irq_save();int result=-9;
     if(owner&&owner==stream_owner)result=start_internal()?0:-11;
+    irq_restore(flags);return result;
+}
+int audio_stream_configure(uint64_t owner,unsigned half_frames){
+    uint64_t flags=irq_save();int result=0;
+    if(!owner||owner!=stream_owner)result=-9;
+    else if(half_frames!=STREAM_HALF&&half_frames!=HALF)result=-22;
+    else if(running||used||dma_frames[0]||dma_frames[1])result=-16;
+    else {active_half=half_frames;active_dma_bytes=half_frames*2;}
     irq_restore(flags);return result;
 }
 void audio_set_volume(unsigned percent){if(percent>100)percent=100;uint64_t f=irq_save();volume=percent;irq_restore(f);}

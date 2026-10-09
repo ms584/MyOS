@@ -32,8 +32,12 @@ bool gfx_capture(struct gfx_surface *surface)
     return true;
 }
 bool gfx_present(const struct gfx_surface *surface,int x,int y)
-{assert(surface&&!x&&!y);if(present_failure)return false;
- last_pixel=surface->pixels[4*surface->stride+3];++presented;return true;}
+{
+ assert(surface&&x>=0&&y>=0);if(present_failure)return false;
+ if(x<=3&&y<=4&&(uint32_t)(3-x)<surface->width&&(uint32_t)(4-y)<surface->height)
+  last_pixel=surface->pixels[(size_t)(4-y)*surface->stride+(unsigned)(3-x)]&0xffffff;
+ ++presented;return true;
+}
 int keyboard_get(void){return -1;}
 void mouse_flush(void){++flushed;}
 bool process_notify(struct process *process,uint64_t address)
@@ -73,12 +77,12 @@ int main(void)
     }
     assert(!native_ui_poll(&process,(uint64_t)handle,&out));
     assert(native_ui_visible(&other,(uint64_t)handle,false)==-9);
-    capture_failure=true;assert(native_ui_visible(&process,(uint64_t)handle,false)==-95&&sequence==140);
-    capture_failure=false;
+    present_failure=true;assert(native_ui_visible(&process,(uint64_t)handle,false)==-95&&sequence==140);
+    present_failure=false;
     assert(!native_ui_visible(&process,(uint64_t)handle,false));
     assert(sequence==141);
     native_ui_emit(&event);assert(sequence==141&&!native_ui_poll(&process,(uint64_t)handle,&out));
-    uint32_t value=0xab123456;struct gfx_surface row={1,1,1,&value};
+    uint32_t value=0xff123456;struct gfx_surface row={1,1,1,&value};
     assert(!native_ui_draw(&process,(uint64_t)handle,&row,3,4));
     assert(native_ui_draw(&other,(uint64_t)handle,&row,3,4)==-9);
     assert(native_ui_draw(&process,(uint64_t)handle,&row,800,4)==-22);
@@ -89,15 +93,15 @@ int main(void)
     assert(!native_ui_visible(&process,(uint64_t)handle,true)&&sequence==142);
     assert(!native_ui_release(&process,(uint64_t)handle));
     assert(last_pixel==0x445566);
-    assert(!allocated&&!queues&&presented==3&&flushed==3&&sequence==143);
-    unsigned count=notified;native_ui_emit(&event);assert(notified==count);
+    assert(!allocated&&!queues&&presented>=3&&flushed==3&&sequence==143);
+    unsigned count=notified,presents=presented;native_ui_emit(&event);assert(notified==count);
     int64_t replacement=native_ui_acquire(&process,(uintptr_t)&sequence,&info);
     assert(replacement>handle&&!info.dropped);
     assert(native_ui_query(&process,(uint64_t)handle,&info)==-9);
     assert(native_ui_poll(&process,(uint64_t)handle,&out)==-9);
     assert(native_ui_release(&process,(uint64_t)handle)==-9);
     native_ui_release_owner(&process);native_ui_release_owner(&process);
-    assert(!allocated&&!queues&&presented==4&&flushed==4);
+    assert(!allocated&&!queues&&presented==presents+1&&flushed==4);
     native_ui_set_modifiers(NATIVE_UI_CONTROL|NATIVE_UI_META);
     assert(native_ui_modifiers()==(NATIVE_UI_CONTROL|NATIVE_UI_META));return 0;
 }

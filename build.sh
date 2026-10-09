@@ -126,7 +126,7 @@ gcc "${flags[@]}" -nostdlib -static -no-pie \
     -o build/kernel.elf build/entry.o "${objects[@]}" build/interrupt-stubs.o build/context-probe.o build/user-blob.o build/app-blob.o build/platform-runtime-blob.o build/elf-start.o build/elf-pair-start.o build/libmbedtls-myos.a "$(gcc -print-libgcc-file-name)"
 objcopy -O binary build/kernel.elf build/kernel.bin
 size=$(stat -c %s build/kernel.bin)
-test "$size" -le 262144 || { echo 'Kernel exceeds 256 KiB loader limit' >&2; exit 1; }
+test "$size" -le 294912 || { echo 'Kernel exceeds 288 KiB development image cap' >&2; exit 1; }
 sectors=$(((size + 511) / 512))
 nasm -f bin boot/boot.asm -o build/boot.bin
 video=()

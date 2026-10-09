@@ -10,6 +10,6 @@ SECTIONS {
  ASSERT(kernel_entry == 0x10000,"entry address mismatch")
  /* Kernel+BSS ends before the BIOS 0x80000..0x8ffff initial stack.
     BIOS DMA owns 0x90000..0x93fff; UEFI allocates owned stack/DMA separately.
-    Keep the image itself under the separate 256 KiB cap. */
+    The separate 288 KiB image cap permits native media plus test probes. */
  ASSERT(__bss_end < 0x80000,"kernel exceeds low-memory reservation")
 }

@@ -15,6 +15,7 @@ int audio_stream_status(uint64_t owner,struct audio_stream_status *status);
 void audio_stream_release(uint64_t owner);
 int audio_stream_flush(uint64_t owner);
 int audio_stream_start(uint64_t owner);
+int audio_stream_configure(uint64_t owner,unsigned half_frames);
 void audio_irq(void);
 bool audio_queue(const uint8_t *pcm,size_t count);
 void audio_stop(void);

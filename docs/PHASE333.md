@@ -1,5 +1,6 @@
-# Phase 33.3  standard media
-Updated 2026-10-09 08:31 +07. Status: OPEN; checkpoint 1 native decode only.
+# Phase 33.3 - standard media
+Updated 2026-10-09 09:55 +07. Status: OPEN; native player checkpoint passes,
+real Cobalt visual playback is NOT passed.
 Baseline main 158f360 / production source 9aece1e. No Phase33.4 work.
 
 ## Prerequisite audit
@@ -49,7 +50,7 @@ Machine-readable pins: PHASE333_MEDIA_LOCK.json. Notices: licenses/phase333/.
   exact change before build. Initial unsupported configure flag and missing
   header/build-tool failures remain in ignored build/media-evaluation logs.
 
-## Checkpoint 1  native standard asset demux/decode
+## Checkpoint 1 - native standard asset demux/decode
 Final focused bundle: build/media-evaluation/native-decode-95k2xx2n.
 Committed public evidence: wip/phase333/checkpoint1/.
 Actual MyOS Ring3, non-root explicit KVM, 128MiB, normal BIOS image:
@@ -94,29 +95,150 @@ disposable asset disk and frozen normal boot copy, never uses owner data disks.
 Fetching here retrieves source archives/standard test asset only. Actual file
 reads, demux and decoding above happen in MyOS. No host decoder is executed.
 
-## Remaining checkpoints and preacceptance envelope
-2. Implement complete optional media-provider ABI, native Starboard player,
-   decode target textures and actual audio sink; test callback ownership,
-   invalid inputs, teardown and legacy provider compatibility. The existing
-   64KiB RX runtime cannot absorb codec libraries; paired loader currently
-   accepts only EGL/GLES provider getters. Design an explicit validated media
-   export contract before adding that architecture.
-3. Bounded sample/PCM/video queues, backpressure, shared A/V clock, pause/resume,
-   seek ticket flushing/reset, EOS, stop/restart; focused fault/low-RAM tests.
-4. Asset -> controlled verified HTTPS -> real Cobalt media element playback.
-5. Capture >=30 seconds moving frames AND sound from the same QEMU session,
-   exercise all controls, measure sync/resources, full regression, normal
-   BIOS/UEFI restoration and local commit.
+## Checkpoint 2 - native player, controls and bounded queues
+Public evidence: wip/phase333/checkpoint2/. These are actual MyOS/QEMU
+measurements of the native paired fixture, NOT Cobalt engine acceptance.
+- Optional version1 readonly media-provider marker and17 explicit strong RX
+  exports. Malformed markers/weak/missing/object exports fail closed before
+  execution; absent marker retains legacy runtime media-unavailable bindings.
+  Current BIOS ABI test provider-abi-9s5vkbi1 passes exact page rollback and
+  responsive shell. UEFI equivalent is running; no premature PASS claim.
+- Native generic VP8/Opus decoders feed4 RGBA160x90 frame slots, one pending
+  <=256KiB borrowed packet per track,32768 mono Int16 PCM sample frames,
+  and at most8 independently retained GL decode textures. API ownership and
+  callbacks remain asynchronous; deallocation follows actual consumption.
+- Actual consumed SB16 frames drive the shared A/V clock. Seek tickets destroy/
+  flush the old sink, release packets, reset codecs/queues/anchors and preroll.
+  Texture handles survive player destruction until explicitly released.
+- PCM_CONFIGURE adds an opt-in1024-frame DMA half. Other clients retain8192
+  frames per half /16KiB prebuffer; configure requires an owned stopped empty
+  lease and rejects other sizes/fields. Extended PCM focused tests passed
+  BIOS pcm-tcu_ly9c and UEFI pcm-gyhe8_c3: bounds,busy,IRQ,partial consumption,
+  flush,lease/default reset,real440Hz output,no hardware and exact cleanup.
+- Frozen original test asset: assets/tests/phase333/standard-160x90-40s.webm,
+  SHA256 c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2.
+  Standard WebM VP8+Opus,40seconds,600 video frames,160x90@15fps.
+  Host encoding only creates this input; no host decoding/transcoding is used
+  as acceptance. Guest reads/demuxes/decodes/renders/plays it.
+- native-player-vpxup2_y / player-optin1.log PASS on512MiB explicit non-root
+  KVM:684 rendered textures;629 framebuffer-readback A/V samples,
+  maximum84043us (declared threshold100000us). Readback decodes source frame
+  identity cells AFTER native GLES draw, compares with actual consumed audio
+  clock after swap; excludes initial/seek preroll and paused intervals.
+  It is a sampled software-presented metric, not physical display latency.
+- Original same-session QEMU SB16 WAV contains36.6075seconds /36 one-second
+  tone windows above the test amplitude threshold. WAV is captured44100Hz
+  stereo by QEMU from guest11025Hz mono8-bit SB16 output, not the source
+  decoder PCM. Moving framebuffer PNGs and original WAV lossless zip retained.
+- Pause/resume,seek15seconds,EOS,stop and same-process restart/close while
+  playing pass;2425 sample buffers allocated/released; free pages126679
+  before/after,SHM0,alias0,heap439040 before/after.
+- Fault fixture player-faults-ivdlnv7f passes two native launches at64MiB:
+  audio/video decode errors,rapid seek revisions,early close,audio-only/
+  video-only creation,real guest mmap pressure causing player creation to
+  fail,then release/recovery. Resource counters return exactly and shell
+  continues. This does not cover HTTPS network faults or every damaged file.
+- Original unsuccessful attempts remain preserved: default short-DMA change
+  broke the legacy prebuffer assertion; opt-in design fixed it without
+  weakening that assertion. Earlier A/V max116424us failed the declared
+  target; nearest-frame selection at renderer pull then passed, without
+  relaxing100ms. A harness run rejected mutable boot-image identity and was
+  rerun using an immutable image copy.
 
-Initial acceptance target BEFORE playback measurements:160x90 at15fps,
+## Real Cobalt engine status - OPEN
+- Exact pinned core fetches controlled verified HTTPS WebM byte ranges and
+  demuxes through its real MediaSource/WebM pipeline in MyOS. SourceBuffer
+  serializes8KiB appends,5s forward backpressure and removes compressed
+  history older than3s once >5s accumulates; telemetry references capped32.
+  This bounded retention revision still needs its completed engine run.
+- The pinned Evergreen USE_STARBOARD_MEDIA build has progressive URL demux
+  disabled when FFmpeg is absent. A direct video src attempt correctly
+  failed with error4; standard MSE is the supported inspected engine path.
+  No YouTube code/service is involved.
+- native-verified-tls-ywvd5_z9 has metadata160x90,playing/clock,keyboard
+  pause/resume/seek/stop events. Its video rectangle is BLACK. Native
+  player trace shows decode/audio progress, but no GetCurrentFrame pulls.
+  Therefore DOM/media clock events are NOT visual playback acceptance.
+- Diagnostic GPU profile log identifies Cobalt GPU context fatal failure:
+  missing GL_ANGLE_robust_client_memory in raw native Mesa. No unsupported
+  extension is advertised as a workaround. A separate frozen diagnostic
+  image tests Cobalt's validating command decoder. Normal source/image
+  restored automatically; diagnostic runs are not timing acceptance.
+- Remaining: actual moving engine video+sound >=30seconds in one session,
+  engine controls/EOS/restart,network stall/truncation/corruption/close tests,
+  measured bounded stream retention and incremental RAM including renderer
+  resources. Engine media clock currently advances slower than wall time;
+  real-time behavior and A/V sync must be measured after the image path works.
+
+## Reproduce player checkpoint
+Run from repository root, using the logger for each command. Codec/renderer SDK
+prerequisites above must already exist; build_media_provider prints its new
+directory. Use that directory with --provider, never its provider.so filename.
+    python3 tools/run_logged.py -- python3 tools/build_media_provider.py
+    python3 tools/run_logged.py -- python3 tests/test_media_native_player.py --provider build/media-evaluation/provider-qxwp5i1z --boot-image build/media-evaluation/optin-dma-normal/myos-current.img --kvm
+    python3 tools/run_logged.py -- python3 tests/test_pcm.py
+    python3 tools/run_logged.py -- python3 tools/build_uefi.py
+    python3 tools/run_logged.py -- python3 tests/test_pcm.py --uefi
+The paths shown identify the recorded runs; fresh builds print different
+directories. Media ABI tests require --core pointing to the generated native
+player fixture shared object and support --boot-image/--uefi/--kvm.
+
+## Remaining gates and preacceptance envelope
+Initial target declared BEFORE playback measurements:160x90 at15fps,
 mono11025Hz SB16 output from decoded Opus, <=100ms absolute presented-video
 timestamp versus actually consumed-audio timestamp after preroll. QEMU512MiB;
-incremental media allocation ceiling32MiB including codec state, stacks, sample/
-PCM queues and decode textures. These are targets, NOT measured or passed.
-Record RAM measurement method, drops, underruns and maxima before acceptance;
-change this envelope explicitly if measured capabilities require it.
+incremental media allocation ceiling32MiB including codec state,stacks,sample/
+PCM queues and decode textures. RAM budget has NOT been measured/passed.
+Record method,drops,underruns,maxima before acceptance; do not silently relax
+the envelope to turn a failed measurement into PASS.
 
-No Starboard player/decode-target/engine capability has been enabled by this
-checkpoint. No visible video, audible playback, HTTPS media streaming, controls,
-30-second session, A/V sync or RAM-budget acceptance exists yet. Phase33.3,
-Phase32/33 overall and YouTube/Rickroll remain NOT PASSED. No Phase33.4 or push.
+The first full phase regression was interrupted before subsequent driver
+changes; terminal1, NOT PASS. New complete tests/test_system.py is running
+against current loader/PCM architecture (phase333-full-regression2.log).
+Final focused tests,complete full regression and normal BIOS/UEFI restoration
+are required before phase acceptance. Checkpoint1's unchanged-image statement
+describes that historical checkpoint only; loader/PCM images have since changed.
+
+Phase33.3,Phase32/33 overall and YouTube/Rickroll remain NOT PASSED.
+No Phase33.4 work and no push.
+
+## Checkpoint3: actual engine video, still OPEN (2026-10-09 10:36 +07)
+The supported Starboard punch-out output activates Cobalt's Viz underlay.
+Native syscall60 copies a bounded160x90 RGBA frame, composites it beneath
+premultiplied UI alpha and clears it on seek/stop/owner exit. No ANGLE extension
+is falsely advertised. Decode-to-texture remains available to the native fixture.
+Both real engine sessions now show changing decoded frames and output SB16 PCM
+from the same MyOS session over ordinarily verified HTTPS/MSE. First run has22
+distinct video crops and40.60s captured audio. This supersedes the black-image
+observation above, without retroactively passing it.
+
+Guest pixel contract tests passed before and after skip-unchanged composition:
+opaque occlusion/alpha, full bad-frame rejection, timestamp order/reset, moves,
+hide/show, cancel/fault/relaunch and exact fixture resources. Host ASan/UBSan
+state-machine checks also passed. The engine still leaves61440bytes of kernel
+heap after exit; source, cause and repeatability need investigation. Captured
+tone windows show real-time quality needs measurement. Neither sync nor complete
+engine cleanup is passed. New provider aggregate presentation/audio-consumption
+metrics compile successfully; a non-trace run is next.
+
+Native asset-only accounted sampled media RAM is12636160bytes, including codec/
+provider preloaded image delta and fixture stack. Engine/MSE/compositor32MiB
+budget remains unmeasured. Existing PCM and media-provider ABI tests passed both
+BIOS and UEFI. Safe evidence is in wip/phase333/checkpoint3/.
+
+Full regression2 terminal1 at the final memory boot assertions: preceding
+helpers restore PROCESS_TESTS=0, while boot_test requires process-probe markers.
+The harness explicitly rebuilds the instrumented image before that group;
+no assertion is removed. Focused memory suite passed. Full regression3 runs
+against promoted native underlay architecture; final full PASS and normal
+BIOS/UEFI restoration remain required. Do not build root concurrently.
+No Phase33.4/YouTube claim and no push.
+
+Full regression3 stopped at build, NOT PASS: instrumented kernel264524bytes
+exceeds the historical256KiB script cap. Normal kernel is256352bytes.
+The development cap is now288KiB (576sectors), also enforced in stage2 NASM.
+Physical safety is unchanged: load starts0x10000, maximum file ends0x58000;
+linker still requires all kernel+BSS below0x80000 stack and0x90000 DMA.
+Floppy CHS/BIOS EDD sector reads use bounded destination segments, with no
+wrap at this envelope. Full regression4 and normal BIOS/UEFI builds are pending.
+No media sync/RAM acceptance threshold changed.

@@ -1,0 +1,111 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 11991
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 2048 sectors
+Storage: unrecognized data disk; RAM-only
+Security: UTC 1791516701, RDRAND unavailable, HTTPS blocked
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> elf live underlay0
+ELF staged pages: 15
+ELF platform: munmap
+ELF platform: SbWindowCreate
+ELF platform: mmap
+ELF platform: write
+ELF platform: MyOSUiPoll
+ELF platform: MyOSUiPresent
+ELF platform: mprotect
+ELF platform: SbWindowDestroy
+ELF relocations: relative=0 absolute=0 global=0 jump=8 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+Underlay blend ready
+Underlay clear ready
+Underlay move ready
+Underlay show ready
+Underlay reacquire ready
+Underlay validation/blend/clear/move/hide/show/reuse PASS
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373504 heap-after=373504
+ELF exited with status 55
+myos> elf live underlay1
+ELF staged pages: 15
+ELF platform: munmap
+ELF platform: SbWindowCreate
+ELF platform: mmap
+ELF platform: write
+ELF platform: MyOSUiPoll
+ELF platform: MyOSUiPresent
+ELF platform: mprotect
+ELF relocations: relative=0 absolute=0 global=0 jump=7 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+Underlay blend ready
+Underlay cancel ready
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373504 heap-after=373504
+ELF cancelled; all threads stopped
+myos> elf live underlay2
+ELF staged pages: 15
+ELF platform: munmap
+ELF platform: SbWindowCreate
+ELF platform: mmap
+ELF platform: write
+ELF platform: MyOSUiPoll
+ELF platform: MyOSUiPresent
+ELF platform: mprotect
+ELF platform: SbWindowDestroy
+ELF relocations: relative=0 absolute=0 global=0 jump=8 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+Underlay blend ready
+Underlay fault ready
+USER FAULT pid=7 vector=6 error=0x0000000000000000 rip=0x000000800000168B
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373504 heap-after=373504
+error: invalid executable
+myos> elf live underlay0
+ELF staged pages: 15
+ELF platform: munmap
+ELF platform: SbWindowCreate
+ELF platform: mmap
+ELF platform: write
+ELF platform: MyOSUiPoll
+ELF platform: MyOSUiPresent
+ELF platform: mprotect
+ELF platform: SbWindowDestroy
+ELF relocations: relative=0 absolute=0 global=0 jump=8 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF live: started; Escape stops all threads
+Underlay blend ready
+Underlay clear ready
+Underlay move ready
+Underlay show ready
+Underlay reacquire ready
+Underlay validation/blend/clear/move/hide/show/reuse PASS
+ELF resident: free-before=11991 free-after=11991 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF live: pages reclaimed; heap-before=373504 heap-after=373504
+ELF exited with status 55
+myos> 

@@ -11,6 +11,8 @@ static uint64_t generation,next_generation,notify_address;
 static unsigned head,tail,count;
 static uint32_t dropped,modifiers;
 static struct native_ui_event *events;
+static void video_dispose(void);
+static int present_base_row(unsigned,unsigned,unsigned);
 
 bool native_ui_owns(struct process *process){return process&&owner==process;}
 uint32_t native_ui_modifiers(void){return modifiers;}
@@ -36,6 +38,7 @@ int64_t native_ui_acquire(struct process *process,uint64_t notification,struct n
     struct native_ui_event *queue=kmalloc(UI_EVENTS*sizeof(*queue));
     if(!queue){gfx_surface_destroy(frame);gfx_surface_destroy(snapshot);return -12;}
     if(!gfx_capture(snapshot)){kfree(queue);gfx_surface_destroy(frame);gfx_surface_destroy(snapshot);return -95;}
+    for(size_t i=0;i<(size_t)frame->stride*frame->height;++i)frame->pixels[i]=snapshot->pixels[i]|0xff000000;
     saved=snapshot;foreground=frame;events=queue;visible=true;
     owner=process;generation=++next_generation;notify_address=notification;
     head=tail=count=0;dropped=0;info->handle=generation;return (int64_t)generation;
@@ -45,6 +48,7 @@ static void release(void)
     /* Wake borrowed waiters before invalidating ownership; no IRQ may retain
      * this process or a notification VA after its pages are reclaimed. */
     if(owner&&notify_address)process_notify(owner,notify_address);
+    video_dispose();
     owner=0;generation=notify_address=0;head=tail=count=0;dropped=0;
     if(saved){gfx_present(saved,0,0);gfx_surface_destroy(saved);saved=0;}
     if(foreground){gfx_surface_destroy(foreground);foreground=0;}visible=false;
@@ -77,18 +81,31 @@ int native_ui_visible(struct process *process,uint64_t handle,bool show)
 {
     if(!matches(process,handle))return -9;
     if(visible==show)return 0;
-    if(!show&&!gfx_capture(foreground))return -95;
-    if(!gfx_present(show?foreground:saved,0,0))return -95;
-    visible=show;head=tail=count=0;process_notify(owner,notify_address);
+    if(!show){if(!gfx_present(saved,0,0))return -95;visible=false;}
+    else{
+        visible=true;
+        for(unsigned y=0;y<foreground->height;++y){
+            int rc=present_base_row(0,y,foreground->width);
+            if(rc){visible=false;gfx_present(saved,0,0);return rc;}
+        }
+    }
+    head=tail=count=0;process_notify(owner,notify_address);
     while(keyboard_get()>=0){}mouse_flush();return 0;
 }
 int native_ui_draw(struct process *process,uint64_t handle,const struct gfx_surface *row,int x,int y)
 {
     if(!matches(process,handle))return -9;
-    if(visible)return gfx_present(row,x,y)?0:-95;
     if(!row||!row->pixels||!row->width||row->height!=1||x<0||y<0||
        (uint64_t)x+row->width>foreground->width||(uint32_t)y>=foreground->height)return -22;
-    for(unsigned i=0;i<row->width;++i)
-        foreground->pixels[(size_t)y*foreground->stride+(unsigned)x+i]=row->pixels[i]&0xffffff;
-    return 0;
+    bool changed=false;
+    for(unsigned i=0;i<row->width;++i){
+        size_t index=(size_t)y*foreground->stride+(unsigned)x+i;
+        if(foreground->pixels[index]!=row->pixels[i])changed=true;
+        foreground->pixels[index]=row->pixels[i];
+    }
+    /* Retained UI pixels already have the current underlay composited.
+     * Avoid repeated slow MMIO for unchanged Cobalt damage rectangles. */
+    return changed?present_base_row((unsigned)x,(unsigned)y,row->width):0;
 }
+
+#include "native-video.inc"

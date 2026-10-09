@@ -1,0 +1,470 @@
+{
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": true,
+  "provider_sha256": "ed5e1646acbf49b529dee0afd5e0a976c214f0bca8886b9b120ba8a10cbe4743",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "core_sha256": "04426f105b175a315c638f6fdf1998cc462e8fa90a35cd965faad6e23d1f7320",
+  "boot_sha256": "036d1b3337079e7f5181c2f0ac42bc901f8a94da18713a6a27a019204db47eaf",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-000.ppm",
+      "host_monotonic": 4635.614554075,
+      "sha256": "d5a45ce3073addade782c4e0087234077bd7d34592f46ea5586884014bec76f5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-001.ppm",
+      "host_monotonic": 4637.626654336,
+      "sha256": "d5a45ce3073addade782c4e0087234077bd7d34592f46ea5586884014bec76f5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-002.ppm",
+      "host_monotonic": 4639.639541477,
+      "sha256": "d5a45ce3073addade782c4e0087234077bd7d34592f46ea5586884014bec76f5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-003.ppm",
+      "host_monotonic": 4641.651514944,
+      "sha256": "d5a45ce3073addade782c4e0087234077bd7d34592f46ea5586884014bec76f5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-004.ppm",
+      "host_monotonic": 4643.663952912,
+      "sha256": "1960428af24d440f4b88d552320d306a9b6c54a612ad36359e8e34c799742ef7"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-005.ppm",
+      "host_monotonic": 4645.67625808,
+      "sha256": "4ecc6caa04b86fa330cd08d42abea1fad3b03c9b6f0e1138a30977ee3f0af9ad"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-006.ppm",
+      "host_monotonic": 4647.687726848,
+      "sha256": "97efcd4dafd5de7149b716777949db6effeb70217f97ee019633646611909462"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-007.ppm",
+      "host_monotonic": 4649.700102605,
+      "sha256": "9cd75b74bee6e8f2443356f167039d9ba0d27fd490c35a1d36c44dc4189ae4a4"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-008.ppm",
+      "host_monotonic": 4651.712000137,
+      "sha256": "5a959b2b3b60bccfb4db9414a15995341c37da8b27c4d95a17a6f5a36bbdfc3e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-009.ppm",
+      "host_monotonic": 4653.724388868,
+      "sha256": "09414f74c17a049de44aa4f46381c19eac05eea85745e04f328fb026c0a9f6fe"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-010.ppm",
+      "host_monotonic": 4655.737190599,
+      "sha256": "990ee6490c067d7e4137c631155aa59fd234f6bdf78effd309d4d5a0b42f588e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-011.ppm",
+      "host_monotonic": 4657.749586774,
+      "sha256": "990ee6490c067d7e4137c631155aa59fd234f6bdf78effd309d4d5a0b42f588e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-012.ppm",
+      "host_monotonic": 4659.762222432,
+      "sha256": "990ee6490c067d7e4137c631155aa59fd234f6bdf78effd309d4d5a0b42f588e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-013.ppm",
+      "host_monotonic": 4661.774679591,
+      "sha256": "08c960ffabee04e4ae7848e9c72a72caa4320b1af7288694d77adf15c7130d89"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-014.ppm",
+      "host_monotonic": 4663.78667595,
+      "sha256": "b2088ebd01bdf65265b98a00b465dec7735c7960dfedc310177caa0c18e8f800"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-015.ppm",
+      "host_monotonic": 4665.799701324,
+      "sha256": "4050660067a8ce04ec96cce6159d53a568ae597d31e2188f73bf6efb905c2a91"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-016.ppm",
+      "host_monotonic": 4667.812095726,
+      "sha256": "f976941492a72c1fd837bd5ed10a4b34de0d54f4676a251edca5b929734a80a2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-017.ppm",
+      "host_monotonic": 4669.825603728,
+      "sha256": "478d3f7f74114f8e1fd7b1d5cc0a82968ffccaab6448d7ada4e3c629533e7f24"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-018.ppm",
+      "host_monotonic": 4671.83830103,
+      "sha256": "1fca96344297dbe6b6072973a21f2b65f6a4bb352242f10af5fb3f434ad4d609"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-019.ppm",
+      "host_monotonic": 4673.850999893,
+      "sha256": "bfc5a20d4d852da738cee7ca5cf2c6c49084e2e4b96e5e35d088fcc7d1ebea98"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-020.ppm",
+      "host_monotonic": 4675.86378039,
+      "sha256": "ebc65608435af8f00878fcfc382fa6df2dce93575deafa923f77d0e4ac9ecd87"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-021.ppm",
+      "host_monotonic": 4677.876684686,
+      "sha256": "8980bbf6d3e3917f906d9d3b5e36de4439e1b8cd7a88d21223b7b3050a885da1"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-022.ppm",
+      "host_monotonic": 4679.888438783,
+      "sha256": "27ce3dee81e2d8de84e8d12cb8f2ff100cf353253ee0c2fb847623b50aa8d1ea"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-023.ppm",
+      "host_monotonic": 4681.90067922,
+      "sha256": "f06830b158660ed19afc745c5169e6d661639ee7fdf28d063e67cd19f36f6dd0"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-024.ppm",
+      "host_monotonic": 4683.912575322,
+      "sha256": "1bd1103e78b6b1bcb4a92b00cd0669a93de688ebb444fbcaac45214ac519a864"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-025.ppm",
+      "host_monotonic": 4685.925425823,
+      "sha256": "8b220e4cd239303edc30f4cca434f3bfe487399464e1aed2dafefc74624f0bea"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-vpxup2_y/frame-026.ppm",
+      "host_monotonic": 4687.937627425,
+      "sha256": "f5222fb503e8b7bedd20712fef7982eac8c0e4b1d37aa280cbf691182a304d3a"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000C000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18331 absolute=0 global=2 jump=62 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: pthread_attr_init\nELF platform: SbWindowCreate\nELF provider: SbDecodeTargetRelease\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=62 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nnative player state=2\nnative media position-us=1051843\nnative media position-us=2033340\nnative media position-us=3033703\nnative media position-us=4034428\nnative PAUSE position=5056106\nnative media position-us=5056106\nnative RESUME\nnative media position-us=6006492\nnative media position-us=7007671\nnative media position-us=8029712\nnative media position-us=9030528\nnative SEEK to=15000000\nnative media position-us=10042410\nnative media position-us=15000000\nnative player state=1\nnative player state=2\nnative media position-us=16032010\nnative media position-us=17043076\nnative media position-us=18034187\nnative media position-us=19056409\nnative media position-us=20037815\nnative media position-us=21038268\nnative media position-us=22020309\nnative media position-us=23054323\nnative media position-us=24058404\nnative media position-us=25030287\nnative media position-us=26052509\nnative media position-us=27040355\nnative media position-us=28001443\nnative media position-us=29022849\nnative media position-us=30034096\nnative media position-us=31056137\nnative media position-us=32027021\nnative media position-us=33018404\nnative media position-us=34049425\nnative media position-us=35000173\nnative media position-us=36030196\nnative media position-us=37000990\nnative media position-us=38005162\nnative media position-us=39032826\nnative player state=3\nnative player state=4\nnative retained textures/player destroy/capacity PASS\nnative rendered textures=684\nnative presented A-V max-us=84043\nnative presented A-V samples=629\nnative sample allocated=2425\nnative sample released=2425\nnative player state=0\nnative player state=1\nnative player state=2\nnative player state=4\nnative same-process restart/stop while playing PASS\nnative standard player asset/control/EOS checkpoint PASS; NOT Cobalt/HTTPS acceptance\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=439040 heap-after=439040\nELF exited with status 97\nmyos> ",
+  "audio_seconds": 36.60750566893424,
+  "audio_channels": 2,
+  "audio_rate": 44100,
+  "audio_windows": [
+    {
+      "second": 0.0,
+      "rms": 7033.645373263099,
+      "positive_crossings": 440
+    },
+    {
+      "second": 1.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 2.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 3.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 4.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 5.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 6.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 7.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 8.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 9.0,
+      "rms": 7034.630578699603,
+      "positive_crossings": 440
+    },
+    {
+      "second": 10.0,
+      "rms": 6786.113443538314,
+      "positive_crossings": 660
+    },
+    {
+      "second": 11.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 12.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 13.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 14.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 15.0,
+      "rms": 6950.291174402666,
+      "positive_crossings": 864
+    },
+    {
+      "second": 16.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 17.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 18.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 19.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 20.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 21.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 22.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 23.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 24.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 25.0,
+      "rms": 6991.92820988275,
+      "positive_crossings": 574
+    },
+    {
+      "second": 26.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 27.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 28.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 29.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 30.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 31.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 32.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 33.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 34.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 35.0,
+      "rms": 6937.503970720606,
+      "positive_crossings": 435
+    }
+  ],
+  "audible_seconds": 36,
+  "visual": [
+    {
+      "path": "frame-000.png",
+      "host_monotonic": 4635.614554075,
+      "pixels_sha256": "062e3fea78c7d8412d273780046c6f632c14f68fad786ba0c3cef9c3c76d7ccc"
+    },
+    {
+      "path": "frame-001.png",
+      "host_monotonic": 4637.626654336,
+      "pixels_sha256": "062e3fea78c7d8412d273780046c6f632c14f68fad786ba0c3cef9c3c76d7ccc"
+    },
+    {
+      "path": "frame-002.png",
+      "host_monotonic": 4639.639541477,
+      "pixels_sha256": "062e3fea78c7d8412d273780046c6f632c14f68fad786ba0c3cef9c3c76d7ccc"
+    },
+    {
+      "path": "frame-003.png",
+      "host_monotonic": 4641.651514944,
+      "pixels_sha256": "062e3fea78c7d8412d273780046c6f632c14f68fad786ba0c3cef9c3c76d7ccc"
+    },
+    {
+      "path": "frame-004.png",
+      "host_monotonic": 4643.663952912,
+      "pixels_sha256": "ef77a7483bfb17031eb7d8c967329cc73e8a15df8d47ed1d304319e3dfb67167"
+    },
+    {
+      "path": "frame-005.png",
+      "host_monotonic": 4645.67625808,
+      "pixels_sha256": "ff5ffa182192ae2c5d685da14ce054c7e7061a2bd6a70248cb20486f28822ead"
+    },
+    {
+      "path": "frame-006.png",
+      "host_monotonic": 4647.687726848,
+      "pixels_sha256": "8e69a04e745bb77cee5b3ff854f8a46f6eb7a9f70c81f8b71cc938212cbca128"
+    },
+    {
+      "path": "frame-007.png",
+      "host_monotonic": 4649.700102605,
+      "pixels_sha256": "7cafb368c9562f02020a52e7c2a3c45fa873610270fcd9d8e857c700215c3ed9"
+    },
+    {
+      "path": "frame-008.png",
+      "host_monotonic": 4651.712000137,
+      "pixels_sha256": "84a150b2c2c83da9d797a14d4f116fca75992f56b27f6d434609c22eade7f0bf"
+    },
+    {
+      "path": "frame-009.png",
+      "host_monotonic": 4653.724388868,
+      "pixels_sha256": "303de5bce22e49fee53ff09116ab9f25bae413e8e6ab9ed1f4a3da7380f41e80"
+    },
+    {
+      "path": "frame-010.png",
+      "host_monotonic": 4655.737190599,
+      "pixels_sha256": "006ef864ccac846b57ccb9916936ec09e812f4c2f75185e0b087870f1b3f5046"
+    },
+    {
+      "path": "frame-011.png",
+      "host_monotonic": 4657.749586774,
+      "pixels_sha256": "006ef864ccac846b57ccb9916936ec09e812f4c2f75185e0b087870f1b3f5046"
+    },
+    {
+      "path": "frame-012.png",
+      "host_monotonic": 4659.762222432,
+      "pixels_sha256": "006ef864ccac846b57ccb9916936ec09e812f4c2f75185e0b087870f1b3f5046"
+    },
+    {
+      "path": "frame-013.png",
+      "host_monotonic": 4661.774679591,
+      "pixels_sha256": "ca1c851aeb1302c6c5d20fbff5d42a8da583747acdcb94c38c1101a79c295611"
+    },
+    {
+      "path": "frame-014.png",
+      "host_monotonic": 4663.78667595,
+      "pixels_sha256": "fa276802237aae129efff77ec262013e4a0fb2b5ee846aa447e68052cc30897f"
+    },
+    {
+      "path": "frame-015.png",
+      "host_monotonic": 4665.799701324,
+      "pixels_sha256": "aca54ea62f754bc65e69874197c880ae2726cbebffaf655d303e188a6d31babe"
+    },
+    {
+      "path": "frame-016.png",
+      "host_monotonic": 4667.812095726,
+      "pixels_sha256": "47de34c3b780c6beff5a73d78386a5345f7f49b37de93e8581ec2851c5f9aeda"
+    },
+    {
+      "path": "frame-017.png",
+      "host_monotonic": 4669.825603728,
+      "pixels_sha256": "d454ffd13585f52458dd4af43bd58fef5e8104a7ad81ad1ed4edac4ed7ad1f16"
+    },
+    {
+      "path": "frame-018.png",
+      "host_monotonic": 4671.83830103,
+      "pixels_sha256": "356cf45ab215cd9e2535c539f0be681e36d9aabb1b4129ad167409068e9fda51"
+    },
+    {
+      "path": "frame-019.png",
+      "host_monotonic": 4673.850999893,
+      "pixels_sha256": "0d3328d4ce15ac34699d6cb9d6c7b586e64499ac9c1b3f664f1cee0ae47741ff"
+    },
+    {
+      "path": "frame-020.png",
+      "host_monotonic": 4675.86378039,
+      "pixels_sha256": "bc7550a1044fb57b52fed7c92c7a5a43d7080d4336f539535250c9ae0481434d"
+    },
+    {
+      "path": "frame-021.png",
+      "host_monotonic": 4677.876684686,
+      "pixels_sha256": "5f25dca330f16f10ae9f02fe31feb2655d208a1a12b7d3df07a6b725341210f0"
+    },
+    {
+      "path": "frame-022.png",
+      "host_monotonic": 4679.888438783,
+      "pixels_sha256": "b7974b133036719c9eb6ef1fb3208db64489200b40b3607e51ee9739574e49de"
+    },
+    {
+      "path": "frame-023.png",
+      "host_monotonic": 4681.90067922,
+      "pixels_sha256": "5c9c3b95efacd3f836f9819f022bc3d457d1402424c5838a700eb56fcd85cb86"
+    },
+    {
+      "path": "frame-024.png",
+      "host_monotonic": 4683.912575322,
+      "pixels_sha256": "0a7ab065c5deaa51cabfb8ccca82eecedccca91e9142a780e17f958016510685"
+    },
+    {
+      "path": "frame-025.png",
+      "host_monotonic": 4685.925425823,
+      "pixels_sha256": "3cae32af2c2a004374d37f00dd6539ca05315ebacedeb83eeddb0416d6551efe"
+    },
+    {
+      "path": "frame-026.png",
+      "host_monotonic": 4687.937627425,
+      "pixels_sha256": "8cf49594a75223e2be3df2b4fb668d7199b7ebbee086676d66c4c01b43df95e6"
+    }
+  ]
+}

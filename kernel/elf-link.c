@@ -1,12 +1,19 @@
 #include "elf.h"
 #include "process.h"
 #include "platform-runtime-exports.h"
-/* Eager linker: tested platform allowlist and an explicit two-getter provider.
+#include "media-provider-abi.h"
+/* Eager linker: tested platform allowlist and an explicit EGL/GLES and optional media provider.
  * No arbitrary dependency search, symbol interposition or host loader. */
 struct dyn { int64_t tag;uint64_t value; };
 struct symbol { uint32_t name;uint8_t info,other;uint16_t section;uint64_t value,size; };
 struct rela { uint64_t offset,info;int64_t addend; };
-struct provider_exports { uint64_t egl,gles; };
+#define MEDIA_ENUM(name) media_##name,
+enum {MYOS_MEDIA_PROVIDER_EXPORTS(MEDIA_ENUM) media_export_count};
+#undef MEDIA_ENUM
+#define MEDIA_NAME(name) #name,
+static const char *const media_names[]={MYOS_MEDIA_PROVIDER_EXPORTS(MEDIA_NAME)};
+#undef MEDIA_NAME
+struct provider_exports { uint64_t egl,gles,media[media_export_count]; };
 struct linker {
     struct process *process;const struct elf_plan *plan;
     const struct provider_exports *provider;
@@ -31,14 +38,17 @@ static bool platform_resolve(const char *name,uint64_t *address)
         if(name_equal(name,platform_exports[i].name)){*address=platform_exports[i].address;return true;}
     return false;
 }
-static bool resolve(struct linker *l,const char *name,uint64_t *address)
+static bool provider_resolve(const struct provider_exports *provider,const char *name,uint64_t *address)
 {
-    if(l->provider){
-        if(name_equal(name,"SbGetEglInterface")){*address=l->provider->egl;return true;}
-        if(name_equal(name,"SbGetGlesInterface")){*address=l->provider->gles;return true;}
-    }
-    return platform_resolve(name,address);
+    if(!provider)return false;
+    if(name_equal(name,"SbGetEglInterface")){*address=provider->egl;return true;}
+    if(name_equal(name,"SbGetGlesInterface")){*address=provider->gles;return true;}
+    for(unsigned i=0;i<media_export_count;++i)
+        if(provider->media[i]&&name_equal(name,media_names[i])){*address=provider->media[i];return true;}
+    return false;
 }
+static bool resolve(struct linker *l,const char *name,uint64_t *address)
+{return provider_resolve(l->provider,name,address)||platform_resolve(name,address);}
 static bool span(const struct elf_plan *plan,uint64_t offset,uint64_t size,unsigned flags)
 {
     if(offset>=ELF_SPAN||size>ELF_SPAN-offset)return false;
@@ -149,8 +159,7 @@ static int imports(struct linker *l)
         if(s.section)continue;
         if(!s.name||!(s.info>>4))return -8;
         char name[256];if(symbol_name(l,&s,name))return -8;uint64_t address;
-        if(resolve(l,name,&address)){++l->platform;print(l->provider&&
-            (name_equal(name,"SbGetEglInterface")||name_equal(name,"SbGetGlesInterface"))?
+        if(resolve(l,name,&address)){++l->platform;print(provider_resolve(l->provider,name,&address)?
             "ELF provider: ":"ELF platform: ");print(name);print("\n");continue;}
         if((s.info>>4)==2){++l->weak;print("ELF weak zero: ");}
         else{++l->missing;print("ELF missing: ");}
@@ -247,6 +256,20 @@ static int paired_exit_abi(struct linker *l)
     if(!process_image_copy(l->process,address,&version,8,false)||version!=1)return -95;
     return 0;
 }
+/* Missing marker preserves the legacy unavailable-media runtime. Once a
+ * provider opts in, every media function must be a unique strong RX export. */
+static int media_provider_abi(struct linker *l,struct provider_exports *exports)
+{
+    uint64_t address,version;
+    int rc=exported_symbol(l,"MyOSMediaProviderAbi",&address,false);
+    if(rc==-95)return 0;
+    if(rc)return rc;
+    if(!process_image_copy(l->process,address,&version,8,false)||
+       version!=MYOS_MEDIA_PROVIDER_VERSION)return -95;
+    for(unsigned i=0;i<media_export_count;++i)
+        if((rc=exported_function(l,media_names[i],&exports->media[i])))return rc;
+    return 0;
+}
 static int prepare(struct process *process,const struct elf_plan *plan,struct elf_start *start,bool starboard,
                    const struct provider_exports *provider,bool runtime_mapped)
 {
@@ -302,11 +325,12 @@ static int prepare_pair(struct process *p,const struct elf_plan *const plans[2],
 {
     if(!plans[0]->dynamic||!plans[1]->dynamic||
        (plans[0]->tls_size&&plans[1]->tls_size))return -95;
-    struct linker provider={.process=p,.plan=plans[1]};struct provider_exports exports;
+    struct linker provider={.process=p,.plan=plans[1]};struct provider_exports exports={0};
     int rc=parse(&provider);if(rc)return rc;
     if(execute&&(rc=paired_exit_abi(&provider)))return rc;
     if((rc=exported_function(&provider,"SbGetEglInterface",&exports.egl))||
        (rc=exported_function(&provider,"SbGetGlesInterface",&exports.gles)))return rc;
+    if((rc=media_provider_abi(&provider,&exports)))return rc;
     if(!process_map_runtime(p))return -12;
     if((rc=prepare(p,plans[1],&starts[1],false,0,true)))return rc;
     if((rc=prepare(p,plans[0],&starts[0],starboard,&exports,true)))return rc;

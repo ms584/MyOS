@@ -1,0 +1,16 @@
+
+[2026-10-09T09:41:57.120516+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_pcm.py --uefi
+$ gcc -print-file-name=include
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Iinclude -Wall -Wextra -Werror -DEXPECT_AUDIO=0 -DLEAK_AUDIO=0 -c user/elf-pcm.c -o /home/xytron404/myos/build/pcm-gyhe8_c3/absent.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/myos/build/pcm-gyhe8_c3/absent.so /home/xytron404/myos/build/pcm-gyhe8_c3/absent.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Iinclude -Wall -Wextra -Werror -DEXPECT_AUDIO=1 -DLEAK_AUDIO=0 -c user/elf-pcm.c -o /home/xytron404/myos/build/pcm-gyhe8_c3/pcm.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/myos/build/pcm-gyhe8_c3/pcm.so /home/xytron404/myos/build/pcm-gyhe8_c3/pcm.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/15/include -Iuser/sdk -Iinclude -Wall -Wextra -Werror -DEXPECT_AUDIO=1 -DLEAK_AUDIO=1 -c user/elf-pcm.c -o /home/xytron404/myos/build/pcm-gyhe8_c3/cleanup.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/myos/build/pcm-gyhe8_c3/cleanup.so /home/xytron404/myos/build/pcm-gyhe8_c3/cleanup.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/pcm-none-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/system-tests/pcm-none-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/system-tests/pcm-none-uefi-vars.fd -drive format=raw,file=/home/xytron404/myos/build/pcm-gyhe8_c3/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 36199 (python3)
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/pcm-audio-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/system-tests/pcm-audio-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/system-tests/pcm-audio-uefi-vars.fd -audiodev wav,id=myos-audio,path=/home/xytron404/myos/build/pcm-gyhe8_c3/capture.wav -device sb16,audiodev=myos-audio -drive format=raw,file=/home/xytron404/myos/build/pcm-gyhe8_c3/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 36199 (python3)
+PASS: PRIVATE PCM real SB16/IRQ/pointer/flush/explicit and automatic process exit/relaunch/no-device/exact resources. /home/xytron404/myos/build/pcm-gyhe8_c3
+[2026-10-09T09:42:19.249140+07:00] exit=0

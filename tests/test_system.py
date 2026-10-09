@@ -288,6 +288,9 @@ def main():
             from test_storage import exercise
             exercise()
         if args.suite in ('all','memory'):
+            # App-focused helpers may restore PROCESS_TESTS=0. Boot assertions
+            # below require the instrumented image, regardless of helper order.
+            build()
             for ram in (16,256):boot_test(f'ram-{ram}M',ram)
         if args.suite in ('all','exceptions'):
             fault_test(1,'Invalid Opcode',0)

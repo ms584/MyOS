@@ -1,0 +1,16 @@
+{
+  "scope": "native asset fixture only; NOT Cobalt/HTTPS budget acceptance",
+  "measured": {
+    "process baseline-bytes": 56504320,
+    "process sampled-peak-bytes": 66674688,
+    "player increment-bytes": 10170368,
+    "PMM increment-bytes": 10170368
+  },
+  "media_provider_load_bytes": 15912960,
+  "renderer_provider_load_bytes": 15544320,
+  "preloaded_media_image_increment_bytes": 368640,
+  "fixture_main_worker_stack_bytes": 2097152,
+  "accounted_sampled_media_increment_bytes": 12636160,
+  "budget_bytes": 33554432,
+  "limits": "Sampled physical/process peak, not an exact allocation high water mark. PMM excludes pre-reserved kernel heap; kernel heap returns exactly after exit. Engine/compositor/MSE RAM still pending."
+}
