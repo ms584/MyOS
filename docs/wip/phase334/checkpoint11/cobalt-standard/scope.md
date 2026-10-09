@@ -1,0 +1,2 @@
+2026-10-10 05:20-05:22+07 latest first-video native Cobalt HTTPS/MSE standard PASS observation:38.533s movie motion14.975fps,39.953s native PCM expected tones,600decoded,dropped0,corrupted0,starvations0,actual SB16 sync39979us,hardware failures0,resident exact. Viewport top moves182->157 on EOS header; analysis detects rectangle edges, retains all frames. No RAM-history strict original acceptance is claimed.
+Phase33.4 incomplete; no33.5/parent33/Rickroll acceptance. No host production fetch/decoder/player. Signed URLs/private CA keys excluded.

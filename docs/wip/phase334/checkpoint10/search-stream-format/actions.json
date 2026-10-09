@@ -1,0 +1,100 @@
+[
+  {
+    "id": "focus-search",
+    "launch": 1,
+    "at": 110,
+    "type": "click",
+    "x": 350,
+    "y": 28
+  },
+  {
+    "id": "type-search",
+    "launch": 1,
+    "at": 115,
+    "type": "text",
+    "text": "BigBuckBunnyBlender"
+  },
+  {
+    "id": "search",
+    "launch": 1,
+    "at": 120,
+    "type": "key",
+    "key": "ret"
+  },
+  {
+    "id": "select-result",
+    "launch": 1,
+    "at": 150,
+    "type": "click",
+    "x": 268,
+    "y": 201
+  },
+  {
+    "id": "settings",
+    "launch": 1,
+    "at": 210,
+    "type": "click",
+    "x": 663,
+    "y": 459
+  },
+  {
+    "id": "quality",
+    "launch": 1,
+    "at": 218,
+    "type": "click",
+    "x": 613,
+    "y": 397
+  },
+  {
+    "id": "144p",
+    "launch": 1,
+    "at": 226,
+    "type": "click",
+    "x": 601,
+    "y": 343
+  },
+  {
+    "id": "pause",
+    "launch": 1,
+    "at": 280,
+    "type": "key",
+    "key": "k"
+  },
+  {
+    "id": "resume",
+    "launch": 1,
+    "at": 295,
+    "type": "key",
+    "key": "k"
+  },
+  {
+    "id": "seek",
+    "launch": 1,
+    "at": 315,
+    "type": "key",
+    "key": "l"
+  },
+  {
+    "id": "context",
+    "launch": 1,
+    "at": 330,
+    "type": "click",
+    "x": 350,
+    "y": 250,
+    "button": "right"
+  },
+  {
+    "id": "stats",
+    "launch": 1,
+    "at": 340,
+    "type": "click",
+    "x": 439,
+    "y": 559
+  },
+  {
+    "id": "close",
+    "launch": 1,
+    "at": 360,
+    "type": "close"
+  }
+]

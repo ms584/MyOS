@@ -10,6 +10,8 @@ base=ROOT/'build/media-evaluation'
 vp9='--vp9' in sys.argv
 underlay='--underlay' in sys.argv
 video_gap='--video-gap' in sys.argv
+late_bounds='--late-bounds' in sys.argv
+assert not late_bounds or (vp9 and underlay), 'late-bounds requires native VP9 underlay'
 assert not video_gap or (vp9 and underlay), 'video-gap requires native VP9 underlay'
 provider=Path(sys.argv[sys.argv.index('--provider')+1]).resolve()
 report=json.loads((provider/'report.json').read_text())
@@ -25,7 +27,7 @@ for name in ('media-webm','elf-media-player'):
  subprocess.run([str(cc),'-std=c11','-O2','-Wall','-Wextra','-Werror',
  '-Wno-misleading-indentation','-I'+str(out/'include'),'-I'+str(provider/'include'),
  '-Iuser','-Iinclude','-Iuser/starboard-media/include','-Iuser/starboard-system/include',
- *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),*(['-DMYOS_TEST_VIDEO_GAP=1'] if video_gap else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
+ *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),*(['-DMYOS_TEST_VIDEO_GAP=1'] if video_gap else []),*(['-DMYOS_TEST_LATE_BOUNDS=1'] if late_bounds else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
 archives=[]
 support=json.loads((ROOT/'build/renderer-provider-evaluation/provider-84sokh6g/report.json').read_text())
 for item in support['inputs']:
@@ -123,3 +125,10 @@ if video_gap:
  assert 'MEDIA rebuffer pause ' in output and 'MEDIA rebuffer resume ' in output, 'Native rebuffer transition not observed'
  (out/'video-gap-result.json').write_text(json.dumps(dict(native_video_only_gap=True,audio_hardware_clock_held=True,feed_restored=True,phase_passed=False),indent=2)+chr(10))
  print('PASS native video-only gap: actual audio held, feeding restored, controls/EOS/resources passed; not phase acceptance')
+
+if late_bounds:
+ assert 'native LATE_BOUNDS clock held until visible bounds PASS' in output
+ first=re.findall(r'MEDIA first-video ticket=(\d+) pts=(\d+) clock=(\d+) consumed=(\d+)',output)
+ assert first and all(int(row[3])==0 for row in first), 'Audio ran before first video submission'
+ (out/'late-bounds-result.json').write_text(json.dumps(dict(native_late_bounds=True,actual_clock_held_until_first_video=True,first_video_rows=first,phase_passed=False),indent=2)+chr(10))
+ print('PASS native late SetBounds: actual audio held until first video; controls/EOS/resources passed')

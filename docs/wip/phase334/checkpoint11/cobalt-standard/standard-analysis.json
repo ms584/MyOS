@@ -1,0 +1,177 @@
+{
+  "phase_passed": false,
+  "native_standard_observation": true,
+  "motion_span_seconds": 38.53333333333333,
+  "visible_fps": 14.97457586612064,
+  "audio_seconds": 39.953106575963716,
+  "visible_frames": [
+    {
+      "elapsed": 87.4185643689998,
+      "frame": 20,
+      "path": "media-087.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 89.44538523000301,
+      "frame": 50,
+      "path": "media-089.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 91.47414161000052,
+      "frame": 81,
+      "path": "media-091.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 93.5006411300019,
+      "frame": 111,
+      "path": "media-093.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 95.53005004300212,
+      "frame": 141,
+      "path": "media-095.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 97.55790607500239,
+      "frame": 172,
+      "path": "media-097.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 99.58861815199998,
+      "frame": 202,
+      "path": "media-099.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 101.62119658300071,
+      "frame": 232,
+      "path": "media-101.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 103.64873421599987,
+      "frame": 263,
+      "path": "media-103.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 105.68163640600324,
+      "frame": 294,
+      "path": "media-105.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 107.71412074700129,
+      "frame": 324,
+      "path": "media-107.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 109.74590165900008,
+      "frame": 355,
+      "path": "media-109.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 111.7771521700015,
+      "frame": 385,
+      "path": "media-111.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 113.809831382001,
+      "frame": 415,
+      "path": "media-113.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 115.84733575100108,
+      "frame": 445,
+      "path": "media-115.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 117.87935746400035,
+      "frame": 476,
+      "path": "media-117.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 119.91495357700114,
+      "frame": 507,
+      "path": "media-119.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 121.94775879000008,
+      "frame": 538,
+      "path": "media-121.png",
+      "barcode_top": 157
+    },
+    {
+      "elapsed": 123.9836527610023,
+      "frame": 568,
+      "path": "media-123.png",
+      "barcode_top": 182
+    },
+    {
+      "elapsed": 126.01732036500107,
+      "frame": 598,
+      "path": "media-126.png",
+      "barcode_top": 182
+    }
+  ],
+  "tones": [
+    {
+      "second": 5,
+      "rms": 55.20365510919513,
+      "crossings": 440,
+      "expected": 440
+    },
+    {
+      "second": 15,
+      "rms": 55.16854817269522,
+      "crossings": 660,
+      "expected": 660
+    },
+    {
+      "second": 25,
+      "rms": 55.38504673068846,
+      "crossings": 880,
+      "expected": 880
+    },
+    {
+      "second": 35,
+      "rms": 55.06317213138077,
+      "crossings": 550,
+      "expected": 550
+    }
+  ],
+  "metrics": {
+    "mono-us": 127300000,
+    "position-us": 40000083,
+    "presented": 603,
+    "sync-samples": 598,
+    "max-sync-us": 39979,
+    "decoded": 600,
+    "dropped": 0,
+    "corrupted": 0,
+    "starvations": 0,
+    "consumed": 441000,
+    "rate": 0,
+    "ram-query-bytes": 275763200,
+    "decode-max-us": 30000,
+    "present-max-us": 30000,
+    "wake-max-us": 20000
+  },
+  "hardware_clock_failures": 0,
+  "resident_exact": true,
+  "strict_original_ram_history_gate": false,
+  "source_sha256": "90dfe4b6d6f45097bad559d8aecc0bb818aafd8d2e796e81b300643d545e8943",
+  "barcode_note": "Viewport moves from y182 to y157 when EOS header stops wrapping; detect rectangle edges before reading cells."
+}

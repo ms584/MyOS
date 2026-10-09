@@ -64,6 +64,7 @@ struct SbPlayerPrivate {
  unsigned decoded_format_logged;
  unsigned native_hardware_clock_reads,native_hardware_clock_failures,native_hardware_ack_lag_frames;
  int native_rebuffering;unsigned native_rebuffers;int64_t native_presentation_max_us;
+ int native_first_video_pending;
 #endif
 #ifdef MYOS_MEDIA_TRACE
  int64_t diagnostic_decode_max_us,diagnostic_present_max_us,diagnostic_wake_max_us;
@@ -160,6 +161,10 @@ static void source_status(int *frames,int *offset,bool *playing,bool *eos,void *
  *playing=p->presenting&&p->rate==1.0&&!p->seek_pending&&!p->stop&&!p->failed;
 #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
  if(p->native_rebuffering)*playing=false;
+ /* Presenting state can precede Cobalt's first SetBounds on SPA navigation.
+  * Hold PCM until the first punch-out frame was actually submitted. Later
+  * hidden/zero bounds do not change normal background-audio behavior. */
+ if(p->native_video&&p->has_video&&p->native_first_video_pending)*playing=false;
 #endif
  *eos=p->pending[kSbMediaTypeAudio].eos&&!p->pending[kSbMediaTypeAudio].full;
  unsigned starved=*playing&&!*eos&&!*frames;
@@ -345,7 +350,7 @@ static void *player_worker(void *context){
    p->video_read=p->video_count=p->have_current=0;p->duration=0;p->wall_media=p->seek_time;p->wall_anchor=now_us();
    p->last_audio_pts=p->last_video_pts=INT64_MIN;p->failed=0;
 #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
-   p->native_rebuffering=0;
+   p->native_rebuffering=0;p->native_first_video_pending=p->native_video&&p->has_video;
 #endif
    pthread_mutex_unlock(&p->mutex);
    if(!error)error=create_sink(p);
@@ -478,6 +483,14 @@ static void *player_worker(void *context){
     if(rc){p->failed=1;notify_error=1;}
     else {
      p->shown_generation=p->rendered_generation=p->generation;p->shown_bounds=p->bounds_revision;p->video_shown=1;
+#ifdef MYOS_MEDIA_VP9
+     if(p->native_first_video_pending){
+      char first[160];snprintf(first,sizeof(first),
+       "MEDIA first-video ticket=%d pts=%lld clock=%lld consumed=%llu\n",
+       p->ticket,(long long)p->current.time,(long long)clock_locked(p),(unsigned long long)p->consumed);SbLogRaw(first);
+      p->native_first_video_pending=0;
+     }
+#endif
      ++p->native_presented;
      if(p->has_audio&&p->presenting&&p->rate==1.0&&p->consumed>2205){
       int64_t delta=p->current.time-clock_locked(p);if(delta<0)delta=-delta;
@@ -567,6 +580,14 @@ SbPlayer SbPlayerCreate(SbWindow window,const SbPlayerCreationParam *param,
 #endif
  if(!valid_creation(param)||!allowed_output||
     !deallocate||!decoder||!status||!error){MEDIA_TRACE("MEDIA create invalid parameters\n");return 0;}
+ #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ {char format[320];snprintf(format,sizeof(format),
+  "MEDIA stream video-mime=%s audio-mime=%s video-codec=%d audio-codec=%d audio-channels=%d audio-rate=%d mode=%d\n",
+  param->video_stream_info.mime?param->video_stream_info.mime:"(unspecified)",
+  param->audio_stream_info.mime?param->audio_stream_info.mime:"(unspecified)",
+  (int)param->video_stream_info.codec,(int)param->audio_stream_info.codec,
+  param->audio_stream_info.number_of_channels,param->audio_stream_info.samples_per_second,(int)param->output_mode);SbLogRaw(format);}
+#endif
  SbPlayer p=calloc(1,sizeof(*p));if(!p)return 0;
  if(pthread_mutex_init(&p->mutex,0)){free(p);return 0;}
  p->deallocate=deallocate;p->decoder=decoder;p->status=status;p->error=error;p->context=context;
@@ -577,6 +598,9 @@ SbPlayer SbPlayerCreate(SbWindow window,const SbPlayerCreationParam *param,
 #endif
 #ifdef MYOS_MEDIA_NATIVE_UNDERLAY
  p->native_video=param->output_mode==kSbPlayerOutputModePunchOut;p->video_window=(uintptr_t)window;
+#ifdef MYOS_MEDIA_VP9
+ p->native_first_video_pending=p->native_video&&p->has_video;
+#endif
 #endif
  p->channels=param->audio_stream_info.number_of_channels;p->rate=p->volume=1;
  p->last_audio_pts=p->last_video_pts=INT64_MIN;

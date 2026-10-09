@@ -1,0 +1,2 @@
+Native homepage/search/result selection reaches actual watch playback. Format-only logger proves video/webm VP9 and audio/webm Opus stereo48000; native Stats SABR. Startup audio before first SetBounds/zero presented was observed and prompted checkpoint11 gate; this run does not accept that startup behavior.
+Phase33.4 incomplete; no33.5/parent33/Rickroll acceptance. No host production fetch/decoder/player. Signed URLs/private CA keys excluded.

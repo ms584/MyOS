@@ -28,10 +28,29 @@ static int wait_value(int *value){
 }
 static void *run(void *unused){
  (void)unused;
- for(int type=0;type<2;++type){
+#ifdef MYOS_TEST_VP9
+ SbPlayerCreationParam unsupported={0};unsupported.output_mode=kSbPlayerOutputModeDecodeToTexture;
+ unsupported.video_stream_info.codec=kSbMediaVideoCodecH264;
+ if(SbPlayerCreate(0,&unsupported,dealloc,decoder,status,error,0,0))return (void *)20;
+ unsupported.video_stream_info.codec=kSbMediaVideoCodecVp9;unsupported.video_stream_info.frame_width=641;unsupported.video_stream_info.frame_height=360;
+ if(SbPlayerCreate(0,&unsupported,dealloc,decoder,status,error,0,0))return (void *)21;
+ unsupported.video_stream_info.codec=kSbMediaVideoCodecNone;unsupported.audio_stream_info.codec=kSbMediaAudioCodecAac;
+ unsupported.audio_stream_info.number_of_channels=1;unsupported.audio_stream_info.samples_per_second=48000;
+ if(SbPlayerCreate(0,&unsupported,dealloc,decoder,status,error,0,0))return (void *)22;
+ SbLogRaw("native unsupported H264/AAC/VP9 oversize creation rejected PASS\n");
+ const int variants=3;
+#else
+ const int variants=2;
+#endif
+ for(int variant=0;variant<variants;++variant){
+  int type=variant==0?0:1;
   SbPlayerCreationParam param={0};param.output_mode=kSbPlayerOutputModeDecodeToTexture;
   if(type==0){param.audio_stream_info.codec=kSbMediaAudioCodecOpus;param.audio_stream_info.number_of_channels=1;param.audio_stream_info.samples_per_second=48000;}
-  else{param.video_stream_info.codec=kSbMediaVideoCodecVp8;param.video_stream_info.frame_width=160;param.video_stream_info.frame_height=90;}
+  else{param.video_stream_info.codec=kSbMediaVideoCodecVp8;
+#ifdef MYOS_TEST_VP9
+    if(variant==2)param.video_stream_info.codec=kSbMediaVideoCodecVp9;
+#endif
+    param.video_stream_info.frame_width=160;param.video_stream_info.frame_height=90;}
   /* Repeat creation/destruction before any seek, without device/worker leak. */
   for(int cycle=0;cycle<3;++cycle){
    current=SbPlayerCreate(0,&param,dealloc,decoder,status,error,0,0);if(!current)return (void *)1;
@@ -53,7 +72,11 @@ static void *run(void *unused){
   SbPlayerWriteSamples(current,(SbMediaType)type,samples,count);
   if(wait_value(&errors)){SbPlayerDestroy(current);return (void *)5;}
   SbPlayerDestroy(current);if(freed!=count||errors!=1)return (void *)6;
-  SbLogRaw(type==0?"native Opus corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n":"native VP8 corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n");
+  #ifdef MYOS_TEST_VP9
+   if(variant==2)SbLogRaw("native VP9 corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n");
+   else
+#endif
+   SbLogRaw(type==0?"native Opus corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n":"native VP8 corrupt/error/sample ownership/rapid seek/immediate teardown PASS\n");
  }
  /* Exhaust real guest pages, then verify Create fails closed and recovers
   * after releasing the pressure. No host-memory injection or fake allocator. */

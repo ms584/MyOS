@@ -1,5 +1,45 @@
 # MyOS handoff — 2026-09-29
 
+### 2026-10-10 05:26 +07 — checkpoint10 public controls/recovery; checkpoint11 startup fix
+Checkpoint10 public3fvd7jf3 (ea94696/provider-0w_9xkyk) proves45s actual moving
+YouTube BBB plus same-session SB16 PCM. All four actual hardware-clock sync
+maxima89940/89965/86040/89997us meet100ms. Native pause froze movie ROI and
+consumed/hardware/presented counters; resume/seek and130s actual NIC loss,
+restoration plus native seek resumed moving video/audio. Two close/reopens
+opened native desktop windows, returned shell/exact257743 physical pages,
+SHM0/aliases0. Peak owned mapping525533184B, QEMU1024MiB.
+Evidence: docs/wip/phase334/checkpoint10/online-rebuffer-controls/.
+Separate native homepage/search/result-selection6i56fxvp proves watch playback
+and actual MIMEvideo/webm VP9, audio/webm Opus stereo48000; Stats144p256x144@30,
+SABR. Early audio before first bounds was observed, retained and fixed next.
+Evidence: checkpoint10/search-stream-format/. WAV records active PCM time;
+do not align its sample offset to wall pause. Native FLUSH/hardware hold proves pause.
+
+Checkpoint11 source90dfe4b6... / provider-sey3hj06 ba9620ca... holds PCM until
+first successful native video submission after creation/seek. Native2s delayed
+bounds/video-gap test PASS, first-video consumed0, actual max39979us/exact resources.
+Latest Cobalt standard1vrufhf0 PASS05:22:53:38.533s motion14.975fps,
+39.953s expected-tone PCM,600decoded/drop0/corrupt0/starve0, actual39979us,
+hardware failures0/exact resources. Barcode rectangle top moves182->157 atEOS;
+analysis uses actual edge location and preserves all frames. Evidence checkpoint11.
+Latest source public direct+search/reopen acceptance still PENDING, not inferred.
+
+Native Cobalt10s XHR timeout with14s controlled stall, N restart/later playing,
+X/ESC exact resources PASS ew64eo10. Native64MiB two-wave malformed VP8/VP9/Opus,
+unsupportedH264/AAC/oversizeVP9, real guest ENOMEM/recreate, exact PMM/heap/SHM/
+aliases PASS tage6tc2. Checkpoint10/cobalt-timeout and player-faults.
+Controlled403 is verified separately; no fixture proves actual live URL expiry.
+
+Architecture remains checkpoint6 full PASS02:03:53, normal/final/pair BIOS+UEFI
+PASS/all5 hashes exact02:05:33, rechecked05:22:20. Default VP8 exact41901a1374...
+Only optional media provider/test apps changed. Phase33.4 ACTIVE/INCOMPLETE.
+Live signed URL expiry is still unverified. Auto-review rejected proposed reuse
+of a private signed Googlevideo URL externally without explicit scoped permission;
+no replay script/action executed. Finish authorized latest public proof first,
+then present concrete scoped approval request. No fake tokens/credentials/clocks.
+No33.5/parent33/Rickroll acceptance. No push.
+
+
 ### 2026-10-10 02:50 +07 — checkpoint9 bounded video rebuffer/latency candidate; online pending
 Actual DMA-clock YouTube session i5btk98n (3321ad0/provider-aq_aruje) failed:
 Auto360p max432751/820536us; selected144p first max1067997us after buffered video

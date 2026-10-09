@@ -190,7 +190,9 @@ static void *run(void *unused){
  player=SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0);
  if(!player)return (void *)5;
 #ifdef MYOS_TEST_UNDERLAY
+#ifndef MYOS_TEST_LATE_BOUNDS
  SbPlayerSetBounds(player,0,80,340,320,180);
+#endif
 #endif
  if(SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0)||
     SbPlayerSetPlaybackRate(player,2.0)||SbPlayerGetCurrentFrame(player))return (void *)21;
@@ -203,6 +205,9 @@ static void *run(void *unused){
  if(start_readers())return (void *)6;
  int64_t start=now(),pause_stamp=0;int paused=0,resumed=0,sought=0,done=0;
  unsigned draws=0;int64_t last_log=-1;
+#ifdef MYOS_TEST_LATE_BOUNDS
+ int bounds_released=0;
+#endif
 #ifndef MYOS_TEST_UNDERLAY
  unsigned sync_samples=0;int64_t max_sync=0;
 #endif
@@ -214,6 +219,14 @@ static void *run(void *unused){
   sample_ram();
   SbPlayerInfo info={0};SbPlayerGetInfo(player,&info);
   int64_t elapsed=now()-start;
+#ifdef MYOS_TEST_LATE_BOUNDS
+  if(!bounds_released&&elapsed>=2000000){
+   lognum("native LATE_BOUNDS held-clock=",info.current_media_timestamp);
+   if(info.current_media_timestamp>100000)bad("native LATE_BOUNDS audio advanced before first video");
+   else SbLogRaw("native LATE_BOUNDS clock held until visible bounds PASS\n");
+   SbPlayerSetBounds(player,0,80,340,320,180);bounds_released=1;
+  }
+#endif
   if(!paused&&info.current_media_timestamp>=5000000){
    SbPlayerSetPlaybackRate(player,0);pause_stamp=info.current_media_timestamp;paused=1;
    lognum("native PAUSE position=",pause_stamp);start=now()-6000000;
