@@ -403,7 +403,11 @@ SbPlayer SbPlayerCreate(SbWindow window,const SbPlayerCreationParam *param,
  pthread_attr_t attr;if(pthread_attr_init(&attr))goto reserved_failed;
  int rc=pthread_attr_setstacksize(&attr,2u*1024u*1024u);
  if(!rc)rc=pthread_create(&p->worker,&attr,player_worker,p);
- pthread_attr_destroy(&attr);if(rc)goto reserved_failed;
+ pthread_attr_destroy(&attr);
+#ifdef MYOS_MEDIA_TRACE
+ if(rc){char message[96];snprintf(message,sizeof(message),"MEDIA worker creation failed rc=%d\n",rc);SbLogRaw(message);}
+#endif
+ if(rc)goto reserved_failed;
  MEDIA_TRACE("MEDIA create success\n");__atomic_store_n(&p->published,1,__ATOMIC_RELEASE);return p;
 reserved_failed:
  MEDIA_TRACE("MEDIA create resource failure\n");
@@ -433,6 +437,9 @@ void SbPlayerDestroy(SbPlayer handle){
  pthread_mutex_destroy(&p->mutex);free(p);
 }
 void SbPlayerSeek(SbPlayer handle,int64_t time,int ticket){
+#ifdef MYOS_MEDIA_TRACE
+ char message[96];snprintf(message,sizeof(message),"MEDIA seek ticket=%d target-us=%lld\n",ticket,(long long)time);SbLogRaw(message);
+#endif
  SbPlayer p=lock_player(handle);if(!p)return;
  if(time<0){p->error_pending=1;unlock_player(p);return;}
  p->seek_time=time;p->ticket=ticket;++p->seek_revision;p->seek_pending=1;p->presenting=0;

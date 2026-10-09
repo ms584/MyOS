@@ -1,0 +1,284 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "date": "2026-10-09T21:36:44.016094+07:00",
+  "commit": "a370fe6c2316a082fde6a7df365a00f0543ed84f",
+  "core_sha256": "fd8bbf7c60d4906a72e4f4ec89bc51c7dbc9bdd83fd1e4c1cd14a8eb3a8b730a",
+  "provider_sha256": "efe86bac9c533f188f29b6ce80c51fc67c9bab217ee3edbe456200659f547137",
+  "normal_identity": {
+    "kernel.bin": "05888010e7a300c0aa358a0dd37c8e1ed4a9f94ee6e2a5841f292bf89a0c0b01",
+    "kernel.elf": "3d51794071c00f935fc7f1c04df13afd87113eb04b7820c0545c2a5728c04916",
+    "myos-current.img": "0d4103e2ab4fb0c582bd344592c8022e3e728d71d4b1ef30ded74ecf599e4f8d",
+    "myos-uefi.img": "707f22eaf8466d97ec0c4d34854ae42eaf0e1c535b97a08d48d770f4bc22b965",
+    "platform-runtime.mrt": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c"
+  },
+  "urls": [
+    "https://www.youtube.com/watch?v=aqz-KE-bpKQ"
+  ],
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "512",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-public.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-2290ybrf/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-public.sock,server=on,wait=off",
+      "-cpu",
+      "host",
+      "-nic",
+      "user,model=rtl8139",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/phase334-public-2290ybrf/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-2290ybrf/assets.img,if=ide,index=1",
+      "-accel",
+      "kvm"
+    ]
+  ],
+  "launches": [
+    {
+      "launch": 1,
+      "url": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+      "frames": [
+        {
+          "elapsed": 2.1046998599999824,
+          "path": "launch-1-002.png"
+        },
+        {
+          "elapsed": 7.141862949999904,
+          "path": "launch-1-007.png"
+        },
+        {
+          "elapsed": 12.171492107000176,
+          "path": "launch-1-012.png"
+        },
+        {
+          "elapsed": 17.202184812999803,
+          "path": "launch-1-017.png"
+        },
+        {
+          "elapsed": 22.233274639999763,
+          "path": "launch-1-022.png"
+        },
+        {
+          "elapsed": 27.264264722000007,
+          "path": "launch-1-027.png"
+        },
+        {
+          "elapsed": 32.29716304700014,
+          "path": "launch-1-032.png"
+        },
+        {
+          "elapsed": 37.328410731000076,
+          "path": "launch-1-037.png"
+        },
+        {
+          "elapsed": 42.35821336199979,
+          "path": "launch-1-042.png"
+        },
+        {
+          "elapsed": 47.38810070699992,
+          "path": "launch-1-047.png"
+        },
+        {
+          "elapsed": 52.4203464520001,
+          "path": "launch-1-052.png"
+        },
+        {
+          "elapsed": 57.45171304099995,
+          "path": "launch-1-057.png"
+        },
+        {
+          "elapsed": 62.483001076000164,
+          "path": "launch-1-062.png"
+        },
+        {
+          "elapsed": 67.51301322900008,
+          "path": "launch-1-067.png"
+        },
+        {
+          "elapsed": 72.54374970399977,
+          "path": "launch-1-072.png"
+        },
+        {
+          "elapsed": 77.57557340899984,
+          "path": "launch-1-077.png"
+        },
+        {
+          "elapsed": 82.61221006300002,
+          "path": "launch-1-082.png"
+        },
+        {
+          "elapsed": 87.64987216100008,
+          "path": "launch-1-087.png"
+        },
+        {
+          "elapsed": 92.68334910299973,
+          "path": "launch-1-092.png"
+        },
+        {
+          "elapsed": 97.72600535299989,
+          "path": "launch-1-097.png"
+        },
+        {
+          "elapsed": 102.76205469199977,
+          "path": "launch-1-102.png"
+        },
+        {
+          "elapsed": 107.80187590800006,
+          "path": "launch-1-107.png"
+        },
+        {
+          "elapsed": 112.83726592199992,
+          "path": "launch-1-112.png"
+        },
+        {
+          "elapsed": 117.87617473299997,
+          "path": "launch-1-117.png"
+        },
+        {
+          "elapsed": 122.9135778320001,
+          "path": "launch-1-122.png"
+        },
+        {
+          "elapsed": 127.95279994099974,
+          "path": "launch-1-127.png"
+        },
+        {
+          "elapsed": 132.99070625800005,
+          "path": "launch-1-132.png"
+        },
+        {
+          "elapsed": 138.029337854,
+          "path": "launch-1-138.png"
+        },
+        {
+          "elapsed": 143.06904033799992,
+          "path": "launch-1-143.png"
+        },
+        {
+          "elapsed": 148.10644570299974,
+          "path": "launch-1-148.png"
+        },
+        {
+          "elapsed": 153.14449347799973,
+          "path": "launch-1-153.png"
+        },
+        {
+          "elapsed": 158.18226552399983,
+          "path": "launch-1-158.png"
+        },
+        {
+          "elapsed": 163.20631928300008,
+          "path": "launch-1-163.png"
+        },
+        {
+          "elapsed": 168.25528512099982,
+          "path": "launch-1-168.png"
+        },
+        {
+          "elapsed": 173.29546537899978,
+          "path": "launch-1-173.png"
+        },
+        {
+          "elapsed": 178.313828028,
+          "path": "launch-1-178.png"
+        },
+        {
+          "elapsed": 183.35954299100013,
+          "path": "launch-1-183.png"
+        },
+        {
+          "elapsed": 188.40738136599975,
+          "path": "launch-1-188.png"
+        },
+        {
+          "elapsed": 193.46475818999988,
+          "path": "launch-1-193.png"
+        },
+        {
+          "elapsed": 198.51311399299993,
+          "path": "launch-1-198.png"
+        },
+        {
+          "elapsed": 203.58722569300016,
+          "path": "launch-1-203.png"
+        },
+        {
+          "elapsed": 208.67097082200007,
+          "path": "launch-1-208.png"
+        },
+        {
+          "elapsed": 213.76196762100017,
+          "path": "launch-1-213.png"
+        },
+        {
+          "elapsed": 218.85608159899994,
+          "path": "launch-1-218.png"
+        },
+        {
+          "elapsed": 223.9501239199999,
+          "path": "launch-1-223.png"
+        },
+        {
+          "elapsed": 229.04806070799987,
+          "path": "launch-1-229.png"
+        },
+        {
+          "elapsed": 234.14929296299988,
+          "path": "launch-1-234.png"
+        },
+        {
+          "elapsed": 239.15045771299992,
+          "path": "launch-1-239.png"
+        }
+      ],
+      "inputs": [
+        {
+          "key": "k",
+          "elapsed": 160.00618628099983
+        },
+        {
+          "key": "k",
+          "elapsed": 175.01859429299975
+        },
+        {
+          "key": "l",
+          "elapsed": 195.0972743970001
+        },
+        {
+          "key": "esc",
+          "elapsed": 240.08496092999985
+        }
+      ],
+      "before": "Free physical pages: 126671\nmyos> ",
+      "elapsed": 240.08496092999985,
+      "shell_returned": true,
+      "after": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "engine_trace": true,
+  "diagnostic_provider": true,
+  "host_fetch": false,
+  "fixture_ca_added": false,
+  "normal_identity_after": {
+    "kernel.bin": "05888010e7a300c0aa358a0dd37c8e1ed4a9f94ee6e2a5841f292bf89a0c0b01",
+    "kernel.elf": "3d51794071c00f935fc7f1c04df13afd87113eb04b7820c0545c2a5728c04916",
+    "myos-current.img": "0d4103e2ab4fb0c582bd344592c8022e3e728d71d4b1ef30ded74ecf599e4f8d",
+    "myos-uefi.img": "707f22eaf8466d97ec0c4d34854ae42eaf0e1c535b97a08d48d770f4bc22b965",
+    "platform-runtime.mrt": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c"
+  }
+}

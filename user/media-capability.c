@@ -9,10 +9,14 @@
 static void trim(const char **a,const char **b){while(*a<*b&&(**a==' '||**a=='\t'))++*a;while(*b>*a&&((*b)[-1]==' '||(*b)[-1]=='\t'))--*b;}
 static int match(const char *a,const char *b,const char *text){size_t n=(size_t)(b-a);return strlen(text)==n&&!memcmp(a,text,n);}
 #ifdef MYOS_MEDIA_VP9
-/* RFC6381 VP9 profile0,8-bit short codec form; no HDR/10-bit claim. */
+/* VP codec binding: profile0/8-bit, short or full default SDR metadata.
+ * Full suffix is 4:2:0, BT709 primaries/transfer/matrix, limited range.
+ * Other colour profiles/ranges require explicit conversion support. */
 static int vp9_codec(const char *a,const char *b){
  if(match(a,b,"vp9")||match(a,b,"vp9.0"))return 1;
- if(b-a!=13||memcmp(a,"vp09.00.",8)||memcmp(a+10,".08",3))return 0;
+ if(b-a!=13&&b-a!=28)return 0;
+ if(b-a==28&&memcmp(a+13,".01.01.01.01.00",15))return 0;
+ if(memcmp(a,"vp09.00.",8)||memcmp(a+10,".08",3))return 0;
  int level=(a[8]-'0')*10+a[9]-'0';
  return a[8]>='0'&&a[8]<='9'&&a[9]>='0'&&a[9]<='9'&&
   (level==10||level==11||level==20||level==21||level==30||level==31||
@@ -70,8 +74,8 @@ SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *k
    }
   }
 #ifdef MYOS_MEDIA_VP9
-  else if(match(name,name_end,"width")){if(!number(value,last,640,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,160,0);}
-  else if(match(name,name_end,"height")){if(!number(value,last,360,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,90,0);}
+  else if(match(name,name_end,"width")){if(!number(value,last,320,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,160,0);}
+  else if(match(name,name_end,"height")){if(!number(value,last,240,0))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,90,0);}
   else if(match(name,name_end,"framerate")){if(!number(value,last,30,1))return kSbMediaSupportTypeNotSupported;within_vp8&=number(value,last,15,1);}
 #else
   else if(match(name,name_end,"width")){if(!number(value,last,160,0))return kSbMediaSupportTypeNotSupported;}

@@ -24,7 +24,7 @@ def fixtures():
     (headers/'export.h').write_text('#define SB_EXPORT\n#define SB_EXPORT_PLATFORM\n')
     (headers/'configuration.h').write_text('#define SB_C_FORCE_INLINE inline\n#define SB_API_VERSION 18\n')
     specs=[]
-    for mode in range(8):
+    for mode in range(9):
         obj=out/f'launch{mode}.o';image=out/f'launch{mode}.so'
         subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin',
                         '-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables',

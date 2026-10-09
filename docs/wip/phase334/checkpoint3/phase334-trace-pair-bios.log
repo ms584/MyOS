@@ -1,0 +1,7 @@
+
+[2026-10-09T21:25:36.349404+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_elf_pair_starboard.py --provider build/renderer-provider-evaluation/provider-84sokh6g
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/elf-pair-starboard.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/renderer-provider-evaluation/pair-starboard-0b_e9332/frozen-boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/elf-pair-starboard.sock,server=on,wait=off -drive format=raw,file=/home/xytron404/myos/build/renderer-provider-evaluation/pair-starboard-0b_e9332/assets.img,if=ide,index=1
+PASS: paired positive pinned SABI before init, zero-entry event handler, 2MiB NX/guard stack/256KiB probe, owned readonly argv/URL, Start/Stop/finalizers/relaunch/exact resources; NOT Cobalt. /home/xytron404/myos/build/renderer-provider-evaluation/pair-starboard-0b_e9332
+qemu-system-x86_64: terminating on signal 15 from pid 20341 (python3)
+[2026-10-09T21:26:04.763171+07:00] exit=0

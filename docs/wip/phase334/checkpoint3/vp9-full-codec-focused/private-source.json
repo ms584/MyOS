@@ -1,0 +1,5 @@
+{
+  "source": "build/media-evaluation/native-player-wqjuod3j",
+  "raw_serial_sha256": "63d7de942f1fdddada4a21c4bd641d830e7a66e00d5889116684921ed8eaaecf",
+  "redactions": "URL queries and data payloads; raw stays private under build"
+}

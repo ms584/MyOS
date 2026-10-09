@@ -17,8 +17,11 @@ def main():
     p.add_argument('resources',type=Path);p.add_argument('fonts',type=Path)
     p.add_argument('--provider',type=Path,default=ROOT/'build/media-evaluation/provider-i8xbwfmz')
     p.add_argument('--url',action='append',required=True)
+    p.add_argument('--engine-trace',action='store_true',help='Native opt-in engine stderr/VLOG only; no memory extraction or TLS overrides')
+    p.add_argument('--identity',type=Path,default=ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json')
     p.add_argument('--seconds',type=int,default=300)
     p.add_argument('--input',action='append',default=[],help='Timed native key: seconds:qcode')
+    p.add_argument('--actions',type=Path,help='Optional local JSON native key/text/click actions; no page scripting')
     p.add_argument('--ram',action='store_true',help='Read-only sampled PMM; includes brief QMP pauses')
     a=p.parse_args()
     assert 30<=a.seconds<=600
@@ -46,7 +49,7 @@ def main():
         source=a.fonts/item['name']
         assert source.stat().st_size==item['bytes'] and digest(source)==item['sha256']
         specs.append('systemfonts/'+item['name']+'='+str(source))
-    identities=json.loads((ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json').read_text())
+    identities=json.loads(a.identity.read_text())
     for name,expected in identities.items():
         assert digest(ROOT/'build'/name)==expected, 'Normal prerequisite identity mismatch: '+name
     boot=out/'boot.img';runtime=out/'platform-runtime.mrt'
@@ -68,7 +71,7 @@ def main():
     evidence=dict(phase_passed=False,observation_only=True,date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=7))).isoformat(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,
-        urls=a.url,qemu=qemu,launches=[],diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
+        urls=a.url,qemu=qemu,launches=[],engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
     vm=None;observer=None
     try:
         vm=VM('phase334-public',ram=512,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
@@ -80,8 +83,8 @@ def main():
             row=dict(launch=n,url=url,frames=[],inputs=[],before=command(vm,'mem','Free physical pages: '))
             evidence['launches'].append(row)
             offset=len(vm.log.read_text());started=time.monotonic()
-            type_text(vm,'elf cobalt cobalt provider '+url+'\n')
-            next_frame=0;sent=set()
+            type_text(vm,('elf cobalt-trace' if a.engine_trace else 'elf cobalt')+' cobalt provider '+url+'\n')
+            next_frame=0;sent=set();action_sent=set()
             if observer:observer.capture(n,0,'before')
             while time.monotonic()-started<a.seconds:
                 elapsed=time.monotonic()-started;content=vm.log.read_text()[offset:]
@@ -95,6 +98,36 @@ def main():
                 for index,(at,key) in enumerate(keys):
                     if elapsed>=at and index not in sent:
                         vm.key(key);sent.add(index);row['inputs'].append(dict(key=key,elapsed=elapsed))
+                if a.actions and a.actions.exists():
+                    actions=json.loads(a.actions.read_text())
+                    assert isinstance(actions,list) and len(actions)<=40
+                    for action in actions:
+                        ident=str(action['id'])
+                        if ident in action_sent or elapsed<float(action.get('at',0)):continue
+                        kind=action['type']
+                        if kind=='click':
+                            x,y=int(action['x']),int(action['y'])
+                            assert 0<=x<800 and 0<=y<600
+                            # Clamp the actual PS/2 cursor to the top-left, then
+                            # move in bounded deltas; never read DOM/guest heaps.
+                            for _ in range(8):
+                                vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':'x','value':-120}},{'type':'rel','data':{'axis':'y','value':-100}}]})
+                                time.sleep(.03)
+                            for axis,value in [('x',x),('y',y)]:
+                                while value:
+                                    step=min(value,100);value-=step
+                                    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':step}}]});time.sleep(.03)
+                            time.sleep(.2)
+                            for down in (True,False):
+                                vm.command('input-send-event',{'events':[{'type':'btn','data':{'down':down,'button':'left'}}]});time.sleep(.1)
+                        elif kind=='text':
+                            text=action['text'];assert isinstance(text,str) and len(text)<=64 and all(ord(c)<128 for c in text)
+                            type_text(vm,text)
+                        elif kind=='key':
+                            assert action['key'] in ('spc','tab','ret','left','right','up','down','k','j','l','f','m')
+                            vm.key(action['key'])
+                        else:raise ValueError('Unsupported native action')
+                        action_sent.add(ident);row['inputs'].append(dict(action=action,elapsed=elapsed))
                 if 'USER FAULT' in content or 'PANIC' in content or content.endswith('myos> '):break
                 time.sleep(.1)
             row['elapsed']=time.monotonic()-started

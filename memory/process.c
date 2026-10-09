@@ -907,6 +907,14 @@ static bool start_images(struct process *p,const struct elf_start *start,const s
                 next+=sizeof(js);memcpy(next,https,sizeof(https));
                 args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);
                 next+=sizeof(https);
+                if(start->native_trace){
+                    static const char logging[]="--enable-logging=stderr",verbose[]="--v=1";
+                    /* Normal5+trace2+optional route1 fits8 argv and NULL slot. */
+                    _Static_assert(ELF_ARGV_SLOTS>=9,"native trace argv/null bound");
+                    memcpy(next,logging,sizeof(logging));args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);
+                    next+=sizeof(logging);memcpy(next,verbose,sizeof(verbose));
+                    args[p->frame->rdi++]=base+(uint64_t)(next-(char *)boot);next+=sizeof(verbose);
+                }
                 if(start->host_mapping){
                     if(!elf_host_rule(start->host_mapping,next,ELF_HOST_RULE_SIZE)){
                         irq_restore(f);return false;}

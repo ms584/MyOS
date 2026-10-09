@@ -159,6 +159,17 @@ static void *run(void *unused){
     SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp8; width=161","")!=kSbMediaSupportTypeNotSupported||
     SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp8","drm")!=kSbMediaSupportTypeNotSupported)
   return (void *)20;
+#ifdef MYOS_TEST_VP9
+ if(SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=320; height=240; framerate=15","")!=kSbMediaSupportTypeProbably||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=192; height=144; framerate=15","")!=kSbMediaSupportTypeProbably||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp9; width=321","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp9; height=241","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp9; framerate=30.1","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp09.02.51.10.01.09.16.09.00","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp09.00.51.08.01.01.01.01.01","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp09.00.51.08.01.01.01.01","")!=kSbMediaSupportTypeNotSupported)
+  return (void *)20;
+#endif
  ram_baseline=SbSystemGetUsedCPUMemory();ram_peak=ram_baseline;
  ram_free_baseline=ram_free_min=free_pages();
  player=SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0);

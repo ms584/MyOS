@@ -68,7 +68,7 @@ allowed=set(re.findall(r'\bX\((\w+),',(root/'build/platform-runtime-exports.h').
 strong={line.split()[-1] for line in undefined.splitlines() if line.split()[0]=='U'}
 assert strong<=allowed,sorted(strong-allowed)
 (out/'undefined.txt').write_text(undefined);(out/'symbols.txt').write_text(symbols)
-result={'vp9_candidate':args.vp9,'capability_source_sha256':digest(root/'user/media-capability.c'),'isolated_player_source':bool(args.player_source),'player_source_sha256':digest(player_source),'experimental_native_underlay':args.native_underlay,'diagnostic_punchout':args.punchout_diagnostic,'diagnostic_trace':args.trace,'provider_sha256':digest(library),'bytes':library.stat().st_size,
+result={'vp9_candidate':args.vp9,'video_selection_bound':{'width':320,'height':240,'framerate':30} if args.vp9 else {'width':160,'height':90,'framerate':15},'capability_source_sha256':digest(root/'user/media-capability.c'),'isolated_player_source':bool(args.player_source),'player_source_sha256':digest(player_source),'experimental_native_underlay':args.native_underlay,'diagnostic_punchout':args.punchout_diagnostic,'diagnostic_trace':args.trace,'provider_sha256':digest(library),'bytes':library.stat().st_size,
  'renderer_provider_sha256':report['provider_sha256'],'media_abi':1,'paired_exit_abi':1,
  'target_only':True,'native_player_executed':False,'cobalt_media_executed':False,
  'inputs':[{'path':str(x),'sha256':digest(x)} for x in inputs],

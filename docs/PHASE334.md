@@ -91,3 +91,30 @@ Two texture-mode trials FAILED113.734/111.163ms; latter records70ms render perio
 Keep these failures distinct from the supported Cobalt native-underlay path.
 Default production provider remains byte-identical41901a13, normal images unchanged.
 New diagnostic VP9 online provider-z73ft99k built21:09:33; online test pending.
+
+
+## Checkpoint3 - full VP9 codec and thread pressure
+See wip/phase334/checkpoint3 and PHASE334_EXPERIMENT_GUIDE.md.
+Opt-in cobalt-trace native stderr/VLOG launcher focused BIOS/UEFI checks pass.
+Full SDR VP9 codec strings from actual YouTube were rejected by the short parser;
+optional full suffix support now passes native capability/40s fixture tests.
+Online240s selects640x360@30, native create resource failure with pthread EAGAIN,
+zero PCM. No online pass. Candidate40 workers fits existing runtime TLS boundary;
+focused lifecycle/TLS PASS21:44:05; new full regression pending. Normal image hashes changed
+for launcher/thread work. Default provider still byte-identical41901a13.
+Broad guest RAM diagnostic was rejected by auto-review, never executed, removed.
+Scoped native logs replace it; redact signed/tracking URL query values for commit.
+
+
+2026-10-09 21:59 +07 update:40 workers fixes native create. Actual BBB YouTube
+VP9 640x360@30 decoded/rendered in MyOS, PNG motion and native same-session
+11025Hz monoU8 WAV2021508frames/183.357s. Pause counters fixed, resume advances,
+seek changes ticket/position; Escape shell/resources exact. NOT PASSED:
+post-resume sync outlier623121us exceeds100ms candidate gate.
+All raw/PNG/PCM preserved in online640-sync-failed; no fake success.
+Small320x240 bound focused PASS native-player-qjz8d23k. Public frontend omits
+dimensions after width640/height360 probe rejection, selects unsupported output;
+SbPlayerBridge invalid mode, zero PCM. online-small-bound-frontend-failed.
+Next quality selection through real native PS/2 UI, no payload/capability bypass.
+Full default regression started21:58:23, running; normal BIOS restore + UEFI and
+final launcher checks queued. Phase33.4/33.5/Rickroll/parent remain NOT PASSED.

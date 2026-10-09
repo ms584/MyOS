@@ -1,0 +1,261 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM frames above256MiB, alias and retained lifetime
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 126679
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 34189 sectors
+Storage: unrecognized data disk; RAM-only
+Audio: SB16 initialized
+Security: UTC 1791556528, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> elf pair-live player provider
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x000000800000B000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18496 absolute=0 global=2 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: clock_gettime
+ELF platform: SbWindowSetDefaultOptions
+ELF provider: SbPlayerGetInfo
+ELF platform: fstatat
+ELF platform: pthread_attr_destroy
+ELF provider: SbPlayerWriteEndOfStream
+ELF platform: pthread_create
+ELF provider: SbPlayerDestroy
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: pthread_attr_init
+ELF provider: SbPlayerSetBounds
+ELF platform: SbWindowCreate
+ELF platform: malloc
+ELF provider: SbPlayerGetCurrentFrame
+ELF platform: lseek
+ELF provider: SbGetEglInterface
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: unlinkat
+ELF provider: SbGetGlesInterface
+ELF provider: SbPlayerSetPlaybackRate
+ELF platform: read
+ELF platform: pthread_attr_setstacksize
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerCreate
+ELF platform: pthread_mutex_unlock
+ELF provider: SbPlayerWriteSamples
+ELF platform: SbLogRaw
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: pthread_mutex_lock
+ELF platform: __errno_location
+ELF platform: openat
+ELF platform: pthread_join
+ELF platform: clock_nanosleep
+ELF platform: close
+ELF platform: SbWindowDestroy
+ELF platform: free
+ELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+MEDIA capability mime=video/webm; codecs="vp8, opus"; width=160; height=90; framerate=15 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9, opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs=vp8; width=161 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs=vp8 encrypted=1 support=0
+MEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=320; height=240; framerate=15 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=192; height=144; framerate=15 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs=vp09.02.51.10.01.09.16.09.00 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.01 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01 encrypted=0 support=0
+MEDIA create entered
+MEDIA create success
+MEDIA bounds z=0 x=80 y=340 width=320 height=180
+MEDIA create entered
+native capability/invalid handles/player capacity PASS
+native player state=0
+native standard player RUN begin
+native media position-us=0
+native player state=1
+MEDIA decoded codec=8 source=160x90 presentation=160x90
+native player state=2
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=8601 consumed=11172 video=4 rate=1 audio-last=1780000 video-last=1267000 req=0,0 full=1,0
+native media position-us=1019916
+native media position-us=2032796
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=15982 consumed=25620 video=4 rate=1 audio-last=3760000 video-last=2533000 req=0,0 full=1,0
+native media position-us=3036787
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21521 consumed=40147 video=4 rate=1 audio-last=5580000 video-last=3867000 req=0,0 full=0,0
+native media position-us=4011753
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21565 consumed=52010 video=4 rate=1 audio-last=6660000 video-last=4933000 req=0,0 full=0,0
+native PAUSE position=5030437
+native media position-us=5030437
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21710 consumed=55613 video=4 rate=0 audio-last=7000000 video-last=5267000 req=0,0 full=0,0
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21710 consumed=55613 video=4 rate=0 audio-last=7000000 video-last=5267000 req=0,0 full=0,0
+native RESUME
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21359 consumed=64564 video=4 rate=1 audio-last=7780000 video-last=6067000 req=0,0 full=1,0
+native media position-us=6026265
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21259 consumed=76791 video=4 rate=1 audio-last=8880000 video-last=7200000 req=0,0 full=1,0
+native media position-us=7022456
+native media position-us=8027807
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21360 consumed=90582 video=4 rate=1 audio-last=10140000 video-last=8467000 req=0,0 full=1,0
+native media position-us=9000143
+media trace ticket=1 seek=0 presenting=1 failed=0 pcm=21384 consumed=103347 video=4 rate=1 audio-last=11300000 video-last=9600000 req=0,0 full=1,0
+native SEEK to=15000000
+native media position-us=10027807
+native media position-us=15000000
+native player state=1
+media trace ticket=2 seek=0 presenting=0 failed=0 pcm=0 consumed=0 video=0 rate=1 audio-last=-9223372036854775808 video-last=-9223372036854775808 req=1,1 full=0,0
+media trace ticket=2 seek=0 presenting=0 failed=0 pcm=0 consumed=0 video=0 rate=1 audio-last=-9223372036854775808 video-last=-9223372036854775808 req=1,1 full=0,0
+native player state=2
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=11884 consumed=5094 video=4 rate=1 audio-last=16520000 video-last=15667000 req=0,0 full=1,0
+native media position-us=16008971
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=20042 consumed=18986 video=4 rate=1 audio-last=18520000 video-last=16933000 req=0,0 full=1,0
+native media position-us=17019493
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21445 consumed=31475 video=4 rate=1 audio-last=19780000 video-last=18067000 req=0,0 full=1,0
+native media position-us=18018404
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21266 consumed=44443 video=4 rate=1 audio-last=20940000 video-last=19267000 req=0,0 full=1,0
+native media position-us=19031194
+native media position-us=20028110
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21287 consumed=56770 video=3 rate=1 audio-last=22060000 video-last=20333000 req=0,0 full=1,1
+native media position-us=21028745
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21482 consumed=69364 video=4 rate=1 audio-last=23220000 video-last=21533000 req=0,0 full=0,0
+native media position-us=22024300
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21398 consumed=82898 video=4 rate=1 audio-last=24440000 video-last=22733000 req=0,0 full=1,0
+native media position-us=23001171
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21507 consumed=96460 video=4 rate=1 audio-last=25680000 video-last=24000000 req=0,0 full=1,0
+native media position-us=24033189
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21521 consumed=110117 video=4 rate=1 audio-last=26920000 video-last=25200000 req=0,0 full=0,0
+native media position-us=25019493
+native media position-us=26035910
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21542 consumed=122444 video=4 rate=1 audio-last=28040000 video-last=26333000 req=0,0 full=0,0
+native media position-us=27019312
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21451 consumed=136206 video=4 rate=1 audio-last=29280000 video-last=27600000 req=0,0 full=1,0
+native media position-us=28027203
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21295 consumed=148931 video=4 rate=1 audio-last=30420000 video-last=28733000 req=0,0 full=1,0
+native media position-us=29000173
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21357 consumed=161658 video=4 rate=1 audio-last=31580000 video-last=29867000 req=0,0 full=1,0
+native media position-us=30017588
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21391 consumed=174192 video=4 rate=1 audio-last=32720000 video-last=31000000 req=0,0 full=1,0
+native media position-us=31043983
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21448 consumed=187586 video=4 rate=1 audio-last=33940000 video-last=32267000 req=0,0 full=1,0
+native media position-us=32019312
+native media position-us=33012690
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21497 consumed=199885 video=4 rate=1 audio-last=35060000 video-last=33333000 req=0,0 full=0,0
+native media position-us=34001897
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21508 consumed=212663 video=4 rate=1 audio-last=36220000 video-last=34533000 req=0,0 full=1,0
+native media position-us=35010967
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21344 consumed=226277 video=4 rate=1 audio-last=37440000 video-last=35733000 req=0,0 full=1,0
+native media position-us=36013688
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21562 consumed=239510 video=4 rate=1 audio-last=38660000 video-last=36933000 req=0,0 full=0,0
+native media position-us=37033461
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=21399 consumed=252682 video=4 rate=1 audio-last=39840000 video-last=38133000 req=0,0 full=1,0
+native media position-us=38011330
+native media position-us=39017044
+media trace ticket=2 seek=0 presenting=1 failed=0 pcm=10162 consumed=265463 video=4 rate=1 audio-last=39980000 video-last=39333000 req=0,0 full=0,0
+native player state=3
+native media position-us=40000083
+native player state=4
+MEDIA native metrics presented=526 sync-samples=518 max-sync-us=9987 decoded=530 dropped=0 corrupted=0 source-starvations=0
+native underlay control polls=1373
+native sample allocated=2380
+native sample released=2380
+MEDIA create entered
+MEDIA create success
+MEDIA bounds z=0 x=80 y=340 width=320 height=180
+native player state=0
+native player state=1
+MEDIA decoded codec=8 source=160x90 presentation=160x90
+native player state=2
+media trace ticket=3 seek=0 presenting=1 failed=0 pcm=10550 consumed=10105 video=4 rate=1 audio-last=1860000 video-last=1133000 req=0,0 full=1,0
+native player state=4
+MEDIA native metrics presented=23 sync-samples=19 max-sync-us=9896 decoded=27 dropped=0 corrupted=0 source-starvations=0
+native RAM process baseline-bytes=56778752
+native RAM process sampled-peak-bytes=65486848
+native RAM player increment-bytes=8708096
+native RAM PMM increment-bytes=8708096
+native same-process restart/stop while playing PASS
+native standard player asset/control/EOS checkpoint PASS; NOT Cobalt/HTTPS acceptance
+ELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=439040 heap-after=439040
+ELF exited with status 97
+myos> 

@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase33.4 checkpoint3 - 2026-10-09 21:43 +07
+
+NOT PASSED, goal active. PROJECT_STATE.md / PHASE334_EXPERIMENT_GUIDE.md /
+wip/phase334/checkpoint3. Native scoped stderr/VLOG launcher implemented;
+focused BIOS/UEFI argv/TLS/jitless/NULL/readonly/route/lifecycle checks passed.
+Trace proves full VP9 SDR codec string rejected by short parser; optional parser
+fixed and focused native40s fixture passed21:36:26,9.987ms sync,8.71MB increment.
+Actual YouTube now selects640x360@30 and calls native player, fails resource
+creation with worker EAGAIN. Zero PCM, no YouTube playback pass.
+Bound40 workers fits existing runtime TLS reservation; focused checks PASS21:44:05,
+new full regression mandatory and pending. New image hashes, not original ones.
+Broad RAM diagnostic auto-review rejected, never executed, removed; replaced
+by scoped logs. Published serial redacts URL query/data payloads.
+No auth/CSP/TLS bypass/host production playback/credentials/push.
+Next: worker lifecycle/TLS checks, native online retry, full regression,
+normal BIOS/UEFI restore, checkpoint local commit. No33.5 or parent acceptance.
+
 ## Phase33.4 checkpoint2 - 2026-10-09 21:10 +07
 
 NOT PASSED, goal active. PHASE334.md / wip/phase334/checkpoint2.
@@ -3607,3 +3624,17 @@ Root normal BIOS/UEFI/kernel/MRT match checkpoint6/final-normal-identity.json;
 no jobs pending. Reproduce using PHASE333_EXPERIMENT_GUIDE.md.
 Implementation local656865a; final acceptance commit includes latest artifacts.
 No push, no33.4 work, no YouTube/Rickroll or parent Phase32/33 acceptance.
+
+
+2026-10-09 21:59 +07 update:40 workers fixes native create. Actual BBB YouTube
+VP9 640x360@30 decoded/rendered in MyOS, PNG motion and native same-session
+11025Hz monoU8 WAV2021508frames/183.357s. Pause counters fixed, resume advances,
+seek changes ticket/position; Escape shell/resources exact. NOT PASSED:
+post-resume sync outlier623121us exceeds100ms candidate gate.
+All raw/PNG/PCM preserved in online640-sync-failed; no fake success.
+Small320x240 bound focused PASS native-player-qjz8d23k. Public frontend omits
+dimensions after width640/height360 probe rejection, selects unsupported output;
+SbPlayerBridge invalid mode, zero PCM. online-small-bound-frontend-failed.
+Next quality selection through real native PS/2 UI, no payload/capability bypass.
+Full default regression started21:58:23, running; normal BIOS restore + UEFI and
+final launcher checks queued. Phase33.4/33.5/Rickroll/parent remain NOT PASSED.

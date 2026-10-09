@@ -16,7 +16,7 @@ assert digest(core)==json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_tex
 fixture=ROOT/'build/system-tests/starboard-launcher/launch0.so'
 assert core.read_bytes()[0x2e2efa:].split(b'\0',1)[0]+b'\0' in fixture.read_bytes()
 out=Path(tempfile.mkdtemp(prefix='pair-starboard-',dir=ROOT/'build/renderer-provider-evaluation'))
-disk=out/'assets.img';create(disk,['launch='+str(fixture),'provider='+str(provider/'provider.so')])
+disk=out/'assets.img';create(disk,['launch='+str(fixture),'trace='+str(ROOT/'build/system-tests/starboard-launcher/launch8.so'),'provider='+str(provider/'provider.so')])
 boot=ROOT/'build'/('myos-uefi.img' if args.uefi else 'myos-current.img')
 before=digest(boot);frozen=out/'frozen-boot.img';shutil.copyfile(boot,frozen)
 options=dict(ram=128,boot_image=frozen,asset_disk=disk)
@@ -34,6 +34,15 @@ try:
         for marker in markers:assert output.count(marker)==1,output
         match=re.search(r'ELF pair live: pages reclaimed; heap-before=(\d+) heap-after=(\d+)',output)
         assert match and match[1]==match[2],output
+    for mapping in ('',' myos.test=10.0.2.2'):
+        output=long_command(vm,'elf cobalt-trace trace provider https://myos.test/a?b=1&c=2'+mapping)
+        assert 'Starboard trace argv/TLS/jitless/NULL PASS' in output,output
+        assert 'Starboard launcher finalizer PASS' in output and 'ELF exited with status 57' in output,output
+        assert 'USER FAULT' not in output and 'PANIC' not in output,output
+        match=re.search(r'ELF pair live: pages reclaimed; heap-before=(\d+) heap-after=(\d+)',output)
+        assert match and match[1]==match[2],output
+    output=long_command(vm,'elf cobalt-trace trace provider https://myos.test/a?b=1&c=2 bad..host=10.0.2.2')
+    assert 'ELF pair live: started' not in output and 'Starboard launcher init' not in output,output
     print('PASS: paired positive pinned SABI before init, zero-entry event handler, 2MiB NX/guard stack/256KiB probe, owned readonly argv/URL, Start/Stop/finalizers/relaunch/exact resources; NOT Cobalt.',out,flush=True)
 finally:
     vm.close();shutil.copyfile(vm.log,out/'serial.log');assert digest(boot)==before
