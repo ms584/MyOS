@@ -1,0 +1,13 @@
+
+[2026-10-09T13:28:09.189273+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_native_underlay.py --boot-image build/myos-uefi.img --runtime build/platform-runtime.mrt --uefi
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Iinclude -DMODE=0 -c user/elf-native-underlay.c -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-0.o
+$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-0.so /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-0.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Iinclude -DMODE=1 -c user/elf-native-underlay.c -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-1.o
+$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-1.so /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-1.o
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Iinclude -DMODE=2 -c user/elf-native-underlay.c -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-2.o
+$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-2.so /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/fixture-2.o
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/native-underlay-contract-uefi.log -no-reboot -no-shutdown -drive format=raw,file=build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/system-tests/native-underlay-contract-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/system-tests/native-underlay-contract-uefi-vars.fd -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud/assets.img,if=ide,index=1
+PASS: real Ring3 underlay pixels, premultiplied alpha/occlusion, bad requests atomic, seek clear, move, conceal/show, stop/fault/relaunch and exact resources /home/xytron404/myos/build/media-evaluation/native-underlay-mkykrgud
+qemu-system-x86_64: terminating on signal 15 from pid 102114 (python3)
+[2026-10-09T13:28:19.588508+07:00] exit=0

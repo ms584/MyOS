@@ -1,0 +1,1532 @@
+{
+  "acceptance_complete": false,
+  "bundle": "native-verified-tls-uwmwvuz5",
+  "metrics": [
+    {
+      "presented": 542,
+      "sync-samples": 536,
+      "max-sync-us": 17316,
+      "decoded": 547,
+      "dropped": 0,
+      "corrupted": 0,
+      "source-starvations": 0
+    },
+    {
+      "presented": 544,
+      "sync-samples": 535,
+      "max-sync-us": 15230,
+      "decoded": 550,
+      "dropped": 0,
+      "corrupted": 0,
+      "source-starvations": 0
+    },
+    {
+      "presented": 546,
+      "sync-samples": 537,
+      "max-sync-us": 9986,
+      "decoded": 551,
+      "dropped": 0,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ],
+  "resource_lines": [
+    "ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0",
+    "ELF pair live: pages reclaimed; heap-before=474880 heap-after=536320",
+    "ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0",
+    "ELF pair live: pages reclaimed; heap-before=536320 heap-after=540416",
+    "ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0",
+    "ELF pair live: pages reclaimed; heap-before=540416 heap-after=540416"
+  ],
+  "heaps": {
+    "heap-after-3s-launch1": {
+      "bytes": 540416,
+      "allocations": 24,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG.old",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-after-3s-launch2": {
+      "bytes": 540416,
+      "allocations": 24,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG.old",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-after-3s": {
+      "bytes": 536320,
+      "allocations": 23,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-after-launch1": {
+      "bytes": 540416,
+      "allocations": 24,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG.old",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-after-launch2": {
+      "bytes": 540416,
+      "allocations": 24,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG.old",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-after": {
+      "bytes": 536320,
+      "allocations": 23,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-before-launch1": {
+      "bytes": 536320,
+      "allocations": 23,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-before-launch2": {
+      "bytes": 540416,
+      "allocations": 24,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG.old",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOG",
+            "size": 106,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOG.old",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/VideoDecodeStats/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/DM1MzUv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/DM1MzUv/shared_proto_db/metadata/LOCK",
+            "size": 0,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    "heap-before": {
+      "bytes": 438272,
+      "allocations": 7,
+      "inode_allocations": [
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/etc/motd",
+            "size": 23,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/bin/hello",
+            "size": 115,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Three normal non-trace launches completed; older startup GP root cause remains unproven.",
+    "Source starvation is not hardware PCM underrun measurement.",
+    "Engine RAM, EOS/restart, sound quality and adverse streaming gates remain open."
+  ]
+}

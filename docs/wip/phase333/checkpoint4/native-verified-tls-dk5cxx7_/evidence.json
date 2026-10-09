@@ -1,0 +1,1054 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "diagnostic_trace": true,
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "range": null,
+      "elapsed": 93.71480588899794
+    },
+    {
+      "server": "valid",
+      "path": "/app.js",
+      "range": null,
+      "elapsed": 93.7856186909994
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=canplay&value=probably&seq=1",
+      "range": null,
+      "elapsed": 93.86649549299909
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=mse&value=true&seq=2",
+      "range": null,
+      "elapsed": 93.86662639299902
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=sourceopen&value=ok&seq=3",
+      "range": null,
+      "elapsed": 94.08790489999956
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=0&seq=4",
+      "range": null,
+      "elapsed": 94.08803099999932
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=0-8191",
+      "elapsed": 94.12762060100067
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=8192-16383",
+      "elapsed": 94.48533111199868
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadedmetadata&value=0&seq=5",
+      "range": null,
+      "elapsed": 94.52530881299754
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=16384-24575",
+      "elapsed": 94.60520591599925
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=24576-32767",
+      "elapsed": 94.70516391899946
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=32768-40959",
+      "elapsed": 94.80539152200072
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dfalse%20ready%3D1%20width%3D160%20height%3D90&seq=6",
+      "range": null,
+      "elapsed": 94.88517602399952
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=40960-49151",
+      "elapsed": 94.88534172399886
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=49152-57343",
+      "elapsed": 94.98514122699999
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadeddata&value=0.250083&seq=7",
+      "range": null,
+      "elapsed": 95.12537453199911
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=0.250083&seq=8",
+      "range": null,
+      "elapsed": 95.1256547319972
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.550083%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=9",
+      "range": null,
+      "elapsed": 95.8657746539975
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=57344-65535",
+      "elapsed": 95.86597365399939
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=1.317565%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=10",
+      "range": null,
+      "elapsed": 96.86677408399919
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=65536-73727",
+      "elapsed": 96.86718508400008
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=2.171171%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=11",
+      "range": null,
+      "elapsed": 97.86601462699764
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=73728-81919",
+      "elapsed": 97.86623762700037
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.054368%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=12",
+      "range": null,
+      "elapsed": 98.86636067499785
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=81920-90111",
+      "elapsed": 98.8666732749989
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=90112-98303",
+      "elapsed": 98.92516867799714
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.92972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=13",
+      "range": null,
+      "elapsed": 99.86646812300023
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=98304-106495",
+      "elapsed": 99.86688562299969
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=4.802055%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=14",
+      "range": null,
+      "elapsed": 100.8665847709999
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=106496-114687",
+      "elapsed": 100.86672957100018
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=p&seq=15",
+      "range": null,
+      "elapsed": 101.33573319399875
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pause&value=5.230037&seq=16",
+      "range": null,
+      "elapsed": 101.37098239499755
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.230037%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90&seq=17",
+      "range": null,
+      "elapsed": 101.8953741209989
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.230037%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90&seq=18",
+      "range": null,
+      "elapsed": 102.86642256699997
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.230037%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90&seq=19",
+      "range": null,
+      "elapsed": 103.8661507149991
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=r&seq=20",
+      "range": null,
+      "elapsed": 104.2761224349997
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=5.230037&seq=21",
+      "range": null,
+      "elapsed": 104.31084613699932
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.765729%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=22",
+      "range": null,
+      "elapsed": 104.86630676300047
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=114688-122879",
+      "elapsed": 104.86673196300035
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.766636%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=23",
+      "range": null,
+      "elapsed": 105.87734866900064
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=122880-131071",
+      "elapsed": 105.87805216899869
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=131072-139263",
+      "elapsed": 105.99529871899722
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=7.764935%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=24",
+      "range": null,
+      "elapsed": 106.86629994900068
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=139264-147455",
+      "elapsed": 106.86673474899726
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=8.766885%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=25",
+      "range": null,
+      "elapsed": 107.8660321239986
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=147456-155647",
+      "elapsed": 107.86617872399802
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=9.769017%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=26",
+      "range": null,
+      "elapsed": 108.86603049800033
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=155648-163839",
+      "elapsed": 108.86625819799883
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=163840-172031",
+      "elapsed": 108.9453862650007
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=10.770083%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=27",
+      "range": null,
+      "elapsed": 109.8669173729977
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=172032-180223",
+      "elapsed": 109.8673637719985
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=s&seq=28",
+      "range": null,
+      "elapsed": 110.33586427299815
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=seeking&value=15&seq=29",
+      "range": null,
+      "elapsed": 110.37137855800029
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=15&seq=30",
+      "range": null,
+      "elapsed": 110.37162625799829
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=15%20paused%3Dfalse%20ready%3D1%20width%3D160%20height%3D90&seq=31",
+      "range": null,
+      "elapsed": 110.88548973899742
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=180224-188415",
+      "elapsed": 110.88571773899821
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=188416-196607",
+      "elapsed": 110.94566211399797
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=seeked&value=15.250083&seq=32",
+      "range": null,
+      "elapsed": 110.98959539499992
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=15.250083&seq=33",
+      "range": null,
+      "elapsed": 110.9897297949974
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=196608-204799",
+      "elapsed": 111.04560037099873
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=204800-212991",
+      "elapsed": 111.14548632899823
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=212992-221183",
+      "elapsed": 111.20567050299724
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=221184-229375",
+      "elapsed": 111.30560546099878
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=229376-237567",
+      "elapsed": 111.40556932199979
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=15.682191%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=34",
+      "range": null,
+      "elapsed": 111.86563664300047
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=16.578563%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=35",
+      "range": null,
+      "elapsed": 112.8666295869989
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=237568-245759",
+      "elapsed": 112.86718998699871
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=17.464867%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=36",
+      "range": null,
+      "elapsed": 113.86728313399726
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=245760-253951",
+      "elapsed": 113.8675022339994
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=253952-262143",
+      "elapsed": 113.96556222599975
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=18.33616%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=37",
+      "range": null,
+      "elapsed": 114.86662053799955
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=262144-270335",
+      "elapsed": 114.86701963700034
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=19.220332%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=38",
+      "range": null,
+      "elapsed": 115.8664437410007
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=270336-278527",
+      "elapsed": 115.86669844099742
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=20.09684%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=39",
+      "range": null,
+      "elapsed": 116.86632174400074
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=278528-286719",
+      "elapsed": 116.86678304299858
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=286720-294911",
+      "elapsed": 116.93566876799741
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=20.954822%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=40",
+      "range": null,
+      "elapsed": 117.86681284599763
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=294912-303103",
+      "elapsed": 117.86719444600021
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=21.819085%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=41",
+      "range": null,
+      "elapsed": 118.86611864999941
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=303104-311295",
+      "elapsed": 118.86629404999985
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=22.71718%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=42",
+      "range": null,
+      "elapsed": 119.86621527500029
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=311296-319487",
+      "elapsed": 119.86642127499726
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=23.597497%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=43",
+      "range": null,
+      "elapsed": 120.86640171399995
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=319488-327679",
+      "elapsed": 120.86667291399863
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=327680-335871",
+      "elapsed": 120.9355886159974
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=24.469629%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=44",
+      "range": null,
+      "elapsed": 121.86738386499928
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=335872-344063",
+      "elapsed": 121.86770996499763
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=25.349039%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=45",
+      "range": null,
+      "elapsed": 122.87031922299866
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=344064-352255",
+      "elapsed": 122.87086132299737
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=26.203144%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=46",
+      "range": null,
+      "elapsed": 123.8665234809996
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=352256-360447",
+      "elapsed": 123.86675418099912
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=27.068858%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=47",
+      "range": null,
+      "elapsed": 124.86690703799832
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=360448-368639",
+      "elapsed": 124.86721393799962
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=368640-376831",
+      "elapsed": 124.94569674299782
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=27.902373%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=48",
+      "range": null,
+      "elapsed": 125.86679789600021
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=376832-385023",
+      "elapsed": 125.86720269599755
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=28.781148%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=49",
+      "range": null,
+      "elapsed": 126.86627315399892
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=385024-393215",
+      "elapsed": 126.86641435399724
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=29.672169%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=50",
+      "range": null,
+      "elapsed": 127.86739151099755
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=393216-401407",
+      "elapsed": 127.86789191199932
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=401408-409599",
+      "elapsed": 127.93585171499944
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=30.536749%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=51",
+      "range": null,
+      "elapsed": 128.86650766899766
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=409600-417791",
+      "elapsed": 128.86668436900072
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=31.413166%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=52",
+      "range": null,
+      "elapsed": 129.8677175289995
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=417792-425983",
+      "elapsed": 129.86824902899752
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=32.265933%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=53",
+      "range": null,
+      "elapsed": 130.8668562419989
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=425984-434175",
+      "elapsed": 130.86730694200014
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=33.121738%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=54",
+      "range": null,
+      "elapsed": 131.86676245499984
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=434176-442367",
+      "elapsed": 131.86718025499795
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=442368-450559",
+      "elapsed": 131.94579864799744
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=33.995343%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=55",
+      "range": null,
+      "elapsed": 132.86728656799824
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=450560-458751",
+      "elapsed": 132.8677825679988
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=34.853416%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=56",
+      "range": null,
+      "elapsed": 133.8675952809972
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=458752-466943",
+      "elapsed": 133.86806267999782
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=35.712577%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=57",
+      "range": null,
+      "elapsed": 134.86666329299987
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=36.600491%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=58",
+      "range": null,
+      "elapsed": 135.8669460059973
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=37.484073%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=59",
+      "range": null,
+      "elapsed": 136.86684471899935
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=38.366454%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=60",
+      "range": null,
+      "elapsed": 137.8667525669989
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=39.222373%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90&seq=61",
+      "range": null,
+      "elapsed": 138.86695318199781
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=x&seq=62",
+      "range": null,
+      "elapsed": 139.27055100699727
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0&seq=63",
+      "range": null,
+      "elapsed": 139.88618549199964
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0&seq=64",
+      "range": null,
+      "elapsed": 140.86639311099862
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0&seq=65",
+      "range": null,
+      "elapsed": 141.8669090250005
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0&seq=66",
+      "range": null,
+      "elapsed": 142.86848963900047
+    }
+  ],
+  "frames": [
+    {
+      "elapsed": 6.581635506998282,
+      "path": "media-006.png"
+    },
+    {
+      "elapsed": 8.621341878999374,
+      "path": "media-008.png"
+    },
+    {
+      "elapsed": 10.648918953997054,
+      "path": "media-010.png"
+    },
+    {
+      "elapsed": 12.676301329996932,
+      "path": "media-012.png"
+    },
+    {
+      "elapsed": 14.70394280599794,
+      "path": "media-014.png"
+    },
+    {
+      "elapsed": 16.730823581998266,
+      "path": "media-016.png"
+    },
+    {
+      "elapsed": 18.759546213997965,
+      "path": "media-018.png"
+    },
+    {
+      "elapsed": 20.78581684799792,
+      "path": "media-020.png"
+    },
+    {
+      "elapsed": 22.814714881998952,
+      "path": "media-022.png"
+    },
+    {
+      "elapsed": 24.84159471699968,
+      "path": "media-024.png"
+    },
+    {
+      "elapsed": 26.868416420998983,
+      "path": "media-026.png"
+    },
+    {
+      "elapsed": 28.895021024996822,
+      "path": "media-028.png"
+    },
+    {
+      "elapsed": 30.921980929997517,
+      "path": "media-030.png"
+    },
+    {
+      "elapsed": 32.94787162599823,
+      "path": "media-032.png"
+    },
+    {
+      "elapsed": 34.97500741099793,
+      "path": "media-034.png"
+    },
+    {
+      "elapsed": 37.00262429599752,
+      "path": "media-037.png"
+    },
+    {
+      "elapsed": 39.031211281999276,
+      "path": "media-039.png"
+    },
+    {
+      "elapsed": 41.05869967599938,
+      "path": "media-041.png"
+    },
+    {
+      "elapsed": 43.08595283300019,
+      "path": "media-043.png"
+    },
+    {
+      "elapsed": 45.11338188999798,
+      "path": "media-045.png"
+    },
+    {
+      "elapsed": 47.140916946998914,
+      "path": "media-047.png"
+    },
+    {
+      "elapsed": 49.168206253998505,
+      "path": "media-049.png"
+    },
+    {
+      "elapsed": 51.19501470799878,
+      "path": "media-051.png"
+    },
+    {
+      "elapsed": 53.222441681999044,
+      "path": "media-053.png"
+    },
+    {
+      "elapsed": 55.24999339999704,
+      "path": "media-055.png"
+    },
+    {
+      "elapsed": 57.27641492299881,
+      "path": "media-057.png"
+    },
+    {
+      "elapsed": 59.30338436099919,
+      "path": "media-059.png"
+    },
+    {
+      "elapsed": 61.32906609899874,
+      "path": "media-061.png"
+    },
+    {
+      "elapsed": 63.35635393699704,
+      "path": "media-063.png"
+    },
+    {
+      "elapsed": 65.38397077599802,
+      "path": "media-065.png"
+    },
+    {
+      "elapsed": 67.41082341799847,
+      "path": "media-067.png"
+    },
+    {
+      "elapsed": 69.437652659999,
+      "path": "media-069.png"
+    },
+    {
+      "elapsed": 71.46481370299807,
+      "path": "media-071.png"
+    },
+    {
+      "elapsed": 73.49017705499864,
+      "path": "media-073.png"
+    },
+    {
+      "elapsed": 75.52008332900004,
+      "path": "media-075.png"
+    },
+    {
+      "elapsed": 77.55063160200007,
+      "path": "media-077.png"
+    },
+    {
+      "elapsed": 79.57785677599895,
+      "path": "media-079.png"
+    },
+    {
+      "elapsed": 81.60391866899954,
+      "path": "media-081.png"
+    },
+    {
+      "elapsed": 83.63095019699904,
+      "path": "media-083.png"
+    },
+    {
+      "elapsed": 85.65810222499931,
+      "path": "media-085.png"
+    },
+    {
+      "elapsed": 87.68454465299874,
+      "path": "media-087.png"
+    },
+    {
+      "elapsed": 89.71242627099855,
+      "path": "media-089.png"
+    },
+    {
+      "elapsed": 91.73976705200039,
+      "path": "media-091.png"
+    },
+    {
+      "elapsed": 93.7587352019982,
+      "path": "media-093.png"
+    },
+    {
+      "elapsed": 95.78211026299687,
+      "path": "media-095.png"
+    },
+    {
+      "elapsed": 97.80600793999838,
+      "path": "media-097.png"
+    },
+    {
+      "elapsed": 99.83346703799907,
+      "path": "media-099.png"
+    },
+    {
+      "elapsed": 101.83959943399896,
+      "path": "media-101.png"
+    },
+    {
+      "elapsed": 103.86910223099767,
+      "path": "media-103.png"
+    },
+    {
+      "elapsed": 105.88008476699906,
+      "path": "media-105.png"
+    },
+    {
+      "elapsed": 107.90702480499749,
+      "path": "media-107.png"
+    },
+    {
+      "elapsed": 109.93334284299999,
+      "path": "media-109.png"
+    },
+    {
+      "elapsed": 111.94113436099724,
+      "path": "media-111.png"
+    },
+    {
+      "elapsed": 113.96941425499972,
+      "path": "media-113.png"
+    },
+    {
+      "elapsed": 115.99983402699945,
+      "path": "media-115.png"
+    },
+    {
+      "elapsed": 118.0305288999989,
+      "path": "media-118.png"
+    },
+    {
+      "elapsed": 120.05922959599775,
+      "path": "media-120.png"
+    },
+    {
+      "elapsed": 122.08813759599798,
+      "path": "media-122.png"
+    },
+    {
+      "elapsed": 124.12100821399872,
+      "path": "media-124.png"
+    },
+    {
+      "elapsed": 126.15587253099875,
+      "path": "media-126.png"
+    },
+    {
+      "elapsed": 128.18700614800036,
+      "path": "media-128.png"
+    },
+    {
+      "elapsed": 130.22079698099697,
+      "path": "media-130.png"
+    },
+    {
+      "elapsed": 132.25390730399886,
+      "path": "media-132.png"
+    },
+    {
+      "elapsed": 134.28603062599723,
+      "path": "media-134.png"
+    },
+    {
+      "elapsed": 136.32053004899717,
+      "path": "media-136.png"
+    },
+    {
+      "elapsed": 138.35621983399687,
+      "path": "media-138.png"
+    },
+    {
+      "elapsed": 140.3719965599994,
+      "path": "media-140.png"
+    },
+    {
+      "elapsed": 142.4069689829994,
+      "path": "media-142.png"
+    }
+  ],
+  "inputs": [
+    {
+      "key": "p",
+      "elapsed": 101.05521849599972
+    },
+    {
+      "key": "r",
+      "elapsed": 103.98510683699715
+    },
+    {
+      "key": "s",
+      "elapsed": 110.04956419399969
+    },
+    {
+      "key": "x",
+      "elapsed": 138.97788661899904
+    }
+  ],
+  "provider_sha256": "a6fd4ecd07d70618388851965d84b540c621ae3acba71904f111095dbac7222b",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "boot_sha256": "ead4e7804097c1b3595534ebf7fd4d8cc6cd9fe26831d70cfd2abdf76ca0b90f",
+  "runtime_sha256": "f5d414273b811fee3b281baa110c09b84743cad67c78c06faefe8965297e1dde",
+  "elapsed": 148.21813703099906
+}

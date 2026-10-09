@@ -56,7 +56,7 @@ struct SbPlayerPrivate {
  uint64_t consumed;int64_t seek_time,audio_anchor,last_audio_pts,last_video_pts;
  int audio_anchor_set;double rate,volume;
  int64_t wall_anchor,wall_media,duration;
- unsigned total_video,dropped_video,corrupted_video,underruns;
+ unsigned total_video,dropped_video,corrupted_video,source_starvations,source_starved;
 };
 struct SbDecodeTargetPrivate {
  struct SbDecodeTargetPrivate *next;SbDecodeTargetInfo info;
@@ -81,6 +81,9 @@ static void source_status(int *frames,int *offset,bool *playing,bool *eos,void *
  *frames=(int)p->pcm_count;*offset=(int)p->pcm_read;
  *playing=p->presenting&&p->rate==1.0&&!p->seek_pending&&!p->stop&&!p->failed;
  *eos=p->pending[kSbMediaTypeAudio].eos&&!p->pending[kSbMediaTypeAudio].full;
+ unsigned starved=*playing&&!*eos&&!*frames;
+ if(starved&&!p->source_starved)++p->source_starvations;
+ p->source_starved=starved;
  pthread_mutex_unlock(&p->mutex);
 }
 static void consume_frames(int count,void *context){
@@ -357,9 +360,9 @@ void SbPlayerDestroy(SbPlayer handle){
 #ifdef MYOS_MEDIA_NATIVE_UNDERLAY
  if(p->native_video){
   char metrics[256];snprintf(metrics,sizeof(metrics),
-   "MEDIA native metrics presented=%u sync-samples=%u max-sync-us=%lld decoded=%u dropped=%u corrupted=%u underruns=%u\n",
+   "MEDIA native metrics presented=%u sync-samples=%u max-sync-us=%lld decoded=%u dropped=%u corrupted=%u source-starvations=%u\n",
    p->native_presented,p->native_sync_samples,(long long)p->native_max_sync,p->total_video,
-   p->dropped_video,p->corrupted_video,p->underruns);SbLogRaw(metrics);
+   p->dropped_video,p->corrupted_video,p->source_starvations);SbLogRaw(metrics);
  }
 #endif
  if(p->video_initialized)vpx_codec_destroy(&p->video);

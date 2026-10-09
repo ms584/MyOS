@@ -242,3 +242,76 @@ linker still requires all kernel+BSS below0x80000 stack and0x90000 DMA.
 Floppy CHS/BIOS EDD sector reads use bounded destination segments, with no
 wrap at this envelope. Full regression4 and normal BIOS/UEFI builds are pending.
 No media sync/RAM acceptance threshold changed.
+
+## Checkpoint4: full regression and UEFI, engine gate still OPEN
+Full tests/test_system.py completed11:20:44 with exit0 and normal BIOS
+restoration. Normal UEFI build plus real guest underlay pixel/lifecycle and
+PCM tests passed13:28. Original full log ZIP,UEFI logs and normal image hashes
+are in wip/phase333/checkpoint4/. Kernel source corresponds to3d3f76f.
+Normal artifacts are frozen in build/media-evaluation/underlay-normal-final-20261009.
+
+The traced native provider measured538 presentations,530 A/V samples,
+max16439us. Two isolated register-diagnostic non-trace observations played
+with542/541 presentations,max11148/10423us and2 drops. These do NOT establish
+stable normal-image acceptance. Earlier two normal non-trace runs faulted in
+pinned core at RIP0x800343612e just after MSE metadata; cause remains open.
+Pinned upstream media/starboard bridge/renderer source was fetched and verified
+against the pinned Git blob hashes for investigation; no arbitrary delay or
+fake GL capability workaround was added.
+
+The cold61440byte heap difference was identified as15 persistent4KiB profile/
+cache file buffers owned by linked RAMFS inodes under /home/cobalt/,refs0.
+A separate36608byte lazy asset index explains the pre-launch sampling difference.
+No remaining new video buffer allocation was found. This identifies ownership,
+not a bounded-relaunch pass; three normal non-trace launches in one VM are now
+running to check cache growth and repeatability. Raw heaps and TLS keys remain
+private in build. Only sanitized inode ownership summaries are public.
+
+The old 'underruns=0' aggregate was an unmeasured placeholder and must not be
+used as evidence. Source now counts actual transitions to empty audio source
+while playing before EOS, reported as source-starvations. This does not measure
+hardware underruns. Updated default provider passed corrupt packet/rapid seek/
+real64MiB guest exhaustion/create recovery/close/relaunch/exact-resource tests
+at13:44:56. Final PCM gap quality and engine32MiB RAM measurements remain open.
+Native underlay test now supports --uefi. Observation runner supports bounded
+MYOS_MEDIA_REPEATS=1..3,with per-launch evidence filtering. MYOS_MEDIA_HEAP_DIAGNOSTIC
+and MYOS_MEDIA_KERNEL_ELF are diagnostic-only; use a matching frozen kernel ELF.
+MYOS_MEDIA_QEMU_INTERRUPTS gave no CPU exception data on KVM and is not proof.
+Do not reuse native-underlay-stage/build as normal: its current binary is a
+fault-register diagnostic even though its source has been restored.
+
+Final required gates remain stable normal engine,controlled-start full media
+RAM accounting,measured PCM quality,EOS/restart and streaming network/truncate/
+corrupt/OOM/close tests. No Phase33.3/YouTube pass and no push.
+
+## Normal replay and engine lifecycle, 2026-10-09 14:04 +07
+Three consecutive normal non-trace launches completed in the same VM:
+542/544/546 video presentations, maximum measured consumed-audio vs
+presented-video PTS error 17316/15230/9986 microseconds; no guest fault.
+PMM, SHM and aliases returned exactly on each launch. Cold profile/cache files
+consume61440 bytes; a second launch adds4096 bytes; third heap540416 before/after
+is exact. Heap snapshots map retained data to linked profile/cache inodes.
+See checkpoint4/normal-three-launch/ for original PCM, selected screenshots,
+serial/resource metrics and ownership summaries. Earlier GP cause is unresolved;
+three successful runs are evidence of replay stability, not proof of a fix.
+
+A normal non-trace engine lifecycle session reached DOM ended at40s after
+real pause/resume/seek15s, then restarted a fresh MediaSource within the SAME
+Cobalt process, played again from0s, and stopped. Two native player instances
+reported550/145 presentations and maximum sync52175/36092us respectively.
+All PMM/SHM/aliases reclaimed on process exit. See checkpoint4/engine-lifecycle/.
+Generation guards reject old request/update callbacks; stop aborts in-flight
+XHR, clears src/load and revokes the old blob URL. No host media decoding.
+
+Raw PCM diagnostics reveal long held samples (up to72.8ms in selected steady
+windows) and reduced tone crossings. This is an OPEN sound-quality issue;
+source-starvations=0 does not prove DMA/capture continuity or correct pitch.
+Do not declare the whole phase passed from these sync counters.
+
+Controlled-start RAM measurement is now running: page waits for B after UI
+ready and3s settling; sample matching-kernel PMM free_count every0.5s during
+fetch/demux/decode/render/audio/EOS/restart. Original32MiB budget remains.
+Conservative accounting will add the entire16MiB reserved kernel heap and
+provider mapped PT_LOAD pages to observed PMM incremental peak; this covers
+underlay allocations and preload cost but sampling is not an exact high-water
+bound. Final budget acceptance must state these limits or add allocation bounds.

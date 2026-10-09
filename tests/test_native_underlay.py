@@ -6,7 +6,7 @@ from test_system import VM,ROOT
 from test_shell import type_text
 from test_elf_dynamic import assert_live_resources
 from make_asset_disk import create
-p=argparse.ArgumentParser();p.add_argument('--boot-image',type=Path,required=True);p.add_argument('--runtime',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--boot-image',type=Path,required=True);p.add_argument('--runtime',type=Path,required=True);p.add_argument('--uefi',action='store_true');a=p.parse_args()
 out=Path(tempfile.mkdtemp(prefix='native-underlay-',dir=ROOT/'build/media-evaluation'))
 specs=[]
 for mode in (0,1,2):
@@ -15,7 +15,9 @@ for mode in (0,1,2):
  subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start','-o',str(so),str(obj)],check=True)
  specs.append(f'underlay{mode}={so}')
 disk=out/'assets.img';create(disk,specs,runtime=a.runtime)
-vm=VM('native-underlay-contract',ram=64,asset_disk=disk,boot_image=a.boot_image)
+options=dict(ram=64)
+if a.uefi:options=dict(ram=128,boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
+vm=VM('native-underlay-contract-uefi' if a.uefi else 'native-underlay-contract',asset_disk=disk,boot_image=a.boot_image,**options)
 shots=[]
 def wait(offset,marker):
  end=time.monotonic()+20

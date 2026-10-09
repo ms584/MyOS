@@ -1,0 +1,10 @@
+{"server": "valid", "path": "/", "range": null, "elapsed": 97.56446737599981}
+{"server": "valid", "path": "/app.js", "range": null, "elapsed": 97.63537657900088}
+{"server": "valid", "path": "/evidence?kind=canplay&value=probably&seq=1", "range": null, "elapsed": 97.7145873820009}
+{"server": "valid", "path": "/evidence?kind=mse&value=true&seq=2", "range": null, "elapsed": 97.71472998199897}
+{"server": "valid", "path": "/evidence?kind=sourceopen&value=ok&seq=3", "range": null, "elapsed": 97.94659199099988}
+{"server": "valid", "path": "/evidence?kind=waiting&value=0&seq=4", "range": null, "elapsed": 97.94678339099846}
+{"server": "valid", "path": "/media.webm", "range": "bytes=0-8191", "elapsed": 97.99316639300014}
+{"server": "valid", "path": "/media.webm", "range": "bytes=8192-16383", "elapsed": 98.2239622019988}
+{"server": "valid", "path": "/evidence?kind=loadedmetadata&value=0&seq=5", "range": null, "elapsed": 98.24484010299784}
+{"server": "valid", "path": "/media.webm", "range": "bytes=16384-24575", "elapsed": 98.34394380699814}

@@ -1,0 +1,255 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "diagnostic_trace": false,
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "range": null,
+      "elapsed": 97.56446737599981
+    },
+    {
+      "server": "valid",
+      "path": "/app.js",
+      "range": null,
+      "elapsed": 97.63537657900088
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=canplay&value=probably&seq=1",
+      "range": null,
+      "elapsed": 97.7145873820009
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=mse&value=true&seq=2",
+      "range": null,
+      "elapsed": 97.71472998199897
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=sourceopen&value=ok&seq=3",
+      "range": null,
+      "elapsed": 97.94659199099988
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=0&seq=4",
+      "range": null,
+      "elapsed": 97.94678339099846
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=0-8191",
+      "elapsed": 97.99316639300014
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=8192-16383",
+      "elapsed": 98.2239622019988
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadedmetadata&value=0&seq=5",
+      "range": null,
+      "elapsed": 98.24484010299784
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=16384-24575",
+      "elapsed": 98.34394380699814
+    }
+  ],
+  "frames": [
+    {
+      "elapsed": 6.931446532002155,
+      "path": "media-006.png"
+    },
+    {
+      "elapsed": 8.969927715999802,
+      "path": "media-008.png"
+    },
+    {
+      "elapsed": 10.995783900001697,
+      "path": "media-010.png"
+    },
+    {
+      "elapsed": 13.021798983001645,
+      "path": "media-013.png"
+    },
+    {
+      "elapsed": 15.048845158002223,
+      "path": "media-015.png"
+    },
+    {
+      "elapsed": 17.07518733300094,
+      "path": "media-017.png"
+    },
+    {
+      "elapsed": 19.101261208001233,
+      "path": "media-019.png"
+    },
+    {
+      "elapsed": 21.127666285003215,
+      "path": "media-021.png"
+    },
+    {
+      "elapsed": 23.153703974003292,
+      "path": "media-023.png"
+    },
+    {
+      "elapsed": 25.179842964000272,
+      "path": "media-025.png"
+    },
+    {
+      "elapsed": 27.205676253001002,
+      "path": "media-027.png"
+    },
+    {
+      "elapsed": 29.231727943002625,
+      "path": "media-029.png"
+    },
+    {
+      "elapsed": 31.259248934002244,
+      "path": "media-031.png"
+    },
+    {
+      "elapsed": 33.28604722500313,
+      "path": "media-033.png"
+    },
+    {
+      "elapsed": 35.312341116001335,
+      "path": "media-035.png"
+    },
+    {
+      "elapsed": 37.340859807001834,
+      "path": "media-037.png"
+    },
+    {
+      "elapsed": 39.36795379900286,
+      "path": "media-039.png"
+    },
+    {
+      "elapsed": 41.39427269200314,
+      "path": "media-041.png"
+    },
+    {
+      "elapsed": 43.419604484002775,
+      "path": "media-043.png"
+    },
+    {
+      "elapsed": 45.4449321860011,
+      "path": "media-045.png"
+    },
+    {
+      "elapsed": 47.47089671300273,
+      "path": "media-047.png"
+    },
+    {
+      "elapsed": 49.497964140002296,
+      "path": "media-049.png"
+    },
+    {
+      "elapsed": 51.52637906700329,
+      "path": "media-051.png"
+    },
+    {
+      "elapsed": 53.56683119500303,
+      "path": "media-053.png"
+    },
+    {
+      "elapsed": 55.59902762400088,
+      "path": "media-055.png"
+    },
+    {
+      "elapsed": 57.629458653002075,
+      "path": "media-057.png"
+    },
+    {
+      "elapsed": 59.66111748300318,
+      "path": "media-059.png"
+    },
+    {
+      "elapsed": 61.69077222700071,
+      "path": "media-061.png"
+    },
+    {
+      "elapsed": 63.718300591001025,
+      "path": "media-063.png"
+    },
+    {
+      "elapsed": 65.74493165600143,
+      "path": "media-065.png"
+    },
+    {
+      "elapsed": 67.77371772100014,
+      "path": "media-067.png"
+    },
+    {
+      "elapsed": 69.8016398159998,
+      "path": "media-069.png"
+    },
+    {
+      "elapsed": 71.83092754700192,
+      "path": "media-071.png"
+    },
+    {
+      "elapsed": 73.85745477800083,
+      "path": "media-073.png"
+    },
+    {
+      "elapsed": 75.8837975100032,
+      "path": "media-075.png"
+    },
+    {
+      "elapsed": 77.90964190700106,
+      "path": "media-077.png"
+    },
+    {
+      "elapsed": 79.95399337300114,
+      "path": "media-079.png"
+    },
+    {
+      "elapsed": 81.98252463800236,
+      "path": "media-081.png"
+    },
+    {
+      "elapsed": 84.01130170300166,
+      "path": "media-084.png"
+    },
+    {
+      "elapsed": 86.03892095600168,
+      "path": "media-086.png"
+    },
+    {
+      "elapsed": 88.07090919900293,
+      "path": "media-088.png"
+    },
+    {
+      "elapsed": 90.10502134300259,
+      "path": "media-090.png"
+    },
+    {
+      "elapsed": 92.1352731870029,
+      "path": "media-092.png"
+    },
+    {
+      "elapsed": 94.16313865400298,
+      "path": "media-094.png"
+    },
+    {
+      "elapsed": 96.192772436003,
+      "path": "media-096.png"
+    }
+  ],
+  "inputs": [],
+  "provider_sha256": "1c971de01ff886740a8590f0f0f09b42b1e60bde9a651fa87a31da13405465cc",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "boot_sha256": "ead4e7804097c1b3595534ebf7fd4d8cc6cd9fe26831d70cfd2abdf76ca0b90f",
+  "runtime_sha256": "f5d414273b811fee3b281baa110c09b84743cad67c78c06faefe8965297e1dde",
+  "elapsed": 103.16090412100311
+}
