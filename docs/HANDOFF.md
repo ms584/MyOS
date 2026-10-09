@@ -3528,3 +3528,10 @@ still has held samples/hardware underruns; audio continuity remains OPEN.
 HTTPS8s stall recovered/stopped/reclaimed. Truncate/corrupt/close observations
 running. See docs/wip/phase333/checkpoint5/README.md and PROJECT_STATE.md.
 No33.4/YouTube or whole33.3 pass. No push.
+
+Checkpoint5 adverse update:truncate and corrupt native HTTPS/MSE error detection,
+fresh-stream recovery, stop and PMM/SHM/aliases cleanup observed. Escape while
+playing also reclaimed PMM/SHM/aliases; partial cold profile40960B needs warm
+confirmation. All666 native PCM long runs are near-zero byte129, suggesting
+real starvation rather than nonzero held tone. OOM ArrayBuffer guest pressure
+run active; full6 still active; neither pending result is passed.

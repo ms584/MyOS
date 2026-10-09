@@ -1,5 +1,5 @@
-Updated:2026-10-09 15:07 +07. /home/xytron404/myos,main.
-Baseline:0476128; new checkpoint5 source/evidence ready for local commit.
+Updated:2026-10-09 15:20 +07. /home/xytron404/myos,main.
+Baseline:091f300 local checkpoint5 worker-join/heap fix; no push.
 Goal Phase33.3 ACTIVE; no push; preserve owner promotion logs/status/audits.
 
 ## Scope
@@ -37,15 +37,18 @@ Full regression5 PASS terminal0 14:58:06 normalBIOSrestored, OLD MRT+heapcounter
 Full regression6 ACTIVE since15:00,logbuild/media-evaluation/phase333-full-regression6.log.
 PID/session must be checked live before waiting; do not restart ontimeout.
 Root build outputs now belong tofull6; do not rebuild/mutate architecture source.
-Truncate/corrupt/close loop ACTIVE session8831;individualcobalt-https-*1.log.
-Prior shell loop lost mode values and is NOT adverse evidence.
-Corrected Python env loop now sets each mode explicitly.
-These byte-only host servers never decode; check actual guest evidence/cleanup.
+Truncate/corrupt native HTTPS errors detected, fresh stream recovery/stop passed;
+PMM/SHM/aliases exact. Escape during playback also exact; partial cold profile
+heap+40960B needs warm close/relaunch owner attribution.
+Erroneous shell loop lost fault mode and is excluded; corrected Python loop DONE.
+Playing OOM ArrayBuffer pressure ACTIVE session53496,cobalt-playing-oom1.log.
+Native PCM666 long constant runs byte129, near zero; voiced periods near source.
+Next investigate real starvation/single-packet callback delivery cadence.
 Final UEFI/checks/normal-image restoration afterfull6 pending.
 
 ## Next gates
 Diagnose audio held samples/hardware underruns; exact PMM highwater/bound.
-Inspect adverse HTTPS results, add actual guest during-playback OOM acceptance.
+Inspect actual guest during-playback OOM result, warm close/relaunch heap.
 Finish focused+full regression/UEFI, restore normal images, update evidence/guide,
 localcommit only. Nativefixturefaults do not substitute forenginefaults.
 References:PHASE333.md,HANDOFF.md,wip/phase333/checkpoint5/README.md.

@@ -49,7 +49,18 @@ One actual range response at byte131072 was delayed8s; engine recovered,
 continued its media clock, accepted stop, and returned all PMM/SHM/aliases.
 Cold heap growth61440B is the profile-file allocation noted above.
 https-stall.json and serial hold the observed events; max sync18.738ms.
-Truncate/corrupt/close scenarios are implemented but results are still pending.
+Truncated Content-Length response at byte131072 caused native fetch-error,
+then N restarted a new stream and played; X stopped. Max sync47.037ms.
+Zeroed first WebM chunk caused SourceBuffer/video error4; new stream restarted
+and played, then X stopped; max sync21.278ms. Both PMM/SHM/aliases exact after
+exit, with cold profile heap growth61440B.
+Closing the process while media clock6.17s/ready4/pausedfalse returned all
+PMM/SHM/aliases and stopped every thread; cold profile heap+40960B.
+Warm close/relaunch heap attribution still needs confirmation for that partial
+profile size. Evidence:https-truncate/corrupt/close JSON and serial logs.
+A bounded native JS ArrayBuffer pressure mode is added; OOM result pending.
+All these tests use guest TLS/fetch/demux/decoder; host only injects bad bytes.
+The first shell loop lost its mode parameters, was stopped, and is excluded.
 
 Full regression5 PASS terminal0 at14:58:06+07, normal framebuffer restored.
 This covered allocator accounting with the OLD MRT; log is losslessly gzipped.
@@ -57,3 +68,9 @@ After promotion of the MRT fix, full regression6 is ACTIVE, not yet PASS.
 Root build image is being used/rebuilt by that suite; do not call it restored.
 Final UEFI, full regression, audio continuity, RAM bound, guest playback OOM,
 stream corruption/truncation/close and normal-image restoration remain gates.
+
+Further PCM analysis:all666 long constant runs in the native-format WAV were
+byte129, one LSB from zero, rather than a held nonzero tone. Selected voiced
+periods remain consistent with source tones at this sample rate; zeros reduce
+whole-window crossing counts. See pcm-gap-analysis.json. This supports real
+starvation as the next investigation; it does not prove a pipeline fix.

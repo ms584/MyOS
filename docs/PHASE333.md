@@ -332,7 +332,15 @@ held samples and hardware underruns: sound continuity remains OPEN.
 HTTPS8s stall recovered and stop/cleanup worked. Other adverse engine cases
 and final regression6/UEFI/image restoration are pending, not passed.
 
-Run byte-only adverse observations with MYOS_MEDIA_FAULT=stall|truncate|corrupt|close,
+Run byte-only adverse observations with MYOS_MEDIA_FAULT=stall|truncate|corrupt|close|oom,
 matching frozen MYOS_MEDIA_BOOT_IMAGE/MYOS_MEDIA_RUNTIME_PATH/provider/resources.
 All decoding/rendering/playback remain native. These runners save evidence;
 exit0 does not automatically mean any phase or adverse case passed.
+
+Additional checkpoint5 adverse observations:truncated HTTPS response caused
+fetch-error then fresh-stream recovery; corrupt WebM header caused native
+SourceBuffer/video error4 then fresh-stream recovery. Both stop/cleanup worked.
+Escape during active playback returned PMM/SHM/aliases and stopped every thread.
+Cold partial profile retention40960B needs warm-close confirmation. OOM mode
+allocates/touches bounded ArrayBuffers from native guest JS during playback;
+its result is pending. None of this closes the unresolved audio/RAM/final checks.

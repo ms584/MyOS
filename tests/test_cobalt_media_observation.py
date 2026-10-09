@@ -84,8 +84,18 @@ if ram_diagnostic:
  script=script.replace(b'begin();\nsetInterval',b"report('media-ready','awaiting B');\nsetInterval")
  script=script.replace(b"if(e.key=='n')begin();",b"if(e.key=='n'||e.key=='b')begin();")
 fault_mode=os.environ.get('MYOS_MEDIA_FAULT','')
-assert fault_mode in ('','stall','truncate','corrupt','close')
+assert fault_mode in ('','stall','truncate','corrupt','close','oom')
 fault_injections=[]
+if fault_mode=='oom':
+ script=script.replace(b"if(e.key=='p')v.pause();",b'''if(e.key=='o'){
+  var pressure=[],failed='',bytes=0;
+  try{for(var i=0;i<32;++i){var block=new ArrayBuffer(16777216),touch=new Uint8Array(block);
+   for(var j=0;j<touch.length;j+=4096)touch[j]=1;
+   pressure.push(block);bytes+=block.byteLength;}}
+  catch(err){failed=String(err);}
+  pressure=null;touch=null;block=null;
+  report(failed?'oom-rejected':'oom-no-rejection',bytes+' '+failed);
+ }if(e.key=='p')v.pause();''')
 def do_GET(self):
  event=dict(server=self.server.label,path=self.path,range=self.headers.get('Range'),elapsed=time.monotonic()-began)
  with lock:
@@ -238,8 +248,12 @@ try:
     if errors and fault_seen is None:fault_seen=time.monotonic()
     if fault_seen and time.monotonic()-fault_seen>=2 and recovery_at is None:
      vm.key('n');recovery_at=time.monotonic();inputs.append(dict(launch=launch,key='n',elapsed=elapsed))
-    if recovery_at and time.monotonic()-recovery_at>=18:
+    if fault_mode!='oom' and recovery_at and time.monotonic()-recovery_at>=18:
      vm.key('x');inputs.append(dict(launch=launch,key='x',elapsed=elapsed));time.sleep(2);break
+    if fault_mode=='oom' and playing:
+     if time.monotonic()-playing>=8 and 'o' not in sent:
+      vm.key('o');sent.add('o');recovery_at=time.monotonic();inputs.append(dict(launch=launch,key='o',elapsed=elapsed))
+     if recovery_at and time.monotonic()-recovery_at>=12:break
     if fault_mode=='close' and playing and time.monotonic()-playing>=8:break
     if fault_mode=='stall' and playing and time.monotonic()-playing>=32:
      vm.key('x');inputs.append(dict(launch=launch,key='x',elapsed=elapsed));time.sleep(2);break
