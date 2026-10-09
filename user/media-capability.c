@@ -2,6 +2,10 @@
 #include <string.h>
 #include "starboard/configuration.h"
 #include "starboard/media.h"
+#ifdef MYOS_MEDIA_TRACE
+#include <stdio.h>
+#include "starboard/log.h"
+#endif
 static void trim(const char **a,const char **b){while(*a<*b&&(**a==' '||**a=='\t'))++*a;while(*b>*a&&((*b)[-1]==' '||(*b)[-1]=='\t'))--*b;}
 static int match(const char *a,const char *b,const char *text){size_t n=(size_t)(b-a);return strlen(text)==n&&!memcmp(a,text,n);}
 static int number(const char *a,const char *b,unsigned maximum,int fraction){
@@ -11,7 +15,11 @@ static int number(const char *a,const char *b,unsigned maximum,int fraction){
  if(a<b&&*a=='.'&&fraction){++a;int decimal=0;while(a<b&&*a>='0'&&*a<='9'){if(n==maximum&&*a!='0')return 0;++a;++decimal;}if(!decimal)return 0;}
  return a==b&&n>0;
 }
+#ifdef MYOS_MEDIA_TRACE
+static SbMediaSupportType can_play(const char *mime,const char *key){
+#else
 SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *key){
+#endif
  if(!mime||!key||*key)return kSbMediaSupportTypeNotSupported;
  size_t length=0;while(mime[length])if(++length>512)return kSbMediaSupportTypeNotSupported;
  const char *end=mime+length,*cursor=mime,*first=cursor;
@@ -51,3 +59,19 @@ SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *k
  return have_codecs?kSbMediaSupportTypeProbably:kSbMediaSupportTypeMaybe;
 }
 bool SbMediaCanChangeType(const char *from,const char *to){(void)from;(void)to;return false;}
+
+#ifdef MYOS_MEDIA_TRACE
+/* Diagnostic-only negotiation evidence; never changes supported capabilities.
+ * MIME is bounded in the log and DRM/key contents are deliberately omitted. */
+SbMediaSupportType SbMediaCanPlayMimeAndKeySystem(const char *mime,const char *key){
+ SbMediaSupportType support=can_play(mime,key);
+#ifdef MYOS_MEDIA_TRACE
+ char message[640];
+ snprintf(message,sizeof(message),"MEDIA capability mime=%.512s encrypted=%d support=%d\n",
+          mime?mime:"(null)",key&&*key?1:0,(int)support);
+ SbLogRaw(message);
+#endif
+ return support;
+}
+
+#endif

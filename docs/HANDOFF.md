@@ -3,6 +3,21 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase33.4 checkpoint1 - 2026-10-09 20:48 +07
+
+Owner requested33.4; goal active, NOT PASSED. Entry PROJECT_STATE.md,
+detail PHASE334.md. Baseline7f4336d. Replayed native-web evidence PASS20:41:12,
+original standard-media analyzer PASS20:41:56; all5 normal artifacts exactly
+match accepted checkpoint6 identities. Full7 terminal0 reused on unchanged
+architecture. Public native Cobalt observation build/phase334-public-35o8vqj2
+started20:40:02, TV pending. Actual home renders YouTube; actual watch
+jNQXAC9IVRw shows Your browser can't play this video (0:00/0:19).
+Both closes return shell mem and exact PMM/SHM/aliases; no media acceptance.
+Trace-only MIME/capability logger added; normal provider rebuilt byte-identical
+to41901a13. Next: diagnostic real watch/search to prove codec/frontend cause.
+No host fetch/player/decoder/proxy, fixture CA or invented certification key.
+No33.5/Rickroll/parent closure. No push; owner promotion files preserved.
+
 ## Phase33.3 checkpoint1  2026-10-09 08:31 +07
 
 Owner explicitly requested Phase33.3 only; goal active. Native web prerequisite

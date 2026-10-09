@@ -1,46 +1,33 @@
-Updated:2026-10-09 17:02 +07. /home/xytron404/myos,main.
-Baseline:656865a implementation; closing acceptance commit contains this state.
-Phase33.3 PASSED on declared MyOS/QEMU profile; no required work remains.
-No push. No33.4/YouTube work. Preserve owner promotion logs/status/audits.
+Updated:2026-10-09 20:48 +07. /home/xytron404/myos,main.
+Phase33.4 owner-authorized, goal active; NOT PASSED. No push.
+Baseline7f4336d; preserve owner untracked promotion logs/status/audits.
 
-## Scope and references
-Phase33.1/33.2 native HTTPS/JS/DOM/input PASSED:
-PHASE33_NATIVE_WEB_ACCEPTANCE.md. No imports-based acceptance.
-Phase33.3 requirement audit:PHASE333_ACCEPTANCE.md.
-Reproduction:PHASE333_EXPERIMENT_GUIDE.md; detail:PHASE333.md.
-Evidence:wip/phase333/checkpoint6/README.md.
-Parent Phase32/33 and YouTube/Rickroll remain unaccepted.
+## Verified prerequisites
+33.1/33.2 native web recorded evidence replay PASS20:41:12.
+33.3 original continuous-session analyzer PASS20:41:56:
+600frames,37.4s visible motion,same-session40.062s PCM,17.890ms sync,
+media RAM bound27103200B. See PHASE333_ACCEPTANCE.md.
+Full regression7 terminal0 at16:52:44; unchanged tested architecture reused.
+Five current normal artifact hashes exactly match checkpoint6 final identity.
+No prerequisite gap found; no fake import-count/fixture acceptance.
 
-## Native standard media
-WebM/VP8/libvpx1.15.2/Opus1.5.2 pins/licenses unchanged.
-160x90@15fps,QEMU512MiB,KVM CPUhost,RTL8139,SB16 native11025monoU8.
-Supported engine punch-out/Viz underlay; real native asset decode targets.
-Bounded incoming audio8/video4 batches,PCM/video output queues/owned samples.
-Actual production40s Cobalt HTTPS/MSE:600decoded,no drops/corruption,
-max17.890ms sync,37.4s visible binary frame IDs at14.948fps.
-Same-session40.062s PCM correct tone windows, no steady gaps after0.465s.
-Three controls/EOS/fresh restart/stop/relaunches pass; max46.733ms.
-Paused frames/hardware counters frozen; seek new frame IDs; stop black/halted.
-One restarted player dropped3frames, recorded.
-Complete PMM512tick allocation history captures short peaks.
-Conservative continuous RAM27103200B; lifecycle maximum31313936B <33554432B.
+## Current33.4 checkpoint
+See PHASE334.md; tests/test_cobalt_youtube_observation.py.
+Real native public home/watch/TV observation started20:40:02:
+build/phase334-public-35o8vqj2; TV still pending.
+Home actually displays YouTube search/menu.
+Watch jNQXAC9IVRw displays native site error:
+Your browser can't play this video,0:00/0:19. NO playback acceptance.
+Both completed closes return shell mem and exact PMM/SHM/aliases.
+No claim about transport/JS failure cause or certification rejection.
+No host page/media fetch/proxy/decoder/player; no added fixture CA.
 
-## Adverse and cleanup
-Latest native full-batch VP8/Opus corruption/seek/destroy/real exhaustion/
-create recovery PASS twice with exact resources.
-HTTPS8s stall recovery; truncate/corrupt native errors/new stream/stop PASS.
-Playing close2/OOM2:Escape/shell mem/relaunch,PMM/SHM/aliases exact.
-OOM actual0 freepages,240MiB ArrayBuffer RangeError; no user fault latest2.
-Media later stalls with network errors; no universal graceful OOM guarantee.
-Cold profile retention61440B full,40960B partial; warm close/OOM exact515840.
-Earlier Mesa faults and concurrent asset120.959ms failure retained.
-Identical asset rerun87.883ms PASS; audio8/video1 failed324.012ms excluded.
-
-## Final validation and images
-Full tests/test_system.py PASS16:52:44, normal framebuffer image restored.
-Final normal UEFI build/PMM/pthread/underlay focused PASS16:53:25.
-Root BIOS/UEFI/kernel/MRT hashes match checkpoint6/final-normal-identity.json
-and tested normal kernel/MRT. No active goal jobs or required tests pending.
-Raw heaps/TLS keys stay private in build; sanitized records only in docs.
-Latest local evidence/guide/handoff acceptance commit; owner pushes manually.
-This task ends at33.3. Await owner instructions; do not start33.4.
+## Diagnostic change and next checkpoint
+MYOS_MEDIA_TRACE-only bounded MIME/support logging in media-capability.c.
+Normal provider rebuild0yzz12iq byte-identical to accepted41901a13.
+Diagnostic provider-xcwnouzd logs real capability requests, not fake support.
+Observation runner supports actual timed input and read-only sampled PMM.
+Finish TV, preserve evidence, then run diagnostic real watch/search.
+Implement additional codec/network/frontend work only from observed evidence.
+33.4 real>=30s video+sound/controls/reopen/error recovery/full checks pending.
+33.5/parent33/Rickroll remain NOT PASSED; do not start final acceptance.
