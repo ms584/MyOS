@@ -54,6 +54,7 @@ struct process {
     uintptr_t *vm_pages; /* Pages and page tables created by anonymous VM. */
     unsigned vm_page_count,vm_page_capacity;
     struct vm_areas *vm_areas;
+    unsigned vm_failure_reports;
     void *kernel_stack;
     uintptr_t kernel_top;
     struct frame *frame;

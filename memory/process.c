@@ -4,6 +4,7 @@
 _Static_assert(ELF_NAME_OFFSET+65+1031+80+32+32+ELF_HOST_RULE_SIZE<=4096,
                "owned native launcher arguments fit boot page");
 #include "vm-ledger.h"
+#include "vm-area.h"
 #include "elf.h"
 #include "runtime-pack.h"
 #include "native-ui.h"
@@ -17,6 +18,22 @@ static struct process processes[PROCESS_LIMIT];
 static uint64_t next_pid = 1;
 extern const unsigned char user_blob_start[], user_blob_end[];
 extern const unsigned char platform_runtime_start[],platform_runtime_end[];
+
+/* Scalar allocation diagnostics stay off the application framebuffer.
+ * At most two reports per process bound serial/IRQ cost during retry loops. */
+static void vm_serial_text(const char *text){while(*text)serial_put(*text++);}
+static void vm_serial_number(uint64_t value){
+ char digits[21];unsigned count=0;
+ do{digits[count++]=(char)('0'+value%10);value/=10;}while(value);
+ while(count)serial_put(digits[--count]);
+}
+static void vm_failure_note(struct process *p,const char *kind,uint64_t pages,uint64_t available){
+ if(p->vm_failure_reports>=2)return;++p->vm_failure_reports;
+ vm_serial_text("VM ");vm_serial_text(kind);vm_serial_text(" ENOMEM pages=");
+ vm_serial_number(pages);vm_serial_text(" available=");vm_serial_number(available);
+ vm_serial_text(" areas=");vm_serial_number(p->vm_areas?p->vm_areas->count:0);
+ vm_serial_text(" limit=");vm_serial_number(VM_AREA_LIMIT);serial_put(10);
+}
 
 struct process *process_find(uint64_t pid)
 {
@@ -448,8 +465,7 @@ static int vm_commit(struct process *p,uint64_t address,size_t length,unsigned p
         }
         size_t needed=length/PAGE_SIZE-resident;
         if(needed>pages_free()){
-            print("VM commit ENOMEM needed-pages=");decimal(needed);
-            print(" free-pages=");decimal(pages_free());print("\n");return -12;
+            vm_failure_note(p,"commit",needed,pages_free());return -12;
         }
         for(uint64_t a=address;a<end;a+=PAGE_SIZE){
             uint64_t *entry=vm_leaf(p,a,true);
@@ -536,8 +552,7 @@ int64_t process_vm_map(struct process *p,uint64_t hint,size_t length,unsigned pr
     if(!p->vm_areas){p->vm_areas=kmalloc(sizeof(*p->vm_areas));if(!p->vm_areas)return -12;
         memset(p->vm_areas,0,sizeof(*p->vm_areas));}
     if(!vm_areas_add(p->vm_areas,address,address+length)){
-        print("VM reserve ENOMEM areas=");decimal(p->vm_areas->count);
-        print(" limit=");decimal(VM_AREA_LIMIT);print(" pages=");decimal(length/PAGE_SIZE);print("\n");return -12;
+        vm_failure_note(p,"reserve",length/PAGE_SIZE,VM_AREA_LIMIT-p->vm_areas->count);return -12;
     }
     int result=vm_commit(p,address,length,prot);
     if(result){check(!process_vm_unmap(p,address,length),"VM reservation rollback");return result;}

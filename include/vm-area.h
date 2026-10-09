@@ -2,7 +2,7 @@
 #define MYOS_VM_AREA_H
 #include <stdint.h>
 #include <stdbool.h>
-#define VM_AREA_LIMIT 256u
+#define VM_AREA_LIMIT 1024u
 struct vm_area { uint64_t begin,end; };
 struct vm_areas { unsigned count;struct vm_area area[VM_AREA_LIMIT]; };
 /* Sorted disjoint, non-adjacent half-open intervals. Ownership only;

@@ -10,7 +10,7 @@ p.add_argument('--uefi',action='store_true')
 p.add_argument('--expect-old-rejection',action='store_true');a=p.parse_args()
 out=Path(tempfile.mkdtemp(prefix='thread-vm-ranges-',dir=ROOT/'build/media-evaluation'))
 obj=out/'ranges.o';so=out/'ranges.so'
-subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone','-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables','-Wall','-Wextra','-Werror','-c','user/elf-thread-vm-ranges.c','-o',str(obj)],check=True)
+subprocess.run(['gcc','-m64','-std=c11','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone','-fno-stack-protector','-fno-asynchronous-unwind-tables','-fno-unwind-tables','-Wall','-Wextra','-Werror',*(['-DMYOS_TEST_OLD_RANGE_REJECTION=1'] if a.expect_old_rejection else []),'-c','user/elf-thread-vm-ranges.c','-o',str(obj)],check=True)
 subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start','-o',str(so),str(obj)],check=True)
 disk=out/'assets.img';create(disk,[f'ranges={so}'],runtime=a.runtime)
 boot=out/'boot.img';shutil.copyfile(a.boot_image,boot)
@@ -24,6 +24,7 @@ try:
   if a.expect_old_rejection:
    assert 'native expanded pthread getattr rejected' in output and 'ELF exited with status 1' in output,output
   else:
+   assert 'native >256 fragmented VM reservations/full-table atomic split/merge/reuse PASS' in output,output
    assert 'native expanded pthread join/detach/getattr/guard PASS' in output and 'ELF exited with status 0' in output,output
   assert_live_resources(output)
  (out/'serial.log').write_text(vm.log.read_text())

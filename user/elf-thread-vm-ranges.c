@@ -34,7 +34,42 @@ static int exercise(uintptr_t start,uintptr_t end){
  while(!__atomic_load_n(&completed,__ATOMIC_ACQUIRE))delay(10);
  delay(200);return 0;
 }
+#ifndef MYOS_TEST_OLD_RANGE_REJECTION
+extern int *__errno_location(void);
+static void reservation_capacity(void){
+ const uintptr_t base=0x8020000000ull,big=base+0x04000000ull;
+ const size_t page=4096;const int flags=0x100022;
+ check(mmap((void *)big,3*page,0,flags,-1,0)==(void *)big);
+ unsigned count=0;
+ for(;count<2048;++count){
+  uintptr_t address=base+(uintptr_t)count*2*page;
+  void *value=mmap((void *)address,page,0,flags,-1,0);
+  if(value==(void *)-1){check(*__errno_location()==12);break;}
+  check(value==(void *)address);
+ }
+ check(count>256&&count<=1024); /* formerly failed real YouTube reservation bound */
+ /* Full-table splitting fails atomically, preserving middle-page ownership. */
+ check(munmap((void *)(big+page),page)==-1&&*__errno_location()==12);
+ check(mmap((void *)(big+page),page,0,flags,-1,0)==(void *)-1&&*__errno_location()==17);
+ /* Make one metadata slot, split successfully, then merge even at full cap. */
+ check(!munmap((void *)base,page));
+ check(!munmap((void *)(big+page),page));
+ check(mmap((void *)(big+page),page,0,flags,-1,0)==(void *)(big+page));
+ check(!munmap((void *)big,3*page));
+ /* Free alternating reservations and reuse exactly those disjoint holes. */
+ for(unsigned i=2;i<count;i+=2)check(!munmap((void *)(base+(uintptr_t)i*2*page),page));
+ for(unsigned i=2;i<count;i+=2){
+  uintptr_t address=base+(uintptr_t)i*2*page;
+  check(mmap((void *)address,page,0,flags,-1,0)==(void *)address);
+ }
+ for(unsigned i=1;i<count;++i)check(!munmap((void *)(base+(uintptr_t)i*2*page),page));
+ message("native >256 fragmented VM reservations/full-table atomic split/merge/reuse PASS\n");
+}
+#endif
 int _start(void){
+#ifndef MYOS_TEST_OLD_RANGE_REJECTION
+ reservation_capacity();
+#endif
  const uintptr_t low=0x8020000000ull,mid=0x8040000000ull,high=0x8100000000ull,end=0xc100000000ull;
  /* PROT_NONE reserves address space without exhausting physical RAM. */
  void *a=mmap((void *)low,0x1f000000,0,0x100022,-1,0);

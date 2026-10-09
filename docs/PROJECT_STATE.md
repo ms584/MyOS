@@ -120,3 +120,13 @@ Evidence checkpoint5/area256-failed. Need bounded VM area capacity increase,
 full-table/reuse native focused coverage, serial-only rate-limited scalar
 ENOMEM diagnostics, then new architectural full suite. No shared images
 mutated during completed observation. Currentnormal5 remain verified.
+
+00:38 VM1024 candidate focused BIOS00:33:21/UEFI00:37:49 PASS.
+Native saturation >256, full-table split fails atomically, slot release,
+split/merge even at fullcap, fragmented hole reuse;2 launches each with
+exactpage/heap cleanup. Ledger16KB/process, dynamically kernel-allocated;
+no physical-memory fabrication. ENOMEM scalar logs serial-only,max2/process.
+MRT exactc407 unchanged; newnormal identity area1024-normal-identity.json.
+Newfull REQUIRED/PENDING for this architecture; previousPMM1GiBfull PASS
+does not cover VM1024. Native YouTube diagnostic retry next, no acceptance
+claim until allfocused/full/currentquality/recovery gates pass.

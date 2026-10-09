@@ -4,6 +4,28 @@ Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
 
+## Phase33.4 checkpoint5 VM capacity — 2026-10-10 00:39 +07
+
+Goal ACTIVE, NOT PASSED. PMM1GiB full default passed00:15:27 and final
+BIOS/UEFI checks/normal5 exact at00:17:06, archived checkpoint4/regression.
+x9u7dks0 actual online diagnostic proved1042 VM reserve failures at256
+areas despite physical RAM available. This run's performance is invalidated
+by diagnostic framebuffer spam; preserve actual error evidence. Both closes
+opened/presented a desktop window with real mouse and returned shell,exact
+PMM257743/SHM/aliases; first actual144p decode source256x144 now logged.
+
+Candidate VM cap1024 dynamically allocates16KB ledger/process; no fakeRAM.
+Serial-only allocation diagnostics max2/process preserve original ENOMEM.
+Native focused BIOS00:33:21 and UEFI00:37:49 pass >256 reservations,
+full-table atomic split rejection, release/split/merge/reuse and thread
+lifecycle/exact cleanup, two waves each. New architectural full required.
+Normal candidate identities area1024-normal-identity.json; MRT c407 unchanged.
+New native YouTube observation4i4dsiw5 started00:38:45 provider-w7xacfv8.
+No image mutations/concurrent regression while observing. Next: verify
+capacity fix live, diagnose remaining sync, GUI stats/search, native idle-TCP
+carrier-loss error path, full architecture suite once changes stabilize.
+No host production chain/credentials/push, no33.4/33.5/Rickroll closure.
+
 ## Phase33.4 checkpoint4 candidate — 2026-10-09 23:35 +07
 
 Read PROJECT_STATE.md. Prior40-worker full passed with exact normal5 hashes.

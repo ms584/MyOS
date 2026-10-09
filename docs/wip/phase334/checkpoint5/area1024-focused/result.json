@@ -1,0 +1,16 @@
+{
+  "phase_passed": false,
+  "focused_passed": true,
+  "full_regression": "required pending for VM1024/serial diagnostic change",
+  "bios_completed": "2026-10-10T00:33:21+07:00",
+  "uefi_completed": "2026-10-10T00:37:49+07:00",
+  "vm_area_limit": 1024,
+  "diagnostics": "serial-only at most2 reports/process",
+  "source_hashes": {
+    "include/vm-area.h": "f6af854c0dbad3d43dbd08bb97f20416b5a1dc538936de4caed8b1a109f9d6b5",
+    "include/process.h": "5f6eea26d45a3ed5d8822098eb97e44cceef4379ac46d062fa060ba90e31c712",
+    "memory/process.c": "10a20461cb030646ff4b7f86b2e2bcfe1706b1fa80b52589716dfd864cd8b5be",
+    "user/elf-thread-vm-ranges.c": "d29423d16b58fe04f10807a8dea7701520316f5192d2b9b6bbc8f13e912a9622",
+    "tests/test_thread_vm_ranges.py": "8327ee8f5001329106aea2985ec33a1d2bfc1829751f68ba4930f200c1436620"
+  }
+}
