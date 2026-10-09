@@ -37,7 +37,11 @@
 #define DECODE_H MAX_H
 #endif
 #define PIXELS (MAX_W*MAX_H*4)
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+#define VIDEO_SLOTS 16
+#else
 #define VIDEO_SLOTS 4
+#endif
 #define PCM_CAP 32768
 #define PCM_RATE 11025
 #define MAX_PACKET (256*1024)
@@ -337,9 +341,30 @@ static void *player_worker(void *context){
     p->current=p->frames[p->video_read];p->have_current=1;++p->generation;
     p->video_read=(p->video_read+1)%VIDEO_SLOTS;--p->video_count;
    }
-   if(!p->presenting&&(!p->has_video||p->have_current)&&
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   int aligned_preroll=1;
+   /* A seek can start video at an earlier keyframe than the audio anchor.
+    * Do not start audible PCM until video has caught up and has bounded
+    * scheduling headroom. EOS admits shorter, already aligned clips. */
+   if(p->has_audio&&p->has_video){
+    int64_t anchor=clock_locked(p);
+    int64_t ahead=p->video_count?p->frames[(p->video_read+p->video_count-1)%VIDEO_SLOTS].time-anchor:0;
+    aligned_preroll=p->have_current&&p->current.time>=anchor-50000&&
+     (ahead>=200000||p->pending[kSbMediaTypeVideo].eos);
+   }
+#endif
+   if(!p->presenting&&
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+      aligned_preroll&&
+#endif
+      (!p->has_video||p->have_current)&&
       (!p->has_audio||p->pcm_count>=2205||p->pending[0].eos)){
     p->presenting=1;p->wall_anchor=now_us();notify_present=1;
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY) && defined(MYOS_MEDIA_TRACE)
+    {char detail[192];snprintf(detail,sizeof(detail),
+     "MEDIA preroll ticket=%d pts=%lld clock=%lld buffered-video=%u audio-frames=%u\n",
+     ticket,(long long)p->current.time,(long long)clock_locked(p),p->video_count,p->pcm_count);SbLogRaw(detail);}
+#endif
    }
    if(p->presenting&&!p->ended&&(!p->has_audio||(p->pending[0].eos&&!p->pcm_count&&!p->pending[0].full))&&
       (!p->has_video||(p->pending[1].eos&&!p->video_count&&!p->pending[1].full))){

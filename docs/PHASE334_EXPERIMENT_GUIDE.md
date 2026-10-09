@@ -166,3 +166,24 @@ python3 tools/run_logged.py -- python3 tests/test_media_native_player.py --provi
 ```
 `--expect-missing` is only for the archived pre-fix kernel; it reproduces the defect and
 never claims a fixed transport pass. Use the matching normal BIOS/UEFI identities.
+
+
+### 2026-10-10 01:22 +07 — checkpoint 7; acceptance still pending
+
+Public batch session `build/phase334-public-5a2ubv7t` genuinely resumed YouTube after
+NIC restoration plus native seek, and both closes/reopens returned to responsive desktop/shell
+with exactly 257743 free pages. At 144p, steady playback exceeded 30s with <=45661 us error,
+but resume/reopen/recovery outliers FAILED (up to 1067993 us). Pause froze PCM counters and
+the movie ROI in both launches. Native Stats proves 256x144@30 VP9 SDR/Opus, SABR.
+Evidence: `docs/wip/phase334/checkpoint6/batched-online-sync-failed/`. Do not report a phase pass.
+
+A separate candidate `provider-a2969w0t` increases only VP9 native-underlay video buffering
+from four to sixteen fixed 160x90 RGBA slots. Preroll waits for current video to catch the audio
+anchor and >=200ms queued video (or EOS for shorter clips) before starting audible PCM.
+The bounded batch remains <=4 video / <=8 audio samples per worker iteration.
+Native fixture `native-player-_q9xnylb` passes controls/seek/EOS/exact cleanup.
+VP8 binary remains exact SHA256 41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696.
+Evidence/source: `docs/wip/phase334/checkpoint7/preroll-native/`.
+Public performance of this candidate is PENDING; this checkpoint is not production acceptance.
+Full regression for VM-area1024 + TCP carrier-loss + current source is still pending and is next.
+No push; Phase33.4 goal active; no Phase33.5/parent33/Rickroll acceptance.

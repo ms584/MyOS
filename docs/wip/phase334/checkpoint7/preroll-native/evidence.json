@@ -1,0 +1,462 @@
+{
+  "output_mode": "underlay",
+  "video_codec": "VP9",
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": true,
+  "provider_sha256": "e077bbc7e59f6b99a7ab796a81408d478fe7887c058c3f3ecce60a15322fab6e",
+  "fixture_sha256": "cecaadd5001511bdefa71699753c6960fb38675a56edd4364ee841e91edfbf7f",
+  "core_sha256": "fe84feb81872a4f4fb1846b00da7b9ddc05042d9098df39b426486ee12fe8a67",
+  "boot_sha256": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-000.ppm",
+      "host_monotonic": 17029.373497509,
+      "sha256": "be61003ad0c59cdfae9be97e44c5e785984fd8fdb9c5a15cf132b67f6c75929d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-001.ppm",
+      "host_monotonic": 17031.384415057,
+      "sha256": "be61003ad0c59cdfae9be97e44c5e785984fd8fdb9c5a15cf132b67f6c75929d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-002.ppm",
+      "host_monotonic": 17033.394343705,
+      "sha256": "be61003ad0c59cdfae9be97e44c5e785984fd8fdb9c5a15cf132b67f6c75929d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-003.ppm",
+      "host_monotonic": 17035.407065353,
+      "sha256": "bff9517e5e394363f6a2307594ddfe6bcdb89fe2329403042f474a599868d930"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-004.ppm",
+      "host_monotonic": 17037.4222204,
+      "sha256": "dec076343997478e37738f4d33f53c6a63287c87e05715beef48829c24e60f3c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-005.ppm",
+      "host_monotonic": 17039.438440548,
+      "sha256": "c2b36e10cc218451c18cacaa5eedd127018f01afb3e49ddd798a3c5d86fa5313"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-006.ppm",
+      "host_monotonic": 17041.457044995,
+      "sha256": "fbdc6c4d4b3c663fbf97ac6afd35183b66f929941e857ab200cea93e497d4bab"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-007.ppm",
+      "host_monotonic": 17043.470674842,
+      "sha256": "b6d27730773b1a92d4cf3ef873e9335955673c67bec5de784166a35d7a46ed98"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-008.ppm",
+      "host_monotonic": 17045.48626839,
+      "sha256": "9bbd9009d44bab7ff119a3467a6036397d47e271284c0eb52dc81a8a98ff9091"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-009.ppm",
+      "host_monotonic": 17047.501775737,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-010.ppm",
+      "host_monotonic": 17049.519030485,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-011.ppm",
+      "host_monotonic": 17051.532385632,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-012.ppm",
+      "host_monotonic": 17053.54426938,
+      "sha256": "d2f3c8c19a50d3b31093b2084326adf747971325c7c3f92a76b29c535b4fe1ea"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-013.ppm",
+      "host_monotonic": 17055.558335027,
+      "sha256": "4db9a9c45d7a835def153668832aa004dc4ab17b5b2a43cbf3e2d97b87d351d0"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-014.ppm",
+      "host_monotonic": 17057.577399175,
+      "sha256": "50186799a1671bf074847297fea528fe3ec13e15a9b251236f9d75bb6bc90989"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-015.ppm",
+      "host_monotonic": 17059.590250422,
+      "sha256": "063cb669af1370b30da1cef87af68799bc4dc325d8e60310381ba4b3d5532a15"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-016.ppm",
+      "host_monotonic": 17061.60344177,
+      "sha256": "cf7ef82fa97837c265564a016804af65cde4120f260ffa6372f03202b59f67e2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-017.ppm",
+      "host_monotonic": 17063.617259618,
+      "sha256": "3d42cc7a7b2755f147c84caafb719fe5000d88bd522258f0f6960bc47e144988"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-018.ppm",
+      "host_monotonic": 17065.633280666,
+      "sha256": "0cad59dca8f7ecb8b5fde518375212298f907bb476cbcabab95d7f8ec1d07504"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-019.ppm",
+      "host_monotonic": 17067.649247313,
+      "sha256": "a7b6da2d047844de655fc239edba457fd4668c3adbcd22fd1f9f3dcec372b5d0"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-020.ppm",
+      "host_monotonic": 17069.665051861,
+      "sha256": "bbef0d375a24176ab683ec45105b7d737d22c14f9c67a5042d0fcc1d70ea691d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-021.ppm",
+      "host_monotonic": 17071.689199908,
+      "sha256": "fe86dda55086e3eacfa61a0d4932a171f2230575473a2a356dd984d600f9882d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-022.ppm",
+      "host_monotonic": 17073.705549154,
+      "sha256": "37518f3fcb5ba937033459931d54f25e06a515c642eb7278cc4635abd2491a89"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-023.ppm",
+      "host_monotonic": 17075.719622699,
+      "sha256": "a9685e653aabd7267c6cf8de6191b58d532bcc5972abf589c6e7ae75226737d5"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-024.ppm",
+      "host_monotonic": 17077.733165244,
+      "sha256": "a2d57fa68543cee0b4ad0d289f2a02c34b15b44201f4738bf5cacc08b22ad5d2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-_q9xnylb/frame-025.ppm",
+      "host_monotonic": 17079.74751489,
+      "sha256": "13ff4d33bcf1f77e6702e1b7e0365f9119cc89ce75eeea3c5755b2c4d8117f6c"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000B000\nELF platform: sysconf\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18496 absolute=0 global=2 jump=64 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF provider: SbPlayerSetBounds\nELF platform: SbWindowCreate\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nMEDIA capability mime=video/webm; codecs=\"vp8, opus\"; width=160; height=90; framerate=15 encrypted=0 support=2\nMEDIA capability mime=video/webm; codecs=\"vp9, opus\" encrypted=0 support=2\nMEDIA capability mime=video/webm; codecs=vp8; width=161 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp8 encrypted=1 support=0\nMEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=320; height=240; framerate=15 encrypted=0 support=2\nMEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.00; width=192; height=144; framerate=15 encrypted=0 support=2\nMEDIA capability mime=video/webm; codecs=vp9; width=641 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp9; height=361 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp9; framerate=30.1 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp09.02.51.10.01.09.16.09.00 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01.01 encrypted=0 support=0\nMEDIA capability mime=video/webm; codecs=vp09.00.51.08.01.01.01.01 encrypted=0 support=0\nMEDIA create entered\nMEDIA create success\nMEDIA bounds z=0 x=80 y=340 width=320 height=180\nMEDIA create entered\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nMEDIA seek ticket=1 target-us=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nMEDIA decoded codec=8 source=160x90 presentation=160x90\nMEDIA preroll ticket=1 pts=0 clock=6583 buffered-video=9 audio-frames=2353\nnative player state=2\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=9310 consumed=11345 video=16 rate=1 audio-last=1860000 video-last=2067000 req=0,0 full=1,0\nMEDIA metrics mono-us=15480000 position-us=1035607 presented=16 sync-samples=12 max-sync-us=8685 decoded=32 dropped=0 corrupted=0 starvations=0 consumed=11345 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=1035607\nnative media position-us=2037512\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=17164 consumed=25100 video=16 rate=1 audio-last=3820000 video-last=3333000 req=0,0 full=1,0\nMEDIA metrics mono-us=16730000 position-us=2283226 presented=35 sync-samples=31 max-sync-us=9424 decoded=51 dropped=0 corrupted=0 starvations=0 consumed=25100 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=3033340\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21372 consumed=38532 video=16 rate=1 audio-last=5420000 video-last=4533000 req=0,0 full=1,0\nMEDIA metrics mono-us=17950000 position-us=3501548 presented=53 sync-samples=49 max-sync-us=9835 decoded=69 dropped=0 corrupted=0 starvations=0 consumed=38532 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=4020732\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21256 consumed=52319 video=15 rate=1 audio-last=6660000 video-last=5733000 req=0,0 full=1,1\nMEDIA metrics mono-us=19200000 position-us=4752070 presented=72 sync-samples=68 max-sync-us=9835 decoded=87 dropped=0 corrupted=0 starvations=0 consumed=52319 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative PAUSE position=5030256\nnative media position-us=5030256\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21714 consumed=55609 video=16 rate=0 audio-last=7000000 video-last=6067000 req=0,0 full=0,0\nMEDIA metrics mono-us=20280000 position-us=5050483 presented=76 sync-samples=72 max-sync-us=9835 decoded=92 dropped=0 corrupted=0 starvations=0 consumed=55609 rate=0 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21714 consumed=55609 video=16 rate=0 audio-last=7000000 video-last=6067000 req=0,0 full=0,0\nMEDIA metrics mono-us=21300000 position-us=5050483 presented=76 sync-samples=72 max-sync-us=9835 decoded=92 dropped=0 corrupted=0 starvations=0 consumed=55609 rate=0 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative RESUME\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21432 consumed=65593 video=16 rate=1 audio-last=7880000 video-last=7000000 req=0,0 full=1,0\nMEDIA metrics mono-us=22410000 position-us=5956061 presented=90 sync-samples=86 max-sync-us=9835 decoded=106 dropped=0 corrupted=0 starvations=0 consumed=65593 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=6037603\nnative media position-us=7033703\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21417 consumed=79059 video=16 rate=1 audio-last=9100000 video-last=8200000 req=0,0 full=1,0\nMEDIA metrics mono-us=23630000 position-us=7177467 presented=108 sync-samples=104 max-sync-us=9835 decoded=124 dropped=0 corrupted=0 starvations=0 consumed=79059 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=8021367\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21505 consumed=92201 video=16 rate=1 audio-last=10300000 video-last=9400000 req=0,0 full=0,0\nMEDIA metrics mono-us=24820000 position-us=8369485 presented=126 sync-samples=122 max-sync-us=9835 decoded=142 dropped=0 corrupted=0 starvations=0 consumed=92201 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=9027172\nmedia trace ticket=1 seek=0 presenting=1 failed=0 pcm=21550 consumed=104504 video=16 rate=1 audio-last=11420000 video-last=10533000 req=0,0 full=0,0\nMEDIA metrics mono-us=25940000 position-us=9485403 presented=143 sync-samples=139 max-sync-us=9925 decoded=159 dropped=0 corrupted=0 starvations=0 consumed=104504 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nMEDIA seek ticket=2 target-us=15000000\nnative SEEK to=15000000\nnative media position-us=10025902\nnative media position-us=15000000\nnative player state=1\nmedia trace ticket=2 seek=0 presenting=0 failed=0 pcm=0 consumed=0 video=0 rate=1 audio-last=-9223372036854775808 video-last=-9223372036854775808 req=1,1 full=0,0\nMEDIA metrics mono-us=28040000 position-us=15000000 presented=151 sync-samples=147 max-sync-us=9925 decoded=167 dropped=0 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=65871872 decode-max-us=0 present-max-us=0 wake-max-us=20000\nmedia trace ticket=2 seek=0 presenting=0 failed=0 pcm=0 consumed=0 video=0 rate=1 audio-last=-9223372036854775808 video-last=-9223372036854775808 req=1,1 full=0,0\nMEDIA metrics mono-us=31120000 position-us=15000000 presented=151 sync-samples=147 max-sync-us=9925 decoded=167 dropped=0 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=65871872 decode-max-us=0 present-max-us=0 wake-max-us=20000\nMEDIA preroll ticket=2 pts=15000000 clock=15000083 buffered-video=4 audio-frames=9261\nnative player state=2\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=10820 consumed=5276 video=15 rate=1 audio-last=16440000 video-last=16467000 req=0,0 full=1,1\nMEDIA metrics mono-us=33200000 position-us=15478631 presented=159 sync-samples=151 max-sync-us=9925 decoded=190 dropped=0 corrupted=0 starvations=0 consumed=5276 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=16039629\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=20074 consumed=18072 video=16 rate=1 audio-last=18440000 video-last=17667000 req=0,0 full=1,0\nMEDIA metrics mono-us=34360000 position-us=16639266 presented=176 sync-samples=168 max-sync-us=9925 decoded=208 dropped=0 corrupted=0 starvations=0 consumed=18072 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=17028926\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21397 consumed=30861 video=16 rate=1 audio-last=19720000 video-last=18800000 req=0,0 full=1,0\nMEDIA metrics mono-us=35520000 position-us=17799266 presented=193 sync-samples=185 max-sync-us=9925 decoded=225 dropped=0 corrupted=0 starvations=0 consumed=30861 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=18003620\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21403 consumed=44085 video=16 rate=1 audio-last=20920000 video-last=20000000 req=0,0 full=1,0\nMEDIA metrics mono-us=36720000 position-us=18998722 presented=211 sync-samples=203 max-sync-us=9986 decoded=243 dropped=0 corrupted=0 starvations=0 consumed=44085 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=19039810\nnative media position-us=20013053\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21543 consumed=57175 video=16 rate=1 audio-last=22120000 video-last=21200000 req=0,0 full=0,0\nMEDIA metrics mono-us=37910000 position-us=20186024 presented=229 sync-samples=221 max-sync-us=9986 decoded=261 dropped=0 corrupted=0 starvations=0 consumed=57175 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=21012690\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21481 consumed=70467 video=16 rate=1 audio-last=23320000 video-last=22400000 req=0,0 full=0,0\nMEDIA metrics mono-us=39120000 position-us=21391647 presented=247 sync-samples=239 max-sync-us=9986 decoded=279 dropped=0 corrupted=0 starvations=0 consumed=70467 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative media position-us=22026477\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21603 consumed=83575 video=16 rate=1 audio-last=24520000 video-last=23600000 req=0,0 full=0,0\nMEDIA metrics mono-us=40310000 position-us=22580581 presented=265 sync-samples=257 max-sync-us=9986 decoded=297 dropped=0 corrupted=0 starvations=0 consumed=83575 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=23020309\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21404 consumed=96563 video=16 rate=1 audio-last=25680000 video-last=24800000 req=0,0 full=1,0\nMEDIA metrics mono-us=41480000 position-us=23758631 presented=283 sync-samples=275 max-sync-us=9986 decoded=315 dropped=0 corrupted=0 starvations=0 consumed=96563 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=24002985\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21428 consumed=109990 video=16 rate=1 audio-last=26900000 video-last=26000000 req=0,0 full=1,0\nMEDIA metrics mono-us=42700000 position-us=24976500 presented=301 sync-samples=293 max-sync-us=9986 decoded=333 dropped=0 corrupted=0 starvations=0 consumed=109990 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=25027747\nnative media position-us=26031556\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21420 consumed=123889 video=16 rate=1 audio-last=28160000 video-last=27267000 req=0,0 full=1,0\nMEDIA metrics mono-us=43960000 position-us=26237180 presented=320 sync-samples=312 max-sync-us=9986 decoded=352 dropped=0 corrupted=0 starvations=0 consumed=123889 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=27029470\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21399 consumed=136920 video=16 rate=1 audio-last=29340000 video-last=28467000 req=0,0 full=1,0\nMEDIA metrics mono-us=45140000 position-us=27419130 presented=338 sync-samples=330 max-sync-us=9986 decoded=370 dropped=0 corrupted=0 starvations=0 consumed=136920 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=28011874\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21368 consumed=149078 video=16 rate=1 audio-last=30440000 video-last=29533000 req=0,0 full=1,0\nMEDIA metrics mono-us=46250000 position-us=28521897 presented=354 sync-samples=346 max-sync-us=9986 decoded=386 dropped=0 corrupted=0 starvations=0 consumed=149078 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=29034278\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21479 consumed=162638 video=16 rate=1 audio-last=31680000 video-last=30800000 req=0,0 full=0,0\nMEDIA metrics mono-us=47480000 position-us=29751829 presented=373 sync-samples=365 max-sync-us=9986 decoded=405 dropped=0 corrupted=0 starvations=0 consumed=162638 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=30013053\nnative media position-us=31015321\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21351 consumed=177319 video=15 rate=1 audio-last=33000000 video-last=32067000 req=0,0 full=1,1\nMEDIA metrics mono-us=48810000 position-us=31083439 presented=393 sync-samples=385 max-sync-us=9986 decoded=424 dropped=0 corrupted=0 starvations=0 consumed=177319 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=32005071\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21468 consumed=189991 video=16 rate=1 audio-last=34160000 video-last=33267000 req=0,0 full=0,0\nMEDIA metrics mono-us=49960000 position-us=32232826 presented=410 sync-samples=402 max-sync-us=9986 decoded=442 dropped=0 corrupted=0 starvations=0 consumed=189991 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=33046160\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21428 consumed=203041 video=15 rate=1 audio-last=35340000 video-last=34400000 req=0,0 full=0,1\nMEDIA metrics mono-us=51140000 position-us=33416500 presented=428 sync-samples=420 max-sync-us=9986 decoded=459 dropped=0 corrupted=0 starvations=0 consumed=203041 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=34011420\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21451 consumed=216248 video=16 rate=1 audio-last=36540000 video-last=35667000 req=0,0 full=1,0\nMEDIA metrics mono-us=52340000 position-us=34614414 presented=446 sync-samples=438 max-sync-us=11663 decoded=478 dropped=0 corrupted=0 starvations=0 consumed=216248 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=35010876\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21161 consumed=228886 video=15 rate=1 audio-last=37660000 video-last=36733000 req=0,0 full=1,1\nMEDIA metrics mono-us=53480000 position-us=35760717 presented=463 sync-samples=455 max-sync-us=11663 decoded=494 dropped=0 corrupted=0 starvations=0 consumed=228886 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=36023393\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21387 consumed=241228 video=15 rate=1 audio-last=38800000 video-last=37867000 req=0,0 full=0,1\nMEDIA metrics mono-us=54610000 position-us=36880173 presented=480 sync-samples=472 max-sync-us=11663 decoded=511 dropped=0 corrupted=0 starvations=0 consumed=241228 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=37033461\nnative media position-us=38018223\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=21280 consumed=254345 video=16 rate=1 audio-last=39980000 video-last=39067000 req=0,0 full=0,0\nMEDIA metrics mono-us=55790000 position-us=38069924 presented=497 sync-samples=489 max-sync-us=11663 decoded=529 dropped=0 corrupted=0 starvations=0 consumed=254345 rate=1 ram-query-bytes=66002944 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative media position-us=39019946\nmedia trace ticket=2 seek=0 presenting=1 failed=0 pcm=8417 consumed=267208 video=11 rate=1 audio-last=39980000 video-last=39933000 req=0,0 full=0,0\nMEDIA metrics mono-us=56960000 position-us=39236636 presented=515 sync-samples=507 max-sync-us=11663 decoded=542 dropped=0 corrupted=0 starvations=0 consumed=267208 rate=1 ram-query-bytes=65724416 decode-max-us=0 present-max-us=20000 wake-max-us=20000\nnative player state=3\nnative media position-us=40000083\nnative player state=4\nMEDIA native metrics presented=526 sync-samples=518 max-sync-us=11663 decoded=542 dropped=0 corrupted=0 source-starvations=0\nnative underlay control polls=1372\nnative sample allocated=2392\nnative sample released=2392\nMEDIA create entered\nMEDIA create success\nMEDIA bounds z=0 x=80 y=340 width=320 height=180\nnative player state=0\nMEDIA seek ticket=3 target-us=0\nnative player state=1\nMEDIA decoded codec=8 source=160x90 presentation=160x90\nMEDIA preroll ticket=3 pts=0 clock=6583 buffered-video=9 audio-frames=2353\nnative player state=2\nmedia trace ticket=3 seek=0 presenting=1 failed=0 pcm=9492 consumed=10942 video=16 rate=1 audio-last=1840000 video-last=2000000 req=0,0 full=1,0\nMEDIA metrics mono-us=59150000 position-us=999054 presented=15 sync-samples=11 max-sync-us=9744 decoded=31 dropped=0 corrupted=0 starvations=0 consumed=10942 rate=1 ram-query-bytes=66281472 decode-max-us=0 present-max-us=0 wake-max-us=20000\nnative player state=4\nMEDIA native metrics presented=23 sync-samples=19 max-sync-us=9744 decoded=39 dropped=0 corrupted=0 source-starvations=0\nnative RAM process baseline-bytes=56881152\nnative RAM process sampled-peak-bytes=66281472\nnative RAM player increment-bytes=9400320\nnative RAM PMM increment-bytes=9400320\nnative same-process restart/stop while playing PASS\nnative standard player asset/control/EOS checkpoint PASS; NOT Cobalt/HTTPS acceptance\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=750336 heap-after=750336\nELF exited with status 97\nmyos> ",
+  "audio_seconds": 36.57818594104308,
+  "audio_channels": 2,
+  "audio_rate": 44100,
+  "audio_windows": [
+    {
+      "second": 0.0,
+      "rms": 7033.645373263099,
+      "positive_crossings": 440
+    },
+    {
+      "second": 1.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 2.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 3.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 4.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 5.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 6.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 7.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 8.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 9.0,
+      "rms": 7034.630578699603,
+      "positive_crossings": 440
+    },
+    {
+      "second": 10.0,
+      "rms": 6788.219471195348,
+      "positive_crossings": 659
+    },
+    {
+      "second": 11.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 12.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 13.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 14.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 15.0,
+      "rms": 6947.751202222332,
+      "positive_crossings": 868
+    },
+    {
+      "second": 16.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 17.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 18.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 19.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 20.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 21.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 22.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 23.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 24.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 25.0,
+      "rms": 6992.379504170246,
+      "positive_crossings": 569
+    },
+    {
+      "second": 26.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 27.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 28.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 29.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 30.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 31.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 32.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 33.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 34.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 35.0,
+      "rms": 6978.868328970434,
+      "positive_crossings": 438
+    }
+  ],
+  "audible_seconds": 36,
+  "visual": [
+    {
+      "path": "frame-000.png",
+      "host_monotonic": 17029.373497509,
+      "pixels_sha256": "28f37d1593ce42c2b5cde46f662b0f05d1a636a554a2bccd6373b97426a01cfb"
+    },
+    {
+      "path": "frame-001.png",
+      "host_monotonic": 17031.384415057,
+      "pixels_sha256": "28f37d1593ce42c2b5cde46f662b0f05d1a636a554a2bccd6373b97426a01cfb"
+    },
+    {
+      "path": "frame-002.png",
+      "host_monotonic": 17033.394343705,
+      "pixels_sha256": "28f37d1593ce42c2b5cde46f662b0f05d1a636a554a2bccd6373b97426a01cfb"
+    },
+    {
+      "path": "frame-003.png",
+      "host_monotonic": 17035.407065353,
+      "pixels_sha256": "99cfcea09a7449bbe1af970d3da00e8f7f09b085921a4a05bc00284e8eb22b33"
+    },
+    {
+      "path": "frame-004.png",
+      "host_monotonic": 17037.4222204,
+      "pixels_sha256": "75bc9ea8f751fa2fc16ef551c3357787e53674c8d783074c5432def4ca6561de"
+    },
+    {
+      "path": "frame-005.png",
+      "host_monotonic": 17039.438440548,
+      "pixels_sha256": "b0d8cf87f1f1298fbbf586f3680530f93278c96bae2bbb5ef7a34162cdaf2307"
+    },
+    {
+      "path": "frame-006.png",
+      "host_monotonic": 17041.457044995,
+      "pixels_sha256": "35de5baeb0a573008d3389a91a06a9dbd78be7f7093b90b8669545483cc10871"
+    },
+    {
+      "path": "frame-007.png",
+      "host_monotonic": 17043.470674842,
+      "pixels_sha256": "5d465949d418a2b8ab6375a3711b16df13d2c6874f369394d09cf7158d627af1"
+    },
+    {
+      "path": "frame-008.png",
+      "host_monotonic": 17045.48626839,
+      "pixels_sha256": "e4f7cf133dfdeda399a054e56a34c3a845890bd3b2efd965a52b275fcf4935d7"
+    },
+    {
+      "path": "frame-009.png",
+      "host_monotonic": 17047.501775737,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-010.png",
+      "host_monotonic": 17049.519030485,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-011.png",
+      "host_monotonic": 17051.532385632,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-012.png",
+      "host_monotonic": 17053.54426938,
+      "pixels_sha256": "3a7a25441532528ccf1c20fe9ed7a9766aba88a0bdf99de95a8d40a0024e9983"
+    },
+    {
+      "path": "frame-013.png",
+      "host_monotonic": 17055.558335027,
+      "pixels_sha256": "33ab8733b8bac25747b4cc739fe63bdd226a6457ee0b8d38bd6ef4a4a5afa72b"
+    },
+    {
+      "path": "frame-014.png",
+      "host_monotonic": 17057.577399175,
+      "pixels_sha256": "74da7db530d98dceda67bdec0e96f6130c7f75d3e7c8f14e5333b72729a4955b"
+    },
+    {
+      "path": "frame-015.png",
+      "host_monotonic": 17059.590250422,
+      "pixels_sha256": "adbe34f2b4ce91190b386ba98e2a7aa3d75f68b1574ea9adfe21664484d8e7db"
+    },
+    {
+      "path": "frame-016.png",
+      "host_monotonic": 17061.60344177,
+      "pixels_sha256": "67604297d36622aaccec4f58d3ef7149f060f7c760e051c3f943cccb02385db2"
+    },
+    {
+      "path": "frame-017.png",
+      "host_monotonic": 17063.617259618,
+      "pixels_sha256": "e6e241229af8b1a3d6ad844e6fd15510c3f3c342c9102be035ee22a6f5823824"
+    },
+    {
+      "path": "frame-018.png",
+      "host_monotonic": 17065.633280666,
+      "pixels_sha256": "89571da0ff6335cdcfe31d9b45b509185f863b6f29a24c2da8d7f96fa20bebc6"
+    },
+    {
+      "path": "frame-019.png",
+      "host_monotonic": 17067.649247313,
+      "pixels_sha256": "a0090d13e34e1db23a3dcffb8e4746462f61c442152864f351c18161effdfb9b"
+    },
+    {
+      "path": "frame-020.png",
+      "host_monotonic": 17069.665051861,
+      "pixels_sha256": "7495798eb3d6947890aabdcb22cb5229387b22f4b8fe09c06f4783246f38a10f"
+    },
+    {
+      "path": "frame-021.png",
+      "host_monotonic": 17071.689199908,
+      "pixels_sha256": "23b786bca92e04d9c93c7929164b2c1636ff56df36284aa17d9e12f7ddcc35ef"
+    },
+    {
+      "path": "frame-022.png",
+      "host_monotonic": 17073.705549154,
+      "pixels_sha256": "cc057d875df117572bd5d0abfe2c47204759bbc955042e8797be137e7aee9712"
+    },
+    {
+      "path": "frame-023.png",
+      "host_monotonic": 17075.719622699,
+      "pixels_sha256": "6549137748fc2fc186c53372a5bcf3d21656b6f7154f4011f312454c7c9f0726"
+    },
+    {
+      "path": "frame-024.png",
+      "host_monotonic": 17077.733165244,
+      "pixels_sha256": "a505e1d1d88b26fea9a6136381faa6beecb507f071122a256a7ddbc2eb045e51"
+    },
+    {
+      "path": "frame-025.png",
+      "host_monotonic": 17079.74751489,
+      "pixels_sha256": "a1b5801ef20c0a52c9805adfc77f1c20b176a9f31f6e7f958ba210a3d55e291b"
+    }
+  ]
+}
