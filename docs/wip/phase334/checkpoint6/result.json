@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-10T01:02:38.831398+07:00",
+  "phase_passed": false,
+  "full_regression": "pending",
+  "native_tcp_loss_bios": "PASS",
+  "native_tcp_loss_uefi": "PASS",
+  "bounded_vp9_batch_native_fixture": "PASS",
+  "youtube_batched": "pending",
+  "default_vp8_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696"
+}

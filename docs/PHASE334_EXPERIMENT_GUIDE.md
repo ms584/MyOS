@@ -144,3 +144,25 @@ system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
 passed, all5 normal identities exact, runner exit0. Evidence:
 wip/phase334/checkpoint4/regression. Earlier running/pending statements
 above are historical. YouTube performance/recovery acceptance still open.
+
+
+### 2026-10-10 01:03 +07 — checkpoint 6; Phase 33.4 remains incomplete
+
+VM-area 1024 eliminated the observed public-session reservation ENOMEM. Native YouTube
+144p Stats proves 256x144@30 VP9/Opus; search/select/reopen and both post-close desktops worked.
+A/V max 560083 us overall / 351299 us at 144p still FAILS. The bounded VP9 batch candidate
+passes native fixture controls/EOS/cleanup; its public sync is pending. Actual idle NIC-loss
+baseline was reproduced; ENETDOWN/waiter/reconnect fix passes native BIOS and UEFI.
+Full regression is PENDING for VM-area 1024 + carrier fix. Earlier PMM full PASS does not cover it.
+See `docs/PHASE334.md`, `docs/HANDOFF.md` and `docs/wip/phase334/checkpoint6/` for commands,
+source identities, evidence and remaining online recovery/sync gates. No Phase 33.5/33/Rickroll acceptance.
+
+Focused checkpoint-6 reproduction:
+```bash
+python3 tools/run_logged.py -- python3 tests/test_tcp_state.py
+python3 tools/run_logged.py -- python3 tests/test_tcp_link_loss.py
+python3 tools/run_logged.py -- python3 tests/test_tcp_link_loss.py --uefi
+python3 tools/run_logged.py -- python3 tests/test_media_native_player.py --provider build/media-evaluation/provider-aml2hg6g --vp9 --underlay --kvm
+```
+`--expect-missing` is only for the archived pre-fix kernel; it reproduces the defect and
+never claims a fixed transport pass. Use the matching normal BIOS/UEFI identities.

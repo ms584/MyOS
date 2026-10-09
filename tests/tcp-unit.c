@@ -7,7 +7,8 @@
 #include <string.h>
 static unsigned allocations,packets;
 static uint16_t legacy_port;
-static bool deny_allocation;
+static bool deny_allocation,carrier=true;
+bool nic_link_up(void){return carrier;}
 volatile uint64_t ticks;
 static uint8_t last[1480];static size_t last_size;
 static const uint8_t target[4]={10,0,2,2};
@@ -154,5 +155,16 @@ int main(void)
     assert(handle>0);struct tcp_address peer={{10,0,2,2},8080,0};assert(tcp_stream_connect(&owner,(uint32_t)handle,&peer)==-115);
     for(unsigned i=0;i<3;++i){ticks+=150;tcp_stream_tick();}
     assert(!tcp_stream_status(&owner,(uint32_t)handle,&status,false)&&status.error==110);
+    tcp_stream_release_owner(&owner);assert(!allocations&&!tcp_stream_busy());
+    struct connection loss={0};connect_new(&owner,&loss,8192);
+    assert(tcp_stream_recv(&owner,loss.handle,out,1,false)==-11);
+    uint64_t before_sequence=loss.sequence,before_registry=loss.registry;
+    carrier=false;tcp_stream_tick();
+    assert(loss.sequence>before_sequence&&loss.registry>before_registry);
+    assert(!tcp_stream_status(&owner,loss.handle,&status,true)&&status.error==100&&(status.ready&8));
+    assert(!tcp_stream_status(&owner,loss.handle,&status,false)&&!status.error);
+    assert(tcp_stream_recv(&owner,loss.handle,out,1,false)==-100);
+    carrier=true;assert(tcp_stream_send(&owner,loss.handle,bytes,1)==-100);
+    assert(!tcp_stream_close(&owner,loss.handle));connect_new(&owner,&loss,8192);
     tcp_stream_release_owner(&owner);assert(!allocations&&!tcp_stream_busy());server_tests();return 0;
 }

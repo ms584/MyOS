@@ -1,5 +1,44 @@
 # MyOS handoff — 2026-09-29
 
+
+## 2026-10-10 01:03 +07 — Phase 33.4 checkpoint 6 (partial, NOT accepted)
+
+The actual VM-area limit of 1024 removed the observed reservation failures in public session
+`build/phase334-public-4i4dsiw5` (zero reservation ENOMEM), without fabricating physical RAM.
+Native YouTube UI selected 144p; Stats for nerds proves 256x144@30, VP9
+`vp09.00.51.08.01.01.01.01.00` + Opus, SABR. Pause held both the consumed PCM
+counter and rendered movie ROI; resume/seek were exercised. Reopening to Home, native typing,
+searching and selecting the official Blender result reached real moving video again.
+Both closes opened a desktop window through native mouse input and returned to shell;
+free pages were exactly 257743 before/after each launch and desktop check. All five normal
+image identities remained exact. Evidence: `docs/wip/phase334/checkpoint5/area1024-online-sync-failed/`.
+
+This is still a negative acceptance: maximum native A/V error 560083 us overall;
+the 144p player recorded 351299 us. Do not count HTML/search/thumbnail or fixture playback
+as Phase 33.4 acceptance. The source snapshots/provider report identify the pre-batch provider.
+
+A bounded VP9-underlay worker candidate now drains only existing input batches (audio <=8,
+video <=4), retires due video while draining and keeps the existing four-frame/PCM limits.
+VP8-underlay binary remains SHA256 41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696.
+Native fixture `native-player-oeicqx89` passed controls/seek/EOS and exact pages/heap cleanup.
+Public YouTube sync for this candidate is PENDING.
+
+A native idle TCP fixture reproduced missing carrier-loss notification on the previous kernel.
+TCP now checks actual NIC carrier for established non-EOF streams, reports ENETDOWN (100),
+and notifies readiness; restoring carrier cannot revive the failed tuple. Native BIOS and UEFI
+tests passed blocked recv, poll error, SO_ERROR consumption, new connection after restoration,
+and exact cleanup. Host peers supply test bytes only, never production media/TLS.
+The baseline harness initially waited for EOF through a disconnected NIC; its corrected
+version holds the peer until the loss observation and reproduces the kernel defect cleanly.
+`test_tcp_link_loss` is included in full regression.
+
+Focused evidence/source/build identities: `docs/wip/phase334/checkpoint6/`.
+FULL REGRESSION IS PENDING for VM-area 1024 + carrier-loss + latest source.
+The earlier checkpoint-4 full PASS covers PMM 1GiB, not these changes.
+Next: actual online candidate controls/network recovery; then full regression, final normal
+BIOS/UEFI launcher/pair checks, exact image restoration and local commit. No push.
+Phase 33.4 remains ACTIVE/incomplete. Phase 33.5, parent Phase 33 and Rickroll remain unaccepted.
+
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 

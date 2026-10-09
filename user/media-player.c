@@ -290,9 +290,38 @@ static void *player_worker(void *context){
    continue;
   }
   int ticket=p->ticket,notify_present=0,notify_end=0,notify_error=0;
-  const void *deallocate[2]={0,0};int request[2]={0,0};
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  const void *deallocate[2][AUDIO_BATCH]={{0}};unsigned deallocate_count[2]={0,0};
+#else
+  const void *deallocate[2]={0,0};
+#endif
+  int request[2]={0,0};
   if(p->error_pending){p->error_pending=0;p->failed=1;notify_error=1;}
   if(!p->failed&&p->seeked){
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   /* Drain only the already bounded input batch. Sleeping after each
+    * compressed frame otherwise limits catch-up after a scheduling delay.
+    * Retire due frames while draining so the four-slot queue stays bounded. */
+   for(int i=0;i<2&&!p->failed;++i){
+    struct pending *pending=&p->pending[i];
+    unsigned budget=i==kSbMediaTypeAudio?AUDIO_BATCH:VIDEO_BATCH;
+    while(pending->full&&budget--){
+     if(i==kSbMediaTypeVideo){
+      int64_t due=clock_locked(p)+10000;
+      while(p->video_count&&(!p->have_current||p->frames[p->video_read].time<=due)){
+       if(p->have_current&&p->generation!=p->rendered_generation)++p->dropped_video;
+       p->current=p->frames[p->video_read];p->have_current=1;++p->generation;
+       p->video_read=(p->video_read+1)%VIDEO_SLOTS;--p->video_count;
+      }
+     }
+     if((i==kSbMediaTypeAudio&&PCM_CAP-p->pcm_count<1400)||(i==kSbMediaTypeVideo&&p->video_count==VIDEO_SLOTS))break;
+     int error=i==kSbMediaTypeAudio?decode_audio_locked(p,&pending->samples[pending->read]):decode_video_locked(p,&pending->samples[pending->read]);
+     if(pending->samples[pending->read].timestamp>p->duration)p->duration=pending->samples[pending->read].timestamp;
+     deallocate[i][deallocate_count[i]++]=pending->samples[pending->read++].buffer;--pending->full;
+     if(error){p->failed=1;notify_error=1;break;}
+    }
+   }
+#else
    for(int i=0;i<2;++i)if(p->pending[i].full){
     struct pending *pending=&p->pending[i];
     if((i==kSbMediaTypeAudio&&PCM_CAP-p->pcm_count<1400)||(i==kSbMediaTypeVideo&&p->video_count==VIDEO_SLOTS))continue;
@@ -301,6 +330,7 @@ static void *player_worker(void *context){
     deallocate[i]=pending->samples[pending->read++].buffer;--pending->full;
     if(error){p->failed=1;notify_error=1;break;}
    }
+#endif
    int64_t clock=clock_locked(p);
    while(p->video_count&&(!p->have_current||p->frames[p->video_read].time<=clock+10000)){
     if(p->have_current&&p->generation!=p->rendered_generation)++p->dropped_video;
@@ -356,7 +386,11 @@ static void *player_worker(void *context){
   }
 #endif
   pthread_mutex_unlock(&p->mutex);
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  for(int i=0;i<2;++i)for(unsigned j=0;j<deallocate_count[i];++j)p->deallocate(p,p->context,deallocate[i][j]);
+#else
   for(int i=0;i<2;++i)if(deallocate[i])p->deallocate(p,p->context,deallocate[i]);
+#endif
   if(notify_error)p->error(p,p->context,kSbPlayerErrorDecode,"native VP8/Opus decode or bounded stream validation failed");
   if(notify_present)report_status(p,kSbPlayerStatePresenting,ticket);
   if(notify_end)report_status(p,kSbPlayerStateEndOfStream,ticket);

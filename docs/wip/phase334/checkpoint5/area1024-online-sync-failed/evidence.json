@@ -1,0 +1,1001 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "date": "2026-10-10T00:38:46.548430+07:00",
+  "commit": "488e0b981cd1770bd6deb3362028a5a477f26a4f",
+  "core_sha256": "fd8bbf7c60d4906a72e4f4ec89bc51c7dbc9bdd83fd1e4c1cd14a8eb3a8b730a",
+  "provider_sha256": "0b333edb3d86e285e440795b5c3819d9bb89823a6b6ee0d3751d5084356f1036",
+  "normal_identity": {
+    "kernel.bin": "4f2ce7c1bb9bbd3927750acb3c9e1044def1b48b05a97a63ac063ca7955c6c15",
+    "kernel.elf": "242f40e41f337342001586056ba3a1993d3f733150cadbb63cdba77806a4b462",
+    "myos-current.img": "853a1e89fd7ef7f2295db10dc33798b5ad058715d934ebe2ef864a6eb1e493c1",
+    "myos-uefi.img": "29a80eec9eee0d29c9f4b3909c21af87909e3e29b79da533b50a2f2df79cd063",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "urls": [
+    "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    "https://www.youtube.com/"
+  ],
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "1024",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-public.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-4i4dsiw5/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-public.sock,server=on,wait=off",
+      "-cpu",
+      "host",
+      "-nic",
+      "user,model=rtl8139",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/phase334-public-4i4dsiw5/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-4i4dsiw5/assets.img,if=ide,index=1",
+      "-accel",
+      "kvm"
+    ]
+  ],
+  "launches": [
+    {
+      "launch": 1,
+      "url": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+      "frames": [
+        {
+          "elapsed": 2.0222865410014492,
+          "path": "launch-1-002.png"
+        },
+        {
+          "elapsed": 7.0821016390000295,
+          "path": "launch-1-007.png"
+        },
+        {
+          "elapsed": 12.11509612700138,
+          "path": "launch-1-012.png"
+        },
+        {
+          "elapsed": 17.148236988001372,
+          "path": "launch-1-017.png"
+        },
+        {
+          "elapsed": 22.180259742001,
+          "path": "launch-1-022.png"
+        },
+        {
+          "elapsed": 27.213697715000308,
+          "path": "launch-1-027.png"
+        },
+        {
+          "elapsed": 32.247717261001526,
+          "path": "launch-1-032.png"
+        },
+        {
+          "elapsed": 37.28099795900016,
+          "path": "launch-1-037.png"
+        },
+        {
+          "elapsed": 42.31433185200149,
+          "path": "launch-1-042.png"
+        },
+        {
+          "elapsed": 47.34841187800157,
+          "path": "launch-1-047.png"
+        },
+        {
+          "elapsed": 52.38223534100143,
+          "path": "launch-1-052.png"
+        },
+        {
+          "elapsed": 57.415240891001304,
+          "path": "launch-1-057.png"
+        },
+        {
+          "elapsed": 62.44894735200069,
+          "path": "launch-1-062.png"
+        },
+        {
+          "elapsed": 67.48274507500173,
+          "path": "launch-1-067.png"
+        },
+        {
+          "elapsed": 72.51657714200155,
+          "path": "launch-1-072.png"
+        },
+        {
+          "elapsed": 77.5547931730016,
+          "path": "launch-1-077.png"
+        },
+        {
+          "elapsed": 82.59378628800005,
+          "path": "launch-1-082.png"
+        },
+        {
+          "elapsed": 87.63533377600106,
+          "path": "launch-1-087.png"
+        },
+        {
+          "elapsed": 92.67268658100147,
+          "path": "launch-1-092.png"
+        },
+        {
+          "elapsed": 97.7060226370013,
+          "path": "launch-1-097.png"
+        },
+        {
+          "elapsed": 102.73925501400117,
+          "path": "launch-1-102.png"
+        },
+        {
+          "elapsed": 107.77753823000057,
+          "path": "launch-1-107.png"
+        },
+        {
+          "elapsed": 112.81803695500093,
+          "path": "launch-1-112.png"
+        },
+        {
+          "elapsed": 117.85666506100097,
+          "path": "launch-1-117.png"
+        },
+        {
+          "elapsed": 122.90157018900027,
+          "path": "launch-1-122.png"
+        },
+        {
+          "elapsed": 127.9452766000013,
+          "path": "launch-1-127.png"
+        },
+        {
+          "elapsed": 132.9869049910012,
+          "path": "launch-1-132.png"
+        },
+        {
+          "elapsed": 138.02851705000103,
+          "path": "launch-1-138.png"
+        },
+        {
+          "elapsed": 143.06890972300062,
+          "path": "launch-1-143.png"
+        },
+        {
+          "elapsed": 148.11919261700132,
+          "path": "launch-1-148.png"
+        },
+        {
+          "elapsed": 153.17365862000042,
+          "path": "launch-1-153.png"
+        },
+        {
+          "elapsed": 158.22146786300073,
+          "path": "launch-1-158.png"
+        },
+        {
+          "elapsed": 163.27901976800058,
+          "path": "launch-1-163.png"
+        },
+        {
+          "elapsed": 168.32059137200122,
+          "path": "launch-1-168.png"
+        },
+        {
+          "elapsed": 173.36432761500146,
+          "path": "launch-1-173.png"
+        },
+        {
+          "elapsed": 178.40869302300052,
+          "path": "launch-1-178.png"
+        },
+        {
+          "elapsed": 183.45104872100092,
+          "path": "launch-1-183.png"
+        },
+        {
+          "elapsed": 188.49431649800135,
+          "path": "launch-1-188.png"
+        },
+        {
+          "elapsed": 193.54006675100027,
+          "path": "launch-1-193.png"
+        },
+        {
+          "elapsed": 198.58555594200152,
+          "path": "launch-1-198.png"
+        },
+        {
+          "elapsed": 203.62962486800097,
+          "path": "launch-1-203.png"
+        },
+        {
+          "elapsed": 208.67310267800167,
+          "path": "launch-1-208.png"
+        },
+        {
+          "elapsed": 213.72042056200007,
+          "path": "launch-1-213.png"
+        },
+        {
+          "elapsed": 218.76531722100117,
+          "path": "launch-1-218.png"
+        },
+        {
+          "elapsed": 223.8085153330012,
+          "path": "launch-1-223.png"
+        },
+        {
+          "elapsed": 228.85140458300157,
+          "path": "launch-1-228.png"
+        },
+        {
+          "elapsed": 233.89633605700146,
+          "path": "launch-1-233.png"
+        },
+        {
+          "elapsed": 238.94535534200077,
+          "path": "launch-1-238.png"
+        },
+        {
+          "elapsed": 243.98856314600016,
+          "path": "launch-1-243.png"
+        },
+        {
+          "elapsed": 249.03175891000137,
+          "path": "launch-1-249.png"
+        },
+        {
+          "elapsed": 254.07648994400006,
+          "path": "launch-1-254.png"
+        },
+        {
+          "elapsed": 259.1196280570002,
+          "path": "launch-1-259.png"
+        },
+        {
+          "elapsed": 264.1645378410012,
+          "path": "launch-1-264.png"
+        },
+        {
+          "elapsed": 269.21090329300023,
+          "path": "launch-1-269.png"
+        },
+        {
+          "elapsed": 274.2559485280017,
+          "path": "launch-1-274.png"
+        },
+        {
+          "elapsed": 279.3135786130006,
+          "path": "launch-1-279.png"
+        },
+        {
+          "elapsed": 284.35815477100005,
+          "path": "launch-1-284.png"
+        },
+        {
+          "elapsed": 289.40597510500083,
+          "path": "launch-1-289.png"
+        },
+        {
+          "elapsed": 294.452023758,
+          "path": "launch-1-294.png"
+        },
+        {
+          "elapsed": 299.49714877600127,
+          "path": "launch-1-299.png"
+        },
+        {
+          "elapsed": 304.54145474600045,
+          "path": "launch-1-304.png"
+        },
+        {
+          "elapsed": 309.5973233950008,
+          "path": "launch-1-309.png"
+        },
+        {
+          "elapsed": 314.64278780600034,
+          "path": "launch-1-314.png"
+        },
+        {
+          "elapsed": 319.69001520800157,
+          "path": "launch-1-319.png"
+        },
+        {
+          "elapsed": 324.7378169880012,
+          "path": "launch-1-324.png"
+        },
+        {
+          "elapsed": 329.7867822770004,
+          "path": "launch-1-329.png"
+        },
+        {
+          "elapsed": 334.8343280120007,
+          "path": "launch-1-334.png"
+        },
+        {
+          "elapsed": 339.8796783100006,
+          "path": "launch-1-339.png"
+        },
+        {
+          "elapsed": 344.9264967800009,
+          "path": "launch-1-344.png"
+        },
+        {
+          "elapsed": 349.97390422800163,
+          "path": "launch-1-349.png"
+        },
+        {
+          "elapsed": 355.01736805400105,
+          "path": "launch-1-355.png"
+        },
+        {
+          "elapsed": 360.0627433110003,
+          "path": "launch-1-360.png"
+        },
+        {
+          "elapsed": 365.1073104060015,
+          "path": "launch-1-365.png"
+        },
+        {
+          "elapsed": 370.1525436240008,
+          "path": "launch-1-370.png"
+        },
+        {
+          "elapsed": 375.2021196430014,
+          "path": "launch-1-375.png"
+        },
+        {
+          "elapsed": 380.24680295600047,
+          "path": "launch-1-380.png"
+        },
+        {
+          "elapsed": 385.29371015200013,
+          "path": "launch-1-385.png"
+        },
+        {
+          "elapsed": 390.32541694200154,
+          "path": "launch-1-390.png"
+        },
+        {
+          "elapsed": 395.36831205100134,
+          "path": "launch-1-395.png"
+        },
+        {
+          "elapsed": 400.41169033500046,
+          "path": "launch-1-400.png"
+        },
+        {
+          "elapsed": 405.4601591940009,
+          "path": "launch-1-405.png"
+        },
+        {
+          "elapsed": 410.5045334080005,
+          "path": "launch-1-410.png"
+        },
+        {
+          "elapsed": 415.5507721310005,
+          "path": "launch-1-415.png"
+        },
+        {
+          "elapsed": 420.5942981850003,
+          "path": "launch-1-420.png"
+        },
+        {
+          "elapsed": 425.63837373500064,
+          "path": "launch-1-425.png"
+        },
+        {
+          "elapsed": 430.6837700870001,
+          "path": "launch-1-430.png"
+        },
+        {
+          "elapsed": 435.71414084700154,
+          "path": "launch-1-435.png"
+        },
+        {
+          "elapsed": 440.75426700700154,
+          "path": "launch-1-440.png"
+        },
+        {
+          "elapsed": 445.80054256600124,
+          "path": "launch-1-445.png"
+        },
+        {
+          "elapsed": 450.84734906000085,
+          "path": "launch-1-450.png"
+        },
+        {
+          "elapsed": 455.88775773900124,
+          "path": "launch-1-455.png"
+        },
+        {
+          "elapsed": 460.9423192910017,
+          "path": "launch-1-460.png"
+        },
+        {
+          "elapsed": 465.98614093500146,
+          "path": "launch-1-465.png"
+        },
+        {
+          "elapsed": 471.04100398300034,
+          "path": "launch-1-471.png"
+        },
+        {
+          "elapsed": 476.0889190530015,
+          "path": "launch-1-476.png"
+        },
+        {
+          "elapsed": 481.1332458800007,
+          "path": "launch-1-481.png"
+        },
+        {
+          "elapsed": 486.17751327600126,
+          "path": "launch-1-486.png"
+        },
+        {
+          "elapsed": 491.2269017160015,
+          "path": "launch-1-491.png"
+        },
+        {
+          "elapsed": 496.2727268620001,
+          "path": "launch-1-496.png"
+        },
+        {
+          "elapsed": 501.32140174400047,
+          "path": "launch-1-501.png"
+        },
+        {
+          "elapsed": 506.3496452170002,
+          "path": "launch-1-506.png"
+        },
+        {
+          "elapsed": 511.4055276930012,
+          "path": "launch-1-511.png"
+        },
+        {
+          "elapsed": 516.4626012840017,
+          "path": "launch-1-516.png"
+        },
+        {
+          "elapsed": 521.5015326330013,
+          "path": "launch-1-521.png"
+        },
+        {
+          "elapsed": 526.5478714870005,
+          "path": "launch-1-526.png"
+        },
+        {
+          "elapsed": 531.5959931950001,
+          "path": "launch-1-531.png"
+        },
+        {
+          "elapsed": 536.6409068400008,
+          "path": "launch-1-536.png"
+        },
+        {
+          "elapsed": 541.6662771230003,
+          "path": "launch-1-541.png"
+        },
+        {
+          "elapsed": 546.7083376350001,
+          "path": "launch-1-546.png"
+        },
+        {
+          "elapsed": 551.7204384230008,
+          "path": "launch-1-551.png"
+        },
+        {
+          "elapsed": 556.7670407700007,
+          "path": "launch-1-556.png"
+        },
+        {
+          "elapsed": 561.8196364450014,
+          "path": "launch-1-561.png"
+        },
+        {
+          "elapsed": 566.8726792020007,
+          "path": "launch-1-566.png"
+        },
+        {
+          "elapsed": 571.9218264760002,
+          "path": "launch-1-571.png"
+        },
+        {
+          "elapsed": 576.9706801510001,
+          "path": "launch-1-576.png"
+        },
+        {
+          "elapsed": 582.008080429001,
+          "path": "launch-1-582.png"
+        },
+        {
+          "elapsed": 587.0585769900008,
+          "path": "launch-1-587.png"
+        },
+        {
+          "elapsed": 592.1091728530009,
+          "path": "launch-1-592.png"
+        },
+        {
+          "elapsed": 597.1605263190013,
+          "path": "launch-1-597.png"
+        }
+      ],
+      "inputs": [
+        {
+          "action": {
+            "id": "settings",
+            "launch": 1,
+            "at": 160,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 160.04939338200165
+        },
+        {
+          "action": {
+            "id": "quality",
+            "launch": 1,
+            "at": 385,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 388.0287012460012
+        },
+        {
+          "action": {
+            "id": "144p",
+            "launch": 1,
+            "at": 425,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 431.20624548200067
+        },
+        {
+          "action": {
+            "id": "pause144",
+            "launch": 1,
+            "at": 505,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 505.06035012400025
+        },
+        {
+          "action": {
+            "id": "resume144",
+            "launch": 1,
+            "at": 520,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 520.0120326420001
+        },
+        {
+          "action": {
+            "id": "seek144",
+            "launch": 1,
+            "at": 540,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 540.0763375280003
+        },
+        {
+          "action": {
+            "id": "context",
+            "launch": 1,
+            "at": 550,
+            "type": "click",
+            "x": 350,
+            "y": 250,
+            "button": "right"
+          },
+          "elapsed": 550.049214472001
+        },
+        {
+          "action": {
+            "id": "stats",
+            "launch": 1,
+            "at": 575,
+            "type": "click",
+            "x": 439,
+            "y": 559
+          },
+          "elapsed": 579.5090806400003
+        },
+        {
+          "key": "esc",
+          "elapsed": 600.0987276000014
+        }
+      ],
+      "before": "Free physical pages: 257743\nmyos> ",
+      "elapsed": 600.0987276000014,
+      "shell_returned": true,
+      "after": "Free physical pages: 257743\nmyos> ",
+      "desktop_after_close": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-1.png"
+      },
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    },
+    {
+      "launch": 2,
+      "url": "https://www.youtube.com/",
+      "frames": [
+        {
+          "elapsed": 1.3588840909997089,
+          "path": "launch-2-001.png"
+        },
+        {
+          "elapsed": 6.391581661999226,
+          "path": "launch-2-006.png"
+        },
+        {
+          "elapsed": 11.422070238999368,
+          "path": "launch-2-011.png"
+        },
+        {
+          "elapsed": 16.452069625998774,
+          "path": "launch-2-016.png"
+        },
+        {
+          "elapsed": 21.491260826000143,
+          "path": "launch-2-021.png"
+        },
+        {
+          "elapsed": 26.522099668998635,
+          "path": "launch-2-026.png"
+        },
+        {
+          "elapsed": 31.54940241099939,
+          "path": "launch-2-031.png"
+        },
+        {
+          "elapsed": 36.63968785399993,
+          "path": "launch-2-036.png"
+        },
+        {
+          "elapsed": 41.65193643800012,
+          "path": "launch-2-041.png"
+        },
+        {
+          "elapsed": 46.68244071299887,
+          "path": "launch-2-046.png"
+        },
+        {
+          "elapsed": 51.715027872000064,
+          "path": "launch-2-051.png"
+        },
+        {
+          "elapsed": 56.74622310099949,
+          "path": "launch-2-056.png"
+        },
+        {
+          "elapsed": 61.786865153999315,
+          "path": "launch-2-061.png"
+        },
+        {
+          "elapsed": 66.81773693499963,
+          "path": "launch-2-066.png"
+        },
+        {
+          "elapsed": 71.84823749699899,
+          "path": "launch-2-071.png"
+        },
+        {
+          "elapsed": 76.87858615000005,
+          "path": "launch-2-076.png"
+        },
+        {
+          "elapsed": 81.91443995099871,
+          "path": "launch-2-081.png"
+        },
+        {
+          "elapsed": 86.95280359699973,
+          "path": "launch-2-086.png"
+        },
+        {
+          "elapsed": 91.99765103299978,
+          "path": "launch-2-091.png"
+        },
+        {
+          "elapsed": 97.06247606299985,
+          "path": "launch-2-097.png"
+        },
+        {
+          "elapsed": 102.10118442400017,
+          "path": "launch-2-102.png"
+        },
+        {
+          "elapsed": 107.15721559599842,
+          "path": "launch-2-107.png"
+        },
+        {
+          "elapsed": 112.21778417399946,
+          "path": "launch-2-112.png"
+        },
+        {
+          "elapsed": 117.28215755400015,
+          "path": "launch-2-117.png"
+        },
+        {
+          "elapsed": 122.34103723099906,
+          "path": "launch-2-122.png"
+        },
+        {
+          "elapsed": 127.4004839019999,
+          "path": "launch-2-127.png"
+        },
+        {
+          "elapsed": 132.45058436599902,
+          "path": "launch-2-132.png"
+        },
+        {
+          "elapsed": 137.50464864099922,
+          "path": "launch-2-137.png"
+        },
+        {
+          "elapsed": 142.56032931399932,
+          "path": "launch-2-142.png"
+        },
+        {
+          "elapsed": 147.62074817899884,
+          "path": "launch-2-147.png"
+        },
+        {
+          "elapsed": 152.66923247199884,
+          "path": "launch-2-152.png"
+        },
+        {
+          "elapsed": 157.67879695099873,
+          "path": "launch-2-157.png"
+        },
+        {
+          "elapsed": 162.7021085969991,
+          "path": "launch-2-162.png"
+        },
+        {
+          "elapsed": 167.74668476099941,
+          "path": "launch-2-167.png"
+        },
+        {
+          "elapsed": 172.81073053799992,
+          "path": "launch-2-172.png"
+        },
+        {
+          "elapsed": 177.8791512049993,
+          "path": "launch-2-177.png"
+        },
+        {
+          "elapsed": 182.9539758760002,
+          "path": "launch-2-182.png"
+        },
+        {
+          "elapsed": 187.96736425400013,
+          "path": "launch-2-187.png"
+        },
+        {
+          "elapsed": 193.0363894129987,
+          "path": "launch-2-193.png"
+        },
+        {
+          "elapsed": 198.08125496199864,
+          "path": "launch-2-198.png"
+        },
+        {
+          "elapsed": 203.12428739200004,
+          "path": "launch-2-203.png"
+        },
+        {
+          "elapsed": 208.1649023329992,
+          "path": "launch-2-208.png"
+        },
+        {
+          "elapsed": 213.2083148799993,
+          "path": "launch-2-213.png"
+        },
+        {
+          "elapsed": 218.2618484300001,
+          "path": "launch-2-218.png"
+        },
+        {
+          "elapsed": 223.30925318399932,
+          "path": "launch-2-223.png"
+        },
+        {
+          "elapsed": 228.35593064299974,
+          "path": "launch-2-228.png"
+        },
+        {
+          "elapsed": 233.41308629800005,
+          "path": "launch-2-233.png"
+        },
+        {
+          "elapsed": 238.45714355699965,
+          "path": "launch-2-238.png"
+        },
+        {
+          "elapsed": 244.16839762499876,
+          "path": "launch-2-244.png"
+        },
+        {
+          "elapsed": 249.21498695399896,
+          "path": "launch-2-249.png"
+        },
+        {
+          "elapsed": 254.26566110899876,
+          "path": "launch-2-254.png"
+        },
+        {
+          "elapsed": 259.3025863059993,
+          "path": "launch-2-259.png"
+        },
+        {
+          "elapsed": 264.3535647339995,
+          "path": "launch-2-264.png"
+        },
+        {
+          "elapsed": 269.41057798099973,
+          "path": "launch-2-269.png"
+        },
+        {
+          "elapsed": 274.4568760279999,
+          "path": "launch-2-274.png"
+        },
+        {
+          "elapsed": 279.502848823,
+          "path": "launch-2-279.png"
+        },
+        {
+          "elapsed": 284.5528129559989,
+          "path": "launch-2-284.png"
+        }
+      ],
+      "inputs": [
+        {
+          "action": {
+            "id": "searchbox",
+            "launch": 2,
+            "at": 30,
+            "type": "click",
+            "x": 350,
+            "y": 28
+          },
+          "elapsed": 30.046068098999967
+        },
+        {
+          "action": {
+            "id": "query",
+            "launch": 2,
+            "at": 35,
+            "type": "text",
+            "text": "Big Buck Bunny Blender"
+          },
+          "elapsed": 35.0741149409987
+        },
+        {
+          "action": {
+            "id": "search",
+            "launch": 2,
+            "at": 40,
+            "type": "key",
+            "key": "ret"
+          },
+          "elapsed": 40.06480661099886
+        },
+        {
+          "action": {
+            "id": "searchbox-ready",
+            "launch": 2,
+            "at": 150,
+            "type": "click",
+            "x": 350,
+            "y": 28
+          },
+          "elapsed": 150.05346464099966
+        },
+        {
+          "action": {
+            "id": "query-ready",
+            "launch": 2,
+            "at": 155,
+            "type": "text",
+            "text": "Big Buck Bunny Blender"
+          },
+          "elapsed": 155.0988335080001
+        },
+        {
+          "action": {
+            "id": "search-ready",
+            "launch": 2,
+            "at": 160,
+            "type": "key",
+            "key": "ret"
+          },
+          "elapsed": 160.0074192259999
+        },
+        {
+          "action": {
+            "id": "select-result",
+            "launch": 2,
+            "at": 185,
+            "type": "click",
+            "x": 268,
+            "y": 201
+          },
+          "elapsed": 186.92577825899934
+        },
+        {
+          "action": {
+            "id": "context-searchplay",
+            "launch": 2,
+            "at": 240,
+            "type": "click",
+            "x": 350,
+            "y": 250,
+            "button": "right"
+          },
+          "elapsed": 243.2008495299997
+        },
+        {
+          "action": {
+            "id": "stats-searchplay",
+            "launch": 2,
+            "at": 255,
+            "type": "click",
+            "x": 439,
+            "y": 559
+          },
+          "elapsed": 255.09489992499948
+        },
+        {
+          "action": {
+            "id": "close-searchplay",
+            "launch": 2,
+            "at": 285,
+            "type": "close"
+          },
+          "elapsed": 285.07629175999864
+        }
+      ],
+      "before": "Free physical pages: 257743\nmyos> ",
+      "elapsed": 285.26180166299855,
+      "shell_returned": true,
+      "after": "Free physical pages: 257743\nmyos> ",
+      "desktop_after_close": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-2.png"
+      },
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    }
+  ],
+  "memory_mib": 1024,
+  "engine_trace": false,
+  "diagnostic_provider": true,
+  "host_fetch": false,
+  "fixture_ca_added": false,
+  "normal_identity_after": {
+    "kernel.bin": "4f2ce7c1bb9bbd3927750acb3c9e1044def1b48b05a97a63ac063ca7955c6c15",
+    "kernel.elf": "242f40e41f337342001586056ba3a1993d3f733150cadbb63cdba77806a4b462",
+    "myos-current.img": "853a1e89fd7ef7f2295db10dc33798b5ad058715d934ebe2ef864a6eb1e493c1",
+    "myos-uefi.img": "29a80eec9eee0d29c9f4b3909c21af87909e3e29b79da533b50a2f2df79cd063",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  }
+}

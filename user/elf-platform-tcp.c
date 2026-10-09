@@ -52,6 +52,25 @@ uint64_t _start(void)
     int fd=socket(2,1,0);struct address a=address(8080);
     if(fd<0||connect(fd,&a,sizeof(a))!=-1||*__errno_location()!=101||close(fd))return 79;
     return 45;
+#elif defined(TCP_LINK_LOSS)
+    waited_fd=begin(PORT_C,0);if(waited_fd<0)return 90;
+    char byte;if(send(waited_fd,"A",1,16384)!=1||recv(waited_fd,&byte,1,0)!=1||byte!='a')return 91;
+    uint64_t thread;if(pthread_create(&thread,0,reader,0))return 92;
+    while(!__atomic_load_n(&waiting,__ATOMIC_ACQUIRE)){}
+    static const char ready[]="TCP idle link-loss ready\n";write(1,ready,sizeof(ready)-1);
+    struct pollfd event={waited_fd,1,0};
+    if(poll(&event,1,7000)!=1||(event.revents&8)==0)return 93;
+    if(pthread_join(thread,0)||waited_result!=-1||waited_error!=100)return 94;
+    int error=-1;uint32_t size=4;
+    if(getsockopt(waited_fd,1,4,&error,&size)||error!=100)return 95;
+    if(getsockopt(waited_fd,1,4,&error,&size)||error!=0)return 96;
+    if(send(waited_fd,"x",1,16384)!=-1||*__errno_location()!=100||close(waited_fd))return 97;
+    static const char recover[]="TCP link recovery ready\n";write(1,recover,sizeof(recover)-1);
+    struct timespec delay={2,0};clock_nanosleep(1,0,&delay,0);
+    int fd=begin(PORT_C,0);if(fd<0)return 98;
+    if(send(fd,"R",1,16384)!=1||recv(fd,&byte,1,0)!=1||byte!='r'||close(fd))return 99;
+    static const char done[]="TCP idle carrier loss/blocked recv/poll/reconnect PASS\n";
+    write(1,done,sizeof(done)-1);return 46;
 #elif defined(TCP_CANCEL)
     waited_fd=begin(PORT_C,0);if(waited_fd<0)return 80;
     uint64_t thread;if(pthread_create(&thread,0,reader,0))return 81;

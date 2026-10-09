@@ -263,6 +263,8 @@ def main():
             dynamic_exercise()
             from test_elf_tcp import main as tcp_exercise
             tcp_exercise()
+            from test_tcp_link_loss import main as tcp_link_loss_exercise
+            tcp_link_loss_exercise([])
             from test_socket_options import main as socket_options_exercise
             socket_options_exercise()
             from test_native_ui import main as native_ui_exercise

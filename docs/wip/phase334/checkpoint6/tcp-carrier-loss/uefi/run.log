@@ -1,0 +1,9 @@
+
+[2026-10-10T01:01:51.048147+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_tcp_link_loss.py --uefi
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Wno-unused-function -DTCP_LINK_LOSS=1 -DPORT_C=49919 -c user/elf-platform-tcp.c -o /home/xytron404/myos/build/system-tests/tcp-link-loss-uefi/fixture.o
+$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/system-tests/tcp-link-loss-uefi/fixture.so /home/xytron404/myos/build/system-tests/tcp-link-loss-uefi/fixture.o
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/tcp-link-loss-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/system-tests/tcp-link-loss-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/system-tests/tcp-link-loss-uefi-vars.fd -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/myos/build/system-tests/tcp-link-loss-uefi/assets.img,if=ide,index=1
+PASS native idle carrier loss, blocked recv, poll, SO_ERROR, reconnect and exact cleanup
+qemu-system-x86_64: terminating on signal 15 from pid 94906 (python3)
+[2026-10-10T01:02:00.655204+07:00] exit=0

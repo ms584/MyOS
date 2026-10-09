@@ -130,3 +130,15 @@ MRT exactc407 unchanged; newnormal identity area1024-normal-identity.json.
 Newfull REQUIRED/PENDING for this architecture; previousPMM1GiBfull PASS
 does not cover VM1024. Native YouTube diagnostic retry next, no acceptance
 claim until allfocused/full/currentquality/recovery gates pass.
+
+
+### 2026-10-10 01:03 +07 — checkpoint 6; Phase 33.4 remains incomplete
+
+VM-area 1024 eliminated the observed public-session reservation ENOMEM. Native YouTube
+144p Stats proves 256x144@30 VP9/Opus; search/select/reopen and both post-close desktops worked.
+A/V max 560083 us overall / 351299 us at 144p still FAILS. The bounded VP9 batch candidate
+passes native fixture controls/EOS/cleanup; its public sync is pending. Actual idle NIC-loss
+baseline was reproduced; ENETDOWN/waiter/reconnect fix passes native BIOS and UEFI.
+Full regression is PENDING for VM-area 1024 + carrier fix. Earlier PMM full PASS does not cover it.
+See `docs/PHASE334.md`, `docs/HANDOFF.md` and `docs/wip/phase334/checkpoint6/` for commands,
+source identities, evidence and remaining online recovery/sync gates. No Phase 33.5/33/Rickroll acceptance.

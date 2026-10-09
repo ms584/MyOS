@@ -1,5 +1,6 @@
 #include "tcp.h"
 #include "net.h"
+#include "nic.h"
 
 enum { TCP_NEW=1,TCP_ROUTE,TCP_SYN,TCP_OPEN,TCP_FAILED,TCP_LISTEN,TCP_SYN_RECEIVED };
 enum { FIN=1,SYN=2,RST=4,ACK=16 };
@@ -99,6 +100,10 @@ static void drive(struct stream *s)
         ++s->retries;s->deadline=ticks+150;return;
     }
     if(s->state!=TCP_OPEN)return;
+    /* Idle readers have no retransmission deadline. Actual carrier loss must
+     * still wake their readiness sequence; restoring the NIC requires a new
+     * connection, never revival of an expired TCP tuple. Preserve clean EOF. */
+    if(!s->peer_fin&&!nic_link_up()){fail(s,100);return;}
     if(s->inflight){
         if(ticks<s->deadline)return;
         if(s->retries>=5){fail(s,110);return;}
