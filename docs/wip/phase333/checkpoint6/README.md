@@ -1,5 +1,6 @@
 # Phase33.3 checkpoint6: bounded batches and exact PMM peaks
-Status OPEN. No Phase33.4/YouTube work or claim. No push.
+Status PASSED at final acceptance2026-10-09 for the declared QEMU profile.
+[Requirement audit](../../../PHASE333_ACCEPTANCE.md). No Phase33.4/YouTube claim. No push.
 
 ## Player changes
 The single-sample callback cadence starved actual SB16 PCM despite the old
@@ -56,9 +57,35 @@ a possible explanation, not a proved cause or reason to discard the failure.
 Real engine acceptance is separately supported by the uninterrupted session above.
 
 Full6 PASS15:44:02 covers the preceding MRT/heap architecture; focused MID/HIGH
-pthread and native-underlay UEFI pass15:40/15:47. Full7 for PMM history ACTIVE.
-Final production controls/relaunch and adverse HTTPS/OOM runs are pending.
-Latest normal BIOS frozen identity is included; final normal UEFI restoration pending.
-Do not call this checkpoint complete Phase33.3.
+pthread and native-underlay UEFI pass15:40/15:47. Full7 for PMM history PASS16:52:44; final normal UEFI build and PMM/pthread/
+underlay focused tests PASS16:53:25. Normal BIOS/UEFI/kernel/MRT restored and
+match final-normal-identity.json. Production controls/relaunch and all adverse
+cases are now verified below; this closes Phase33.3 only.
 
 Public serial copies trim trailing whitespace only; original private logs remain unchanged.
+
+## Final lifecycle/adverse acceptance
+production-lifecycle-three/ contains actual pause/resume/seek/EOS/fresh restart/
+stop/relaunch3. Max sync46.733ms; all three RAM bounds<=31313936B <32MiB.
+Visible paused frames remain identical after following actual viewport movement;
+hardware consumed/IRQ counters freeze, then advance after resume. Seek shows
+new frame IDs234/265,246,250; stop clears every video pixel and halts hardware.
+PMM/SHM/aliases reclaim on all launches; profile heap61440 cold,4096 second,
+then exact540416. One restarted player dropped3frames, recorded, not hidden.
+
+production-https-stall/truncate/corrupt/ detect native failures and recover.
+Stall causes actual source starvation1, then resumed clock and stop.
+Corrupt WebM is a parser/video error4; separate production-faults/ tests codec
+errors. Each case responds to input, returns shell mem and exact process pages.
+
+production-engine-close/ two playing closes: cold40960B persistent file buffers,
+warm heap exact515840; pages/SHM/aliases exact, no fault/panic.
+production-engine-oom/ two actual0-free-page peaks: JS240MiB allocation RangeError,
+no user fault in these latest runs. Media later stalls with network errors;
+Escape stops every thread, shell mem responds, relaunch/close reclaims all
+process resources, warm heap exact515840. Continued OOM playback is not claimed.
+Earlier Mesa faults remain in old-provider-oom-relaunch/, not retroactively passed.
+
+Full-regression7 and final normal/UEFI logs and identity are archived here.
+The observation/session JSON intentionally stays observation-only; final
+requirement-by-requirement acceptance is PHASE333_ACCEPTANCE.md.

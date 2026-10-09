@@ -3554,3 +3554,25 @@ same-source rerun87.883ms passed. Host contention is possible, not proved.
 Full6 and prior UEFI focused tests passed. Full7 for new PMM history and
 production lifecycle3launches ACTIVE. Final adverse/relaunch/image restoration
 and local commits pending. No33.4/YouTube, no push.
+
+## Phase33.3 accepted  2026-10-09 17:02 +07
+All standard-media requirements now verified in PHASE333_ACCEPTANCE.md.
+Latest production Cobalt40s native WebM/VP8/Opus+SB16:600frames/no drops,
+actual37.4s frame identity span14.948fps, same-session40.062s PCM,
+max17.890ms sync. Three controls/EOS/fresh restart/stop/relaunches pass,
+max46.733ms and RAM maximum31313936B within32MiB. Pause freezes actual
+visible frames and hardware counters; seek yields new IDs; stop clears video
+and halts audio. PMM/SHM/aliases exact; third profile heap exact540416B.
+
+Current native corrupt/full-batch/seek/destroy/exhaustion fixture passes twice.
+HTTPS8s stall recovers; truncated/corrupt input detected and fresh stream
+recovered. Playing close2/OOM2 respond to Escape, shell mem and relaunch, exact
+PMM/SHM/aliases and warm heap515840. OOM reaches0 freepages and catches240MiB
+ArrayBuffer RangeError, then media can stall with network errors. No universal
+graceful OOM playback guarantee; earlier Mesa faults/failures remain recorded.
+
+Full7 PASS16:52:44 and final normal UEFI/PMM/pthread/underlay PASS16:53:25.
+Root normal BIOS/UEFI/kernel/MRT match checkpoint6/final-normal-identity.json;
+no jobs pending. Reproduce using PHASE333_EXPERIMENT_GUIDE.md.
+Implementation local656865a; final acceptance commit includes latest artifacts.
+No push, no33.4 work, no YouTube/Rickroll or parent Phase32/33 acceptance.

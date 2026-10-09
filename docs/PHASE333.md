@@ -1,7 +1,10 @@
 # Phase 33.3 - standard media
-Updated 2026-10-09 16:16 +07. Status: OPEN; production continuous native
-Cobalt video/audio/sync/RAM session passes; final lifecycle/fault/regression pending.
-Baseline main 158f360 / production source 9aece1e. No Phase33.4 work.
+Updated 2026-10-09 17:02 +07. Status: PASSED for the declared MyOS/QEMU profile.
+Final audit: [PHASE333_ACCEPTANCE.md](PHASE333_ACCEPTANCE.md).
+Initial baseline main158f360 / native-web source9aece1e; media implementation656865a.
+Historical checkpoints below retain their original statuses. No Phase33.4 work.
+
+Experiment instructions: [PHASE333_EXPERIMENT_GUIDE.md](PHASE333_EXPERIMENT_GUIDE.md).
 
 ## Prerequisite audit
 Read AGENTS.md, PROJECT_STATE.md, HANDOFF.md and PHASE33_EXECUTION_PLAN.md.
@@ -371,3 +374,18 @@ Transient PMM proof:
 Use fresh emitted bundle/provider paths for new runs. An observation exit0 alone
 is not acceptance. Do not run multiple Cobalt/media acceptance VMs simultaneously.
 No Phase33.4/YouTube claim; owner pushes manually.
+
+## Final Phase33.3 acceptance  2026-10-09
+[Requirement audit](PHASE333_ACCEPTANCE.md) and
+[experiment guide](PHASE333_EXPERIMENT_GUIDE.md).
+All declared standard-media gates pass: native asset -> verified HTTPS/Cobalt,
+same-session40s moving VP8/Opus+SB16, controls/EOS/restart/relaunch3, real bounded
+allocator peaks<32MiB, latest native codec/HTTP/close/OOM adverse cases and exact
+OS response/reclamation. Continuous sync17.890ms; lifecycle maximum46.733ms.
+Observed memory maximum31313936B across controls, within33554432B.
+Full tests/test_system.py PASS16:52:44; normal UEFI build and focused PMM/
+pthread/underlay PASS16:53:25. Both normal images/kernel/MRT restored and hashes
+match final-normal-identity.json. Source/evidence/guide/handoff committed locally.
+OOM may stall playback; Escape/shell/relaunch and resource recovery pass.
+This supersedes pending gates in historical checkpoints, not their failed runs.
+Phase33.4/YouTube/Rickroll and parent Phase32/33 remain unaccepted. No push.

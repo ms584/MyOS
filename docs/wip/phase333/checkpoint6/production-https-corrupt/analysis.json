@@ -1,0 +1,270 @@
+{
+  "adverse_case_passed": true,
+  "whole_phase_passed": false,
+  "mode": "corrupt",
+  "events": [
+    {
+      "elapsed": 113.72432695799944,
+      "kind": "canplay",
+      "value": "probably"
+    },
+    {
+      "elapsed": 113.72470475799855,
+      "kind": "mse",
+      "value": "true"
+    },
+    {
+      "elapsed": 113.77425185799802,
+      "kind": "media-ready",
+      "value": "awaiting B"
+    },
+    {
+      "elapsed": 114.72449085999688,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 115.69610986199768,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 116.69522016499832,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 117.07687166599862,
+      "kind": "key",
+      "value": "b"
+    },
+    {
+      "elapsed": 117.0775327659976,
+      "kind": "started",
+      "value": "1"
+    },
+    {
+      "elapsed": 117.07714746599959,
+      "kind": "stopped",
+      "value": "1"
+    },
+    {
+      "elapsed": 117.53481896699668,
+      "kind": "sourceopen",
+      "value": "generation=1"
+    },
+    {
+      "elapsed": 117.5351428670001,
+      "kind": "waiting",
+      "value": "0 generation=1"
+    },
+    {
+      "elapsed": 117.67530076699768,
+      "kind": "sourcebuffer-error",
+      "value": "error"
+    },
+    {
+      "elapsed": 117.69637946699731,
+      "kind": "error",
+      "value": "0 generation=1 error=4"
+    },
+    {
+      "elapsed": 117.77608836699801,
+      "kind": "pause",
+      "value": "0 generation=1 error=4"
+    },
+    {
+      "elapsed": 117.77656246699917,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=1"
+    },
+    {
+      "elapsed": 117.86426996699811,
+      "kind": "append-error",
+      "value": "InvalidStateError: Failed to execute 'appendBuffer' on 'SourceBuffer': This SourceBuffer has been removed from the parent media source."
+    },
+    {
+      "elapsed": 118.72332786900006,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=1"
+    },
+    {
+      "elapsed": 119.69487647200003,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=1"
+    },
+    {
+      "elapsed": 119.95510127199668,
+      "kind": "key",
+      "value": "n"
+    },
+    {
+      "elapsed": 119.95534507199773,
+      "kind": "stopped",
+      "value": "2"
+    },
+    {
+      "elapsed": 119.95551817199885,
+      "kind": "started",
+      "value": "2"
+    },
+    {
+      "elapsed": 120.56565227399915,
+      "kind": "sourceopen",
+      "value": "generation=2"
+    },
+    {
+      "elapsed": 120.5660088739969,
+      "kind": "waiting",
+      "value": "0 generation=2"
+    },
+    {
+      "elapsed": 120.73511147399768,
+      "kind": "clock",
+      "value": "0 paused=false ready=0 width=0 height=0 generation=2"
+    },
+    {
+      "elapsed": 120.7555693739996,
+      "kind": "loadedmetadata",
+      "value": "0 generation=2"
+    },
+    {
+      "elapsed": 121.20551707499908,
+      "kind": "loadeddata",
+      "value": "0.140083 generation=2"
+    },
+    {
+      "elapsed": 121.20623687499756,
+      "kind": "playing",
+      "value": "0.140083 generation=2"
+    },
+    {
+      "elapsed": 121.71467905600002,
+      "kind": "clock",
+      "value": "0.455094 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 122.69535411499965,
+      "kind": "clock",
+      "value": "1.396795 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 123.69484967099925,
+      "kind": "clock",
+      "value": "2.400604 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 124.6949270269979,
+      "kind": "clock",
+      "value": "3.397135 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 125.69522568299726,
+      "kind": "clock",
+      "value": "4.402214 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 126.69499393899969,
+      "kind": "clock",
+      "value": "5.396885 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 127.69496809499833,
+      "kind": "clock",
+      "value": "6.401692 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 128.69538625099813,
+      "kind": "clock",
+      "value": "7.395797 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 129.69492712099964,
+      "kind": "clock",
+      "value": "8.40235 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 130.6953796969974,
+      "kind": "clock",
+      "value": "9.402169 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 131.69523327299976,
+      "kind": "clock",
+      "value": "10.401443 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 132.69486364899785,
+      "kind": "clock",
+      "value": "11.395094 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 133.69486342500022,
+      "kind": "clock",
+      "value": "12.396001 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 134.69811990099697,
+      "kind": "clock",
+      "value": "13.395117 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 135.6966590769989,
+      "kind": "clock",
+      "value": "14.404822 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 136.69527385299807,
+      "kind": "clock",
+      "value": "15.395683 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 137.6954593269984,
+      "kind": "clock",
+      "value": "16.394935 paused=false ready=4 width=160 height=90 generation=2"
+    },
+    {
+      "elapsed": 138.00466161199802,
+      "kind": "key",
+      "value": "x"
+    },
+    {
+      "elapsed": 138.0048576119989,
+      "kind": "stopped",
+      "value": "3"
+    },
+    {
+      "elapsed": 138.72510977699858,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=3"
+    },
+    {
+      "elapsed": 139.694960730998,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=3"
+    }
+  ],
+  "metrics": [
+    {
+      "presented": 250,
+      "sync-samples": 248,
+      "max-sync-us": 44346,
+      "decoded": 255,
+      "dropped": 2,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ],
+  "resources": [
+    [
+      "126671",
+      "126671",
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "boot_sha256": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7"
+}

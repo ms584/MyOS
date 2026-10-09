@@ -5,15 +5,17 @@ from test_system import VM,ROOT,parse_symbols
 from test_elf_dynamic import long_command,assert_live_resources
 from make_asset_disk import create
 p=argparse.ArgumentParser(description=__doc__)
-p.add_argument('--image-dir',type=Path,required=True);a=p.parse_args()
+p.add_argument('--image-dir',type=Path,required=True);p.add_argument('--uefi',action='store_true');a=p.parse_args()
 out=Path(tempfile.mkdtemp(prefix='pmm-pressure-',dir=ROOT/'build/media-evaluation'))
 obj=out/'pressure.o';so=out/'pressure.so'
 subprocess.run(['gcc','-m64','-Os','-fPIC','-ffreestanding','-fno-builtin','-mno-red-zone','-fno-stack-protector','-fno-asynchronous-unwind-tables','-Wall','-Wextra','-Werror','-c','user/elf-pmm-pressure.c','-o',str(obj)],check=True)
 subprocess.run(['ld','-shared','--hash-style=both','-z','now','-z','relro','-e','_start','-o',str(so),str(obj)],check=True)
 disk=out/'assets.img';create(disk,[f'pressure={so}'],runtime=a.image_dir/'platform-runtime.mrt')
-boot=out/'boot.img';shutil.copyfile(a.image_dir/'myos-current.img',boot)
+boot=out/'boot.img';shutil.copyfile(a.image_dir/('myos-uefi.img' if a.uefi else 'myos-current.img'),boot)
 symbols=parse_symbols(subprocess.check_output(['nm',str(a.image_dir/'kernel.elf')],text=True))
-vm=VM('pmm-pressure',asset_disk=disk,boot_image=boot,ram=64)
+options=dict(ram=64)
+if a.uefi:options=dict(ram=128,boot_bus='ide',firmware=(Path('/usr/share/OVMF/OVMF_CODE_4M.fd'),Path('/usr/share/OVMF/OVMF_VARS_4M.fd')))
+vm=VM('pmm-pressure-uefi' if a.uefi else 'pmm-pressure',asset_disk=disk,boot_image=boot,**options)
 read=lambda n:struct.unpack('<Q',vm.memory(symbols[n],8))[0]
 rows=[]
 try:

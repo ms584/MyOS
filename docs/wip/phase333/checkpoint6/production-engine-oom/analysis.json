@@ -1,0 +1,652 @@
+{
+  "os_responsiveness_and_reclamation_passed": true,
+  "whole_phase_passed": false,
+  "mode": "oom",
+  "resource_rows": [
+    [
+      "126671",
+      "126671",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "126671",
+      "126671",
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "events": [
+    {
+      "elapsed": 108.21540674199787,
+      "kind": "canplay",
+      "value": "probably"
+    },
+    {
+      "elapsed": 108.21563264200086,
+      "kind": "mse",
+      "value": "true"
+    },
+    {
+      "elapsed": 108.2637481419988,
+      "kind": "media-ready",
+      "value": "awaiting B"
+    },
+    {
+      "elapsed": 109.21500622799795,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 110.21493331699821,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 111.21463220900114,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 111.47474200600118,
+      "kind": "key",
+      "value": "b"
+    },
+    {
+      "elapsed": 111.47490190600001,
+      "kind": "stopped",
+      "value": "1"
+    },
+    {
+      "elapsed": 111.4751914059998,
+      "kind": "started",
+      "value": "1"
+    },
+    {
+      "elapsed": 111.94477040199854,
+      "kind": "sourceopen",
+      "value": "generation=1"
+    },
+    {
+      "elapsed": 111.94517350200113,
+      "kind": "waiting",
+      "value": "0 generation=1"
+    },
+    {
+      "elapsed": 112.09509810099917,
+      "kind": "loadedmetadata",
+      "value": "0 generation=1"
+    },
+    {
+      "elapsed": 112.23275619999913,
+      "kind": "clock",
+      "value": "0 paused=false ready=1 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 112.51472009799909,
+      "kind": "loadeddata",
+      "value": "0.180083 generation=1"
+    },
+    {
+      "elapsed": 112.51524169799814,
+      "kind": "playing",
+      "value": "0.180083 generation=1"
+    },
+    {
+      "elapsed": 113.21546709199902,
+      "kind": "clock",
+      "value": "0.695887 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 114.21536618299797,
+      "kind": "clock",
+      "value": "1.693711 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 115.21499907500038,
+      "kind": "clock",
+      "value": "2.688881 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 116.21509776599851,
+      "kind": "clock",
+      "value": "3.690083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 117.21808105799937,
+      "kind": "clock",
+      "value": "4.68777 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 118.21485613999903,
+      "kind": "clock",
+      "value": "5.693733 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 119.21476271699794,
+      "kind": "clock",
+      "value": "6.691829 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 120.21788929399918,
+      "kind": "clock",
+      "value": "7.688019 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 121.11753657399822,
+      "kind": "key",
+      "value": "o"
+    },
+    {
+      "elapsed": 121.11797867399946,
+      "kind": "oom-rejected",
+      "value": "251658240 RangeError: Array buffer allocation failed"
+    },
+    {
+      "elapsed": 121.51763376500094,
+      "kind": "clock",
+      "value": "8.96972 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 121.57522766300099,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 122.21511244900103,
+      "kind": "clock",
+      "value": "9.697361 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 122.3052855470014,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 123.21553522599788,
+      "kind": "clock",
+      "value": "10.694005 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 123.26522872499845,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 124.22537360299975,
+      "kind": "clock",
+      "value": "11.695865 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 124.27558360200055,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 125.2256054799982,
+      "kind": "clock",
+      "value": "12.696545 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 125.27538377900055,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 126.22601086099894,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 126.27504666000095,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 127.22536184300043,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 127.29533804200037,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 128.24558322499797,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 128.29513372400106,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 129.21558670800005,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 129.2953732060014,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 130.215488490001,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 130.2955789890002,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 131.21531507300097,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 131.3051619709986,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 132.2253026549988,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 132.2753417540007,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 238.48773076200087,
+      "kind": "canplay",
+      "value": "probably"
+    },
+    {
+      "elapsed": 238.48793036200004,
+      "kind": "mse",
+      "value": "true"
+    },
+    {
+      "elapsed": 238.53603796199968,
+      "kind": "media-ready",
+      "value": "awaiting B"
+    },
+    {
+      "elapsed": 239.48678785599986,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 240.487097549998,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 241.48670134499844,
+      "kind": "clock",
+      "value": "0 paused=true ready=0 width=0 height=0 generation=0"
+    },
+    {
+      "elapsed": 241.74869734299864,
+      "kind": "key",
+      "value": "b"
+    },
+    {
+      "elapsed": 241.7489469430002,
+      "kind": "stopped",
+      "value": "1"
+    },
+    {
+      "elapsed": 241.74909504300012,
+      "kind": "started",
+      "value": "1"
+    },
+    {
+      "elapsed": 242.19705383999826,
+      "kind": "sourceopen",
+      "value": "generation=1"
+    },
+    {
+      "elapsed": 242.1972901400004,
+      "kind": "waiting",
+      "value": "0 generation=1"
+    },
+    {
+      "elapsed": 242.35683953999978,
+      "kind": "loadedmetadata",
+      "value": "0 generation=1"
+    },
+    {
+      "elapsed": 242.5130176390012,
+      "kind": "clock",
+      "value": "0 paused=false ready=1 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 242.79556853699978,
+      "kind": "loadeddata",
+      "value": "0.180083 generation=1"
+    },
+    {
+      "elapsed": 242.8161266370007,
+      "kind": "playing",
+      "value": "0.180083 generation=1"
+    },
+    {
+      "elapsed": 243.48736213300072,
+      "kind": "clock",
+      "value": "0.686296 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 244.4872029270009,
+      "kind": "clock",
+      "value": "1.688064 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 245.48754802099938,
+      "kind": "clock",
+      "value": "2.679243 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 246.4881674089993,
+      "kind": "clock",
+      "value": "3.679448 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 247.48701779399926,
+      "kind": "clock",
+      "value": "4.680536 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 248.48729997899864,
+      "kind": "clock",
+      "value": "5.68167 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 249.48726556399924,
+      "kind": "clock",
+      "value": "6.676568 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 250.49033684900132,
+      "kind": "clock",
+      "value": "7.67845 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 251.33994743699805,
+      "kind": "key",
+      "value": "o"
+    },
+    {
+      "elapsed": 251.3404376369981,
+      "kind": "oom-rejected",
+      "value": "251658240 RangeError: Array buffer allocation failed"
+    },
+    {
+      "elapsed": 251.78840593000132,
+      "kind": "clock",
+      "value": "8.965253 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 251.83747172899893,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 252.4876864200014,
+      "kind": "clock",
+      "value": "9.6882 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 252.56749451799988,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 253.48747900499802,
+      "kind": "clock",
+      "value": "10.683257 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 253.56730310299827,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 254.48745820099793,
+      "kind": "clock",
+      "value": "11.681398 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 254.56763458999922,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 255.48780986600104,
+      "kind": "clock",
+      "value": "12.685162 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 255.56737925500056,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 256.48768093000035,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 256.5673135190009,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 257.48828729399975,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 257.56743048299904,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 258.48799925799904,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 258.5676270469994,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 259.4875493219988,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 259.56733861199973,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 260.4875085870008,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 260.5673076759995,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 261.48773274999985,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 261.5684688500005,
+      "kind": "fetch-error",
+      "value": "network"
+    },
+    {
+      "elapsed": 262.4878135559993,
+      "kind": "clock",
+      "value": "13.530083 paused=false ready=4 width=160 height=90 generation=1"
+    },
+    {
+      "elapsed": 262.5673129559982,
+      "kind": "fetch-error",
+      "value": "network"
+    }
+  ],
+  "ownership": [
+    {
+      "launch": 0,
+      "before_snapshot_bytes": 438272,
+      "after_snapshot_bytes": 515840,
+      "new_allocations": [
+        {
+          "size": 36608,
+          "inode": null
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Variations",
+            "size": 86,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/migration_completed.txt",
+            "size": 5,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/zQ3MTkv/Shared Dictionary/cache/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Code Cache/wasm/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Cache/Cache_Data/index-dir/the-real-index",
+            "size": 72,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Cache/Cache_Data/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/zQ3MTkv/Shared Dictionary/cache/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Code Cache/js/index",
+            "size": 24,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Code Cache/js/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        },
+        {
+          "size": 4096,
+          "inode": {
+            "path": "/home/cobalt/cache/zQ3MTkv/Code Cache/wasm/index-dir/the-real-index",
+            "size": 48,
+            "capacity": 4096,
+            "refs": 0,
+            "unlinked": 0
+          }
+        }
+      ]
+    },
+    {
+      "launch": 1,
+      "before_snapshot_bytes": 515840,
+      "after_snapshot_bytes": 515840,
+      "new_allocations": []
+    }
+  ],
+  "pmm_minima": [
+    0,
+    0
+  ],
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "boot_sha256": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+  "shell_checks": [
+    {
+      "launch": 0,
+      "output": "Free physical pages: 126671\nmyos> "
+    },
+    {
+      "launch": 1,
+      "output": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "lazy_pool_note": "First prelaunch snapshot omits36608B lazy inode pool established before ELF live baseline474880. Ten linked profile/cache buffers retain40960B; warm repeat heap exact515840.",
+  "limit": "Allocation failure is caught by JS. Playback later stalls with network allocation errors; Escape cancels all threads and shell/relaunch/reclamation pass. No uninterrupted playback under OOM or universal graceful engine recovery claim. Earlier provider Mesa faults remain recorded."
+}
