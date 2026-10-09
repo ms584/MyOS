@@ -187,3 +187,30 @@ Evidence/source: `docs/wip/phase334/checkpoint7/preroll-native/`.
 Public performance of this candidate is PENDING; this checkpoint is not production acceptance.
 Full regression for VM-area1024 + TCP carrier-loss + current source is still pending and is next.
 No push; Phase33.4 goal active; no Phase33.5/parent33/Rickroll acceptance.
+
+
+### 2026-10-10 02:12 +07 — full PASS; checkpoint8 DMA-clock focused PASS, online pending
+
+Full architecture regression terminal0 at 02:03:53+07. Normal UEFI build, UEFI launcher,
+pair BIOS and pair UEFI all terminal0; all5 normal kernel/ELF/BIOS/UEFI/MRT hashes EXACT
+at 02:05:33+07. This covers VM1024 + PMM1GiB + native TCP carrier-loss change, including
+the added native idle blocked-recv/poll/reconnect test. Evidence:
+`docs/wip/phase334/checkpoint6/regression/`. No production acceptance inferred.
+
+Underlay presentation holds the player mutex, delaying audio-sink acknowledgement while
+SB16 DMA keeps playing. The isolated VP9 provider now reads the actual PCM_STATUS consumed
+counter for frame selection/current time/sync measurement. Audio sink alone acknowledges
+and reclaims the PCM ring. Counter/device inconsistency causes an error, with explicit
+read/failure/maximum-ack-lag diagnostics. VP8 default binary remains exact41901a1374....
+The prior cached-clock measurements are not sufficient alone for a Phase33.4 A/V pass.
+
+`provider-aq_aruje` / `native-player-ag1yr0w6` passes native fixture controls/seek/EOS and
+exact cleanup; actual hardware-clock max error22394us, hardware-query failures0,
+player+PMM peak increment9400320bytes. Source/report/evidence:
+`docs/wip/phase334/checkpoint8/dma-native/`.
+This provider branch is separate from the kernel/MRT full build and still requires native
+Cobalt HTTPS/standard-media and actual YouTube controls/recovery observations.
+Controlled HTTP403 mode is added but UNTESTED; it requires native error403, input restart,
+later playing and exact pages/SHM/aliases. It cannot prove live YouTube expiry.
+Actual signed-URL expiry has not been tested or simulated; no token/clock manipulation.
+Phase33.4 remains active/incomplete. No push; no Phase33.5/33/Rickroll acceptance.

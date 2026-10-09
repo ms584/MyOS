@@ -62,6 +62,7 @@ struct SbPlayerPrivate {
  unsigned native_presented,native_sync_samples;int64_t native_max_sync;
 #ifdef MYOS_MEDIA_VP9
  unsigned decoded_format_logged;
+ unsigned native_hardware_clock_reads,native_hardware_clock_failures,native_hardware_ack_lag_frames;
 #endif
 #ifdef MYOS_MEDIA_TRACE
  int64_t diagnostic_decode_max_us,diagnostic_present_max_us,diagnostic_wake_max_us;
@@ -98,7 +99,30 @@ static SbPlayer lock_player(SbPlayer p){
 }
 static void unlock_player(SbPlayer p){pthread_mutex_unlock(&p->mutex);}
 static int64_t clock_locked(SbPlayer p){
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+ if(p->has_audio){
+  uint64_t played=p->consumed;
+  /* Presentation holds this mutex, so the sink's consume callback cannot
+   * acknowledge DMA during it. Read the real device counter for clocking;
+   * only the sink callback owns PCM-ring acknowledgement and reclamation. */
+  if(p->sink&&p->audio_anchor_set&&!p->seek_pending){
+   struct pcm_status hardware;struct pcm_request request={PCM_STATUS,0,0,0,(uintptr_t)&hardware};
+   register uint64_t result __asm__("rax")=51;
+   __asm__ volatile("int $0x80":"+a"(result):"D"((uint64_t)SYSTEM_AUDIO),"S"((uintptr_t)&request),"d"((uint64_t)0):"memory","cc");
+   ++p->native_hardware_clock_reads;
+   if((int64_t)result||hardware.consumed<p->consumed||hardware.consumed-p->consumed>p->pcm_count){
+    ++p->native_hardware_clock_failures;p->error_pending=1;
+   }else {
+    unsigned lag=(unsigned)(hardware.consumed-p->consumed);
+    if(lag>p->native_hardware_ack_lag_frames)p->native_hardware_ack_lag_frames=lag;
+    played=hardware.consumed;
+   }
+  }
+  return p->audio_anchor_set?p->audio_anchor+(int64_t)(played*1000000/PCM_RATE):p->seek_time;
+ }
+#else
  if(p->has_audio)return p->audio_anchor_set?p->audio_anchor+(int64_t)(p->consumed*1000000/PCM_RATE):p->seek_time;
+#endif
  return p->wall_media+(p->presenting&&p->rate==1.0?now_us()-p->wall_anchor:0);
 }
 static void source_status(int *frames,int *offset,bool *playing,bool *eos,void *context){
@@ -267,6 +291,11 @@ static void *player_worker(void *context){
     (long long)p->native_max_sync,p->total_video,p->dropped_video,p->corrupted_video,p->source_starvations,
     (unsigned long long)p->consumed,(int)p->rate,(long long)SbSystemGetUsedCPUMemory(), (long long)p->diagnostic_decode_max_us, (long long)p->diagnostic_present_max_us, (long long)p->diagnostic_wake_max_us);
    SbLogRaw(counters);
+#ifdef MYOS_MEDIA_VP9
+   {char hardware[160];snprintf(hardware,sizeof(hardware),
+    "MEDIA hardware-clock reads=%u failures=%u max-ack-lag-frames=%u\n",
+    p->native_hardware_clock_reads,p->native_hardware_clock_failures,p->native_hardware_ack_lag_frames);SbLogRaw(hardware);}
+#endif
 #endif
   }
 #endif
@@ -416,7 +445,11 @@ static void *player_worker(void *context){
 #else
   for(int i=0;i<2;++i)if(deallocate[i])p->deallocate(p,p->context,deallocate[i]);
 #endif
-  if(notify_error)p->error(p,p->context,kSbPlayerErrorDecode,"native VP8/Opus decode or bounded stream validation failed");
+  if(notify_error)p->error(p,p->context,kSbPlayerErrorDecode,
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+   p->native_hardware_clock_failures?"native audio hardware clock unavailable":
+#endif
+   "native VP8/Opus decode or bounded stream validation failed");
   if(notify_present)report_status(p,kSbPlayerStatePresenting,ticket);
   if(notify_end)report_status(p,kSbPlayerStateEndOfStream,ticket);
   for(int i=0;i<2;++i)if(request[i])p->decoder(p,p->context,(SbMediaType)i,kSbPlayerDecoderStateNeedsData,ticket);

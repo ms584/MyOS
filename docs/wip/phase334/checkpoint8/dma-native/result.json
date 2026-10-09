@@ -1,0 +1,11 @@
+{
+  "phase_passed": false,
+  "focused_native_dma_clock": "PASS",
+  "hardware_counter_failures": 0,
+  "max_sync_us": 22394,
+  "player_ram_increment_bytes": 9400320,
+  "public_youtube": "pending",
+  "standard_cobalt_https": "pending",
+  "http403": "pending",
+  "default_vp8_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696"
+}
