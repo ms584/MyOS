@@ -1,5 +1,50 @@
 # Phase33.4 actual YouTube integration
 
+### 2026-10-10 05:49 +07 — checkpoint11 latest native public and errors PASS observations
+Implementation tested:da08b2db58df7b9d4f9d6cc850cbb77729ddc98b; source90dfe4b6...,
+provider-sey3hj06 ba9620ca..., optional native-underlay VP9/trace profile.
+Public6mmepdfk ran05:27:38-05:42:06+07 in one MyOS/QEMU1GiB session:
+direct BBB URL and homepage/native typing/search/official Blender result/watch/reopen.
+Human inspected native movie/search/Stats frames; both Stats prove aqz-KE-bpKQ,
+256x144@30 VP9itag278/Opus251, WebM MIME, SABR, SDRbt709. Native decoding/rendering/
+audio/TLS/network/JS only. Output160x90 in800x600,SB16mono11025U8 from Opusstereo48k.
+Movie ROI movement50.447s direct and30.283s search; native WAV497.971active seconds,
+492audible1s bins. Pause movies changed0pixels across10.1s, real PCM_STATUS position/
+consumed/presented held; resume/seek first frames consumed0. Three actual seek tickets.
+Four actual hardware-clock sync maxima88217/89876/89577/89970us, no outliers or
+hardware-query failures. Actual130s NIC loss exhausts data, holds clock236750883us;
+native rebuffer resumes automatically after link restoration before recovery seek.
+Both close/reopens open desktop windows, return shell/exact257743pages,SHM0/aliases0.
+Peak owned mapping568778752B/542.43MiB (not RSS). Dropped frames disclosed:
+auto360final415/431; selected144last706/397. Stream30fps is not a zero-drop display claim.
+Evidence: wip/phase334/checkpoint11/current-online/ (PNG,WAV.gz,redactedserial,
+native-observation-analysis,source,actions,build identities,QEMU command,SHA256SUMS).
+Public exit0 alone is observation; human/PCM/pixel/clock audit is recorded separately.
+
+Latest provider focused faults75k_sbd0 PASS:64MiB,two malformed VP8/VP9/Opus waves,
+unsupportedH264/AAC/oversizeVP9,real ENOMEM/release/recreate,exact11991pages/heap/SHM/
+aliases. Native Cobalt40301guwqqc and timeout10s/14s stall PASS:actual fetch error,
+Nrestart/newgeneration/laterplaying,X/ESC exactresources. See checkpoint11/current-
+faults,current-http403,current-timeout. Standard1vrufhf0 and latebounds/video-gap
+also pass for this exact provider. Compile-only report execution flags remainfalse;
+actual tests are separate SHA-linked evidence, not fabricated build-report flags.
+
+Final normal5/default VP8 exact05:48:20, no running VM. Full architecture suite
+checkpoint6 terminal0 02:03:53; normalUEFI/finallauncher/pair BIOS+UEFI0/all5 exact
+02:05:33. Architecture/kernel/MRT/images unchanged since that suite. New provider/
+fixtures are separately focused/standard/public tested, default binary remains41901a1374...
+Final checks: wip/phase334/checkpoint11/final-checks/.
+
+Phase33.4 ACTIVE/INCOMPLETE:actual signed-URL expiry remains unverified. Automatic
+approval review rejected reuse of a stored private Googlevideo signed URI externally
+without explicit scoped permission. No replay harness/action executed. Review-only
+plan:PHASE334_EXPIRY_REVIEW_PLAN.md; cannot substitute controlled403/timeout for expiry.
+Public token/query values are private inignored build, absent from committed evidence.
+Native playback/control/recovery foundation is ready for eventual33.5 trial, but do
+not start/accept33.5 or close parent33/Rickroll until33.4 and33.5 gates actually pass.
+Local commits only; no push. Owner untracked promotion logs/status/audits untouched.
+
+
 ### 2026-10-10 05:26 +07 — checkpoint10 public controls/recovery; checkpoint11 startup fix
 Checkpoint10 public3fvd7jf3 (ea94696/provider-0w_9xkyk) proves45s actual moving
 YouTube BBB plus same-session SB16 PCM. All four actual hardware-clock sync

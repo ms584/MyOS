@@ -1,0 +1,935 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "diagnostic_trace": true,
+  "continuous_playback": false,
+  "fault_shell_before": "Free physical pages: 126671\nmyos> ",
+  "fault_mode": "http403",
+  "fault_injections": [
+    {
+      "mode": "http403",
+      "start": 131072,
+      "elapsed": 95.71634113699838
+    }
+  ],
+  "native_pcm_capture": true,
+  "ram_diagnostic": false,
+  "ram_samples": [],
+  "ram_baselines": [],
+  "lifecycle_scenario": false,
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "range": null,
+      "elapsed": 87.4765930930007
+    },
+    {
+      "server": "valid",
+      "path": "/app.js",
+      "range": null,
+      "elapsed": 87.54701619700063
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=canplay&value=probably&seq=1",
+      "range": null,
+      "elapsed": 87.62738860199897
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=mse&value=true&seq=2",
+      "range": null,
+      "elapsed": 87.6278345019964
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=stopped&value=1&seq=3",
+      "range": null,
+      "elapsed": 87.68406570499792
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=started&value=1&seq=4",
+      "range": null,
+      "elapsed": 87.68554460500309
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=sourceopen&value=generation%3D1&seq=5",
+      "range": null,
+      "elapsed": 87.88992581699858
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=0%20generation%3D1&seq=6",
+      "range": null,
+      "elapsed": 87.8901883169965
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=0-8191",
+      "elapsed": 87.89040681700135
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=8192-16383",
+      "elapsed": 88.15632222899876
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadedmetadata&value=0%20generation%3D1&seq=7",
+      "range": null,
+      "elapsed": 88.21642983100173
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=16384-24575",
+      "elapsed": 88.31614133500261
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=24576-32767",
+      "elapsed": 88.4163146389983
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadeddata&value=0.020083%20generation%3D1&seq=8",
+      "range": null,
+      "elapsed": 88.51612044299691
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=0.020083%20generation%3D1&seq=9",
+      "range": null,
+      "elapsed": 88.51633504300116
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=32768-40959",
+      "elapsed": 88.53636674400332
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=40960-49151",
+      "elapsed": 88.63645494799857
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.180083%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=10",
+      "range": null,
+      "elapsed": 88.65714734899666
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=49152-57343",
+      "elapsed": 88.73641975200007
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=57344-65535",
+      "elapsed": 88.83645995600091
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.882033%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=11",
+      "range": null,
+      "elapsed": 89.63689678900118
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=65536-73727",
+      "elapsed": 89.6371156890018
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=1.873076%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=12",
+      "range": null,
+      "elapsed": 90.627926328998
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=73728-81919",
+      "elapsed": 90.62823012899753
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=2.874459%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=13",
+      "range": null,
+      "elapsed": 91.62688917000196
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=81920-90111",
+      "elapsed": 91.6272814699987
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.882101%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=14",
+      "range": null,
+      "elapsed": 92.62819291099731
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=90112-98303",
+      "elapsed": 92.6286111110021
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=98304-106495",
+      "elapsed": 92.7165400140002
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=4.878404%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=15",
+      "range": null,
+      "elapsed": 93.62725135200162
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=106496-114687",
+      "elapsed": 93.62774385199737
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=114688-122879",
+      "elapsed": 94.62725159199908
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.877452%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=16",
+      "range": null,
+      "elapsed": 94.62745909200021
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.87972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=17",
+      "range": null,
+      "elapsed": 95.62805173300148
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=122880-131071",
+      "elapsed": 95.62836283299839
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=131072-139263",
+      "elapsed": 95.71615023699997
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=fetch-error&value=403&seq=18",
+      "range": null,
+      "elapsed": 95.81616224099707
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=7.87981%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=19",
+      "range": null,
+      "elapsed": 96.62850265399902
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=131072-139263",
+      "elapsed": 96.62877215399931
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=139264-147455",
+      "elapsed": 96.71615515599842
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=8.881874%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=20",
+      "range": null,
+      "elapsed": 97.62828286700096
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=147456-155647",
+      "elapsed": 97.62859516699973
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=n&seq=21",
+      "range": null,
+      "elapsed": 97.92793977099791
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=started&value=2&seq=23",
+      "range": null,
+      "elapsed": 97.92828217100032
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=stopped&value=2&seq=22",
+      "range": null,
+      "elapsed": 97.9284806709984
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=sourceopen&value=generation%3D2&seq=24",
+      "range": null,
+      "elapsed": 98.20652187400265
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=0%20generation%3D2&seq=25",
+      "range": null,
+      "elapsed": 98.20674517400039
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=0-8191",
+      "elapsed": 98.20702007399814
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=8192-16383",
+      "elapsed": 98.33704777599633
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadedmetadata&value=0%20generation%3D2&seq=26",
+      "range": null,
+      "elapsed": 98.35844807599642
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=16384-24575",
+      "elapsed": 98.44643987699965
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=24576-32767",
+      "elapsed": 98.54638147800142
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dfalse%20ready%3D1%20width%3D160%20height%3D90%20generation%3D2&seq=27",
+      "range": null,
+      "elapsed": 98.66697587999806
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=32768-40959",
+      "elapsed": 98.66744967999693
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadeddata&value=0.020083%20generation%3D2&seq=28",
+      "range": null,
+      "elapsed": 98.70674098000018
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=0.020083%20generation%3D2&seq=29",
+      "range": null,
+      "elapsed": 98.70711308000318
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=40960-49151",
+      "elapsed": 98.77714508100325
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=49152-57343",
+      "elapsed": 98.86648488199717
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=57344-65535",
+      "elapsed": 98.96650228399812
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.760355%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=30",
+      "range": null,
+      "elapsed": 99.62720119200094
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=1.779175%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=31",
+      "range": null,
+      "elapsed": 100.6370417040016
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=65536-73727",
+      "elapsed": 100.63741780399869
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=73728-81919",
+      "elapsed": 100.69636210500175
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=2.759584%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=32",
+      "range": null,
+      "elapsed": 101.62837411699729
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=81920-90111",
+      "elapsed": 101.62883641700319
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.76133%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=33",
+      "range": null,
+      "elapsed": 102.62719932899927
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=90112-98303",
+      "elapsed": 102.62774952899781
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=4.768903%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=34",
+      "range": null,
+      "elapsed": 103.62741924200236
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=98304-106495",
+      "elapsed": 103.62790854200284
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=106496-114687",
+      "elapsed": 103.6874892420019
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.769742%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=35",
+      "range": null,
+      "elapsed": 104.62695467100275
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=114688-122879",
+      "elapsed": 104.62749077100307
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.760876%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=36",
+      "range": null,
+      "elapsed": 105.62675796000258
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=122880-131071",
+      "elapsed": 105.62697215999651
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=7.77972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=37",
+      "range": null,
+      "elapsed": 106.6369407480015
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=131072-139263",
+      "elapsed": 106.63722204799706
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=139264-147455",
+      "elapsed": 106.70367303999956
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=8.780808%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=38",
+      "range": null,
+      "elapsed": 107.63792363600078
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=147456-155647",
+      "elapsed": 107.63819103599963
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=9.761897%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=39",
+      "range": null,
+      "elapsed": 108.63713522499893
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=155648-163839",
+      "elapsed": 108.63728132499818
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=163840-172031",
+      "elapsed": 108.7064982180018
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=10.762373%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=40",
+      "range": null,
+      "elapsed": 109.63691901400307
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=172032-180223",
+      "elapsed": 109.63738261399703
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=11.766024%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=41",
+      "range": null,
+      "elapsed": 110.62698370400176
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=180224-188415",
+      "elapsed": 110.6273674039985
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=188416-196607",
+      "elapsed": 110.71709179400204
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=12.760536%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=42",
+      "range": null,
+      "elapsed": 111.62788389300113
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=196608-204799",
+      "elapsed": 111.6283981930028
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=13.763189%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=43",
+      "range": null,
+      "elapsed": 112.62763512999663
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=204800-212991",
+      "elapsed": 112.62784542999725
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=14.763325%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=44",
+      "range": null,
+      "elapsed": 113.62738869099849
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=212992-221183",
+      "elapsed": 113.62774699099828
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=221184-229375",
+      "elapsed": 113.72673838699848
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=15.764686%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=45",
+      "range": null,
+      "elapsed": 114.62736345199664
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=229376-237567",
+      "elapsed": 114.62776945200312
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=16.76972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D2&seq=46",
+      "range": null,
+      "elapsed": 115.62716251399979
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=237568-245759",
+      "elapsed": 115.62732451399643
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=245760-253951",
+      "elapsed": 115.69448141100293
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=x&seq=47",
+      "range": null,
+      "elapsed": 116.08122379599808
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=stopped&value=3&seq=48",
+      "range": null,
+      "elapsed": 116.08140169599938
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D3&seq=49",
+      "range": null,
+      "elapsed": 116.66357477400015
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D3&seq=50",
+      "range": null,
+      "elapsed": 117.6289297359981
+    }
+  ],
+  "frames": [
+    {
+      "launch": 0,
+      "elapsed": 6.481815728999209,
+      "path": "media-006.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 8.513570038994658,
+      "path": "media-008.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 10.537921147995803,
+      "path": "media-010.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 12.561432258000423,
+      "path": "media-012.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 14.585452966995945,
+      "path": "media-014.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 16.60910567699466,
+      "path": "media-016.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 18.63386748499761,
+      "path": "media-018.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 20.65807259400026,
+      "path": "media-020.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 22.683104902993364,
+      "path": "media-022.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 24.708592511997267,
+      "path": "media-024.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 26.734076921995438,
+      "path": "media-026.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 28.758197330993426,
+      "path": "media-028.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 30.783716940997692,
+      "path": "media-030.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 32.807825152995065,
+      "path": "media-032.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 34.83498696699826,
+      "path": "media-034.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 36.8588368799974,
+      "path": "media-036.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 38.8826088939968,
+      "path": "media-038.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 40.90728621499875,
+      "path": "media-040.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 42.930997140996624,
+      "path": "media-042.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 44.955857266999374,
+      "path": "media-044.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 46.97962959299912,
+      "path": "media-046.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 49.003655820997665,
+      "path": "media-049.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 51.02783544900012,
+      "path": "media-051.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 53.05259077599476,
+      "path": "media-053.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 55.07780150399776,
+      "path": "media-055.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 57.102155859996856,
+      "path": "media-057.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 59.125702424993506,
+      "path": "media-059.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 61.149539990998164,
+      "path": "media-061.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 63.17292525599623,
+      "path": "media-063.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 65.19696295199537,
+      "path": "media-065.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 67.22150675699959,
+      "path": "media-067.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 69.24561996199918,
+      "path": "media-069.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 71.27054766699439,
+      "path": "media-071.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 73.2948311029977,
+      "path": "media-073.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 75.31938634499966,
+      "path": "media-075.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 77.34675208800036,
+      "path": "media-077.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 79.37209493099363,
+      "path": "media-079.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 81.39659605299676,
+      "path": "media-081.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 83.42231887099479,
+      "path": "media-083.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 85.44795118899492,
+      "path": "media-085.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 87.48051220699563,
+      "path": "media-087.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 89.50212759299757,
+      "path": "media-089.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 91.52814767499513,
+      "path": "media-091.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 93.5552538579941,
+      "path": "media-093.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 95.58174064099876,
+      "path": "media-095.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 97.61255166899355,
+      "path": "media-097.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 99.62225059399498,
+      "path": "media-099.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 101.6544485189952,
+      "path": "media-101.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 103.68523864399322,
+      "path": "media-103.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 105.71926432100008,
+      "path": "media-105.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 107.75227689500025,
+      "path": "media-107.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 109.7845377689955,
+      "path": "media-109.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 111.81680824999785,
+      "path": "media-111.png"
+    },
+    {
+      "launch": 0,
+      "elapsed": 113.85257027199987,
+      "path": "media-113.png"
+    }
+  ],
+  "inputs": [
+    {
+      "launch": 0,
+      "key": "n",
+      "elapsed": 97.61255166899355
+    },
+    {
+      "launch": 0,
+      "key": "x",
+      "elapsed": 115.78323699699831
+    }
+  ],
+  "shell_checks": [
+    {
+      "launch": 0,
+      "output": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "provider_sha256": "ba9620ca077d7942775d9ec9fcca0e8561e39c3989f17ae024e625d5122c2c85",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "boot_sha256": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+  "runtime_sha256": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87",
+  "elapsed": 119.18372396499763
+}
