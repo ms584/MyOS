@@ -16,6 +16,13 @@
 #include "starboard/window.h"
 #include "starboard/log.h"
 #include "media-webm.h"
+#ifdef MYOS_TEST_VP9
+#define TEST_VIDEO_CODEC kSbMediaVideoCodecVp9
+#define TEST_VIDEO_MIME "video/webm; codecs=vp9"
+#else
+#define TEST_VIDEO_CODEC kSbMediaVideoCodecVp8
+#define TEST_VIDEO_MIME "video/webm; codecs=vp8"
+#endif
 extern int64_t SbSystemGetUsedCPUMemory(void);
 static int64_t ram_baseline,ram_peak;static uint64_t ram_free_baseline,ram_free_min;
 static uint64_t free_pages(void){
@@ -78,7 +85,7 @@ static int packet(void *context,int kind,const unsigned char *data,size_t n,int6
   /* Generated WebM declares CodecDelay=6500us. */
   if(stamp==0)sample.audio_sample_info.discarded_duration_from_front=6500;
  }else{
-  sample.video_sample_info.stream_info.codec=kSbMediaVideoCodecVp8;
+  sample.video_sample_info.stream_info.codec=TEST_VIDEO_CODEC;
   sample.video_sample_info.stream_info.frame_width=160;sample.video_sample_info.stream_info.frame_height=90;
  }
  pthread_mutex_lock(&mu);++allocated;++packets[type];pthread_mutex_unlock(&mu);
@@ -134,10 +141,21 @@ static void *run(void *unused){
  SbPlayerCreationParam param={0};param.audio_stream_info.codec=kSbMediaAudioCodecOpus;
  param.audio_stream_info.number_of_channels=1;param.audio_stream_info.samples_per_second=48000;
  param.audio_stream_info.mime="audio/webm; codecs=opus";
- param.video_stream_info.codec=kSbMediaVideoCodecVp8;param.video_stream_info.frame_width=160;param.video_stream_info.frame_height=90;
- param.video_stream_info.mime="video/webm; codecs=vp8";param.output_mode=kSbPlayerOutputModeDecodeToTexture;
+ param.video_stream_info.codec=TEST_VIDEO_CODEC;param.video_stream_info.frame_width=160;param.video_stream_info.frame_height=90;
+ param.video_stream_info.mime=TEST_VIDEO_MIME;param.output_mode=kSbPlayerOutputModeDecodeToTexture;
+#ifdef MYOS_TEST_UNDERLAY
+ param.output_mode=kSbPlayerOutputModePunchOut;
+ gl->glClearColor(0,0,0,0);gl->glClear(0x4000);
+ if(!egl->eglSwapBuffers(display,surf))return (void *)4;
+#endif
  if(SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=\"vp8, opus\"; width=160; height=90; framerate=15","")!=kSbMediaSupportTypeProbably||
-    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=\"vp9, opus\"","")!=kSbMediaSupportTypeNotSupported||
+    SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=\"vp9, opus\"","")!=
+#ifdef MYOS_TEST_VP9
+    kSbMediaSupportTypeProbably
+#else
+    kSbMediaSupportTypeNotSupported
+#endif
+    ||
     SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp8; width=161","")!=kSbMediaSupportTypeNotSupported||
     SbMediaCanPlayMimeAndKeySystem("video/webm; codecs=vp8","drm")!=kSbMediaSupportTypeNotSupported)
   return (void *)20;
@@ -145,6 +163,9 @@ static void *run(void *unused){
  ram_free_baseline=ram_free_min=free_pages();
  player=SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0);
  if(!player)return (void *)5;
+#ifdef MYOS_TEST_UNDERLAY
+ SbPlayerSetBounds(player,0,80,340,320,180);
+#endif
  if(SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0)||
     SbPlayerSetPlaybackRate(player,2.0)||SbPlayerGetCurrentFrame(player))return (void *)21;
  SbPlayerGetInfo((SbPlayer)(uintptr_t)1,0);SbPlayerDestroy((SbPlayer)(uintptr_t)1);
@@ -155,7 +176,13 @@ static void *run(void *unused){
  SbPlayerSeek(player,0,ticket);
  if(start_readers())return (void *)6;
  int64_t start=now(),pause_stamp=0;int paused=0,resumed=0,sought=0,done=0;
- unsigned draws=0,sync_samples=0;int64_t max_sync=0,last_log=-1,seek_wall=now();
+ unsigned draws=0;int64_t last_log=-1;
+#ifndef MYOS_TEST_UNDERLAY
+ unsigned sync_samples=0;int64_t max_sync=0;
+#endif
+#ifndef MYOS_TEST_UNDERLAY
+ int64_t seek_wall=now();
+#endif
  SbLogRaw("native standard player RUN begin\n");
  while(now()-start<90000000&&!failed&&!done){
   sample_ram();
@@ -171,8 +198,16 @@ static void *run(void *unused){
   if(resumed&&!sought&&info.current_media_timestamp>=10000000){
    stop_feeders();pthread_mutex_lock(&mu);++ticket;requested[0]=requested[1]=preroll=ended=0;stop_readers=0;seek_to=15000000;pthread_mutex_unlock(&mu);
    SbPlayerSeek(player,seek_to,ticket);if(start_readers())bad("native seek feeders failed");
-   sought=1;seek_wall=now();SbLogRaw("native SEEK to=15000000\n");
+   sought=1;
+#ifndef MYOS_TEST_UNDERLAY
+   seek_wall=now();
+#endif
+   SbLogRaw("native SEEK to=15000000\n");
   }
+  #ifndef MYOS_TEST_UNDERLAY
+#ifdef MYOS_TEST_VP9
+  int64_t frame_began=now();
+#endif
   SbDecodeTarget target=SbPlayerGetCurrentFrame(player);
   if(target){SbDecodeTargetInfo ti={0};if(!SbDecodeTargetGetInfo(target,&ti)||ti.width!=160||ti.height!=90)bad("native texture dimensions");
    gl->glClearColor(.05f,.05f,.08f,1);gl->glClear(0x4000);
@@ -191,14 +226,24 @@ static void *run(void *unused){
    if(consumed.playback_rate==1.0&&now()-seek_wall>1000000&&source_frame<600){
     int64_t video_stamp=(int64_t)source_frame*1000000/15;
     int64_t delta=consumed.current_media_timestamp-video_stamp;if(delta<0)delta=-delta;
-    if(delta>max_sync)max_sync=delta;++sync_samples;
+    if(delta>max_sync){
+#ifdef MYOS_TEST_VP9
+     if(delta>80000){char message[192];
+      snprintf(message,sizeof(message),"native VP9 sync outlier frame=%u clock=%lld delta=%lld texture-render-us=%lld\n",
+               source_frame,(long long)consumed.current_media_timestamp,(long long)delta,(long long)(now()-frame_began));SbLogRaw(message);}
+#endif
+     max_sync=delta;}++sync_samples;
    }
    SbDecodeTargetRelease(target);++draws;
   }
+#else
+  ++draws;
+#endif
   if(info.current_media_timestamp/1000000!=last_log){last_log=info.current_media_timestamp/1000000;lognum("native media position-us=",info.current_media_timestamp);}
   pthread_mutex_lock(&mu);done=ended;pthread_mutex_unlock(&mu);sleep_ms(30);
  }
  stop_feeders();
+#ifndef MYOS_TEST_UNDERLAY
  SbDecodeTarget held[8];
  for(int i=0;i<8;++i){held[i]=SbPlayerGetCurrentFrame(player);if(!held[i])bad("native target capacity before limit");}
  if(SbPlayerGetCurrentFrame(player))bad("native target limit not enforced");
@@ -206,8 +251,19 @@ static void *run(void *unused){
  SbPlayerDestroy(player);player=0;
  for(int i=0;i<8;++i){SbDecodeTargetInfo ti={0};if(!SbDecodeTargetGetInfo(held[i],&ti))bad("native retained target died with player");SbDecodeTargetRelease(held[i]);}
  SbLogRaw("native retained textures/player destroy/capacity PASS\n");
- lognum("native rendered textures=",draws);lognum("native presented A-V max-us=",max_sync);lognum("native presented A-V samples=",sync_samples);lognum("native sample allocated=",allocated);lognum("native sample released=",released);
- int ok=!failed&&done&&paused&&resumed&&sought&&draws>100&&allocated==released&&sync_samples>100&&max_sync<=100000;
+#else
+ SbPlayerDestroy(player);player=0;
+#endif
+#ifndef MYOS_TEST_UNDERLAY
+ lognum("native rendered textures=",draws);lognum("native presented A-V max-us=",max_sync);lognum("native presented A-V samples=",sync_samples);
+#else
+ lognum("native underlay control polls=",draws);
+#endif
+ lognum("native sample allocated=",allocated);lognum("native sample released=",released);
+ int ok=!failed&&done&&paused&&resumed&&sought&&draws>100&&allocated==released;
+#ifndef MYOS_TEST_UNDERLAY
+ ok=ok&&sync_samples>100&&max_sync<=100000;
+#endif
  /* A second native player in the SAME process proves stop/restart ownership,
   * independent of automatic process teardown. Stop it while still playing. */
  pthread_mutex_lock(&mu);++ticket;initialized=preroll=ended=stop_readers=0;
@@ -215,6 +271,9 @@ static void *run(void *unused){
  player=SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0);
  if(!player){bad("native same-process restart failed");ok=0;}
  else{
+#ifdef MYOS_TEST_UNDERLAY
+  SbPlayerSetBounds(player,0,80,340,320,180);
+#endif
   for(int i=0;i<1000&&!initialized;++i)sleep_ms(10);
   SbPlayerSeek(player,0,ticket);
   if(start_readers()){bad("native restart feeders");ok=0;}

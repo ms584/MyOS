@@ -66,3 +66,28 @@ timeout/loss/expired-URL/unsupported-format recovery;
 focused checks and applicable full regression; normal image restored.
 No33.5 or parent phase closure until its separate acceptance.
 
+
+## Checkpoint2: measured codec gap and native VP9 candidate
+See [original evidence](wip/phase334/checkpoint2/README.md).
+Public home/watch/TV original observation completed exit0 at20:49:08 with exact
+PMM/SHM/aliases after every close, shell mem, normal artifacts unchanged.
+Audio capture contains zero frames. Home/TV welcome were real guest pixels;
+watch error Your browser cannot play this video does not pass.
+Diagnostic desktop query records explicitly request VP9/H264/AV1, no VP8;
+Opus support2, video support0. This proves a codec-negotiation gap, not all
+causes of failure or a certificate/authentication rejection.
+TV guest input reaches home; attempted TV fragment does not play a video.
+First fragment injection failed in QMP helper (missing # Shift+3), preserved.
+
+Separate --vp9 candidate target build/configuration added from existing pins.
+Upstream decoder640x360 size guard,8bit only, no host decoder.
+Provider retains160x90 native presentation after guest-only downscale.
+Declared candidate goal: VP9 profile0+Opus, at most640x360/30fps decode,
+160x90 presentation, sync<=100ms and media RAM<=32MiB; actual higher-size/rate
+limits remain unverified until online/dedicated tests. No capability promotion.
+Native underlay40s160x90@15 fixture passes controls/EOS/restart/resources and
+actual PNG/PCM focused gate,9.987ms maximum sync,8.71MB sampled player increment.
+Two texture-mode trials FAILED113.734/111.163ms; latter records70ms render period.
+Keep these failures distinct from the supported Cobalt native-underlay path.
+Default production provider remains byte-identical41901a13, normal images unchanged.
+New diagnostic VP9 online provider-z73ft99k built21:09:33; online test pending.

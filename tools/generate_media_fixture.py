@@ -4,9 +4,12 @@ VP8 encoder is the pinned upstream source, built separately without decoder.
 Opus host encoder ABI is stable; record its version. Guest uses pinned Opus1.5.2.
 """
 from pathlib import Path
-import ctypes,hashlib,json,math,struct,subprocess
+import argparse,ctypes,hashlib,json,math,struct,subprocess
+p=argparse.ArgumentParser(description=__doc__)
+p.add_argument("--vp9",action="store_true",help="Encode original synthetic source as VP9; no host decoder")
+args=p.parse_args()
 ROOT=Path(__file__).resolve().parents[1]
-base=ROOT/'build/media-evaluation';out=base/'fixture-encoder'
+base=ROOT/'build/media-evaluation';out=base/('fixture-vp9-encoder' if args.vp9 else 'fixture-encoder')
 out.mkdir(exist_ok=True)
 code=r'''
 #include <stdio.h>
@@ -43,6 +46,7 @@ int main(void){
  vpx_img_free(im);vpx_codec_destroy(&codec);return 0;
 }
 '''
+if args.vp9:code=code.replace('vpx_codec_vp8_cx()', 'vpx_codec_vp9_cx()')
 (out/'encode-vp8.c').write_text(code)
 subprocess.run(['gcc','-O2','-I'+str(base/'libvpx-1.15.2'),str(out/'encode-vp8.c'),
  str(out/'libvpx.a'),'-lm','-lpthread','-o',str(out/'encode-vp8')],check=True)
@@ -80,7 +84,7 @@ def u(tag,n):return el(tag,uint(n))
 def text(tag,s):return el(tag,s.encode())
 header=el('1a45dfa3',u('4286',1)+u('42f7',1)+u('42f2',4)+u('42f3',8)+text('4282','webm')+u('4287',4)+u('4285',2))
 info=el('1549a966',u('2ad7b1',1000000)+el('4489',struct.pack('>d',40000))+text('4d80','MyOS standard fixture encoder')+text('5741','MyOS Phase33.3'))
-vt=el('ae',u('d7',1)+u('73c5',1)+u('83',1)+text('86','V_VP8')+u('23e383',66666667)+el('e0',u('b0',160)+u('ba',90)))
+vt=el('ae',u('d7',1)+u('73c5',1)+u('83',1)+text('86','V_VP9' if args.vp9 else 'V_VP8')+u('23e383',66666667)+el('e0',u('b0',160)+u('ba',90)))
 head=b'OpusHead'+bytes([1,1])+struct.pack('<HIhB',lookahead.value,48000,0,0)
 at=el('ae',u('d7',2)+u('73c5',2)+u('83',2)+text('86','A_OPUS')+el('63a2',head)+u('56aa',lookahead.value*1000000000//48000)+u('56bb',80000000)+el('e1',el('b5',struct.pack('>d',48000))+u('9f',1)))
 packets=sorted(video+audio,key=lambda x:(x[0],x[1]))
@@ -92,10 +96,10 @@ for start in range(0,40000,1000):
    blocks.append(el('a3',bytes([0x80|track])+struct.pack('>h',ts-start)+bytes([0x80 if key else 0])+data))
  clusters.append(el('1f43b675',u('e7',start)+b''.join(blocks)))
 payload=header+el('18538067',info+el('1654ae6b',vt+at)+b''.join(clusters))
-asset=base/'standard-160x90-40s.webm';asset.write_bytes(payload)
+asset=base/('standard-vp9-160x90-40s.webm' if args.vp9 else 'standard-160x90-40s.webm');asset.write_bytes(payload)
 report={'asset':str(asset),'sha256':hashlib.sha256(payload).hexdigest(),'bytes':len(payload),
 'width':160,'height':90,'fps':15,'duration_seconds':40,'video_frames':600,'opus_packets':2000,
 'encoder_only_host_opus_version':version,'opus_preskip_samples':lookahead.value,
-'host_decoding':False,'guest_acceptance':False,'generation':'deterministic raw moving cells and sine PCM, encoded VP8+Opus, standard WebM mux'}
-(base/'standard-fixture.json').write_text(json.dumps(report,indent=2)+'\n')
+'video_codec':'VP9' if args.vp9 else 'VP8','host_decoding':False,'guest_acceptance':False,'generation':'deterministic raw moving cells and sine PCM, encoded native test video+Opus, standard WebM mux'}
+(base/('standard-fixture-vp9.json' if args.vp9 else 'standard-fixture.json')).write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

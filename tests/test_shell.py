@@ -5,7 +5,7 @@ from test_system import VM,symbols
 def type_text(vm,text):
     plain={' ':'spc','/':'slash','.':'dot','-':'minus','=':'equal',';':'semicolon',
            '\n':'ret','\b':'backspace'}
-    shifted={':':'semicolon','?':'slash','&':'7','_':'minus','+':'equal'}
+    shifted={':':'semicolon','?':'slash','&':'7','#':'3','_':'minus','+':'equal'}
     for ch in text:
         code=shifted.get(ch,plain.get(ch,ch.lower()))
         codes=['shift',code] if ch.isupper() or ch in shifted else [code]

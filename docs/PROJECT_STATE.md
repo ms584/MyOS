@@ -1,4 +1,4 @@
-Updated:2026-10-09 20:48 +07. /home/xytron404/myos,main.
+Updated:2026-10-09 21:10 +07. /home/xytron404/myos,main.
 Phase33.4 owner-authorized, goal active; NOT PASSED. No push.
 Baseline7f4336d; preserve owner untracked promotion logs/status/audits.
 
@@ -12,22 +12,22 @@ Five current normal artifact hashes exactly match checkpoint6 final identity.
 No prerequisite gap found; no fake import-count/fixture acceptance.
 
 ## Current33.4 checkpoint
-See PHASE334.md; tests/test_cobalt_youtube_observation.py.
-Real native public home/watch/TV observation started20:40:02:
-build/phase334-public-35o8vqj2; TV still pending.
-Home actually displays YouTube search/menu.
-Watch jNQXAC9IVRw displays native site error:
-Your browser can't play this video,0:00/0:19. NO playback acceptance.
-Both completed closes return shell mem and exact PMM/SHM/aliases.
-No claim about transport/JS failure cause or certification rejection.
-No host page/media fetch/proxy/decoder/player; no added fixture CA.
+PHASE334.md; docs/wip/phase334/checkpoint{1,2}.
+Public native home/watch/TV exit0:108PNG, no decoded video, zero audio.
+Watch browser cannot play error0:00; all3 shell closes/PMM/SHM/aliases exact.
+Trace MIME queries VP9/H264/AV1, no VP8; Opus supported.
+TV Enter Watch as guest reaches home; deeplink does not play.
+First fragment input failed helper # mapping; corrected Shift+3 and preserved.
+No certificate/authentication rejection proof; no fake credentials.
 
-## Diagnostic change and next checkpoint
-MYOS_MEDIA_TRACE-only bounded MIME/support logging in media-capability.c.
-Normal provider rebuild0yzz12iq byte-identical to accepted41901a13.
-Diagnostic provider-xcwnouzd logs real capability requests, not fake support.
-Observation runner supports actual timed input and read-only sampled PMM.
-Finish TV, preserve evidence, then run diagnostic real watch/search.
-Implement additional codec/network/frontend work only from observed evidence.
-33.4 real>=30s video+sound/controls/reopen/error recovery/full checks pending.
-33.5/parent33/Rickroll remain NOT PASSED; do not start final acceptance.
+## Native VP9 candidate and next checkpoint
+Optional --vp9 tools/provider, separate pinned decoder archive, size640x360.
+Guest decode/downscale to160x90 presentation; higher size/rate not accepted yet.
+Native VP9 underlay asset40s/control/EOS/restart/stop/PNG/PCM PASS21:07:46:
+9.987ms max sync,8.71MB sampled RAM, exact samples/pages/SHM/aliases/heap.
+Texture tests FAILED113.734/111.163ms;70ms rendering latency evidence retained.
+Latest normal provider-pvl4ua4k byte-identical to accepted41901a13.
+All5 normal images unchanged; no kernel/runtime architecture change.
+Next: diagnostic online provider-z73ft99k real YouTube watch/controls/media fetch.
+33.4>=30s real video+sound/controls/search/reopen/error recovery/full checks pending.
+Goal active, NOT PASSED; no33.5/Rickroll/parent closure or push.

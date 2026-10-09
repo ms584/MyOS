@@ -1,0 +1,212 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM frames above256MiB, alias and retained lifetime
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 126679
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 34189 sectors
+Storage: unrecognized data disk; RAM-only
+Audio: SB16 initialized
+Security: UTC 1791554621, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> elf pair-live player provider
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x000000800000C000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18496 absolute=0 global=2 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: clock_gettime
+ELF platform: SbWindowSetDefaultOptions
+ELF provider: SbPlayerGetInfo
+ELF platform: fstatat
+ELF platform: pthread_attr_destroy
+ELF provider: SbPlayerWriteEndOfStream
+ELF platform: pthread_create
+ELF provider: SbPlayerDestroy
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: pthread_attr_init
+ELF platform: SbWindowCreate
+ELF provider: SbDecodeTargetRelease
+ELF platform: malloc
+ELF provider: SbPlayerGetCurrentFrame
+ELF platform: lseek
+ELF provider: SbGetEglInterface
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: unlinkat
+ELF provider: SbGetGlesInterface
+ELF provider: SbPlayerSetPlaybackRate
+ELF platform: read
+ELF platform: pthread_attr_setstacksize
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerCreate
+ELF platform: pthread_mutex_unlock
+ELF provider: SbPlayerWriteSamples
+ELF platform: SbLogRaw
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: pthread_mutex_lock
+ELF platform: __errno_location
+ELF platform: openat
+ELF platform: pthread_join
+ELF platform: clock_nanosleep
+ELF platform: close
+ELF platform: SbWindowDestroy
+ELF platform: free
+ELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+native capability/invalid handles/player capacity PASS
+native player state=0
+native standard player RUN begin
+native media position-us=0
+native player state=1
+MEDIA decoded codec=8 source=160x90 presentation=160x90
+native player state=2
+native media position-us=1041957
+native VP9 sync outlier frame=27 clock=1911163 delta=111163 texture-render-us=70000
+native media position-us=2013567
+native media position-us=3022637
+native media position-us=4016106
+native PAUSE position=5064270
+native media position-us=5064270
+native RESUME
+native media position-us=6013476
+native media position-us=7049213
+native media position-us=8032614
+native media position-us=9078601
+native SEEK to=15000000
+native media position-us=10048034
+native media position-us=15000000
+native player state=1
+native player state=2
+native media position-us=16010785
+native media position-us=17042531
+native media position-us=18045434
+native media position-us=19032373
+native media position-us=20027475
+native VP9 sync outlier frame=303 clock=20312917 delta=112917 texture-render-us=70000
+native media position-us=21030559
+native media position-us=22026840
+native media position-us=23018677
+native media position-us=24036817
+native media position-us=25027838
+native media position-us=26001171
+native media position-us=27022940
+native media position-us=28032191
+native media position-us=29022486
+native media position-us=30042441
+native media position-us=31013960
+native media position-us=32023575
+native media position-us=33046341
+native media position-us=34036999
+native media position-us=35037180
+native media position-us=36007429
+native media position-us=37007339
+native media position-us=38047702
+native media position-us=39011239
+native player state=3
+native media position-us=40000083
+native player state=4
+native retained textures/player destroy/capacity PASS
+native rendered textures=668
+native presented A-V max-us=112917
+native presented A-V samples=616
+native sample allocated=2381
+native sample released=2381
+native player state=0
+native player state=1
+MEDIA decoded codec=8 source=160x90 presentation=160x90
+native player state=2
+native player state=4
+native RAM process baseline-bytes=56766464
+native RAM process sampled-peak-bytes=67067904
+native RAM player increment-bytes=10301440
+native RAM PMM increment-bytes=10301440
+ELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=439040 heap-after=439040
+ELF exited with status 7
+myos> 

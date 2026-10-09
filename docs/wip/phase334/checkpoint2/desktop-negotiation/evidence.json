@@ -1,0 +1,691 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "date": "2026-10-09T20:49:37.319439+07:00",
+  "commit": "44e97fc7b7c44e316394ece1549f364e623288b5",
+  "core_sha256": "fd8bbf7c60d4906a72e4f4ec89bc51c7dbc9bdd83fd1e4c1cd14a8eb3a8b730a",
+  "provider_sha256": "bc72ee9072feba309affdc4f9493e6eddeec466cb430b899c555f81d2b7861be",
+  "normal_identity": {
+    "kernel.bin": "ce43a5b4ac637b89703ab12b980079509202d0568a07bac8489e7112d4b9e43f",
+    "myos-current.img": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+    "platform-runtime.mrt": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c",
+    "kernel.elf": "e46d4b376859b4ba4894a8f309cf7eb5db3f49ff7b23374ed8505dca37a88e84",
+    "myos-uefi.img": "44e1e74a6bf0db4972e3e644454237723439d92001a16516d11622deea256a1a"
+  },
+  "urls": [
+    "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    "https://www.youtube.com/tv#/watch?v=aqz-KE-bpKQ"
+  ],
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "512",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-public.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-efcc1jvm/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-public.sock,server=on,wait=off",
+      "-cpu",
+      "host",
+      "-nic",
+      "user,model=rtl8139",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/phase334-public-efcc1jvm/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-efcc1jvm/assets.img,if=ide,index=1",
+      "-accel",
+      "kvm"
+    ]
+  ],
+  "launches": [
+    {
+      "launch": 1,
+      "url": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+      "frames": [
+        {
+          "elapsed": 1.8384188670000867,
+          "path": "launch-1-001.png"
+        },
+        {
+          "elapsed": 6.888524124000014,
+          "path": "launch-1-006.png"
+        },
+        {
+          "elapsed": 11.923751081000091,
+          "path": "launch-1-011.png"
+        },
+        {
+          "elapsed": 16.964693865000072,
+          "path": "launch-1-016.png"
+        },
+        {
+          "elapsed": 22.006542187000036,
+          "path": "launch-1-022.png"
+        },
+        {
+          "elapsed": 27.047795697000083,
+          "path": "launch-1-027.png"
+        },
+        {
+          "elapsed": 32.08879958500006,
+          "path": "launch-1-032.png"
+        },
+        {
+          "elapsed": 37.125640830000066,
+          "path": "launch-1-037.png"
+        },
+        {
+          "elapsed": 42.168371162000085,
+          "path": "launch-1-042.png"
+        },
+        {
+          "elapsed": 47.21411228300008,
+          "path": "launch-1-047.png"
+        },
+        {
+          "elapsed": 52.249489444999995,
+          "path": "launch-1-052.png"
+        },
+        {
+          "elapsed": 57.29172048600003,
+          "path": "launch-1-057.png"
+        },
+        {
+          "elapsed": 62.32484928600002,
+          "path": "launch-1-062.png"
+        },
+        {
+          "elapsed": 67.358674124,
+          "path": "launch-1-067.png"
+        },
+        {
+          "elapsed": 72.40144325300002,
+          "path": "launch-1-072.png"
+        },
+        {
+          "elapsed": 77.44282883900007,
+          "path": "launch-1-077.png"
+        },
+        {
+          "elapsed": 82.48278001300002,
+          "path": "launch-1-082.png"
+        },
+        {
+          "elapsed": 87.52865371100006,
+          "path": "launch-1-087.png"
+        },
+        {
+          "elapsed": 92.57991821600001,
+          "path": "launch-1-092.png"
+        },
+        {
+          "elapsed": 97.62501771300003,
+          "path": "launch-1-097.png"
+        },
+        {
+          "elapsed": 102.67258739300007,
+          "path": "launch-1-102.png"
+        },
+        {
+          "elapsed": 107.7267478770001,
+          "path": "launch-1-107.png"
+        },
+        {
+          "elapsed": 112.77089950200002,
+          "path": "launch-1-112.png"
+        },
+        {
+          "elapsed": 117.82006512800001,
+          "path": "launch-1-117.png"
+        },
+        {
+          "elapsed": 122.87541335500009,
+          "path": "launch-1-122.png"
+        },
+        {
+          "elapsed": 127.92267148300004,
+          "path": "launch-1-127.png"
+        },
+        {
+          "elapsed": 132.97322541300002,
+          "path": "launch-1-132.png"
+        },
+        {
+          "elapsed": 138.01596634500004,
+          "path": "launch-1-138.png"
+        },
+        {
+          "elapsed": 143.08346865700003,
+          "path": "launch-1-143.png"
+        },
+        {
+          "elapsed": 148.1526553550001,
+          "path": "launch-1-148.png"
+        },
+        {
+          "elapsed": 153.2046223330001,
+          "path": "launch-1-153.png"
+        },
+        {
+          "elapsed": 158.24885402900009,
+          "path": "launch-1-158.png"
+        },
+        {
+          "elapsed": 163.3161932710001,
+          "path": "launch-1-163.png"
+        },
+        {
+          "elapsed": 168.36837956,
+          "path": "launch-1-168.png"
+        },
+        {
+          "elapsed": 173.3999864120001,
+          "path": "launch-1-173.png"
+        },
+        {
+          "elapsed": 178.45180393400005,
+          "path": "launch-1-178.png"
+        },
+        {
+          "elapsed": 183.50621163100004,
+          "path": "launch-1-183.png"
+        },
+        {
+          "elapsed": 188.550841515,
+          "path": "launch-1-188.png"
+        },
+        {
+          "elapsed": 193.6044555950001,
+          "path": "launch-1-193.png"
+        },
+        {
+          "elapsed": 198.65814762700006,
+          "path": "launch-1-198.png"
+        },
+        {
+          "elapsed": 203.720107074,
+          "path": "launch-1-203.png"
+        },
+        {
+          "elapsed": 208.775747388,
+          "path": "launch-1-208.png"
+        },
+        {
+          "elapsed": 213.83428290900008,
+          "path": "launch-1-213.png"
+        },
+        {
+          "elapsed": 218.88843974100007,
+          "path": "launch-1-218.png"
+        },
+        {
+          "elapsed": 223.93076535400007,
+          "path": "launch-1-223.png"
+        },
+        {
+          "elapsed": 228.96255534499994,
+          "path": "launch-1-228.png"
+        },
+        {
+          "elapsed": 233.9999491100001,
+          "path": "launch-1-233.png"
+        },
+        {
+          "elapsed": 239.04054995000013,
+          "path": "launch-1-239.png"
+        }
+      ],
+      "inputs": [
+        {
+          "key": "ret",
+          "elapsed": 170.0011414380001
+        },
+        {
+          "key": "esc",
+          "elapsed": 240.06308897099996
+        }
+      ],
+      "before": "Free physical pages: 126671\nmyos> ",
+      "elapsed": 240.06308897099996,
+      "shell_returned": true,
+      "after": "Free physical pages: 126671\nmyos> "
+    },
+    {
+      "launch": 2,
+      "url": "https://www.youtube.com/tv#/watch?v=aqz-KE-bpKQ",
+      "frames": [],
+      "inputs": [],
+      "before": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "diagnostic_provider": true,
+  "host_fetch": false,
+  "fixture_ca_added": false,
+  "pmm": {
+    "kernel_elf_sha256": "e46d4b376859b4ba4894a8f309cf7eb5db3f49ff7b23374ed8505dca37a88e84",
+    "samples": [
+      {
+        "launch": 1,
+        "elapsed": 0,
+        "label": "before",
+        "free_pages": 126671,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 1,
+        "elapsed": 1.8384188670000867,
+        "label": "sample",
+        "free_pages": 126671,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 1,
+        "elapsed": 6.888524124000014,
+        "label": "sample",
+        "free_pages": 124767,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 24645632
+      },
+      {
+        "launch": 1,
+        "elapsed": 11.923751081000091,
+        "label": "sample",
+        "free_pages": 122758,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 32874496
+      },
+      {
+        "launch": 1,
+        "elapsed": 16.964693865000072,
+        "label": "sample",
+        "free_pages": 120809,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 40857600
+      },
+      {
+        "launch": 1,
+        "elapsed": 22.006542187000036,
+        "label": "sample",
+        "free_pages": 118870,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 48799744
+      },
+      {
+        "launch": 1,
+        "elapsed": 27.047795697000083,
+        "label": "sample",
+        "free_pages": 116890,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 56909824
+      },
+      {
+        "launch": 1,
+        "elapsed": 32.08879958500006,
+        "label": "sample",
+        "free_pages": 114922,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 64970752
+      },
+      {
+        "launch": 1,
+        "elapsed": 37.125640830000066,
+        "label": "sample",
+        "free_pages": 112970,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 72966144
+      },
+      {
+        "launch": 1,
+        "elapsed": 42.168371162000085,
+        "label": "sample",
+        "free_pages": 111028,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 80920576
+      },
+      {
+        "launch": 1,
+        "elapsed": 47.21411228300008,
+        "label": "sample",
+        "free_pages": 109103,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 88805376
+      },
+      {
+        "launch": 1,
+        "elapsed": 52.249489444999995,
+        "label": "sample",
+        "free_pages": 107161,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 96759808
+      },
+      {
+        "launch": 1,
+        "elapsed": 57.29172048600003,
+        "label": "sample",
+        "free_pages": 105201,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 104787968
+      },
+      {
+        "launch": 1,
+        "elapsed": 62.32484928600002,
+        "label": "sample",
+        "free_pages": 103254,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 112762880
+      },
+      {
+        "launch": 1,
+        "elapsed": 67.358674124,
+        "label": "sample",
+        "free_pages": 101146,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 121397248
+      },
+      {
+        "launch": 1,
+        "elapsed": 72.40144325300002,
+        "label": "sample",
+        "free_pages": 99190,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 129409024
+      },
+      {
+        "launch": 1,
+        "elapsed": 77.44282883900007,
+        "label": "sample",
+        "free_pages": 96707,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 139579392
+      },
+      {
+        "launch": 1,
+        "elapsed": 82.48278001300002,
+        "label": "sample",
+        "free_pages": 65174,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 268738560
+      },
+      {
+        "launch": 1,
+        "elapsed": 87.52865371100006,
+        "label": "sample",
+        "free_pages": 43711,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 356651008
+      },
+      {
+        "launch": 1,
+        "elapsed": 92.57991821600001,
+        "label": "sample",
+        "free_pages": 26775,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 426020864
+      },
+      {
+        "launch": 1,
+        "elapsed": 97.62501771300003,
+        "label": "sample",
+        "free_pages": 30862,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 409280512
+      },
+      {
+        "launch": 1,
+        "elapsed": 102.67258739300007,
+        "label": "sample",
+        "free_pages": 26851,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 425709568
+      },
+      {
+        "launch": 1,
+        "elapsed": 107.7267478770001,
+        "label": "sample",
+        "free_pages": 20525,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 451620864
+      },
+      {
+        "launch": 1,
+        "elapsed": 112.77089950200002,
+        "label": "sample",
+        "free_pages": 20715,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 450842624
+      },
+      {
+        "launch": 1,
+        "elapsed": 117.82006512800001,
+        "label": "sample",
+        "free_pages": 20892,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 450117632
+      },
+      {
+        "launch": 1,
+        "elapsed": 122.87541335500009,
+        "label": "sample",
+        "free_pages": 18362,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 460480512
+      },
+      {
+        "launch": 1,
+        "elapsed": 127.92267148300004,
+        "label": "sample",
+        "free_pages": 16460,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 468271104
+      },
+      {
+        "launch": 1,
+        "elapsed": 132.97322541300002,
+        "label": "sample",
+        "free_pages": 18748,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 458899456
+      },
+      {
+        "launch": 1,
+        "elapsed": 138.01596634500004,
+        "label": "sample",
+        "free_pages": 18685,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 459157504
+      },
+      {
+        "launch": 1,
+        "elapsed": 143.08346865700003,
+        "label": "sample",
+        "free_pages": 19966,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 453910528
+      },
+      {
+        "launch": 1,
+        "elapsed": 148.1526553550001,
+        "label": "sample",
+        "free_pages": 19966,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 453910528
+      },
+      {
+        "launch": 1,
+        "elapsed": 153.2046223330001,
+        "label": "sample",
+        "free_pages": 19964,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 453918720
+      },
+      {
+        "launch": 1,
+        "elapsed": 158.24885402900009,
+        "label": "sample",
+        "free_pages": 19965,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 453914624
+      },
+      {
+        "launch": 1,
+        "elapsed": 163.3161932710001,
+        "label": "sample",
+        "free_pages": 19921,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454094848
+      },
+      {
+        "launch": 1,
+        "elapsed": 168.36837956,
+        "label": "sample",
+        "free_pages": 19921,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454094848
+      },
+      {
+        "launch": 1,
+        "elapsed": 173.3999864120001,
+        "label": "sample",
+        "free_pages": 19921,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454094848
+      },
+      {
+        "launch": 1,
+        "elapsed": 178.45180393400005,
+        "label": "sample",
+        "free_pages": 19920,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454098944
+      },
+      {
+        "launch": 1,
+        "elapsed": 183.50621163100004,
+        "label": "sample",
+        "free_pages": 19921,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454094848
+      },
+      {
+        "launch": 1,
+        "elapsed": 188.550841515,
+        "label": "sample",
+        "free_pages": 19921,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454094848
+      },
+      {
+        "launch": 1,
+        "elapsed": 193.6044555950001,
+        "label": "sample",
+        "free_pages": 19791,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454627328
+      },
+      {
+        "launch": 1,
+        "elapsed": 198.65814762700006,
+        "label": "sample",
+        "free_pages": 19792,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454623232
+      },
+      {
+        "launch": 1,
+        "elapsed": 203.720107074,
+        "label": "sample",
+        "free_pages": 19791,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454627328
+      },
+      {
+        "launch": 1,
+        "elapsed": 208.775747388,
+        "label": "sample",
+        "free_pages": 19792,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454623232
+      },
+      {
+        "launch": 1,
+        "elapsed": 213.83428290900008,
+        "label": "sample",
+        "free_pages": 19790,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454631424
+      },
+      {
+        "launch": 1,
+        "elapsed": 218.88843974100007,
+        "label": "sample",
+        "free_pages": 19791,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454627328
+      },
+      {
+        "launch": 1,
+        "elapsed": 223.93076535400007,
+        "label": "sample",
+        "free_pages": 19791,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 454627328
+      },
+      {
+        "launch": 1,
+        "elapsed": 228.96255534499994,
+        "label": "sample",
+        "free_pages": 19250,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 456843264
+      },
+      {
+        "launch": 1,
+        "elapsed": 233.9999491100001,
+        "label": "sample",
+        "free_pages": 19251,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 456839168
+      },
+      {
+        "launch": 1,
+        "elapsed": 239.04054995000013,
+        "label": "sample",
+        "free_pages": 19251,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 456839168
+      },
+      {
+        "launch": 1,
+        "elapsed": 240.2577810890001,
+        "label": "after",
+        "free_pages": 126671,
+        "total_pages": 130784,
+        "pmm_allocated_bytes": 16846848
+      }
+    ],
+    "sampled_peak_bytes": 468271104,
+    "paused_seconds": 0.48064043599993056,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; heap backing reserved outside PMM is not counted."
+  },
+  "normal_identity_after": {
+    "kernel.bin": "ce43a5b4ac637b89703ab12b980079509202d0568a07bac8489e7112d4b9e43f",
+    "myos-current.img": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+    "platform-runtime.mrt": "462a1dbf7dcd447714d36486225f807603629d43a51559994d63f74ea613b89c",
+    "kernel.elf": "e46d4b376859b4ba4894a8f309cf7eb5db3f49ff7b23374ed8505dca37a88e84",
+    "myos-uefi.img": "44e1e74a6bf0db4972e3e644454237723439d92001a16516d11622deea256a1a"
+  }
+}

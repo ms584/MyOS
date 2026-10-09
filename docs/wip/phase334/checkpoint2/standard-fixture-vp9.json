@@ -1,0 +1,17 @@
+{
+  "asset": "/home/xytron404/myos/build/media-evaluation/standard-vp9-160x90-40s.webm",
+  "sha256": "cecaadd5001511bdefa71699753c6960fb38675a56edd4364ee841e91edfbf7f",
+  "bytes": 360529,
+  "width": 160,
+  "height": 90,
+  "fps": 15,
+  "duration_seconds": 40,
+  "video_frames": 600,
+  "opus_packets": 2000,
+  "encoder_only_host_opus_version": "libopus 1.6.1",
+  "opus_preskip_samples": 312,
+  "video_codec": "VP9",
+  "host_decoding": false,
+  "guest_acceptance": false,
+  "generation": "deterministic raw moving cells and sine PCM, encoded native test video+Opus, standard WebM mux"
+}

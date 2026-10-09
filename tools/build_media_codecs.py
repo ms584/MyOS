@@ -1,6 +1,9 @@
 """Build pinned target-only VP8/Opus archives; NOT playback evidence."""
 from pathlib import Path
-import hashlib,json,subprocess,shutil
+import argparse,hashlib,json,subprocess,shutil
+p=argparse.ArgumentParser(description=__doc__)
+p.add_argument("--vp9",action="store_true",help="Separate bounded VP8/VP9 target archive; does not replace VP8 baseline")
+args=p.parse_args()
 root=Path(__file__).resolve().parents[1]
 base=root/'build/media-evaluation'
 lock=json.loads((root/'docs/PHASE333_MEDIA_LOCK.json').read_text())
@@ -18,7 +21,7 @@ for name,digest in pins.items():
             if not member.isfile():continue
             original=tar.extractfile(member).read()
             patched=original
-            if member.name=='libvpx-1.15.2/vp8/decoder/onyxd_if.c':
+            if member.name in ('libvpx-1.15.2/vp8/decoder/onyxd_if.c','libvpx-1.15.2/vp9/decoder/vp9_decoder.c'):
                 old=b'#include "vpx_ports/vpx_timer.h"'
                 assert original.count(old)==1
                 patched=original.replace(old,b'/* MyOS: unused timer header omitted. */')
@@ -43,13 +46,14 @@ def run(args,cwd=None):
     subprocess.run(list(map(str,args)),cwd=cwd,check=True)
 vpx=base/'libvpx-1.15.2'
 # Unused timer include pulls sys/time.h even though no timer is used.
-p=vpx/'vp8/decoder/onyxd_if.c'
-s=p.read_text(); old='#include "vpx_ports/vpx_timer.h"'
-assert s.count(old) in (0,1)
-if old in s: p.write_text(s.replace(old,'/* MyOS: unused timer header omitted. */'))
-out=base/'vpx-target';out.mkdir(exist_ok=True)
+for relative in ('vp8/decoder/onyxd_if.c','vp9/decoder/vp9_decoder.c'):
+    p=vpx/relative;s=p.read_text(); old='#include "vpx_ports/vpx_timer.h"'
+    assert s.count(old) in (0,1)
+    if old in s:p.write_text(s.replace(old,'/* MyOS: unused timer header omitted. */'))
+out=base/('vpx-target-vp9' if args.vp9 else 'vpx-target');out.mkdir(exist_ok=True)
 if not (out/'Makefile').exists():
-    run([vpx/'configure','--target=generic-gnu','--disable-vp9','--disable-vp8-encoder',
+    codec_flags=['--enable-vp9','--disable-vp9-encoder','--disable-vp9-highbitdepth','--size-limit=640x360'] if args.vp9 else ['--disable-vp9']
+    run([vpx/'configure','--target=generic-gnu',*codec_flags,'--disable-vp8-encoder',
          '--disable-multithread','--disable-runtime-cpu-detect',
          '--disable-examples','--disable-tools','--disable-docs','--disable-unit-tests',
          '--enable-pic','--disable-shared'],out)
@@ -79,9 +83,9 @@ with ThreadPoolExecutor(max_workers=4) as pool:
     objects=list(pool.map(compile_source,sources))
 run(['ar','rcs',opout/'libopus.a',*objects])
 report={'target':'MyOS x86_64 SDK only','host_decode_executed':False,
-        'native_decode_executed':False,'pins':pins,'math_archive_sha256':math_pin,'archives':{}}
+        'native_decode_executed':False,'vp9':args.vp9,'decode_size_limit':'640x360' if args.vp9 else None,'pins':pins,'math_archive_sha256':math_pin,'archives':{}}
 for path in (out/'libvpx.a',opout/'libopus.a'):
     (path.parent/'undefined.txt').write_text(subprocess.check_output(['nm','-u',str(path)],text=True))
     report['archives'][str(path.relative_to(root))]={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':path.stat().st_size}
-(base/'codec-build.json').write_text(json.dumps(report,indent=2)+'\n')
+(base/('codec-build-vp9.json' if args.vp9 else 'codec-build.json')).write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

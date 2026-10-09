@@ -66,7 +66,12 @@ static int parse(struct reader *r){
   }else if(id==0x86&&r->in_entry){
    unsigned char name[16];
    if(!r->track||n>sizeof(name)||take(r,name,(size_t)n))return -1;
-   if(n==5&&!memcmp(name,"V_VP8",5)){if(r->video)return -1;r->video=r->track;r->kind=1;}
+   #ifdef MYOS_TEST_VP9
+   if(n==5&&!memcmp(name,"V_VP9",5)){
+#else
+   if(n==5&&!memcmp(name,"V_VP8",5)){
+#endif
+   if(r->video)return -1;r->video=r->track;r->kind=1;}
    else if(n==6&&!memcmp(name,"A_OPUS",6)){if(r->audio)return -1;r->audio=r->track;r->kind=2;}
    else return -1;
   }else if(id==0xe7){

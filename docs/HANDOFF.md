@@ -3,6 +3,22 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase33.4 checkpoint2 - 2026-10-09 21:10 +07
+
+NOT PASSED, goal active. PHASE334.md / wip/phase334/checkpoint2.
+Actual public home/watch/TV have zero PCM/no decoded YouTube video; all3 closes
+and normal hashes exact. Native MIME traces prove VP9/H264/AV1 queries, no VP8;
+Opus supported. TV Watch as guest works, deeplink no playback, no auth-block claim.
+Optional pinned bounded VP9 candidate built. Native underlay40s160x90@15 fixture
+controls/EOS/restart/stop/PNG/PCM PASS21:07:46,9.987ms sync,8.71MB sampled RAM,
+exact samples/pages/SHM/aliases/heap. Higher decoder sizes/rates unverified.
+Two texture trials FAILED113.734/111.163ms, latter70ms render latency retained.
+Default provider byte-identical41901a13, all5 normal images unchanged.
+Next diagnostic online VP9 provider-z73ft99k watch/controls/stream evidence.
+No host YouTube downloader/decoder/browser/proxy; fixture encoder only with both
+host decoders disabled. No credentials fabricated, no full33.4/33.5/parent pass.
+Owner pushes manually. No push.
+
 ## Phase33.4 checkpoint1 - 2026-10-09 20:48 +07
 
 Owner requested33.4; goal active, NOT PASSED. Entry PROJECT_STATE.md,

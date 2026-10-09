@@ -1,0 +1,143 @@
+{
+  "video_codec": "VP9",
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": false,
+  "provider_sha256": "ce209e810f9e528792bc63f67a1b7b2ac36166c9cc36711b2e297d5d8d506d6a",
+  "fixture_sha256": "cecaadd5001511bdefa71699753c6960fb38675a56edd4364ee841e91edfbf7f",
+  "core_sha256": "8e417b2ca19dc7e69518f5601ab562f9f2bb851781de7bd7b0f5672a5dca3d1c",
+  "boot_sha256": "a4bc11171903ffbdf6f052e7d60aa6eeedee053eb89a4127f58319c5c8dea1f7",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-000.ppm",
+      "host_monotonic": 1481.082626908,
+      "sha256": "af27a3b41ecb1e88663bc7e8034c0caab93d202a133ffba3b1b83d89fe14e391"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-001.ppm",
+      "host_monotonic": 1483.093947109,
+      "sha256": "af27a3b41ecb1e88663bc7e8034c0caab93d202a133ffba3b1b83d89fe14e391"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-002.ppm",
+      "host_monotonic": 1485.105249921,
+      "sha256": "af27a3b41ecb1e88663bc7e8034c0caab93d202a133ffba3b1b83d89fe14e391"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-003.ppm",
+      "host_monotonic": 1487.117378373,
+      "sha256": "a80bc528d861d08cf1b899c8edba65565af83ec936e0345f06a7782c40c9ffbb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-004.ppm",
+      "host_monotonic": 1489.130642425,
+      "sha256": "8afc24fe6d8c836e4e39afa5357a81d0977e5a77940ef4c9d0596b135d8a95fd"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-005.ppm",
+      "host_monotonic": 1491.143899578,
+      "sha256": "a72111d7b0b6a75441ccbba4626080a1c5ab269dae9db14487c37ee09301f0da"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-006.ppm",
+      "host_monotonic": 1493.159036168,
+      "sha256": "6bdf17326933078a50c8c1d850e356a6ad4d6bb8061681a7831f3cf19e74597c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-007.ppm",
+      "host_monotonic": 1495.174501594,
+      "sha256": "da696bbf08838f0ec27e98b4420367e051136dfb7f964e2228ef58b925d6ec9c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-008.ppm",
+      "host_monotonic": 1497.187114519,
+      "sha256": "3c10a0a4e1f2f9fee01d80582ab709caab75799ca44d008822603e33d7b6d06c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-009.ppm",
+      "host_monotonic": 1499.203659145,
+      "sha256": "ab9997388d083c29105a630213d94825aeb847a382a75846ec151064bd7f5f3c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-010.ppm",
+      "host_monotonic": 1501.217889428,
+      "sha256": "ab9997388d083c29105a630213d94825aeb847a382a75846ec151064bd7f5f3c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-011.ppm",
+      "host_monotonic": 1503.232865662,
+      "sha256": "ab9997388d083c29105a630213d94825aeb847a382a75846ec151064bd7f5f3c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-012.ppm",
+      "host_monotonic": 1505.250380296,
+      "sha256": "ceed9c2ee850427cbc372942b43bf31368f1cb81185f39d24c9aca18e3298b81"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-013.ppm",
+      "host_monotonic": 1507.265539931,
+      "sha256": "a6b26882d6d902977ee836616d2bfef7bac1b76bd6c8c9ba10777e75a6d31d58"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-014.ppm",
+      "host_monotonic": 1509.27700204,
+      "sha256": "1ec9e572da632be7c8b602705acd62c4135047155c10196a8ada0bb65d83081c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-015.ppm",
+      "host_monotonic": 1511.290192067,
+      "sha256": "4145e8015dad5b12d0ccfc9e05a7c87f099bab403cb4d5dd712c594b9ace1a04"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-016.ppm",
+      "host_monotonic": 1513.303743194,
+      "sha256": "e526022537e895ce46ca1e7bc39ed1cd4670d38360fee1c8c27e48fa88293660"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-017.ppm",
+      "host_monotonic": 1515.317085221,
+      "sha256": "9c2e043f4af0f8ebe4909aa6a4a8ac2daf18581e6cf0ddd1138db094e8d7ed17"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-018.ppm",
+      "host_monotonic": 1517.332918686,
+      "sha256": "735a422ce0fed21495574f7459cae451b24fff7a1f169493ad6b1ba03b02d34b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-019.ppm",
+      "host_monotonic": 1519.346154196,
+      "sha256": "b09d15020bec668c5da7f20e073e33820830e7a82a993766e235bde5a3917b6c"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-020.ppm",
+      "host_monotonic": 1521.364433608,
+      "sha256": "cb2ef268f06bb29725945e65dd5aa63a71b72af58ec470f4bbba7b1e66edba17"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-021.ppm",
+      "host_monotonic": 1523.378621118,
+      "sha256": "05ee3027fb8b0caed1952924950b78d93b6eeb38765f9fbffc2cf3cc70135a84"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-022.ppm",
+      "host_monotonic": 1525.39331575,
+      "sha256": "2164c01074780addf7ca8f8ea0dd2cc74f66651dde1a8b8ba1af480c5434a4e6"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-023.ppm",
+      "host_monotonic": 1527.407552168,
+      "sha256": "dfb70c676e6fb733b20f776e33a1a4e4934547cfca599929de05298420f279ed"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-024.ppm",
+      "host_monotonic": 1529.426301786,
+      "sha256": "3dd1b55aca362605067501079361a1c7c097f5945fdbd27ea90386282b4480cc"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-dmckcax1/frame-025.ppm",
+      "host_monotonic": 1531.441119704,
+      "sha256": "0a142101883a28cf991b7c002accb4e44b106564aeddc7699b1f0d5bbb4ecd5e"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000C000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18496 absolute=0 global=2 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF platform: SbWindowCreate\nELF provider: SbDecodeTargetRelease\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nnative player state=2\nnative media position-us=1084134\nnative media position-us=2013022\nnative media position-us=3051662\nnative media position-us=4022818\nnative PAUSE position=5042592\nnative media position-us=5042592\nnative RESUME\nnative media position-us=6034519\nnative media position-us=7006401\nnative media position-us=8019372\nnative media position-us=9017285\nnative SEEK to=15000000\nnative media position-us=10000596\nnative media position-us=15000000\nnative player state=1\nnative player state=2\nnative media position-us=16075366\nnative media position-us=17057951\nnative media position-us=18040445\nnative media position-us=19000355\nnative media position-us=20011058\nnative media position-us=21029924\nnative media position-us=22001624\nnative media position-us=23006160\nnative media position-us=24033552\nnative media position-us=25015048\nnative media position-us=26023665\nnative media position-us=27028473\nnative media position-us=28051783\nnative media position-us=29004708\nnative media position-us=30034640\nnative media position-us=31014504\nnative media position-us=32010967\nnative media position-us=33004890\nnative media position-us=34003711\nnative media position-us=35034640\nnative media position-us=36003620\nnative media position-us=37032010\nnative media position-us=38056772\nnative media position-us=39036364\nnative player state=3\nnative player state=4\nnative retained textures/player destroy/capacity PASS\nnative rendered textures=662\nnative presented A-V max-us=113734\nnative presented A-V samples=609\nnative sample allocated=2378\nnative sample released=2378\nnative player state=0\nnative player state=1\nnative player state=2\nnative player state=4\nnative RAM process baseline-bytes=56766464\nnative RAM process sampled-peak-bytes=67067904\nnative RAM player increment-bytes=10301440\nnative RAM PMM increment-bytes=10301440\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=439040 heap-after=439040\nELF exited with status 7\nmyos> "
+}

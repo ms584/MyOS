@@ -26,6 +26,13 @@
 #include "opus.h"
 #define MAX_W 160
 #define MAX_H 90
+#ifdef MYOS_MEDIA_VP9
+#define DECODE_W 640
+#define DECODE_H 360
+#else
+#define DECODE_W MAX_W
+#define DECODE_H MAX_H
+#endif
 #define PIXELS (MAX_W*MAX_H*4)
 #define VIDEO_SLOTS 4
 #define PCM_CAP 32768
@@ -51,6 +58,9 @@ struct SbPlayerPrivate {
  unsigned trace_ticks;
 #endif
  int has_audio,has_video,channels,ticket,seek_pending,presenting,ended,failed,error_pending;
+ #ifdef MYOS_MEDIA_VP9
+ SbMediaVideoCodec video_codec;
+#endif
  int video_initialized;vpx_codec_ctx_t video;OpusDecoder *audio;SbAudioSink sink;void *sink_buffers[1];
  struct pending pending[2];struct frame frames[VIDEO_SLOTS],current;
  unsigned video_read,video_count,have_current,generation,rendered_generation;
@@ -122,8 +132,12 @@ static void release_pending(SbPlayer p){
 static int reset_decoders(SbPlayer p){
  if(p->video_initialized){vpx_codec_destroy(&p->video);p->video_initialized=0;}
  if(p->has_video){
-  vpx_codec_dec_cfg_t cfg={1,MAX_W,MAX_H};
-  if(vpx_codec_dec_init(&p->video,vpx_codec_vp8_dx(),&cfg,0))return -1;
+  vpx_codec_dec_cfg_t cfg={1,DECODE_W,DECODE_H};
+  vpx_codec_iface_t *iface=vpx_codec_vp8_dx();
+#ifdef MYOS_MEDIA_VP9
+  if(p->video_codec==kSbMediaVideoCodecVp9)iface=vpx_codec_vp9_dx();
+#endif
+  if(vpx_codec_dec_init(&p->video,iface,&cfg,0))return -1;
   p->video_initialized=1;
  }
  if(p->has_audio&&opus_decoder_ctl(p->audio,OPUS_RESET_STATE)!=OPUS_OK)return -1;
@@ -133,6 +147,9 @@ static unsigned char clamp(int value){return value<0?0:value>255?255:(unsigned c
 static int decode_video_locked(SbPlayer p,const SbPlayerSampleInfo *s){
  const unsigned char *data=s->buffer;unsigned bytes=(unsigned)s->buffer_size;
  if(!bytes)return -1;
+ #ifdef MYOS_MEDIA_VP9
+ if(p->video_codec==kSbMediaVideoCodecVp8)
+#endif
  if(!(data[0]&1)){
   if(bytes<10||data[3]!=0x9d||data[4]!=1||data[5]!=0x2a)return -1;
   unsigned w=((unsigned)data[6]|((unsigned)data[7]<<8))&16383;
@@ -144,16 +161,40 @@ static int decode_video_locked(SbPlayer p,const SbPlayerSampleInfo *s){
  if(vpx_codec_decode(&p->video,data,bytes,0,0)){++p->corrupted_video;return -1;}
  vpx_codec_iter_t iter=0;vpx_image_t *image;
  while((image=vpx_codec_get_frame(&p->video,&iter))){
-  if(!image->d_w||!image->d_h||image->d_w>MAX_W||image->d_h>MAX_H||image->fmt!=VPX_IMG_FMT_I420)return -1;
+  if(!image->d_w||!image->d_h||image->d_w>DECODE_W||image->d_h>DECODE_H||image->fmt!=VPX_IMG_FMT_I420)return -1;
   if(s->timestamp<p->seek_time){++p->dropped_video;continue;}
   if(p->video_count==VIDEO_SLOTS)return -1;
   struct frame *f=&p->frames[(p->video_read+p->video_count)%VIDEO_SLOTS];
   f->width=(int)image->d_w;f->height=(int)image->d_h;f->time=s->timestamp;
+#ifdef MYOS_MEDIA_VP9
+  /* Decode full bounded VP9 in MyOS; retain only a160x90 aspect-preserving
+   * presentation. This uses the accepted kernel underlay ABI unchanged. */
+  if(f->width>MAX_W||f->height>MAX_H){
+   if(image->d_w*MAX_H>=image->d_h*MAX_W){
+    f->width=MAX_W;f->height=(int)(image->d_h*MAX_W/image->d_w);
+   }else{f->height=MAX_H;f->width=(int)(image->d_w*MAX_H/image->d_h);}
+   if(f->width<1)f->width=1;if(f->height<1)f->height=1;
+  }
+#endif
+#ifdef MYOS_MEDIA_VP9
+#ifdef MYOS_MEDIA_NATIVE_UNDERLAY
+  if(p->total_video==1){char message[160];
+   snprintf(message,sizeof(message),"MEDIA decoded codec=%d source=%ux%u presentation=%dx%d\n",
+            (int)p->video_codec,image->d_w,image->d_h,f->width,f->height);SbLogRaw(message);}
+#endif
+  for(unsigned y=0;y<(unsigned)f->height;++y)for(unsigned x=0;x<(unsigned)f->width;++x){
+   unsigned sx=x*image->d_w/(unsigned)f->width,sy=y*image->d_h/(unsigned)f->height;
+   int Y=image->planes[0][sy*image->stride[0]+sx]-16;
+   int U=image->planes[1][(sy/2)*image->stride[1]+sx/2]-128;
+   int V=image->planes[2][(sy/2)*image->stride[2]+sx/2]-128;
+   unsigned offset=4*(y*(unsigned)f->width+x);
+#else
   for(unsigned y=0;y<image->d_h;++y)for(unsigned x=0;x<image->d_w;++x){
    int Y=image->planes[0][y*image->stride[0]+x]-16;
    int U=image->planes[1][(y/2)*image->stride[1]+x/2]-128;
    int V=image->planes[2][(y/2)*image->stride[2]+x/2]-128;
    unsigned offset=4*(y*image->d_w+x);
+#endif
    f->rgba[offset]=clamp((298*Y+409*V+128)>>8);
    f->rgba[offset+1]=clamp((298*Y-100*U-208*V+128)>>8);
    f->rgba[offset+2]=clamp((298*Y+516*U+128)>>8);f->rgba[offset+3]=255;
@@ -306,9 +347,15 @@ static int valid_creation(const SbPlayerCreationParam *param){
  if(audio&&(param->audio_stream_info.codec!=kSbMediaAudioCodecOpus||
   (param->audio_stream_info.number_of_channels!=1&&param->audio_stream_info.number_of_channels!=2)||
   param->audio_stream_info.samples_per_second!=48000))return 0;
- if(video&&(param->video_stream_info.codec!=kSbMediaVideoCodecVp8||
-  param->video_stream_info.frame_width<1||param->video_stream_info.frame_width>MAX_W||
-  param->video_stream_info.frame_height<1||param->video_stream_info.frame_height>MAX_H))return 0;
+ int supported_video=param->video_stream_info.codec==kSbMediaVideoCodecVp8;
+#ifdef MYOS_MEDIA_VP9
+ supported_video|=param->video_stream_info.codec==kSbMediaVideoCodecVp9;
+#endif
+ if(video&&(!supported_video||
+  param->video_stream_info.frame_width<1||param->video_stream_info.frame_width>DECODE_W||
+  param->video_stream_info.frame_height<1||param->video_stream_info.frame_height>DECODE_H))return 0;
+ if(video&&param->video_stream_info.codec==kSbMediaVideoCodecVp8&&
+    (param->video_stream_info.frame_width>MAX_W||param->video_stream_info.frame_height>MAX_H))return 0;
  return 1;
 }
 SbPlayerOutputMode SbPlayerGetPreferredOutputMode(const SbPlayerCreationParam *param){
@@ -341,6 +388,9 @@ SbPlayer SbPlayerCreate(SbWindow window,const SbPlayerCreationParam *param,
  p->deallocate=deallocate;p->decoder=decoder;p->status=status;p->error=error;p->context=context;
  p->has_audio=param->audio_stream_info.codec!=kSbMediaAudioCodecNone;
  p->has_video=param->video_stream_info.codec!=kSbMediaVideoCodecNone;
+#ifdef MYOS_MEDIA_VP9
+ p->video_codec=param->video_stream_info.codec;
+#endif
 #ifdef MYOS_MEDIA_NATIVE_UNDERLAY
  p->native_video=param->output_mode==kSbPlayerOutputModePunchOut;p->video_window=(uintptr_t)window;
 #endif

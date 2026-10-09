@@ -27,7 +27,7 @@ def main():
     keys=[]
     for item in a.input:
         at,key=item.split(':',1);at=float(at)
-        assert 0<=at<a.seconds and key in ('spc','tab','ret','left','right','up','down','pgdn','pgup')
+        assert 0<=at<a.seconds and key in ('spc','tab','ret','left','right','up','down','pgdn','pgup','k','j','l','f','m')
         keys.append((at,key))
     os.umask(0o077)
     out=Path(tempfile.mkdtemp(prefix='phase334-public-',dir=ROOT/'build'))

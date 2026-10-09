@@ -7,6 +7,8 @@ sys.path.insert(0,str(ROOT/'tools'))
 from make_asset_disk import create
 from test_shell import type_text
 base=ROOT/'build/media-evaluation'
+vp9='--vp9' in sys.argv
+underlay='--underlay' in sys.argv
 provider=Path(sys.argv[sys.argv.index('--provider')+1]).resolve()
 report=json.loads((provider/'report.json').read_text())
 digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
@@ -21,7 +23,7 @@ for name in ('media-webm','elf-media-player'):
  subprocess.run([str(cc),'-std=c11','-O2','-Wall','-Wextra','-Werror',
  '-Wno-misleading-indentation','-I'+str(out/'include'),'-I'+str(provider/'include'),
  '-Iuser','-Iinclude','-Iuser/starboard-media/include','-Iuser/starboard-system/include',
- '-c','user/'+name+'.c','-o',str(obj)],check=True)
+ *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
 archives=[]
 support=json.loads((ROOT/'build/renderer-provider-evaluation/provider-84sokh6g/report.json').read_text())
 for item in support['inputs']:
@@ -40,8 +42,10 @@ allow.update(re.findall(r'X\((\w+)\)',(ROOT/'include/media-provider-abi.h').read
 allow.update(('SbGetEglInterface','SbGetGlesInterface'))
 strong={line.split()[-1] for line in undefined.splitlines() if line.split()[0]=='U'}
 assert strong<=allow,sorted(strong-allow)
-fixture=ROOT/'assets/tests/phase333/standard-160x90-40s.webm'
-assert digest(fixture)==json.loads((ROOT/'assets/tests/phase333/standard-fixture.json').read_text())['sha256']
+fixture=base/'standard-vp9-160x90-40s.webm' if vp9 else ROOT/'assets/tests/phase333/standard-160x90-40s.webm'
+fixture_metadata=base/'standard-fixture-vp9.json' if vp9 else ROOT/'assets/tests/phase333/standard-fixture.json'
+assert digest(fixture)==json.loads(fixture_metadata.read_text())['sha256']
+if vp9:assert report['vp9_candidate']
 runtime_source=Path(sys.argv[sys.argv.index('--runtime')+1]).resolve() if '--runtime' in sys.argv else ROOT/'build/platform-runtime.mrt'
 runtime=out/'platform-runtime.mrt';shutil.copyfile(runtime_source,runtime)
 disk=out/'assets.img';create(disk,['player='+str(library),'provider='+str(provider/'provider.so'),'media='+str(fixture)],runtime=runtime)
@@ -68,11 +72,16 @@ try:
  print(output,flush=True)
 finally:
  vm.close();shutil.copyfile(vm.log,out/'serial.log');assert digest(boot)==before
-(out/'evidence.json').write_text(json.dumps({'native_asset_checkpoint':True,'cobalt_media':False,'passed':False,
+(out/'evidence.json').write_text(json.dumps({'output_mode':'underlay' if underlay else 'texture','video_codec':'VP9' if vp9 else 'VP8','native_asset_checkpoint':True,'cobalt_media':False,'passed':False,
  'provider_sha256':digest(provider/'provider.so'),'fixture_sha256':digest(fixture),'core_sha256':digest(library),
  'boot_sha256':before,'captures':captures,'output':output},indent=2)+'\n')
 assert 'native standard player asset/control/EOS checkpoint PASS' in output,output
 assert 'ELF exited with status 97' in output,output
+if underlay:
+ metrics=[dict((k,int(v)) for k,v in re.findall(r'([\w-]+)=(\d+)',line))
+          for line in output.splitlines() if line.startswith('MEDIA native metrics ')]
+ assert len(metrics)==2 and metrics[0]['sync-samples']>=400 and metrics[0]['max-sync-us']<=100000,metrics
+
 match=re.search(r'ELF pair live: pages reclaimed; heap-before=(\d+) heap-after=(\d+)',output)
 assert match and match[1]==match[2],output
 from array import array
