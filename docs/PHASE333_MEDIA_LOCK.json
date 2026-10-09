@@ -1,0 +1,42 @@
+{
+  "cobalt": {
+    "release": "27.lts.3",
+    "commit": "3befd332486952f6603ae3baf2a8713878d6e200",
+    "starboard": 18
+  },
+  "container": "WebM",
+  "video": "VP8",
+  "audio": "Opus",
+  "dependencies": [
+    {
+      "name": "libvpx",
+      "version": "1.15.2",
+      "commit": "d168454ecd099805c675d4a98c66f4891373302a",
+      "archive": "libvpx-v1.15.2.tar.gz",
+      "url": "https://codeload.github.com/webmproject/libvpx/tar.gz/refs/tags/v1.15.2",
+      "sha256": "26fcd3db88045dee380e581862a6ef106f49b74b6396ee95c2993a260b4636aa",
+      "license": "BSD-3-Clause plus separate PATENTS grant"
+    },
+    {
+      "name": "opus",
+      "version": "1.5.2",
+      "commit": "ddbe48383984d56acd9e1ab6a090c54ca6b735a6",
+      "archive": "opus-1.5.2.tar.gz",
+      "url": "https://downloads.xiph.org/releases/opus/opus-1.5.2.tar.gz",
+      "sha256": "65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1",
+      "license": "BSD-3-Clause and COPYING patent references"
+    }
+  ],
+  "fixture": {
+    "name": "opus-trimming-video-test.webm",
+    "url": "https://raw.githubusercontent.com/youtube/cobalt/3befd332486952f6603ae3baf2a8713878d6e200/media/test/data/opus-trimming-video-test.webm",
+    "sha256": "31a8ef844e6732242029e3de1a0153e6cffd66a31537f1f034108d811d39a5b4"
+  },
+  "cobalt_demux_sources": {
+    "media-filters-chunk_demuxer.cc": "072afc2cf2f4dc8e3fe27d25e2dd501fa5b8bfe15da4330a64e95e737f028632",
+    "media-formats-webm-webm_stream_parser.cc": "a6cbbedea337d496078ade07f1f604f259ad43d7247af0019e76da02d5e98c0e",
+    "media-formats-webm-webm_audio_client.cc": "f35e37cef46f9a20fe6ee949ebb3294af4d2eee043e21c1547e6b4c790bcdbd4",
+    "media-formats-webm-webm_video_client.cc": "f98ea1bf66080fcb1f04c16d37f0cfc03bff8def87ca7d93f3745cce979d5a5d",
+    "media-starboard-sbplayer_bridge.cc": "b988f7bb278ab7804590c35bbfeb6c5471a9c03a1b7414df9fa6f1f3d2e977d9"
+  }
+}

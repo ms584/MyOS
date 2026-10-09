@@ -1,5 +1,5 @@
 # MyOS project state
-Updated: 2026-10-08 20:23 +07. /home/xytron404/myos,main.
+Updated: 2026-10-09 08:31 +07. /home/xytron404/myos,main.
 Production source9aece1e. Owner pushes only; no push performed.
 Origin/main01f33ea fetched20:23:48,ancestor of local; no incoming changes.
 
@@ -9,7 +9,8 @@ Origin/main01f33ea fetched20:23:48,ancestor of local; no incoming changes.
   controlled verified HTTPS with3 concurrent assets,>60s interaction and two
   close/relaunch cycles with checked cleanup. Not symbol/fixture-count closure.
 - Phase33 overall and Phase32 YouTube playback remain NOT PASSED.
-  No Phase33.3 work started. No public Internet/DNS/universal-browser claim.
+  Phase33.3 checkpoint1 native WebM/VP8/Opus asset decode now exists; NOT playback.
+  No public Internet/DNS/universal-browser claim.
 - Imports242/242,missing0;15 media unavailable+9 POSIX ENOSYS explicit.
   See [native acceptance and limits](PHASE33_NATIVE_WEB_ACCEPTANCE.md).
 
@@ -45,6 +46,10 @@ Origin/main01f33ea fetched20:23:48,ancestor of local; no incoming changes.
 ## Handoff
 - No live test/promotion job. Documentation checkpoint accompanies source9aece1e.
   Reproduction,exact limits and original failures: HANDOFF.md/native report.
-- No automatic next phase. Owner reviews/pushes; start33.3 only on new request.
+- Phase33.3 active at owner request; see PHASE333.md and wip/phase333/checkpoint1/.
+  Two native decodes+malformed/truncation+exact cleanup passed; parser sanitizers pass.
+  Next: validated media-provider ABI/player/decode-target/audio clock integration.
+  Playback/controls/HTTPS media/30s/A-V sync/RAM/full phase regression remain OPEN.
+  All5 normal artifact hashes preserved; no Phase33.4 or push.
 - activity.log bounded48MiB; NEVER read it through run_logged.py. Preserve owner
   untracked promotion logs; no unrelated cleanup.

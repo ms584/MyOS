@@ -3,6 +3,23 @@
 Current entry point: [PROJECT_STATE.md](PROJECT_STATE.md). Read it first;
 this document retains historical context and may describe earlier checkpoints.
 
+## Phase33.3 checkpoint1  2026-10-09 08:31 +07
+
+Owner explicitly requested Phase33.3 only; goal active. Native web prerequisite
+evidence replay PASS, origin/main158f360 matches initial HEAD. Standard media
+pins/interfaces/licenses and reproducible native decoder checkpoint now recorded
+in PHASE333.md / PHASE333_MEDIA_LOCK.json / wip/phase333/checkpoint1/.
+Real guest WebM VP8/Opus asset decode twice:383frames,616320 audio sample frames,
+deterministic output. Invalid/truncated input and exact cleanup pass; parser-only
+ASan/UBSan corpus passes. Explicit2MiB codec worker stack fixes proven small
+launcher-stack exhaustion; earlier failure preserved, no fake decoder.
+All5 normal artifacts byte-identical to prior baseline; production player still
+unavailable. No clocked video/audio/controls/HTTPS media/30s/full-phase regression
+claim. Next checkpoint is explicit validated optional media-provider ABI/player/
+decode-target/audio sink, then bounded buffers/clock/controls and acceptance.
+Detailed reproduction and proposed160x90/15fps/100ms/32MiB media envelope in
+PHASE333.md. Do not skip engine playback gate or start33.4. Local commits only.
+
 ## Final native web handoff — 2026-10-08 20:23 +07
 
 Production source9aece1e. Coupled Phase33.1/33.2 native web gate PASSED for
