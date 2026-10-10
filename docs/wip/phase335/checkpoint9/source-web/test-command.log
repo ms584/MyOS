@@ -1,0 +1,14 @@
+
+[2026-10-11T03:52:14.379241+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 -u /home/xytron404/myos/build/phase335-core-workspace/run-source-web.py
+$ git rev-parse HEAD
+$ git diff --name-only
+PRIVATE source-built core prerequisite observation; no phase acceptance
+$ openssl x509 -in /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-lqntn0lr/public-test-ca.pem -subject_hash -noout
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '512', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/native-verified-tls.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/native-verified-tls.sock,server=on,wait=off', '-cpu', 'host', '-nic', 'user,model=rtl8139', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-lqntn0lr/assets.img,if=ide,index=1', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/native-verified-tls.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/native-verified-tls.sock,server=on,wait=off -cpu host -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-lqntn0lr/assets.img,if=ide,index=1 -accel kvm
+LAUNCH_OBSERVATION {"launch": 1, "elapsed": 222.85061216300528, "request_start": 0, "request_end": 162, "cleanup": ["ELF pair live: pages reclaimed; heap-before=720640 heap-after=761600", "ELF cancelled; all threads stopped"], "shell_returned": true}
+qemu-system-x86_64: terminating on signal 15 from pid 526850 (python3)
+EVIDENCE_BUNDLE /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-lqntn0lr requests 162 peak_concurrent_assets 3
+OBSERVATION ONLY: inspect actual native screenshot, TLS rejection errors, concurrency and cleanup; not full acceptance.
+[2026-10-11T03:56:04.243669+07:00] exit=0

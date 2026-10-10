@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-11T03:58:12.951352+07:00",
+  "scope": "Private source-core native HTTPS prerequisite; not normal-build YouTube acceptance",
+  "assistant_inspected_actual_pngs": true,
+  "dom_42": true,
+  "timer_visible": [
+    48,
+    89,
+    128
+  ],
+  "clicks_visible": 1,
+  "scroll_visual_middle_then_top": true,
+  "tls_negative_no_http": true,
+  "tls_negative_callbacks": [
+    "wrong-host",
+    "expired",
+    "untrusted"
+  ],
+  "exact_native_certificate_error_codes_logged": false,
+  "concurrent_assets": 3,
+  "shell_returned": true,
+  "resident_cleanup": [
+    [
+      "126671",
+      "126671",
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  ],
+  "heap_before": 720640,
+  "heap_after": 761600,
+  "phase_passed": false,
+  "owner_acceptance_received": false,
+  "core_sha256": "72a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505",
+  "provider_sha256": "1a29d0649470cbfad06e5f3abc12c0279ae9a91c0ab920b08b9ff605b671cf71"
+}

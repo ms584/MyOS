@@ -1,5 +1,5 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint f8bce28; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint 2ecb582; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
@@ -18,9 +18,12 @@ Actual target Clang syntax/type check of patched tooltip passed22:50:55; no obje
 Two launches/four hover-hide cycles passed03:46:33; actual PNG drawing reviewed.
 See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
-CURRENT TEST: native TLS/JS/input running since03:52:14; PTY51267.
-Bundle private/build/native-verified-tls-lqntn0lr; log build/phase335-source-web.log.
-NEXT: inspect actual TLS/DOM/input results, then standard media prerequisites.
+Native TLS/DOM/input test lqntn0lr terminal0 at03:56:04; inspected PNG/callbacks.
+DOM42, timer, click, keys, scroll80→0; TLS3 rejected/no bad HTTP; parallel assets3.
+Physical126671→126671/SHM0/aliases0; heap720640→761600; checkpoint9/source-web.
+CURRENT TEST: native WebM/Opus n97q9_ey active; PTY73108.
+Log build/phase335-source-media-2.log; first wrapper failure retained.
+NEXT: inspect actual media controls/PCM/motion, then adverse/lifecycle.
 Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.
 Physical/SHM/aliases exact on both closes; heap786176→827136 then stable.
 See checkpoint8/tooltip-source-core; diagnostic fixture, not YouTube acceptance.

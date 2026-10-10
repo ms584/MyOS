@@ -1,0 +1,35 @@
+
+[2026-10-11T03:56:29.417882+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 -u /home/xytron404/myos/build/phase335-core-workspace/run-source-media.py
+$ git rev-parse HEAD
+$ git diff --name-only
+PRIVATE source-built core prerequisite observation; no phase acceptance
+$ openssl x509 -in /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-swygo719/public-test-ca.pem -subject_hash -noout
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '512', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-swygo719/boot.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.sock,server=on,wait=off', '-cpu', 'host', '-nic', 'user,model=rtl8139', '-audiodev', 'wav,id=myos-audio,path=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-swygo719/audio.wav', '-device', 'sb16,audiodev=myos-audio', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-swygo719/assets.img,if=ide,index=1', '-accel', 'kvm']
+Traceback (most recent call last):
+  File "tests/test_cobalt_media_observation.py", line 246, in <module>
+    vm=VM('cobalt-media-native',ram=512,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
+  File "/home/xytron404/myos/build/phase335-abort-worktree/tests/test_system.py", line 64, in __init__
+    self.process=subprocess.Popen(command)
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/xytron404/myos/build/phase335-abort-worktree/docs/wip/native-pmm512/kvm-ata-20261008/qemu_kvm_optin_20261008.py", line 20, in launch
+    return original(args, *positional, **kwargs)
+  File "/home/xytron404/myos/build/phase335-abort-worktree/docs/wip/native-pmm512/kvm-ata-20261008/qemu_kvm_optin_20261008.py", line 11, in launch
+    assert '-accel' not in args and '-enable-kvm' not in args
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/xytron404/myos/build/phase335-core-workspace/run-source-media.py", line 15, in <module>
+    runpy.run_path('tests/test_cobalt_media_observation.py',run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "tests/test_cobalt_media_observation.py", line 325, in <module>
+    continuous_playback=continuous,fault_shell_before=fault_shell_before,fault_mode=fault_mode,fault_injections=fault_injections,native_pcm_capture=native_pcm_capture,ram_diagnostic=ram_diagnostic,ram_samples=ram_samples,ram_baselines=ram_baselines,lifecycle_scenario=os.environ.get('MYOS_MEDIA_LIFECYCLE')=='1',requests=records,frames=frames,inputs=inputs,shell_checks=shell_checks,provider_sha256=hashlib.sha256(provider.read_bytes()).hexdigest(),
+                        ^^^^^^^^^^
+NameError: name 'continuous' is not defined
+[2026-10-11T03:56:31.854133+07:00] exit=1
