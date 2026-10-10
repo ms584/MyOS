@@ -1,60 +1,46 @@
-2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
-Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Base 3b2ca8f on main;176×24 tooltip abort confirmed. No push.
-Owner promotion files/logs preserved. No permission pending.
+2026-10-10 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
+Repository /home/xytron404/myos; main HEAD 7110806; local commits only, no push.
+Owner has not tried/confirmed music and controls. No permission pending.
+Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
-Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
-online33.4 including separate Phase32 native search/select/watch30.283s.
-No new live smoke for every archived prerequisite is claimed.
-Full architecture checkpoint6 passed02:03:53+07 and finalnormal BIOS/UEFI02:05:33;
-kernel/MRT unchanged. New optional provider focused/adverse/live checks separate.
+CURRENT WORK: source-built Cobalt27.lts.3 tooltip fix, not yet runtime-tested.
+Native verified HTTPS title requested176x24 while primary800x600 exists;
+ENOTSUP(-95) caused FATAL/SIGABRT. All16 PCs match online abort.
+Source3befd332 has9-line Cobalt-only NativeWidgetAura/root-compositor patch.
+Kernel retains fullscreen/single-window rules; no fake window handles.
+Workspace build/phase335-core-workspace; dependencies and GN complete.
+Initial compile failed22:05 on missing host gperf; retained failure log.
+Workspace-only gperf3.3 installed; actual main color generator completed22:16.
+Incremental compile8workers/PTY90120, actual NinjaPID438963.
+Checked 2026-10-10T22:30:14+07:00; latest [1514/18756] CXX clang_x64/obj/v8/torque_generated_initializers/typed-array-findlastindex-tq-csa.o.
+No linked libcobalt.so yet; no new-core playback or tooltip drawing claimed.
+See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
-Original Rickroll runs2il8_yph/c6i_rjf2 failed108771/160083us sync.
-First-fix wljlc_k0/tr7_ipw9 threeopens:45s motion each,480.194sPCM,max89983us.
-First-fix outage qlyiqp51 failed172217us. Failures are retained.
-Final source7f9bc1bc guards repaint until actualDMAheld/currentframealigned;
-90ms preroll/rebuffer resume ordering,actual100ms gate unchanged.
-Final nontrace provider3k2mykzc SHA1a29d064...; native focused0qgncuxk,
-faults vvncqg3p (realOOM/two waves) PASS; PMM/inode safety4+4 tests PASS.
-Final70xq_hg5 initialRickroll45.160s,pause0pixels/0PCM,max89970us,exactresources.
-130s outage/Retry recovered a sponsored different video,notRickroll.
-Fresh g_wbd0r3 twoopens done15:35:45s motioneach,331.380sPCM,max89974us,exactresources.
+NEXT: wait terminal0, freeze/validate source/core identity, then run native
+rendered HTTPS tooltip show/hide/recreate/close/resource tests; inspect images.
+Retest affected33.1-33.4 prerequisites with the actual new core.
+Then normal MyOS Rickroll>=30s, pause/resume/seek, close/reopen, freshboot,
+repeated-open stability and true resource peak; focused/full required regression.
+Update normal bundle/manual only after verified promotion; restore normal build.
 
-ProfileQEMU10.2.1/KVM/CPUhost/1024MiB/RTL8139/SB16/800x600.
-Cobalt27.lts.3/Evergreen7.3.2/API18,Mesa25.0.7,libvpx1.15.2,Opus1.5.2.
-ActualRickroll256x144@25 VP9itag278/Opus251,WebM/SABR,presentation160x90.
-SampledPMM555175936B threeopens/605028352B recovery,nottruepeak/RSS.
-Physical257743pages/SHM0/aliases0 exact aftercloses,desktop/shell responsive.
-Linkedcachebuffer8192→212992→315392→450560B; nonfileheap stable777728B.
-Heapretentiondisclosed,no warmplateau/longrunstabilityacceptance.
+NORMAL ARTIFACTS unchanged: kernel.bin/kernel.elf/BIOS/UEFI/platform-runtime.
+Prior full architecture checkpoint6 passed02:03:53; normal rebuild02:05:33.
+Final normal BIOS/UEFI rebuild15:37; all5 identities/defaultVP8 unchanged.
+VP9/Opus provider3k2mykzc focused/adverse/PMM-inode tests passed.
+Profile QEMU10.2.1/KVM/CPUhost/1024MiB/RTL8139/SB16/800x600.
+Cobalt27.lts.3/Evergreen7.3.2/API18; Mesa25.0.7/libvpx1.15.2/Opus1.5.2.
+Rickroll256x144@25 VP9itag278/Opus251 WebM/SABR; presentation160x90.
+Normal g_wbd0r3 two45s moving plays recordedPCM/max89974us/exactcleanup.
+Normal di3oxi_6 third-open abort FAILED; private six opens lack motion5/6.
+No-abort diagnostics do not prove repair; old sync failures/cache ENOSPC kept.
+Detailed failures/resources/evidence in PHASE335_ACCEPTANCE.md/checkpoints1-7.
+SampledRAM is not true peak; heap/cache retention is not stability acceptance.
 
-Publicsafe evidence docs/wip/phase335/checkpoint1; originalsprivateignoredbuild.
-Screen+PCM AVImux approximate; nativePNG/WAV/timeline authoritative.
-Audio input unsupported; cannot listen/identifymusic or fully inspect staleaudio.
-LiveWSLg/Pulse speaker output and owner interactivecontrols/freshboot pending.
-Do not close33.5/33 or claim owner acceptance. Phase32 remains independently open
-for audible/interactive confirmation despite verified search/select/play evidence.
-
-15:37 final BIOS/UEFI rebuild0;all5 normalhashes exact/defaultVP8 exact41901a13.
-Latest4opens di3oxi_6:third engineFATAL/SIGABRT afterdecode;stabilityFAIL.
-Private abort worktree build/phase335-abort-worktree (base c5b7282).
-Bounded native abort callchain fixture PASS fourtimes; no production changes.
-
-Read checkpoint2/stability-failed +checkpoint3;fix/retest before acceptance.
-Owner tried opening:IDE readonly failed beforeboot;playback/signoff absent.
-Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.
-Sixopens i04m0umd done17:14:35:noabort,exactcleanup,max89843us.
-Private resourceerror diagnostic build/4abortfixtures PASS.
-Capacityfault2opens done:455ENOSPC in cache/LevelDB;noabort/exactcleanup.
-Manual snapshotfix:negative reproduced/headless+GTK shells PASS;guide updated.
-Private map/thread:realfailure2runs+abort4 PASS;iw24chsq4opens DONE.
-Zero memory/threadnotes;65cacheENOSPC/noabort;tooltip cause now reproduced.
-Control j_4b33rx DONE18:10:59:third FATAL/SIG6;returnPC−1 proves native tooltip.
-Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED.
-Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
-Source-core tooltip retest prepared/syntax PASS only;real runtime test pending.
-Private source-core HTTPS/standard/online selectors syntax PASS;runtime pending.
-HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
-Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.
-Source3befd332+tooltip Aura-root patch applied;gclient deps DONE19:01:10.
-GN DONE;missing gperf failed22:05;local gperf3.3 installed;resume ACTIVE8jobs PTY90120 checked22:16+07;main color generator DONE.
+Manual tools/run_phase335_manual.py snapshot fix: negative error reproduced;
+headless+GTK shell boots passed. PHASE335_USER_GUIDE_TH.md has start commands.
+Guide/bundle g_wbd0r3 is draft/old core; repeat-open abort remains.
+Audio input unsupported: cannot identify music/stale audio by listening here.
+Owner live WSLg/Pulse music, controls and freshboot confirmation pending.
+Screen+PCM AVI timing approximate; native PNG/WAV/timeline are authoritative.
+Phase32 independently open for audible/interactive search/select/play gate.
+Owner untracked promotion files/logs preserved; do not stage them.
