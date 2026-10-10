@@ -1,0 +1,12 @@
+{
+  "phase_passed": false,
+  "host_generator_only": true,
+  "standalone_smoke": true,
+  "ninja_main_action_observed": false,
+  "output_bytes": 26789,
+  "output_sha256": "565eb665bac685e8fc889782157e8580852c8b482e69956bc3b27bd467008d73",
+  "input_sha256": "be64357245fcd0d3f60178506dfe04ed370dcc5a90b987a3a41937cc94cf28d7",
+  "returncode": 0,
+  "stderr": "",
+  "native_runtime_tested": false
+}

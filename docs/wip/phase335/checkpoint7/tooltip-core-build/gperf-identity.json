@@ -1,0 +1,8 @@
+{
+  "package_metadata": "Package: gperf\nVersion: 3.3-1\nArchitecture: amd64\n",
+  "package_sha256": "4e8ffad168b19f3675822de91d3333ec08d4c054bf5f48e3770c6766ad2aa667",
+  "executable_sha256": "e545c1d4cc6c0f7c6ba6c9898249d2608ebf68876a45cedb209c54211d684d4e",
+  "version": "GNU gperf 3.3",
+  "role": "Host source table generator only; no media playback/decoder",
+  "system_install": false
+}

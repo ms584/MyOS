@@ -91,3 +91,20 @@ the actual new core. This change has syntax checks only; no new guest run occurr
 The standard WebM fixture is a prerequisite/regression input and never substitutes
 for online YouTube/Rickroll acceptance. Ring3/kernel underlay contract fixtures do
 not load Cobalt and remain separate; changing their filenames would not retest it.
+
+22:05:39+07 actual build failed on Blink color_data.cc generation because gperf
+was absent (FileNotFoundError/command127; Ninja1, wrapper1). The complete failed
+log remains private build/phase335-core-compile-gperf-failed.log; excerpt retained
+here. Ubuntu package gperf3.3-1 amd64 was downloaded with apt metadata and extracted
+only under build/phase335-core-workspace/host-tools/prefix. No system-wide install
+or engine-source change. Package/executable hashes and version are recorded here.
+Resume wrapper PATH now prepends that tool; same output/source continues with8
+workers, session90120. No linked core or new native runtime result is claimed.
+
+A22:10 check of the main generated file ran before that queued action and failed:
+it still had the zero-byte partial output of the original missing-tool failure,
+and no successful color_data entry existed in .ninja_log. No main-generator pass
+was recorded. At22:12 the exact upstream generator command/input was executed
+with a separate output path: exit0,26789-byte generated C++ table; SHA/input/tool
+identity recorded in gperf-generator-smoke.json. This verifies the installed host
+utility against actual source, not main Ninja completion or any guest playback.

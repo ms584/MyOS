@@ -9,8 +9,8 @@
   "phase_passed": false,
   "host_player_used": false,
   "build_instructions": "https://developers.google.com/youtube/cobalt/docs/development/setup-linux",
-  "build_status": "incremental compile active; prior6worker build deliberately interrupted for concurrency change",
-  "build_session": 18106,
+  "build_status": "incremental compile active after actual missing-gperf generator failure and workspace-only gperf installation",
+  "build_session": 90120,
   "build_log": "build/phase335-core-compile.log",
   "jobs": 8,
   "ninja_version": "1.12.1",
@@ -32,5 +32,7 @@
   "online_selector_runtime_tested": false,
   "prerequisite_source_core_selector_prepared": true,
   "prerequisite_source_core_selector_syntax_checked": true,
-  "prerequisite_source_core_runtime_tested": false
+  "prerequisite_source_core_runtime_tested": false,
+  "host_gperf_version": "3.3",
+  "host_gperf_system_installed": false
 }

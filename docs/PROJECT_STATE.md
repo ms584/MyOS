@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Base 5940eb7 on main;176×24 tooltip abort confirmed. No push.
+Base 3b2ca8f on main;176×24 tooltip abort confirmed. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -57,4 +57,4 @@ Private source-core HTTPS/standard/online selectors syntax PASS;runtime pending.
 HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
 Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.
 Source3befd332+tooltip Aura-root patch applied;gclient deps DONE19:01:10.
-GN DONE20:35:03;real GPU/Skia metadata corrected;compile ACTIVE8jobs PTY18106 checked21:48+07;controlled resume/old log recovered.
+GN DONE;missing gperf failed22:05;local gperf3.3 installed;resume ACTIVE8jobs PTY90120.
