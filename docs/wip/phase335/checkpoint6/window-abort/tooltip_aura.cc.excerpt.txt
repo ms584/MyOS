@@ -1,0 +1,38 @@
+// Upstream Cobalt tag27.lts.3; Apache-2.0. Selected diagnostic excerpts.
+
+// Original lines 194..228
+void TooltipAura::CreateTooltipWidget(const gfx::Rect& bounds,
+                                      const ui::OwnedWindowAnchor& anchor) {
+  DCHECK(!widget_);
+  DCHECK(tooltip_window_);
+  widget_ = std::make_unique<TooltipWidget>();
+  views::Widget::InitParams params(
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
+      views::Widget::InitParams::TYPE_TOOLTIP);
+  // For aura, since we set the type to TYPE_TOOLTIP, the widget will get
+  // auto-parented to the right container.
+  params.context = tooltip_window_;
+  DCHECK(params.context);
+  params.z_order = ui::ZOrderLevel::kFloatingUIElement;
+  params.accept_events = false;
+  params.bounds = bounds;
+  if (CanUseTranslucentTooltipWidget()) {
+    params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
+  }
+  params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
+  // Use software compositing to avoid using unnecessary hardware resources
+  // which just amount to overkill for this UI.
+  params.force_software_compositing = true;
+  params.name = kWidgetName;
+
+  params.init_properties_container.SetProperty(aura::client::kOwnedWindowAnchor,
+                                               anchor);
+
+  widget_->Init(std::move(params));
+}
+
+void TooltipAura::DestroyWidget() {
+  if (widget_) {
+    widget_->Close();
+    widget_.reset();
+  }

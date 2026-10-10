@@ -1,0 +1,144 @@
+// Upstream Cobalt tag27.lts.3; Apache-2.0. Selected diagnostic excerpts.
+
+// Original lines 229..369
+void NativeWidgetAura::InitNativeWidget(Widget::InitParams params) {
+  // See Widget::InitParams::context for details.
+  DCHECK(params.parent || params.context);
+
+  ownership_ = params.ownership;
+  if (ownership_ == Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET) {
+    owned_delegate_ = base::WrapUnique(delegate_.get());
+  }
+
+  window_->AcquireAllPropertiesFrom(
+      std::move(params.init_properties_container));
+
+  RegisterNativeWidgetForWindow(this, window_);
+  window_->SetType(GetAuraWindowTypeForWidgetType(params.type));
+  if (params.corner_radius) {
+    window_->SetProperty(aura::client::kWindowCornerRadiusKey,
+                         *params.corner_radius);
+  }
+  window_->SetProperty(aura::client::kShowStateKey, params.show_state);
+
+  int desk_index;
+  // Set workspace property of this window created with a specified workspace
+  // in InitParams. The desk index can be kActiveWorkspace=-1, representing
+  // an active desk. If the window is visible on all workspaces, it belongs on
+  // the active desk.
+  if (params.visible_on_all_workspaces) {
+    window_->SetProperty(aura::client::kWindowWorkspaceKey,
+                         aura::client::kWindowWorkspaceVisibleOnAllWorkspaces);
+  } else if (const base::Uuid& desk_uuid =
+                 base::Uuid::ParseLowercase(params.workspace);
+             desk_uuid.is_valid()) {
+    window_->SetProperty(aura::client::kDeskUuidKey,
+                         desk_uuid.AsLowercaseString());
+  } else if (base::StringToInt(params.workspace, &desk_index)) {
+    // `params.workspace` used to be the desk index, it now stores the desk
+    // Uuid. We still check to see if it is the index for compatibility.
+    window_->SetProperty(aura::client::kWindowWorkspaceKey, desk_index);
+  }
+
+  if (params.type == Widget::InitParams::TYPE_BUBBLE) {
+    wm::SetHideOnDeactivate(window_, true);
+  }
+
+  // Check for ShadowType::kNone before aura::Window::Init() to ensure observers
+  // do not add useless shadow layers by deriving one from the window type.
+  SetShadowElevationFromInitParams(window_, params);
+
+  window_->Init(params.layer_type);
+  window_->SetTransparent(params.opacity ==
+                          Widget::InitParams::WindowOpacity::kTranslucent);
+
+  // Set name after layer init so it propagates to layer.
+  window_->SetName(params.name.empty() ? "NativeWidgetAura" : params.name);
+  if (params.type == Widget::InitParams::TYPE_CONTROL) {
+    window_->Show();
+  }
+
+  delegate_->OnNativeWidgetCreated();
+
+  gfx::Rect window_bounds = params.bounds;
+  gfx::NativeView parent = params.parent;
+  gfx::NativeView context = params.context;
+
+  if (!params.child) {
+    wm::TransientWindowManager::GetOrCreate(window_)->AddObserver(this);
+
+    // Set up the transient child before the window is added. This way the
+    // LayoutManager knows the window has a transient parent.
+    if (parent && parent->GetType() != aura::client::WINDOW_TYPE_UNKNOWN) {
+      wm::AddTransientChild(parent, window_);
+      if (!context) {
+        context = parent;
+      }
+      parent = nullptr;
+
+      // Generally transient bubbles are showing state associated to the parent
+      // window. Make sure the transient bubble is only visible if the parent is
+      // visible, otherwise the bubble may not make sense by itself.
+      if (params.type == Widget::InitParams::TYPE_BUBBLE) {
+        wm::TransientWindowManager::GetOrCreate(window_)
+            ->set_parent_controls_visibility(true);
+      }
+    }
+    // SetZOrderLevel before SetParent so that always-on-top container is used.
+    SetZOrderLevel(params.EffectiveZOrderLevel());
+
+    // Make sure we have a real |window_bounds|.
+    aura::Window* parent_or_context = parent ? parent : context;
+    if (parent_or_context && window_bounds == gfx::Rect()) {
+      // If a parent or context is specified but no bounds are given, use the
+      // origin of the display so that the widget will be added to the same
+      // display as the parent or context.
+      gfx::Rect bounds = display::Screen::GetScreen()
+                             ->GetDisplayNearestWindow(parent_or_context)
+                             .bounds();
+      window_bounds.set_origin(bounds.origin());
+    }
+  }
+
+  // Set properties before adding to the parent so that its layout manager sees
+  // the correct values.
+  OnSizeConstraintsChanged();
+
+  std::optional<int64_t> target_display;
+#if BUILDFLAG(IS_CHROMEOS)
+  target_display = params.display_id;
+#endif
+  if (parent) {
+    parent->AddChild(window_);
+  } else {
+    aura::client::ParentWindowWithContext(
+        window_, context->GetRootWindow(), window_bounds,
+        target_display.value_or(display::kInvalidDisplayId));
+  }
+
+  window_->AddObserver(this);
+
+  // Wait to set the bounds until we have a parent. That way we can know our
+  // true state/bounds (the LayoutManager may enforce a particular
+  // state/bounds).
+  if (IsMaximized() || IsMinimized()) {
+    SetRestoreBounds(window_, window_bounds);
+  } else {
+    SetBoundsInternal(window_bounds, target_display);
+  }
+  window_->SetEventTargetingPolicy(
+      params.accept_events ? aura::EventTargetingPolicy::kTargetAndDescendants
+                           : aura::EventTargetingPolicy::kNone);
+  DCHECK(GetWidget()->GetRootView());
+  if (params.type != Widget::InitParams::TYPE_TOOLTIP) {
+    tooltip_manager_ = std::make_unique<views::TooltipManagerAura>(this);
+  }
+
+  drop_helper_ = std::make_unique<DropHelper>(GetWidget()->GetRootView());
+  if (params.type != Widget::InitParams::TYPE_TOOLTIP &&
+      params.type != Widget::InitParams::TYPE_POPUP) {
+    aura::client::SetDragDropDelegate(window_, this);
+  }
+
+  if (params.type == Widget::InitParams::TYPE_WINDOW) {
+    focus_manager_event_handler_ =

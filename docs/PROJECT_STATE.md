@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Baseaa137da on main;manual overlay/guide fix committed. No push.
+Base19ae326 on main;manual overlay/guide fix committed. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -37,24 +37,24 @@ for audible/interactive confirmation despite verified search/select/play evidenc
 
 15:37 final BIOS/UEFI rebuild0;all5 normalhashes exact/defaultVP8 exact41901a13.
 Latest4opens di3oxi_6:third engineFATAL/SIGABRT afterdecode;stabilityFAIL.
-Enginetrace ulkpezt9 done/noabort,notnormalplaybackacceptance.
 Private abort worktree build/phase335-abort-worktree (base c5b7282).
 Bounded native abort callchain fixture PASS fourtimes; no production changes.
-Online guoh2tyy done:noabort,table64/64,motion window3/4FAIL;not repair.
-DiagnosticPMM563261440B coveragecomplete;rootnormal5 exact/no QEMU.
-Playertrace rn03ntw3/iwdvm5_h done/noabort,not repair;normalartifacts unchanged.
 
 Read checkpoint2/stability-failed +checkpoint3;fix/retest before acceptance.
 Owner tried opening:IDE readonly failed beforeboot;playback/signoff absent.
-
 Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.
-Checkpoint4:symbols match21 loadedsections;liveSHM observer5tests PASS.
 Sixopens i04m0umd done17:14:35:noabort,exactcleanup,max89843us.
 Inodepeaks53/57/64/62/64/64;after52/56/59/60/61/63,not originalabortrepair.
 PMMownedpeak550572032B complete;fivefixedmotionwindows FAIL.
-Rootnormal5 exact;no productionchange. See checkpoint4 safeevidence.
 Private resourceerror diagnostic build/4abortfixtures PASS.
 Capacityfault2opens done:455ENOSPC in cache/LevelDB;noabort/exactcleanup.
 Manual snapshotfix:negative reproduced/headless+GTK shells PASS;guide updated.
 Private map/thread:realfailure2runs+abort4 PASS;iw24chsq4opens DONE.
 Zero memory/threadnotes;65cacheENOSPC/noabort;originalfault unresolved.
+Control j_4b33rx DONE18:10:59:third FATAL/SIG6;returnPC−1 proves native tooltip.
+Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED.
+Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
+HTTPS title fixture DONE:DOM90s timeout;not tooltip proof.
+File title DONE:blank frames/noDOM;wrong pair-resource assertion recorded.
+HTTPS title210s ACTIVE:phase335-tooltip-engine-210.log,PTY85121.
+See checkpoint6/window-abort;root production unchanged;owner signoff pending.

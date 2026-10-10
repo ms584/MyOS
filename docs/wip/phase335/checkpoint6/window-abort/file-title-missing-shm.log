@@ -1,0 +1,12 @@
+
+[2026-10-10T18:31:22.186199+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 tests/phase335_tooltip_file_reproduction.py /home/xytron404/cd-QJYMwG/build/cobalt-resources-dwxalc2n /home/xytron404/platform-fonts-01W7Ri/build/platform-fonts-20261007
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '1024', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-file.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-file.sock,server=on,wait=off', '-cpu', 'host', '-audiodev', 'wav,id=myos-audio,path=/home/xytron404/myos/build/phase335-abort-worktree/build/tooltip-file-pbloeu0z/audio.wav', '-device', 'sb16,audiodev=myos-audio', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/tooltip-file-pbloeu0z/assets.img,if=ide,index=1', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 1024 -display none -monitor none -serial file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-file.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-file.sock,server=on,wait=off -cpu host -audiodev wav,id=myos-audio,path=/home/xytron404/myos/build/phase335-abort-worktree/build/tooltip-file-pbloeu0z/audio.wav -device sb16,audiodev=myos-audio -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/tooltip-file-pbloeu0z/assets.img,if=ide,index=1 -accel kvm
+qemu-system-x86_64: terminating on signal 15 from pid 334526 (python3)
+Traceback (most recent call last):
+  File "/home/xytron404/myos/build/phase335-abort-worktree/tests/phase335_tooltip_file_reproduction.py", line 35, in <module>
+    if text.endswith('myos> '):raise AssertionError('Engine exited before window')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Engine exited before window
+[2026-10-10T18:32:59.490046+07:00] exit=1

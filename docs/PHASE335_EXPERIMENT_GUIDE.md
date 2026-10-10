@@ -1,3 +1,5 @@
+Checkpoint6 2026-10-10 18:20+07: private j_4b33rx controls run completed; third open FATAL/SIGABRT. Matching official symbols (returnPC−1) prove TooltipAura creation → PlatformWindowStarboard::Show. Current native UI rejects small windows and a second physical window; private Ring3 reproduction twice confirms ENOTSUP/EBUSY and exact cleanup. Actual tooltip dimensions are being measured separately. No production repair or acceptance yet; pinned Starboard permits fullscreen-only platforms, so engine/compositor adaptation must be correct rather than returning fake handles. See wip/phase335/checkpoint6/window-abort/README.md. Owner listening/signoff still absent;33.5/33 remain open.
+
 # Phase33.5 experiment guide — no automatic acceptance
 
 Run in WSL Ubuntu /home/xytron404/myos. Owner pushes manually. Read

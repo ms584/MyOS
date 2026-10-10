@@ -1,0 +1,40 @@
+// Upstream Cobalt tag27.lts.3; Apache-2.0. Selected diagnostic excerpts.
+
+// Original lines 555..591
+void DesktopNativeWidgetAura::InitNativeWidget(Widget::InitParams params) {
+  ownership_ = params.ownership;
+  widget_type_ = params.type;
+  name_ = params.name;
+
+  if (ownership_ == Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET) {
+    owned_native_widget_delegate =
+        base::WrapUnique(native_widget_delegate_.get());
+  }
+
+  content_window_->AcquireAllPropertiesFrom(
+      std::move(params.init_properties_container));
+
+  NativeWidgetAura::RegisterNativeWidgetForWindow(this, content_window_);
+  content_window_->SetType(GetAuraWindowTypeForWidgetType(params.type));
+  content_window_->Init(params.layer_type);
+  wm::SetShadowElevation(content_window_, wm::kShadowElevationNone);
+
+  if (!desktop_window_tree_host_) {
+    if (params.desktop_window_tree_host) {
+      desktop_window_tree_host_ = params.desktop_window_tree_host;
+    } else {
+      desktop_window_tree_host_ =
+          DesktopWindowTreeHost::Create(native_widget_delegate_.get(), this);
+    }
+    host_.reset(desktop_window_tree_host_->AsWindowTreeHost());
+  }
+  host_->window()->SetProperty(kDesktopNativeWidgetAuraKey, this);
+  desktop_window_tree_host_->Init(params);
+
+  host_->window()->AddChild(content_window_);
+  host_->window()->AddObserver(new RootWindowDestructionObserver(this));
+
+  // The WindowsModalityController event filter should be at the head of the
+  // pre target handlers list. This ensures that it handles input events first
+  // when modal windows are at the top of the Zorder.
+  if (widget_type_ == Widget::InitParams::TYPE_WINDOW) {

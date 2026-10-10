@@ -1,0 +1,50 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/youtube/cobalt/27.lts.3/ui/views/corewm/tooltip_aura.cc",
+    "original_sha256": "79aa232915f33e43c7b3b9519ab15350cbefae47872ddb56e3ebb469acc4d13d",
+    "excerpts": [
+      [
+        194,
+        228
+      ]
+    ],
+    "license": "Apache-2.0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/youtube/cobalt/27.lts.3/ui/views/widget/widget.cc",
+    "original_sha256": "bae326adabd1ceb1d45658e8296f360685b971e962348e6294e64fbc98565fc2",
+    "excerpts": [
+      [
+        95,
+        110
+      ],
+      [
+        475,
+        513
+      ]
+    ],
+    "license": "Apache-2.0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/youtube/cobalt/27.lts.3/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc",
+    "original_sha256": "23699d1e89d1c8de4234d3986048c7eff58a045cf6498754c7e011ebb878db01",
+    "excerpts": [
+      [
+        555,
+        591
+      ]
+    ],
+    "license": "Apache-2.0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/youtube/cobalt/27.lts.3/ui/views/widget/native_widget_aura.cc",
+    "original_sha256": "a48d76113d0410f087a7473c9444504d999f4446b18d442f55328de6aba81e1c",
+    "excerpts": [
+      [
+        229,
+        369
+      ]
+    ],
+    "license": "Apache-2.0"
+  }
+]

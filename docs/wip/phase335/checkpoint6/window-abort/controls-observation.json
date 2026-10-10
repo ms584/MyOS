@@ -1,0 +1,326 @@
+[
+  {
+    "launch": 1,
+    "controls": [
+      {
+        "action": {
+          "id": "settings1",
+          "launch": 1,
+          "at": 120,
+          "type": "click",
+          "x": 663,
+          "y": 459
+        },
+        "elapsed": 120.01674171000195
+      },
+      {
+        "action": {
+          "id": "quality1",
+          "launch": 1,
+          "at": 128,
+          "type": "click",
+          "x": 613,
+          "y": 397
+        },
+        "elapsed": 128.0218534040032
+      },
+      {
+        "action": {
+          "id": "144p1",
+          "launch": 1,
+          "at": 136,
+          "type": "click",
+          "x": 601,
+          "y": 343
+        },
+        "elapsed": 136.03614993600058
+      },
+      {
+        "action": {
+          "id": "pause1",
+          "launch": 1,
+          "at": 205,
+          "type": "key",
+          "key": "k"
+        },
+        "elapsed": 205.04891118599335
+      },
+      {
+        "action": {
+          "id": "resume1",
+          "launch": 1,
+          "at": 220,
+          "type": "key",
+          "key": "k"
+        },
+        "elapsed": 220.07544717700512
+      },
+      {
+        "action": {
+          "id": "forward1",
+          "launch": 1,
+          "at": 240,
+          "type": "key",
+          "key": "l"
+        },
+        "elapsed": 240.0727734319953
+      },
+      {
+        "action": {
+          "id": "backward1",
+          "launch": 1,
+          "at": 265,
+          "type": "key",
+          "key": "j"
+        },
+        "elapsed": 265.00630834000185
+      },
+      {
+        "action": {
+          "id": "context1",
+          "launch": 1,
+          "at": 280,
+          "type": "click",
+          "x": 350,
+          "y": 250,
+          "button": "right"
+        },
+        "elapsed": 280.02588941299473
+      },
+      {
+        "action": {
+          "id": "stats1",
+          "launch": 1,
+          "at": 288,
+          "type": "click",
+          "x": 439,
+          "y": 559
+        },
+        "elapsed": 288.0145966150012
+      },
+      {
+        "action": {
+          "id": "player-close1",
+          "launch": 1,
+          "at": 297,
+          "type": "click",
+          "x": 100,
+          "y": 28
+        },
+        "elapsed": 297.0030906949978
+      },
+      {
+        "action": {
+          "id": "close1",
+          "launch": 1,
+          "at": 315,
+          "type": "close"
+        },
+        "elapsed": 315.03944491100265
+      }
+    ],
+    "pause": {
+      "frame_a": {
+        "elapsed": 210.40213125900482,
+        "path": "launch-1-210402.png"
+      },
+      "frame_b": {
+        "elapsed": 217.5970896200015,
+        "path": "launch-1-217597.png"
+      },
+      "changed_pixels": 0,
+      "wav_a": {
+        "elapsed": 209.99975546899077,
+        "wav_bytes": 782336
+      },
+      "wav_b": {
+        "elapsed": 218.01812058099313,
+        "wav_bytes": 782336
+      },
+      "native_pcm_bytes_delta": 0
+    },
+    "resume": {
+      "frame_a": {
+        "elapsed": 224.8115660399926,
+        "path": "launch-1-224812.png"
+      },
+      "frame_b": {
+        "elapsed": 235.13692700400134,
+        "path": "launch-1-235137.png"
+      },
+      "changed_pixels": 68000,
+      "wav_a": {
+        "elapsed": 224.95982683599868,
+        "wav_bytes": 831488
+      },
+      "wav_b": {
+        "elapsed": 235.0365765040042,
+        "wav_bytes": 942080
+      },
+      "native_pcm_bytes_delta": 110592
+    },
+    "scope": "Diagnostic observation only. Pixel change and PCM bytes do not identify music, prove exact A/V alignment or inspect seek stale audio; no owner signoff."
+  },
+  {
+    "launch": 2,
+    "controls": [
+      {
+        "action": {
+          "id": "settings2",
+          "launch": 2,
+          "at": 120,
+          "type": "click",
+          "x": 663,
+          "y": 459
+        },
+        "elapsed": 120.08192927700293
+      },
+      {
+        "action": {
+          "id": "quality2",
+          "launch": 2,
+          "at": 128,
+          "type": "click",
+          "x": 613,
+          "y": 397
+        },
+        "elapsed": 128.02092879499833
+      },
+      {
+        "action": {
+          "id": "144p2",
+          "launch": 2,
+          "at": 136,
+          "type": "click",
+          "x": 601,
+          "y": 343
+        },
+        "elapsed": 136.09174300500308
+      },
+      {
+        "action": {
+          "id": "pause2",
+          "launch": 2,
+          "at": 205,
+          "type": "key",
+          "key": "k"
+        },
+        "elapsed": 205.09714068799803
+      },
+      {
+        "action": {
+          "id": "resume2",
+          "launch": 2,
+          "at": 220,
+          "type": "key",
+          "key": "k"
+        },
+        "elapsed": 220.02486675301043
+      },
+      {
+        "action": {
+          "id": "forward2",
+          "launch": 2,
+          "at": 240,
+          "type": "key",
+          "key": "l"
+        },
+        "elapsed": 240.08134861099825
+      },
+      {
+        "action": {
+          "id": "backward2",
+          "launch": 2,
+          "at": 265,
+          "type": "key",
+          "key": "j"
+        },
+        "elapsed": 265.0023556350061
+      },
+      {
+        "action": {
+          "id": "context2",
+          "launch": 2,
+          "at": 280,
+          "type": "click",
+          "x": 350,
+          "y": 250,
+          "button": "right"
+        },
+        "elapsed": 280.0637714879995
+      },
+      {
+        "action": {
+          "id": "stats2",
+          "launch": 2,
+          "at": 288,
+          "type": "click",
+          "x": 439,
+          "y": 559
+        },
+        "elapsed": 288.08989651499724
+      },
+      {
+        "action": {
+          "id": "player-close2",
+          "launch": 2,
+          "at": 297,
+          "type": "click",
+          "x": 100,
+          "y": 28
+        },
+        "elapsed": 297.096106048004
+      },
+      {
+        "action": {
+          "id": "close2",
+          "launch": 2,
+          "at": 315,
+          "type": "close"
+        },
+        "elapsed": 315.02379503499833
+      }
+    ],
+    "pause": {
+      "frame_a": {
+        "elapsed": 210.4447443770041,
+        "path": "launch-2-210445.png"
+      },
+      "frame_b": {
+        "elapsed": 217.64773525799683,
+        "path": "launch-2-217648.png"
+      },
+      "changed_pixels": 0,
+      "wav_a": {
+        "elapsed": 210.0421230780048,
+        "wav_bytes": 2514944
+      },
+      "wav_b": {
+        "elapsed": 217.96928225799638,
+        "wav_bytes": 2514944
+      },
+      "native_pcm_bytes_delta": 0
+    },
+    "resume": {
+      "frame_a": {
+        "elapsed": 224.83701914100675,
+        "path": "launch-2-224837.png"
+      },
+      "frame_b": {
+        "elapsed": 235.1371072190086,
+        "path": "launch-2-235137.png"
+      },
+      "changed_pixels": 68000,
+      "wav_a": {
+        "elapsed": 224.97404844099947,
+        "wav_bytes": 2568192
+      },
+      "wav_b": {
+        "elapsed": 235.03617992000363,
+        "wav_bytes": 2678784
+      },
+      "native_pcm_bytes_delta": 110592
+    },
+    "scope": "Diagnostic observation only. Pixel change and PCM bytes do not identify music, prove exact A/V alignment or inspect seek stale audio; no owner signoff."
+  }
+]

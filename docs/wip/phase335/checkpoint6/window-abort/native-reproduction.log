@@ -1,0 +1,11 @@
+
+[2026-10-10T18:19:03.060899+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 tests/phase335_window_reproduction.py
+$ gcc -m64 -O1 -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-omit-frame-pointer -fno-optimize-sibling-calls -Iinclude -c /home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j/fixture.c -o /home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j/fixture.o
+$ ld -shared -Ttext=0x108b000 --hash-style=both -Bsymbolic -z now -z relro -z noexecstack -e _start /home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j/fixture.o -o /home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j/fixture.so
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/phase335-window-reproduction.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/phase335-window-reproduction.sock,server=on,wait=off -cpu max -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j/assets.img,if=ide,index=1
+PASS reproduction only: small windows ENOTSUP, second fullscreen EBUSY, exact cleanup 1
+PASS reproduction only: small windows ENOTSUP, second fullscreen EBUSY, exact cleanup 2
+qemu-system-x86_64: terminating on signal 15 from pid 331178 (python3)
+PASS window rejection reproduced; NOT repaired /home/xytron404/myos/build/phase335-abort-worktree/build/window-repro-z7jj868j
+[2026-10-10T18:19:07.564117+07:00] exit=0

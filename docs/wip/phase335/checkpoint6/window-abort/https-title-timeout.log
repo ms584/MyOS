@@ -1,0 +1,13 @@
+
+[2026-10-10T18:27:45.955813+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 tests/phase335_tooltip_engine_reproduction.py /home/xytron404/cd-QJYMwG/build/cobalt-resources-dwxalc2n /home/xytron404/platform-fonts-01W7Ri/build/platform-fonts-20261007
+$ openssl x509 -in /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-09ma1u1j/public-test-ca.pem -subject_hash -noout
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '1024', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-repro.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-repro.sock,server=on,wait=off', '-cpu', 'host', '-nic', 'user,model=rtl8139', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-09ma1u1j/assets.img,if=ide,index=1', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 1024 -display none -monitor none -serial file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-repro.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/tooltip-repro.sock,server=on,wait=off -cpu host -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-09ma1u1j/assets.img,if=ide,index=1 -accel kvm
+qemu-system-x86_64: terminating on signal 15 from pid 333599 (python3)
+Traceback (most recent call last):
+  File "/home/xytron404/myos/build/phase335-abort-worktree/tests/phase335_tooltip_engine_reproduction.py", line 29, in <module>
+    else:raise AssertionError('No native DOM ready')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: No native DOM ready
+[2026-10-10T18:29:25.367332+07:00] exit=1
