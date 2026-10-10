@@ -66,3 +66,9 @@ The retest waits for actual rendered page pixels, records two hover/hide cycles
 in each of two launches, and checks no FATAL plus exact physical/SHM/alias cleanup.
 Saved hover images still need visual inspection; this fixture cannot pass YouTube
 or sound/music criteria. Source files live in the private diagnostic worktree.
+
+Private online observation runner now accepts --source-core-manifest explicitly.
+Its helper verifies the finished compile log, exact source/patch/core hashes and
+labels all derived-core observations diagnostic. The default official-core hash
+check and resource/provider/normal image checks remain intact. This prepares real
+online follow-up; it has passed syntax checks only and has not launched a VM.

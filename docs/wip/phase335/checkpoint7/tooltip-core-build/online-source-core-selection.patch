@@ -1,0 +1,36 @@
+--- a/tests/test_cobalt_youtube_observation.py
++++ b/tests/test_cobalt_youtube_observation.py
+@@ -33,6 +33,7 @@
+     p.add_argument('resources',type=Path);p.add_argument('fonts',type=Path)
+     p.add_argument('--provider',type=Path,default=ROOT/'build/media-evaluation/provider-i8xbwfmz')
+     p.add_argument('--url',action='append',required=True)
++    p.add_argument('--source-core-manifest',type=Path,help='PRIVATE source-built tooltip core; explicit identity verification, never normal/phase acceptance')
+     p.add_argument('--engine-trace',action='store_true',help='Native opt-in engine stderr/VLOG only; no memory extraction or TLS overrides')
+     p.add_argument('--identity',type=Path,default=ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json')
+     p.add_argument('--memory-mib',type=int,choices=(512,1024),default=512,help='Actual QEMU physical RAM; native E820/PMM, no invented memory')
+@@ -62,8 +63,14 @@
+     os.umask(0o077)
+     out=Path(tempfile.mkdtemp(prefix='phase334-public-',dir=ROOT/'build'))
+     audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
+-    core=ROOT/'build/engine-evaluation/libcobalt.so';provider=a.provider.resolve()/'provider.so'
+-    assert digest(core)==audit['library_sha256']
++    source_core_build=None
++    if a.source_core_manifest:
++        from phase335_source_core import load_source_core
++        core,source_core_build=load_source_core(a.source_core_manifest)
++    else:
++        core=ROOT/'build/engine-evaluation/libcobalt.so'
++        assert digest(core)==audit['library_sha256']
++    provider=a.provider.resolve()/'provider.so'
+     assert digest(provider)==json.loads((provider.parent/'report.json').read_text())['provider_sha256']
+     specs=['cobalt='+str(core),'provider='+str(provider)]
+     report=json.loads((a.resources/'report.json').read_text())
+@@ -98,7 +105,7 @@
+     install()
+     evidence=dict(phase_passed=False,observation_only=True,date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=7))).isoformat(),
+         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+-        core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,
++        core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,source_core_build=source_core_build,diagnostic_core=source_core_build is not None,
+         urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False,diagnostic_prefill_nodes=a.diagnostic_prefill)
+     vm=None;observer=None;inode_observer=None
+     try:

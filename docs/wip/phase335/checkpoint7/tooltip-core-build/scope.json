@@ -25,5 +25,9 @@
   "updated": "2026-10-10T20:40:40.281678+07:00",
   "retest_prepared": true,
   "retest_syntax_checked": true,
-  "retest_runtime_tested": false
+  "retest_runtime_tested": false,
+  "online_selector_prepared": true,
+  "online_selector_syntax_checked": true,
+  "online_selector_help_checked": true,
+  "online_selector_runtime_tested": false
 }

@@ -53,7 +53,7 @@ Control j_4b33rx DONE18:10:59:third FATAL/SIG6;returnPC−1 proves native toolti
 Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED.
 Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
 Source-core tooltip retest prepared/syntax PASS only;real runtime test pending.
-File title DONE:blank frames/noDOM;wrong pair-resource assertion recorded.
+Private online source-core selector syntax/help PASS;actual retest pending.
 HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
 Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.
 Source3befd332+tooltip Aura-root patch applied;gclient deps DONE19:01:10.
