@@ -1,0 +1,11 @@
+
+[2026-10-10T17:33:49.935503+07:00] cwd=/home/xytron404/myos
+$ python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3 --check-boot
+Serial log: /home/xytron404/myos/build/phase334-public-g_wbd0r3/manual-session-2cea5dkx/serial.log
+Fresh native MyOS manual trial; no phase acceptance is recorded automatically.
+In the MyOS shell: net up; mkdir /dev/shm; mem
+Then type: elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+Select native YouTube Quality144p. Watch/listen>=30s; K pause/resume; L forward10s; J back10s; Esc close; mem; desktop,open a window,Q; reopen. Repeat after fresh boot.
+PASS passive normal MyOS boot; writable temporary drive overlays, immutable source images. Playback/speaker acceptance not tested.
+qemu-system-x86_64: terminating on signal 15 from pid 319960 (python3)
+[2026-10-10T17:33:55.656291+07:00] exit=0

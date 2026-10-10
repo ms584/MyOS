@@ -5,8 +5,53 @@
 **ฉบับร่างก่อนตรวจรับ — Phase33.5/33 ยังไม่เสร็จ**
 ล่าสุดพบ Cobalt abort ในการเปิดซ้ำครั้งที่3 ของชุด di3oxi_6;
 กำลังวินิจฉัยและต้องแก้/ทดสอบใหม่ก่อนออกคู่มือฉบับตรวจรับสุดท้าย
-คุณแจ้งว่ายังไม่ได้ทดลอง จึงยังไม่มีผลรับรองภาพ/เสียง/controls จากคุณ
+คุณลองเปิดแล้วพบ error ก่อนบูต ยังไม่มีผลรับรองภาพ/เสียง/controls จากคุณ
 ดูผลจริงล่าสุดใน PHASE335_ACCEPTANCE.md และ PROJECT_STATE.md
+
+## คำสั่งตั้งแต่เปิด PowerShell จนเข้า MyOS
+
+1. เปิด **PowerShell** หรือ **Windows Terminal** ใน Windows แล้วพิมพ์:
+
+```powershell
+wsl.exe -d Ubuntu
+```
+
+2. เมื่อเห็น prompt ของ Ubuntu เช่น `xytron404@...:~$` ให้พิมพ์ทีละบรรทัด:
+
+```sh
+cd /home/xytron404/myos
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3
+```
+
+3. รอหน้าต่าง **QEMU / MyOS** เปิด แล้วคลิกในหน้าต่างนั้น คำสั่งต่อไปนี้พิมพ์ที่ `myos>` ภายใน MyOS ทีละบรรทัด:
+
+```text
+net up
+mkdir /dev/shm
+mem
+elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+```
+
+4. รอ YouTube โหลด เลือกวิดีโอ Rick Astley ที่ถูกต้อง แล้วเลือก Settings → Quality → 144p ภายใน MyOS ดูและฟังเพลงอย่างน้อย30วินาที จากนั้นทดสอบ `K` pause/resume, `L` seek หน้า10วินาที และ `J` seek หลัง10วินาทีตามรายการด้านล่าง
+
+5. เมื่อต้องการกลับ shell กด `Esc` ภายใน MyOS แล้วพิมพ์:
+
+```text
+mem
+desktop
+```
+
+เปิดหน้าต่างบน desktop ด้วยเมาส์ กด `Q` กลับ shell แล้วเปิด Rickroll ใหม่ด้วยคำสั่ง `elf cobalt ...` ด้านบน เมื่อต้องการบูตใหม่ให้ปิดหน้าต่าง QEMU แล้วรันคำสั่งขั้นที่2 ใน Ubuntu อีกครั้ง
+
+**แก้ error `Block node is read-only`:** ตัวเปิดใช้ temporary snapshot overlay ให้ QEMU IDE ทำงานได้โดยไม่แก้ไฟล์ boot/assets ต้นฉบับ ต้องใช้ตัวเปิดฉบับแก้แล้ว ไม่ใช้คำสั่งเก่าที่มี `readonly=on` บน IDE hard disk
+
+หากต้องการตรวจเฉพาะการบูตก่อนเปิดหน้าต่าง ใช้คำสั่งนี้ใน Ubuntu:
+
+```sh
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3 --check-boot
+```
+
+ผล `PASS passive normal MyOS boot` ตรวจเพียงถึง shell ยังไม่ยืนยันภาพเพลง/เสียง/controls หรือ Phase ผ่าน ตัวเปิดแต่ละครั้งจะพิมพ์ตำแหน่ง serial log ของ session ใหม่ และไม่เขียนทับหลักฐานรอบก่อน
 
 ## เตรียมระบบ
 ใช้ WSL Ubuntu กับ repository `/home/xytron404/myos` และ WSLg ที่รองรับ
