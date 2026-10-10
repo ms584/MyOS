@@ -1,0 +1,347 @@
+[
+  {
+    "server": "valid",
+    "path": "/",
+    "elapsed": 107.7586822930025
+  },
+  {
+    "server": "valid",
+    "path": "/app.js",
+    "elapsed": 107.85113208799157
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=ready",
+    "elapsed": 107.89970688598987
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 108.20024037000258
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=280&y=200",
+    "elapsed": 109.17955201999575
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=160&y=100",
+    "elapsed": 109.22914781699365
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 109.3092344129982
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=400&y=0",
+    "elapsed": 109.54938100099389
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 109.75967549000052
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=480&y=300",
+    "elapsed": 112.95959192499868
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 112.98493282299023
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=240&y=100",
+    "elapsed": 113.02940012099862
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 113.10921661699831
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=200",
+    "elapsed": 113.32995830599975
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 118.5600263029919
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=300&y=0",
+    "elapsed": 118.84966329399322
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=400&y=0",
+    "elapsed": 118.8800163929991
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=0",
+    "elapsed": 118.92952559099649
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=100",
+    "elapsed": 118.97996708999563
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=200",
+    "elapsed": 119.00397808899288
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=300",
+    "elapsed": 119.0301356879936
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 119.07968248600082
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=480&y=300",
+    "elapsed": 122.32944208499976
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 122.35509348400228
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=240&y=100",
+    "elapsed": 122.39925438299542
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 122.47934307999094
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=300&y=0",
+    "elapsed": 122.65939607399923
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 122.83084756899916
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 126.10989200200129
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=0",
+    "elapsed": 126.36061720599537
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=200",
+    "elapsed": 126.58987701000297
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 131.700036395996
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=300",
+    "elapsed": 132.17236130600213
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 132.20030700600182
+  },
+  {
+    "server": "valid",
+    "path": "/",
+    "elapsed": 231.48056348699902
+  },
+  {
+    "server": "valid",
+    "path": "/app.js",
+    "elapsed": 231.5518512879935
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=ready",
+    "elapsed": 231.6328500899981
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 231.93198119399312
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=480&y=300",
+    "elapsed": 233.06154381298984
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 233.08541801299725
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=240&y=100",
+    "elapsed": 233.13100251399737
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 233.21102731500287
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=300&y=0",
+    "elapsed": 233.41086211899528
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 233.58155522200104
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 236.84191268299764
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=0",
+    "elapsed": 237.09156118799
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=200",
+    "elapsed": 237.3216102939914
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 242.43402370599506
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=200&y=0",
+    "elapsed": 242.73118581299786
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=300",
+    "elapsed": 242.90146301599452
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 242.96165441800258
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 246.21207215699542
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=120&y=0",
+    "elapsed": 246.32179436199658
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=200&y=0",
+    "elapsed": 246.491440769998
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=300",
+    "elapsed": 246.68178627899033
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 246.7215436809929
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=480&y=300",
+    "elapsed": 249.9818063319981
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=360&y=200",
+    "elapsed": 250.00826853400213
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=240&y=100",
+    "elapsed": 250.05216943599225
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 250.1316857389902
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=180&y=200",
+    "elapsed": 250.35159654999734
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=0&y=0",
+    "elapsed": 255.57289528999536
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=200&y=0",
+    "elapsed": 255.8418821959931
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=400&y=0",
+    "elapsed": 255.89221069699852
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=500&y=0",
+    "elapsed": 255.94162769799004
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=0",
+    "elapsed": 255.96580409799935
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=100",
+    "elapsed": 255.99223539899685
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=300",
+    "elapsed": 256.04168840000057
+  },
+  {
+    "server": "valid",
+    "path": "/evidence?kind=pointer&x=600&y=400",
+    "elapsed": 256.0918217009894
+  }
+]

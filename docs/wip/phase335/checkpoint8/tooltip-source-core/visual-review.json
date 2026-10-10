@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-11T03:48:52.379306+07:00",
+  "method": "Assistant visually inspected actual MyOS framebuffer PNGs with view_image",
+  "drawing_verified": true,
+  "scope": "two private native HTTPS page launches, two hover/hide cycles each",
+  "text": "Native tooltip within MyOS",
+  "observed_tooltip_bounds": [
+    190,
+    216,
+    365,
+    239
+  ],
+  "within_guest_framebuffer": [
+    800,
+    600
+  ],
+  "tooltip_visible_on_hover": true,
+  "hidden_on_pointer_away": true,
+  "recreated_on_second_hover_and_second_launch": true,
+  "host_browser_or_decoder_used": false,
+  "phase_passed": false,
+  "youtube_test": false,
+  "owner_acceptance_received": false,
+  "limitations": [
+    "Private diagnostic kernel/provider test, not normal MyOS YouTube acceptance",
+    "Only two opens; not repeated-open warm stability or peak RAM acceptance",
+    "No audiovisual music or seek listening tested"
+  ]
+}

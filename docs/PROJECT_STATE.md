@@ -1,9 +1,9 @@
-2026-10-10 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint2508f4a; local commits only, no push.
+2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
+Repository /home/xytron404/myos; main checkpoint f8bce28; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
-CURRENT WORK: source-built Cobalt27.lts.3 tooltip fix, not yet runtime-tested.
+CURRENT WORK: source core built; private tooltip drawing/reopen test passed.
 Native verified HTTPS title requested176x24 while primary800x600 exists;
 ENOTSUP(-95) caused FATAL/SIGABRT. All16 PCs match online abort.
 Source3befd332 has9-line Cobalt-only NativeWidgetAura/root-compositor patch.
@@ -11,17 +11,19 @@ Kernel retains fullscreen/single-window rules; no fake window handles.
 Workspace build/phase335-core-workspace; dependencies and GN complete.
 Initial compile failed22:05 on missing host gperf; retained failure log.
 Workspace-only gperf3.3 installed; actual main color generator completed22:16.
-Incremental compile12workers/PTY32637, actual NinjaPID447750.
-Checked2026-10-10T22:45:58+07:00; PTY32637/Ninja447750 live; [262/17169] CXX clang_x64/obj/v8/v8_base_without_compiler/stub-cache.o.
-MemAvailable:    6883960 kB host only; no core linked.
+Full core build completed2026-10-11T03:42:04+07:00, terminal0; no FAILED action.
+Core SHA25672a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505.
+Source core103391688bytes; identity build/phase335-core-workspace/core-build-identity.json.
 Actual target Clang syntax/type check of patched tooltip passed22:50:55; no object writes.
-No linked libcobalt.so yet; no new-core playback or tooltip drawing claimed.
+Two launches/four hover-hide cycles passed03:46:33; actual PNG drawing reviewed.
 See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
-NEXT: one-shot chain PTY66862 waits successful terminal0 then freeze/test.
+CURRENT TEST: native TLS/JS/input running since03:52:14; PTY51267.
+Bundle private/build/native-verified-tls-lqntn0lr; log build/phase335-source-web.log.
+NEXT: inspect actual TLS/DOM/input results, then standard media prerequisites.
 Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.
-Validate source/core identity, then run native
-rendered HTTPS tooltip show/hide/recreate/close/resource tests; inspect images.
+Physical/SHM/aliases exact on both closes; heap786176→827136 then stable.
+See checkpoint8/tooltip-source-core; diagnostic fixture, not YouTube acceptance.
 Retest affected33.1-33.4 prerequisites with the actual new core.
 Then normal MyOS Rickroll>=30s, pause/resume/seek, close/reopen, freshboot,
 repeated-open stability and true resource peak; focused/full required regression.
