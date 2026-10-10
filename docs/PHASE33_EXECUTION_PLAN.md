@@ -19,9 +19,9 @@ The historical planning baseline below is retained. Native33.1/33.2 was accepted
 on2026-10-08 (PHASE33_NATIVE_WEB_ACCEPTANCE.md). Standard-media33.3 is now
 accepted on its declared MyOS/QEMU profile (PHASE333_ACCEPTANCE.md).
 That earlier task stopped at33.3. On2026-10-09 the owner explicitly authorized
-Phase33.4 only. PROJECT_STATE.md/PHASE334.md are current: real native public
-YouTube playback is observed, but sync/network-recovery and remaining gates
-are NOT PASSED. No33.5, Rickroll or parent Phase33 acceptance is claimed.
+Phase33.4 only. PROJECT_STATE.md/PHASE334.md are current: checkpoint11 proves
+real native public YouTube playback, controls, bounded sync and network-loss
+recovery. Real signed-URI expiry and its recovery remain pending in checkpoint12. No33.5, Rickroll or parent Phase33 acceptance is claimed.
 
 ## Verified starting point and uncertainty
 
