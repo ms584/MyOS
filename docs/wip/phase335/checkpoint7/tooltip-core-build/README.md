@@ -113,3 +113,7 @@ utility against actual source, not main Ninja completion or any guest playback.
 file26789 bytes; hash comparison with the isolated smoke is recorded separately
 in gperf-main-generator-result.json. This is real main-build prerequisite progress,
 not core linking or native tooltip/YouTube/audio acceptance. Build remains active.
+
+## Controlled concurrency increase 2026-10-10 22:35+07
+
+Measured12logicalCPUs/67.8%busy/9184018432Bavailable host RAM, seven observed clang processes3342184448BcombinedRSS. This is host-build data, not guest playback RAM. Verified owned Ninja438963 was stopped with SIGINT; wrapper terminal1/Ninja2 at22:34:26. Full log archived privately as build/phase335-core-compile-j8-gperf-fixed.log before any new stdout redirection. Source/objects retained unchanged. Incremental compile resumed12workers, active PTY32637 / Ninja447750 at 2026-10-10T22:35:45+07:00. No core linked, no runtime or acceptance claim. See concurrency-8-to-12.json, host-build-resources-8-to-12.json and resume-compile-12.py.

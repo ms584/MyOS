@@ -9,10 +9,10 @@
   "phase_passed": false,
   "host_player_used": false,
   "build_instructions": "https://developers.google.com/youtube/cobalt/docs/development/setup-linux",
-  "build_status": "incremental compile active after actual missing-gperf generator failure and workspace-only gperf installation",
-  "build_session": 90120,
+  "build_status": "incremental compile active12workers after measured host headroom and controlled8to12 transition; gperf main generator completed",
+  "build_session": 32637,
   "build_log": "build/phase335-core-compile.log",
-  "jobs": 8,
+  "jobs": 12,
   "ninja_version": "1.12.1",
   "clang_version": [
     "clang version 21.0.0git (https://chromium.googlesource.com/a/external/github.com/llvm/llvm-project fd3fecfc0936703f2715fe6fea890e81b0b3c2ac)",
@@ -22,7 +22,7 @@
   ],
   "metadata_filter": ".",
   "metadata_reason": "GitHub source HEAD has no Gerrit Change-Id; use actual pinned commit, never generated zero-hash fallback",
-  "updated": "2026-10-10T20:40:40.281678+07:00",
+  "updated": "2026-10-10T22:36:25.890117+07:00",
   "retest_prepared": true,
   "retest_syntax_checked": true,
   "retest_runtime_tested": false,
@@ -35,5 +35,6 @@
   "prerequisite_source_core_runtime_tested": false,
   "host_gperf_version": "3.3",
   "host_gperf_system_installed": false,
-  "gperf_main_generator_completed": true
+  "gperf_main_generator_completed": true,
+  "ninja_pid": 447750
 }

@@ -1,5 +1,5 @@
 2026-10-10 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main HEAD 7110806; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint a3b0701; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
@@ -11,8 +11,8 @@ Kernel retains fullscreen/single-window rules; no fake window handles.
 Workspace build/phase335-core-workspace; dependencies and GN complete.
 Initial compile failed22:05 on missing host gperf; retained failure log.
 Workspace-only gperf3.3 installed; actual main color generator completed22:16.
-Incremental compile8workers/PTY90120, actual NinjaPID438963.
-Checked 2026-10-10T22:30:14+07:00; latest [1514/18756] CXX clang_x64/obj/v8/torque_generated_initializers/typed-array-findlastindex-tq-csa.o.
+Incremental compile12workers/PTY32637, actual NinjaPID447750.
+Checked 2026-10-10T22:35:45+07:00; 8-to-12 transition logged; current log build/phase335-core-compile.log.
 No linked libcobalt.so yet; no new-core playback or tooltip drawing claimed.
 See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
