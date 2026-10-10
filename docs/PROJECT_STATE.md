@@ -52,7 +52,7 @@ Zero memory/threadnotes;65cacheENOSPC/noabort;tooltip cause now reproduced.
 Control j_4b33rx DONE18:10:59:third FATAL/SIG6;returnPC−1 proves native tooltip.
 Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED.
 Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
-HTTPS title fixture DONE:DOM90s timeout;not tooltip proof.
+Source-core tooltip retest prepared/syntax PASS only;real runtime test pending.
 File title DONE:blank frames/noDOM;wrong pair-resource assertion recorded.
 HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
 Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.

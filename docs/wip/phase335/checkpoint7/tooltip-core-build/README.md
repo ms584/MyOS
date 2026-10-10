@@ -55,3 +55,14 @@ relevant regression and restore normal images before promoting a final bundle.
 Owner has not confirmed music or controls. Audio input in this chat is unsupported;
 PCM/RMS is not proof of Rickroll music or stale-audio absence. Phase33.5/33 and the
 independent audible/interactive Phase32 gate remain open. No push.
+
+Prepared private source-core retest and freeze-core.py are archived here. Both
+passed Python syntax checking only; neither has run against a new linked core.
+After the existing compile log reports terminal exit0, freeze-core.py validates
+source/patch/normal hashes, records real ELF/header/dynamic identity, and writes
+build/phase335-core-workspace/core-build-identity.json. It rejects pending/failed
+builds. Set MYOS_TOOLTIP_CORE_MANIFEST to that file for the private retest.
+The retest waits for actual rendered page pixels, records two hover/hide cycles
+in each of two launches, and checks no FATAL plus exact physical/SHM/alias cleanup.
+Saved hover images still need visual inspection; this fixture cannot pass YouTube
+or sound/music criteria. Source files live in the private diagnostic worktree.

@@ -1,0 +1,8 @@
+{
+  "phase_passed": false,
+  "test": "Reject identity freeze while actual compile is pending",
+  "returncode": 1,
+  "expected_message_seen": true,
+  "manifest_created": false,
+  "runtime_retest_executed": false
+}

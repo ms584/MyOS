@@ -22,5 +22,8 @@
   ],
   "metadata_filter": ".",
   "metadata_reason": "GitHub source HEAD has no Gerrit Change-Id; use actual pinned commit, never generated zero-hash fallback",
-  "updated": "2026-10-10T20:40:40.281678+07:00"
+  "updated": "2026-10-10T20:40:40.281678+07:00",
+  "retest_prepared": true,
+  "retest_syntax_checked": true,
+  "retest_runtime_tested": false
 }
