@@ -1,0 +1,362 @@
+Console: framebuffer 800x600x32
+MyOS Kernel: 64-bit Long Mode
+IDT/PIC initialized
+PASS: PMM frames above256MiB, alias and retained lifetime
+PASS: PMM, paging, heap, exhaustion/recovery
+PASS: graphics surface, clipping, font and redraw
+Free physical pages: 126679
+RAMFS mounted: /bin /home /etc /dev (RAM-backed)
+PASS: RAMFS paths, binary I/O, offsets, permissions and cleanup
+GDT/TSS and Ring 3 selectors initialized
+PS/2 keyboard initialized
+PS/2 mouse initialized
+PIT: 100 Hz; preemptive scheduler started
+PASS: two CPU-bound tasks preempted; task exit
+PASS: context registers and direction flag preserved
+PASS: Ring 3 processes, private CR3/data/stack, timer preemption
+PASS: boot user probes retired and pages recovered
+Hello from Ring 3 via sys_write!
+PASS: user write/getpid/yield/exit; status=42, resources reclaimed
+Welcome to MyOS RAMFS.
+PASS: Ring 3 opened/read/closed /etc/motd
+PASS: boot kernel probes retired
+ATA PIO disk: 240818 sectors
+Storage: unrecognized data disk; RAM-only
+NIC: RTL8139 initialized
+Audio: SB16 initialized
+Security: UTC 1791666571, RDRAND ready, HTTPS prerequisites ready
+App available: /bin/hello (Ring 3)
+MyOS Shell ready. Type help.
+myos> net up
+Network: DHCP configured
+Network: RTL8139, IP 10.0.2.15 gateway 10.0.2.2 DNS 10.0.2.3
+myos> mkdir /dev/shm
+myos> elf cobalt cobalt provider https://cobalt.example.com:45331/ cobalt.example.com=10.0.2.2
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x0000008006331000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: pthread_mutex_trylock
+ELF platform: SbSystemGetExtension
+ELF platform: pthread_mutex_unlock
+ELF provider: SbGetEglInterface
+ELF provider: SbGetGlesInterface
+ELF platform: SbWindowDestroy
+ELF platform: SbWindowSetDefaultOptions
+ELF platform: SbWindowCreate
+ELF platform: SbWindowGetSize
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: pthread_getspecific
+ELF platform: SbSystemRaisePlatformError
+ELF platform: SbSystemRequestStop
+ELF platform: gettid
+ELF platform: read
+ELF platform: __errno_location
+ELF platform: close
+ELF platform: clock_gettime
+ELF platform: pthread_sigmask
+ELF platform: pthread_setspecific
+ELF platform: pthread_key_create
+ELF platform: write
+ELF platform: sched_yield
+ELF platform: free
+ELF platform: pthread_mutex_init
+ELF platform: pthread_cond_init
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_wait
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_cond_signal
+ELF platform: sem_init
+ELF platform: sem_timedwait
+ELF platform: sem_wait
+ELF platform: sem_post
+ELF platform: pthread_self
+ELF platform: pthread_getschedparam
+ELF platform: sysconf
+ELF platform: munmap
+ELF platform: mmap
+ELF platform: sigaction
+ELF platform: signal
+ELF platform: raise
+ELF platform: uname
+ELF platform: eventfd
+ELF platform: fstat
+ELF platform: fdatasync
+ELF platform: mkdir
+ELF platform: access
+ELF platform: opendir
+ELF platform: readdir
+ELF platform: geteuid
+ELF platform: chmod
+ELF platform: closedir
+ELF platform: mprotect
+ELF platform: madvise
+ELF platform: pipe
+ELF platform: fcntl
+ELF platform: mkstemp
+ELF platform: mkdtemp
+ELF platform: readlink
+ELF platform: posix_memalign
+ELF platform: prctl
+ELF platform: pthread_setname_np
+ELF platform: pthread_create
+ELF platform: poll
+ELF platform: dup
+ELF platform: isatty
+ELF platform: getpid
+ELF platform: pthread_key_delete
+ELF platform: pthread_getname_np
+ELF platform: fchmod
+ELF platform: writev
+ELF platform: ftruncate
+ELF platform: getaddrinfo
+ELF platform: freeaddrinfo
+ELF platform: socketpair
+ELF platform: socket
+ELF platform: setsockopt
+ELF platform: bind
+ELF platform: listen
+ELF platform: connect
+ELF platform: shutdown
+ELF platform: sendmsg
+ELF platform: recvmsg
+ELF platform: getsockname
+ELF platform: getsockopt
+ELF platform: accept
+ELF platform: realloc
+ELF platform: malloc
+ELF platform: gai_strerror
+ELF platform: getifaddrs
+ELF platform: freeifaddrs
+ELF platform: calloc
+ELF platform: sem_destroy
+ELF platform: pthread_mutex_destroy
+ELF platform: SbMicrophoneGetAvailable
+ELF platform: SbMicrophoneCreate
+ELF platform: SbMicrophoneOpen
+ELF platform: SbMicrophoneRead
+ELF platform: SbMicrophoneDestroy
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbMediaCanChangeType
+ELF platform: SbMediaGetAudioOutputCount
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: SbMediaGetBufferAllocationUnit
+ELF platform: SbMediaGetAudioBufferBudget
+ELF platform: SbMediaGetBufferGarbageCollectionDurationThreshold
+ELF platform: SbMediaGetInitialBufferCapacity
+ELF platform: SbMediaIsBufferPoolAllocateOnDemand
+ELF platform: SbMediaGetVideoBufferBudget
+ELF provider: SbPlayerWriteEndOfStream
+ELF provider: SbPlayerGetMaximumNumberOfSamplesPerWrite
+ELF provider: SbPlayerCreate
+ELF provider: SbPlayerGetPreferredOutputMode
+ELF provider: SbPlayerDestroy
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerWriteSamples
+ELF provider: SbPlayerSetBounds
+ELF provider: SbPlayerSetPlaybackRate
+ELF provider: SbPlayerSetVolume
+ELF provider: SbPlayerGetInfo
+ELF provider: SbPlayerGetCurrentFrame
+ELF provider: SbPlayerGetAudioConfiguration
+ELF platform: SbDrmCreateSystem
+ELF platform: SbDrmDestroySystem
+ELF platform: SbDrmIsServerCertificateUpdatable
+ELF platform: SbDrmUpdateServerCertificate
+ELF platform: SbDrmGenerateSessionUpdateRequest
+ELF platform: SbDrmUpdateSession
+ELF platform: SbDrmCloseSession
+ELF platform: getuid
+ELF platform: pause
+ELF weak zero: _ZTHN2v88internal12trap_handler21g_thread_in_wasm_codeE
+ELF platform: malloc_usable_size
+ELF platform: pthread_kill
+ELF platform: getrlimit
+ELF platform: ioctl_FIONREAD
+ELF platform: inotify_add_watch
+ELF platform: inotify_rm_watch
+ELF platform: SbSpeechSynthesisIsSupported
+ELF platform: SbSpeechSynthesisSpeak
+ELF platform: SbSpeechSynthesisCancel
+ELF platform: SbSystemGetLocaleId
+ELF platform: SbTimeZoneGetName
+ELF platform: rename
+ELF platform: SbSystemGetProperty
+ELF platform: kSbFileMaxPath
+ELF platform: SbSystemGetPath
+ELF platform: SbWindowGetDiagonalSizeInInches
+ELF platform: SbSystemRequestConceal
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: SbSystemHasCapability
+ELF platform: SbSystemGetTotalCPUMemory
+ELF platform: SbSystemGetUsedGPUMemory
+ELF platform: SbAudioSinkDestroy
+ELF platform: SbAudioSinkIsAudioSampleTypeSupported
+ELF platform: SbAudioSinkGetMinBufferSizeInFrames
+ELF platform: SbAudioSinkGetNearestSupportedSampleFrequency
+ELF platform: SbAudioSinkCreate
+ELF platform: aligned_alloc
+ELF platform: pthread_cond_broadcast
+ELF platform: kSbFileSepString
+ELF platform: SbLog
+ELF platform: SbSystemGetLastError
+ELF platform: SbSystemGetErrorString
+ELF platform: SbLogRaw
+ELF platform: msync
+ELF platform: kSbMaxThreads
+ELF platform: lseek
+ELF platform: pread
+ELF platform: pwrite
+ELF platform: pthread_condattr_init
+ELF platform: pthread_condattr_setclock
+ELF platform: pthread_condattr_destroy
+ELF platform: pthread_cond_destroy
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_attr_init
+ELF platform: pthread_attr_setdetachstate
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_join
+ELF platform: pthread_detach
+ELF platform: setpriority
+ELF platform: sched_setscheduler
+ELF platform: mincore
+ELF platform: sched_getaffinity
+ELF platform: statvfs
+ELF platform: realpath
+ELF platform: getcwd
+ELF platform: pipe2
+ELF platform: symlink
+ELF platform: pathconf
+ELF platform: fstatat
+ELF platform: openat
+ELF platform: unlinkat
+ELF platform: fdopendir
+ELF platform: recv
+ELF platform: SbEventCancel
+ELF platform: SbEventSchedule
+ELF platform: SbSystemIsDebuggerAttached
+ELF platform: SbSystemBreakIntoDebugger
+ELF platform: epoll_create1
+ELF platform: epoll_ctl
+ELF platform: epoll_wait
+ELF platform: pthread_attr_getstacksize
+ELF platform: kSbFileMaxName
+ELF platform: fsync
+ELF platform: SbSystemGetStack
+ELF platform: SbSystemSymbolize
+ELF platform: pthread_once
+ELF platform: SbStorageOpenRecord
+ELF platform: SbStorageCloseRecord
+ELF platform: SbStorageGetRecordSize
+ELF platform: SbStorageReadRecord
+ELF platform: SbStorageDeleteRecord
+ELF platform: pthread_getattr_np
+ELF platform: pthread_attr_getstack
+ELF platform: send
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_rwlock_destroy
+ELF platform: SbSystemGetRandomUInt64
+ELF platform: inotify_init1
+ELF platform: getauxval
+ELF platform: readv
+ELF platform: utimensat
+ELF platform: clock_nanosleep
+ELF platform: if_indextoname
+ELF platform: getpeername
+ELF platform: recvmmsg
+ELF platform: sendto
+ELF platform: readdir_r
+ELF platform: pthread_mutexattr_settype
+ELF platform: fchown
+ELF provider: SbDecodeTargetRelease
+ELF platform: SbDrmGetMetrics
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: SbSystemHideSplashScreen
+ELF platform: SbSystemNetworkIsDisconnected
+ELF platform: SbSystemSignWithCertificationSecretKey
+ELF relocations: relative=117653 absolute=20 global=17 jump=626 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+Starboard SABI: pinned x64 API 18 matched
+[1010/211029.220000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.
+DIAG window-create width height windowed existing result= 0x0000000000000320 0x0000000000000258 0x0000000000000000 0x0000000000000001 0x0000000000000001
+MEDIA native metrics presented=603 sync-samples=598 max-sync-us=33824 decoded=600 dropped=0 corrupted=0 source-starvations=0
+ELF resident: free-before=126671 free-after=126671 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=786176 heap-after=847616
+ELF cancelled; all threads stopped
+myos> mem
+Free physical pages: 126671
+myos> 

@@ -1,0 +1,41 @@
+{
+  "phase_passed": false,
+  "automatic_analyzer_passed": false,
+  "metrics": [
+    "MEDIA native metrics presented=603 sync-samples=598 max-sync-us=33824 decoded=600 dropped=0 corrupted=0 source-starvations=0"
+  ],
+  "ram_baselines": [
+    {
+      "launch": 0,
+      "elapsed": 100.7534659380035,
+      "label": "baseline",
+      "free_pages": 64942,
+      "heap_live_bytes": 7068864,
+      "heap_runtime_peak_bytes": 7724240,
+      "irq_count": 0,
+      "underrun_count": 0,
+      "consumed_frames": 0,
+      "pmm_history_tick": 10003
+    }
+  ],
+  "ram_history_rows": 84,
+  "ram_history_complete": true,
+  "max_history_gap_ticks": 258,
+  "min_free_pages": 58574,
+  "heap_runtime_peak_bytes": 7724240,
+  "last_ram_sample": {
+    "launch": 0,
+    "elapsed": 146.1125326199981,
+    "label": "after-process-exit",
+    "free_pages": 126671,
+    "heap_live_bytes": 847616,
+    "heap_runtime_peak_bytes": 7724240,
+    "irq_count": 431,
+    "underrun_count": 4,
+    "consumed_frames": 0,
+    "pmm_history_tick": 14538,
+    "pmm_history_coverage_ticks": 258,
+    "pmm_history_complete": true,
+    "pmm_interval_min_free_pages": 60366
+  }
+}

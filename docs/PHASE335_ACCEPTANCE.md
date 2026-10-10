@@ -1,3 +1,5 @@
+Checkpoint12 2026-10-11 04:14+07: continuous new-core observations retained as NOT PASSED: VP9 zero-drop analyzer rejected1drop; original-profile VP8 zero-drop decoded600, but one obscured barcode screenshot rejected pixel reader. Fixed-layout private fixture retest active; no runtime/threshold relaxation. Normal online source-core selector prepared, three focused identity tests pass. See wip/phase335/checkpoint12/continuous-retests/README.md.
+
 Checkpoint11 2026-10-11 04:03:59+07: private source-core standard-media paired controls completed. Five frozen viewport crops and zero PCM-file growth over observed8.116s; resume both advance, forward seek15s. Owner listening/backward seek/normal online unverified. Continuous/RAM retest active. See wip/phase335/checkpoint11/paired-controls/README.md.
 
 Checkpoint10 2026-10-11 03:59:34+07: private new-core WebM/Opus observation completed; actual motion/resume/forward seek, captured PCM36.93s, sync89956us, exact physical/SHM/alias cleanup. Pause/audio timing not fully verified; paired observer follow-up active. Not YouTube/normal acceptance. See wip/phase335/checkpoint10/source-media/README.md.

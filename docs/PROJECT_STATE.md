@@ -1,5 +1,5 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint 4835c3e; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint 04de44e; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
@@ -9,12 +9,9 @@ ENOTSUP(-95) caused FATAL/SIGABRT. All16 PCs match online abort.
 Source3befd332 has9-line Cobalt-only NativeWidgetAura/root-compositor patch.
 Kernel retains fullscreen/single-window rules; no fake window handles.
 Workspace build/phase335-core-workspace; dependencies and GN complete.
-Initial compile failed22:05 on missing host gperf; retained failure log.
-Workspace-only gperf3.3 installed; actual main color generator completed22:16.
 Full core build completed2026-10-11T03:42:04+07:00, terminal0; no FAILED action.
 Core SHA25672a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505.
 Source core103391688bytes; identity build/phase335-core-workspace/core-build-identity.json.
-Actual target Clang syntax/type check of patched tooltip passed22:50:55; no object writes.
 Two launches/four hover-hide cycles passed03:46:33; actual PNG drawing reviewed.
 See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
@@ -25,9 +22,12 @@ Media n97q9_ey terminal0 at03:59:34; real decode/motion/forward seek, PCM36.93s.
 Sync89956us; exact physical/SHM/alias; heap+60KiB; checkpoint10/source-media.
 Paired controls yx51f7lc terminal0 at04:03:59; five frozen crops/PCM65536 bytes.
 Observed pause8.116s; resume pixels/PCM advance; forward seek15s. checkpoint11.
-CURRENT TEST: continuous/RAM kueg10ge, PTY92519; not yet verified.
-Log build/phase335-source-media-continuous.log; first wrapper failure retained.
-NEXT: inspect continuous/sync/RAM, lifecycle3/adverse then normal online.
+Continuous VP9 analyzer rejected1drop; VP8 rejected one obscured barcode PNG.
+Both histories complete; failures retained checkpoint12/continuous-retests.
+CURRENT TEST: VP8 fixed-layout retest PTY97538; runtime/threshold unchanged.
+Log build/phase335-source-media-vp8-fixed-layout.log; scoped fixture only.
+Normal online source-core selector prepared; identity tamper tests3 pass.
+NEXT: retest standard profile, assess reflow, lifecycle/adverse then normal online.
 Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.
 Physical/SHM/aliases exact on both closes; heap786176→827136 then stable.
 See checkpoint8/tooltip-source-core; diagnostic fixture, not YouTube acceptance.

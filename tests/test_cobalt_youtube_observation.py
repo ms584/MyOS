@@ -31,6 +31,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('resources',type=Path);p.add_argument('fonts',type=Path)
     p.add_argument('--provider',type=Path,default=ROOT/'build/media-evaluation/provider-i8xbwfmz')
+    p.add_argument('--source-core-manifest',type=Path,help='Explicit validated source-built core; preserves the official-core audit and does not imply phase acceptance')
     p.add_argument('--url',action='append',required=True)
     p.add_argument('--engine-trace',action='store_true',help='Native opt-in engine stderr/VLOG only; no memory extraction or TLS overrides')
     p.add_argument('--identity',type=Path,default=ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json')
@@ -60,6 +61,11 @@ def main():
     audit=json.loads((ROOT/'docs/PHASE33_COBALT_AUDIT.json').read_text())
     core=ROOT/'build/engine-evaluation/libcobalt.so';provider=a.provider.resolve()/'provider.so'
     assert digest(core)==audit['library_sha256']
+    source_core_build=None
+    if a.source_core_manifest:
+        from cobalt_source_core import load_source_core
+        core,source_core_build=load_source_core(a.source_core_manifest)
+        (out/'source-core-build.json').write_text(json.dumps(source_core_build,indent=2)+'\n')
     assert digest(provider)==json.loads((provider.parent/'report.json').read_text())['provider_sha256']
     specs=['cobalt='+str(core),'provider='+str(provider)]
     report=json.loads((a.resources/'report.json').read_text())
@@ -94,7 +100,7 @@ def main():
     install()
     evidence=dict(phase_passed=False,observation_only=True,date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=7))).isoformat(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-        core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,
+        core_sha256=digest(core),source_core_build=source_core_build,official_google_core=source_core_build is None,provider_sha256=digest(provider),normal_identity=identities,
         urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
     vm=None;observer=None;inode_observer=None
     try:
