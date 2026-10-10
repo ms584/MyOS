@@ -29,5 +29,8 @@
   "online_selector_prepared": true,
   "online_selector_syntax_checked": true,
   "online_selector_help_checked": true,
-  "online_selector_runtime_tested": false
+  "online_selector_runtime_tested": false,
+  "prerequisite_source_core_selector_prepared": true,
+  "prerequisite_source_core_selector_syntax_checked": true,
+  "prerequisite_source_core_runtime_tested": false
 }

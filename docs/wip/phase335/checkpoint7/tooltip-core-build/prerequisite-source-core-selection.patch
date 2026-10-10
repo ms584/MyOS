@@ -1,0 +1,15 @@
+--- a/tests/test_cobalt_native_acceptance.py
++++ b/tests/test_cobalt_native_acceptance.py
+@@ -27,6 +27,12 @@
+ assert hashlib.sha256(provider.read_bytes()).hexdigest()==json.loads((provider.parent/'report.json').read_text())['provider_sha256']
+ assert len(sys.argv)==3,'Require pinned engine resource and platform font directories'
+ out=Path(tempfile.mkdtemp(prefix='native-verified-tls-',dir=ROOT/'build'))
++source_core_build=None
++if os.environ.get('MYOS_SOURCE_CORE_MANIFEST'):
++    from phase335_source_core import load_source_core
++    core,source_core_build=load_source_core(os.environ['MYOS_SOURCE_CORE_MANIFEST'])
++    (out/'source-core-build.json').write_text(json.dumps(source_core_build,indent=2)+'\n')
++    print('PRIVATE source-built core prerequisite observation; no phase acceptance',flush=True)
+ os.umask(0o077)
+ specs=['cobalt='+str(core),'provider='+str(provider)]
+ resources=Path(sys.argv[1]);report=json.loads((resources/'report.json').read_text())

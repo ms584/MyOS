@@ -81,3 +81,13 @@ segment was recovered privately and hash-recorded here. Failure log and safe
 interrupt tail retained. Source and completed objects were not deleted. Active
 resume session is18106, using the same compile log path and identical source.
 These are host build operations, not a guest failure or playback acceptance.
+
+Private native HTTPS/JavaScript setup now supports MYOS_SOURCE_CORE_MANIFEST.
+The original official baseline core hash is still checked first, then the shared
+helper verifies the derived core before it is placed in the guest asset disk.
+Its build identity is recorded in each output directory. The standard VP8/Opus
+MSE observation inherits this setup, so affected prerequisites can be rerun using
+the actual new core. This change has syntax checks only; no new guest run occurred.
+The standard WebM fixture is a prerequisite/regression input and never substitutes
+for online YouTube/Rickroll acceptance. Ring3/kernel underlay contract fixtures do
+not load Cobalt and remain separate; changing their filenames would not retest it.
