@@ -44,3 +44,9 @@ was intentionally interrupted before expiry; its native-body SHA confirms origin
 1663-byte request identity. Current lz6fldt5 repeats same URI/body/deadline, native
 source44/HTTP200 and native SHA bae9a411... confirmed again. No extra expiry wait.
 All after-expiry/recovery/close acceptance flags remain false until actual audit.
+
+Current expiry boot/assets hashes are frozen in checkpoint.json. For the earlier
+protocol-capture custom kernel, only actual QEMU path/source/command were retained
+at launch; no hash was frozen before later isolated rebuild. Do not substitute the
+normal-image hash for that diagnostic image. Main checkpoint11 production playback
+retains its complete build identities. Current negative-test identity is explicit.

@@ -37,5 +37,11 @@
   },
   "superseded_harness": "build/native-verified-tls-l8dr2viu",
   "superseded_reason": "new shell prompt wait and durable native reports",
-  "native_body_sha256_confirmed": true
+  "native_body_sha256_confirmed": true,
+  "current_expiry_profile_identities": {
+    "boot.img": "c7868eeb449eaecca5f7322fa89b81630a077b7d6c348a1731bc6e1aa160fcb3",
+    "assets.img": "c0e5aa1caf930591487453e345c69eaa109a378ef13ad67e47f9132842f80b03"
+  },
+  "protocol_capture_custom_boot_hash_recorded_at_launch": false,
+  "protocol_capture_custom_boot_hash_limitation": "Original custom image path was recorded, but its hash was not frozen before subsequent isolated diagnostic rebuild; no normal-image hash is claimed as that custom image hash."
 }
