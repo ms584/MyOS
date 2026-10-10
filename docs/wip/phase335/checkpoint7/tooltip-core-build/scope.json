@@ -34,5 +34,6 @@
   "prerequisite_source_core_selector_syntax_checked": true,
   "prerequisite_source_core_runtime_tested": false,
   "host_gperf_version": "3.3",
-  "host_gperf_system_installed": false
+  "host_gperf_system_installed": false,
+  "gperf_main_generator_completed": true
 }

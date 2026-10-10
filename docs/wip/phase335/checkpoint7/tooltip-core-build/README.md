@@ -108,3 +108,8 @@ was recorded. At22:12 the exact upstream generator command/input was executed
 with a separate output path: exit0,26789-byte generated C++ table; SHA/input/tool
 identity recorded in gperf-generator-smoke.json. This verifies the installed host
 utility against actual source, not main Ninja completion or any guest playback.
+
+22:16+07 main Ninja color_data action completed at step761/18756: actual generated
+file26789 bytes; hash comparison with the isolated smoke is recorded separately
+in gperf-main-generator-result.json. This is real main-build prerequisite progress,
+not core linking or native tooltip/YouTube/audio acceptance. Build remains active.

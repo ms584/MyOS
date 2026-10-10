@@ -57,4 +57,4 @@ Private source-core HTTPS/standard/online selectors syntax PASS;runtime pending.
 HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
 Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.
 Source3befd332+tooltip Aura-root patch applied;gclient deps DONE19:01:10.
-GN DONE;missing gperf failed22:05;local gperf3.3 installed;resume ACTIVE8jobs PTY90120.
+GN DONE;missing gperf failed22:05;local gperf3.3 installed;resume ACTIVE8jobs PTY90120 checked22:16+07;main color generator DONE.
