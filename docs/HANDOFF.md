@@ -1,4 +1,20 @@
-# MyOS handoff — 2026-09-29
+# MyOS handoff — 2026-10-10
+
+### 2026-10-10 13:20 +07 — checkpoint13; Phase33.4 accepted on tested profile
+See PHASE334_ACCEPTANCE.md for the requirement audit and wip/phase334/checkpoint13/
+for authentic native expiry/recovery. Productionda08b2d/provider-sey3hj06 unchanged.
+Direct/search movie50.447s/30.283s,same-session sound,controls/reopens,
+actual sync<=89970us,timeout/loss/unsupported/error recovery and regression pass.
+Real expiry is native SABR UMP46 RELOAD_PLAYER_RESPONSE inside HTTP200:
+same authentic URI/body,request44/stream47/TLS74,complete144-byte control.
+Long session recovered35.220s movie/188.510s PCM,max89945us,exactresources.
+Short follow-up encountered302/429 and closed cleanly; not playback success.
+All5 normal artifacts exact; no QEMU remains. OptionalVP9/native-underlay profile:
+QEMU1GiB,source256x144@30,presentation160x90,drops disclosed,defaultVP8 unchanged.
+Authorization resolved; no permission pending. Local commits only/no push.
+Ready for requested33.5 actual Rickroll/fresh-boot/interactive gates.
+Phase33.5,parent33,wider32 and Rickroll acceptance remain unclaimed.
+
 
 ### 2026-10-10 07:10 +07 — checkpoint12 native expiry protocol; real deadline pending
 Owner explicitly authorized signed-URI reuse and necessary33.4 work; no permission

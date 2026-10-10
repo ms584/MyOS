@@ -1,0 +1,115 @@
+{
+  "phase_passed": false,
+  "scoped_native_expired_uri_error_and_recovery": true,
+  "human_youtube_frame_review_required": true,
+  "uri_sha256": "1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d",
+  "body_sha256": "bae9a411dcaa582cb5ca952297d6f76635965700dfd57f1f83d94fd0d2f34fed",
+  "body_bytes": 1663,
+  "expiry_utc": "2026-10-10T05:51:09+00:00",
+  "native_requests": [
+    {
+      "source_id": 44,
+      "method": "POST",
+      "uri_sha256": "1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d",
+      "native_mono_ms": 89020,
+      "statuses": [
+        200
+      ],
+      "server_dates": [
+        "2026-10-10T00:26:55+00:00"
+      ]
+    },
+    {
+      "source_id": 86,
+      "method": "POST",
+      "uri_sha256": "1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d",
+      "native_mono_ms": 19665630,
+      "statuses": [
+        200
+      ],
+      "server_dates": [
+        "2026-10-10T05:53:12+00:00"
+      ]
+    }
+  ],
+  "native_ump_expiry_proof": {
+    "request_source": 44,
+    "http_stream_source": 47,
+    "native_tls_source": 74,
+    "native_ump_parts": [
+      [
+        74,
+        46,
+        144,
+        144
+      ]
+    ],
+    "http_status": 200,
+    "server_dates": [
+      "2026-10-10T06:08:47+00:00"
+    ],
+    "actual_outgoing_body_sha_confirmed": true,
+    "meaning": "Native MyOS HTTP/chunk/UMP observer identified complete part46 RELOAD_PLAYER_RESPONSE from authentic expired original URI/body; no host UMP demux/media decoder."
+  },
+  "native_body_sha_confirmed": true,
+  "native_after_reports": [
+    {
+      "kind": "after-expiry-network-or-cors",
+      "value": "{\"status\":0,\"body_bytes\":1663,\"uri_sha256\":\"1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d\"}",
+      "utc": "2026-10-10T05:53:10.640Z"
+    }
+  ],
+  "normal_identity_exact": true,
+  "desktop_shell_resources_exact": true,
+  "recovered_motion_span_seconds": 35.219860295001126,
+  "recovered_motion_roi": [
+    40,
+    80,
+    740,
+    350
+  ],
+  "recovered_motion_changes": [
+    {
+      "before": "frame-19839.png",
+      "after": "frame-19844.png",
+      "changed_pixels": 186943
+    },
+    {
+      "before": "frame-19844.png",
+      "after": "frame-19849.png",
+      "changed_pixels": 189000
+    },
+    {
+      "before": "frame-19849.png",
+      "after": "frame-19854.png",
+      "changed_pixels": 189000
+    },
+    {
+      "before": "frame-19854.png",
+      "after": "frame-19859.png",
+      "changed_pixels": 189000
+    },
+    {
+      "before": "frame-19859.png",
+      "after": "frame-19864.png",
+      "changed_pixels": 189000
+    },
+    {
+      "before": "frame-19864.png",
+      "after": "frame-19869.png",
+      "changed_pixels": 187542
+    },
+    {
+      "before": "frame-19869.png",
+      "after": "frame-19874.png",
+      "changed_pixels": 189000
+    }
+  ],
+  "native_pcm_sha256": "f97302348c099bb73dab24de7bf3f106dd8dae87c7c49540a9d1c8d9cd2ea719",
+  "native_pcm_seconds": 188.50956916099773,
+  "native_pcm_audible_second_bins": 183,
+  "actual_hardware_query_failures": 0,
+  "observed_max_sync_us": 89945,
+  "owned_mapping_peak_bytes": 532844544,
+  "scope": "Native peer HTTP200 before and native HTTP403 or complete native UMP46 after real expiry for same URI/body; browser status0 may be CORS opaque. Native display/PCM recovery, exact close/desktop resources. Never whole33.4/33.5/33/Rickroll acceptance by this script alone."
+}

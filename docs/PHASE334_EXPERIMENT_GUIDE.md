@@ -1,5 +1,21 @@
 # Phase33.4 experiment guide
 
+### 2026-10-10 13:20 +07 — checkpoint13; Phase33.4 accepted on tested profile
+See PHASE334_ACCEPTANCE.md for the requirement audit and wip/phase334/checkpoint13/
+for authentic native expiry/recovery. Productionda08b2d/provider-sey3hj06 unchanged.
+Direct/search movie50.447s/30.283s,same-session sound,controls/reopens,
+actual sync<=89970us,timeout/loss/unsupported/error recovery and regression pass.
+Real expiry is native SABR UMP46 RELOAD_PLAYER_RESPONSE inside HTTP200:
+same authentic URI/body,request44/stream47/TLS74,complete144-byte control.
+Long session recovered35.220s movie/188.510s PCM,max89945us,exactresources.
+Short follow-up encountered302/429 and closed cleanly; not playback success.
+All5 normal artifacts exact; no QEMU remains. OptionalVP9/native-underlay profile:
+QEMU1GiB,source256x144@30,presentation160x90,drops disclosed,defaultVP8 unchanged.
+Authorization resolved; no permission pending. Local commits only/no push.
+Ready for requested33.5 actual Rickroll/fresh-boot/interactive gates.
+Phase33.5,parent33,wider32 and Rickroll acceptance remain unclaimed.
+
+
 ### 2026-10-10 07:10 +07 — checkpoint12 native expiry protocol; real deadline pending
 Owner explicitly authorized signed-URI reuse and necessary33.4 work; no permission
 is pending. Production code/normal5 unchanged; checkpoint11 remains latest native
@@ -420,3 +436,42 @@ offset with wall-time pause. Actual PCM_STATUS hold/FLUSH plus movie ROI proves 
 Live expiry approval/protocol plan:PHASE334_EXPIRY_REVIEW_PLAN.md. Do not execute replay
 or disclose signed tokens before scoped owner authorization. Status0/arbitraryGET/
 CORS failure/controlled403 cannot count as real SABR signed-URL expiry.
+
+## Checkpoint13 expiry reproduction and interpretation
+Keep authentic URI/body private;never alter expire/signature/guest time.
+Native media host200 alone did not pass.MyOS bounded TLS/HTTP/UMP observer proved
+complete part46 RELOAD_PLAYER_RESPONSE after real expiry.See checkpoint13/scope.md.
+Run the retained scoped audit through tools/run_logged.py:
+~~~sh
+python3 tools/run_logged.py -- python3 docs/wip/phase334/checkpoint13/audit-expiry-recovery.py build/native-verified-tls-lz6fldt5 --expected docs/wip/phase334/checkpoint12/selected-request-safe.json --ump-bundle build/native-verified-tls-ang_oxou --motion-start 19839 --motion-end 19875
+~~~
+It checks identical actual outgoing body,request/socket binding,native complete
+UMP46 after server/nativeUTC expiration,recovery motion/nativePCM,<=100ms clock
+error and exact desktop/normal cleanup.Whole-phase audit/human review remain
+separate.Raw URI/body/CA keys are never committed.
+
+Current public-profile reproduction (native inputs from committed actions):
+~~~sh
+python3 tools/run_logged.py -- python3 - <<'PY'
+import sys,runpy
+sys.path.insert(0,'docs/wip/native-pmm512/kvm-ata-20261008')
+from qemu_kvm_optin_20261008 import install
+install()
+sys.path.insert(0,'tests')
+sys.argv=['tests/test_cobalt_youtube_observation.py',
+'/home/xytron404/cd-QJYMwG/build/cobalt-resources-dwxalc2n',
+'/home/xytron404/platform-fonts-01W7Ri/build/platform-fonts-20261007',
+'--provider','build/media-evaluation/provider-sey3hj06',
+'--identity','docs/wip/phase334/checkpoint11/current-online/normal-identity.json',
+'--memory-mib','1024','--seconds','500',
+'--url','https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+'--url','https://www.youtube.com/',
+'--actions','docs/wip/phase334/checkpoint11/current-online/actions.json',
+'--desktop-check']
+runpy.run_path('tests/test_cobalt_youtube_observation.py',run_name='__main__')
+PY
+~~~
+Observe/review actual playback;fresh runs are not automatic PASS. A short
+follow-up returned302/429:retain real failures,return to MyOS and never bypass
+service controls/fabricate credentials.33.5 still needs separately requested
+normal-image Rickroll/fresh-boot/interactive acceptance.

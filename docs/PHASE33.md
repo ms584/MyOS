@@ -1,25 +1,22 @@
 # Phase 33 — Rickroll playback acceptance (in progress; not passed)
 
-Current2026-10-10 05:49+07:33.4 ACTIVE/INCOMPLETE only live signed-URL expiry unverified/explicit replay approval pending. Latest testedda08b2d native direct/search/reopen YouTube movie50.447s/30.283s with same-session PCM,controls/network recovery,actual sync<=89970us and latest focused error/restart tests PASS. Full architecture regression/normal5/defaultVP8 exact. PROJECT_STATE.md/PHASE334.md authoritative; older observations historical. No33.5/parent33/Rickroll closure.
+Current2026-10-10 13:20+07:Phase33.4 accepted on its tested QEMU1GiB optional
+VP9/Opus/native-underlay profile. PHASE334_ACCEPTANCE.md is the audit:actual
+online video/sound/controls/search/reopen,native SABR expiry/recovery,focused
+checks/full relevant regression;normal image restored. Phase33.5 and this
+parent/Rickroll gate remain NOT PASSED.
 
 **Status: NOT PASSED.** The owner added this hard gate on 2026-09-28. Do not
 close Phase 33 until a person can watch the real online Rickroll video with
 sound inside MyOS running in QEMU. Phase 32's broader YouTube work remains
 open and is a prerequisite, not evidence that this gate has passed.
 
-## Current checkpoint — 2026-10-09
-
-Native33.1/33.2 and standard-media33.3 prerequisites were verified before the
-owner-authorized33.4 work. Cobalt now runs HTTPS, JavaScript/DOM/input and native
-media in MyOS. Real public YouTube BBB playback has moving video and same-session
-SB16 audio; direct native pause/resume/seek and close/reopen have been exercised.
-This is partial33.4 progress, not Rickroll acceptance. Latest1GiB candidate has
-sync outliers beyond100ms and fails playback recovery after actual NIC loss.
-Search/select, expiry/error handling, bounded repeated reopen and final accepted
-profile still need proof. See PHASE334.md, PROJECT_STATE.md and checkpoint4.
-The PMM1024 architectural full regression passed2026-10-10 00:15:27;
-normal BIOS/UEFI and all5 hashes were restored and verified00:17:06.
-Do not close33.4,33.5 or this parent gate from partial online playback.
+## Current checkpoint — 2026-10-10
+Native33.1/33.2 and standard33.3 prerequisites verified. Phase33.4 now has accepted
+public Big Buck Bunny playback,sound,controls,native search/selection,close/reopen,
+bounded sync and loss/timeout/expiry/error recovery evidence. See
+PHASE334_ACCEPTANCE.md/checkpoint11/checkpoint13. Rickroll demonstration below
+belongs to33.5 and is still pending.
 
 ## Required demonstration
 

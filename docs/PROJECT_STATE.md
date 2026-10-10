@@ -1,40 +1,38 @@
-2026-10-10 07:45+07 — Phase33.4 ACTIVE/INCOMPLETE; main,local commits only.
-Implementation da08b2d; prior checkpoint commit079027a. Owner pushes; never push.
-Owner explicitly authorized necessary33.4 work/scoped signed-URI reuse; no permission
-pending. Preserve owner untracked promotion logs/status/audits. No33.5/33/Rickroll.
+2026-10-10 13:20+07 — Phase33.4 ACCEPTED on declared native MyOS/QEMU profile.
+Implementationda08b2d; acceptance PHASE334_ACCEPTANCE.md/checkpoint13.
+main/local commits only; owner pushes. Preserve owner untracked promotion files.
+No pending permission. No33.5/parent33/wider32/Rickroll acceptance.
 
-Prerequisites nativeHTTPS/JS/DOM/input replay PASS20:41Oct9;33.3 standard accepted.
-Latest exact-provider standard1vrufhf0:38.533s movie/39.953s PCM,600decoded/drop0,
-actual sync39979us,exactresources. Native latebounds2s/video-gap tests also PASS.
-Source90dfe4b6...; optionalVP9/native-underlay/trace provider-sey3hj06 ba9620ca...;
-defaultVP8 unchanged41901a1374... . No host production fetch/decoder/transcoder/proxy.
+NativeHTTPS/JS/DOM/input prerequisites and standard33.3 verified.
+Cobalt27.lts.3/Evergreen7.3.2/API18; pinned corefd8bbf7c...
+OptionalVP9/Opus native-underlay/trace provider-sey3hj06 ba9620ca...
+Player source90dfe4b6...; defaultVP8 unchanged41901a1374...
+Production source unchanged afterda08; all production stages native.
 
-Latest public6mmepdfk05:27:38-05:42:06:direct BBB and native homepage/search/
-selection/watch/reopen. NativeStats256x144@30 VP9itag278/Opus251,WebM,SABR;
-presentation160x90 in800x600,QEMU1024MiB. Actual moving pixels50.447s/30.283s,
-same-session497.971s PCM/492audible1s bins. Pause/resume/seek/two close/reopens,
-130s NIC loss/exhaustion/restoration automatic recovery; responsive desktops/shell,
-exact257743pages/SHM0/aliases0. Actual syncmax<=89970us,failure0. Owned mappingpeak
-568778752B/542.43MiB,notRSS. Drops disclosed; no zero-drop30fps-display claim.
-Evidence: wip/phase334/checkpoint11/current-online/; PHASE334.md/experiment guide.
+Public6mmepdfk05:27–05:42 Oct10:direct aqz-KE-bpKQ and native homepage/search/
+selection/watch/reopen. NativeStats256x144@30 VP9itag278/Opus251,WebM,SABR,SDR.
+Presentation160x90 in800x600;QEMU1024MiB/KVM/CPUhost/RTL8139/SB16.
+Motion50.447s/30.283s;same-session497.971s PCM/492audible1s bins.
+Pause stops pixels/actualPCM;resume,3seeks,two reopens;desktops/shell exact.
+130s NIC loss/exhaustion/rebuffer/automatic resumed link.Sync<=89970us,failure0.
+Owned mappingpeak568778752B/542.43MiB,notRSS;drops/rebuffers disclosed.
 
-Latest focused75k_sbd0:64MiB malformedVP8/VP9/Opus,unsupported,realENOMEM,
-two teardown waves exactresources PASS. Cobalt40301guwqqc/native10sXHRtimeout
-14sstall/Nrestart/laterplaying/close exactresources PASS. Checkpoint11 archives.
-Full architecture regression checkpoint6 terminal0 02:03:53; normalUEFI/final
-launcher/BIOS+UEFI0/all5 exact02:05:33. Production architecture unchanged; tests
-retain scope. All5 exact07:10 during isolated diagnostics; normalimages unchanged.
+Focused standard1vrufhf0:38.533s movie/39.953s PCM,600decoded/drop0/max39979us.
+Late-bounds/gap/seek/EOS,malformed/unsupported/realENOMEM,403 and timeout/restart
+tests pass with exact resources.Checkpoint11 holds safe logs/PNG/WAV/identities.
+Full architecture checkpoint6 terminal0 plus normalUEFI/launcher/BIOS+UEFI pair;
+no later architecture change.All5 normal image/runtime identities exact/no QEMU.
 
-Remaining:real signed-URI expiry after12:51:09+07,2026-10-10. Native NetLog proves
-SABR HTTP/1.1 POST; original1663byte body/URI hashes and native200/1087988bytes
-captured privately. No host media fetch/decode. Native lab replay source44 returns
-HTTP200 before expiry; browser status0 is CORS opaque. Exact URI/body repeat at
-12:53:09+07 runs in MyOS build/native-verified-tls-lz6fldt5. No URL/signature/time
-changes. After HTTPstatus/error UI/N fresh-watch/movie/PCM/exact close/desktop audit
-pending. ArbitraryGET/status0 and qmem teardown failure were not expiry acceptance.
-Isolated bounded NetLog collector retains metadata, omits receive bytes. Target
-line records complete; forced-ESC JSON footer incomplete. See checkpoint12/scope.md.
-Private signed query/body/CA keys stay build; public safe hashes/source/diffs archived.
-Live session81701 verified07:44; final-audit checklist/scoped auditor in checkpoint12.
-Next:monitor native test, audit after expiry,then commit final evidence/restore-check.
-Do not close33.4/33.5/parent33/Rickroll until required acceptance actually passes.
+Expiry:authentic native URI/body1663B,original200/1087988bytes,expiry12:51:09.
+Native exact-repeat12:53 server200 is CORS opaque,not expiry proof alone.
+Native bounded TLS/HTTP/UMP observer13:08 proves complete part46(144B)
+RELOAD_PLAYER_RESPONSE:request44/stream47/TLS74,actual unchanged outgoing body.
+Long session fresh-watch recovery35.220s/188.510s PCM/183audible1s bins,
+sync89945us and exact close/desktop.Checkpoint13 preserves all safe evidence.
+Short follow-up had302/429;closed cleanly,not a positive movie run.
+Private queries/body/CA keys stay ignored build;no host media fetch/decode/proxy.
+
+Guide:PHASE334_EXPERIMENT_GUIDE.md;background:HANDOFF.md;audit:PHASE334_ACCEPTANCE.md.
+Ready for requested33.5:tested pins/profile,actual Rickroll>=30s music/video,
+controls/close,normal-image fresh boot repeat and interactive acceptance.
+Stop at33.4;no automatic33.5,parent33 or Rickroll closure.

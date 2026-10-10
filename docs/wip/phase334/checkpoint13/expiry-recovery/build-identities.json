@@ -1,0 +1,38 @@
+{
+  "boot_sha256": "c7868eeb449eaecca5f7322fa89b81630a077b7d6c348a1731bc6e1aa160fcb3",
+  "asset_sha256": "c0e5aa1caf930591487453e345c69eaa109a378ef13ad67e47f9132842f80b03",
+  "raw_private_serial_sha256": "09ec070d36b4fc8afa0dde90d410dc09da84cca88463559fbe340a88942383c1",
+  "raw_private_netlog_sha256": "e93441f8b677ba65713ad8eabae6be46e008926126b83a60af610db29125ad3e",
+  "image_hash_note": "Sampled from exact retained QEMU input files after execution; long expiry launch identities additionally frozen in checkpoint12.",
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "1024",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-expiry-faithful.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/native-verified-tls-lz6fldt5/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-expiry-faithful.sock,server=on,wait=off",
+      "-cpu",
+      "max",
+      "-nic",
+      "user,model=rtl8139",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/native-verified-tls-lz6fldt5/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/native-verified-tls-lz6fldt5/assets.img,if=ide,index=1"
+    ]
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "phase_passed": false,
+  "diagnostic_only": true,
+  "date": "2026-10-10T13:07:06.889253+07:00",
+  "commit": "52fa9c2fabb738ec301b1325543d04cc7fd85c96",
+  "uri_sha256": "1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d",
+  "uri_bytes": 1062,
+  "original_media_hostname": "rr4---sn-0opoxuui5pa5oq-c33z.googlevideo.com",
+  "expiry_utc": "2026-10-10T05:51:09+00:00",
+  "method": "POST",
+  "request_body_bytes": 1663,
+  "body_sha256": "bae9a411dcaa582cb5ca952297d6f76635965700dfd57f1f83d94fd0d2f34fed",
+  "comparable_success_before": false,
+  "faithful_sabr_request_proved": false,
+  "host_fetch": false,
+  "host_decode": false,
+  "fixture_request_delivery_only": true,
+  "media_hostname_mapping": false,
+  "normal_identity": {
+    "kernel.bin": "adafde541dcc5dac747ddabb0eb7fe36cc27947a758e9ce06f249e6b33a29102",
+    "kernel.elf": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "myos-current.img": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "frames": [
+    {
+      "elapsed": 2.5009287819993915,
+      "path": "frame-002.png"
+    },
+    {
+      "elapsed": 32.57986748399708,
+      "path": "frame-032.png"
+    },
+    {
+      "elapsed": 62.63845431699883,
+      "path": "frame-062.png"
+    },
+    {
+      "elapsed": 92.69882189000054,
+      "path": "frame-092.png"
+    },
+    {
+      "elapsed": 122.86883398299688,
+      "path": "frame-122.png"
+    },
+    {
+      "elapsed": 127.89494622799975,
+      "path": "frame-127.png"
+    },
+    {
+      "elapsed": 132.92127238200192,
+      "path": "frame-132.png"
+    },
+    {
+      "elapsed": 137.94672363300197,
+      "path": "frame-137.png"
+    },
+    {
+      "elapsed": 142.9730818809985,
+      "path": "frame-142.png"
+    },
+    {
+      "elapsed": 147.99859952899715,
+      "path": "frame-147.png"
+    },
+    {
+      "elapsed": 153.02425267900253,
+      "path": "frame-153.png"
+    },
+    {
+      "elapsed": 158.04851653199876,
+      "path": "frame-158.png"
+    },
+    {
+      "elapsed": 163.07540282200353,
+      "path": "frame-163.png"
+    },
+    {
+      "elapsed": 168.10221461400215,
+      "path": "frame-168.png"
+    },
+    {
+      "elapsed": 173.12573109000368,
+      "path": "frame-173.png"
+    },
+    {
+      "elapsed": 178.14916000200174,
+      "path": "frame-178.png"
+    },
+    {
+      "elapsed": 183.17544197200186,
+      "path": "frame-183.png"
+    }
+  ],
+  "inputs": [
+    {
+      "key": "n",
+      "elapsed": 109.95464826499665
+    }
+  ],
+  "requests": [
+    {
+      "path": "/",
+      "elapsed": 98.10024642800272
+    },
+    {
+      "path": "/app.js",
+      "elapsed": 98.18258202900324
+    },
+    {
+      "path": "/request.json",
+      "elapsed": 98.23300542999641
+    },
+    {
+      "path": "/report?kind=timer-scheduled&value=2026-10-10T05%3A53%3A09.000Z&utc=2026-10-10T06%3A08%3A43.920Z",
+      "elapsed": 98.47377553200204
+    },
+    {
+      "path": "/report?kind=native-body-sha256&value=bae9a411dcaa582cb5ca952297d6f76635965700dfd57f1f83d94fd0d2f34fed&utc=2026-10-10T06%3A08%3A43.940Z",
+      "elapsed": 98.50778573299613
+    },
+    {
+      "path": "/report?kind=after-expiry-network-or-cors&value=%7B%22status%22%3A0%2C%22body_bytes%22%3A1663%2C%22uri_sha256%22%3A%221e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d%22%7D&utc=2026-10-10T06%3A08%3A45.580Z",
+      "elapsed": 100.13134854999953
+    },
+    {
+      "path": "/report?kind=restart&value=ordinary-watch&utc=2026-10-10T06%3A09%3A00.690Z",
+      "elapsed": 115.24451870300254
+    }
+  ],
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "1024",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-expiry-ump.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/native-verified-tls-ang_oxou/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-expiry-ump.sock,server=on,wait=off",
+      "-cpu",
+      "max",
+      "-nic",
+      "user,model=rtl8139",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/native-verified-tls-ang_oxou/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/native-verified-tls-ang_oxou/assets.img,if=ide,index=1"
+    ]
+  ],
+  "before": "Free physical pages: 257743\nmyos> ",
+  "restart_at": 109.95464826499665,
+  "after": "Free physical pages: 257743\nmyos> ",
+  "after_desktop": "Free physical pages: 257743\nmyos> ",
+  "desktop_responsive": true,
+  "normal_resources_restored": true,
+  "normal_identity_after": {
+    "kernel.bin": "adafde541dcc5dac747ddabb0eb7fe36cc27947a758e9ce06f249e6b33a29102",
+    "kernel.elf": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "myos-current.img": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  }
+}
