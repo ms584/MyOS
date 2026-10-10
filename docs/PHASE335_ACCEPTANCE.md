@@ -168,3 +168,24 @@ Four opens/noabort/noactive-player-create-busy report;max89736us,exactphysical/S
 PMM history548790272B with complete coverage,heap runtime high-water10240720B
 reported separately (included PMMbacking;do not add). No functional repair is claimed.
 Normal di3oxi_6 abort remains an acceptance failure. Evidence:checkpoint2/player-diagnostic.
+
+### Checkpoint3 — private abort callsite diagnostic, no repair
+Native bounded real-callchain/invalid-pointer SIGABRT fixture passed four times.
+The isolated worktree is build/phase335-abort-worktree, base c5b7282; source
+patch/fixture/build identity are archived. Production source/build unchanged.
+Normal nontrace provider3k2mykzc with diagnostic kernel/MRT guoh2tyy ran four
+opens; terminal16:45:03+07, noabort, max89510us, exactphysical/SHM/aliases.
+Normal file nodes52→60→63→64 (table full); linkedcapacity212992→360448→454656→454656B.
+Nonfileheap777728/777760/777760/777760B; small padding variation disclosed.
+PMM existing history563261440B, complete coverage; heap highwater10285808B
+is separately reported, never added to PMM. These are diagnostic-profile values.
+Motion111..161s window false/true/false/false; nativePCM487424/413696/458752/286720B,
+postclose0B each. Actual frame3/145.436s inspected:Rickroll. One screenshot
+and nativePCM do not prove all four >=30s continuous movie+music gates.
+No repair/rootcause claimed. File saturation needs live-node/error investigation;
+causal link to earlier NORMAL abort is unproven. No full diagnostic regression.
+Normal failed third-open screen+nativePCM recording stored in checkpoint3/
+normal-abort-recording; approximate bytepoll timing, not clock/sync measurement.
+Root five normal artifacts exact and no QEMU remains. Owner has not tried.
+Phase33.5/parent33 remain open; Phase32 audible/interactive gate independently open.
+Thai draft now has owner result form. No push; private diagnostic worktree retained.

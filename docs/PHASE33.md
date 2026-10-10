@@ -1,5 +1,16 @@
 # Phase 33 — Rickroll playback acceptance (in progress; not passed)
 
+Latest checkpoint3 (2026-10-10 16:45+07): Phase33.5/33 remain NOT ACCEPTED.
+A private abort-diagnostic kernel/MRT passed four native diagnostic fixtures
+and four online opens without reproducing the NORMAL di3oxi_6 abort. This
+is no repair or normal playback pass. File table reached64/64; fixed-window
+motion audit failed in three of four diagnostic opens. Root normal5 exact;
+no QEMU remains. Owner has not tried; audible/interactive acceptance absent.
+Next:use bounded live inode metadata + abort caller diagnostic to investigate
+repeat/cache saturation; fix proven cause, retest normal/fresh boot, then owner
+listening/controls. Thai guide is a draft; finalize only after real completion.
+See wip/phase335/checkpoint3 and PHASE335_ACCEPTANCE.md.
+
 Latest checkpoint2:normal4opens di3oxi_6 thirdnativeVP9 playback aborted
 (FATAL/USER SIGNAL6). Resources reclaimed but repeated playback stabilityFAIL.
 No rootcause/repair yet;diagnostics active. Owner has not tried audio/controls.

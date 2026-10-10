@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Starting main bac6dea; normal baseline da08b2d. Local commit only; no push.
+Checkpoint2 base c5b7282 on main; prior d704611/native normal da08b2d. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -38,9 +38,13 @@ for audible/interactive confirmation despite verified search/select/play evidenc
 15:37 final BIOS/UEFI rebuild0;all5 normalhashes exact/defaultVP8 exact41901a13.
 Latest4opens di3oxi_6:third engineFATAL/SIGABRT afterdecode;stabilityFAIL.
 Enginetrace ulkpezt9 done/noabort,notnormalplaybackacceptance.
+Private abort worktree build/phase335-abort-worktree (base c5b7282).
+Bounded native abort callchain fixture PASS fourtimes; no production changes.
+Online guoh2tyy done:noabort,table64/64,motion window3/4FAIL;not repair.
+DiagnosticPMM563261440B coveragecomplete;rootnormal5 exact/no QEMU.
 Playertrace rn03ntw3/iwdvm5_h done/noabort,not repair;normalartifacts unchanged.
 
-Read checkpoint2/stability-failed;fix/retest crash before acceptance.
+Read checkpoint2/stability-failed +checkpoint3;fix/retest before acceptance.
 Owner replied stillnottried;audio/interactive signoff absent.
 
 History235reads:coveragecomplete,PMMownedpeak529207296B ondiagnosticprofile.
