@@ -1,3 +1,5 @@
+Checkpoint5:four private diagnostic opens completed,noabort;65 actual cache ENOSPC,no recorded memory/thread failures. Not a repair of original normal abort or Phase acceptance. See PHASE335_ACCEPTANCE.md.
+
 Checkpoint4 fault follow-up completed 2026-10-10: tcbk0_ij two native opens with16 empty normal files reserved. Actual ENOSPC455 notes map to disk_cache::SimpleSynchronousEntry creation and LevelDB file operations using matching official symbols. No FATAL/SIGABRT; exact physical/SHM/alias cleanup and desktop/shell response; max sync90000us. PMM owned peak539852800B with complete ring coverage, heap9945680B reported separately. This is a private fault diagnostic, not normal acceptance or proof of original abort cause. The original normal di3oxi_6 abort remains unresolved; do not enlarge capacity or mark33.5/33 passed based on nonreproduction. Source patch/fixture/identities/safe logs/network metadata are archived in docs/wip/phase335/checkpoint4. Root normal five artifacts remain exact; owner listening/signoff still absent.
 
 Checkpoint4 2026-10-10 17:20+07 — still NOT ACCEPTED.

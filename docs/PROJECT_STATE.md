@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Basefc14fc4 on main; manual launcher correction in latest local commit. No push.
+Baseaa137da on main;manual overlay/guide fix committed. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -48,7 +48,6 @@ Read checkpoint2/stability-failed +checkpoint3;fix/retest before acceptance.
 Owner tried opening:IDE readonly failed beforeboot;playback/signoff absent.
 
 Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.
-
 Checkpoint4:symbols match21 loadedsections;liveSHM observer5tests PASS.
 Sixopens i04m0umd done17:14:35:noabort,exactcleanup,max89843us.
 Inodepeaks53/57/64/62/64/64;after52/56/59/60/61/63,not originalabortrepair.
@@ -57,4 +56,5 @@ Rootnormal5 exact;no productionchange. See checkpoint4 safeevidence.
 Private resourceerror diagnostic build/4abortfixtures PASS.
 Capacityfault2opens done:455ENOSPC in cache/LevelDB;noabort/exactcleanup.
 Manual snapshotfix:negative reproduced/headless+GTK shells PASS;guide updated.
-Private map/thread diag built;native fixtures/live pending;normal phase open.
+Private map/thread:realfailure2runs+abort4 PASS;iw24chsq4opens DONE.
+Zero memory/threadnotes;65cacheENOSPC/noabort;originalfault unresolved.

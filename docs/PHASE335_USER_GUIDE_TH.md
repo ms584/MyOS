@@ -32,6 +32,8 @@ mem
 elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
+หลังพิมพ์คำสั่ง Browser ให้รอโหลดเอนจินและหน้าเว็บโดยไม่พิมพ์คำสั่งซ้ำระหว่างรอ
+
 4. รอ YouTube โหลด เลือกวิดีโอ Rick Astley ที่ถูกต้อง แล้วเลือก Settings → Quality → 144p ภายใน MyOS ดูและฟังเพลงอย่างน้อย30วินาที จากนั้นทดสอบ `K` pause/resume, `L` seek หน้า10วินาที และ `J` seek หลัง10วินาทีตามรายการด้านล่าง
 
 5. เมื่อต้องการกลับ shell กด `Esc` ภายใน MyOS แล้วพิมพ์:

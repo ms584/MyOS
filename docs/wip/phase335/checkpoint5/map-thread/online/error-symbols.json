@@ -1,0 +1,142 @@
+{
+  "matching_build_id": "739726c6552d87a319de5106f918c6a8e9ab9341",
+  "actual_native_return_pcs": true,
+  "source_lines_resolved": false,
+  "rows": [
+    {
+      "pc": "0x108baab",
+      "symbol": "base::RepeatingCallback<void ()>::Run() &&",
+      "offset": 45
+    },
+    {
+      "pc": "0x12197f8",
+      "symbol": "void base::internal::ReturnAsParamAdapter<int>(base::OnceCallback<int ()>, std::__Cr::unique_ptr<int, std::__Cr::default_delete<int> >*)",
+      "offset": 41
+    },
+    {
+      "pc": "0x121989b",
+      "symbol": "base::RepeatingCallback<bool (content::BackgroundTracingRule const*)>::Run(content::BackgroundTracingRule const*) &&",
+      "offset": 45
+    },
+    {
+      "pc": "0x33be19d",
+      "symbol": "base::File::Initialize(base::FilePath const&, unsigned int)",
+      "offset": 141
+    },
+    {
+      "pc": "0x341549a",
+      "symbol": "base::TaskAnnotator::RunTaskImpl(base::PendingTask&)",
+      "offset": 282
+    },
+    {
+      "pc": "0x343634b",
+      "symbol": "base::internal::PostTaskAndReplyRelay::RunTaskAndPostReply(base::internal::PostTaskAndReplyRelay)",
+      "offset": 27
+    },
+    {
+      "pc": "0x3436405",
+      "symbol": "base::internal::Invoker<base::internal::FunctorTraits<void (*&&)(base::internal::PostTaskAndReplyRelay), base::internal::PostTaskAndReplyRelay&&>, base::internal::BindState<false, true, false, void (*)(base::internal::PostTaskAndReplyRelay), base::internal::PostTaskAndReplyRelay>, void ()>::RunOnce(base::internal::BindStateBase*)",
+      "offset": 37
+    },
+    {
+      "pc": "0x346097c",
+      "symbol": "base::File::DoInitialize(base::FilePath const&, unsigned int)",
+      "offset": 380
+    },
+    {
+      "pc": "0x35aa2b1",
+      "symbol": "open",
+      "offset": 217
+    },
+    {
+      "pc": "0x376de00",
+      "symbol": "net::PrioritizedTaskRunner::RunTaskAndPostReply()",
+      "offset": 80
+    },
+    {
+      "pc": "0x37b97af",
+      "symbol": "disk_cache::TrivialFileOperations::OpenFile(base::FilePath const&, unsigned int)",
+      "offset": 51
+    },
+    {
+      "pc": "0x37c6616",
+      "symbol": "base::internal::Invoker<base::internal::FunctorTraits<void (*&&)(net::CacheType, base::FilePath const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, unsigned long, disk_cache::OpenEntryIndexEnum, bool, disk_cache::SimpleFileTracker*, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, int, disk_cache::SimpleEntryCreationResults*), net::CacheType&&, base::FilePath&&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> >&&, unsigned long&&, disk_cache::OpenEntryIndexEnum&&, bool&&, base::raw_ptr<disk_cache::SimpleFileTracker, (partition_alloc::internal::RawPtrTraits)0>&&, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >&&, int&&, disk_cache::SimpleEntryCreationResults*&&>, base::internal::BindState<false, true, false, void (*)(net::CacheType, base::FilePath const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, unsigned long, disk_cache::OpenEntryIndexEnum, bool, disk_cache::SimpleFileTracker*, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, int, disk_cache::SimpleEntryCreationResults*), net::CacheType, base::FilePath, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> >, unsigned long, disk_cache::OpenEntryIndexEnum, bool, base::internal::UnretainedWrapper<disk_cache::SimpleFileTracker, base::unretained_traits::MayNotDangle, (partition_alloc::internal::RawPtrTraits)0>, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, int, base::internal::UnretainedWrapper<disk_cache::SimpleEntryCreationResults, base::unretained_traits::MayNotDangle, (partition_alloc::internal::RawPtrTraits)0> >, void ()>::RunOnce(base::internal::BindStateBase*)",
+      "offset": 78
+    },
+    {
+      "pc": "0x37d0262",
+      "symbol": "disk_cache::SimpleSynchronousEntry::CreateEntry(net::CacheType, base::FilePath const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, unsigned long, disk_cache::SimpleFileTracker*, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, disk_cache::SimpleEntryCreationResults*)",
+      "offset": 228
+    },
+    {
+      "pc": "0x37d0327",
+      "symbol": "disk_cache::SimpleSynchronousEntry::InitializeForCreate(disk_cache::BackendFileOperations*, disk_cache::SimpleEntryStat*)",
+      "offset": 21
+    },
+    {
+      "pc": "0x37d057f",
+      "symbol": "disk_cache::SimpleSynchronousEntry::OpenOrCreateEntry(net::CacheType, base::FilePath const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, unsigned long, disk_cache::OpenEntryIndexEnum, bool, disk_cache::SimpleFileTracker*, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, int, disk_cache::SimpleEntryCreationResults*)",
+      "offset": 239
+    },
+    {
+      "pc": "0x37d0743",
+      "symbol": "disk_cache::SimpleSynchronousEntry::OpenOrCreateEntry(net::CacheType, base::FilePath const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, unsigned long, disk_cache::OpenEntryIndexEnum, bool, disk_cache::SimpleFileTracker*, std::__Cr::unique_ptr<disk_cache::UnboundBackendFileOperations, std::__Cr::default_delete<disk_cache::UnboundBackendFileOperations> >, int, disk_cache::SimpleEntryCreationResults*)",
+      "offset": 691
+    },
+    {
+      "pc": "0x37d1f2a",
+      "symbol": "disk_cache::SimpleSynchronousEntry::MaybeCreateFile(disk_cache::BackendFileOperations*, int, disk_cache::SimpleSynchronousEntry::FileRequired, base::File::Error*)",
+      "offset": 160
+    },
+    {
+      "pc": "0x37d409d",
+      "symbol": "disk_cache::SimpleSynchronousEntry::CreateFiles(disk_cache::BackendFileOperations*, disk_cache::SimpleEntryStat*)",
+      "offset": 47
+    },
+    {
+      "pc": "0x409400e",
+      "symbol": "leveldb_proto::LevelDB::Init(base::FilePath const&, leveldb_env::Options const&, bool)",
+      "offset": 288
+    },
+    {
+      "pc": "0x40979ed",
+      "symbol": "leveldb_proto::(anonymous namespace)::InitFromTaskRunner(leveldb_proto::LevelDB*, base::FilePath const&, leveldb_env::Options const&, bool, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&)",
+      "offset": 51
+    },
+    {
+      "pc": "0x40a218c",
+      "symbol": "leveldb_env::ChromiumEnv::NewWritableFile(std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, leveldb::WritableFile**)",
+      "offset": 156
+    },
+    {
+      "pc": "0x40a2f61",
+      "symbol": "leveldb_env::DBTracker::OpenDatabase(leveldb_env::Options const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, leveldb_env::DBTracker::TrackedDB**)",
+      "offset": 71
+    },
+    {
+      "pc": "0x40a346d",
+      "symbol": "leveldb_env::OpenDB(leveldb_env::Options const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, std::__Cr::unique_ptr<leveldb::DB, std::__Cr::default_delete<leveldb::DB> >*)",
+      "offset": 450
+    },
+    {
+      "pc": "0x40a68fe",
+      "symbol": "leveldb::DBImpl::NewDB()",
+      "offset": 288
+    },
+    {
+      "pc": "0x40a7106",
+      "symbol": "leveldb::DBImpl::Recover(leveldb::VersionEdit*, bool*)",
+      "offset": 442
+    },
+    {
+      "pc": "0x40ab2ee",
+      "symbol": "leveldb::DB::Open(leveldb::Options const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char> > const&, leveldb::DB**)",
+      "offset": 218
+    },
+    {
+      "pc": "0x40bec19",
+      "symbol": "storage::FilesystemProxy::OpenFile(base::FilePath const&, int)",
+      "offset": 199
+    }
+  ]
+}
