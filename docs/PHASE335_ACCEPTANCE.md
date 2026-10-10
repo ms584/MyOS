@@ -1,3 +1,5 @@
+Checkpoint11 2026-10-11 04:03:59+07: private source-core standard-media paired controls completed. Five frozen viewport crops and zero PCM-file growth over observed8.116s; resume both advance, forward seek15s. Owner listening/backward seek/normal online unverified. Continuous/RAM retest active. See wip/phase335/checkpoint11/paired-controls/README.md.
+
 Checkpoint10 2026-10-11 03:59:34+07: private new-core WebM/Opus observation completed; actual motion/resume/forward seek, captured PCM36.93s, sync89956us, exact physical/SHM/alias cleanup. Pause/audio timing not fully verified; paired observer follow-up active. Not YouTube/normal acceptance. See wip/phase335/checkpoint10/source-media/README.md.
 
 Checkpoint9 2026-10-11 03:56:04+07: source-core private native HTTPS/DOM/JS/input retest completed; actual screenshots and callbacks verified, TLS3 rejected/no invalid HTTP, concurrent assets3, exact physical/SHM/alias cleanup. Heap+40KiB disclosed. Standard-media run active; no new-core online/normal acceptance. Phase33.5/33 remain open. See wip/phase335/checkpoint9/source-web/README.md.

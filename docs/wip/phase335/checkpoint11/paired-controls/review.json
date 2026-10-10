@@ -1,0 +1,73 @@
+{
+  "phase_passed": false,
+  "scope": "private native standard WebM/VP8/Opus controls; not online YouTube",
+  "assistant_inspected_actual_pngs": true,
+  "pause_key_elapsed": 107.01742775899766,
+  "resume_key_elapsed": 116.94141755900637,
+  "pause_samples": [
+    {
+      "elapsed": 107.70227615900512,
+      "path": "media-107.png",
+      "pcm_file_bytes": 65536,
+      "viewport_top": 157,
+      "crop_sha256": "d1115b9145f9b8623a71db0ead5d217a17cf18090c1eeae4c6306a63a0aca102"
+    },
+    {
+      "elapsed": 109.72973945799458,
+      "path": "media-109.png",
+      "pcm_file_bytes": 65536,
+      "viewport_top": 182,
+      "crop_sha256": "d1115b9145f9b8623a71db0ead5d217a17cf18090c1eeae4c6306a63a0aca102"
+    },
+    {
+      "elapsed": 111.75879775799694,
+      "path": "media-111.png",
+      "pcm_file_bytes": 65536,
+      "viewport_top": 182,
+      "crop_sha256": "d1115b9145f9b8623a71db0ead5d217a17cf18090c1eeae4c6306a63a0aca102"
+    },
+    {
+      "elapsed": 113.78899815899786,
+      "path": "media-113.png",
+      "pcm_file_bytes": 65536,
+      "viewport_top": 182,
+      "crop_sha256": "d1115b9145f9b8623a71db0ead5d217a17cf18090c1eeae4c6306a63a0aca102"
+    },
+    {
+      "elapsed": 115.81845995900221,
+      "path": "media-115.png",
+      "pcm_file_bytes": 65536,
+      "viewport_top": 182,
+      "crop_sha256": "d1115b9145f9b8623a71db0ead5d217a17cf18090c1eeae4c6306a63a0aca102"
+    }
+  ],
+  "observed_frozen_span": 8.116183799997088,
+  "pcm_growth_in_pause": 0,
+  "resumed_pcm_samples": [
+    {
+      "launch": 0,
+      "elapsed": 117.82795055900351,
+      "path": "media-117.png",
+      "pcm_file_bytes": 73728,
+      "capture_finished": 117.84642575899488
+    },
+    {
+      "launch": 0,
+      "elapsed": 119.8595194590016,
+      "path": "media-119.png",
+      "pcm_file_bytes": 98304,
+      "capture_finished": 119.87520675899577
+    },
+    {
+      "launch": 0,
+      "elapsed": 121.89004615999875,
+      "path": "media-121.png",
+      "pcm_file_bytes": 118784,
+      "capture_finished": 121.91890616000455
+    }
+  ],
+  "forward_seek_native_event": true,
+  "actual_auditory_music_identification": false,
+  "backward_seek_tested": false,
+  "source_core_sha256": "72a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505"
+}

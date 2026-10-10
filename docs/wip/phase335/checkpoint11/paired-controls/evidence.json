@@ -1,0 +1,1486 @@
+{
+  "phase_passed": false,
+  "observation_only": true,
+  "diagnostic_trace": false,
+  "continuous_playback": false,
+  "fault_shell_before": null,
+  "fault_mode": "",
+  "fault_injections": [],
+  "native_pcm_capture": true,
+  "ram_diagnostic": false,
+  "ram_samples": [],
+  "ram_baselines": [],
+  "lifecycle_scenario": false,
+  "requests": [
+    {
+      "server": "valid",
+      "path": "/",
+      "range": null,
+      "elapsed": 100.06533414800651
+    },
+    {
+      "server": "valid",
+      "path": "/app.js",
+      "range": null,
+      "elapsed": 100.13662674800435
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=canplay&value=probably&seq=1",
+      "range": null,
+      "elapsed": 100.21720324800117
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=mse&value=true&seq=2",
+      "range": null,
+      "elapsed": 100.217687648008
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=stopped&value=1&seq=3",
+      "range": null,
+      "elapsed": 100.2649970479979
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=started&value=1&seq=4",
+      "range": null,
+      "elapsed": 100.29571624800155
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=sourceopen&value=generation%3D1&seq=5",
+      "range": null,
+      "elapsed": 100.4786951480055
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=0-8191",
+      "elapsed": 100.47917314800725
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=0%20generation%3D1&seq=6",
+      "range": null,
+      "elapsed": 100.47939164799755
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=8192-16383",
+      "elapsed": 100.75639784900704
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadedmetadata&value=0%20generation%3D1&seq=7",
+      "range": null,
+      "elapsed": 100.77689754900348
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=16384-24575",
+      "elapsed": 100.89603584900033
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=24576-32767",
+      "elapsed": 100.99567674900754
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=loadeddata&value=0.020083%20generation%3D1&seq=8",
+      "range": null,
+      "elapsed": 101.09609755000565
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=32768-40959",
+      "elapsed": 101.0965434499958
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=0.020083%20generation%3D1&seq=9",
+      "range": null,
+      "elapsed": 101.09693645000516
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=40960-49151",
+      "elapsed": 101.19625485000142
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.160083%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=10",
+      "range": null,
+      "elapsed": 101.24205965000147
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=49152-57343",
+      "elapsed": 101.29569184999855
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=57344-65535",
+      "elapsed": 101.3956599499943
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0.996545%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=11",
+      "range": null,
+      "elapsed": 102.21713045200158
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=65536-73727",
+      "elapsed": 102.21749115199782
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=1.996681%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=12",
+      "range": null,
+      "elapsed": 103.21632275299635
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=73728-81919",
+      "elapsed": 103.21646625299763
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.003801%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=13",
+      "range": null,
+      "elapsed": 104.21637935499894
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=81920-90111",
+      "elapsed": 104.21682685500127
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=90112-98303",
+      "elapsed": 104.28375295500155
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=3.999085%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=14",
+      "range": null,
+      "elapsed": 105.21909055499418
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=98304-106495",
+      "elapsed": 105.21985405500163
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=5.006273%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=15",
+      "range": null,
+      "elapsed": 106.21667255500506
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=106496-114687",
+      "elapsed": 106.21719185500115
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.003008%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=16",
+      "range": null,
+      "elapsed": 107.22125355500611
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=114688-122879",
+      "elapsed": 107.22231185500277
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=122880-131071",
+      "elapsed": 107.32627955499629
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=p&seq=17",
+      "range": null,
+      "elapsed": 107.34652075500344
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pause&value=6.113008%20generation%3D1&seq=18",
+      "range": null,
+      "elapsed": 107.39067365499795
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=19",
+      "range": null,
+      "elapsed": 108.23624065400509
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=20",
+      "range": null,
+      "elapsed": 109.21616765399813
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=21",
+      "range": null,
+      "elapsed": 110.21632515400415
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=22",
+      "range": null,
+      "elapsed": 111.21922285400797
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=23",
+      "range": null,
+      "elapsed": 112.21685935399728
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=24",
+      "range": null,
+      "elapsed": 113.21659505400748
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=25",
+      "range": null,
+      "elapsed": 114.21664715500083
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=26",
+      "range": null,
+      "elapsed": 115.21666195499711
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.113008%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=27",
+      "range": null,
+      "elapsed": 116.21684225500212
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=r&seq=28",
+      "range": null,
+      "elapsed": 117.20654045499396
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=6.13523%20generation%3D1&seq=29",
+      "range": null,
+      "elapsed": 117.24673855499714
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=6.13523%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=30",
+      "range": null,
+      "elapsed": 117.24699245499505
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=7.141284%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=31",
+      "range": null,
+      "elapsed": 118.22135575499851
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=131072-139263",
+      "elapsed": 118.22191255500366
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=8.138223%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=32",
+      "range": null,
+      "elapsed": 119.21674635499949
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=139264-147455",
+      "elapsed": 119.21717965499556
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=9.138518%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=33",
+      "range": null,
+      "elapsed": 120.21675995500118
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=147456-155647",
+      "elapsed": 120.216912554999
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=155648-163839",
+      "elapsed": 120.28598745500494
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=10.13972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=34",
+      "range": null,
+      "elapsed": 121.21867775599821
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=163840-172031",
+      "elapsed": 121.2189300559985
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=11.140695%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=35",
+      "range": null,
+      "elapsed": 122.21735495599569
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=172032-180223",
+      "elapsed": 122.21777105600631
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=180224-188415",
+      "elapsed": 122.31635335600004
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=12.142033%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=36",
+      "range": null,
+      "elapsed": 123.21826585600502
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=188416-196607",
+      "elapsed": 123.2185745559982
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=s&seq=37",
+      "range": null,
+      "elapsed": 123.35603345600248
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=seeking&value=15%20generation%3D1&seq=38",
+      "range": null,
+      "elapsed": 123.43628345600155
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=waiting&value=15%20generation%3D1&seq=39",
+      "range": null,
+      "elapsed": 123.43653885599633
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=seeked&value=15.020083%20generation%3D1&seq=40",
+      "range": null,
+      "elapsed": 123.54917755600763
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=playing&value=15.020083%20generation%3D1&seq=41",
+      "range": null,
+      "elapsed": 123.54975665600796
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=15.688178%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=42",
+      "range": null,
+      "elapsed": 124.21680525600095
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=196608-204799",
+      "elapsed": 124.21695785599877
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=204800-212991",
+      "elapsed": 124.29626175599697
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=212992-221183",
+      "elapsed": 124.39606285600166
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=221184-229375",
+      "elapsed": 124.49615495599573
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=229376-237567",
+      "elapsed": 124.56673985600355
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=237568-245759",
+      "elapsed": 124.61644325600355
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=16.692554%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=43",
+      "range": null,
+      "elapsed": 125.21733725600643
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=245760-253951",
+      "elapsed": 125.21757825600798
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=17.691216%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=44",
+      "range": null,
+      "elapsed": 126.21684995600663
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=253952-262143",
+      "elapsed": 126.21702455599734
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=18.686908%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=45",
+      "range": null,
+      "elapsed": 127.21671015600441
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=262144-270335",
+      "elapsed": 127.21688005600299
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=270336-278527",
+      "elapsed": 127.33608325599926
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=19.694414%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=46",
+      "range": null,
+      "elapsed": 128.2281963550049
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=278528-286719",
+      "elapsed": 128.22863805500674
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=20.688541%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=47",
+      "range": null,
+      "elapsed": 129.21671994999633
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=286720-294911",
+      "elapsed": 129.21721284999512
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=21.686568%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=48",
+      "range": null,
+      "elapsed": 130.21681144399918
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=294912-303103",
+      "elapsed": 130.2170980439987
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=303104-311295",
+      "elapsed": 130.31631514399487
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=22.700241%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=49",
+      "range": null,
+      "elapsed": 131.2272616380069
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=311296-319487",
+      "elapsed": 131.22756493800262
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=23.688178%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=50",
+      "range": null,
+      "elapsed": 132.2171864330012
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=319488-327679",
+      "elapsed": 132.2176645330037
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=327680-335871",
+      "elapsed": 132.28479833299934
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=24.691942%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=51",
+      "range": null,
+      "elapsed": 133.2171895270003
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=335872-344063",
+      "elapsed": 133.21744162699906
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=25.68879%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=52",
+      "range": null,
+      "elapsed": 134.21677702199668
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=344064-352255",
+      "elapsed": 134.2169231220032
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=352256-360447",
+      "elapsed": 134.3262863209966
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=26.690876%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=53",
+      "range": null,
+      "elapsed": 135.21810841599654
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=360448-368639",
+      "elapsed": 135.21851911599515
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=27.694232%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=54",
+      "range": null,
+      "elapsed": 136.21686110799783
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=368640-376831",
+      "elapsed": 136.217275307994
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=376832-385023",
+      "elapsed": 136.3162849060027
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=28.688745%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=55",
+      "range": null,
+      "elapsed": 137.21684438599914
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=385024-393215",
+      "elapsed": 137.21727808599826
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=29.6904%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=56",
+      "range": null,
+      "elapsed": 138.21722506299557
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=393216-401407",
+      "elapsed": 138.21743646300456
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=401408-409599",
+      "elapsed": 138.31648786099686
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=30.693166%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=57",
+      "range": null,
+      "elapsed": 139.2207048410055
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=409600-417791",
+      "elapsed": 139.22207454100135
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=31.690808%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=58",
+      "range": null,
+      "elapsed": 140.21718911900825
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=417792-425983",
+      "elapsed": 140.21732891899592
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=32.693779%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=59",
+      "range": null,
+      "elapsed": 141.21731309700408
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=425984-434175",
+      "elapsed": 141.21748439699877
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=434176-442367",
+      "elapsed": 141.31643259400153
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=33.695887%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=60",
+      "range": null,
+      "elapsed": 142.2167366740032
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=442368-450559",
+      "elapsed": 142.21702677400026
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=34.688087%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=61",
+      "range": null,
+      "elapsed": 143.2180051519972
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=450560-458751",
+      "elapsed": 143.21829535199504
+    },
+    {
+      "server": "valid",
+      "path": "/media.webm",
+      "range": "bytes=458752-466943",
+      "elapsed": 143.3471287489956
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=eos-submitted&value=464222&seq=62",
+      "range": null,
+      "elapsed": 143.4471629470063
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=35.689425%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=63",
+      "range": null,
+      "elapsed": 144.2167233270011
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=36.692917%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=64",
+      "range": null,
+      "elapsed": 145.21712449099869
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=37.695071%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=65",
+      "range": null,
+      "elapsed": 146.21703005400195
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=38.68972%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=66",
+      "range": null,
+      "elapsed": 147.2173764170002
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=39.694209%20paused%3Dfalse%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=67",
+      "range": null,
+      "elapsed": 148.21700627999962
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=pause&value=40%20generation%3D1&seq=68",
+      "range": null,
+      "elapsed": 148.54828206800448
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=ended&value=40%20generation%3D1&seq=69",
+      "range": null,
+      "elapsed": 148.54855946800672
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=70",
+      "range": null,
+      "elapsed": 149.21683954300534
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=71",
+      "range": null,
+      "elapsed": 150.2169053069956
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=72",
+      "range": null,
+      "elapsed": 151.2168859700032
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=73",
+      "range": null,
+      "elapsed": 152.21707633600454
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=74",
+      "range": null,
+      "elapsed": 153.21722302300623
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=75",
+      "range": null,
+      "elapsed": 154.21697090899397
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=76",
+      "range": null,
+      "elapsed": 155.21737519500311
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=77",
+      "range": null,
+      "elapsed": 156.21704058200703
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=78",
+      "range": null,
+      "elapsed": 157.21748136800306
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=79",
+      "range": null,
+      "elapsed": 158.21706205399823
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=80",
+      "range": null,
+      "elapsed": 159.21710034100397
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=40%20paused%3Dtrue%20ready%3D4%20width%3D160%20height%3D90%20generation%3D1&seq=81",
+      "range": null,
+      "elapsed": 160.21711383000365
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=key&value=x&seq=82",
+      "range": null,
+      "elapsed": 161.20006654299505
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=stopped&value=2&seq=83",
+      "range": null,
+      "elapsed": 161.2003094429965
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D2&seq=84",
+      "range": null,
+      "elapsed": 161.27730784400774
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D2&seq=85",
+      "range": null,
+      "elapsed": 162.21706005600572
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D2&seq=86",
+      "range": null,
+      "elapsed": 163.21718556899577
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D2&seq=87",
+      "range": null,
+      "elapsed": 164.2172252820019
+    },
+    {
+      "server": "valid",
+      "path": "/evidence?kind=clock&value=0%20paused%3Dtrue%20ready%3D0%20width%3D0%20height%3D0%20generation%3D2&seq=88",
+      "range": null,
+      "elapsed": 165.21724179500598
+    }
+  ],
+  "frames": [
+    {
+      "launch": 0,
+      "elapsed": 6.292157593998127,
+      "path": "media-006.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 6.320060494006611
+    },
+    {
+      "launch": 0,
+      "elapsed": 8.324756963003892,
+      "path": "media-008.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 8.346610063003027
+    },
+    {
+      "launch": 0,
+      "elapsed": 10.35140503999719,
+      "path": "media-010.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 10.373137939997832
+    },
+    {
+      "launch": 0,
+      "elapsed": 12.378392917002202,
+      "path": "media-012.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 12.400002116002725
+    },
+    {
+      "launch": 0,
+      "elapsed": 14.404658493003808,
+      "path": "media-014.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 14.42855709300784
+    },
+    {
+      "launch": 0,
+      "elapsed": 16.433406078998814,
+      "path": "media-016.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 16.456295178999426
+    },
+    {
+      "launch": 0,
+      "elapsed": 18.460968480998417,
+      "path": "media-018.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 18.482001480995677
+    },
+    {
+      "launch": 0,
+      "elapsed": 20.486783283005934,
+      "path": "media-020.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 20.508530983002856
+    },
+    {
+      "launch": 0,
+      "elapsed": 22.513178184002754,
+      "path": "media-022.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 22.535623784002382
+    },
+    {
+      "launch": 0,
+      "elapsed": 24.540803837007843,
+      "path": "media-024.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 24.566591738999705
+    },
+    {
+      "launch": 0,
+      "elapsed": 26.57156645800569,
+      "path": "media-026.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 26.59886176000873
+    },
+    {
+      "launch": 0,
+      "elapsed": 28.603960979002295,
+      "path": "media-028.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 28.626891880994663
+    },
+    {
+      "launch": 0,
+      "elapsed": 30.632067400001688,
+      "path": "media-030.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 30.65675680199638
+    },
+    {
+      "launch": 0,
+      "elapsed": 32.66174796500127,
+      "path": "media-032.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 32.68388016500103
+    },
+    {
+      "launch": 0,
+      "elapsed": 34.688625270006014,
+      "path": "media-034.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 34.71076756999537
+    },
+    {
+      "launch": 0,
+      "elapsed": 36.715678676002426,
+      "path": "media-036.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 36.73796117599704
+    },
+    {
+      "launch": 0,
+      "elapsed": 38.743130080998526,
+      "path": "media-038.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 38.76539808099915
+    },
+    {
+      "launch": 0,
+      "elapsed": 40.7702954080014,
+      "path": "media-040.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 40.79437440900074
+    },
+    {
+      "launch": 0,
+      "elapsed": 42.79896535399894,
+      "path": "media-042.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 42.824341654995806
+    },
+    {
+      "launch": 0,
+      "elapsed": 44.828998500001035,
+      "path": "media-044.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 44.851736901007826
+    },
+    {
+      "launch": 0,
+      "elapsed": 46.85613234700577,
+      "path": "media-046.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 46.88155354700575
+    },
+    {
+      "launch": 0,
+      "elapsed": 48.886163788003614,
+      "path": "media-048.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 48.90890538900567
+    },
+    {
+      "launch": 0,
+      "elapsed": 50.91361002699705,
+      "path": "media-050.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 50.93557692700415
+    },
+    {
+      "launch": 0,
+      "elapsed": 52.940249965002295,
+      "path": "media-052.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 52.96231546600757
+    },
+    {
+      "launch": 0,
+      "elapsed": 54.96688770399487,
+      "path": "media-054.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 54.9905845040048
+    },
+    {
+      "launch": 0,
+      "elapsed": 56.99513732299965,
+      "path": "media-056.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 57.01710972300498
+    },
+    {
+      "launch": 0,
+      "elapsed": 59.021920829996816,
+      "path": "media-059.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 59.044827431003796
+    },
+    {
+      "launch": 0,
+      "elapsed": 61.050030737998895,
+      "path": "media-061.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 61.07490473800863
+    },
+    {
+      "launch": 0,
+      "elapsed": 63.08018834600807,
+      "path": "media-063.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 63.10685364600795
+    },
+    {
+      "launch": 0,
+      "elapsed": 65.11207274800108,
+      "path": "media-065.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 65.13434124800551
+    },
+    {
+      "launch": 0,
+      "elapsed": 67.13880894900649,
+      "path": "media-067.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 67.16112814900407
+    },
+    {
+      "launch": 0,
+      "elapsed": 69.16582874899905,
+      "path": "media-069.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 69.18841604900081
+    },
+    {
+      "launch": 0,
+      "elapsed": 71.19313324900577,
+      "path": "media-071.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 71.21642664899991
+    },
+    {
+      "launch": 0,
+      "elapsed": 73.22155145500437,
+      "path": "media-073.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 73.2439921549958
+    },
+    {
+      "launch": 0,
+      "elapsed": 75.24901556200348,
+      "path": "media-075.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 75.274133961997
+    },
+    {
+      "launch": 0,
+      "elapsed": 77.27911606999987,
+      "path": "media-077.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 77.30535417000647
+    },
+    {
+      "launch": 0,
+      "elapsed": 79.31043087800208,
+      "path": "media-079.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 79.33277007800643
+    },
+    {
+      "launch": 0,
+      "elapsed": 81.33763059199555,
+      "path": "media-081.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 81.36110359200393
+    },
+    {
+      "launch": 0,
+      "elapsed": 83.36612210799649,
+      "path": "media-083.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 83.38945550800418
+    },
+    {
+      "launch": 0,
+      "elapsed": 85.39428572400357,
+      "path": "media-085.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 85.41979802500282
+    },
+    {
+      "launch": 0,
+      "elapsed": 87.42463064100593,
+      "path": "media-087.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 87.44845194100344
+    },
+    {
+      "launch": 0,
+      "elapsed": 89.45403518600506,
+      "path": "media-089.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 89.48081408700091
+    },
+    {
+      "launch": 0,
+      "elapsed": 91.48618143699423,
+      "path": "media-091.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 91.51151413800835
+    },
+    {
+      "launch": 0,
+      "elapsed": 93.51722468799562,
+      "path": "media-093.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 93.53818478800531
+    },
+    {
+      "launch": 0,
+      "elapsed": 95.54329543899803,
+      "path": "media-095.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 95.56873143899429
+    },
+    {
+      "launch": 0,
+      "elapsed": 97.57428554700164,
+      "path": "media-097.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 97.59454084800382
+    },
+    {
+      "launch": 0,
+      "elapsed": 99.6025687509973,
+      "path": "media-099.png",
+      "pcm_file_bytes": 0,
+      "capture_finished": 99.62830855100765
+    },
+    {
+      "launch": 0,
+      "elapsed": 101.63812105500256,
+      "path": "media-101.png",
+      "pcm_file_bytes": 4096,
+      "capture_finished": 101.65496685499966
+    },
+    {
+      "launch": 0,
+      "elapsed": 103.66559105900524,
+      "path": "media-103.png",
+      "pcm_file_bytes": 28672,
+      "capture_finished": 103.68170585899497
+    },
+    {
+      "launch": 0,
+      "elapsed": 105.69345975900069,
+      "path": "media-105.png",
+      "pcm_file_bytes": 49152,
+      "capture_finished": 105.71048725899891
+    },
+    {
+      "launch": 0,
+      "elapsed": 107.70227615900512,
+      "path": "media-107.png",
+      "pcm_file_bytes": 65536,
+      "capture_finished": 107.71944215899566
+    },
+    {
+      "launch": 0,
+      "elapsed": 109.72973945799458,
+      "path": "media-109.png",
+      "pcm_file_bytes": 65536,
+      "capture_finished": 109.74614205800754
+    },
+    {
+      "launch": 0,
+      "elapsed": 111.75879775799694,
+      "path": "media-111.png",
+      "pcm_file_bytes": 65536,
+      "capture_finished": 111.77522695800872
+    },
+    {
+      "launch": 0,
+      "elapsed": 113.78899815899786,
+      "path": "media-113.png",
+      "pcm_file_bytes": 65536,
+      "capture_finished": 113.80614985899592
+    },
+    {
+      "launch": 0,
+      "elapsed": 115.81845995900221,
+      "path": "media-115.png",
+      "pcm_file_bytes": 65536,
+      "capture_finished": 115.83507305900275
+    },
+    {
+      "launch": 0,
+      "elapsed": 117.82795055900351,
+      "path": "media-117.png",
+      "pcm_file_bytes": 73728,
+      "capture_finished": 117.84642575899488
+    },
+    {
+      "launch": 0,
+      "elapsed": 119.8595194590016,
+      "path": "media-119.png",
+      "pcm_file_bytes": 98304,
+      "capture_finished": 119.87520675899577
+    },
+    {
+      "launch": 0,
+      "elapsed": 121.89004615999875,
+      "path": "media-121.png",
+      "pcm_file_bytes": 118784,
+      "capture_finished": 121.91890616000455
+    },
+    {
+      "launch": 0,
+      "elapsed": 123.91439725999953,
+      "path": "media-123.png",
+      "pcm_file_bytes": 139264,
+      "capture_finished": 123.93027326000447
+    },
+    {
+      "launch": 0,
+      "elapsed": 125.94553765999444,
+      "path": "media-125.png",
+      "pcm_file_bytes": 159744,
+      "capture_finished": 125.96280875999946
+    },
+    {
+      "launch": 0,
+      "elapsed": 127.97813935899467,
+      "path": "media-127.png",
+      "pcm_file_bytes": 184320,
+      "capture_finished": 128.00945315900026
+    },
+    {
+      "launch": 0,
+      "elapsed": 130.02462834800826,
+      "path": "media-130.png",
+      "pcm_file_bytes": 204800,
+      "capture_finished": 130.04529654800717
+    },
+    {
+      "launch": 0,
+      "elapsed": 132.06216773700726,
+      "path": "media-132.png",
+      "pcm_file_bytes": 229376,
+      "capture_finished": 132.07902413699776
+    },
+    {
+      "launch": 0,
+      "elapsed": 134.09557482499804,
+      "path": "media-134.png",
+      "pcm_file_bytes": 249856,
+      "capture_finished": 134.11358042500797
+    },
+    {
+      "launch": 0,
+      "elapsed": 136.133601309004,
+      "path": "media-136.png",
+      "pcm_file_bytes": 274432,
+      "capture_finished": 136.15310100800707
+    },
+    {
+      "launch": 0,
+      "elapsed": 138.1704442629998,
+      "path": "media-138.png",
+      "pcm_file_bytes": 294912,
+      "capture_finished": 138.18970066300244
+    },
+    {
+      "launch": 0,
+      "elapsed": 140.2103337180015,
+      "path": "media-140.png",
+      "pcm_file_bytes": 319488,
+      "capture_finished": 140.22951781800657
+    },
+    {
+      "launch": 0,
+      "elapsed": 142.2481489720085,
+      "path": "media-142.png",
+      "pcm_file_bytes": 339968,
+      "capture_finished": 142.26856007199967
+    },
+    {
+      "launch": 0,
+      "elapsed": 144.28896502000862,
+      "path": "media-144.png",
+      "pcm_file_bytes": 364544,
+      "capture_finished": 144.30899961999967
+    },
+    {
+      "launch": 0,
+      "elapsed": 146.3299801450048,
+      "path": "media-146.png",
+      "pcm_file_bytes": 385024,
+      "capture_finished": 146.35001304499747
+    },
+    {
+      "launch": 0,
+      "elapsed": 148.37110117000702,
+      "path": "media-148.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 148.39261376899958
+    },
+    {
+      "launch": 0,
+      "elapsed": 150.41898429499997,
+      "path": "media-150.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 150.43581879399426
+    },
+    {
+      "launch": 0,
+      "elapsed": 152.4561198339943,
+      "path": "media-152.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 152.47209643400856
+    },
+    {
+      "launch": 0,
+      "elapsed": 154.49278170599428,
+      "path": "media-154.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 154.5091159059957
+    },
+    {
+      "launch": 0,
+      "elapsed": 156.5333928780019,
+      "path": "media-156.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 156.5500985779945
+    },
+    {
+      "launch": 0,
+      "elapsed": 158.57273655000608,
+      "path": "media-158.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 158.58906655000465
+    },
+    {
+      "launch": 0,
+      "elapsed": 160.61280724199605,
+      "path": "media-160.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 160.63047954300418
+    },
+    {
+      "launch": 0,
+      "elapsed": 162.6370606690034,
+      "path": "media-162.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 162.65197096900374
+    },
+    {
+      "launch": 0,
+      "elapsed": 164.67575639500865,
+      "path": "media-164.png",
+      "pcm_file_bytes": 409600,
+      "capture_finished": 164.69461799500277
+    }
+  ],
+  "inputs": [
+    {
+      "launch": 0,
+      "key": "p",
+      "elapsed": 107.01742775899766
+    },
+    {
+      "launch": 0,
+      "key": "r",
+      "elapsed": 116.94141755900637
+    },
+    {
+      "launch": 0,
+      "key": "s",
+      "elapsed": 123.02725215999817
+    },
+    {
+      "launch": 0,
+      "key": "x",
+      "elapsed": 160.93465114700666
+    }
+  ],
+  "shell_checks": [
+    {
+      "launch": 0,
+      "output": "Free physical pages: 126671\nmyos> "
+    }
+  ],
+  "provider_sha256": "1a29d0649470cbfad06e5f3abc12c0279ae9a91c0ab920b08b9ff605b671cf71",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "boot_sha256": "5f0a82d99b057c662fe50b9b100a6cda8131c3baacc0f8b9d8306b8340de0dfc",
+  "runtime_sha256": "7653c37c15898df660d01b310c09e489de631d21123eb9e63848273d554e6314",
+  "elapsed": 166.2525934150035
+}
