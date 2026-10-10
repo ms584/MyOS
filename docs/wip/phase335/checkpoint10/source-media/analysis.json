@@ -1,0 +1,168 @@
+{
+  "phase_passed": false,
+  "fixture_not_youtube": true,
+  "actual_pngs_inspected": true,
+  "frames": [
+    {
+      "elapsed": 99.5952259869955,
+      "frame_id": 0,
+      "viewport_top": 157,
+      "path": "media-099.png"
+    },
+    {
+      "elapsed": 101.61787026000093,
+      "frame_id": 29,
+      "viewport_top": 182,
+      "path": "media-101.png"
+    },
+    {
+      "elapsed": 103.64605592699081,
+      "frame_id": 60,
+      "viewport_top": 182,
+      "path": "media-103.png"
+    },
+    {
+      "elapsed": 105.67344517199672,
+      "frame_id": 90,
+      "viewport_top": 182,
+      "path": "media-105.png"
+    },
+    {
+      "elapsed": 107.683722716989,
+      "frame_id": 91,
+      "viewport_top": 182,
+      "path": "media-107.png"
+    },
+    {
+      "elapsed": 109.69511266199697,
+      "frame_id": 105,
+      "viewport_top": 157,
+      "path": "media-109.png"
+    },
+    {
+      "elapsed": 111.72541747899959,
+      "frame_id": 136,
+      "viewport_top": 182,
+      "path": "media-111.png"
+    },
+    {
+      "elapsed": 113.75359610898886,
+      "frame_id": 166,
+      "viewport_top": 182,
+      "path": "media-113.png"
+    },
+    {
+      "elapsed": 115.76678263899521,
+      "frame_id": 239,
+      "viewport_top": 157,
+      "path": "media-115.png"
+    },
+    {
+      "elapsed": 117.79990676799207,
+      "frame_id": 270,
+      "viewport_top": 182,
+      "path": "media-117.png"
+    },
+    {
+      "elapsed": 119.83475209199241,
+      "frame_id": 300,
+      "viewport_top": 182,
+      "path": "media-119.png"
+    },
+    {
+      "elapsed": 121.86516869999468,
+      "frame_id": 331,
+      "viewport_top": 182,
+      "path": "media-121.png"
+    },
+    {
+      "elapsed": 123.89816620798956,
+      "frame_id": 361,
+      "viewport_top": 182,
+      "path": "media-123.png"
+    },
+    {
+      "elapsed": 125.93480511599046,
+      "frame_id": 392,
+      "viewport_top": 182,
+      "path": "media-125.png"
+    },
+    {
+      "elapsed": 127.97023817199806,
+      "frame_id": 422,
+      "viewport_top": 182,
+      "path": "media-127.png"
+    },
+    {
+      "elapsed": 130.00494221899135,
+      "frame_id": 453,
+      "viewport_top": 182,
+      "path": "media-130.png"
+    },
+    {
+      "elapsed": 132.03877406699758,
+      "frame_id": 483,
+      "viewport_top": 182,
+      "path": "media-132.png"
+    },
+    {
+      "elapsed": 134.07433521399798,
+      "frame_id": 514,
+      "viewport_top": 182,
+      "path": "media-134.png"
+    },
+    {
+      "elapsed": 136.11011312699702,
+      "frame_id": 544,
+      "viewport_top": 182,
+      "path": "media-136.png"
+    },
+    {
+      "elapsed": 138.14469088999613,
+      "frame_id": 575,
+      "viewport_top": 182,
+      "path": "media-138.png"
+    }
+  ],
+  "pcm": {
+    "channels": 1,
+    "sample_bytes": 1,
+    "rate": 11025
+  },
+  "pcm_seconds": 36.9287074829932,
+  "pcm_rms_u8": 55.19823189963171,
+  "controls": [
+    {
+      "launch": 0,
+      "key": "p",
+      "elapsed": 105.67344517199672
+    },
+    {
+      "launch": 0,
+      "key": "r",
+      "elapsed": 108.70710623999184
+    },
+    {
+      "launch": 0,
+      "key": "s",
+      "elapsed": 114.67838577699149
+    },
+    {
+      "launch": 0,
+      "key": "x",
+      "elapsed": 143.6465790989896
+    }
+  ],
+  "metrics": [
+    "MEDIA native metrics presented=563 sync-samples=550 max-sync-us=89956 decoded=572 dropped=1 corrupted=0 source-starvations=0"
+  ],
+  "missing_evidence": [
+    "Multiple settled pause screenshots",
+    "PCM file-byte timeline paired to controls",
+    "Backward seek",
+    "Lifecycle/adverse/continuous regression",
+    "Owner listening"
+  ],
+  "heap_before": 786176,
+  "heap_after": 847616
+}
