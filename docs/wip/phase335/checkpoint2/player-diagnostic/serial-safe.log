@@ -1,0 +1,940 @@
+Free physical pages: 257751
+Free physical pages: 257743
+ELF pair live: started; Escape stops all threads
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.02.51.10.01.09.16.09.00" encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E"; decode-to-texture=true encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2" encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=99 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs=av01.0.05M.08 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=640 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=360 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=30 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=9999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9"; width=3840; height=2160; bitrate=2000000 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=300000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=2000000000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=bt709 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=catavision encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.05M.08"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.04M.08"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.01M.08"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=640; height=360; framerate=25 encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="avc1.640028"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401F"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D4015"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D400C"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2"; channels=2 encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=subsample encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=invalidformat encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=nope encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=allowed encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=invalid encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=true encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=19130000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=437751808 decode-max-us=40000 present-max-us=0 wake-max-us=10000
+MEDIA hardware-clock reads=396 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=20960000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=410218496 decode-max-us=40000 present-max-us=0 wake-max-us=50000
+MEDIA hardware-clock reads=808 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=22940000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=419561472 decode-max-us=40000 present-max-us=0 wake-max-us=50000
+MEDIA hardware-clock reads=1222 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=application/json+protobuf encrypted=0 support=0
+MEDIA metrics mono-us=24610000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=421265408 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=1634 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=25660000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=421470208 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2043 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=27190000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=421851136 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2455 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA bounds z=0 x=24 y=80 width=768 height=432
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA metrics mono-us=30080000 position-us=2011330 presented=40 sync-samples=36 max-sync-us=78920 decoded=68 dropped=13 corrupted=0 starvations=0 consumed=22174 rate=1 ram-query-bytes=437350400 decode-max-us=40000 present-max-us=40000 wake-max-us=80000
+MEDIA hardware-clock reads=2925 failures=0 max-ack-lag-frames=2017 presentation-max-us=40000 rebuffers=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA capability mime=text/plain encrypted=0 support=0
+MEDIA rebuffer pause clock=6743212 latest-video=6840000 vq=2 pcm=3166
+MEDIA rebuffer resume clock=6753370 pts=6760000 vq=6 pcm=4484
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA metrics mono-us=37120000 position-us=8987293 presented=133 sync-samples=129 max-sync-us=81641 decoded=236 dropped=93 corrupted=0 starvations=0 consumed=98412 rate=1 ram-query-bytes=468914176 decode-max-us=90000 present-max-us=110000 wake-max-us=80000
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA hardware-clock reads=3550 failures=0 max-ack-lag-frames=2467 presentation-max-us=110000 rebuffers=1
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA bounds z=1 x=17 y=56 width=766 height=431
+MEDIA rebuffer pause clock=10592736 latest-video=10680000 vq=3 pcm=2727
+MEDIA rebuffer resume clock=10592736 pts=10600000 vq=6 pcm=2727
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=10949561 latest-video=11000000 vq=1 pcm=893
+MEDIA rebuffer resume clock=10949561 pts=10960000 vq=5 pcm=2321
+MEDIA rebuffer pause clock=11062033 latest-video=11160000 vq=4 pcm=2845
+MEDIA rebuffer resume clock=11062033 pts=11040000 vq=7 pcm=2845
+MEDIA rebuffer pause clock=11549289 latest-video=11640000 vq=3 pcm=2765
+MEDIA rebuffer resume clock=11549289 pts=11520000 vq=7 pcm=2765
+MEDIA rebuffer pause clock=12194096 latest-video=12280000 vq=2 pcm=2936
+MEDIA rebuffer resume clock=12194187 pts=12200000 vq=6 pcm=2711
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=14611965 latest-video=14680000 vq=1 pcm=2627
+MEDIA rebuffer resume clock=14622033 pts=14640000 vq=5 pcm=4168
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA rebuffer pause clock=15565978 latest-video=15640000 vq=1 pcm=2807
+MEDIA rebuffer resume clock=15565978 pts=15600000 vq=5 pcm=4345
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=16706568 latest-video=16760000 vq=4 pcm=4636
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer resume clock=16706658 pts=16680000 vq=6 pcm=4117
+MEDIA metrics mono-us=45740000 position-us=16706658 presented=224 sync-samples=220 max-sync-us=81641 decoded=424 dropped=194 corrupted=0 starvations=0 consumed=184190 rate=1 ram-query-bytes=497012736 decode-max-us=90000 present-max-us=110000 wake-max-us=90000
+MEDIA hardware-clock reads=4231 failures=0 max-ack-lag-frames=2467 presentation-max-us=110000 rebuffers=9
+MEDIA rebuffer pause clock=16838903 latest-video=16920000 vq=2 pcm=2771
+MEDIA rebuffer resume clock=16838903 pts=16840000 vq=6 pcm=4423
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA native metrics presented=313 sync-samples=309 max-sync-us=82639 decoded=596 dropped=277 corrupted=0 source-starvations=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA seek ticket=5 target-us=22943008
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA preroll ticket=5 pts=22960000 clock=22943104 buffered-video=16 audio-frames=3946
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA bounds z=2 x=17 y=56 width=766 height=431
+MEDIA first-video ticket=5 pts=23000000 clock=22943104 consumed=0
+MEDIA metrics mono-us=56180000 position-us=23257752 presented=7 sync-samples=1 max-sync-us=42928 decoded=24 dropped=4 corrupted=0 starvations=0 consumed=3241 rate=1 ram-query-bytes=507179008 decode-max-us=30000 present-max-us=30000 wake-max-us=20000
+MEDIA hardware-clock reads=282 failures=0 max-ack-lag-frames=782 presentation-max-us=30000 rebuffers=0
+MEDIA metrics mono-us=61560000 position-us=28636437 presented=104 sync-samples=98 max-sync-us=75128 decoded=160 dropped=41 corrupted=0 starvations=0 consumed=62430 rate=1 ram-query-bytes=506945536 decode-max-us=40000 present-max-us=50000 wake-max-us=80000
+MEDIA hardware-clock reads=860 failures=0 max-ack-lag-frames=1460 presentation-max-us=50000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=63370000 position-us=30437525 presented=149 sync-samples=143 max-sync-us=84107 decoded=207 dropped=42 corrupted=0 starvations=0 consumed=82404 rate=1 ram-query-bytes=502198272 decode-max-us=40000 present-max-us=50000 wake-max-us=80000
+MEDIA hardware-clock reads=1322 failures=0 max-ack-lag-frames=1460 presentation-max-us=50000 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=65920000 position-us=32977843 presented=205 sync-samples=199 max-sync-us=84107 decoded=271 dropped=50 corrupted=0 starvations=0 consumed=110523 rate=1 ram-query-bytes=502083584 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=1808 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=67700000 position-us=34753897 presented=249 sync-samples=243 max-sync-us=84107 decoded=315 dropped=50 corrupted=0 starvations=0 consumed=130214 rate=1 ram-query-bytes=498221056 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=2266 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=69830000 position-us=36888954 presented=300 sync-samples=294 max-sync-us=88370 decoded=368 dropped=52 corrupted=0 starvations=0 consumed=153641 rate=1 ram-query-bytes=497131520 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=2737 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=71830000 position-us=38883693 presented=346 sync-samples=340 max-sync-us=88733 decoded=418 dropped=56 corrupted=0 starvations=0 consumed=175633 rate=1 ram-query-bytes=494108672 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=3201 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=74180000 position-us=41233988 presented=403 sync-samples=397 max-sync-us=88733 decoded=476 dropped=58 corrupted=0 starvations=0 consumed=201654 rate=1 ram-query-bytes=504950784 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=3680 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=75970000 position-us=43022106 presented=448 sync-samples=442 max-sync-us=88733 decoded=522 dropped=58 corrupted=0 starvations=0 consumed=221148 rate=1 ram-query-bytes=502763520 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=4142 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=78110000 position-us=45147276 presented=499 sync-samples=493 max-sync-us=88733 decoded=575 dropped=60 corrupted=0 starvations=0 consumed=244683 rate=1 ram-query-bytes=500707328 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=4615 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=82090000 position-us=49117344 presented=579 sync-samples=573 max-sync-us=88733 decoded=672 dropped=78 corrupted=0 starvations=0 consumed=288347 rate=1 ram-query-bytes=511176704 decode-max-us=40000 present-max-us=110000 wake-max-us=80000
+MEDIA hardware-clock reads=5147 failures=0 max-ack-lag-frames=1793 presentation-max-us=110000 rebuffers=0
+MEDIA native metrics presented=600 sync-samples=594 max-sync-us=88733 decoded=708 dropped=95 corrupted=0 source-starvations=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=785920 heap-after=921088
+Free physical pages: 257743
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+DESKTOP CLOSED
+Free physical pages: 257743
+Free physical pages: 257743
+ELF pair live: started; Escape stops all threads
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.02.51.10.01.09.16.09.00" encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E"; decode-to-texture=true encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2" encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=99 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs=av01.0.05M.08 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=640 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=360 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=30 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=9999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9"; width=3840; height=2160; bitrate=2000000 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=300000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=2000000000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=bt709 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=catavision encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.05M.08"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.04M.08"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.01M.08"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=640; height=360; framerate=25 encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="avc1.640028"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401F"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D4015"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D400C"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2"; channels=2 encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=subsample encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=invalidformat encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=nope encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=allowed encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=invalid encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=true encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA metrics mono-us=109990000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=435458048 decode-max-us=30000 present-max-us=0 wake-max-us=20000
+MEDIA hardware-clock reads=395 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=111310000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=473808896 decode-max-us=30000 present-max-us=0 wake-max-us=30000
+MEDIA hardware-clock reads=805 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=113150000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=478564352 decode-max-us=30000 present-max-us=0 wake-max-us=30000
+MEDIA hardware-clock reads=1218 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/json+protobuf encrypted=0 support=0
+MEDIA metrics mono-us=115290000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=421367808 decode-max-us=30000 present-max-us=0 wake-max-us=70000
+MEDIA hardware-clock reads=1630 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA metrics mono-us=116560000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=421244928 decode-max-us=30000 present-max-us=0 wake-max-us=70000
+MEDIA hardware-clock reads=2040 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=117790000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=424583168 decode-max-us=30000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2450 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA metrics mono-us=118830000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=424599552 decode-max-us=30000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2859 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA bounds z=0 x=24 y=80 width=768 height=432
+MEDIA metrics mono-us=120470000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=436801536 decode-max-us=30000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=3272 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA native metrics presented=4 sync-samples=0 max-sync-us=0 decoded=20 dropped=2 corrupted=0 source-starvations=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA bounds z=1 x=24 y=80 width=768 height=432
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=126850000 position-us=5194005 presented=82 sync-samples=77 max-sync-us=78194 decoded=136 dropped=49 corrupted=0 starvations=0 consumed=56369 rate=1 ram-query-bytes=461021184 decode-max-us=110000 present-max-us=60000 wake-max-us=50000
+MEDIA hardware-clock reads=548 failures=0 max-ack-lag-frames=2348 presentation-max-us=60000 rebuffers=0
+MEDIA rebuffer pause clock=5315910 latest-video=5400000 vq=2 pcm=5901
+MEDIA rebuffer resume clock=5315910 pts=5320000 vq=6 pcm=5117
+MEDIA rebuffer pause clock=6420853 latest-video=6520000 vq=3 pcm=5618
+MEDIA rebuffer resume clock=6430922 pts=6440000 vq=6 pcm=5172
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA bounds z=2 x=17 y=56 width=766 height=431
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=9627928 latest-video=9720000 vq=2 pcm=3666
+MEDIA rebuffer resume clock=9638178 pts=9640000 vq=6 pcm=5092
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=9780672 latest-video=9880000 vq=2 pcm=3632
+MEDIA rebuffer resume clock=9780672 pts=9800000 vq=6 pcm=5285
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=10278359 latest-video=10360000 vq=2 pcm=3549
+MEDIA rebuffer resume clock=10278359 pts=10280000 vq=6 pcm=5090
+MEDIA rebuffer pause clock=10430922 latest-video=10520000 vq=1 pcm=3408
+MEDIA rebuffer resume clock=10430922 pts=10480000 vq=5 pcm=5172
+MEDIA rebuffer pause clock=12195729 latest-video=12280000 vq=2 pcm=3805
+MEDIA rebuffer resume clock=12195729 pts=12200000 vq=6 pcm=5119
+MEDIA rebuffer pause clock=12377860 latest-video=12440000 vq=2 pcm=3447
+MEDIA rebuffer resume clock=12377860 pts=12360000 vq=6 pcm=4875
+MEDIA metrics mono-us=135170000 position-us=12813597 presented=173 sync-samples=168 max-sync-us=78194 decoded=324 dropped=148 corrupted=0 starvations=0 consumed=140708 rate=1 ram-query-bytes=492871680 decode-max-us=110000 present-max-us=70000 wake-max-us=80000
+MEDIA hardware-clock reads=1224 failures=0 max-ack-lag-frames=2351 presentation-max-us=70000 rebuffers=8
+MEDIA rebuffer pause clock=13006795 latest-video=13080000 vq=1 pcm=3458
+MEDIA rebuffer resume clock=13006795 pts=13040000 vq=5 pcm=4997
+MEDIA rebuffer pause clock=13639901 latest-video=13720000 vq=2 pcm=3421
+MEDIA rebuffer resume clock=13639901 pts=13640000 vq=6 pcm=5073
+MEDIA rebuffer pause clock=13974414 latest-video=14040000 vq=1 pcm=3483
+MEDIA rebuffer resume clock=13984482 pts=14000000 vq=5 pcm=4802
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=15396908 latest-video=15480000 vq=1 pcm=3564
+MEDIA rebuffer resume clock=15396908 pts=15440000 vq=5 pcm=5106
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=16376228 latest-video=16440000 vq=1 pcm=3353
+MEDIA rebuffer resume clock=16376228 pts=16400000 vq=5 pcm=4893
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=17645253 latest-video=17720000 vq=1 pcm=3473
+MEDIA rebuffer resume clock=17645253 pts=17680000 vq=5 pcm=5014
+MEDIA rebuffer pause clock=20200717 latest-video=20280000 vq=2 pcm=3637
+MEDIA rebuffer resume clock=20205343 pts=20200000 vq=6 pcm=5013
+MEDIA metrics mono-us=143340000 position-us=20276273 presented=264 sync-samples=259 max-sync-us=82820 decoded=512 dropped=244 corrupted=0 starvations=0 consumed=223321 rate=1 ram-query-bytes=500776960 decode-max-us=110000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=1874 failures=0 max-ack-lag-frames=2961 presentation-max-us=70000 rebuffers=15
+MEDIA rebuffer pause clock=20986658 latest-video=21080000 vq=5 pcm=3455
+MEDIA rebuffer resume clock=20996726 pts=21000000 vq=6 pcm=5108
+MEDIA native metrics presented=290 sync-samples=285 max-sync-us=83274 decoded=568 dropped=273 corrupted=0 source-starvations=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA seek ticket=5 target-us=22132645
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA preroll ticket=5 pts=22160000 clock=22132729 buffered-video=7 audio-frames=9132
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA bounds z=3 x=17 y=56 width=766 height=431
+MEDIA first-video ticket=5 pts=22200000 clock=22132729 consumed=0
+MEDIA metrics mono-us=149590000 position-us=23057536 presented=19 sync-samples=13 max-sync-us=61739 decoded=76 dropped=41 corrupted=0 starvations=0 consumed=9861 rate=1 ram-query-bytes=493203456 decode-max-us=30000 present-max-us=40000 wake-max-us=20000
+MEDIA hardware-clock reads=386 failures=0 max-ack-lag-frames=893 presentation-max-us=40000 rebuffers=0
+MEDIA metrics mono-us=154550000 position-us=28007286 presented=110 sync-samples=104 max-sync-us=78609 decoded=196 dropped=73 corrupted=0 starvations=0 consumed=64319 rate=1 ram-query-bytes=504700928 decode-max-us=30000 present-max-us=60000 wake-max-us=90000
+MEDIA hardware-clock reads=950 failures=0 max-ack-lag-frames=1566 presentation-max-us=60000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=156600000 position-us=30045019 presented=157 sync-samples=151 max-sync-us=86319 decoded=251 dropped=78 corrupted=0 starvations=0 consumed=87122 rate=1 ram-query-bytes=493973504 decode-max-us=30000 present-max-us=60000 wake-max-us=90000
+MEDIA hardware-clock reads=1419 failures=0 max-ack-lag-frames=1566 presentation-max-us=60000 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=159200000 position-us=32629146 presented=216 sync-samples=210 max-sync-us=86319 decoded=316 dropped=84 corrupted=0 starvations=0 consumed=115610 rate=1 ram-query-bytes=498249728 decode-max-us=30000 present-max-us=60000 wake-max-us=90000
+MEDIA hardware-clock reads=1909 failures=0 max-ack-lag-frames=1566 presentation-max-us=60000 rebuffers=0
+MEDIA metrics mono-us=160890000 position-us=34319486 presented=258 sync-samples=252 max-sync-us=86319 decoded=358 dropped=84 corrupted=0 starvations=0 consumed=134247 rate=1 ram-query-bytes=494383104 decode-max-us=30000 present-max-us=60000 wake-max-us=90000
+MEDIA hardware-clock reads=2364 failures=0 max-ack-lag-frames=1566 presentation-max-us=60000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=163210000 position-us=36631867 presented=312 sync-samples=306 max-sync-us=87589 decoded=416 dropped=88 corrupted=0 starvations=0 consumed=159853 rate=1 ram-query-bytes=498028544 decode-max-us=30000 present-max-us=60000 wake-max-us=90000
+MEDIA hardware-clock reads=2845 failures=0 max-ack-lag-frames=1566 presentation-max-us=60000 rebuffers=0
+MEDIA metrics mono-us=165310000 position-us=38729372 presented=360 sync-samples=354 max-sync-us=87589 decoded=468 dropped=92 corrupted=0 starvations=0 consumed=182866 rate=1 ram-query-bytes=496132096 decode-max-us=30000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=3314 failures=0 max-ack-lag-frames=1570 presentation-max-us=70000 rebuffers=0
+MEDIA metrics mono-us=167590000 position-us=41005654 presented=415 sync-samples=409 max-sync-us=87589 decoded=524 dropped=95 corrupted=0 starvations=0 consumed=208074 rate=1 ram-query-bytes=502611968 decode-max-us=30000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=3792 failures=0 max-ack-lag-frames=1570 presentation-max-us=70000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=169610000 position-us=43032230 presented=465 sync-samples=459 max-sync-us=89131 decoded=576 dropped=95 corrupted=0 starvations=0 consumed=230193 rate=1 ram-query-bytes=506851328 decode-max-us=30000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=4263 failures=0 max-ack-lag-frames=1570 presentation-max-us=70000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=171970000 position-us=45386425 presented=520 sync-samples=514 max-sync-us=89131 decoded=632 dropped=98 corrupted=0 starvations=0 consumed=256037 rate=1 ram-query-bytes=501891072 decode-max-us=30000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=4739 failures=0 max-ack-lag-frames=1570 presentation-max-us=70000 rebuffers=0
+MEDIA metrics mono-us=174770000 position-us=48178533 presented=576 sync-samples=570 max-sync-us=89131 decoded=696 dropped=107 corrupted=0 starvations=0 consumed=287043 rate=1 ram-query-bytes=509157376 decode-max-us=40000 present-max-us=70000 wake-max-us=90000
+MEDIA hardware-clock reads=5228 failures=0 max-ack-lag-frames=1901 presentation-max-us=70000 rebuffers=0
+MEDIA native metrics presented=598 sync-samples=592 max-sync-us=89131 decoded=740 dropped=130 corrupted=0 source-starvations=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=921088 heap-after=1023504
+Free physical pages: 257743
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+DESKTOP CLOSED
+Free physical pages: 257743
+Free physical pages: 257743
+ELF pair live: started; Escape stops all threads
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.02.51.10.01.09.16.09.00" encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E"; decode-to-texture=true encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2" encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=99 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs=av01.0.05M.08 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=640 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=360 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=30 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=9999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9"; width=3840; height=2160; bitrate=2000000 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=300000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=2000000000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=bt709 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=catavision encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.05M.08"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.04M.08"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.01M.08"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=640; height=360; framerate=25 encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="avc1.640028"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401F"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D4015"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D400C"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2"; channels=2 encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=subsample encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=invalidformat encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=nope encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=allowed encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=invalid encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=true encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA capability mime=application/json+protobuf encrypted=0 support=0
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA seek ticket=3 target-us=0
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA bounds z=0 x=24 y=80 width=768 height=432
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=2131602 latest-video=2200000 vq=1 pcm=4512
+MEDIA rebuffer resume clock=2131602 pts=2160000 vq=5 pcm=6047
+MEDIA metrics mono-us=212140000 position-us=2619312 presented=32 sync-samples=28 max-sync-us=71482 decoded=72 dropped=35 corrupted=0 starvations=0 consumed=28316 rate=1 ram-query-bytes=457777152 decode-max-us=120000 present-max-us=40000 wake-max-us=40000
+MEDIA hardware-clock reads=467 failures=0 max-ack-lag-frames=2130 presentation-max-us=40000 rebuffers=1
+MEDIA rebuffer pause clock=3239992 latest-video=3320000 vq=2 pcm=4746
+MEDIA rebuffer resume clock=3239992 pts=3240000 vq=6 pcm=6175
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA metrics mono-us=217430000 position-us=7789561 presented=114 sync-samples=110 max-sync-us=78013 decoded=200 dropped=81 corrupted=0 starvations=0 consumed=85429 rate=1 ram-query-bytes=478900224 decode-max-us=120000 present-max-us=50000 wake-max-us=40000
+MEDIA hardware-clock reads=1037 failures=0 max-ack-lag-frames=2130 presentation-max-us=50000 rebuffers=2
+MEDIA rebuffer pause clock=8040536 latest-video=8120000 vq=2 pcm=4741
+MEDIA rebuffer resume clock=8040536 pts=8040000 vq=6 pcm=6169
+MEDIA rebuffer pause clock=8568518 latest-video=8600000 vq=1 pcm=4213
+MEDIA rebuffer resume clock=8568609 pts=8560000 vq=9 pcm=7403
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA rebuffer pause clock=10102305 latest-video=10200000 vq=2 pcm=4829
+MEDIA rebuffer resume clock=10102305 pts=10120000 vq=6 pcm=6370
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA bounds z=1 x=17 y=56 width=766 height=431
+MEDIA rebuffer pause clock=12518631 latest-video=12600000 vq=1 pcm=4649
+MEDIA rebuffer resume clock=12528699 pts=12560000 vq=5 pcm=6079
+MEDIA rebuffer pause clock=12680264 latest-video=12760000 vq=2 pcm=4632
+MEDIA rebuffer resume clock=12690332 pts=12680000 vq=6 pcm=6061
+MEDIA rebuffer pause clock=13015593 latest-video=13080000 vq=2 pcm=4580
+MEDIA rebuffer resume clock=13015593 pts=13000000 vq=6 pcm=6003
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=13197996 latest-video=13240000 vq=1 pcm=4215
+MEDIA rebuffer resume clock=13218223 pts=13200000 vq=9 pcm=7297
+MEDIA rebuffer pause clock=14748654 latest-video=14840000 vq=2 pcm=4764
+MEDIA metrics mono-us=225450000 position-us=14748654 presented=198 sync-samples=194 max-sync-us=78013 decoded=372 dropped=172 corrupted=0 starvations=0 consumed=162603 rate=1 ram-query-bytes=500080640 decode-max-us=120000 present-max-us=50000 wake-max-us=70000
+MEDIA hardware-clock reads=1669 failures=0 max-ack-lag-frames=2323 presentation-max-us=50000 rebuffers=10
+MEDIA rebuffer resume clock=14748654 pts=14760000 vq=6 pcm=6300
+MEDIA rebuffer pause clock=15257316 latest-video=15320000 vq=5 pcm=4220
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer resume clock=15257316 pts=15240000 vq=6 pcm=5984
+MEDIA rebuffer pause clock=16191556 latest-video=16280000 vq=2 pcm=4727
+MEDIA rebuffer resume clock=16191556 pts=16200000 vq=6 pcm=6268
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=17177497 latest-video=17240000 vq=1 pcm=4446
+MEDIA rebuffer resume clock=17177497 pts=17200000 vq=5 pcm=5982
+MEDIA rebuffer pause clock=18938042 latest-video=19000000 vq=1 pcm=4324
+MEDIA rebuffer resume clock=18948110 pts=18960000 vq=5 pcm=5865
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=19608336 latest-video=19640000 vq=1 pcm=4216
+MEDIA rebuffer resume clock=19608336 pts=19600000 vq=9 pcm=7406
+MEDIA rebuffer pause clock=20857407 latest-video=20920000 vq=1 pcm=4445
+MEDIA rebuffer resume clock=20857407 pts=20880000 vq=5 pcm=5983
+MEDIA metrics mono-us=233440000 position-us=21842894 presented=287 sync-samples=283 max-sync-us=78013 decoded=552 dropped=261 corrupted=0 starvations=0 consumed=239921 rate=1 ram-query-bytes=513769472 decode-max-us=120000 present-max-us=90000 wake-max-us=100000
+MEDIA hardware-clock reads=2304 failures=0 max-ack-lag-frames=2905 presentation-max-us=90000 rebuffers=16
+MEDIA rebuffer pause clock=22107021 latest-video=22200000 vq=2 pcm=4777
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer resume clock=22107112 pts=22120000 vq=6 pcm=6317
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA native metrics presented=316 sync-samples=312 max-sync-us=78013 decoded=612 dropped=290 corrupted=0 source-starvations=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA seek ticket=5 target-us=23795411
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA preroll ticket=5 pts=23800000 clock=23795500 buffered-video=8 audio-frames=3810
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=238890000 position-us=23795500 presented=0 sync-samples=0 max-sync-us=0 decoded=42 dropped=25 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=506712064 decode-max-us=30000 present-max-us=0 wake-max-us=30000
+MEDIA hardware-clock reads=357 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA bounds z=2 x=17 y=56 width=766 height=431
+MEDIA first-video ticket=5 pts=23880000 clock=23795500 consumed=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=244250000 position-us=29020715 presented=94 sync-samples=89 max-sync-us=87584 decoded=171 dropped=61 corrupted=0 starvations=0 consumed=57273 rate=1 ram-query-bytes=515481600 decode-max-us=30000 present-max-us=80000 wake-max-us=60000
+MEDIA hardware-clock reads=934 failures=0 max-ack-lag-frames=1456 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=248630000 position-us=33396134 presented=180 sync-samples=175 max-sync-us=87584 decoded=280 dropped=85 corrupted=0 starvations=0 consumed=105623 rate=1 ram-query-bytes=511795200 decode-max-us=30000 present-max-us=110000 wake-max-us=70000
+MEDIA hardware-clock reads=1482 failures=0 max-ack-lag-frames=1563 presentation-max-us=110000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=250540000 position-us=35299626 presented=224 sync-samples=219 max-sync-us=88764 decoded=324 dropped=85 corrupted=0 starvations=0 consumed=126722 rate=1 ram-query-bytes=513695744 decode-max-us=30000 present-max-us=110000 wake-max-us=70000
+MEDIA hardware-clock reads=1938 failures=0 max-ack-lag-frames=1563 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=252800000 position-us=37547880 presented=275 sync-samples=270 max-sync-us=88764 decoded=385 dropped=94 corrupted=0 starvations=0 consumed=151620 rate=1 ram-query-bytes=506593280 decode-max-us=30000 present-max-us=110000 wake-max-us=70000
+MEDIA hardware-clock reads=2415 failures=0 max-ack-lag-frames=1563 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=254720000 position-us=39474955 presented=323 sync-samples=318 max-sync-us=89126 decoded=432 dropped=94 corrupted=0 starvations=0 consumed=172641 rate=1 ram-query-bytes=500137984 decode-max-us=30000 present-max-us=110000 wake-max-us=70000
+MEDIA hardware-clock reads=2878 failures=0 max-ack-lag-frames=1563 presentation-max-us=110000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=257110000 position-us=41839309 presented=380 sync-samples=375 max-sync-us=89126 decoded=492 dropped=96 corrupted=0 starvations=0 consumed=198933 rate=1 ram-query-bytes=507666432 decode-max-us=30000 present-max-us=110000 wake-max-us=70000
+MEDIA hardware-clock reads=3360 failures=0 max-ack-lag-frames=1563 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=259580000 position-us=44309060 presented=434 sync-samples=429 max-sync-us=89126 decoded=554 dropped=104 corrupted=0 starvations=0 consumed=226049 rate=1 ram-query-bytes=508051456 decode-max-us=30000 present-max-us=110000 wake-max-us=100000
+MEDIA hardware-clock reads=3839 failures=0 max-ack-lag-frames=2552 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=261660000 position-us=46384797 presented=484 sync-samples=479 max-sync-us=89126 decoded=606 dropped=106 corrupted=0 starvations=0 consumed=248935 rate=1 ram-query-bytes=508641280 decode-max-us=30000 present-max-us=110000 wake-max-us=100000
+MEDIA hardware-clock reads=4309 failures=0 max-ack-lag-frames=2552 presentation-max-us=110000 rebuffers=0
+MEDIA metrics mono-us=264030000 position-us=48757223 presented=540 sync-samples=535 max-sync-us=89126 decoded=664 dropped=108 corrupted=0 starvations=0 consumed=274757 rate=1 ram-query-bytes=518311936 decode-max-us=30000 present-max-us=110000 wake-max-us=100000
+MEDIA hardware-clock reads=4788 failures=0 max-ack-lag-frames=2552 presentation-max-us=110000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA native metrics presented=586 sync-samples=581 max-sync-us=89126 decoded=740 dropped=142 corrupted=0 source-starvations=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08" encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E"; decode-to-texture=true encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2" encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=640 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=360 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=30 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=9999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9"; width=3840; height=2160; bitrate=2000000 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=300000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=2000000000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=bt709 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=catavision encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=99 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=subsample encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=invalidformat encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=nope encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs=av01.0.05M.08 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=allowed encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=invalid encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=true encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=false encrypted=0 support=2
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=1023504 heap-after=1150496
+Free physical pages: 257743
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+DESKTOP CLOSED
+Free physical pages: 257743
+Free physical pages: 257743
+ELF pair live: started; Escape stops all threads
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.02.51.10.01.09.16.09.00" encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E"; decode-to-texture=true encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.42001E" encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2" encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus"; channels=99 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs=av01.0.05M.08 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=640 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; width=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=360 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; height=99999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=30 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; framerate=9999 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9"; width=3840; height=2160; bitrate=2000000 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=300000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; bitrate=2000000000 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=bt709 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; eotf=catavision encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.12M.08"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.08M.08"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.05M.08"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.04M.08"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.01M.08"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="av01.0.00M.08"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=3840; height=2160; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=2560; height=1440; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00"; width=640; height=360; framerate=25 encrypted=0 support=2
+MEDIA capability mime=video/mp4; codecs="avc1.640028"; width=1920; height=1080; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401F"; width=1280; height=720; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=854; height=480; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D401E"; width=640; height=360; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D4015"; width=426; height=240; framerate=25 encrypted=0 support=0
+MEDIA capability mime=video/mp4; codecs="avc1.4D400C"; width=256; height=144; framerate=25 encrypted=0 support=0
+MEDIA capability mime=audio/mp4; codecs="mp4a.40.2"; channels=2 encrypted=0 support=0
+MEDIA capability mime=audio/webm; codecs="opus"; channels=2 encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=subsample encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; cryptoblockformat=invalidformat encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; decode-to-texture=nope encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=allowed encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; experimental=invalid encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=true encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9"; tunnelmode=false encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp9" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA preroll ticket=3 pts=0 clock=83 buffered-video=7 audio-frames=3528
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=295740000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=452276224 decode-max-us=40000 present-max-us=0 wake-max-us=30000
+MEDIA hardware-clock reads=396 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=297570000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=414400512 decode-max-us=40000 present-max-us=0 wake-max-us=40000
+MEDIA hardware-clock reads=809 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=299590000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=420098048 decode-max-us=40000 present-max-us=0 wake-max-us=60000
+MEDIA hardware-clock reads=1224 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=application/json+protobuf encrypted=0 support=0
+MEDIA metrics mono-us=301020000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=420999168 decode-max-us=40000 present-max-us=0 wake-max-us=60000
+MEDIA hardware-clock reads=1635 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=302480000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=423243776 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2046 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA metrics mono-us=303530000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=423239680 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2455 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA metrics mono-us=304840000 position-us=83 presented=0 sync-samples=0 max-sync-us=0 decoded=19 dropped=2 corrupted=0 starvations=0 consumed=0 rate=1 ram-query-bytes=430235648 decode-max-us=40000 present-max-us=0 wake-max-us=80000
+MEDIA hardware-clock reads=2865 failures=0 max-ack-lag-frames=0 presentation-max-us=0 rebuffers=0
+MEDIA bounds z=0 x=24 y=80 width=768 height=432
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA metrics mono-us=307960000 position-us=2328609 presented=45 sync-samples=40 max-sync-us=69940 decoded=76 dropped=15 corrupted=0 starvations=0 consumed=25672 rate=1 ram-query-bytes=443691008 decode-max-us=40000 present-max-us=50000 wake-max-us=80000
+MEDIA hardware-clock reads=3343 failures=0 max-ack-lag-frames=1339 presentation-max-us=50000 rebuffers=0
+MEDIA capability mime=text/css encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA rebuffer pause clock=6101216 latest-video=6200000 vq=3 pcm=3853
+MEDIA rebuffer resume clock=6111375 pts=6120000 vq=6 pcm=5167
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA capability mime=audio/mpeg encrypted=0 support=0
+MEDIA bounds z=1 x=17 y=56 width=766 height=431
+MEDIA rebuffer pause clock=9969334 latest-video=10040000 vq=1 pcm=3428
+MEDIA metrics mono-us=315760000 position-us=9969334 presented=144 sync-samples=139 max-sync-us=79373 decoded=252 dropped=107 corrupted=0 starvations=0 consumed=109911 rate=1 ram-query-bytes=483704832 decode-max-us=110000 present-max-us=70000 wake-max-us=80000
+MEDIA hardware-clock reads=3983 failures=0 max-ack-lag-frames=2349 presentation-max-us=70000 rebuffers=2
+MEDIA rebuffer resume clock=9969334 pts=10000000 vq=5 pcm=4969
+MEDIA rebuffer pause clock=10111375 latest-video=10200000 vq=2 pcm=3627
+MEDIA rebuffer resume clock=10111375 pts=10120000 vq=6 pcm=5167
+MEDIA rebuffer pause clock=10456772 latest-video=10520000 vq=4 pcm=3123
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer resume clock=10456772 pts=10440000 vq=6 pcm=4887
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA rebuffer pause clock=10599175 latest-video=10680000 vq=2 pcm=3542
+MEDIA rebuffer resume clock=10609243 pts=10600000 vq=6 pcm=4970
+MEDIA rebuffer pause clock=10923529 latest-video=11000000 vq=1 pcm=3493
+MEDIA rebuffer resume clock=10923529 pts=10960000 vq=5 pcm=5033
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA rebuffer pause clock=11903665 latest-video=11960000 vq=1 pcm=3160
+MEDIA rebuffer resume clock=11913733 pts=11920000 vq=5 pcm=4700
+MEDIA rebuffer pause clock=12828019 latest-video=12920000 vq=3 pcm=3440
+MEDIA rebuffer resume clock=12828019 pts=12800000 vq=7 pcm=5204
+MEDIA rebuffer pause clock=13306296 latest-video=13400000 vq=2 pcm=3683
+MEDIA rebuffer resume clock=13306296 pts=13320000 vq=6 pcm=5223
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=14751466 latest-video=14840000 vq=4 pcm=3402
+MEDIA rebuffer resume clock=14751466 pts=14760000 vq=6 pcm=5166
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA rebuffer pause clock=16061851 latest-video=16120000 vq=1 pcm=3402
+MEDIA rebuffer resume clock=16061942 pts=16080000 vq=5 pcm=4830
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=324040000 position-us=17082985 presented=227 sync-samples=222 max-sync-us=79373 decoded=432 dropped=202 corrupted=0 starvations=0 consumed=187435 rate=1 ram-query-bytes=497537024 decode-max-us=110000 present-max-us=80000 wake-max-us=80000
+MEDIA hardware-clock reads=4645 failures=0 max-ack-lag-frames=2349 presentation-max-us=80000 rebuffers=11
+MEDIA rebuffer pause clock=17154005 latest-video=17240000 vq=1 pcm=3821
+MEDIA rebuffer resume clock=17164164 pts=17200000 vq=5 pcm=5026
+MEDIA rebuffer pause clock=18343030 latest-video=18360000 vq=1 pcm=2951
+MEDIA rebuffer resume clock=18343030 pts=18320000 vq=9 pcm=6141
+MEDIA native metrics presented=242 sync-samples=237 max-sync-us=79373 decoded=468 dropped=219 corrupted=0 source-starvations=0
+MEDIA capability mime=audio/webm; codecs="opus" encrypted=0 support=2
+MEDIA capability mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" encrypted=0 support=2
+MEDIA create entered
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA create success
+MEDIA seek ticket=3 target-us=0
+MEDIA seek ticket=5 target-us=17935117
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA preroll ticket=5 pts=17960000 clock=17935208 buffered-video=16 audio-frames=3813
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA bounds z=2 x=17 y=56 width=766 height=431
+MEDIA first-video ticket=5 pts=18000000 clock=17935208 consumed=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=329570000 position-us=19325684 presented=26 sync-samples=21 max-sync-us=62525 decoded=64 dropped=24 corrupted=0 starvations=0 consumed=14996 rate=1 ram-query-bytes=494362624 decode-max-us=0 present-max-us=40000 wake-max-us=20000
+MEDIA hardware-clock reads=377 failures=0 max-ack-lag-frames=1228 presentation-max-us=40000 rebuffers=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=335000000 position-us=24730582 presented=124 sync-samples=119 max-sync-us=83568 decoded=200 dropped=62 corrupted=0 starvations=0 consumed=74696 rate=1 ram-query-bytes=497446912 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=961 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA metrics mono-us=337030000 position-us=26750355 presented=173 sync-samples=168 max-sync-us=86380 decoded=252 dropped=64 corrupted=0 starvations=0 consumed=97077 rate=1 ram-query-bytes=493584384 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=1428 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=339320000 position-us=29035434 presented=228 sync-samples=223 max-sync-us=86380 decoded=310 dropped=66 corrupted=0 starvations=0 consumed=122352 rate=1 ram-query-bytes=496861184 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=1906 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=341410000 position-us=31131217 presented=276 sync-samples=271 max-sync-us=86380 decoded=362 dropped=70 corrupted=0 starvations=0 consumed=145016 rate=1 ram-query-bytes=497516544 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=2373 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=343580000 position-us=33290128 presented=328 sync-samples=323 max-sync-us=89282 decoded=416 dropped=73 corrupted=0 starvations=0 consumed=169201 rate=1 ram-query-bytes=495747072 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=2845 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=345380000 position-us=35079334 presented=372 sync-samples=367 max-sync-us=89736 decoded=461 dropped=73 corrupted=0 starvations=0 consumed=188990 rate=1 ram-query-bytes=493506560 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=3306 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=347660000 position-us=37357339 presented=424 sync-samples=419 max-sync-us=89736 decoded=518 dropped=78 corrupted=0 starvations=0 consumed=214078 rate=1 ram-query-bytes=492695552 decode-max-us=40000 present-max-us=80000 wake-max-us=40000
+MEDIA hardware-clock reads=3780 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=349980000 position-us=39674164 presented=476 sync-samples=471 max-sync-us=89736 decoded=576 dropped=84 corrupted=0 starvations=0 consumed=239611 rate=1 ram-query-bytes=497303552 decode-max-us=40000 present-max-us=80000 wake-max-us=50000
+MEDIA hardware-clock reads=4260 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA capability mime=application/vnd.yt-ump encrypted=0 support=0
+MEDIA metrics mono-us=352460000 position-us=42147906 presented=534 sync-samples=529 max-sync-us=89736 decoded=638 dropped=88 corrupted=0 starvations=0 consumed=266781 rate=1 ram-query-bytes=494354432 decode-max-us=40000 present-max-us=80000 wake-max-us=50000
+MEDIA hardware-clock reads=4744 failures=0 max-ack-lag-frames=1838 presentation-max-us=80000 rebuffers=0
+MEDIA metrics mono-us=356380000 position-us=46058019 presented=607 sync-samples=602 max-sync-us=89736 decoded=732 dropped=111 corrupted=0 starvations=0 consumed=310054 rate=1 ram-query-bytes=506298368 decode-max-us=40000 present-max-us=80000 wake-max-us=50000
+MEDIA hardware-clock reads=5269 failures=0 max-ack-lag-frames=2059 presentation-max-us=80000 rebuffers=0
+MEDIA native metrics presented=609 sync-samples=604 max-sync-us=89736 decoded=736 dropped=114 corrupted=0 source-starvations=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=image/svg+xml encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+MEDIA capability mime=text/html encrypted=0 support=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=1150496 heap-after=1248784
+Free physical pages: 257743
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+DESKTOP CLOSED
+Free physical pages: 257743

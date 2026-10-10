@@ -132,3 +132,39 @@ build/phase334-public-g_wbd0r3. Frozen boot/assets hashes are checked. WSLg/Puls
 speaker output is still unverified. Public final-normal-repeat contains PNGs,original
 PCM.gz,two screen/audio AVI.gz,timingmaps and encrypted-PCAP metadata. Approximate
 recording cannot replace owner listening. Goal remains active;33.5/33 are not closed.
+
+## Checkpoint2 follow-up — stability FAILED,15:54+07
+Normal non-trace di3oxi_6 four opens:1/2/4 produced media;3 decoded640x360,
+then Cobalt main FATAL ImmediateCrash/USER SIGNAL6 at129s. All closures returned
+exact pages/SHM/aliases and desktop/shell, but this does NOT pass repeated playback.
+Linked capacity188416/258048/319488/401408B,nodes50/54/58/61; residual non-file
+heap777760/777760/777728/777728B. Cache has not plateaued. Root cause is not yet
+identified; do not assert cache caused the abort. Diagnosis/retest required.
+Analyzer now includes USER SIGNAL/FATAL, not merely USER FAULT/PANIC.
+
+Measurement correction: memory/memory.c allocates kernel heap backing through
+page_alloc,so PMM already counts those pages. Prior observer caveat stating heap
+backing is outside PMM was incorrect. Original archived reports remain unchanged;
+current observer/documentation corrected. Do not add heap-live bytes to physical
+RAM. Existing512x10ms native allocation history can measure short peaks if polling
+coverage is complete. New read-only history observer passes4 safety/coverage tests,
+uses unchanged normal kernel,and excludes the initial partial tick/boot OOM.
+Diagnostic engine-trace run is separate; its timing is not normal acceptance.
+Owner replied15:52+07 that manual experiment has not been performed. No signoff.
+
+Engine diagnostic ulkpezt9 ended16:08:30+07:4opens/noabort,no repaired stability
+claim. Existing native allocation history235reads has complete coverage after baseline
+partial tick:PMMownedpeak529207296B vs sampled520527872B,kernelheap cumulativepeak
+9945680B (already within PMM backing,not added). Trace altered loading;not normal
+playback/RAM acceptance. Player-only trace rn03ntw3 diagnostics remain active.
+Official pinned [ImmediateCrash source](https://github.com/youtube/cobalt/blob/27.lts.3/base/immediate_crash.h#L62)
+uses a generic Starboard failure macro,so its false expression is not a root-cause
+identifier. Source hash4105cd50966e55484515cb49ac0b92a6c26f1bd3ecf580fcfa965bb1d061d312;
+tag commit3befd332486952f6603ae3baf2a8713878d6e200. No debug symbols in tested ELF.
+Thai owner manual draft:PHASE335_USER_GUIDE_TH.md;finalize only after real closure.
+
+Native-player-only diagnostic rn03ntw3/iwdvm5_h completed16:23:17+07.
+Four opens/noabort/noactive-player-create-busy report;max89736us,exactphysical/SHM/aliases.
+PMM history548790272B with complete coverage,heap runtime high-water10240720B
+reported separately (included PMMbacking;do not add). No functional repair is claimed.
+Normal di3oxi_6 abort remains an acceptance failure. Evidence:checkpoint2/player-diagnostic.

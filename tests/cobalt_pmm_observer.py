@@ -48,4 +48,4 @@ class Observer:
         return dict(kernel_elf_sha256=self.kernel_elf_sha256,samples=self.samples,
                     sampled_peak_bytes=max((x['pmm_allocated_bytes'] for x in self.samples),default=None),
                     paused_seconds=self.paused_seconds,
-                    caveat='Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; heap backing reserved outside PMM is not counted.')
+                    caveat='Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.')

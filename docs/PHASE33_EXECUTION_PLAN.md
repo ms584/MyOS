@@ -1,5 +1,11 @@
 # Phase 33.1-33.5 execution plan
 
+Latest checkpoint2:normal4opens di3oxi_6 thirdnativeVP9 playback aborted
+(FATAL/USER SIGNAL6). Resources reclaimed but repeated playback stabilityFAIL.
+No rootcause/repair yet;diagnostics active. Owner has not tried audio/controls.
+See PHASE335_ACCEPTANCE.md and Thai draft PHASE335_USER_GUIDE_TH.md.
+Do not close33.5/33 or treat prior2opens as proof of this repeated-open gate.
+
 ### Phase33.5 current audit — 2026-10-10
 See PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md. Actual native
 Rickroll trials found baseline sync failures108771/160083us and first-fix outage

@@ -36,4 +36,12 @@ Do not close33.5/33 or claim owner acceptance. Phase32 remains independently ope
 for audible/interactive confirmation despite verified search/select/play evidence.
 
 15:37 final BIOS/UEFI rebuild0;all5 normalhashes exact/defaultVP8 exact41901a13.
-No QEMU remains;manual bundleg_wbd0r3 ready with frozen boot/assets hash checks.
+Latest4opens di3oxi_6:third engineFATAL/SIGABRT afterdecode;stabilityFAIL.
+Enginetrace ulkpezt9 done/noabort,notnormalplaybackacceptance.
+Playertrace rn03ntw3/iwdvm5_h done/noabort,not repair;normalartifacts unchanged.
+
+Read checkpoint2/stability-failed;fix/retest crash before acceptance.
+Owner replied stillnottried;audio/interactive signoff absent.
+
+History235reads:coveragecomplete,PMMownedpeak529207296B ondiagnosticprofile.
+Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.

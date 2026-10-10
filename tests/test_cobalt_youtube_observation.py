@@ -43,8 +43,10 @@ def main():
     p.add_argument('--network-capture',action='store_true',help='Record encrypted virtual-NIC traffic to private PCAP; never decrypt TLS or log credentials')
     p.add_argument('--record-fps',type=int,choices=(1,2,4),default=1,help='Native screen recording rate; observer overhead must be disclosed')
     p.add_argument('--record',action='store_true',help='Capture native screen and WAV byte/wall timeline every 0.25s; host recording only')
+    p.add_argument('--pmm-history',action='store_true',help='Read existing native allocation history; requires --ram, no guest counter resets')
     p.add_argument('--ram',action='store_true',help='Read-only sampled PMM; includes brief QMP pauses')
     a=p.parse_args()
+    assert not a.pmm_history or a.ram
     assert 30<=a.seconds<=600
     assert all(u.startswith('https://www.youtube.com/') and not any(c.isspace() for c in u) for u in a.url)
     assert len(a.url)<=4
@@ -99,6 +101,9 @@ def main():
         vm=VM('phase334-public',ram=a.memory_mib,nic='user,model=rtl8139,id=phase335net' if a.network_capture else True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
         if a.ram:
             from cobalt_pmm_observer import Observer
+            if a.pmm_history:
+                from cobalt_pmm_history_observer import HistoryObserver
+                Observer=HistoryObserver
             observer=Observer(vm,memory_mib=a.memory_mib)
         if a.inode_accounting:
             from cobalt_inode_observer import InodeObserver
@@ -109,16 +114,17 @@ def main():
             evidence['launches'].append(row)
             if inode_observer:row['inode_before']=inode_observer.capture()
             offset=len(vm.log.read_text());started=time.monotonic()
+            if observer and a.pmm_history:observer.capture(n,0,'before-command')
             type_text(vm,('elf cobalt-trace' if a.engine_trace else 'elf cobalt')+' cobalt provider '+url+'\n')
             next_frame=0;next_pmm=0;sent=set();action_sent=set()
             row['recording_timeline']=[]
-            if observer:observer.capture(n,0,'before')
+            if observer and not a.pmm_history:observer.capture(n,0,'before')
             while time.monotonic()-started<a.seconds:
                 elapsed=time.monotonic()-started;content=vm.log.read_text()[offset:]
                 if elapsed>=next_frame:
                     next_frame=elapsed+(1/a.record_fps if a.record else 5)
                     if observer and elapsed>=next_pmm:
-                        observer.capture(n,elapsed);next_pmm=elapsed+5
+                        observer.capture(n,elapsed);next_pmm=elapsed+(2.5 if a.pmm_history else 5)
                     ppm=out/('launch-%d-%06d.ppm'%(n,round(elapsed*1000) if a.record else int(elapsed)))
                     vm.command('screendump',{'filename':str(ppm)})
                     png=ppm.with_suffix('.png');Image.open(ppm).save(png);ppm.unlink()
