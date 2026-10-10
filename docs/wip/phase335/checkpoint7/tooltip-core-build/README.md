@@ -121,3 +121,7 @@ Measured12logicalCPUs/67.8%busy/9184018432Bavailable host RAM, seven observed cl
 ## One-shot build-dependent test chain 2026-10-10 22:44+07
 
 run-after-build.py is running privately as PTY66862, waiting for verified owned Ninja447750/PTY32637. It requires actual successful terminal build log, then runs freeze-core.py and the private rendered HTTPS tooltip retest. It refuses to start a VM if another QEMU exists and never stops an owner VM. New core/sources are hash-checked; normal identities must remain exact. Current stage waiting-for-build: no runtime test or drawing/YouTube/audio/Phase acceptance. Log build/phase335-after-build.log; state build/phase335-core-workspace/after-build-result.json. Actual tooltip PNG visual review, affected prerequisites, normal online controls/stability/freshboot, regression and owner listening still required after this limited chain.
+
+## Actual target C++ syntax check 2026-10-10 22:50:55+07
+
+The modified tooltip_aura.cc passed Clang21 using the actual evergreen-x64_gold target command from Ninja, with only object/dependency output switches removed and -fsyntax-only added. Compiler exit0; sourceSHA8b6489632f62993c81a076245db8da9acf773ec2547b066368bf12d965bb775a unchanged; no Ninja object writes. See tooltip-syntax-check-command.json and tooltip-syntax-check-result.json. This is actual C++ syntax/type checking, not a linked core, drawing/lifecycle/playback proof or Phase acceptance. Main build/PTY32637 and dependent runner/PTY66862 remain active.
