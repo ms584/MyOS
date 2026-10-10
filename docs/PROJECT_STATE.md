@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Checkpoint2 base c5b7282 on main; prior d704611/native normal da08b2d. No push.
+Checkpoint4 parent3c2285c on main; prior c5b7282/d704611. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -49,3 +49,12 @@ Owner replied stillnottried;audio/interactive signoff absent.
 
 History235reads:coveragecomplete,PMMownedpeak529207296B ondiagnosticprofile.
 Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.
+
+Checkpoint4:symbols match21 loadedsections;liveSHM observer5tests PASS.
+Sixopens i04m0umd done17:14:35:noabort,exactcleanup,max89843us.
+Inodepeaks53/57/64/62/64/64;after52/56/59/60/61/63,not originalabortrepair.
+PMMownedpeak550572032B complete;fivefixedmotionwindows FAIL.
+Rootnormal5 exact;no productionchange. See checkpoint4 safeevidence.
+Private resourceerror diagnostic build/4abortfixtures PASS.
+Capacityfault2opens done:455ENOSPC in cache/LevelDB;noabort/exactcleanup.
+Next captureactualENOSPC/ENOMEM callsite before fix;normal acceptance pending.

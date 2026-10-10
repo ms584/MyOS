@@ -1,0 +1,10 @@
+{
+  "tool": "GNU addr2line",
+  "addresses": [
+    "0x47a537a",
+    "0x34a7390"
+  ],
+  "started": "2026-10-10T17:05:08+07:00",
+  "stopped": "2026-10-10T17:17:06+07:00",
+  "result": "Explicit SIGINT after over11min/no output; exit -2. Not a guest failure. Static matching binary debug symbols retained; no source-line result claimed."
+}

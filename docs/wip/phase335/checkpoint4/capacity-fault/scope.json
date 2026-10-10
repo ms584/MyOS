@@ -1,0 +1,24 @@
+{
+  "diagnostic_kernel": true,
+  "diagnostic_mrt": true,
+  "diagnostic_prefill_nodes": 16,
+  "phase_passed": false,
+  "production_changed": false,
+  "user_acceptance": false,
+  "open_enospc_notes": 455,
+  "allocation_map_failed_notes": 0,
+  "faults": [],
+  "max_sync_us": 90000,
+  "resources_exact": true,
+  "pmm": {
+    "kernel_elf_sha256": "819e5946b3dbace72e0365f25b4fb595656308cf555323c38a56b4dee1f438b1",
+    "sampled_peak_bytes": 537014272,
+    "paused_seconds": 1.4917124010244152,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.",
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 539852800,
+    "kernel_heap_runtime_peak_bytes": 9945680,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "scope": "Actual native empty-file inode pressure, not prepared media. Native HTTPS/JS/media unchanged, pinned core/normal nontrace optional VP9 test provider. Real ENOSPC callchains identify disk cache and LevelDB; both launches survive and clean up. This disproves only the claim that every full inode table immediately aborts; it does not rule out a specific failure path or diagnose original di3oxi_6. Fixed movie window includes menus, not continuous30s/owner music acceptance. Four bounded native abort fixtures passed for this private build; full normal architecture regression is reused only for unchanged root normal artifacts, not this private diagnostic build."
+}

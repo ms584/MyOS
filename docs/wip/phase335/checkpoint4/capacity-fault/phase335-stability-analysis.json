@@ -1,0 +1,2608 @@
+{
+  "phase_passed": false,
+  "user_acceptance_received": false,
+  "commit": "c5b7282dff339712755f0d0224810e1ccade32d1",
+  "date": "2026-10-10T17:20:02.514101+07:00",
+  "provider_sha256": "1a29d0649470cbfad06e5f3abc12c0279ae9a91c0ab920b08b9ff605b671cf71",
+  "normal_identity_exact": true,
+  "launches": [
+    {
+      "launch": 1,
+      "movie_span_seconds": 49.74057896499289,
+      "movie_changed_pixels": [
+        0,
+        68000,
+        68000,
+        67801,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000
+      ],
+      "motion_observed": false,
+      "movie_window_pcm_bytes": 450560,
+      "post_close_pcm_bytes": 0,
+      "heap_before": 851456,
+      "heap_after": 974336,
+      "linked_capacity_before": 73728,
+      "linked_capacity_after": 196608,
+      "unlinked_capacity_after": 0,
+      "non_file_heap_before": 777728,
+      "non_file_heap_after": 777728,
+      "live_nodes_after": 63,
+      "normal_nodes_after": 63,
+      "referenced_file_nodes_after": 0,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-1.png"
+      },
+      "shell_returned": true,
+      "inputs": [
+        {
+          "action": {
+            "id": "settings1",
+            "launch": 1,
+            "at": 120,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 120.03710533298727
+        },
+        {
+          "action": {
+            "id": "quality1",
+            "launch": 1,
+            "at": 128,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 128.0775405089953
+        },
+        {
+          "action": {
+            "id": "144p1",
+            "launch": 1,
+            "at": 136,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 136.02516966499388
+        },
+        {
+          "action": {
+            "id": "player-close1",
+            "launch": 1,
+            "at": 165,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 165.06312129998696
+        },
+        {
+          "action": {
+            "id": "close1",
+            "launch": 1,
+            "at": 178,
+            "type": "close"
+          },
+          "elapsed": 178.0255691029888
+        }
+      ]
+    },
+    {
+      "launch": 2,
+      "movie_span_seconds": 50.29624751799565,
+      "movie_changed_pixels": [
+        68000,
+        0,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000,
+        68000
+      ],
+      "motion_observed": false,
+      "movie_window_pcm_bytes": 450560,
+      "post_close_pcm_bytes": 0,
+      "heap_before": 974336,
+      "heap_after": 974336,
+      "linked_capacity_before": 196608,
+      "linked_capacity_after": 196608,
+      "unlinked_capacity_after": 0,
+      "non_file_heap_before": 777728,
+      "non_file_heap_after": 777728,
+      "live_nodes_after": 64,
+      "normal_nodes_after": 64,
+      "referenced_file_nodes_after": 0,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-2.png"
+      },
+      "shell_returned": true,
+      "inputs": [
+        {
+          "action": {
+            "id": "settings2",
+            "launch": 2,
+            "at": 120,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 120.00843521900242
+        },
+        {
+          "action": {
+            "id": "quality2",
+            "launch": 2,
+            "at": 128,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 128.02458915799798
+        },
+        {
+          "action": {
+            "id": "144p2",
+            "launch": 2,
+            "at": 136,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 136.05590241200116
+        },
+        {
+          "action": {
+            "id": "player-close2",
+            "launch": 2,
+            "at": 165,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 165.0080937110033
+        },
+        {
+          "action": {
+            "id": "close2",
+            "launch": 2,
+            "at": 178,
+            "type": "close"
+          },
+          "elapsed": 178.08845556899905
+        }
+      ]
+    }
+  ],
+  "resident_resources_exact": true,
+  "native_metrics": [
+    {
+      "presented": 312,
+      "sync-samples": 308,
+      "max-sync-us": 82004,
+      "decoded": 616,
+      "dropped": 303,
+      "corrupted": 0,
+      "source-starvations": 0
+    },
+    {
+      "presented": 518,
+      "sync-samples": 513,
+      "max-sync-us": 90000,
+      "decoded": 640,
+      "dropped": 109,
+      "corrupted": 0,
+      "source-starvations": 0
+    },
+    {
+      "presented": 270,
+      "sync-samples": 264,
+      "max-sync-us": 85904,
+      "decoded": 516,
+      "dropped": 243,
+      "corrupted": 0,
+      "source-starvations": 0
+    },
+    {
+      "presented": 576,
+      "sync-samples": 570,
+      "max-sync-us": 89690,
+      "decoded": 740,
+      "dropped": 152,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ],
+  "max_sync_us": 90000,
+  "sync_outliers": [],
+  "faults": [],
+  "pcm_seconds": 96.18757369614512,
+  "pmm": {
+    "kernel_elf_sha256": "819e5946b3dbace72e0365f25b4fb595656308cf555323c38a56b4dee1f438b1",
+    "samples": [
+      {
+        "launch": 1,
+        "elapsed": 0,
+        "label": "before-command",
+        "free_pages": 257743,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 1,
+        "elapsed": 1.8809034329897258,
+        "label": "sample",
+        "free_pages": 257743,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 1,
+        "elapsed": 4.989699287994881,
+        "label": "sample",
+        "free_pages": 256685,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 21180416
+      },
+      {
+        "launch": 1,
+        "elapsed": 8.08297864299675,
+        "label": "sample",
+        "free_pages": 255607,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 25595904
+      },
+      {
+        "launch": 1,
+        "elapsed": 11.17945339999278,
+        "label": "sample",
+        "free_pages": 254555,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 29904896
+      },
+      {
+        "launch": 1,
+        "elapsed": 14.281262356991647,
+        "label": "sample",
+        "free_pages": 253504,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 34209792
+      },
+      {
+        "launch": 1,
+        "elapsed": 17.376427119990694,
+        "label": "sample",
+        "free_pages": 252495,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 38342656
+      },
+      {
+        "launch": 1,
+        "elapsed": 20.47515448599006,
+        "label": "sample",
+        "free_pages": 251462,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 42573824
+      },
+      {
+        "launch": 1,
+        "elapsed": 23.565184252991457,
+        "label": "sample",
+        "free_pages": 250396,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 46940160
+      },
+      {
+        "launch": 1,
+        "elapsed": 26.65775852499064,
+        "label": "sample",
+        "free_pages": 249336,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 51281920
+      },
+      {
+        "launch": 1,
+        "elapsed": 29.74449519799964,
+        "label": "sample",
+        "free_pages": 248262,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 55681024
+      },
+      {
+        "launch": 1,
+        "elapsed": 32.839146681988495,
+        "label": "sample",
+        "free_pages": 247215,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 59969536
+      },
+      {
+        "launch": 1,
+        "elapsed": 35.92835567299335,
+        "label": "sample",
+        "free_pages": 246155,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 64311296
+      },
+      {
+        "launch": 1,
+        "elapsed": 39.01434156698815,
+        "label": "sample",
+        "free_pages": 245102,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 68624384
+      },
+      {
+        "launch": 1,
+        "elapsed": 42.10359466499358,
+        "label": "sample",
+        "free_pages": 244077,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 72822784
+      },
+      {
+        "launch": 1,
+        "elapsed": 45.20289646399033,
+        "label": "sample",
+        "free_pages": 243062,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 76980224
+      },
+      {
+        "launch": 1,
+        "elapsed": 48.297717536988785,
+        "label": "sample",
+        "free_pages": 242011,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 81285120
+      },
+      {
+        "launch": 1,
+        "elapsed": 51.38555507299316,
+        "label": "sample",
+        "free_pages": 240973,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 85536768
+      },
+      {
+        "launch": 1,
+        "elapsed": 54.479104909987655,
+        "label": "sample",
+        "free_pages": 239960,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 89686016
+      },
+      {
+        "launch": 1,
+        "elapsed": 57.56830165399879,
+        "label": "sample",
+        "free_pages": 238964,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 93765632
+      },
+      {
+        "launch": 1,
+        "elapsed": 60.6656612779916,
+        "label": "sample",
+        "free_pages": 237899,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 98127872
+      },
+      {
+        "launch": 1,
+        "elapsed": 63.7606816849875,
+        "label": "sample",
+        "free_pages": 236843,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 102453248
+      },
+      {
+        "launch": 1,
+        "elapsed": 66.85652408198803,
+        "label": "sample",
+        "free_pages": 235780,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 106807296
+      },
+      {
+        "launch": 1,
+        "elapsed": 69.94369097899471,
+        "label": "sample",
+        "free_pages": 234716,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 111165440
+      },
+      {
+        "launch": 1,
+        "elapsed": 73.03812080599891,
+        "label": "sample",
+        "free_pages": 233655,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 115511296
+      },
+      {
+        "launch": 1,
+        "elapsed": 76.13437190098921,
+        "label": "sample",
+        "free_pages": 232590,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 119873536
+      },
+      {
+        "launch": 1,
+        "elapsed": 79.23167891299818,
+        "label": "sample",
+        "free_pages": 231380,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 124829696
+      },
+      {
+        "launch": 1,
+        "elapsed": 82.31689305898908,
+        "label": "sample",
+        "free_pages": 230320,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 129171456
+      },
+      {
+        "launch": 1,
+        "elapsed": 85.4162848059932,
+        "label": "sample",
+        "free_pages": 229264,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 133496832
+      },
+      {
+        "launch": 1,
+        "elapsed": 88.50296615799016,
+        "label": "sample",
+        "free_pages": 227402,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 141123584
+      },
+      {
+        "launch": 1,
+        "elapsed": 91.59211584999866,
+        "label": "sample",
+        "free_pages": 206894,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 225124352
+      },
+      {
+        "launch": 1,
+        "elapsed": 94.6788298249885,
+        "label": "sample",
+        "free_pages": 190948,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 290439168
+      },
+      {
+        "launch": 1,
+        "elapsed": 97.75179505298729,
+        "label": "sample",
+        "free_pages": 176254,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 350625792
+      },
+      {
+        "launch": 1,
+        "elapsed": 100.84071502998995,
+        "label": "sample",
+        "free_pages": 159324,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 419971072
+      },
+      {
+        "launch": 1,
+        "elapsed": 103.91120869599399,
+        "label": "sample",
+        "free_pages": 157587,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 427085824
+      },
+      {
+        "launch": 1,
+        "elapsed": 106.98320898399106,
+        "label": "sample",
+        "free_pages": 156832,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 430178304
+      },
+      {
+        "launch": 1,
+        "elapsed": 110.0589326719928,
+        "label": "sample",
+        "free_pages": 153729,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 442888192
+      },
+      {
+        "launch": 1,
+        "elapsed": 113.14259423999465,
+        "label": "sample",
+        "free_pages": 150588,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 455753728
+      },
+      {
+        "launch": 1,
+        "elapsed": 116.22284950799076,
+        "label": "sample",
+        "free_pages": 145701,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 475770880
+      },
+      {
+        "launch": 1,
+        "elapsed": 119.30491330199584,
+        "label": "sample",
+        "free_pages": 142129,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 490401792
+      },
+      {
+        "launch": 1,
+        "elapsed": 122.17962103299215,
+        "label": "sample",
+        "free_pages": 140953,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 495218688
+      },
+      {
+        "launch": 1,
+        "elapsed": 125.2816925419902,
+        "label": "sample",
+        "free_pages": 139405,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 501559296
+      },
+      {
+        "launch": 1,
+        "elapsed": 129.17082043799746,
+        "label": "sample",
+        "free_pages": 138775,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 504139776
+      },
+      {
+        "launch": 1,
+        "elapsed": 132.27556861098856,
+        "label": "sample",
+        "free_pages": 137257,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 510357504
+      },
+      {
+        "launch": 1,
+        "elapsed": 135.37813635698694,
+        "label": "sample",
+        "free_pages": 136978,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 511500288
+      },
+      {
+        "launch": 1,
+        "elapsed": 138.14550871998654,
+        "label": "sample",
+        "free_pages": 139731,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 500224000
+      },
+      {
+        "launch": 1,
+        "elapsed": 141.23082173599687,
+        "label": "sample",
+        "free_pages": 136301,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 514273280
+      },
+      {
+        "launch": 1,
+        "elapsed": 144.31070309398638,
+        "label": "sample",
+        "free_pages": 135357,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 518139904
+      },
+      {
+        "launch": 1,
+        "elapsed": 147.40701043499575,
+        "label": "sample",
+        "free_pages": 131782,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 532783104
+      },
+      {
+        "launch": 1,
+        "elapsed": 150.51347481399716,
+        "label": "sample",
+        "free_pages": 135569,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 517271552
+      },
+      {
+        "launch": 1,
+        "elapsed": 153.61094451899407,
+        "label": "sample",
+        "free_pages": 136910,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 511778816
+      },
+      {
+        "launch": 1,
+        "elapsed": 156.70155822098604,
+        "label": "sample",
+        "free_pages": 136795,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 512249856
+      },
+      {
+        "launch": 1,
+        "elapsed": 159.79521185198973,
+        "label": "sample",
+        "free_pages": 137439,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 509612032
+      },
+      {
+        "launch": 1,
+        "elapsed": 162.8848318829987,
+        "label": "sample",
+        "free_pages": 136808,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 512196608
+      },
+      {
+        "launch": 1,
+        "elapsed": 165.97597871298785,
+        "label": "sample",
+        "free_pages": 135107,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 519163904
+      },
+      {
+        "launch": 1,
+        "elapsed": 169.07748029299546,
+        "label": "sample",
+        "free_pages": 134900,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 520011776
+      },
+      {
+        "launch": 1,
+        "elapsed": 172.15306564499042,
+        "label": "sample",
+        "free_pages": 133152,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 527171584
+      },
+      {
+        "launch": 1,
+        "elapsed": 175.2383475099923,
+        "label": "sample",
+        "free_pages": 132370,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 530374656
+      },
+      {
+        "launch": 1,
+        "elapsed": 179.46968466498947,
+        "label": "after",
+        "free_pages": 257743,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 2,
+        "elapsed": 0,
+        "label": "before-command",
+        "free_pages": 257743,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16846848
+      },
+      {
+        "launch": 2,
+        "elapsed": 1.8903583060018718,
+        "label": "sample",
+        "free_pages": 257733,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16887808
+      },
+      {
+        "launch": 2,
+        "elapsed": 4.9685200459935,
+        "label": "sample",
+        "free_pages": 256756,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 20889600
+      },
+      {
+        "launch": 2,
+        "elapsed": 8.040662782004802,
+        "label": "sample",
+        "free_pages": 255721,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 25128960
+      },
+      {
+        "launch": 2,
+        "elapsed": 11.112656219003838,
+        "label": "sample",
+        "free_pages": 254653,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 29503488
+      },
+      {
+        "launch": 2,
+        "elapsed": 14.184214170003543,
+        "label": "sample",
+        "free_pages": 253605,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 33796096
+      },
+      {
+        "launch": 2,
+        "elapsed": 17.24784302500484,
+        "label": "sample",
+        "free_pages": 252549,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 38121472
+      },
+      {
+        "launch": 2,
+        "elapsed": 20.31833408800594,
+        "label": "sample",
+        "free_pages": 251496,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 42434560
+      },
+      {
+        "launch": 2,
+        "elapsed": 23.39130037900759,
+        "label": "sample",
+        "free_pages": 250436,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 46776320
+      },
+      {
+        "launch": 2,
+        "elapsed": 26.462061471000197,
+        "label": "sample",
+        "free_pages": 249352,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 51216384
+      },
+      {
+        "launch": 2,
+        "elapsed": 29.53159745699668,
+        "label": "sample",
+        "free_pages": 248301,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 55521280
+      },
+      {
+        "launch": 2,
+        "elapsed": 32.6055342979962,
+        "label": "sample",
+        "free_pages": 247287,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 59674624
+      },
+      {
+        "launch": 2,
+        "elapsed": 35.692357438994804,
+        "label": "sample",
+        "free_pages": 246297,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 63729664
+      },
+      {
+        "launch": 2,
+        "elapsed": 38.764158146004775,
+        "label": "sample",
+        "free_pages": 245269,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 67940352
+      },
+      {
+        "launch": 2,
+        "elapsed": 41.84222075299476,
+        "label": "sample",
+        "free_pages": 244280,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 71991296
+      },
+      {
+        "launch": 2,
+        "elapsed": 44.9196367149998,
+        "label": "sample",
+        "free_pages": 243267,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 76140544
+      },
+      {
+        "launch": 2,
+        "elapsed": 47.997752516996115,
+        "label": "sample",
+        "free_pages": 242293,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 80130048
+      },
+      {
+        "launch": 2,
+        "elapsed": 51.06761221900524,
+        "label": "sample",
+        "free_pages": 241329,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 84078592
+      },
+      {
+        "launch": 2,
+        "elapsed": 54.145712939003715,
+        "label": "sample",
+        "free_pages": 240352,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 88080384
+      },
+      {
+        "launch": 2,
+        "elapsed": 57.22306106300675,
+        "label": "sample",
+        "free_pages": 239448,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 91783168
+      },
+      {
+        "launch": 2,
+        "elapsed": 60.29799229699711,
+        "label": "sample",
+        "free_pages": 238484,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 95731712
+      },
+      {
+        "launch": 2,
+        "elapsed": 63.36538816400571,
+        "label": "sample",
+        "free_pages": 237492,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 99794944
+      },
+      {
+        "launch": 2,
+        "elapsed": 66.43859083199641,
+        "label": "sample",
+        "free_pages": 236495,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 103878656
+      },
+      {
+        "launch": 2,
+        "elapsed": 69.50533245899715,
+        "label": "sample",
+        "free_pages": 235481,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 108032000
+      },
+      {
+        "launch": 2,
+        "elapsed": 72.5794514589943,
+        "label": "sample",
+        "free_pages": 234474,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 112156672
+      },
+      {
+        "launch": 2,
+        "elapsed": 75.65601835900452,
+        "label": "sample",
+        "free_pages": 233472,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 116260864
+      },
+      {
+        "launch": 2,
+        "elapsed": 78.7312016109936,
+        "label": "sample",
+        "free_pages": 232463,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 120393728
+      },
+      {
+        "launch": 2,
+        "elapsed": 81.80007646199374,
+        "label": "sample",
+        "free_pages": 231312,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 125108224
+      },
+      {
+        "launch": 2,
+        "elapsed": 84.88320722499338,
+        "label": "sample",
+        "free_pages": 230338,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 129097728
+      },
+      {
+        "launch": 2,
+        "elapsed": 87.95159040299768,
+        "label": "sample",
+        "free_pages": 229381,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 133017600
+      },
+      {
+        "launch": 2,
+        "elapsed": 91.0267167819984,
+        "label": "sample",
+        "free_pages": 227772,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 139608064
+      },
+      {
+        "launch": 2,
+        "elapsed": 94.12610780300747,
+        "label": "sample",
+        "free_pages": 215839,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 188485632
+      },
+      {
+        "launch": 2,
+        "elapsed": 97.21501050700317,
+        "label": "sample",
+        "free_pages": 197124,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 265142272
+      },
+      {
+        "launch": 2,
+        "elapsed": 100.29807080500177,
+        "label": "sample",
+        "free_pages": 182013,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 327036928
+      },
+      {
+        "launch": 2,
+        "elapsed": 103.38365667499602,
+        "label": "sample",
+        "free_pages": 166744,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 389578752
+      },
+      {
+        "launch": 2,
+        "elapsed": 106.47520794499724,
+        "label": "sample",
+        "free_pages": 165695,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 393875456
+      },
+      {
+        "launch": 2,
+        "elapsed": 109.5542591150006,
+        "label": "sample",
+        "free_pages": 161012,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 413057024
+      },
+      {
+        "launch": 2,
+        "elapsed": 112.64971908299776,
+        "label": "sample",
+        "free_pages": 155367,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 436178944
+      },
+      {
+        "launch": 2,
+        "elapsed": 115.74542875199404,
+        "label": "sample",
+        "free_pages": 151067,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 453791744
+      },
+      {
+        "launch": 2,
+        "elapsed": 118.84870572799991,
+        "label": "sample",
+        "free_pages": 151762,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 450945024
+      },
+      {
+        "launch": 2,
+        "elapsed": 122.15315510200162,
+        "label": "sample",
+        "free_pages": 144155,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 482103296
+      },
+      {
+        "launch": 2,
+        "elapsed": 125.23685747900163,
+        "label": "sample",
+        "free_pages": 145254,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 477601792
+      },
+      {
+        "launch": 2,
+        "elapsed": 129.1170703509997,
+        "label": "sample",
+        "free_pages": 140274,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 497999872
+      },
+      {
+        "launch": 2,
+        "elapsed": 132.20836292899912,
+        "label": "sample",
+        "free_pages": 137196,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 510607360
+      },
+      {
+        "launch": 2,
+        "elapsed": 135.31955011500395,
+        "label": "sample",
+        "free_pages": 137286,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 510238720
+      },
+      {
+        "launch": 2,
+        "elapsed": 138.17686120199505,
+        "label": "sample",
+        "free_pages": 138734,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 504307712
+      },
+      {
+        "launch": 2,
+        "elapsed": 141.26665648800554,
+        "label": "sample",
+        "free_pages": 137019,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 511332352
+      },
+      {
+        "launch": 2,
+        "elapsed": 144.36982607499522,
+        "label": "sample",
+        "free_pages": 135002,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 519593984
+      },
+      {
+        "launch": 2,
+        "elapsed": 147.4639089620032,
+        "label": "sample",
+        "free_pages": 135448,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 517767168
+      },
+      {
+        "launch": 2,
+        "elapsed": 150.56591165199643,
+        "label": "sample",
+        "free_pages": 136792,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 512262144
+      },
+      {
+        "launch": 2,
+        "elapsed": 153.66946874299902,
+        "label": "sample",
+        "free_pages": 136328,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 514162688
+      },
+      {
+        "launch": 2,
+        "elapsed": 156.76478193400544,
+        "label": "sample",
+        "free_pages": 137325,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 510078976
+      },
+      {
+        "launch": 2,
+        "elapsed": 159.8601240249991,
+        "label": "sample",
+        "free_pages": 137765,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 508276736
+      },
+      {
+        "launch": 2,
+        "elapsed": 162.94072321600106,
+        "label": "sample",
+        "free_pages": 136360,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 514031616
+      },
+      {
+        "launch": 2,
+        "elapsed": 166.0391687090014,
+        "label": "sample",
+        "free_pages": 134780,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 520503296
+      },
+      {
+        "launch": 2,
+        "elapsed": 169.12966490299732,
+        "label": "sample",
+        "free_pages": 134120,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 523206656
+      },
+      {
+        "launch": 2,
+        "elapsed": 172.21313969600305,
+        "label": "sample",
+        "free_pages": 130749,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 537014272
+      },
+      {
+        "launch": 2,
+        "elapsed": 175.2932172820001,
+        "label": "sample",
+        "free_pages": 132460,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 530006016
+      },
+      {
+        "launch": 2,
+        "elapsed": 179.53456566299428,
+        "label": "after",
+        "free_pages": 257743,
+        "total_pages": 261856,
+        "pmm_allocated_bytes": 16846848
+      }
+    ],
+    "sampled_peak_bytes": 537014272,
+    "paused_seconds": 1.4917124010244152,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.",
+    "history_samples": [
+      {
+        "launch": 1,
+        "elapsed": 0,
+        "tick": 1318,
+        "start_tag": 1319,
+        "previous_tag": null,
+        "coverage_gap": false,
+        "min_free_pages": 257743,
+        "pmm_owned_peak_bytes": 16846848,
+        "heap_live_bytes": 815104,
+        "heap_runtime_peak_bytes": 815104
+      },
+      {
+        "launch": 1,
+        "elapsed": 1.8809034329897258,
+        "tick": 1505,
+        "start_tag": 1319,
+        "previous_tag": 1319,
+        "coverage_gap": false,
+        "min_free_pages": 257743,
+        "pmm_owned_peak_bytes": 16846848,
+        "heap_live_bytes": 851456,
+        "heap_runtime_peak_bytes": 851456
+      },
+      {
+        "launch": 1,
+        "elapsed": 4.989699287994881,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1506,
+        "coverage_gap": false,
+        "min_free_pages": 256685,
+        "pmm_owned_peak_bytes": 21180416,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 8.08297864299675,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 255607,
+        "pmm_owned_peak_bytes": 25595904,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 11.17945339999278,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 254555,
+        "pmm_owned_peak_bytes": 29904896,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 14.281262356991647,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 253504,
+        "pmm_owned_peak_bytes": 34209792,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 17.376427119990694,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 252495,
+        "pmm_owned_peak_bytes": 38342656,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 20.47515448599006,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 251462,
+        "pmm_owned_peak_bytes": 42573824,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 23.565184252991457,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 250396,
+        "pmm_owned_peak_bytes": 46940160,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 26.65775852499064,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 249336,
+        "pmm_owned_peak_bytes": 51281920,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 29.74449519799964,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 248262,
+        "pmm_owned_peak_bytes": 55681024,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 32.839146681988495,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 247215,
+        "pmm_owned_peak_bytes": 59969536,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 35.92835567299335,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 246155,
+        "pmm_owned_peak_bytes": 64311296,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 39.01434156698815,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 245102,
+        "pmm_owned_peak_bytes": 68624384,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 42.10359466499358,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 244077,
+        "pmm_owned_peak_bytes": 72822784,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 45.20289646399033,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 243062,
+        "pmm_owned_peak_bytes": 76980224,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 48.297717536988785,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 242011,
+        "pmm_owned_peak_bytes": 81285120,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 51.38555507299316,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 240973,
+        "pmm_owned_peak_bytes": 85536768,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 54.479104909987655,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 239960,
+        "pmm_owned_peak_bytes": 89686016,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 57.56830165399879,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 238964,
+        "pmm_owned_peak_bytes": 93765632,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 60.6656612779916,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 237899,
+        "pmm_owned_peak_bytes": 98127872,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 63.7606816849875,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 236843,
+        "pmm_owned_peak_bytes": 102453248,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 66.85652408198803,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 235780,
+        "pmm_owned_peak_bytes": 106807296,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 69.94369097899471,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 234716,
+        "pmm_owned_peak_bytes": 111165440,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 73.03812080599891,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 233655,
+        "pmm_owned_peak_bytes": 115511296,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 76.13437190098921,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 232590,
+        "pmm_owned_peak_bytes": 119873536,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 79.23167891299818,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 231380,
+        "pmm_owned_peak_bytes": 124829696,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 82.31689305898908,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 230320,
+        "pmm_owned_peak_bytes": 129171456,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 85.4162848059932,
+        "tick": 1507,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 229264,
+        "pmm_owned_peak_bytes": 133496832,
+        "heap_live_bytes": 1093984,
+        "heap_runtime_peak_bytes": 1093984
+      },
+      {
+        "launch": 1,
+        "elapsed": 88.50296615799016,
+        "tick": 1815,
+        "start_tag": 1319,
+        "previous_tag": 1508,
+        "coverage_gap": false,
+        "min_free_pages": 227157,
+        "pmm_owned_peak_bytes": 142127104,
+        "heap_live_bytes": 1147328,
+        "heap_runtime_peak_bytes": 1189104
+      },
+      {
+        "launch": 1,
+        "elapsed": 91.59211584999866,
+        "tick": 2123,
+        "start_tag": 1319,
+        "previous_tag": 1816,
+        "coverage_gap": false,
+        "min_free_pages": 206894,
+        "pmm_owned_peak_bytes": 225124352,
+        "heap_live_bytes": 6130880,
+        "heap_runtime_peak_bytes": 6331552
+      },
+      {
+        "launch": 1,
+        "elapsed": 94.6788298249885,
+        "tick": 2430,
+        "start_tag": 1319,
+        "previous_tag": 2124,
+        "coverage_gap": false,
+        "min_free_pages": 190948,
+        "pmm_owned_peak_bytes": 290439168,
+        "heap_live_bytes": 7228256,
+        "heap_runtime_peak_bytes": 7736736
+      },
+      {
+        "launch": 1,
+        "elapsed": 97.75179505298729,
+        "tick": 2737,
+        "start_tag": 1319,
+        "previous_tag": 2431,
+        "coverage_gap": false,
+        "min_free_pages": 175812,
+        "pmm_owned_peak_bytes": 352436224,
+        "heap_live_bytes": 7222976,
+        "heap_runtime_peak_bytes": 7736736
+      },
+      {
+        "launch": 1,
+        "elapsed": 100.84071502998995,
+        "tick": 3045,
+        "start_tag": 1319,
+        "previous_tag": 2738,
+        "coverage_gap": false,
+        "min_free_pages": 157518,
+        "pmm_owned_peak_bytes": 427368448,
+        "heap_live_bytes": 8762032,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 103.91120869599399,
+        "tick": 3351,
+        "start_tag": 1319,
+        "previous_tag": 3046,
+        "coverage_gap": false,
+        "min_free_pages": 143852,
+        "pmm_owned_peak_bytes": 483344384,
+        "heap_live_bytes": 8744480,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 106.98320898399106,
+        "tick": 3658,
+        "start_tag": 1319,
+        "previous_tag": 3352,
+        "coverage_gap": false,
+        "min_free_pages": 146190,
+        "pmm_owned_peak_bytes": 473767936,
+        "heap_live_bytes": 8893152,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 110.0589326719928,
+        "tick": 3964,
+        "start_tag": 1319,
+        "previous_tag": 3659,
+        "coverage_gap": false,
+        "min_free_pages": 153729,
+        "pmm_owned_peak_bytes": 442888192,
+        "heap_live_bytes": 8971056,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 113.14259423999465,
+        "tick": 4271,
+        "start_tag": 1319,
+        "previous_tag": 3965,
+        "coverage_gap": false,
+        "min_free_pages": 149730,
+        "pmm_owned_peak_bytes": 459268096,
+        "heap_live_bytes": 9094160,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 116.22284950799076,
+        "tick": 4579,
+        "start_tag": 1319,
+        "previous_tag": 4272,
+        "coverage_gap": false,
+        "min_free_pages": 145309,
+        "pmm_owned_peak_bytes": 477376512,
+        "heap_live_bytes": 9177328,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 119.30491330199584,
+        "tick": 4886,
+        "start_tag": 1319,
+        "previous_tag": 4580,
+        "coverage_gap": false,
+        "min_free_pages": 142090,
+        "pmm_owned_peak_bytes": 490561536,
+        "heap_live_bytes": 9244656,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 122.17962103299215,
+        "tick": 5173,
+        "start_tag": 1319,
+        "previous_tag": 4887,
+        "coverage_gap": false,
+        "min_free_pages": 140648,
+        "pmm_owned_peak_bytes": 496467968,
+        "heap_live_bytes": 9129920,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 125.2816925419902,
+        "tick": 5480,
+        "start_tag": 1319,
+        "previous_tag": 5174,
+        "coverage_gap": false,
+        "min_free_pages": 139400,
+        "pmm_owned_peak_bytes": 501579776,
+        "heap_live_bytes": 9097120,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 129.17082043799746,
+        "tick": 5868,
+        "start_tag": 1319,
+        "previous_tag": 5481,
+        "coverage_gap": false,
+        "min_free_pages": 137597,
+        "pmm_owned_peak_bytes": 508964864,
+        "heap_live_bytes": 9068432,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 132.27556861098856,
+        "tick": 6177,
+        "start_tag": 1319,
+        "previous_tag": 5869,
+        "coverage_gap": false,
+        "min_free_pages": 137257,
+        "pmm_owned_peak_bytes": 510357504,
+        "heap_live_bytes": 9101232,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 135.37813635698694,
+        "tick": 6487,
+        "start_tag": 1319,
+        "previous_tag": 6178,
+        "coverage_gap": false,
+        "min_free_pages": 136603,
+        "pmm_owned_peak_bytes": 513036288,
+        "heap_live_bytes": 9138080,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 138.14550871998654,
+        "tick": 6763,
+        "start_tag": 1319,
+        "previous_tag": 6488,
+        "coverage_gap": false,
+        "min_free_pages": 135769,
+        "pmm_owned_peak_bytes": 516452352,
+        "heap_live_bytes": 9024272,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 141.23082173599687,
+        "tick": 7071,
+        "start_tag": 1319,
+        "previous_tag": 6764,
+        "coverage_gap": false,
+        "min_free_pages": 133883,
+        "pmm_owned_peak_bytes": 524177408,
+        "heap_live_bytes": 9129648,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 144.31070309398638,
+        "tick": 7377,
+        "start_tag": 1319,
+        "previous_tag": 7072,
+        "coverage_gap": false,
+        "min_free_pages": 133734,
+        "pmm_owned_peak_bytes": 524787712,
+        "heap_live_bytes": 9207712,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 147.40701043499575,
+        "tick": 7685,
+        "start_tag": 1319,
+        "previous_tag": 7378,
+        "coverage_gap": false,
+        "min_free_pages": 131259,
+        "pmm_owned_peak_bytes": 534925312,
+        "heap_live_bytes": 9265168,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 150.51347481399716,
+        "tick": 7994,
+        "start_tag": 1319,
+        "previous_tag": 7686,
+        "coverage_gap": false,
+        "min_free_pages": 130720,
+        "pmm_owned_peak_bytes": 537133056,
+        "heap_live_bytes": 9097072,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 153.61094451899407,
+        "tick": 8302,
+        "start_tag": 1319,
+        "previous_tag": 7995,
+        "coverage_gap": false,
+        "min_free_pages": 135445,
+        "pmm_owned_peak_bytes": 517779456,
+        "heap_live_bytes": 9051984,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 156.70155822098604,
+        "tick": 8611,
+        "start_tag": 1319,
+        "previous_tag": 8303,
+        "coverage_gap": false,
+        "min_free_pages": 136387,
+        "pmm_owned_peak_bytes": 513921024,
+        "heap_live_bytes": 9117584,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 159.79521185198973,
+        "tick": 8919,
+        "start_tag": 1319,
+        "previous_tag": 8612,
+        "coverage_gap": false,
+        "min_free_pages": 136794,
+        "pmm_owned_peak_bytes": 512253952,
+        "heap_live_bytes": 9068384,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 162.8848318829987,
+        "tick": 9227,
+        "start_tag": 1319,
+        "previous_tag": 8920,
+        "coverage_gap": false,
+        "min_free_pages": 136277,
+        "pmm_owned_peak_bytes": 514371584,
+        "heap_live_bytes": 9150352,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 165.97597871298785,
+        "tick": 9536,
+        "start_tag": 1319,
+        "previous_tag": 9228,
+        "coverage_gap": false,
+        "min_free_pages": 135018,
+        "pmm_owned_peak_bytes": 519528448,
+        "heap_live_bytes": 9142176,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 169.07748029299546,
+        "tick": 9844,
+        "start_tag": 1319,
+        "previous_tag": 9537,
+        "coverage_gap": false,
+        "min_free_pages": 133055,
+        "pmm_owned_peak_bytes": 527568896,
+        "heap_live_bytes": 9035408,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 172.15306564499042,
+        "tick": 10151,
+        "start_tag": 1319,
+        "previous_tag": 9845,
+        "coverage_gap": false,
+        "min_free_pages": 132955,
+        "pmm_owned_peak_bytes": 527978496,
+        "heap_live_bytes": 9051808,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 175.2383475099923,
+        "tick": 10459,
+        "start_tag": 1319,
+        "previous_tag": 10152,
+        "coverage_gap": false,
+        "min_free_pages": 131102,
+        "pmm_owned_peak_bytes": 535568384,
+        "heap_live_bytes": 9018992,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 1,
+        "elapsed": 179.46968466498947,
+        "tick": 10880,
+        "start_tag": 1319,
+        "previous_tag": 10460,
+        "coverage_gap": false,
+        "min_free_pages": 130990,
+        "pmm_owned_peak_bytes": 536027136,
+        "heap_live_bytes": 974336,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 0,
+        "tick": 10892,
+        "start_tag": 1319,
+        "previous_tag": 10881,
+        "coverage_gap": false,
+        "min_free_pages": 257743,
+        "pmm_owned_peak_bytes": 16846848,
+        "heap_live_bytes": 974336,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 1.8903583060018718,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 10893,
+        "coverage_gap": false,
+        "min_free_pages": 257733,
+        "pmm_owned_peak_bytes": 16887808,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 4.9685200459935,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 256756,
+        "pmm_owned_peak_bytes": 20889600,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 8.040662782004802,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 255721,
+        "pmm_owned_peak_bytes": 25128960,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 11.112656219003838,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 254653,
+        "pmm_owned_peak_bytes": 29503488,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 14.184214170003543,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 253605,
+        "pmm_owned_peak_bytes": 33796096,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 17.24784302500484,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 252549,
+        "pmm_owned_peak_bytes": 38121472,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 20.31833408800594,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 251496,
+        "pmm_owned_peak_bytes": 42434560,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 23.39130037900759,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 250436,
+        "pmm_owned_peak_bytes": 46776320,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 26.462061471000197,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 249352,
+        "pmm_owned_peak_bytes": 51216384,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 29.53159745699668,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 248301,
+        "pmm_owned_peak_bytes": 55521280,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 32.6055342979962,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 247287,
+        "pmm_owned_peak_bytes": 59674624,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 35.692357438994804,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 246297,
+        "pmm_owned_peak_bytes": 63729664,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 38.764158146004775,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 245269,
+        "pmm_owned_peak_bytes": 67940352,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 41.84222075299476,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 244280,
+        "pmm_owned_peak_bytes": 71991296,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 44.9196367149998,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 243267,
+        "pmm_owned_peak_bytes": 76140544,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 47.997752516996115,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 242293,
+        "pmm_owned_peak_bytes": 80130048,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 51.06761221900524,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 241329,
+        "pmm_owned_peak_bytes": 84078592,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 54.145712939003715,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 240352,
+        "pmm_owned_peak_bytes": 88080384,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 57.22306106300675,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 239448,
+        "pmm_owned_peak_bytes": 91783168,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 60.29799229699711,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 238484,
+        "pmm_owned_peak_bytes": 95731712,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 63.36538816400571,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 237492,
+        "pmm_owned_peak_bytes": 99794944,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 66.43859083199641,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 236495,
+        "pmm_owned_peak_bytes": 103878656,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 69.50533245899715,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 235481,
+        "pmm_owned_peak_bytes": 108032000,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 72.5794514589943,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 234474,
+        "pmm_owned_peak_bytes": 112156672,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 75.65601835900452,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 233472,
+        "pmm_owned_peak_bytes": 116260864,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 78.7312016109936,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 232463,
+        "pmm_owned_peak_bytes": 120393728,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 81.80007646199374,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 231312,
+        "pmm_owned_peak_bytes": 125108224,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 84.88320722499338,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 230338,
+        "pmm_owned_peak_bytes": 129097728,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 87.95159040299768,
+        "tick": 11078,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 229381,
+        "pmm_owned_peak_bytes": 133017600,
+        "heap_live_bytes": 1216864,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 91.0267167819984,
+        "tick": 11383,
+        "start_tag": 1319,
+        "previous_tag": 11079,
+        "coverage_gap": false,
+        "min_free_pages": 227772,
+        "pmm_owned_peak_bytes": 139608064,
+        "heap_live_bytes": 1233248,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 94.12610780300747,
+        "tick": 11689,
+        "start_tag": 1319,
+        "previous_tag": 11384,
+        "coverage_gap": false,
+        "min_free_pages": 210738,
+        "pmm_owned_peak_bytes": 209379328,
+        "heap_live_bytes": 6114464,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 97.21501050700317,
+        "tick": 11996,
+        "start_tag": 1319,
+        "previous_tag": 11690,
+        "coverage_gap": false,
+        "min_free_pages": 197121,
+        "pmm_owned_peak_bytes": 265154560,
+        "heap_live_bytes": 6516160,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 100.29807080500177,
+        "tick": 12303,
+        "start_tag": 1319,
+        "previous_tag": 11997,
+        "coverage_gap": false,
+        "min_free_pages": 180625,
+        "pmm_owned_peak_bytes": 332722176,
+        "heap_live_bytes": 7279168,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 103.38365667499602,
+        "tick": 12611,
+        "start_tag": 1319,
+        "previous_tag": 12304,
+        "coverage_gap": false,
+        "min_free_pages": 166000,
+        "pmm_owned_peak_bytes": 392626176,
+        "heap_live_bytes": 7291456,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 106.47520794499724,
+        "tick": 12915,
+        "start_tag": 1319,
+        "previous_tag": 12612,
+        "coverage_gap": false,
+        "min_free_pages": 146683,
+        "pmm_owned_peak_bytes": 471748608,
+        "heap_live_bytes": 8630848,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 109.5542591150006,
+        "tick": 13221,
+        "start_tag": 1319,
+        "previous_tag": 12916,
+        "coverage_gap": false,
+        "min_free_pages": 144572,
+        "pmm_owned_peak_bytes": 480395264,
+        "heap_live_bytes": 8809456,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 112.64971908299776,
+        "tick": 13530,
+        "start_tag": 1319,
+        "previous_tag": 13222,
+        "coverage_gap": false,
+        "min_free_pages": 151063,
+        "pmm_owned_peak_bytes": 453808128,
+        "heap_live_bytes": 8962816,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 115.74542875199404,
+        "tick": 13837,
+        "start_tag": 1319,
+        "previous_tag": 13531,
+        "coverage_gap": false,
+        "min_free_pages": 151058,
+        "pmm_owned_peak_bytes": 453828608,
+        "heap_live_bytes": 9049152,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 118.84870572799991,
+        "tick": 14145,
+        "start_tag": 1319,
+        "previous_tag": 13838,
+        "coverage_gap": false,
+        "min_free_pages": 149312,
+        "pmm_owned_peak_bytes": 460980224,
+        "heap_live_bytes": 9065504,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 122.15315510200162,
+        "tick": 14474,
+        "start_tag": 1319,
+        "previous_tag": 14146,
+        "coverage_gap": false,
+        "min_free_pages": 143294,
+        "pmm_owned_peak_bytes": 485629952,
+        "heap_live_bytes": 9179088,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 125.23685747900163,
+        "tick": 14782,
+        "start_tag": 1319,
+        "previous_tag": 14475,
+        "coverage_gap": false,
+        "min_free_pages": 143950,
+        "pmm_owned_peak_bytes": 482942976,
+        "heap_live_bytes": 9162688,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 129.1170703509997,
+        "tick": 15168,
+        "start_tag": 1319,
+        "previous_tag": 14783,
+        "coverage_gap": false,
+        "min_free_pages": 140264,
+        "pmm_owned_peak_bytes": 498040832,
+        "heap_live_bytes": 9150400,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 132.20836292899912,
+        "tick": 15477,
+        "start_tag": 1319,
+        "previous_tag": 15169,
+        "coverage_gap": false,
+        "min_free_pages": 137191,
+        "pmm_owned_peak_bytes": 510627840,
+        "heap_live_bytes": 9117616,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 135.31955011500395,
+        "tick": 15787,
+        "start_tag": 1319,
+        "previous_tag": 15478,
+        "coverage_gap": false,
+        "min_free_pages": 136150,
+        "pmm_owned_peak_bytes": 514891776,
+        "heap_live_bytes": 9101200,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 138.17686120199505,
+        "tick": 16071,
+        "start_tag": 1319,
+        "previous_tag": 15788,
+        "coverage_gap": false,
+        "min_free_pages": 135536,
+        "pmm_owned_peak_bytes": 517406720,
+        "heap_live_bytes": 9092816,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 141.26665648800554,
+        "tick": 16379,
+        "start_tag": 1319,
+        "previous_tag": 16072,
+        "coverage_gap": false,
+        "min_free_pages": 136442,
+        "pmm_owned_peak_bytes": 513695744,
+        "heap_live_bytes": 9117600,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 144.36982607499522,
+        "tick": 16688,
+        "start_tag": 1319,
+        "previous_tag": 16380,
+        "coverage_gap": false,
+        "min_free_pages": 134997,
+        "pmm_owned_peak_bytes": 519614464,
+        "heap_live_bytes": 9117600,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 147.4639089620032,
+        "tick": 16996,
+        "start_tag": 1319,
+        "previous_tag": 16689,
+        "coverage_gap": false,
+        "min_free_pages": 130383,
+        "pmm_owned_peak_bytes": 538513408,
+        "heap_live_bytes": 9117616,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 150.56591165199643,
+        "tick": 17305,
+        "start_tag": 1319,
+        "previous_tag": 16997,
+        "coverage_gap": false,
+        "min_free_pages": 135313,
+        "pmm_owned_peak_bytes": 518320128,
+        "heap_live_bytes": 9068400,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 153.66946874299902,
+        "tick": 17614,
+        "start_tag": 1319,
+        "previous_tag": 17306,
+        "coverage_gap": false,
+        "min_free_pages": 135265,
+        "pmm_owned_peak_bytes": 518516736,
+        "heap_live_bytes": 9117632,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 156.76478193400544,
+        "tick": 17922,
+        "start_tag": 1319,
+        "previous_tag": 17615,
+        "coverage_gap": false,
+        "min_free_pages": 136327,
+        "pmm_owned_peak_bytes": 514166784,
+        "heap_live_bytes": 9101216,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 159.8601240249991,
+        "tick": 18231,
+        "start_tag": 1319,
+        "previous_tag": 17923,
+        "coverage_gap": false,
+        "min_free_pages": 136039,
+        "pmm_owned_peak_bytes": 515346432,
+        "heap_live_bytes": 9052016,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 162.94072321600106,
+        "tick": 18538,
+        "start_tag": 1319,
+        "previous_tag": 18232,
+        "coverage_gap": false,
+        "min_free_pages": 136220,
+        "pmm_owned_peak_bytes": 514605056,
+        "heap_live_bytes": 9068416,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 166.0391687090014,
+        "tick": 18847,
+        "start_tag": 1319,
+        "previous_tag": 18539,
+        "coverage_gap": false,
+        "min_free_pages": 134742,
+        "pmm_owned_peak_bytes": 520658944,
+        "heap_live_bytes": 9134032,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 169.12966490299732,
+        "tick": 19155,
+        "start_tag": 1319,
+        "previous_tag": 18848,
+        "coverage_gap": false,
+        "min_free_pages": 131924,
+        "pmm_owned_peak_bytes": 532201472,
+        "heap_live_bytes": 9043664,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 172.21313969600305,
+        "tick": 19462,
+        "start_tag": 1319,
+        "previous_tag": 19156,
+        "coverage_gap": false,
+        "min_free_pages": 130749,
+        "pmm_owned_peak_bytes": 537014272,
+        "heap_live_bytes": 9047776,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 175.2932172820001,
+        "tick": 19770,
+        "start_tag": 1319,
+        "previous_tag": 19463,
+        "coverage_gap": false,
+        "min_free_pages": 130389,
+        "pmm_owned_peak_bytes": 538488832,
+        "heap_live_bytes": 8982160,
+        "heap_runtime_peak_bytes": 9945680
+      },
+      {
+        "launch": 2,
+        "elapsed": 179.53456566299428,
+        "tick": 20192,
+        "start_tag": 1319,
+        "previous_tag": 19771,
+        "coverage_gap": false,
+        "min_free_pages": 130056,
+        "pmm_owned_peak_bytes": 539852800,
+        "heap_live_bytes": 974336,
+        "heap_runtime_peak_bytes": 9945680
+      }
+    ],
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 539852800,
+    "kernel_heap_runtime_peak_bytes": 9945680,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "scope": "Finite repeated-open observations, actual changing movie region/native PCM and cleanup only. Movie identity requires inspecting selected full frames. Non-file heap subtracts linked file buffer capacity; allocator padding may differ. Cache retention is not zero heap, unlimited stability or proof of no silent cache I/O failure. Sampled PMM includes reserved heap backing; old observer caveat claiming otherwise was incorrect. Song listening/owner acceptance remain absent."
+}

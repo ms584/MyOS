@@ -1,0 +1,24 @@
+{
+  "url": "https://github.com/youtube/cobalt/releases/download/27.lts.3/libcobalt_7.3.2_unstripped_x64_sbversion-18_release_739726c6552d87a319de5106f918c6a8e9ab9341.tar.gz",
+  "archive_sha256": "61d050e683f22873dd61b998447de0402884f15687c316a2d89eed5cd458b6d4",
+  "asset_digest": "sha256:61d050e683f22873dd61b998447de0402884f15687c316a2d89eed5cd458b6d4",
+  "archive_bytes": 262371092,
+  "started_epoch": 1791625989.2590702,
+  "finished_epoch": 1791626026.1337178,
+  "members": [
+    {
+      "name": "libcobalt.so",
+      "bytes": 1135990968,
+      "regular": true
+    }
+  ],
+  "extracted": [
+    {
+      "name": "libcobalt.so",
+      "bytes": 1135990968,
+      "target": "build/phase335-engine-source/symbols/libcobalt.so"
+    }
+  ],
+  "host_media_fetch": false,
+  "scope": "Official build/debug symbols only. Download overlaps diagnostic native-online run; no normal timing acceptance claimed."
+}

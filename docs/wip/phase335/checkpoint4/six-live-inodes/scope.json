@@ -1,0 +1,20 @@
+{
+  "diagnostic_kernel": true,
+  "diagnostic_mrt": true,
+  "production_changed": false,
+  "acceptance": false,
+  "root_commit": "3c2285c86de96354d954b50a700b178a5d29b0c5",
+  "completed": "2026-10-10T17:14:35+07:00",
+  "private_bundle": "build/phase335-abort-worktree/build/phase334-public-i04m0umd",
+  "pmm": {
+    "kernel_elf_sha256": "08163a25604204460f8be5f694fcbbacd3ae3eaee78271f99fd0ea666355130b",
+    "sampled_peak_bytes": 538525696,
+    "paused_seconds": 4.662372520077042,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.",
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 550572032,
+    "kernel_heap_runtime_peak_bytes": 10323728,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "scope": "Six finite diagnostic opens; no abort observed, not a repair of original normal abort. Live inode saturation is capacity pressure, not proof of abort cause. Fixed movie window crosses menus/rebuffer: five of six motion windows fail; not six continuous 30s Rickroll passes. Host addr2line analysis overlapped this diagnostic; no normal performance acceptance. Song listening and owner signoff absent."
+}
