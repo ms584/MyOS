@@ -117,3 +117,7 @@ not core linking or native tooltip/YouTube/audio acceptance. Build remains activ
 ## Controlled concurrency increase 2026-10-10 22:35+07
 
 Measured12logicalCPUs/67.8%busy/9184018432Bavailable host RAM, seven observed clang processes3342184448BcombinedRSS. This is host-build data, not guest playback RAM. Verified owned Ninja438963 was stopped with SIGINT; wrapper terminal1/Ninja2 at22:34:26. Full log archived privately as build/phase335-core-compile-j8-gperf-fixed.log before any new stdout redirection. Source/objects retained unchanged. Incremental compile resumed12workers, active PTY32637 / Ninja447750 at 2026-10-10T22:35:45+07:00. No core linked, no runtime or acceptance claim. See concurrency-8-to-12.json, host-build-resources-8-to-12.json and resume-compile-12.py.
+
+## One-shot build-dependent test chain 2026-10-10 22:44+07
+
+run-after-build.py is running privately as PTY66862, waiting for verified owned Ninja447750/PTY32637. It requires actual successful terminal build log, then runs freeze-core.py and the private rendered HTTPS tooltip retest. It refuses to start a VM if another QEMU exists and never stops an owner VM. New core/sources are hash-checked; normal identities must remain exact. Current stage waiting-for-build: no runtime test or drawing/YouTube/audio/Phase acceptance. Log build/phase335-after-build.log; state build/phase335-core-workspace/after-build-result.json. Actual tooltip PNG visual review, affected prerequisites, normal online controls/stability/freshboot, regression and owner listening still required after this limited chain.

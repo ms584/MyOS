@@ -1,5 +1,5 @@
 2026-10-10 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint a3b0701; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint42fde6c; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
@@ -12,11 +12,14 @@ Workspace build/phase335-core-workspace; dependencies and GN complete.
 Initial compile failed22:05 on missing host gperf; retained failure log.
 Workspace-only gperf3.3 installed; actual main color generator completed22:16.
 Incremental compile12workers/PTY32637, actual NinjaPID447750.
-Checked 2026-10-10T22:35:45+07:00; 8-to-12 transition logged; current log build/phase335-core-compile.log.
+Checked2026-10-10T22:42:25+07:00; PTY32637/Ninja447750 live; [172/17169] CXX clang_x64/obj/v8/v8_base_without_compiler/stack-guard.o.
+Host MemAvailable:    8066996 kB; no core linked; not guest peak RAM.
 No linked libcobalt.so yet; no new-core playback or tooltip drawing claimed.
 See docs/wip/phase335/checkpoint7/tooltip-core-build/README.md and SHA256SUMS.
 
-NEXT: wait terminal0, freeze/validate source/core identity, then run native
+NEXT: one-shot chain PTY66862 waits successful terminal0 then freeze/test.
+Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.
+Validate source/core identity, then run native
 rendered HTTPS tooltip show/hide/recreate/close/resource tests; inspect images.
 Retest affected33.1-33.4 prerequisites with the actual new core.
 Then normal MyOS Rickroll>=30s, pause/resume/seek, close/reopen, freshboot,
