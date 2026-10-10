@@ -1,0 +1,8 @@
+{
+  "switch": "--log-net-log=/dev/shm/n.json",
+  "export_exists": true,
+  "export_bytes": 7747320,
+  "netlog_json_events_found": true,
+  "phase_passed": false,
+  "normal_source_unchanged": true
+}

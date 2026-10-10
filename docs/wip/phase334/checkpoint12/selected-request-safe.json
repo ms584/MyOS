@@ -1,0 +1,17 @@
+{
+  "transport": "HTTP/1.1",
+  "socket": 212,
+  "method": "POST",
+  "uri_sha256": "1e59c02644db8752d6100da3bb34c9b062868e12ed754da44393ba278a8e038d",
+  "hostname": "rr4---sn-0opoxuui5pa5oq-c33z.googlevideo.com",
+  "body_captured": true,
+  "body_bytes": 1663,
+  "body_sha256": "bae9a411dcaa582cb5ca952297d6f76635965700dfd57f1f83d94fd0d2f34fed",
+  "http_status": [
+    "200"
+  ],
+  "received_data_bytes": 1087988,
+  "expire": "1791611469",
+  "expiry_local": "2026-10-10T12:51:09+07:00",
+  "after_expiry_local": "2026-10-10T12:53:09+07:00"
+}

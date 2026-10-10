@@ -1,5 +1,24 @@
 # Phase33.4 actual YouTube integration
 
+### 2026-10-10 07:10 +07 — checkpoint12 native expiry protocol; real deadline pending
+Owner explicitly authorized signed-URI reuse and necessary33.4 work; no permission
+is pending. Production code/normal5 unchanged; checkpoint11 remains latest native
+playback/control/error acceptance evidence. This continuation proves native Cobalt
+NetLog works with --log-net-log, and Googlevideo SABR uses HTTP/1.1 POST here.
+Opaque1663-byte original request, URI/body hashes and native HTTP200/1087988bytes
+are recorded safely in wip/phase334/checkpoint12/. No host media fetch/decode/proxy.
+Native lab replay now receives HTTP200 before expiry; browser status0 is CORS opaque,
+not server failure. Same URI/body are scheduled after actual expiry12:51:09+07,
+at12:53:09+07 on2026-10-10. No URL/signature/guest-time changes. Live MyOS/QEMU
+bundle build/native-verified-tls-lz6fldt5; native source44 reports200. After-expiry
+status/error UI/N ordinary-watch recovery/moving video/PCM/exact desktop resources
+are still pending. Original arbitraryGET/qmem teardown and log-export timeouts were
+failures, never expiry passes. Isolated bounded collector omits receive bytes while
+retaining metadata; valid target line records exist, but forced-ESC NetLog JSON footer
+is incomplete. See checkpoint12/scope.md and PHASE334_EXPIRY_REVIEW_PLAN.md.
+Do not close33.4/33.5/parent33/Rickroll. Local commits only; owner pushes.
+
+
 ### 2026-10-10 05:49 +07 — checkpoint11 latest native public and errors PASS observations
 Implementation tested:da08b2db58df7b9d4f9d6cc850cbb77729ddc98b; source90dfe4b6...,
 provider-sey3hj06 ba9620ca..., optional native-underlay VP9/trace profile.

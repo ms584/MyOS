@@ -1,7 +1,8 @@
 # Phase33.4 — live signed-URL expiry review plan
 
-Status2026-10-10:NOT EXECUTED; explicit scoped permission required by automatic
-approval review. This is a reviewable plan, not an expiry harness or proof.
+Status2026-10-10:owner explicitly authorized scoped signed-URI reuse in this chat
+via annotation reply. Prior approval blocker is resolved. Implementation/audit is
+active; actual expiry is not yet proved. NetLog native method/protocol probe first.
 
 The proposed diagnostic would reuse one signed Googlevideo media URI originally
 obtained by Cobalt inside an authorized MyOS YouTube session. Private URI/tokens
@@ -27,8 +28,17 @@ be replayed faithfully, report the limitation; do not count a controlled fixture
 live YouTube expiry. The existing controlled403/timeout tests remain useful separate
 error/restart evidence.
 
-Authorization requested: reuse this session's private signed media URI in this
+Authorization granted2026-10-10 for: reuse this session's private signed media URI in this
 bounded MyOS-only expiry diagnostic against its original media host. This permission
 does not authorize publishing credentials, host fetching/decoding or TLS bypass.
-Automatic review rejected the earlier proposed reuse as external signed-token use
-without explicit scoped human permission. No replay harness/action was executed.
+Historical:automatic review rejected the earlier proposed reuse before scoped
+permission. No replay ran at that time. Owner has now explicitly authorized it;
+normal TLS, original media host and private-token constraints above still apply.
+
+Implementation checkpoint12,2026-10-10 07:10+07:original native HTTP/1.1 POST
+body1663bytes captured without host media decoding. Native initial request200 and
+1087988received bytes; native lab replay source44 also200 while browser is CORS
+opaque/status0. Actual deadline12:51:09+07; repeat at12:53:09+07 in ongoing MyOS
+session lz6fldt5. URI/body hashes are public safe metadata, raw values remain build.
+After-expiry/fresh-watch recovery/PCM/close resource audit pending. No new permission
+needed. Source/diffs and limitations are recorded in wip/phase334/checkpoint12/.
