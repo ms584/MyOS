@@ -9,10 +9,10 @@
   "phase_passed": false,
   "host_player_used": false,
   "build_instructions": "https://developers.google.com/youtube/cobalt/docs/development/setup-linux",
-  "build_status": "compiling, not yet linked or tested",
-  "build_session": 72380,
+  "build_status": "incremental compile active; prior6worker build deliberately interrupted for concurrency change",
+  "build_session": 18106,
   "build_log": "build/phase335-core-compile.log",
-  "jobs": 6,
+  "jobs": 8,
   "ninja_version": "1.12.1",
   "clang_version": [
     "clang version 21.0.0git (https://chromium.googlesource.com/a/external/github.com/llvm/llvm-project fd3fecfc0936703f2715fe6fea890e81b0b3c2ac)",

@@ -72,3 +72,12 @@ Its helper verifies the finished compile log, exact source/patch/core hashes and
 labels all derived-core observations diagnostic. The default official-core hash
 check and resource/provider/normal image checks remain intact. This prepares real
 online follow-up; it has passed syntax checks only and has not launched a VM.
+
+20:53+07 concurrency follow-up: measured12 logical CPUs,55.7%busy and11.5GB
+available RAM. The owned6worker Ninja was deliberately interrupted (Ninja2,
+wrapper1) to continue the same output with8 workers. A failed resume wrapper
+truncated the standalone old log before archiving; its full interleaved activity
+segment was recovered privately and hash-recorded here. Failure log and safe
+interrupt tail retained. Source and completed objects were not deleted. Active
+resume session is18106, using the same compile log path and identical source.
+These are host build operations, not a guest failure or playback acceptance.

@@ -1,0 +1,7 @@
+
+[2026-10-10T20:52:39.273085+07:00] cwd=/home/xytron404/myos
+$ python3 -u
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+AssertionError
+[2026-10-10T20:52:39.406145+07:00] exit=1
