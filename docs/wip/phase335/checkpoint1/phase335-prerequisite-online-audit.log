@@ -1,0 +1,6 @@
+
+[2026-10-10T14:04:58.740706+07:00] cwd=/home/xytron404/myos
+$ python3 tools/analyze_youtube_observation.py build/phase334-public-6mmepdfk --provider build/media-evaluation/provider-sey3hj06 --motion 1:150:205 --motion 2:240:275 --pause 1:213:224 --pause 2:283:295
+PASS scoped native pixel/PCM/clock observation; whole phase incomplete build/phase334-public-6mmepdfk
+actual sync-us [88217, 89876, 89577, 89970] owned mapping peak 568778752 PCM seconds 497.9705215419501
+[2026-10-10T14:05:00.067023+07:00] exit=0

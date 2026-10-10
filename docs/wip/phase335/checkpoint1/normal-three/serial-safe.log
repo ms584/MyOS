@@ -1,0 +1,121 @@
+Free physical pages: 257751
+myos> net up
+Network: DHCP configured
+Network: RTL8139, IP 10.0.2.15 gateway 10.0.2.2 DNS 10.0.2.3
+myos> mkdir /dev/shm
+myos> mem
+Free physical pages: 257743
+myos> elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA rebuffer pause clock=4042713 latest-video=4120000 vq=1 pcm=5708
+MEDIA rebuffer resume clock=4042713 pts=4080000 vq=5 pcm=5483
+MEDIA native metrics presented=249 sync-samples=246 max-sync-us=79192 decoded=484 dropped=231 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=5 pts=18920000 clock=18830166 consumed=0
+MEDIA first-video ticket=7 pts=113240000 clock=113222645 consumed=0
+MEDIA rebuffer pause clock=113395524 latest-video=113480000 vq=2 pcm=6237
+MEDIA rebuffer resume clock=113405683 pts=113400000 vq=6 pcm=7666
+MEDIA first-video ticket=9 pts=127880000 clock=127857270 consumed=0
+MEDIA native metrics presented=3177 sync-samples=3164 max-sync-us=89744 decoded=3700 dropped=481 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=785920 heap-after=990720
+ELF cancelled; all threads stopped
+myos> mem
+Free physical pages: 257743
+myos> desktop
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+myos> mem
+Free physical pages: 257743
+myos> mem
+Free physical pages: 257743
+myos> elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA rebuffer pause clock=9956817 latest-video=10040000 vq=2 pcm=4446
+MEDIA rebuffer resume clock=9956817 pts=9960000 vq=6 pcm=4446
+MEDIA rebuffer pause clock=10148563 latest-video=10200000 vq=1 pcm=4424
+MEDIA rebuffer resume clock=10148563 pts=10160000 vq=5 pcm=4096
+MEDIA rebuffer pause clock=10280717 latest-video=10360000 vq=2 pcm=4740
+MEDIA rebuffer resume clock=10290967 pts=10280000 vq=6 pcm=4290
+MEDIA rebuffer pause clock=10423393 latest-video=10520000 vq=4 pcm=4594
+MEDIA rebuffer resume clock=10433552 pts=10440000 vq=6 pcm=4482
+MEDIA rebuffer pause clock=10748019 latest-video=10840000 vq=4 pcm=4543
+MEDIA rebuffer resume clock=10748019 pts=10720000 vq=7 pcm=4543
+MEDIA rebuffer pause clock=10931330 latest-video=11000000 vq=1 pcm=4512
+MEDIA rebuffer resume clock=10941398 pts=10960000 vq=5 pcm=4175
+MEDIA rebuffer pause clock=11256046 latest-video=11320000 vq=1 pcm=2692
+MEDIA rebuffer resume clock=11256046 pts=11280000 vq=5 pcm=4234
+MEDIA rebuffer pause clock=11712736 latest-video=11800000 vq=2 pcm=4716
+MEDIA rebuffer resume clock=11712826 pts=11720000 vq=6 pcm=4490
+MEDIA rebuffer pause clock=13956364 latest-video=14040000 vq=2 pcm=3021
+MEDIA rebuffer resume clock=13956364 pts=13960000 vq=6 pcm=4451
+MEDIA rebuffer pause clock=14758450 latest-video=14840000 vq=1 pcm=2664
+MEDIA rebuffer resume clock=14758450 pts=14800000 vq=5 pcm=4428
+MEDIA rebuffer pause clock=16076908 latest-video=16120000 vq=4 pcm=4704
+MEDIA rebuffer resume clock=16076908 pts=16080000 vq=5 pcm=4004
+MEDIA rebuffer pause clock=16991466 latest-video=17080000 vq=2 pcm=2965
+MEDIA rebuffer resume clock=16991556 pts=17000000 vq=6 pcm=4504
+MEDIA rebuffer pause clock=20062305 latest-video=20120000 vq=1 pcm=2625
+MEDIA rebuffer resume clock=20072463 pts=20080000 vq=5 pcm=4053
+MEDIA native metrics presented=271 sync-samples=265 max-sync-us=80280 decoded=520 dropped=247 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=5 pts=20440000 clock=20384895 consumed=0
+MEDIA first-video ticket=7 pts=115760000 clock=115738166 consumed=0
+MEDIA rebuffer pause clock=116034220 latest-video=116120000 vq=2 pcm=8566
+MEDIA rebuffer resume clock=116034220 pts=116040000 vq=6 pcm=10218
+MEDIA rebuffer pause clock=116206283 latest-video=116280000 vq=1 pcm=8545
+MEDIA rebuffer resume clock=116216351 pts=116240000 vq=5 pcm=9974
+MEDIA first-video ticket=9 pts=130040000 clock=130034145 consumed=0
+MEDIA native metrics presented=3220 sync-samples=3205 max-sync-us=89482 decoded=3816 dropped=551 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=990720 heap-after=1093120
+ELF cancelled; all threads stopped
+myos> mem
+Free physical pages: 257743
+myos> desktop
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+myos> mem
+Free physical pages: 257743
+myos> mem
+Free physical pages: 257743
+myos> elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA native metrics presented=4 sync-samples=0 max-sync-us=0 decoded=20 dropped=3 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA rebuffer pause clock=9978677 latest-video=10040000 vq=2 pcm=4543
+MEDIA rebuffer resume clock=9978677 pts=9960000 vq=6 pcm=5748
+MEDIA native metrics presented=154 sync-samples=150 max-sync-us=69668 decoded=296 dropped=136 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=5 pts=11240000 clock=11186208 consumed=0
+MEDIA first-video ticket=7 pts=106560000 clock=106538437 consumed=0
+MEDIA first-video ticket=9 pts=120080000 clock=120060958 consumed=0
+MEDIA native metrics presented=3193 sync-samples=3177 max-sync-us=89983 decoded=3864 dropped=626 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=1093120 heap-after=1228288
+ELF cancelled; all threads stopped
+myos> mem
+Free physical pages: 257743
+myos> desktop
+DESKTOP FRAME
+DESKTOP READY
+WINDOW OPEN 1
+DESKTOP FRAME
+myos> mem
+Free physical pages: 257743
+myos>

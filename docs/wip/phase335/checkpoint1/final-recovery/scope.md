@@ -1,0 +1,1 @@
+Native output only. Raw encrypted PCAP/assets/logs remain private in ignored build. PNGs + original WAV/timeline are authoritative. AVI is approximate evidence mux. No listening or owner acceptance. Failed sessions remain failed. Final recovery after Retry showed sponsored Spandau Ballet video, not Rickroll; it does not prove Rickroll recovery.

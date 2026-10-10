@@ -131,13 +131,25 @@ static int64_t clock_locked(SbPlayer p){
 static int64_t native_frame_due_locked(SbPlayer p){
  int64_t lead=10000;
  if(p->native_video&&p->has_audio&&p->presenting&&p->rate==1.0&&!p->native_rebuffering){
-  /* Predict synchronous presentation latency, bounded40..90ms.
-   * Actual SB16 clock and post-display error remain unchanged. */
-  lead=p->native_presentation_max_us+10000;
-  if(lead<40000)lead=40000;
-  if(lead>90000)lead=90000;
+  /* Reserve the measured profile's90ms headroom from the first frame,
+   * before a new player has presentation history. The real post-display
+   * hardware clock and100ms acceptance bound remain unchanged. */
+  lead=90000;
  }
  return clock_locked(p)+lead;
+}
+#endif
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+static int native_pcm_held_locked(SbPlayer p){
+ if(!p->sink)return 1;
+ struct pcm_status hardware;struct pcm_request request={PCM_STATUS,0,0,0,(uintptr_t)&hardware};
+ register uint64_t result __asm__("rax")=51;
+ __asm__ volatile("int $0x80":"+a"(result):"D"((uint64_t)SYSTEM_AUDIO),"S"((uintptr_t)&request),"d"((uint64_t)0):"memory","cc");
+ ++p->native_hardware_clock_reads;
+ if((int64_t)result){++p->native_hardware_clock_failures;p->error_pending=1;return 0;}
+ /* Only the sink owns FLUSH and ring acknowledgement. A rebuffer flag
+  * alone cannot prove its async worker has actually stopped queued DMA. */
+ return !hardware.queued&&!hardware.dma_frames;
 }
 #endif
 static void source_status(int *frames,int *offset,bool *playing,bool *eos,void *context){
@@ -364,6 +376,9 @@ static void *player_worker(void *context){
   }
   int ticket=p->ticket,notify_present=0,notify_end=0,notify_error=0;
 #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  int native_resume_ready=0;
+#endif
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
   const void *deallocate[2][AUDIO_BATCH]={{0}};unsigned deallocate_count[2]={0,0};
 #else
   const void *deallocate[2]={0,0};
@@ -429,11 +444,9 @@ static void *player_worker(void *context){
 #endif
 #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
    if(p->native_rebuffering&&aligned_preroll&&
-      (p->pcm_count>=2205||p->pending[kSbMediaTypeAudio].eos)){
-    p->native_rebuffering=0;
-    char detail[160];snprintf(detail,sizeof(detail),
-     "MEDIA rebuffer resume clock=%lld pts=%lld vq=%u pcm=%u\n",
-     (long long)clock_locked(p),(long long)p->current.time,p->video_count,p->pcm_count);SbLogRaw(detail);
+      (p->pcm_count>=2205||p->pending[kSbMediaTypeAudio].eos)&&native_pcm_held_locked(p)){
+    /* Keep audio held through the synchronous fresh-video submission. */
+    native_resume_ready=1;
    }
 #endif
    if(!p->presenting&&
@@ -465,7 +478,14 @@ static void *player_worker(void *context){
   if(p->native_video&&p->has_video){
    if(p->failed||!p->bounds_width||!p->bounds_height){
     if(p->video_shown){media_video_clear(p->video_window);p->video_shown=0;}
-   }else if(p->have_current&&(p->generation!=p->shown_generation||p->bounds_revision!=p->shown_bounds)){
+   }else if(p->have_current&&(p->generation!=p->shown_generation||p->bounds_revision!=p->shown_bounds)
+#ifdef MYOS_MEDIA_VP9
+     /* The sink needs this mutex to finish the async FLUSH/acknowledge.
+      * Do not start another expensive presentation while DMA still runs,
+      * or repaint a stale frame after the hardware clock has been held. */
+     &&(!p->native_rebuffering||(native_pcm_held_locked(p)&&p->current.time>=clock_locked(p)-50000))
+#endif
+   ){
 #if defined(MYOS_MEDIA_VP9) || defined(MYOS_MEDIA_TRACE)
     int64_t diagnostic_present_start=now_us();
 #endif
@@ -504,6 +524,14 @@ static void *player_worker(void *context){
      }
     }
    }
+  }
+#endif
+#if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
+  if(native_resume_ready&&!p->failed&&p->video_shown&&p->shown_generation==p->generation){
+   p->native_rebuffering=0;
+   char detail[160];snprintf(detail,sizeof(detail),
+    "MEDIA rebuffer resume clock=%lld pts=%lld vq=%u pcm=%u\n",
+    (long long)clock_locked(p),(long long)p->current.time,p->video_count,p->pcm_count);SbLogRaw(detail);
   }
 #endif
   pthread_mutex_unlock(&p->mutex);

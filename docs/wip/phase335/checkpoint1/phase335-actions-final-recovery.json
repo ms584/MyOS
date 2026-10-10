@@ -1,0 +1,131 @@
+[
+  {
+    "id": "settings1",
+    "launch": 1,
+    "at": 120,
+    "type": "click",
+    "x": 663,
+    "y": 459
+  },
+  {
+    "id": "quality1",
+    "launch": 1,
+    "at": 128,
+    "type": "click",
+    "x": 613,
+    "y": 397
+  },
+  {
+    "id": "144p1",
+    "launch": 1,
+    "at": 136,
+    "type": "click",
+    "x": 601,
+    "y": 343
+  },
+  {
+    "id": "pause1",
+    "launch": 1,
+    "at": 205,
+    "type": "key",
+    "key": "k"
+  },
+  {
+    "id": "resume1",
+    "launch": 1,
+    "at": 220,
+    "type": "key",
+    "key": "k"
+  },
+  {
+    "id": "forward1",
+    "launch": 1,
+    "at": 240,
+    "type": "key",
+    "key": "l"
+  },
+  {
+    "id": "backward1",
+    "launch": 1,
+    "at": 265,
+    "type": "key",
+    "key": "j"
+  },
+  {
+    "id": "context1",
+    "launch": 1,
+    "at": 490,
+    "type": "click",
+    "x": 350,
+    "y": 250,
+    "button": "right"
+  },
+  {
+    "id": "stats1",
+    "launch": 1,
+    "at": 498,
+    "type": "click",
+    "x": 439,
+    "y": 559
+  },
+  {
+    "id": "player-close1",
+    "launch": 1,
+    "at": 515,
+    "type": "click",
+    "x": 100,
+    "y": 28
+  },
+  {
+    "id": "close1",
+    "launch": 1,
+    "at": 535,
+    "type": "close"
+  },
+  {
+    "id": "link-down",
+    "launch": 1,
+    "at": 275,
+    "type": "link",
+    "up": false
+  },
+  {
+    "id": "link-up",
+    "launch": 1,
+    "at": 405,
+    "type": "link",
+    "up": true
+  },
+  {
+    "id": "native-retry",
+    "launch": 1,
+    "at": 425,
+    "type": "click",
+    "x": 400,
+    "y": 483
+  },
+  {
+    "id": "recovery-settings",
+    "launch": 1,
+    "at": 438,
+    "type": "click",
+    "x": 663,
+    "y": 459
+  },
+  {
+    "id": "recovery-quality",
+    "launch": 1,
+    "at": 446,
+    "type": "click",
+    "x": 613,
+    "y": 397
+  },
+  {
+    "id": "recovery-144p",
+    "launch": 1,
+    "at": 454,
+    "type": "click",
+    "x": 601,
+    "y": 343
+  }
+]

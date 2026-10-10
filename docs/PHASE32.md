@@ -1,10 +1,19 @@
 # Phase 32 — YouTube playback (in progress; acceptance open)
 
-**Actual YouTube playback in MyOS does not work yet.** Do not label this phase
-complete. The goal remains: open YouTube in the MyOS browser, search, select
+**Acceptance remains open.** Actual native Cobalt YouTube playback now has
+recorded evidence; the historical text-Browser limits below do not describe Cobalt. The goal remains: open YouTube in the MyOS browser, search, select
 and play an online video with audible sound, pause/resume and seek in QEMU.
 
-## Verified gate, 2026-09-27
+## Current separate Phase32 audit — 2026-10-10
+Rechecked actual checkpoint11/current-online search PNGs/native input: typed
+BigBuckBunnyBlender, selected official Blender result, reached aqz-KE-bpKQ
+256x144@30 VP9/Opus WebM/SABR,30.283s changing movie and same-sessionPCM.
+The native analyzer reran successfully, not merely a document review. Search/
+selection/play technical evidence supports this phase independently of Rickroll.
+Actual listening/audio continuity and owner interactive acceptance remain open;
+do not infer these from RMS or from a parent phase label. See PHASE335_ACCEPTANCE.md.
+
+## Historical verified gate, 2026-09-27
 
 A live QEMU probe opened `https://www.youtube.com/` using MyOS networking and
 certificate-verified TLS. The site currently chains through Google Trust

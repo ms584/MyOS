@@ -5,7 +5,9 @@ import time
 from pathlib import Path
 
 class Observer:
-    def __init__(self, vm):
+    def __init__(self, vm, memory_mib=512):
+        assert memory_mib in (512,1024)
+        self.memory_mib = memory_mib
         self.vm = vm
         self.samples = []
         self.symbols = {}
@@ -33,7 +35,7 @@ class Observer:
             values = {key:int.from_bytes(self.vm.memory(address,8),'little')
                       for key,address in self.symbols.items()}
             free,total = values['free_count'],values['total_count']
-            assert 0 <= free <= total <= 512*1024*1024//4096
+            assert 0 <= free <= total <= self.memory_mib*1024*1024//4096
             item = dict(launch=launch,elapsed=elapsed,label=label,free_pages=free,
                         total_pages=total,pmm_allocated_bytes=(total-free)*4096)
             self.samples.append(item)

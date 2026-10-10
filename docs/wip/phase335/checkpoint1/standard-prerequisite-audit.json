@@ -1,0 +1,44 @@
+{
+  "recorded_session_verified": true,
+  "fresh_execution": false,
+  "trace_scope": true,
+  "motion_span": 38.53333333333333,
+  "pcm_seconds": 39.953106575963716,
+  "tones": [
+    {
+      "second": 5,
+      "rms": 55.20365510919513,
+      "crossings": 440,
+      "expected_hz": 440
+    },
+    {
+      "second": 15,
+      "rms": 55.16854817269522,
+      "crossings": 660,
+      "expected_hz": 660
+    },
+    {
+      "second": 25,
+      "rms": 55.38504673068846,
+      "crossings": 880,
+      "expected_hz": 880
+    },
+    {
+      "second": 35,
+      "rms": 55.06317213138077,
+      "crossings": 550,
+      "expected_hz": 550
+    }
+  ],
+  "metrics": [
+    {
+      "presented": 603,
+      "sync-samples": 598,
+      "max-sync-us": 39979,
+      "decoded": 600,
+      "dropped": 0,
+      "corrupted": 0,
+      "source-starvations": 0
+    }
+  ]
+}

@@ -39,6 +39,10 @@ def main():
     p.add_argument('--input',action='append',default=[],help='Timed native key: seconds:qcode')
     p.add_argument('--actions',type=Path,help='Optional local JSON native key/text/click actions; no page scripting')
     p.add_argument('--desktop-check',action='store_true',help='Native desktop window/input smoke after each player close')
+    p.add_argument('--inode-accounting',action='store_true',help='Bounded post-close inode metadata; no heap/file content reads')
+    p.add_argument('--network-capture',action='store_true',help='Record encrypted virtual-NIC traffic to private PCAP; never decrypt TLS or log credentials')
+    p.add_argument('--record-fps',type=int,choices=(1,2,4),default=1,help='Native screen recording rate; observer overhead must be disclosed')
+    p.add_argument('--record',action='store_true',help='Capture native screen and WAV byte/wall timeline every 0.25s; host recording only')
     p.add_argument('--ram',action='store_true',help='Read-only sampled PMM; includes brief QMP pauses')
     a=p.parse_args()
     assert 30<=a.seconds<=600
@@ -81,6 +85,7 @@ def main():
         if isinstance(args,list) and args and Path(args[0]).name=='qemu-system-x86_64':
             args=list(args);i=args.index('-audiodev')+1
             args[i]+=',out.frequency=11025,out.channels=1,out.format=u8'
+            if a.network_capture:args.extend(['-object',f'filter-dump,id=phase335capture,netdev=phase335net,file={out}/network.pcap'])
             qemu.append(args)
         return original(args,*pos,**kw)
     subprocess.Popen=capture
@@ -89,29 +94,38 @@ def main():
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         core_sha256=digest(core),provider_sha256=digest(provider),normal_identity=identities,
         urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
-    vm=None;observer=None
+    vm=None;observer=None;inode_observer=None
     try:
-        vm=VM('phase334-public',ram=a.memory_mib,nic=True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
+        vm=VM('phase334-public',ram=a.memory_mib,nic='user,model=rtl8139,id=phase335net' if a.network_capture else True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')
         if a.ram:
             from cobalt_pmm_observer import Observer
-            observer=Observer(vm)
+            observer=Observer(vm,memory_mib=a.memory_mib)
+        if a.inode_accounting:
+            from cobalt_inode_observer import InodeObserver
+            inode_observer=InodeObserver(vm)
         vm.wait('myos> ');command(vm,'net up','Network: DHCP configured');command(vm,'mkdir /dev/shm','myos> ')
         for n,url in enumerate(a.url,1):
             row=dict(launch=n,url=url,frames=[],inputs=[],before=command(vm,'mem','Free physical pages: '))
             evidence['launches'].append(row)
+            if inode_observer:row['inode_before']=inode_observer.capture()
             offset=len(vm.log.read_text());started=time.monotonic()
             type_text(vm,('elf cobalt-trace' if a.engine_trace else 'elf cobalt')+' cobalt provider '+url+'\n')
-            next_frame=0;sent=set();action_sent=set()
+            next_frame=0;next_pmm=0;sent=set();action_sent=set()
+            row['recording_timeline']=[]
             if observer:observer.capture(n,0,'before')
             while time.monotonic()-started<a.seconds:
                 elapsed=time.monotonic()-started;content=vm.log.read_text()[offset:]
                 if elapsed>=next_frame:
-                    next_frame=elapsed+5
-                    if observer:observer.capture(n,elapsed)
-                    ppm=out/('launch-%d-%03d.ppm'%(n,elapsed))
+                    next_frame=elapsed+(1/a.record_fps if a.record else 5)
+                    if observer and elapsed>=next_pmm:
+                        observer.capture(n,elapsed);next_pmm=elapsed+5
+                    ppm=out/('launch-%d-%06d.ppm'%(n,round(elapsed*1000) if a.record else int(elapsed)))
                     vm.command('screendump',{'filename':str(ppm)})
                     png=ppm.with_suffix('.png');Image.open(ppm).save(png);ppm.unlink()
                     row['frames'].append(dict(elapsed=elapsed,path=png.name))
+
+                if a.record:
+                    row['recording_timeline'].append(dict(elapsed=time.monotonic()-started,wav_bytes=(out/'audio.wav').stat().st_size if (out/'audio.wav').exists() else 0))
                 for index,(at,key) in enumerate(keys):
                     if elapsed>=at and index not in sent:
                         vm.key(key);sent.add(index);row['inputs'].append(dict(key=key,elapsed=elapsed))
@@ -175,8 +189,9 @@ def main():
                     row['after_desktop']=command(vm,'mem','Free physical pages: ')
 
                 if observer:observer.capture(n,time.monotonic()-started,'after')
+                if inode_observer:row['inode_after']=inode_observer.capture()
             (out/'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
-            print('PUBLIC_OBSERVATION',json.dumps({k:v for k,v in row.items() if k!='frames'}),flush=True)
+            print('PUBLIC_OBSERVATION',json.dumps({k:v for k,v in row.items() if k not in ('frames','recording_timeline','inode_before','inode_after')}),flush=True)
             assert row['shell_returned'], 'Cannot safely reopen without shell recovery'
     finally:
         if vm:
@@ -186,7 +201,7 @@ def main():
         evidence['normal_identity_after']={name:digest(ROOT/'build'/name) for name in identities}
         assert evidence['normal_identity_after']==identities
         (out/'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
-        print('EVIDENCE_BUNDLE',out,'OBSERVATION ONLY; Phase33.4 NOT PASSED',flush=True)
+        print('EVIDENCE_BUNDLE',out,'OBSERVATION ONLY; interactive phase acceptance not granted',flush=True)
 
 if __name__=='__main__':main()
 

@@ -1,0 +1,68 @@
+
+[2026-10-10T14:08:25.727108+07:00] cwd=/home/xytron404/myos
+$ bash -lc 'mkdir -p build/phase335-prerequisite-web; tar -xzf docs/wip/native-pmm512/integration-20261008/native-frames.tar.gz -C build/phase335-prerequisite-web --no-same-owner --no-same-permissions; cp docs/wip/native-pmm512/integration-20261008/evidence.json build/phase335-prerequisite-web/; gzip -dc docs/wip/native-pmm512/integration-20261008/native-serial.txt.gz > build/phase335-prerequisite-web/serial.txt; python3 docs/wip/native-pmm512/integration-20261008/verify_native_web_bundle_20261008.py build/phase335-prerequisite-web'
+{
+  "native_web_evidence_pass": true,
+  "launches": [
+    {
+      "launch": 1,
+      "visible_span_seconds": 118.77855041499424,
+      "first_visible_seconds": 102.93138417300361,
+      "keys": [
+        {
+          "key": "a",
+          "sampled_upper_seconds": 1.2367107370082522
+        },
+        {
+          "key": "b",
+          "sampled_upper_seconds": 1.2439760859997477
+        },
+        {
+          "key": "pgdn",
+          "sampled_upper_seconds": 0.9026083059870871
+        },
+        {
+          "key": "c",
+          "sampled_upper_seconds": 1.3273388759989757
+        },
+        {
+          "key": "pgup",
+          "sampled_upper_seconds": 0.7959147290093824
+        }
+      ]
+    },
+    {
+      "launch": 2,
+      "visible_span_seconds": 119.6928877360042,
+      "first_visible_seconds": 91.12863874599861,
+      "keys": [
+        {
+          "key": "a",
+          "sampled_upper_seconds": 1.2438953509990824
+        },
+        {
+          "key": "b",
+          "sampled_upper_seconds": 1.2381208970036823
+        },
+        {
+          "key": "pgdn",
+          "sampled_upper_seconds": 0.8006715089868521
+        },
+        {
+          "key": "c",
+          "sampled_upper_seconds": 1.3275740329991095
+        },
+        {
+          "key": "pgup",
+          "sampled_upper_seconds": 0.7011064769903896
+        }
+      ]
+    }
+  ],
+  "heap_after": [
+    450304,
+    450304
+  ],
+  "caveat": "Native web subset only; integrated regression, source promotion, sampled RAM review and final docs remain independent gates. Key bound2s includes1s image sampling."
+}
+[2026-10-10T14:08:27.380544+07:00] exit=0

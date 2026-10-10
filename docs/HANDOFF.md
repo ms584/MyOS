@@ -1,5 +1,17 @@
 # MyOS handoff — 2026-10-10
 
+### Phase33.5 current audit — 2026-10-10
+See PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md. Actual native
+Rickroll trials found baseline sync failures108771/160083us and first-fix outage
+failure172217us; all retained. Final native VP9 rebuffer ordering fix has focused/
+OOM/fault passes and live max89970us; fresh g_wbd0r3 twoopens:45s motioneach,331.380sPCM,max89974us,exactresources.
+Normal BIOS/UEFI rebuilt0/all5 hashes exact/defaultVP8 exact. No QEMU remains.
+Screen/PCM/control/resource evidence does not replace listening or owner acceptance.
+Audio input is unsupported in this chat. Cache retention is disclosed; warm plateau
+not proved. Offline Retry later played a sponsored different video, not Rickroll.
+Phase33.5/parent33 remain NOT ACCEPTED. Phase32 search/select/play is separately
+rechecked; audible/interactive acceptance remains open. Local commit only/no push.
+
 ### 2026-10-10 13:20 +07 — checkpoint13; Phase33.4 accepted on tested profile
 See PHASE334_ACCEPTANCE.md for the requirement audit and wip/phase334/checkpoint13/
 for authentic native expiry/recovery. Productionda08b2d/provider-sey3hj06 unchanged.
