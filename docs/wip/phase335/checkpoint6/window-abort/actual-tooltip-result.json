@@ -1,0 +1,38 @@
+{
+  "date_completed": "2026-10-10T18:39:39.315185+07:00",
+  "private_bundle": "/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-oojztkc8",
+  "phase_passed": false,
+  "diagnostic_fixture": true,
+  "actual_requested_width": 176,
+  "actual_requested_height": 24,
+  "windowed": false,
+  "primary_handle": 1,
+  "returned_error": "ENOTSUP (-95)",
+  "fatal_signal": 6,
+  "core_callchain_matches_online_j_4b33rx_all16": true,
+  "physical_before_after": [
+    257743,
+    257743
+  ],
+  "shm_before_after": [
+    0,
+    0
+  ],
+  "aliases_before_after": [
+    0,
+    0
+  ],
+  "heap_before_after": [
+    786176,
+    827136
+  ],
+  "dom_ready_http_elapsed": 97.27401862799888,
+  "pointer_http": {
+    "x": 180,
+    "y": 200,
+    "elapsed": 97.7431483320106
+  },
+  "picture_scope": "Native pre-hover screenshot still shows Cobalt YouTube splash; HTML button rendering not visually verified. Native HTTPS HTML/JS ready+pointer callbacks, actual window request and same 16-PC FATAL chain prove tooltip creation failure; not video/music acceptance.",
+  "no_host_decoder": true,
+  "owner_acceptance_received": false
+}

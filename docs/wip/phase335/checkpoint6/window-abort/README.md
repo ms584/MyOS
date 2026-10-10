@@ -89,3 +89,19 @@ pair resident metadata. Heap retention remains disclosed. This job is active
 in phase335-tooltip-engine-210.log, session85121; no claim of its outcome yet.
 
 Public log copies normalize line-end whitespace; raw originals remain unchanged in ignored build bundles. SHA256SUMS describes these public copies.
+
+## Confirmed deterministic engine reproduction,18:39:39+07
+Corrected native HTTPS fixture `oojztkc8` completed successfully as a fault
+reproduction: HTML/app.js/ready and actual pointer180,200 callbacks arrived
+97.12–97.74s after start. Cobalt requested176×24,windowed=false,primary1 still
+live. MyOS returned ENOTSUP(-95), then FATAL/SIGABRT6 with ALL16 core returnPCs
+identical to online `j_4b33rx`. This establishes the exact tooltip creation
+failure, not merely a guessed small-window limitation. Physical257743/SHM0/
+aliases0 returned exactly; heap786176→827136 is disclosed separately.
+The pre-hover native screenshot still shows Cobalt's YouTube splash; it does
+not visibly demonstrate the HTML button. DOM/JS callback and matching fault
+chain are the actual diagnostic proof. No network/movie/audio acceptance is
+claimed for this test page. Private fixture CA/keys never enter normal image.
+No QEMU remains. Next: choose/build a real tooltip-in-root compositor adapter,
+verify tooltip drawing/bounds/lifetime, full applicable regression and actual
+normal repeated/freshboot YouTube controls, then owner audiovisual signoff.

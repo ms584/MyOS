@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Base19ae326 on main;manual overlay/guide fix committed. No push.
+Base e0081d2 on main;tooltip evidence checkpoint committed. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -56,5 +56,5 @@ Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED
 Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
 HTTPS title fixture DONE:DOM90s timeout;not tooltip proof.
 File title DONE:blank frames/noDOM;wrong pair-resource assertion recorded.
-HTTPS title210s ACTIVE:phase335-tooltip-engine-210.log,PTY85121.
-See checkpoint6/window-abort;root production unchanged;owner signoff pending.
+HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
+See checkpoint6/window-abort;root production unchanged;no QEMU/signoff pending.
