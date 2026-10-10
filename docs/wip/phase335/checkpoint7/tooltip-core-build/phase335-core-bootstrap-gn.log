@@ -1,0 +1,35 @@
+
+[2026-10-10T20:30:29.950229+07:00] cwd=/home/xytron404/myos
+$ python3 -u
+WARNING: Existing args.gn was overwritten. Old file was copied to stale_args.gn.
+Running gn gen out/evergreen-x64_gold --check
+ERROR at //build/timestamp.gni:43:19: Script returned non-zero exit code.
+build_timestamp = exec_script(compute_build_timestamp,
+                  ^----------
+Current dir: /home/xytron404/myos/build/phase335-core-workspace/src/out/evergreen-x64_gold/
+Command: python3 /home/xytron404/myos/build/phase335-core-workspace/src/build/compute_build_timestamp.py official
+Returned 1.
+stderr:
+
+Traceback (most recent call last):
+  File "/home/xytron404/myos/build/phase335-core-workspace/src/build/compute_build_timestamp.py", line 138, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/xytron404/myos/build/phase335-core-workspace/src/build/compute_build_timestamp.py", line 111, in main
+    last_commit_timestamp = int(open(lastchange_file).read())
+                                ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/xytron404/myos/build/phase335-core-workspace/src/build/util/LASTCHANGE.committime'
+
+See //base/BUILD.gn:4539:3: whence it was imported.
+  import("//build/timestamp.gni")
+  ^-----------------------------
+See //BUILD.gn:102:7: which caused the file to be included.
+      "//base:base_unittests",
+      ^----------------------
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['python3', 'cobalt/build/gn.py', '-p', 'evergreen-x64', '-c', 'gold', '--no-rbe']' returned non-zero exit status 1.
+[2026-10-10T20:31:43.971488+07:00] exit=1

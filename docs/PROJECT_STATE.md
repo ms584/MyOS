@@ -1,6 +1,6 @@
 2026-10-10 — Phase33.5 ACTIVE/NOT ACCEPTED; parent33 stays open.
 Read PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md.
-Base e0081d2 on main;tooltip evidence checkpoint committed. No push.
+Base f37d70c on main;176×24 tooltip abort confirmed. No push.
 Owner promotion files/logs preserved. No permission pending.
 
 Actual prerequisite evidence reverified: native web33.1/33.2,standard33.3,
@@ -44,17 +44,17 @@ Read checkpoint2/stability-failed +checkpoint3;fix/retest before acceptance.
 Owner tried opening:IDE readonly failed beforeboot;playback/signoff absent.
 Thai manualdraft PHASE335_USER_GUIDE_TH.md;finalizeafter realacceptance.
 Sixopens i04m0umd done17:14:35:noabort,exactcleanup,max89843us.
-Inodepeaks53/57/64/62/64/64;after52/56/59/60/61/63,not originalabortrepair.
-PMMownedpeak550572032B complete;fivefixedmotionwindows FAIL.
 Private resourceerror diagnostic build/4abortfixtures PASS.
 Capacityfault2opens done:455ENOSPC in cache/LevelDB;noabort/exactcleanup.
 Manual snapshotfix:negative reproduced/headless+GTK shells PASS;guide updated.
 Private map/thread:realfailure2runs+abort4 PASS;iw24chsq4opens DONE.
-Zero memory/threadnotes;65cacheENOSPC/noabort;originalfault unresolved.
+Zero memory/threadnotes;65cacheENOSPC/noabort;tooltip cause now reproduced.
 Control j_4b33rx DONE18:10:59:third FATAL/SIG6;returnPC−1 proves native tooltip.
 Small/second native window rejection reproduced twice/exact cleanup;NOT REPAIRED.
 Hover1x2i1nyl DONE18:24:14:noabort,only primary800×600;not repair.
 HTTPS title fixture DONE:DOM90s timeout;not tooltip proof.
 File title DONE:blank frames/noDOM;wrong pair-resource assertion recorded.
 HTTPS title DONE18:39:39:176×24→ENOTSUP→FATAL/SIG6;all16 PCs match.
-See checkpoint6/window-abort;root production unchanged;no QEMU/signoff pending.
+Root normal unchanged/no QEMU;owner signoff pending. See checkpoint6/7.
+Source3befd332+tooltip Aura-root patch applied;gclient deps DONE19:01:10.
+GN DONE20:35:03;real GPU/Skia metadata corrected;compile ACTIVE PTY72380.

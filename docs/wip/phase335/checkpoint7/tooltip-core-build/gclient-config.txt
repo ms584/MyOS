@@ -1,0 +1,13 @@
+solutions = [
+  { "name"        : 'src',
+    "url"         : 'https://github.com/youtube/cobalt.git',
+    "deps_file"   : 'DEPS',
+    "managed"     : False,
+    "custom_deps" : {
+    },
+    "custom_vars": {},
+  },
+]
+
+# MyOS native x64 engine build only; no host browser run.
+target_os = ["linux"]

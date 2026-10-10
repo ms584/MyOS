@@ -1,0 +1,11 @@
+
+[2026-10-10T20:32:52.832518+07:00] cwd=/home/xytron404/myos
+$ python3 -u
+ERROR:root:Failed to get version info: Git command 'git log -1 --format=%H %ct --grep=^Change-Id: HEAD' in /home/xytron404/myos/build/phase335-core-workspace/src failed: rc=0, stdout='' stderr=''
+WARNING:root:Falling back to a version of 0.0.0 to allow script to finish. This is normal if you are bootstrapping a new environment or do not have a git repository for any other reason. If not, this could represent a serious error.
+ERROR:root:Failed to get version info: Git command 'git log -1 --format=%H %ct --grep=^Change-Id: HEAD' in /home/xytron404/myos/build/phase335-core-workspace/src failed: rc=0, stdout='' stderr=''
+WARNING:root:Falling back to a version of 0.0.0 to allow script to finish. This is normal if you are bootstrapping a new environment or do not have a git repository for any other reason. If not, this could represent a serious error.
+WARNING: Existing args.gn was overwritten. Old file was copied to stale_args.gn.
+Running gn gen out/evergreen-x64_gold --check
+Done. Made 29494 targets from 4132 files in 129958ms
+[2026-10-10T20:35:03.753001+07:00] exit=0

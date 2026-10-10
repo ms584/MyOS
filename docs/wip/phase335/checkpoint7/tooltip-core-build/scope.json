@@ -1,0 +1,26 @@
+{
+  "source_commit": "3befd332486952f6603ae3baf2a8713878d6e200",
+  "bootstrap_depot_commit": "a03dfbf7f2d1cefa2795d81d59ca4f16c8616a8f",
+  "pinned_depot_commit": "a8900cc0f023d6a662eb66b317e8ddceeb113490",
+  "native_target": "evergreen-x64",
+  "build_type": "gold",
+  "starboard_api": 18,
+  "core_built": false,
+  "phase_passed": false,
+  "host_player_used": false,
+  "build_instructions": "https://developers.google.com/youtube/cobalt/docs/development/setup-linux",
+  "build_status": "compiling, not yet linked or tested",
+  "build_session": 72380,
+  "build_log": "build/phase335-core-compile.log",
+  "jobs": 6,
+  "ninja_version": "1.12.1",
+  "clang_version": [
+    "clang version 21.0.0git (https://chromium.googlesource.com/a/external/github.com/llvm/llvm-project fd3fecfc0936703f2715fe6fea890e81b0b3c2ac)",
+    "Target: x86_64-unknown-linux-gnu",
+    "Thread model: posix",
+    "InstalledDir: /home/xytron404/myos/build/phase335-core-workspace/src/third_party/llvm-build/Release+Asserts/bin"
+  ],
+  "metadata_filter": ".",
+  "metadata_reason": "GitHub source HEAD has no Gerrit Change-Id; use actual pinned commit, never generated zero-hash fallback",
+  "updated": "2026-10-10T20:40:40.281678+07:00"
+}

@@ -1,0 +1,10 @@
+{
+  "source_tag": "27.lts.3",
+  "source_commit": "3befd332486952f6603ae3baf2a8713878d6e200",
+  "path": "ui/views/corewm/tooltip_aura.cc",
+  "original_sha256": "79aa232915f33e43c7b3b9519ab15350cbefae47872ddb56e3ebb469acc4d13d",
+  "modified_sha256": "8b6489632f62993c81a076245db8da9acf773ec2547b066368bf12d965bb775a",
+  "tested": false,
+  "phase_passed": false,
+  "reason": "Actual native176x24 tooltip SbWindowCreate ENOTSUP causes matching FATAL/SIGABRT; reuse actual Aura root compositor"
+}

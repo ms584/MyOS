@@ -1,4 +1,4 @@
-// Upstream Cobalt tag27.lts.3; Apache-2.0. Selected diagnostic excerpts.
+// Upstream Cobalt tag27.lts.3; Chromium BSD-style license; see upstream LICENSE. Selected diagnostic excerpts.
 
 // Original lines 95..110
 NativeWidget* CreateNativeWidget(const Widget::InitParams& params,

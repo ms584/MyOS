@@ -1,0 +1,25 @@
+--- a/ui/views/corewm/tooltip_aura.cc
++++ b/ui/views/corewm/tooltip_aura.cc
+@@ -28,6 +28,10 @@
+ #include "ui/gfx/text_utils.h"
+ #include "ui/views/accessibility/view_accessibility.h"
+ #include "ui/views/widget/widget.h"
++
++#if BUILDFLAG(IS_COBALT)
++#include "ui/views/widget/native_widget_aura.h"
++#endif
+ #include "ui/wm/public/tooltip_observer.h"
+ 
+ #if BUILDFLAG(IS_OZONE)
+@@ -203,6 +207,11 @@
+   // auto-parented to the right container.
+   params.context = tooltip_window_;
+   DCHECK(params.context);
++#if BUILDFLAG(IS_COBALT)
++  // A Starboard target may expose only one fullscreen SbWindow. Composite
++  // the tooltip in its context root rather than creating a desktop host.
++  params.native_widget = new NativeWidgetAura(widget_.get());
++#endif
+   params.z_order = ui::ZOrderLevel::kFloatingUIElement;
+   params.accept_events = false;
+   params.bounds = bounds;
