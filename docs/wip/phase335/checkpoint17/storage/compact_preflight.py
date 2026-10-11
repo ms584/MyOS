@@ -14,6 +14,6 @@ for n,want in expected.items():
   for chunk in iter(lambda:f.read(1048576),b''):h.update(chunk)
  assert h.hexdigest()==want,n
 if len(sys.argv)>1 and sys.argv[1]=='verify':
- print('Normal five hashes exact after compact.');raise SystemExit(0)
+ print('Normal five hashes exact; verification alone does not prove Windows compaction ran.');raise SystemExit(0)
 subprocess.run(['sync'],check=True);subprocess.run(['fstrim','-v','/'],check=True)
 print('Preflight: no active test/build; normal hashes exact; trim completed.')
