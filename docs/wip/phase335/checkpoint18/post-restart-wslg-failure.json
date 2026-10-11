@@ -1,0 +1,12 @@
+{
+  "restart_exit": 0,
+  "normal5_hashes_exact": true,
+  "error_recurred_on_gui_start": true,
+  "safe_weston_lines": [
+    "[18:24:58.046]   WSL2_SHARED_MEMORY_MOUNT_POINT=/mnt/shared_memory",
+    "[18:24:58.046] rdp_allocate_shared_memory: Failed to open \"/mnt/shared_memory/{cd9b2586-3733-4da2-bda6-649df4d2975e}\" with error: Input/output error"
+  ],
+  "window_title": "[WARN:COPY MODE] QEMU (Ubuntu)",
+  "window_foreground_request": true,
+  "restart_fixed_stutter": false
+}

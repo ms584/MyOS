@@ -40,3 +40,10 @@ to foreground on owner request; native caption WARN:COPY MODE was observed.
 WSLg Weston reports shared-memory Input/output error. This host-display defect
 is proven, but causality for all stutter still needs before/after testing.
 Owner has saved work and authorized WSL restart; all QEMU jobs are terminal.
+
+Visible production post-restart observer completed exit0 but owner confirms
+only Linux icon, no visible QEMU picture. Foreground API success did not prove
+rendered visibility. Repeated shared-memory EIO persisted. No acceptance.
+Next minimal check launches normal manual QEMU from a visible Windows Terminal
+with Ubuntu kept open; optional local QMP only permits real native inputs later.
+It does not change normal images, provider/core or import a movie.

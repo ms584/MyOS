@@ -4,7 +4,7 @@ No automatic input, acceptance or host media player. Requires WSLg/PulseAudio/KV
 """
 import argparse,json,hashlib,subprocess,os,tempfile,time
 from pathlib import Path
-p=argparse.ArgumentParser(description=__doc__);p.add_argument('bundle',type=Path);p.add_argument('--check-boot',action='store_true',help='Passive headless boot check using the same drives/PulseAudio; no browser input or acceptance');a=p.parse_args();b=a.bundle.resolve();root=Path.cwd()
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('bundle',type=Path);p.add_argument('--check-boot',action='store_true',help='Passive headless boot check using the same drives/PulseAudio; no browser input or acceptance');p.add_argument('--qmp',action='store_true',help='Local native-input socket for visible diagnostics; no automatic acceptance');a=p.parse_args();b=a.bundle.resolve();root=Path.cwd()
 if subprocess.run(['pgrep','-f','qemu-system-'],stdout=subprocess.DEVNULL).returncode==0:
     p.error('QEMU is already running; close the current VM or wait for the test to finish first.')
 assert b.is_relative_to((root/'build').resolve())
@@ -30,6 +30,7 @@ assert os.geteuid()!=0,'Run as the normal WSL user'
 assert os.access('/dev/kvm',os.R_OK|os.W_OK),'Non-root KVM access required'
 session=Path(tempfile.mkdtemp(prefix='manual-session-',dir=b));serial=session/'serial.log'
 command=['qemu-system-x86_64','-m','1024','-accel','kvm','-cpu','host','-display','none' if a.check_boot else 'gtk','-monitor','none','-serial',f'file:{serial}','-no-reboot','-no-shutdown','-drive',f'format=raw,file={b}/boot.img,if=floppy,index=0,snapshot=on','-boot','order=a','-nic','user,model=rtl8139','-audiodev','pa,id=myos-audio,out.frequency=11025,out.channels=1,out.format=u8','-device','sb16,audiodev=myos-audio','-drive',f'format=raw,file={b}/assets.img,if=ide,index=1,snapshot=on']
+if a.qmp:command.extend(['-qmp',f'unix:{session}/manual.sock,server=on,wait=off'])
 (session/'qemu-command.json').write_text(json.dumps(dict(command=command,boot_check=a.check_boot,phase_passed=False,user_acceptance_received=False,source_bundle=str(b),source_core_build=source_core,frozen_inputs=frozen),indent=2)+'\n')
 print('Serial log:',serial,flush=True)
 print('Fresh native MyOS manual trial; no phase acceptance is recorded automatically.',flush=True)

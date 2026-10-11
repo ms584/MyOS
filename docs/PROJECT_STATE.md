@@ -4,7 +4,8 @@ Owner now tried tjks53iv and reports BOTH picture/audio stutter: NOT ACCEPTED.
 Manual maxsync900037us/2171dropped of5326decoded; checkpoint18 records failure.
 GTK/Pulse diagnostic reproduces stalls: present3730000us/maxsync660037us.
 GL diagnostic completed but failed: present4830000us/maxsync620037us.
-WSLg WARN:COPY MODE and shared-memory EIO; owner authorized saved-work restart.
+WSLg WARN:COPY MODE/shared-memory EIO recurs after authorized restart.
+Owner sees only Linux icon despite foreground API success; visible demo NOT verified.
 
 Current production user/media-player.c SHA3be11a9ebab7b79fd8e95715cc3b22d26f644602b3e5da8a802e9ae8469d3e65.
 Pending-seek clock fix prevents Blink paused_time_ caching the old audio anchor.
