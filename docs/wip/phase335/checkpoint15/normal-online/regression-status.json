@@ -1,0 +1,7 @@
+{
+  "phase_passed": false,
+  "full_regression_passed": false,
+  "log": "build/phase335-first-frame-full-regression.log",
+  "sha256": "29c0467ccc8a244245559bc0d94d03fe6248b0ac3bd511b971cbf805af65a622",
+  "reason": "Host WSL stopped; launcher session6243 exit1 before full suite terminal. Partial PASS lines are not full acceptance. Normal restore terminal0."
+}

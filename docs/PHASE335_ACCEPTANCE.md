@@ -1,3 +1,14 @@
+Checkpoint15 2026-10-11: normal online oql02ybt completed3opens12:34:02, no abort,
+exact physical/SHM/alias cleanup; max native sync82911us. Second/third paired
+pause movie pixels/PCM freeze and resume observed; first controls invalid from
+late quality input overlap. Stats actual RickID/VP9(278)/Opus(251); dropped frames
+disclosed. Heap/cache still grows, not stability acceptance. Fresh search/boot
+and full regression interrupted by WSL; no PASS. Normal restore terminal0.
+Manual source-core bundle passive bootPASS12:48:05; Thai guide uses oql02ybt.
+Owner has not tried; music/stale-audio/freshboot signoff remains absent.
+Phase32 search/select/play independently OPEN; Phase33.5/33 OPEN.
+See wip/phase335/checkpoint15/normal-online/README.md.
+
 Checkpoint12 2026-10-11 04:14+07: continuous new-core observations retained as NOT PASSED: VP9 zero-drop analyzer rejected1drop; original-profile VP8 zero-drop decoded600, but one obscured barcode screenshot rejected pixel reader. Fixed-layout private fixture retest active; no runtime/threshold relaxation. Normal online source-core selector prepared, three focused identity tests pass. See wip/phase335/checkpoint12/continuous-retests/README.md.
 
 Checkpoint11 2026-10-11 04:03:59+07: private source-core standard-media paired controls completed. Five frozen viewport crops and zero PCM-file growth over observed8.116s; resume both advance, forward seek15s. Owner listening/backward seek/normal online unverified. Continuous/RAM retest active. See wip/phase335/checkpoint11/paired-controls/README.md.

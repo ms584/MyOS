@@ -4020,3 +4020,14 @@ Checkpoint14 2026-10-11T11:59:30+07: non-trace first-frame candidate/source-core
 Checkpoint14 lifecycle fkk5vxc8 scoped PASS12:10:49:3 launches/6players,EOS/restart/stop/captured frame transitions/real PCM IRQ controls/exact residents; heap786176→847616→851712→851712,third stable. Max sync19856us/RAM30355456B complete media history under32MiB. Only1 settled image per pause, so pair-frozen visual proof not claimed. Old VP8 late-bounds baseline FAILED12:10:21 (audio clock1663090us before first bounds); candidate test PTY77717 active. No production promotion/new online Rickroll/owner signoff. See wip/phase335/checkpoint14/lifecycle-three.
 
 Checkpoint14 production2026-10-11T12:16:30+07: tested first-frame hold now in user/media-player.c (SHA7a923b...). Old VP8 late-bounds1663090us failed; candidateactualhold/controls/EOS/restart/exact cleanup PASS12:12:41, native corrupt/rapid-seek/OOM/teardown PASS12:13:52. Normal buildPASS12:15:31/all5 exact. Production VP8a0usu27d SHA3dc54a... and VP98homrhps SHA7df78b... have all20 allocated sections identical to the respective tested VP8candidate/previousVP9 binaries, including NOBITS size/type/address. Old .bss file-byte comparison was invalid because NOBITS has no file content; corrected comparison is preserved. New-core normal3online opens/freshboot and full relevant regression still pending; no acceptance/owner listening claimed.
+
+Checkpoint15 2026-10-11: normal online oql02ybt completed3opens12:34:02, no abort,
+exact physical/SHM/alias cleanup; max native sync82911us. Second/third paired
+pause movie pixels/PCM freeze and resume observed; first controls invalid from
+late quality input overlap. Stats actual RickID/VP9(278)/Opus(251); dropped frames
+disclosed. Heap/cache still grows, not stability acceptance. Fresh search/boot
+and full regression interrupted by WSL; no PASS. Normal restore terminal0.
+Manual source-core bundle passive bootPASS12:48:05; Thai guide uses oql02ybt.
+Owner has not tried; music/stale-audio/freshboot signoff remains absent.
+Phase32 search/select/play independently OPEN; Phase33.5/33 OPEN.
+See wip/phase335/checkpoint15/normal-online/README.md.

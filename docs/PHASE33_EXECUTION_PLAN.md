@@ -1,3 +1,14 @@
+Checkpoint15 2026-10-11: normal online oql02ybt completed3opens12:34:02, no abort,
+exact physical/SHM/alias cleanup; max native sync82911us. Second/third paired
+pause movie pixels/PCM freeze and resume observed; first controls invalid from
+late quality input overlap. Stats actual RickID/VP9(278)/Opus(251); dropped frames
+disclosed. Heap/cache still grows, not stability acceptance. Fresh search/boot
+and full regression interrupted by WSL; no PASS. Normal restore terminal0.
+Manual source-core bundle passive bootPASS12:48:05; Thai guide uses oql02ybt.
+Owner has not tried; music/stale-audio/freshboot signoff remains absent.
+Phase32 search/select/play independently OPEN; Phase33.5/33 OPEN.
+See wip/phase335/checkpoint15/normal-online/README.md.
+
 Checkpoint8 2026-10-11 03:46:33+07: source-built Cobalt tooltip fix linked successfully; two private native verified HTTPS launches with two hover/hide cycles each passed without abort. Actual PNG inspection confirms title tooltip draws, hides and recreates in existing root. Physical/SHM/alias cleanup exact; heap786176→827136 then stable for second launch only. Normal images unchanged. New-core YouTube, affected prerequisites, repeated-open stability, regression and owner listening remain pending; Phase33.5/33 remain open. See wip/phase335/checkpoint8/tooltip-source-core/README.md.
 
 Checkpoint5:four private diagnostic opens completed,noabort;65 actual cache ENOSPC,no recorded memory/thread failures. Not a repair of original normal abort or Phase acceptance. See PHASE335_ACCEPTANCE.md.

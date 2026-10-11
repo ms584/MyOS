@@ -1,0 +1,51 @@
+Free physical pages: 257751
+Free physical pages: 257743
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA native metrics presented=3 sync-samples=1 max-sync-us=49804 decoded=20 dropped=7 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=0 clock=83 consumed=0
+MEDIA native metrics presented=47 sync-samples=41 max-sync-us=58784 decoded=108 dropped=56 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA first-video ticket=5 pts=37520000 clock=37500645 consumed=0
+MEDIA first-video ticket=7 pts=17560000 clock=17531604 consumed=0
+MEDIA native metrics presented=658 sync-samples=651 max-sync-us=82911 decoded=779 dropped=73 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+Free physical pages: 257743
+Free physical pages: 257743
+Free physical pages: 257743
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA native metrics presented=4 sync-samples=0 max-sync-us=0 decoded=20 dropped=4 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA native metrics presented=750 sync-samples=745 max-sync-us=79917 decoded=1208 dropped=448 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=5 pts=47480000 clock=47406375 consumed=0
+MEDIA first-video ticket=7 pts=116040000 clock=116010895 consumed=0
+MEDIA first-video ticket=9 pts=130160000 clock=130144750 consumed=0
+MEDIA native metrics presented=2402 sync-samples=2385 max-sync-us=81335 decoded=3051 dropped=616 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+Free physical pages: 257743
+Free physical pages: 257743
+Free physical pages: 257743
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA native metrics presented=813 sync-samples=808 max-sync-us=79010 decoded=1376 dropped=558 corrupted=0 source-starvations=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=256x144 presentation=160x90
+MEDIA first-video ticket=5 pts=54200000 clock=54141375 consumed=0
+MEDIA first-video ticket=7 pts=123560000 clock=123546166 consumed=0
+MEDIA first-video ticket=9 pts=137920000 clock=137899583 consumed=0
+MEDIA native metrics presented=2685 sync-samples=2668 max-sync-us=82299 decoded=3283 dropped=554 corrupted=0 source-starvations=0
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+Free physical pages: 257743
+Free physical pages: 257743

@@ -1,13 +1,11 @@
 # คู่มือทดลอง MyOS — YouTube และ Rickroll
 
 **ฉบับร่างก่อนตรวจรับ — Phase33.5/33 ยังไม่เสร็จ**
-อัปเดต 11 ต.ค. 2026 03:46: เอนจินแก้ tooltip build สำเร็จแล้ว และทดสอบหน้า
-HTTPS ภายใน MyOS เปิดสองรอบ/hover–hide รอบละสองครั้งได้โดยไม่ abort
-ตรวจภาพจริงแล้ว tooltip แสดง/หาย/สร้างใหม่ถูกต้อง แต่ยังเป็นชุด diagnostic
-ยังต้องทดสอบ prerequisite และ YouTube ด้วยเอนจินใหม่ก่อนเปลี่ยนชุดทดลอง
-คำสั่งด้านล่างยังใช้เอนจินเดิมที่พบปัญหาเปิดซ้ำ จึงยังไม่ใช่ชุดตรวจรับสุดท้าย
-ยังไม่มีผลฟังเพลง/controls จากคุณ
-คุณลองเปิดแล้วพบ error ก่อนบูต ยังไม่มีผลรับรองภาพ/เสียง/controls จากคุณ
+อัปเดต 11 ต.ค. 2026: ชุด `oql02ybt` ใช้ image ปกติและเอนจิน Cobalt ที่ build
+จาก source พร้อมแก้ tooltip และ provider ที่ผ่าน focused tests แล้ว เปิด YouTube
+ออนไลน์ครบสามรอบโดยไม่ abort และคืน physical/SHM/alias ครบ แต่ยังไม่ยืนยัน
+ความเสถียรระยะยาว/บูตใหม่/full regression และยังไม่มีผลฟังเพลงจากคุณ
+ตัวเปิดชุดนี้ตรวจบูตถึง shell ผ่านแล้ว ข้อผิดพลาด read-only ใช้ snapshot overlay แก้แล้ว
 ดูผลจริงล่าสุดใน PHASE335_ACCEPTANCE.md และ PROJECT_STATE.md
 
 ## คำสั่งตั้งแต่เปิด PowerShell จนเข้า MyOS
@@ -22,7 +20,7 @@ wsl.exe -d Ubuntu
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt
 ```
 
 3. รอหน้าต่าง **QEMU / MyOS** เปิด แล้วคลิกในหน้าต่างนั้น คำสั่งต่อไปนี้พิมพ์ที่ `myos>` ภายใน MyOS ทีละบรรทัด:
@@ -52,7 +50,7 @@ desktop
 หากต้องการตรวจเฉพาะการบูตก่อนเปิดหน้าต่าง ใช้คำสั่งนี้ใน Ubuntu:
 
 ```sh
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3 --check-boot
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt --check-boot
 ```
 
 ผล `PASS passive normal MyOS boot` ตรวจเพียงถึง shell ยังไม่ยืนยันภาพเพลง/เสียง/controls หรือ Phase ผ่าน ตัวเปิดแต่ละครั้งจะพิมพ์ตำแหน่ง serial log ของ session ใหม่ และไม่เขียนทับหลักฐานรอบก่อน
@@ -70,18 +68,19 @@ Cobalt27.lts.3/Evergreen7.3.2/Starboard18,Mesa25.0.7,libvpx1.15.2,Opus1.5.2
 รายละเอียด SHA256 อยู่ในรายงาน ไม่ให้ใช้ provider เก่าที่พบ sync failures
 
 ## เปิดหน้าต่าง MyOS สำหรับตรวจรับด้วยตนเอง
-ชุด g_wbd0r3 เป็น snapshot normal boot และ native application assets ที่ใช้
+ชุด oql02ybt เป็น snapshot normal boot และ native application assets ที่ใช้
 ทดลองครั้งก่อน;ไม่มี movie fixture สำหรับแทน YouTube เครื่องมือจะตรวจ hash
 boot/assets/runtime/core ก่อนเปิด VM ทุกครั้ง การเปิดนี้ยังไม่บันทึกว่า Phase ผ่าน
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-g_wbd0r3
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt
 ```
 
 คำสั่งนี้เปิด QEMU GTK และเสียง PulseAudio เท่านั้น ไม่เปิด host browser/player
 ขั้นตอน fetch,TLS,JavaScript,demux,decode,render และ audio อยู่ใน MyOS
-หลังแก้ปัญหาเปิดซ้ำ จะอัปเดต bundle/provider ที่แนะนำในคู่มือฉบับสุดท้าย
+เอนจินนี้เป็น source build ไม่ใช่ official Google binary; provenance และ SHA ตรวจโดยตัวเปิด
+ชุดนี้ยังเป็นชุดทดลองก่อนตรวจรับ ห้ามนับ passive boot เป็นผ่าน playback
 
 ## เปิด Browser ภายใน MyOS และไปยัง Rickroll
 ที่ `myos>` พิมพ์ทีละบรรทัด:

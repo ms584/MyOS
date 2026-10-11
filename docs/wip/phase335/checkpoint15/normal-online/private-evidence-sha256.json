@@ -1,0 +1,62 @@
+{
+  "build/phase334-public-oql02ybt/audio.wav": {
+    "bytes": 4080947,
+    "sha256": "73d747f8d9bb14d0b97062ae8f5de0f8411bd42b1f860d9fc3c11c764ebd4e74"
+  },
+  "build/phase334-public-oql02ybt/network.pcap": {
+    "bytes": 47391129,
+    "sha256": "2403767f11efd5de9dbd4b66ca3f34ffb756c29173572b83f38c23740e8c99de"
+  },
+  "build/phase334-public-oql02ybt/serial.log": {
+    "bytes": 41945,
+    "sha256": "8591d7685d7ee7ff41a513f2181076d8a778d3728c8b13590924aa983dc3e8cb"
+  },
+  "build/phase334-public-oql02ybt/evidence.json": {
+    "bytes": 1283235,
+    "sha256": "75716276f3c374c43730138ddd92559965fa3c9144bdab6c14f996012ddf0ee6"
+  },
+  "build/phase334-public-oql02ybt/source-core-build.json": {
+    "bytes": 41074,
+    "sha256": "e41e9d1952d478a45b610e218fef469b6324bf8aabc51762f92d4e002aa60c67"
+  },
+  "build/phase334-public-oql02ybt/boot.img": {
+    "bytes": 1474560,
+    "sha256": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89"
+  },
+  "build/phase334-public-oql02ybt/assets.img": {
+    "bytes": 123584000,
+    "sha256": "94ff4d6359a0f6e7fa86b978e31308dcb9e626ea212d9f022239457ba1f7f139"
+  },
+  "build/phase334-public-oql02ybt/platform-runtime.mrt": {
+    "bytes": 34194,
+    "sha256": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "build/phase334-public-oql02ybt/manual-assets-identity.json": {
+    "bytes": 263,
+    "sha256": "320cf1191c9bc937fbc1ab75416c8079dfd778861e20264d4b760080c1d588c3"
+  },
+  "build/phase334-public-oql02ybt/launch-1-screen-audio.avi": {
+    "bytes": 25668474,
+    "sha256": "53cb9fe04e61fc73d44bcefe556859aa1fcf66fe05cc9d46d6938cbdb38a89d1"
+  },
+  "build/phase334-public-oql02ybt/launch-2-screen-audio.avi": {
+    "bytes": 18446048,
+    "sha256": "6b6bf2bc4e79e01911509bebf4aca5f3a87d78d7fe79d00aee39a48967f94f7f"
+  },
+  "build/phase334-public-oql02ybt/launch-3-screen-audio.avi": {
+    "bytes": 19028846,
+    "sha256": "a9217e0211618bce86c3618e98f6d674a2f6e62682d89ca9006569b5514614be"
+  },
+  "build/phase334-public-oql02ybt/launch-1-recording-map.json": {
+    "bytes": 11630,
+    "sha256": "96471c9e71c28a5934ad84ccee3bccb3fa32738fdf63567b9c912655a2dcb1ee"
+  },
+  "build/phase334-public-oql02ybt/launch-2-recording-map.json": {
+    "bytes": 59333,
+    "sha256": "f2d7ee4b74e87acc5bb5bba611cfd75a79d7cc52e56119d4391bddfe3e88b4b8"
+  },
+  "build/phase334-public-oql02ybt/launch-3-recording-map.json": {
+    "bytes": 68091,
+    "sha256": "fe7e265e14d173a0a606bfb6f9f47f8be95c40aa7372fbca2c2cd481efff747d"
+  }
+}
