@@ -15,7 +15,8 @@ Initial real-QEMU centre/corners/small moves/click/keyboard/PS2 return test PASS
 Absent vmport, affected BIOS/UEFI and full regression remain pending.
 Normal build succeeded; source changed, prior cursor full regression cannot
 establish this new build's acceptance. Owner frontend input still unverified.
-Phase32/33.5/33 stay OPEN. No new commit/push yet.
+Phase32/33.5/33 stay OPEN. Owner-requested WIP checkpoint0d5d09b pushed
+to origin/main; remote verified. Follow-up pause receipt is committed separately.
 
 Protocol references:
 - https://github.com/qemu/qemu/blob/v10.2.1/hw/i386/vmmouse.c

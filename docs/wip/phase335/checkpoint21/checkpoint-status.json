@@ -1,6 +1,6 @@
 {
   "date": "2026-10-11T20:49:06.592663+07:00",
-  "status": "PAUSE_REQUESTED_AFTER_COMMIT_PUSH_NOT_ACCEPTED",
+  "status": "PAUSED_NOT_ACCEPTED",
   "normal_current_identity": {
     "kernel.bin": "d45124221dd6dc080bd2caededf0465b1db57054ddd2c9dc7f880e1e9cd80875",
     "kernel.elf": "1a1e5136604ca71ea0d546396a0c3591e5fc41a9de3d5cf5fe99446f7e3a79ac",
@@ -17,5 +17,8 @@
     "actual_owner_absolute_input": "PENDING; no acceptance"
   },
   "phase_passed": false,
-  "owner_push_authorized": true
+  "owner_push_authorized": true,
+  "pushed_checkpoint_commit": "0d5d09bd1f2f9f8b55341ede76ba1b6f1acaf4c2",
+  "remote_main_verified": "0d5d09bd1f2f9f8b55341ede76ba1b6f1acaf4c2",
+  "push_completed_at": "2026-10-11T20:51:30.972714+07:00"
 }
