@@ -1,5 +1,5 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 OPEN; no push.
-Repository /home/xytron404/myos; main de652ba before checkpoint15 docs commit.
+Repository /home/xytron404/myos; main17dd27f checkpoint15; tested runtime commitde652ba.
 Owner explicitly has not tried; audible song/control acceptance unavailable.
 
 Production first-frame hold promoted after native late-bounds negative/positive,
@@ -15,7 +15,8 @@ RickID/VP9itag278/Opus251/WebM/SABR actually seen; source256x144@25.
 Max native sync82911us; capturedPCM370.149932s, not music listening proof.
 Second/third paired pause ROI freeze + WAV constant; resume advances both.
 First intended controls INVALID: quality retries collided with pause.
-Seek inputs/scenes recorded; complete position/stale-audio review pending.
+Seek -10 UI2:10→2:20 over3.1s while buffering: unresolved clock/display anomaly.
+Later new motion/PCM observed; exact position/stale-audio acceptance pending.
 Physical257743→257743/SHM0/aliases0 all3; shell/desktop responsive.
 PMM runtime history complete ownedpeak555286528B; heap10293952B separate.
 Cache147456→286720→401408B, heap keeps growing; no warm stability PASS.

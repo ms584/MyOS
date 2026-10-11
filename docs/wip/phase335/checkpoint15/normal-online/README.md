@@ -70,3 +70,13 @@ Use PHASE335_USER_GUIDE_TH.md start commands with bundle oql02ybt.
 Owner explicitly has not tried; audible song, stale audio, fresh boot, Phase32
 search/select/play, repeated cache stability and completed full regression remain
 pending. Phase33.5/33 cannot close. No push.
+
+## Subsequent direct seek-image review
+
+See seek-visual-review.json. Native -10 at286.402 shows2:10, but289.502
+shows2:20 with buffering: unresolved display/clock discrepancy, not seek PASS.
+At299.831 new motion and captured PCM resume. Third +10 shows2:04, later
+backward recovery image304.152 shows2:32. No audible stale-audio verdict.
+Next stable-session diagnostic must record before/after UI/currentTime/native
+PTS and PCM counters, including seek while paused to separate position change
+from elapsed playback. Retain original playing-seek criteria as well.
