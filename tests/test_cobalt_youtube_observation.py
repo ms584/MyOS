@@ -34,6 +34,8 @@ def main():
     p.add_argument('--source-core-manifest',type=Path,help='Explicit validated source-built core; preserves the official-core audit and does not imply phase acceptance')
     p.add_argument('--url',action='append',required=True)
     p.add_argument('--engine-trace',action='store_true',help='Native opt-in engine stderr/VLOG only; no memory extraction or TLS overrides')
+    p.add_argument('--owner-output-diagnostic',action='store_true',help='Diagnostic GTK/PulseAudio output matching the manual launcher; no WAV capture or acceptance')
+    p.add_argument('--gtk-gl-diagnostic',action='store_true',help='Compare accelerated QEMU GTK display only; requires --owner-output-diagnostic')
     p.add_argument('--identity',type=Path,default=ROOT/'docs/wip/phase333/checkpoint6/final-normal-identity.json')
     p.add_argument('--memory-mib',type=int,choices=(512,1024),default=512,help='Actual QEMU physical RAM; native E820/PMM, no invented memory')
     p.add_argument('--seconds',type=int,default=300)
@@ -92,6 +94,11 @@ def main():
     def capture(args,*pos,**kw):
         if isinstance(args,list) and args and Path(args[0]).name=='qemu-system-x86_64':
             args=list(args);i=args.index('-audiodev')+1
+            if a.gtk_gl_diagnostic and not a.owner_output_diagnostic:raise ValueError('--gtk-gl-diagnostic requires --owner-output-diagnostic')
+            if a.owner_output_diagnostic:
+                if a.record:raise ValueError('GTK/PulseAudio diagnostic does not capture WAV; omit --record')
+                args[args.index('-display')+1]='gtk,gl=on' if a.gtk_gl_diagnostic else 'gtk'
+                args[i]='pa,id=myos-audio'
             args[i]+=',out.frequency=11025,out.channels=1,out.format=u8'
             if a.network_capture:args.extend(['-object',f'filter-dump,id=phase335capture,netdev=phase335net,file={out}/network.pcap'])
             qemu.append(args)
@@ -101,7 +108,7 @@ def main():
     evidence=dict(phase_passed=False,observation_only=True,date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=7))).isoformat(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         core_sha256=digest(core),source_core_build=source_core_build,official_google_core=source_core_build is None,provider_sha256=digest(provider),normal_identity=identities,
-        urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
+        urls=a.url,qemu=qemu,launches=[],memory_mib=a.memory_mib,owner_output_diagnostic=a.owner_output_diagnostic,native_wav_capture_available=not a.owner_output_diagnostic,engine_trace=a.engine_trace,diagnostic_provider=json.loads((provider.parent/'report.json').read_text()).get('diagnostic_trace',False),host_fetch=False,fixture_ca_added=False)
     vm=None;observer=None;inode_observer=None
     try:
         vm=VM('phase334-public',ram=a.memory_mib,nic='user,model=rtl8139,id=phase335net' if a.network_capture else True,asset_disk=disk,boot_image=boot,audio=out/'audio.wav',cpu='max')

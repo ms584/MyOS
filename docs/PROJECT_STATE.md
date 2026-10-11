@@ -1,6 +1,10 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 OPEN; no push.
-Repository /home/xytron404/myos; checkpoint17 commit follows7898ed2; tested normal base de652ba.
-Owner explicitly has not tried/listened; audible music/control signoff absent.
+Repository /home/xytron404/myos; baseline2ad8088; checkpoint18 owner-stutter diagnosis; normal base de652ba.
+Owner now tried tjks53iv and reports BOTH picture/audio stutter: NOT ACCEPTED.
+Manual maxsync900037us/2171dropped of5326decoded; checkpoint18 records failure.
+GTK/Pulse diagnostic reproduces stalls: present3730000us/maxsync660037us.
+GL diagnostic completed but failed: present4830000us/maxsync620037us.
+WSLg WARN:COPY MODE and shared-memory EIO; owner authorized saved-work restart.
 
 Current production user/media-player.c SHA3be11a9ebab7b79fd8e95715cc3b22d26f644602b3e5da8a802e9ae8469d3e65.
 Pending-seek clock fix prevents Blink paused_time_ caching the old audio anchor.
@@ -35,7 +39,7 @@ After restart stable through cleanup/native tests/current online runs; cause unc
 
 Thai guide has Windows Terminal→Ubuntu→MyOS commands, uses new tjks53iv bundle.
 Manual launcher snapshot fix and concurrent-VM refusal verified; new passive normal bootPASS exit0.
-Owner manual controls/music/freshboot result still required; do not infer approval.
+Owner current trial failed; smooth audiovisual/controls/freshboot result still required.
 One VM, normal1024MiB/fixture512MiB, nice10,1FPS, compile≤2workers, no redundantAVI.
 Cleanup37 tar-verified old source copies net8.015GiB inside Ubuntu completed15:51:36.
 Receipt8605818880B; canonical/current source/core/dependencies preserved.
@@ -45,6 +49,8 @@ Do not shutdown/compact WSL while any test/build runs; never delete ext4.vhdx.
 
 Fresh controls/full regression/normal restore/passive guide boot completed.
 One fresh native screen+audio AVI retained; approximate recording alignment disclosed.
-Next: owner trial/listening/repeated-open controls and offline Windows compaction
+Next: diagnose/fix owner audiovisual stutter, then affected retest and owner trial.
+Offline Windows compaction remains pending readiness; no compact during diagnostic.
+Later: owner listening/repeated-open controls and offline Windows compaction
 with actual before/after measurement; current cache plateau remains unobserved.
 Close33.5/33 only when every PHASE33.md gate is actually verified. No push.

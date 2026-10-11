@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-11",
+  "phase_accepted": false,
+  "owner_tried": true,
+  "owner_report": "ทั้งภาพและเสียงกระตุก",
+  "owner_pass_confirmed": false,
+  "recording": {
+    "original_path": "/mnt/c/Users/Xytron/Videos/Recording 2026-10-11 175745.mp4",
+    "windows_path": "C:/Users/Xytron/Videos/Recording 2026-10-11 175745.mp4",
+    "bytes": 802028058,
+    "sha256": "db7a9bf2219ac2b666dd2fcee3c6187e6b1cbdc4f9bf643153b3e610374c2151",
+    "duration_seconds": 1338.9,
+    "width": 1918,
+    "height": 1078,
+    "video_codec": "H264",
+    "metadata_reader": "Windows.Media.Editing.MediaClip; no YouTube fetch/playback",
+    "review_samples_seconds": [
+      0,
+      180,
+      360,
+      540,
+      720,
+      900,
+      1080,
+      1260
+    ],
+    "inspected_samples_seconds": [
+      180,
+      540,
+      900,
+      1260
+    ],
+    "observed": "MyOS/QEMU boot/shell, online loading, actual Rickroll/title at1260s; sparse samples not continuous FPS proof",
+    "audio_content_review_by_agent": false,
+    "whole_video_watched_by_agent": false
+  },
+  "manual_session": "build/phase334-public-tjks53iv/manual-session-o2nw6p7u",
+  "serial_sha256": "cea04a9a94db1dcfec8e77a44541d170a31dcdf463e7ef024bbe8988598215a7",
+  "metrics_lines": [
+    "MEDIA native metrics presented=3155 sync-samples=3153 max-sync-us=900037 decoded=5326 dropped=2171 corrupted=0 source-starvations=0"
+  ],
+  "sync_outliers": [
+    "MEDIA sync-outlier pts=1320000 clock=2220037 delta=900037 pcm=10584 vq=6 consumed=13891 audio-last=2201000 video-last=1560000"
+  ],
+  "rebuffer_pause_count": 104,
+  "rebuffer_resume_count": 104,
+  "root_cause_proven": false,
+  "diagnostic": "build/phase335-owner-stutter-focused-online.log",
+  "diagnostic_complete": false,
+  "production_source_changed": false
+}

@@ -1,3 +1,8 @@
+Checkpoint18 2026-10-11: owner actual manual trial reports BOTH picture/audio
+stutter. Serial maxsync900037us and2171/5326 dropped on640x360 input.
+Owner has now tried; no acceptance. Root cause/fix unproven; bounded diagnostic
+active with unchanged source. Phase33.5/33 NOT ACCEPTED; see wip/phase335/checkpoint18.
+
 Checkpoint17 2026-10-11: pending-seek GetInfo stale timeline cause reproduced;
 minimal production fix + native VP8/VP9 negative/positive regression verified.
 Normal tjks53iv2opens completed16:24:00; paused forward/back/resume2:51→2:41→2:42.
