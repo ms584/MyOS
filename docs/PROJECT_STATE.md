@@ -1,5 +1,5 @@
-2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 OPEN; no push.
-Repository /home/xytron404/myos; main17dd27f checkpoint15; tested runtime commitde652ba.
+2026-10-11 — Phase33.5 BLOCKED / NOT ACCEPTED; Phase33 OPEN; no push.
+Repository /home/xytron404/myos; main7117802 checkpoint15 seek review; tested runtime commitde652ba.
 Owner explicitly has not tried; audible song/control acceptance unavailable.
 
 Production first-frame hold promoted after native late-bounds negative/positive,
@@ -31,7 +31,10 @@ Normal bash build.sh restore terminal0; normal hashes checkpoint15.
 Manual oql02ybt passive normal bootPASS12:48:05, snapshot overlay fixes read-only.
 Thai guide now has Windows Terminal→WSL→MyOS start commands for new bundle.
 
-NEXT: stabilize long WSL session (user asked to keep Ubuntu terminal open).
+BLOCKER: three consecutive goal turns confirm interrupted/stopped WSL session.
+13:06:50 init age2s; no live QEMU/observer/regression; all3 fresh runs incomplete.
+No stable user-open Ubuntu terminal or listening result received.
+NEXT: user opens Windows Terminal, runs wsl.exe -d Ubuntu, keeps it open.
 Then actual homepage search/select/Rick play, freshboot paired controls,
 repeated-open/cache stability, complete full regression and normal restore.
 Review song/stale AV with owner; never infer their signoff from logs.

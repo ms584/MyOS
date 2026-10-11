@@ -4031,3 +4031,12 @@ Manual source-core bundle passive bootPASS12:48:05; Thai guide uses oql02ybt.
 Owner has not tried; music/stale-audio/freshboot signoff remains absent.
 Phase32 search/select/play independently OPEN; Phase33.5/33 OPEN.
 See wip/phase335/checkpoint15/normal-online/README.md.
+
+2026-10-11 13:06+07: Phase33.5 goal BLOCKED after repeated WSL interruptions
+across three goal turns. No live QEMU/observer/regression; fresh3 attempts lack
+completed evidence.json; full suite incomplete. Normal5 still exact. Latest
+7117802 adds actual seek UI discrepancy2:10→2:20 in3.1s with buffering; not PASS.
+Resume requires stable user-open Ubuntu terminal; pending async request already
+sent. Owner has not tried; music/control signoff absent. All Phase33 gates remain
+required and Phase32 search/select/play remains independently OPEN. No push.
+See wip/phase335/checkpoint15/blocked-status.json and PROJECT_STATE.md.
