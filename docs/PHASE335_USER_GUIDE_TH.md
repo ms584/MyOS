@@ -1,20 +1,21 @@
 # คู่มือทดลอง MyOS — YouTube และ Rickroll
 
-**ฉบับร่างก่อนตรวจรับ — Phase33.5/33 ยังไม่เสร็จ**
-ผลทดลองล่าสุดจากคุณ: ทั้งภาพและเสียงกระตุก จึงยังไม่ผ่าน
-ชุด tjks53iv ยังเป็นชุดที่พบปัญหานี้ ไม่ใช่ชุดแก้ stutter แล้ว
-กำลังวิเคราะห์สาเหตุ; ไม่ต้องทดสอบซ้ำยาว ๆ ระหว่างรอการแก้
-อัปเดต 11 ต.ค. 2026: ชุด `tjks53iv` ใช้ image ปกติ เอนจิน source Cobalt27.lts.3
-และ provider ที่แก้เวลาซึ่ง GetInfo รายงานระหว่าง seek_pending แล้ว
-Focused native VP8/VP9 ผ่าน; ออนไลน์สองครั้งจบและคืน physical/SHM/alias ครบ
-Pause ภาพ/PCM คงที่และ resume เดินต่อ; paused seek แสดง2:51→2:41→resume2:42
-รอบบูตใหม่จบและภาพ/PCM controls ทำงานต่อจากตำแหน่ง seek ใหม่ได้
-Full regression ผ่านและจบ17:18:25; คืน image ปกติและตรวจ hash ครบ5ไฟล์แล้ว
-ผลนี้ยังไม่ใช่ผลตรวจรับจากคุณ
-ตัวเปิดชุดใหม่ตรวจบูตถึง shell ผ่านแล้ว (ยังไม่ใช่ตรวจรับเสียงเพลง)
-ยังต้องฟังเพลงจริงและตรวจว่าไม่มีเสียงเก่าค้าง คู่มือนี้ไม่บันทึกว่าคุณตรวจรับแล้ว
-ตัวเปิดป้องกัน QEMU ซ้อน; หากมีรอบทดสอบทำงานให้รอจนจบก่อน
-ดูผลจริงล่าสุดใน PHASE335_ACCEPTANCE.md และ PROJECT_STATE.md
+**Phase33.5/33 ยังตรวจรับไม่ครบ**
+อัปเดต 11 ต.ค. 2026: Windows Terminal เปิด QEMU ให้เห็นจริงได้แล้ว
+GTK ยังพบภาพ/เสียงกระตุก; SDL ใช้ build/provider/core เดิม และคุณยืนยันว่า
+ภาพกับเสียงลื่นขึ้น ฟัง Rickroll เกิน30วินาที และ pause/resume/seek เสียงครบ
+รอบเปิดใหม่บันทึกภาพ/เสียงแล้ว; คุณยืนยันเพลงเกิน30วินาทีและ controls ครบในรอบบูตใหม่ด้วย
+ผลนี้เป็นชุด SDL เดิม ยังไม่ใช่การตรวจรับ Phase ทั้งหมด
+ข้อจำกัดล่าสุด: เปิด Browser/โหลดวิดีโอนาน; ชุด cursor พิมพ์ Search ได้ แต่เมาส์กระโดด/ค้าง
+K/Esc ใช้ได้ และยืนยันการจับเมาส์แล้ว แต่คลิกเลือกข้อความแทนช่อง Search
+ชุดใหม่มีตัวชี้ภายใน MyOS; focused BIOS/UEFI และ full regression ผ่านแล้ว
+ชุดแก้ใหม่เพิ่มคำสั่ง MyOS `mouse absolute` สำหรับอุปกรณ์ virtual ของ QEMU
+ผ่าน focused test ครั้งแรกและ fallback แต่ยังรอ full regression/UEFI/การลองจริง
+ห้ามนำผล full regression ของชุด cursor เดิมมานับเป็นผลชุด absolute ใหม่
+โหมด SDL X11/warp ลองแล้วขยับนิดเดียวไปไกล จึงยังไม่แนะนำว่าแก้สำเร็จ
+พักงานตามคำขอของคุณ 11 ต.ค.; จะจัดชุดทดลองใหม่หลังตรวจครบเมื่อทำต่อ
+ห้ามนับ QMP click แทนการคลิกของคุณ
+ดูผลล่าสุดใน PHASE335_ACCEPTANCE.md, PROJECT_STATE.md และ wip/phase335/checkpoint20
 
 ## คำสั่งตั้งแต่เปิด PowerShell จนเข้า MyOS
 
@@ -28,7 +29,7 @@ wsl.exe -d Ubuntu
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual --sdl-diagnostic --network-evidence
 ```
 
 3. รอหน้าต่าง **QEMU / MyOS** เปิด แล้วคลิกในหน้าต่างนั้น คำสั่งต่อไปนี้พิมพ์ที่ `myos>` ภายใน MyOS ทีละบรรทัด:
@@ -40,7 +41,9 @@ mem
 elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
-หลังพิมพ์คำสั่ง Browser ให้รอโหลดเอนจินและหน้าเว็บโดยไม่พิมพ์คำสั่งซ้ำระหว่างรอ
+หลังพิมพ์คำสั่ง Browser ให้รอโหลดเอนจินและหน้าเว็บโดยไม่พิมพ์คำสั่งซ้ำระหว่างรอ รอบที่วัดจริงโหลดประมาณ2นาที ยังไม่ได้แก้ความล่าช้านี้
+
+หาก K/Esc ใช้ได้แต่คลิกเมาส์ไม่ได้ ให้คลิกหน้าต่าง QEMU แล้วกด Ctrl+Alt+G เพื่อสลับการจับเมาส์/คีย์บอร์ด กดซ้ำเพื่อปล่อยกลับ Windows นี่เป็นขั้นวินิจฉัย ยังไม่ได้ยืนยันว่าแก้เมาส์ของคุณได้ ดู [คู่มือ QEMU](https://www.qemu.org/docs/master/system/qemu-manpage.html)
 
 4. รอ YouTube โหลด เลือกวิดีโอ Rick Astley ที่ถูกต้อง แล้วเลือก Settings → Quality → 144p ภายใน MyOS ดูและฟังเพลงอย่างน้อย30วินาที จากนั้นทดสอบ `K` pause/resume, `L` seek หน้า10วินาที และ `J` seek หลัง10วินาทีตามรายการด้านล่าง
 
@@ -58,7 +61,7 @@ desktop
 หากต้องการตรวจเฉพาะการบูตก่อนเปิดหน้าต่าง ใช้คำสั่งนี้ใน Ubuntu:
 
 ```sh
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv --check-boot
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual --check-boot
 ```
 
 ผล `PASS passive normal MyOS boot` ตรวจเพียงถึง shell ยังไม่ยืนยันภาพเพลง/เสียง/controls หรือ Phase ผ่าน ตัวเปิดแต่ละครั้งจะพิมพ์ตำแหน่ง serial log ของ session ใหม่ และไม่เขียนทับหลักฐานรอบก่อน
@@ -76,13 +79,13 @@ Cobalt27.lts.3/Evergreen7.3.2/Starboard18,Mesa25.0.7,libvpx1.15.2,Opus1.5.2
 รายละเอียด SHA256 อยู่ในรายงาน ไม่ให้ใช้ provider เก่าที่พบ sync failures
 
 ## เปิดหน้าต่าง MyOS สำหรับตรวจรับด้วยตนเอง
-ชุด tjks53iv เป็น snapshot normal boot และ native application assets ที่ใช้
+ชุด phase335-cursor-manual เป็น snapshot normal boot และ native application assets ที่ใช้
 ทดลองครั้งก่อน;ไม่มี movie fixture สำหรับแทน YouTube เครื่องมือจะตรวจ hash
 boot/assets/runtime/core ก่อนเปิด VM ทุกครั้ง การเปิดนี้ยังไม่บันทึกว่า Phase ผ่าน
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual
 ```
 
 คำสั่งนี้เปิด QEMU GTK และเสียง PulseAudio เท่านั้น ไม่เปิด host browser/player
@@ -217,3 +220,7 @@ Image ปกติ/core/dependenciesปัจจุบันยัง hash ต�
 หากต้องรัน incremental build ของชุดเก่าที่ archive ไว้ ให้ตรวจ SHA256 ใน receipt แล้ว `tar -xzf ARCHIVE.tar.gz -C ORIGINAL_PARENT` ก่อน
 การคืนพื้นที่ C: ยังต้องวัดหลัง compact VHDX อย่าตีความตัวเลข fstrim896.7GiB ว่าเป็นพื้นที่ Windows ที่คืนได้
 แฟลชไดรฟ์32GBมีพื้นที่พอสำหรับ image BIOS1.4MiB/UEFI32MiBและ browser assetsประมาณ118MiB ของ profile ปัจจุบัน แต่การบูต/ไดรเวอร์เครื่องจริงยังไม่ตรวจรับ
+
+## Cobalt และขอบเขต Browser ปัจจุบัน
+
+Cobalt เป็นเอนจินเว็บแอปที่นำมาพอร์ตให้ MyOS รัน HTML/JavaScript และสื่อออนไลน์ใน guest จริง ชุดนี้เน้น YouTube และยังไม่มีแถบ URL/แท็บ/ประวัติครบแบบ Chrome การตรวจรับ Rickroll ไม่ใช่การรับรองทุกเว็บไซต์ หรือการใช้งาน Browser ทั่วไป ดู [เอกสาร Cobalt](https://developers.google.com/youtube/cobalt/docs/overview) งานขยาย Browser ต้องกำหนดและทดสอบแยกภายหลัง

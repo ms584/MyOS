@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-11T20:39:04.161198+07:00",
+  "status": "IN_PROGRESS_NOT_ACCEPTED",
+  "owner_push_authorized": true,
+  "previous_build_owner_reports": {
+    "sdl_first": "picture/audio smoother; song >30 seconds; pause/resume and both seeks without stale sound confirmed",
+    "sdl_fresh_boot": "all above confirmed in fresh separate QEMU",
+    "remaining_issue": "Search clicks select paragraph; keyboard K/Esc work; grab screenshot proven"
+  },
+  "cursor_change": {
+    "files": [
+      "kernel/native-ui.c",
+      "kernel/native-video.inc",
+      "tests/native-ui-unit.c"
+    ],
+    "purpose": "show guest pointer at coordinates delivered to native UI; restore retained foreground/video beneath pointer",
+    "root_cause_limit": "does not yet prove all click coordinate defects fixed",
+    "sanitizer_unit": "PASS",
+    "normal_build": "PASS",
+    "focused_qemu_native_ui": "PASS",
+    "full_regression": "PASS exit0 2026-10-11T20:09:08+07:00",
+    "affected_bios_uefi": "PASS real input + guest cursor over video/restoration + exact resources by20:11:23"
+  },
+  "logs": [
+    "build/phase335-cursor-build.log",
+    "build/phase335-cursor-native-ui.log",
+    "build/phase335-cursor-full-regression.log"
+  ],
+  "next": "Actual owner X11/warp frontend direction test; then correct Search/select/Rickroll acceptance. Do not repeat unchanged regression.",
+  "network_evidence_option": "PASS passive normal launcher boot with QEMU filter-dump, exit0",
+  "full_regression_last_observation": {
+    "date": "2026-10-11T20:09:08+07:00",
+    "handle": 55115,
+    "terminal_result": "exit0",
+    "normal_restore": "final matching BIOS/UEFI/kernel/MRT five hashes verified in normal-build-identity.json"
+  },
+  "storage_compaction": "New checkpoint20/storage guards prepared; compaction NOT executed; C: refund pending",
+  "new_manual_bundle": "build/phase335-cursor-manual; immutable assets verified; old assets hardlinked",
+  "visible_current_session": "manual-session-uss8n0tx: live fresh SDL X11/warp guest gfx calibration, owner direction result pending",
+  "owner_latest": "Search typing works, opposite mouse and freeze reported; captured unsupported Shorts",
+  "freeze_diagnosis": "Guest ticks advance; QMP pointer +10/+10 correct; Esc exits with exact physical/SHM/alias recovery; physical frontend cause unconfirmed",
+  "pulse_timeout": "poxqjeoo exited1 before shell due PA connection timeout. System/Ubuntu PA responded subsequently; actual uss8n0tx normal boot succeeded without service restart. Not root-cause repair."
+}

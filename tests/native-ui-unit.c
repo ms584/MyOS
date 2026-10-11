@@ -40,6 +40,9 @@ bool gfx_present(const struct gfx_surface *surface,int x,int y)
 }
 int keyboard_get(void){return -1;}
 void mouse_flush(void){++flushed;}
+bool mouse_ready(void){return true;}
+void mouse_position(int *x,int *y,uint8_t *buttons)
+{*x=400;*y=300;*buttons=0;}
 bool process_notify(struct process *process,uint64_t address)
 {assert(process&&address);++*(uint64_t *)(uintptr_t)address;++notified;return true;}
 int main(void)
@@ -100,8 +103,19 @@ int main(void)
     assert(native_ui_query(&process,(uint64_t)handle,&info)==-9);
     assert(native_ui_poll(&process,(uint64_t)handle,&out)==-9);
     assert(native_ui_release(&process,(uint64_t)handle)==-9);
+    /* A visible pointer must track the guest coordinates, survive repaint,
+     * restore the old retained pixels, and preserve the delivered hit point. */
+    uint32_t retained=0xff123456;struct gfx_surface pixel={1,1,1,&retained};
+    assert(!native_ui_draw(&process,(uint64_t)replacement,&pixel,3,4));
+    struct native_ui_event pointer={.type=NATIVE_UI_POINTER,.x=2,.y=1};
+    native_ui_emit(&pointer);assert(last_pixel==0xffffff);
+    assert(native_ui_poll(&process,(uint64_t)replacement,&out)==1&&out.x==2&&out.y==1);
+    assert(!native_ui_draw(&process,(uint64_t)replacement,&pixel,3,4));
+    assert(last_pixel==0xffffff);
+    pointer.x=20;pointer.y=20;native_ui_emit(&pointer);
+    assert(last_pixel==0x123456);
     native_ui_release_owner(&process);native_ui_release_owner(&process);
-    assert(!allocated&&!queues&&presented==presents+1&&flushed==4);
+    assert(!allocated&&!queues&&presented>=presents+1&&flushed==4);
     native_ui_set_modifiers(NATIVE_UI_CONTROL|NATIVE_UI_META);
     assert(native_ui_modifiers()==(NATIVE_UI_CONTROL|NATIVE_UI_META));return 0;
 }

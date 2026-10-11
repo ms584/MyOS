@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-10-11T20:33:22.793550+07:00",
+  "owner_reports": [
+    "mouse moves opposite direction",
+    "freezes",
+    "search works",
+    "currently frozen"
+  ],
+  "actual_capture": "YouTube Shorts page displays Your browser cannot play this video; not Rickroll acceptance",
+  "guest_ticks": [
+    86790,
+    86892,
+    86992
+  ],
+  "direct_qmp_pointer": {
+    "before": [
+      256,
+      77
+    ],
+    "delta": [
+      10,
+      10
+    ],
+    "after": [
+      266,
+      87
+    ]
+  },
+  "direct_qmp_escape": "returned myos shell; free pages257743 exact,shm0,aliases0",
+  "mouse_trace": "frontend con0 x218 y-121/-2; physical stroke axis not independently confirmed",
+  "root_cause": "unconfirmed; PS2 signed8 suspicion ruled out for QEMU10.2.1 because it clamps packet deltas to +/-127",
+  "source_reference": "https://raw.githubusercontent.com/qemu/qemu/v10.2.1/hw/input/ps2.c",
+  "next": "unchanged image diagnostic X11/warp SDL mouse calibration; no acceptance",
+  "phase_passed": false
+}

@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-11T19:35:14.663267+07:00",
+  "scope": "Old normal SDL first/reopen and fresh boots; not new cursor image acceptance",
+  "filter": "Only media/security metadata; URL lines and potentially sensitive field lines omitted; originals preserved locally",
+  "reports": [
+    {
+      "original_path": "build/phase334-public-tjks53iv/manual-session-_qakqrn_/serial.log",
+      "original_sha256": "aaf6747c014c9e61372ae73fa5d0c1a3841008aea3fb18c0df8243b03b4beff1",
+      "safe_path": "docs/wip/phase335/checkpoint19/manual-session-_qakqrn_-media-safe.log",
+      "safe_lines": 13,
+      "original_bytes": 45433
+    },
+    {
+      "original_path": "build/phase334-public-tjks53iv/manual-session-hvo6_vbn/serial.log",
+      "original_sha256": "d0bc837cec2fb2c4ffc77ce1a36dafcc4123ed019f37c94d39fe185d7a91175a",
+      "safe_path": "docs/wip/phase335/checkpoint19/manual-session-hvo6_vbn-media-safe.log",
+      "safe_lines": 6,
+      "original_bytes": 28684
+    }
+  ]
+}

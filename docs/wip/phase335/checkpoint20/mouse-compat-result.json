@@ -1,0 +1,19 @@
+{
+  "owner": "Small physical movement sends cursor far away",
+  "guest_boot_passed": true,
+  "actual_mouse_test_passed": false,
+  "trace_stats": {
+    "x": {
+      "count": 5176,
+      "min": -388,
+      "max": 237
+    },
+    "y": {
+      "count": 5176,
+      "min": -220,
+      "max": 271
+    }
+  },
+  "kernel_changed": false,
+  "phase_passed": false
+}

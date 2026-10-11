@@ -29,6 +29,14 @@ static int present_base_row(unsigned x,unsigned y,unsigned width){
     unsigned b=(base&255)+((behind&255)*inverse+127)/255;
     color=((r>255?255:r)<<16)|((g>255?255:g)<<8)|(b>255?255:b);
    }
+   /* Keep the pointer above both HTML and the native video underlay. */
+   int cx=(int)px-pointer_x,cy=(int)y-pointer_y;
+   if(pointer_visible&&cy>=0&&cy<16){
+    int span=cy<9?2+cy/2:cy<12?5:3;
+    if(cx>=0&&cx<span)
+     color=cx==0||cx==span-1||cy==0?0x101010:
+           (pointer_buttons&1?0xf5b642:0xffffff);
+   }
    composite_pixels[i]=color&0xffffff;
   }
   row.width=row.stride=n;if(!gfx_present(&row,(int)x,(int)y))return -95;

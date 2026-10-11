@@ -1,5 +1,6 @@
 #include "mouse.h"
 #include "native-ui.h"
+#include "vmmouse.h"
 
 #define MOUSE_QUEUE 64u
 static struct mouse_event events[MOUSE_QUEUE];
@@ -48,6 +49,17 @@ bool mouse_init(uint16_t width,uint16_t height)
     return true;
 }
 bool mouse_ready(void){return ready;}
+bool mouse_absolute_enable(void)
+{
+    uint64_t flags=irq_save();
+    bool result=ready&&vmmouse_enable();
+    if(result){packet_index=0;tail=head;}
+    irq_restore(flags);return result;
+}
+void mouse_relative_enable(void)
+{
+    uint64_t flags=irq_save();vmmouse_disable();packet_index=0;tail=head;irq_restore(flags);
+}
 static void enqueue(struct mouse_event event)
 {
     unsigned next=(head+1)%MOUSE_QUEUE;
@@ -55,6 +67,20 @@ static void enqueue(struct mouse_event event)
     events[head]=event;
     __asm__ volatile("":::"memory");
     head=next;
+}
+static void report_position(int nx,int ny,uint8_t current)
+{
+    if(nx<0)nx=0;if(nx>=bound_width)nx=bound_width-1;
+    if(ny<0)ny=0;if(ny>=bound_height)ny=bound_height-1;
+    uint8_t changed=current^buttons;
+    struct mouse_event event={nx,ny,nx-x_position,ny-y_position,current,changed};
+    x_position=nx;y_position=ny;buttons=current;
+    if(event.dx || event.dy || changed){
+        enqueue(event);
+        struct native_ui_event native={NATIVE_UI_POINTER,0,0,native_ui_modifiers(),
+            event.x,event.y,event.dx,event.dy,event.buttons,event.changed,0};
+        native_ui_emit(&native);
+    }
 }
 void mouse_irq(void)
 {
@@ -66,21 +92,22 @@ void mouse_irq(void)
     packet[packet_index++]=value;
     if(packet_index<3)return;
     packet_index=0;
+    if(vmmouse_enabled()){
+        /* PS/2 bytes notify us; positions come from the bounded virtual queue. */
+        for(unsigned n=0;n<256;++n){
+            struct vmmouse_event event;
+            if(vmmouse_read(&event)!=1)break;
+            int nx=((uint32_t)event.x*(bound_width-1)+32767u)/65535u;
+            int ny=((uint32_t)event.y*(bound_height-1)+32767u)/65535u;
+            report_position(nx,ny,event.buttons);
+        }
+        return;
+    }
     if(packet[0]&0xc0)return; /* PS/2 overflow: discard this packet. */
     int dx=(int8_t)packet[1],dy=-(int8_t)packet[2];
-    int nx=x_position+dx,ny=y_position+dy;
-    if(nx<0)nx=0;if(nx>=bound_width)nx=bound_width-1;
-    if(ny<0)ny=0;if(ny>=bound_height)ny=bound_height-1;
-    uint8_t current=packet[0]&7u,changed=current^buttons;
-    struct mouse_event event={nx,ny,nx-x_position,ny-y_position,current,changed};
-    x_position=nx;y_position=ny;buttons=current;
-    if(event.dx || event.dy || changed){
-        enqueue(event);
-        struct native_ui_event native={NATIVE_UI_POINTER,0,0,native_ui_modifiers(),
-            event.x,event.y,event.dx,event.dy,event.buttons,event.changed,0};
-        native_ui_emit(&native);
-    }
+    report_position(x_position+dx,y_position+dy,packet[0]&7u);
 }
+
 bool mouse_get(struct mouse_event *event)
 {
     if(!event)return false;

@@ -1,0 +1,16 @@
+{
+  "before": {
+    "x": 256,
+    "y": 77
+  },
+  "after": {
+    "x": 266,
+    "y": 87
+  },
+  "qmp_delta": [
+    10,
+    10
+  ],
+  "esc_serial_tail": " platform: fchown\nELF provider: SbDecodeTargetRelease\nELF platform: SbDrmGetMetrics\nELF provider: SbDecodeTargetGetInfo\nELF platform: SbSystemHideSplashScreen\nELF platform: SbSystemNetworkIsDisconnected\nELF platform: SbSystemSignWithCertificationSecretKey\nELF relocations: relative=117653 absolute=20 global=17 jump=626 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nStarboard SABI: pinned x64 API 18 matched\n[1011/131607.330000:WARNING:cobalt/app/app_event_delegate.cc:444] Crash handler extension not implemented or version too low.\n[5:Chrome_InProcGpuThread/7:1011/131621.270000:ERROR:gpu/command_buffer/service/gl_utils.cc:439] [GroupMarkerNotSet(crbug.com/242999)!:A080050588000000] GL_CONTEXT_FLAG_DEBUG_BIT_KHR: GL_INVALID_ENUM in glGetString\nMEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1\nMEDIA decoded codec=8 source=640x360 presentation=160x90\nMEDIA native metrics presented=0 sync-samples=0 max-sync-us=0 decoded=17 dropped=0 corrupted=0 source-starvations=0\nMEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1\nMEDIA decoded codec=8 source=640x360 presentation=160x90\nMEDIA first-video ticket=3 pts=80000 clock=83 consumed=0\n[5:Chrome_InProcGpuThread/7:1011/132525.620000:ERROR:gpu/command_buffer/service/gl_utils.cc:439] [GroupMarkerNotSet(crbug.com/242999)!:A080050588000000] GL_CONTEXT_FLAG_DEBUG_BIT_KHR: GL_INVALID_ENUM in glGetString\nELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=785920 heap-after=892448\nELF cancelled; all threads stopped\nmyos> ",
+  "phase_passed": false
+}

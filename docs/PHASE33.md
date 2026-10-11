@@ -1,3 +1,25 @@
+Checkpoint21 2026-10-11 PAUSED AFTER OWNER-REQUESTED COMMIT/PUSH: optional
+native virtual absolute mouse prepared; initial actual QEMU coordinate/button/
+PS2-return test and absent-vmport fallback PASS. Default PS2 remains available.
+Owner X11/warp test failed: small physical movement sends cursor far away.
+New-source full regression, matching normal UEFI rebuild, current native video
+underlay retest and actual owner absolute frontend/YouTube acceptance PENDING.
+Earlier cursor full suite does not prove the new virtual driver. Phase32/33.5/33 OPEN.
+No active QEMU/build/test job at pause. C: compaction/refund remains pending.
+Resume from docs/wip/phase335/checkpoint21, preserve all prior failure evidence.
+
+Checkpoint20 2026-10-11 CURRENT: guest cursor overlay and retained-video restoration
+PASS in real BIOS/UEFI QEMU fixtures, with original alpha/pixel/cleanup criteria intact.
+Full default tests/test_system.py exited0 at20:09:08; initial normal hashes restored exact.
+Matching new normal UEFI + real input/underlay tests exited0 by20:11:23.
+New frozen phase335-cursor-manual passive launcher/network-capture boot exited0.
+Owner new-kernel trial: Search typing works; mouse direction/inconsistent input and freeze reported.
+Actual freeze capture is unsupported Shorts, not accepted Rickroll playback.
+Guest timer advances; direct QMP +10/+10 correct; Esc returns shell with exact physical/SHM/alias cleanup.
+Frontend cause unconfirmed; X11/warp diagnostic prepared, not yet verified.
+Owner confirmed song >30s/controls in old SDL first/fresh boots; keep old-build scope.
+Phase32/33.5/33 OPEN. Owner authorized Phase33 push. See wip/phase335/checkpoint20.
+
 Checkpoint18 2026-10-11: owner actual manual trial reports BOTH picture/audio
 stutter. Serial maxsync900037us and2171/5326 dropped on640x360 input.
 Owner has now tried; no acceptance. Root cause/fix unproven; bounded diagnostic
@@ -57,7 +79,7 @@ Root normal five artifacts remain exact. Private fault follow-up reserves16 empt
 
 # Phase 33 — Rickroll playback acceptance (in progress; not passed)
 
-Latest checkpoint3 (2026-10-10 16:45+07): Phase33.5/33 remain NOT ACCEPTED.
+Historical checkpoint3 (2026-10-10 16:45+07): Phase33.5/33 remain NOT ACCEPTED.
 A private abort-diagnostic kernel/MRT passed four native diagnostic fixtures
 and four online opens without reproducing the NORMAL di3oxi_6 abort. This
 is no repair or normal playback pass. File table reached64/64; fixed-window
@@ -68,13 +90,13 @@ repeat/cache saturation; fix proven cause, retest normal/fresh boot, then owner
 listening/controls. Thai guide is a draft; finalize only after real completion.
 See wip/phase335/checkpoint3 and PHASE335_ACCEPTANCE.md.
 
-Latest checkpoint2:normal4opens di3oxi_6 thirdnativeVP9 playback aborted
+Historical checkpoint2:normal4opens di3oxi_6 thirdnativeVP9 playback aborted
 (FATAL/USER SIGNAL6). Resources reclaimed but repeated playback stabilityFAIL.
 No rootcause/repair yet;diagnostics active. Owner has not tried audio/controls.
 See PHASE335_ACCEPTANCE.md and Thai draft PHASE335_USER_GUIDE_TH.md.
 Do not close33.5/33 or treat prior2opens as proof of this repeated-open gate.
 
-### Phase33.5 current audit — 2026-10-10
+### Historical Phase33.5 audit — 2026-10-10
 See PHASE335_ACCEPTANCE.md and PHASE335_EXPERIMENT_GUIDE.md. Actual native
 Rickroll trials found baseline sync failures108771/160083us and first-fix outage
 failure172217us; all retained. Final native VP9 rebuffer ordering fix has focused/

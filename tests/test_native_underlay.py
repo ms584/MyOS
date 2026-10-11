@@ -42,7 +42,19 @@ try:
  vm.wait('myos> ')
  for cycle,mode in enumerate((0,1,2,0)):
   offset=len(vm.log.read_text());type_text(vm,f'elf live underlay{mode}\n')
-  wait(offset,'Underlay blend ready');shot(f'{cycle}-blend',blend);vm.key('n')
+  wait(offset,'Underlay blend ready');shot(f'{cycle}-blend',blend)
+  if cycle==0:
+   # Real PS/2 movement: the guest pointer must overlay retained video, and
+   # moving it away must restore all original alpha/video pixel assertions.
+   # Keep each delta within the existing validated PS/2 fixture range.
+   for axis,value in (('x',120),('x',120),('x',42),('y',100),('y',100),('y',20)):
+    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
+   time.sleep(.05)
+   shot('cursor-over-video',{(682,520):(16,16,16),(683,522):(255,255,255)})
+   for axis,value in (('x',-120),('x',-120),('x',-42),('y',-100),('y',-100),('y',-20)):
+    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
+   time.sleep(.05);shot('cursor-moved-video-restored',blend)
+  vm.key('n')
   if mode==1:
    wait(offset,'Underlay cancel ready');vm.key('esc')
   elif mode==2:wait(offset,'Underlay fault ready')
@@ -55,7 +67,7 @@ try:
   elif mode==1:assert 'ELF cancelled; all threads stopped' in result,result
   else:assert 'USER FAULT' in result and 'vector=6 ' in result,result
   assert_live_resources(result)
- print('PASS: real Ring3 underlay pixels, premultiplied alpha/occlusion, bad requests atomic, seek clear, move, conceal/show, stop/fault/relaunch and exact resources',out,flush=True)
+ print('PASS: real Ring3 underlay pixels, guest cursor overlay/restoration, premultiplied alpha/occlusion, bad requests atomic, seek clear, move, conceal/show, stop/fault/relaunch and exact resources',out,flush=True)
 finally:
  (out/'serial.log').write_text(vm.log.read_text());vm.close()
  (out/'evidence.json').write_text(json.dumps(dict(boot_sha256=hashlib.sha256(a.boot_image.read_bytes()).hexdigest(),runtime_sha256=hashlib.sha256(a.runtime.read_bytes()).hexdigest(),shots=shots),indent=2)+'\n')

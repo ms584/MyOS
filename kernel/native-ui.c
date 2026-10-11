@@ -13,6 +13,10 @@ static uint32_t dropped,modifiers;
 static struct native_ui_event *events;
 static void video_dispose(void);
 static int present_base_row(unsigned,unsigned,unsigned);
+static int redraw_video_rect(int,int,int,int);
+static int pointer_x,pointer_y;
+static uint8_t pointer_buttons;
+static bool pointer_visible;
 
 bool native_ui_owns(struct process *process){return process&&owner==process;}
 uint32_t native_ui_modifiers(void){return modifiers;}
@@ -40,6 +44,7 @@ int64_t native_ui_acquire(struct process *process,uint64_t notification,struct n
     if(!gfx_capture(snapshot)){kfree(queue);gfx_surface_destroy(frame);gfx_surface_destroy(snapshot);return -95;}
     for(size_t i=0;i<(size_t)frame->stride*frame->height;++i)frame->pixels[i]=snapshot->pixels[i]|0xff000000;
     saved=snapshot;foreground=frame;events=queue;visible=true;
+    pointer_visible=mouse_ready();mouse_position(&pointer_x,&pointer_y,&pointer_buttons);
     owner=process;generation=++next_generation;notify_address=notification;
     head=tail=count=0;dropped=0;info->handle=generation;return (int64_t)generation;
 }
@@ -66,6 +71,14 @@ void native_ui_release_owner(struct process *process)
 void native_ui_emit(const struct native_ui_event *event)
 {
     if(!owner||!visible)return;
+    if(event->type==NATIVE_UI_POINTER&&pointer_visible){
+        int old_x=pointer_x,old_y=pointer_y;
+        pointer_x=event->x;pointer_y=event->y;pointer_buttons=event->buttons;
+        /* Restore through the retained foreground/video compositor, then
+         * paint the actual guest pointer. No allocation in the mouse IRQ. */
+        redraw_video_rect(old_x,old_y,12,16);
+        redraw_video_rect(pointer_x,pointer_y,12,16);
+    }
     if(count==UI_EVENTS){tail=(tail+1)%UI_EVENTS;--count;if(dropped!=UINT32_MAX)++dropped;}
     events[head]=*event;events[head].tick=ticks;
     head=(head+1)%UI_EVENTS;++count;
@@ -84,6 +97,7 @@ int native_ui_visible(struct process *process,uint64_t handle,bool show)
     if(!show){if(!gfx_present(saved,0,0))return -95;visible=false;}
     else{
         visible=true;
+        mouse_position(&pointer_x,&pointer_y,&pointer_buttons);
         for(unsigned y=0;y<foreground->height;++y){
             int rc=present_base_row(0,y,foreground->width);
             if(rc){visible=false;gfx_present(saved,0,0);return rc;}

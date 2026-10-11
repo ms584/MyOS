@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-11T20:09:08.517963+07:00",
+  "before_full_regression": {
+    "kernel.bin": "27862734a0473d68e441b77cb9fde1a442428f7766171768e677341a053086f3",
+    "kernel.elf": "75500b4e85d2e3596e026b5e4e5cf17923a23a23986eafbef2ef21afbec10923",
+    "myos-current.img": "6a49e1cc54cc5cbe302547a62bf27b232f60dfe97bc2a91aa26cb320ad496d43",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "after_full_regression": {
+    "kernel.bin": "27862734a0473d68e441b77cb9fde1a442428f7766171768e677341a053086f3",
+    "kernel.elf": "75500b4e85d2e3596e026b5e4e5cf17923a23a23986eafbef2ef21afbec10923",
+    "myos-current.img": "6a49e1cc54cc5cbe302547a62bf27b232f60dfe97bc2a91aa26cb320ad496d43",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "exit": 0,
+  "normal_restored_exact": true,
+  "normal_uefi_verified": true,
+  "final_normal_identity": {
+    "kernel.bin": "27862734a0473d68e441b77cb9fde1a442428f7766171768e677341a053086f3",
+    "kernel.elf": "75500b4e85d2e3596e026b5e4e5cf17923a23a23986eafbef2ef21afbec10923",
+    "myos-current.img": "6a49e1cc54cc5cbe302547a62bf27b232f60dfe97bc2a91aa26cb320ad496d43",
+    "myos-uefi.img": "3ad73962f7ade09e1c335af894eaa82baa6acb5b88f7bec0f7a1ed6aec9c6b85",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "followup_results": [
+    {
+      "stage": "normal-uefi-build",
+      "exit": 0,
+      "log": "build/phase335-cursor-normal-uefi-build.log",
+      "date": "2026-10-11T20:10:50.507153+07:00"
+    },
+    {
+      "stage": "native-ui-uefi",
+      "exit": 0,
+      "log": "build/phase335-cursor-native-ui-uefi.log",
+      "date": "2026-10-11T20:11:03.569491+07:00"
+    },
+    {
+      "stage": "underlay-bios",
+      "exit": 0,
+      "log": "build/phase335-cursor-underlay-bios.log",
+      "date": "2026-10-11T20:11:11.057001+07:00"
+    },
+    {
+      "stage": "underlay-uefi",
+      "exit": 0,
+      "log": "build/phase335-cursor-underlay-uefi.log",
+      "date": "2026-10-11T20:11:22.962042+07:00"
+    }
+  ],
+  "final_date": "2026-10-11T20:11:23.075389+07:00",
+  "scope": "Full default system suite passed and restored initial normal BIOS/kernel/MRT exactly. Initial UEFI was historical old image; subsequently rebuilt matching current kernel and affected UEFI/input/underlay tests passed."
+}

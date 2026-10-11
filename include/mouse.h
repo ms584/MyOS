@@ -10,6 +10,8 @@ struct mouse_event {
 
 bool mouse_init(uint16_t width,uint16_t height);
 bool mouse_ready(void);
+bool mouse_absolute_enable(void);
+void mouse_relative_enable(void);
 void mouse_irq(void);
 bool mouse_get(struct mouse_event *event);
 void mouse_position(int *x,int *y,uint8_t *buttons);

@@ -96,7 +96,12 @@ static void execute(char *line){
     if(equal(cmd,"desktop")){if(arg || word(&rest))print("error: unexpected argument\n");else desktop_run();return;}
     if(equal(cmd,"settings")){if(arg || word(&rest))print("error: unexpected argument\n");else settings_print();return;}
     if(equal(cmd,"mouse")){
-        if(arg || word(&rest)){print("error: unexpected argument\n");return;}
+        if(arg){
+            if(word(&rest)){print("error: unexpected argument\n");return;}
+            if(equal(arg,"absolute")){print(mouse_absolute_enable()?"Mouse: absolute virtual coordinates enabled\n":"Mouse: absolute virtual device unavailable; PS/2 retained\n");return;}
+            if(equal(arg,"relative")){mouse_relative_enable();print("Mouse: relative PS/2 enabled\n");return;}
+            print("usage: mouse [absolute|relative]\n");return;
+        }
         if(!mouse_ready()){print("Mouse unavailable\n");return;}
         int x,y;uint8_t buttons;mouse_position(&x,&y,&buttons);
         print("Mouse: x=");decimal((uint64_t)x);print(" y=");decimal((uint64_t)y);

@@ -91,7 +91,7 @@ for source in net/dns.c net/dns-wire.c; do
     gcc "${flags[@]}" -c "$source" -o "$obj"
     objects+=("$obj")
 done
-for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c kernel/native-ui.c kernel/signal.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/asset.c kernel/elf.c kernel/elf-link.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c net/tcp.c drivers/sb16.c audio/audio.c security/security.c security/tls_port.c security/tls.c drivers/graphics.c drivers/mouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c video/video.c; do
+for source in kernel/kernel.c kernel/boot.c kernel/app.c kernel/runtime.c kernel/native-ui.c kernel/signal.c drivers/console.c drivers/keyboard.c memory/memory.c cpu/interrupts.c cpu/scheduler.c cpu/gdt.c memory/process.c user/process-test.c kernel/syscall.c user/syscall-test.c fs/ramfs.c fs/asset.c kernel/elf.c kernel/elf-link.c fs/fs-test.c user/fs-test.c shell/shell.c drivers/ata.c drivers/storage.c drivers/rtl8139.c net/net.c net/tcp.c drivers/sb16.c audio/audio.c security/security.c security/tls_port.c security/tls.c drivers/graphics.c drivers/mouse.c drivers/vmmouse.c gui/desktop.c gui/widgets.c gui/settings.c gui/calculator.c gui/snake.c gui/browser.c video/video.c; do
     obj="build/${source//\//-}"
     obj="${obj%.c}.o"
     gcc "${flags[@]}" -c "$source" -o "$obj"

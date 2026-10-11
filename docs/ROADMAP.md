@@ -1,3 +1,25 @@
+Checkpoint21 2026-10-11 PAUSED AFTER OWNER-REQUESTED COMMIT/PUSH: optional
+native virtual absolute mouse prepared; initial actual QEMU coordinate/button/
+PS2-return test and absent-vmport fallback PASS. Default PS2 remains available.
+Owner X11/warp test failed: small physical movement sends cursor far away.
+New-source full regression, matching normal UEFI rebuild, current native video
+underlay retest and actual owner absolute frontend/YouTube acceptance PENDING.
+Earlier cursor full suite does not prove the new virtual driver. Phase32/33.5/33 OPEN.
+No active QEMU/build/test job at pause. C: compaction/refund remains pending.
+Resume from docs/wip/phase335/checkpoint21, preserve all prior failure evidence.
+
+Checkpoint20 2026-10-11 CURRENT: guest cursor overlay and retained-video restoration
+PASS in real BIOS/UEFI QEMU fixtures, with original alpha/pixel/cleanup criteria intact.
+Full default tests/test_system.py exited0 at20:09:08; initial normal hashes restored exact.
+Matching new normal UEFI + real input/underlay tests exited0 by20:11:23.
+New frozen phase335-cursor-manual passive launcher/network-capture boot exited0.
+Owner new-kernel trial: Search typing works; mouse direction/inconsistent input and freeze reported.
+Actual freeze capture is unsupported Shorts, not accepted Rickroll playback.
+Guest timer advances; direct QMP +10/+10 correct; Esc returns shell with exact physical/SHM/alias cleanup.
+Frontend cause unconfirmed; X11/warp diagnostic prepared, not yet verified.
+Owner confirmed song >30s/controls in old SDL first/fresh boots; keep old-build scope.
+Phase32/33.5/33 OPEN. Owner authorized Phase33 push. See wip/phase335/checkpoint20.
+
 Checkpoint18 2026-10-11: owner actual manual trial reports BOTH picture/audio
 stutter. Serial maxsync900037us and2171/5326 dropped on640x360 input.
 Owner has now tried; no acceptance. Root cause/fix unproven; bounded diagnostic

@@ -1,0 +1,5 @@
+$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -c user/elf-cpu-clock.c -o /home/xytron404/myos/build/cpu-clock-9qoev8aj/clock.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/myos/build/cpu-clock-9qoev8aj/clock.so /home/xytron404/myos/build/cpu-clock-9qoev8aj/clock.o
+$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/cpu-clock.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/cpu-clock.sock,server=on,wait=off -drive format=raw,file=/home/xytron404/myos/build/cpu-clock-9qoev8aj/assets.img,if=ide,index=1
+qemu-system-x86_64: terminating on signal 15 from pid 294353 (python3)
+PASS native CPU clock busy/sleep/process/thread/worker reuse/invalid clock guards/relaunch/exact resources; sampled 10ms, NOT browser. /home/xytron404/myos/build/cpu-clock-9qoev8aj
