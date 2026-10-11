@@ -1,0 +1,462 @@
+{
+  "output_mode": "underlay",
+  "video_codec": "VP8",
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": true,
+  "provider_sha256": "7cd804458f8a1da6834877b03d8f3325618f58a74348c2f0a764cc3a379e0c00",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "core_sha256": "6ef5dc7a95f5b784b04e5ce62470136ca6a9d3826c3756753b1005114f3ab650",
+  "boot_sha256": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-000.ppm",
+      "host_monotonic": 114755.318728346,
+      "sha256": "66d9d4acd6e97cc466eff5ca121e8e30888e58c6bba0d0f69911b7924a601031"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-001.ppm",
+      "host_monotonic": 114757.331143124,
+      "sha256": "66d9d4acd6e97cc466eff5ca121e8e30888e58c6bba0d0f69911b7924a601031"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-002.ppm",
+      "host_monotonic": 114759.343389088,
+      "sha256": "66d9d4acd6e97cc466eff5ca121e8e30888e58c6bba0d0f69911b7924a601031"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-003.ppm",
+      "host_monotonic": 114761.355703557,
+      "sha256": "de7dad6d1d7706fcfd0772b912d57d846154fe0fde8b22ac9486c570efc6dc74"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-004.ppm",
+      "host_monotonic": 114763.369274227,
+      "sha256": "9ce26ac292377d9a11dce20ccabda01b443a5c8190381352215285576fd391fb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-005.ppm",
+      "host_monotonic": 114765.382312797,
+      "sha256": "de65c6db58bf4f47e1679cc996b65b4a11324e9c63d22dffec1ea57b12332b65"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-006.ppm",
+      "host_monotonic": 114767.395378902,
+      "sha256": "b4fefcfc89120a919a087b5ad13f6bfde3ed7e72d044da59e66b6c0d9d57e309"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-007.ppm",
+      "host_monotonic": 114769.410052148,
+      "sha256": "ef57e058806314125180a68d2e76b1ff48f718a65af74f350d61ca2225d7fc9e"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-008.ppm",
+      "host_monotonic": 114771.422975393,
+      "sha256": "558b9a289138f140ba3fdc8acf63248304af295b3f846c95fc92027322629984"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-009.ppm",
+      "host_monotonic": 114773.435747339,
+      "sha256": "2a04fe54d66eaf685d108d10867182a6feddf0c57577dd240aef49c6a641e3bf"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-010.ppm",
+      "host_monotonic": 114775.451954069,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-011.ppm",
+      "host_monotonic": 114777.465823579,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-012.ppm",
+      "host_monotonic": 114779.47889579,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-013.ppm",
+      "host_monotonic": 114781.4905842,
+      "sha256": "184cfe69dc13b7114d61f4e8eb39d5ef116128662b332360aa6a3338b490c1a0"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-014.ppm",
+      "host_monotonic": 114783.503848272,
+      "sha256": "47c80772d9765ef464d465f39d09ad13c397bee8330b918d35c8d1e4d94e077b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-015.ppm",
+      "host_monotonic": 114785.516081108,
+      "sha256": "c9e5710d72782a156bf546f775ac06be21f8ef614b73b7b5ba602711cc2bc527"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-016.ppm",
+      "host_monotonic": 114787.534883743,
+      "sha256": "3105b06f79a4d7b4ba7513078dddab8953d2e7927da6c7e4d311978dfa09f3cb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-017.ppm",
+      "host_monotonic": 114789.552509179,
+      "sha256": "1f873fb78ae7d7e9799116975082ae3ab36dadb612b0e7ab7df57390a6481e89"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-018.ppm",
+      "host_monotonic": 114791.567377082,
+      "sha256": "a0a88a0d30aa491942a7e6c7c1ed175dc23e44be9874d5ae2cf05dbc516e85a4"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-019.ppm",
+      "host_monotonic": 114793.579774344,
+      "sha256": "ab9bf4410eaad057679da8fd0ed929916ad1d89ab6f7723bad79dbb2e22c9ebe"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-020.ppm",
+      "host_monotonic": 114795.593057106,
+      "sha256": "c3798ce58ef865e012496b3727df3d872195e297ea519f27d29c7ed7cadca4b9"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-021.ppm",
+      "host_monotonic": 114797.605772469,
+      "sha256": "59f833269b09fb074a76f5c6f65461f88edabf93f72c95d5b7db7359dc4ee73b"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-022.ppm",
+      "host_monotonic": 114799.619289379,
+      "sha256": "949b81db63cddeda0f71917de8afda9a2a62ecbab0e140285c2d898256afd52d"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-023.ppm",
+      "host_monotonic": 114801.632279848,
+      "sha256": "a83afe4132e2c8fb6009423d9ddf302ad8241c699779d6d49f6eba1c444287eb"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-024.ppm",
+      "host_monotonic": 114803.644959716,
+      "sha256": "988a9253552f777bb314d4b015f8685640656af9931beb9ab341125aa08099c8"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-kpk8nzkw/frame-025.ppm",
+      "host_monotonic": 114805.658458084,
+      "sha256": "0fa8d31803b4265ff3395bf0bd96a4bf9e4160f49efc09786a9937e878f69016"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000B000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF provider: SbPlayerSetBounds\nELF platform: SbWindowCreate\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nMEDIA first-video ticket=1 pts=0 clock=6583 consumed=0\nnative player state=2\nnative media position-us=1029712\nnative media position-us=2030982\nnative media position-us=3029802\nnative media position-us=4031163\nnative PAUSE position=5032977\nnative media position-us=5032977\nnative RESUME\nnative media position-us=6014655\nnative media position-us=7005131\nnative media position-us=8005766\nnative media position-us=9005403\nnative SEEK to=15000000\nnative media position-us=10035970\nnative media position-us=15000000\nnative player state=1\nMEDIA first-video ticket=2 pts=15000000 clock=15000083 consumed=0\nnative player state=2\nnative media position-us=16035003\nnative media position-us=17003892\nnative media position-us=18036999\nnative media position-us=19013688\nnative media position-us=20012690\nnative media position-us=21014323\nnative media position-us=22013597\nnative media position-us=23027293\nnative media position-us=24004073\nnative media position-us=25027384\nnative media position-us=26020037\nnative media position-us=27038178\nnative media position-us=28032373\nnative media position-us=29025298\nnative media position-us=30013416\nnative media position-us=31014051\nnative media position-us=32012055\nnative media position-us=33011783\nnative media position-us=34024572\nnative media position-us=35024572\nnative media position-us=36012146\nnative media position-us=37020672\nnative media position-us=38001806\nnative media position-us=39005615\nnative player state=3\nnative media position-us=40000083\nnative player state=4\nMEDIA native metrics presented=526 sync-samples=518 max-sync-us=9956 decoded=530 dropped=0 corrupted=0 source-starvations=0\nnative underlay control polls=1372\nnative sample allocated=2380\nnative sample released=2380\nnative player state=0\nnative player state=1\nMEDIA first-video ticket=3 pts=0 clock=6583 consumed=0\nnative player state=2\nnative player state=4\nMEDIA native metrics presented=24 sync-samples=20 max-sync-us=9987 decoded=27 dropped=0 corrupted=0 source-starvations=0\nnative RAM process baseline-bytes=56614912\nnative RAM process sampled-peak-bytes=65200128\nnative RAM player increment-bytes=8585216\nnative RAM PMM increment-bytes=8585216\nnative same-process restart/stop while playing PASS\nnative standard player asset/control/EOS checkpoint PASS; NOT Cobalt/HTTPS acceptance\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=750336 heap-after=750336\nELF exited with status 97\nmyos> ",
+  "audio_seconds": 36.599773242630384,
+  "audio_channels": 2,
+  "audio_rate": 44100,
+  "audio_windows": [
+    {
+      "second": 0.0,
+      "rms": 7033.645373263099,
+      "positive_crossings": 440
+    },
+    {
+      "second": 1.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 2.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 3.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 4.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 5.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 6.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 7.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 8.0,
+      "rms": 7034.383517655929,
+      "positive_crossings": 440
+    },
+    {
+      "second": 9.0,
+      "rms": 7034.630578699603,
+      "positive_crossings": 440
+    },
+    {
+      "second": 10.0,
+      "rms": 6786.95781156504,
+      "positive_crossings": 659
+    },
+    {
+      "second": 11.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 12.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 13.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 14.0,
+      "rms": 6983.736171453762,
+      "positive_crossings": 660
+    },
+    {
+      "second": 15.0,
+      "rms": 6950.3708012733205,
+      "positive_crossings": 863
+    },
+    {
+      "second": 16.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 17.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 18.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 19.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 20.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 21.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 22.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 23.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 24.0,
+      "rms": 6950.72138457487,
+      "positive_crossings": 880
+    },
+    {
+      "second": 25.0,
+      "rms": 6991.600626303853,
+      "positive_crossings": 575
+    },
+    {
+      "second": 26.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 27.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 28.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 29.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 30.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 31.0,
+      "rms": 6994.211208299607,
+      "positive_crossings": 550
+    },
+    {
+      "second": 32.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 33.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 34.0,
+      "rms": 6994.213781207546,
+      "positive_crossings": 550
+    },
+    {
+      "second": 35.0,
+      "rms": 6984.3827082909065,
+      "positive_crossings": 442
+    }
+  ],
+  "audible_seconds": 36,
+  "visual": [
+    {
+      "path": "frame-000.png",
+      "host_monotonic": 114755.318728346,
+      "pixels_sha256": "1f48243eac895731a07de32be1c03e4beb0c53f8330417de9e79556f7b67a223"
+    },
+    {
+      "path": "frame-001.png",
+      "host_monotonic": 114757.331143124,
+      "pixels_sha256": "1f48243eac895731a07de32be1c03e4beb0c53f8330417de9e79556f7b67a223"
+    },
+    {
+      "path": "frame-002.png",
+      "host_monotonic": 114759.343389088,
+      "pixels_sha256": "1f48243eac895731a07de32be1c03e4beb0c53f8330417de9e79556f7b67a223"
+    },
+    {
+      "path": "frame-003.png",
+      "host_monotonic": 114761.355703557,
+      "pixels_sha256": "1d2bd4fa4eead20f6b948d6fae648a0cc79f5f9a363a7bd4b9e0f53e5c3837f6"
+    },
+    {
+      "path": "frame-004.png",
+      "host_monotonic": 114763.369274227,
+      "pixels_sha256": "a88e1bb9f7a177881a1464970b945db3eea0a0dbb1d0467f1e68cb935ae044b7"
+    },
+    {
+      "path": "frame-005.png",
+      "host_monotonic": 114765.382312797,
+      "pixels_sha256": "8f44be0cc841f7f3dcc941086f5f470461c6b10fd40e363c83a74c888f3d2ef4"
+    },
+    {
+      "path": "frame-006.png",
+      "host_monotonic": 114767.395378902,
+      "pixels_sha256": "280d298bae2ecca7c5fdd27046fd13565133f22249b3f953857f421cab9d3547"
+    },
+    {
+      "path": "frame-007.png",
+      "host_monotonic": 114769.410052148,
+      "pixels_sha256": "4e8d01f1e6b7843d5811a7afe53058f8fdfbc86f5c1786d304869cd15ed4d075"
+    },
+    {
+      "path": "frame-008.png",
+      "host_monotonic": 114771.422975393,
+      "pixels_sha256": "999429c5dc1710d0d16472ecb708720dd0b42dba180ce88cc1402971fd634779"
+    },
+    {
+      "path": "frame-009.png",
+      "host_monotonic": 114773.435747339,
+      "pixels_sha256": "f1a29db04938fd33278740482f3ae07665ccd80d6db22a850ccbd5a0e6985a2f"
+    },
+    {
+      "path": "frame-010.png",
+      "host_monotonic": 114775.451954069,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-011.png",
+      "host_monotonic": 114777.465823579,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-012.png",
+      "host_monotonic": 114779.47889579,
+      "pixels_sha256": "53853188f83a941e2f45ec1383293ae935106c5721918079000dcb2254fc550b"
+    },
+    {
+      "path": "frame-013.png",
+      "host_monotonic": 114781.4905842,
+      "pixels_sha256": "7182e99fea6ae5cd1ed750ddce87b6230cf432f3af9157953661f7485a749212"
+    },
+    {
+      "path": "frame-014.png",
+      "host_monotonic": 114783.503848272,
+      "pixels_sha256": "7fc63ba907d866b23b292c691b662c9676fe288d61ab0a0f18063736812af219"
+    },
+    {
+      "path": "frame-015.png",
+      "host_monotonic": 114785.516081108,
+      "pixels_sha256": "153651a4d5a3c54e4eb69fafe87a61758bd03d382cf60868d7290a72ac75217c"
+    },
+    {
+      "path": "frame-016.png",
+      "host_monotonic": 114787.534883743,
+      "pixels_sha256": "11d0cf3f5244ee3e0e6b8ef72a5d0e14aa026f49d3873aeac1e3d4de04094c46"
+    },
+    {
+      "path": "frame-017.png",
+      "host_monotonic": 114789.552509179,
+      "pixels_sha256": "afab6206c96062f81ddda35b04457c425ca67a569d91436e13a56746971b8b91"
+    },
+    {
+      "path": "frame-018.png",
+      "host_monotonic": 114791.567377082,
+      "pixels_sha256": "60c8b428dba0b502be4b0d90f35919a8568732ddb96d7b426b9534250808fa0d"
+    },
+    {
+      "path": "frame-019.png",
+      "host_monotonic": 114793.579774344,
+      "pixels_sha256": "6171ee8d41e3c4b35ecfdacc9d19cfea006f735a5a62048b7a53c353ddc5b0b1"
+    },
+    {
+      "path": "frame-020.png",
+      "host_monotonic": 114795.593057106,
+      "pixels_sha256": "0b4f2fb6c335e61f17a414ff885a72c0069417807422312ede75e784278afe5e"
+    },
+    {
+      "path": "frame-021.png",
+      "host_monotonic": 114797.605772469,
+      "pixels_sha256": "254e0f0da6954801faed234859ddba67d663707812da6b9f9bcedc3ac48ad32e"
+    },
+    {
+      "path": "frame-022.png",
+      "host_monotonic": 114799.619289379,
+      "pixels_sha256": "df6b60b9a331407f869ad7e8303737b5b63ce35eab5476420cf92127530e3ee6"
+    },
+    {
+      "path": "frame-023.png",
+      "host_monotonic": 114801.632279848,
+      "pixels_sha256": "2e56a8acfe7a9fc5e463124fa206959918202d2aabd1675a5911d67395de6b8a"
+    },
+    {
+      "path": "frame-024.png",
+      "host_monotonic": 114803.644959716,
+      "pixels_sha256": "fc7fc7cb0bc1a0a77336e49f7e4c2c445c7d9bc69898a6ea1f4c6f01f29c585f"
+    },
+    {
+      "path": "frame-025.png",
+      "host_monotonic": 114805.658458084,
+      "pixels_sha256": "879cb6fda5532490ff8a8f2c468f777e0e717a960475125e083d05f6a68cb766"
+    }
+  ]
+}

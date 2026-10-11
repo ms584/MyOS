@@ -221,3 +221,5 @@ normal-abort-recording; approximate bytepoll timing, not clock/sync measurement.
 Root five normal artifacts exact and no QEMU remains. Owner has not tried.
 Phase33.5/parent33 remain open; Phase32 audible/interactive gate independently open.
 Thai draft now has owner result form. No push; private diagnostic worktree retained.
+
+Checkpoint13 2026-10-11: fixed-layout VP8 continuous failed actual PCM gap12.880ms at1.008798s; no criteria waived. Invalid4096 DMA candidate rejected. First-frame hold candidate native controls/EOS/restart/exact cleanup passed04:29:41, max sync9956/9987us; not Cobalt/YouTube proof. New-core continuous wr6bjpii active11:46:27/PTY22142. Production player/normal images unchanged; Phase33.5/33 and owner listening remain pending. See wip/phase335/checkpoint13/startup-audio/README.md.

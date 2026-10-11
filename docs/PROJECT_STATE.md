@@ -1,7 +1,6 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint 04de44e; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint 35fd59e; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
-Read PHASE335_ACCEPTANCE.md, PHASE335_EXPERIMENT_GUIDE.md and PHASE33.md.
 
 CURRENT WORK: source core built; private tooltip drawing/reopen test passed.
 Native verified HTTPS title requested176x24 while primary800x600 exists;
@@ -24,8 +23,10 @@ Paired controls yx51f7lc terminal0 at04:03:59; five frozen crops/PCM65536 bytes.
 Observed pause8.116s; resume pixels/PCM advance; forward seek15s. checkpoint11.
 Continuous VP9 analyzer rejected1drop; VP8 rejected one obscured barcode PNG.
 Both histories complete; failures retained checkpoint12/continuous-retests.
-CURRENT TEST: VP8 fixed-layout retest PTY97538; runtime/threshold unchanged.
-Log build/phase335-source-media-vp8-fixed-layout.log; scoped fixture only.
+Fixed-layout VP8 failed held PCM gap12.880ms at1.008798s; no waiver.
+4096 DMA candidate rejected; first-frame hold native controls/cleanup PASS.
+CURRENT: candidate Cobalt continuous wr6bjpii/PTY22142 started11:46:27.
+See checkpoint13/startup-audio; production player/images unchanged.
 Normal online source-core selector prepared; identity tamper tests3 pass.
 NEXT: retest standard profile, assess reflow, lifecycle/adverse then normal online.
 Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.

@@ -4008,3 +4008,5 @@ system suite passed00:15:27; normalUEFI/final launcher/pair BIOS+UEFI
 passed, all5 normal identities exact, runner exit0. Evidence:
 wip/phase334/checkpoint4/regression. Earlier running/pending statements
 above are historical. YouTube performance/recovery acceptance still open.
+
+Checkpoint13 2026-10-11: fixed-layout VP8 continuous failed actual PCM gap12.880ms at1.008798s; no criteria waived. Invalid4096 DMA candidate rejected. First-frame hold candidate native controls/EOS/restart/exact cleanup passed04:29:41, max sync9956/9987us; not Cobalt/YouTube proof. New-core continuous wr6bjpii active11:46:27/PTY22142. Production player/normal images unchanged; Phase33.5/33 and owner listening remain pending. See wip/phase335/checkpoint13/startup-audio/README.md.
