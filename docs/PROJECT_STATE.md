@@ -1,5 +1,5 @@
 2026-10-11 — Phase33.5 ACTIVE / NOT ACCEPTED; Phase33 remains open.
-Repository /home/xytron404/myos; main checkpoint 35fd59e; local commits only, no push.
+Repository /home/xytron404/myos; main checkpoint a1350b5; local commits only, no push.
 Owner has not tried/confirmed music and controls. No permission pending.
 
 CURRENT WORK: source core built; private tooltip drawing/reopen test passed.
@@ -25,11 +25,12 @@ Continuous VP9 analyzer rejected1drop; VP8 rejected one obscured barcode PNG.
 Both histories complete; failures retained checkpoint12/continuous-retests.
 Fixed-layout VP8 failed held PCM gap12.880ms at1.008798s; no waiver.
 4096 DMA candidate rejected; first-frame hold native controls/cleanup PASS.
-CURRENT: candidate Cobalt continuous wr6bjpii/PTY22142 started11:46:27.
+First-frame Cobalt wr6bjpii FAILED1drop/max19736us; startup PCM gaps remain.
+Diagnostic nj9c1244 passed600/0drop,40sPCM,RAM27152400B; no miss reproduced.
+CURRENT: non-diagnostic confirmation ms6zca8g/PTY52912; no promotion.
 See checkpoint13/startup-audio; production player/images unchanged.
 Normal online source-core selector prepared; identity tamper tests3 pass.
 NEXT: retest standard profile, assess reflow, lifecycle/adverse then normal online.
-Log build/phase335-after-build.log; existing QEMU preserved; no auto acceptance.
 Physical/SHM/aliases exact on both closes; heap786176→827136 then stable.
 See checkpoint8/tooltip-source-core; diagnostic fixture, not YouTube acceptance.
 Retest affected33.1-33.4 prerequisites with the actual new core.
@@ -57,4 +58,3 @@ Audio input unsupported: cannot identify music/stale audio by listening here.
 Owner live WSLg/Pulse music, controls and freshboot confirmation pending.
 Screen+PCM AVI timing approximate; native PNG/WAV/timeline are authoritative.
 Phase32 independently open for audible/interactive search/select/play gate.
-Owner untracked promotion files/logs preserved; do not stage them.

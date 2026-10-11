@@ -12,12 +12,23 @@ frozen=json.loads((b/'manual-assets-identity.json').read_text())
 assert all(sha(b/name)==digest for name,digest in frozen.items())
 assert sha(b/'boot.img')==d['normal_identity']['myos-current.img']
 assert sha(root/'build/platform-runtime.mrt')==d['normal_identity']['platform-runtime.mrt']
-assert sha(root/'build/engine-evaluation/libcobalt.so')==d['core_sha256']
+official=json.loads((root/'docs/PHASE33_COBALT_AUDIT.json').read_text())
+assert sha(root/'build/engine-evaluation/libcobalt.so')==official['library_sha256']
+source_core=d.get('source_core_build')
+if source_core is None:
+    assert sha(root/'build/engine-evaluation/libcobalt.so')==d['core_sha256']
+else:
+    from cobalt_source_core import load_source_core
+    core,validated=load_source_core(root/'build/phase335-core-workspace/core-build-identity.json')
+    assert validated==source_core,'Manual bundle source-core identity mismatch'
+    assert d.get('official_google_core') is False
+    assert sha(core)==d['core_sha256']
+
 assert os.geteuid()!=0,'Run as the normal WSL user'
 assert os.access('/dev/kvm',os.R_OK|os.W_OK),'Non-root KVM access required'
 session=Path(tempfile.mkdtemp(prefix='manual-session-',dir=b));serial=session/'serial.log'
 command=['qemu-system-x86_64','-m','1024','-accel','kvm','-cpu','host','-display','none' if a.check_boot else 'gtk','-monitor','none','-serial',f'file:{serial}','-no-reboot','-no-shutdown','-drive',f'format=raw,file={b}/boot.img,if=floppy,index=0,snapshot=on','-boot','order=a','-nic','user,model=rtl8139','-audiodev','pa,id=myos-audio,out.frequency=11025,out.channels=1,out.format=u8','-device','sb16,audiodev=myos-audio','-drive',f'format=raw,file={b}/assets.img,if=ide,index=1,snapshot=on']
-(session/'qemu-command.json').write_text(json.dumps(dict(command=command,boot_check=a.check_boot,phase_passed=False,user_acceptance_received=False,source_bundle=str(b),frozen_inputs=frozen),indent=2)+'\n')
+(session/'qemu-command.json').write_text(json.dumps(dict(command=command,boot_check=a.check_boot,phase_passed=False,user_acceptance_received=False,source_bundle=str(b),source_core_build=source_core,frozen_inputs=frozen),indent=2)+'\n')
 print('Serial log:',serial,flush=True)
 print('Fresh native MyOS manual trial; no phase acceptance is recorded automatically.',flush=True)
 print('In the MyOS shell: net up; mkdir /dev/shm; mem',flush=True)
