@@ -236,7 +236,13 @@ static void *run(void *unused){
   }
   if(resumed&&!sought&&info.current_media_timestamp>=10000000){
    stop_feeders();pthread_mutex_lock(&mu);++ticket;requested[0]=requested[1]=preroll=ended=0;stop_readers=0;seek_to=15000000;pthread_mutex_unlock(&mu);
-   SbPlayerSeek(player,seek_to,ticket);if(start_readers())bad("native seek feeders failed");
+   SbPlayerSeek(player,seek_to,ticket);
+    /* HTML media caches GetInfo before asynchronous seek teardown completes.
+     * It must observe the new timeline, never the previous audio anchor. */
+    SbPlayerInfo seek_info={0};SbPlayerGetInfo(player,&seek_info);
+    lognum("native immediate SEEK position=",seek_info.current_media_timestamp);
+    if(seek_info.current_media_timestamp!=seek_to)bad("native pending SEEK reported old timeline");
+    if(start_readers())bad("native seek feeders failed");
    sought=1;
 #ifndef MYOS_TEST_UNDERLAY
    seek_wall=now();

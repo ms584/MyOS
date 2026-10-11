@@ -1,5 +1,12 @@
 # Phase 32 — YouTube playback (in progress; acceptance open)
 
+## Separate checkpoint — 2026-10-11
+Fresh xnmkswbc native homepage query and result selection reached actual RickID.
+Current repaired provider direct-URL normal/fresh observations are not an additional
+search/select pass. Existing native search/movie/PCM evidence retained; audible
+playback and owner interactive result remain unverified. Phase32 stays OPEN.
+See wip/phase335/checkpoint16 and checkpoint17/prerequisite-review.json.
+
 **Acceptance remains open.** Actual native Cobalt YouTube playback now has
 recorded evidence; the historical text-Browser limits below do not describe Cobalt. The goal remains: open YouTube in the MyOS browser, search, select
 and play an online video with audible sound, pause/resume and seek in QEMU.

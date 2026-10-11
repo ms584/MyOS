@@ -1,3 +1,13 @@
+Checkpoint17 2026-10-11: pending-seek GetInfo stale timeline cause reproduced;
+minimal production fix + native VP8/VP9 negative/positive regression verified.
+Normal tjks53iv2opens completed16:24:00; paused forward/back/resume2:51→2:41→2:42.
+Pause movie/PCM freeze, resume advance; maxsync89986us; normal5 exact/resources reclaimed.
+Fresh53waebuq completed16:34:36; movie31.908s/PCM and pause/resume/seek verified.
+Full tests/test_system.py terminal0 at17:18:25; restored normal5 hashes exact.
+Current two-open cache plateau unobserved; unchanged four-open resource case reused
+with explicit scope. Owner music/stale-audio/interactive signoff remains pending.
+Phase32 independent OPEN; Phase33.5/33 NOT ACCEPTED. See wip/phase335/checkpoint17.
+
 Checkpoint16 2026-10-11: fresh normal xnmkswbc completed4opens15:18:43;
 native homepage search/result reached actual RickID. First controls invalid from ads/promotion.
 Second paused backward/resume FAIL:2:12→2:22 at342.317; no fix/cause yet.

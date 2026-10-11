@@ -1,0 +1,29 @@
+{
+  "phase_accepted": false,
+  "owner_confirmed": false,
+  "fix": "GetInfo reports requested timeline while seek_pending before asynchronous worker flush",
+  "source_sha256": "3be11a9ebab7b79fd8e95715cc3b22d26f644602b3e5da8a802e9ae8469d3e65",
+  "baseline_negative": {
+    "provider": "provider-8homrhps",
+    "requested_us": 15000000,
+    "actual_us": 10030437,
+    "expected_failure": true,
+    "log": "build/phase335-pending-seek-baseline-negative.log"
+  },
+  "native_positive": {
+    "vp9": "build/media-evaluation/native-player-zjvg5bez",
+    "vp8": "build/media-evaluation/native-player-3v63bb2_",
+    "immediate_seek_us": 15000000
+  },
+  "online": "build/phase334-public-tjks53iv",
+  "online_complete": true,
+  "compact_guard_actual_vm_refused": true,
+  "fresh_online": "build/phase334-public-53waebuq",
+  "fresh_online_complete": true,
+  "normal_manual_passive_boot_exit": 0,
+  "full_regression": "build/phase335-pending-seek-full-regression.log",
+  "full_regression_complete": true,
+  "full_regression_exit": 0,
+  "normal_restored_identity_exact": true,
+  "recording": "build/phase334-public-53waebuq/launch-1-screen-audio.avi"
+}

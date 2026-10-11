@@ -65,7 +65,7 @@
 
 ## Resource budget — owner request 2026-10-11
 
-- Run one QEMU/media/regression job at a time. Use the validated 1024 MiB guest profile; do not reduce guest RAM to conceal a failure.
+- Run one QEMU/media/regression job at a time. Use each test's validated profile (normal online 1024 MiB; existing focused fixtures may use 512 MiB); do not reduce RAM to conceal a failure.
 - For new host compilation, start with at most two workers and reuse incremental objects. Keep this cap unless the owner changes the resource budget.
 - Prefer low-priority diagnostic execution; record native screenshots at 1 FPS unless a specific failure requires more. Keep one authoritative PNG/WAV/timeline bundle; do not generate redundant AVI copies.
 - Reuse valid unchanged tests. Diagnose a concrete failure with one focused run before repeating long acceptance sessions; required affected and architectural regression still applies.

@@ -101,6 +101,9 @@ static SbPlayer lock_player(SbPlayer p){
 }
 static void unlock_player(SbPlayer p){pthread_mutex_unlock(&p->mutex);}
 static int64_t clock_locked(SbPlayer p){
+ /* GetInfo may be queried before the worker flushes the previous audio ring.
+  * Publishing that old anchor lets HTML media cache a stale seek timeline. */
+ if(p->seek_pending)return p->seek_time;
 #if defined(MYOS_MEDIA_VP9) && defined(MYOS_MEDIA_NATIVE_UNDERLAY)
  if(p->has_audio){
   uint64_t played=p->consumed;

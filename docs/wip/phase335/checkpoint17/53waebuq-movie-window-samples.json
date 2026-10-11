@@ -1,0 +1,107 @@
+[
+  {
+    "launch": 1,
+    "span_seconds": 31.907733499000187,
+    "pairs": [
+      {
+        "first": {
+          "elapsed": 192.4688809119998,
+          "path": "launch-1-192469.png"
+        },
+        "second": {
+          "elapsed": 195.55883254799983,
+          "path": "launch-1-195559.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 40960
+      },
+      {
+        "first": {
+          "elapsed": 195.55883254799983,
+          "path": "launch-1-195559.png"
+        },
+        "second": {
+          "elapsed": 199.6706378959998,
+          "path": "launch-1-199671.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 45056
+      },
+      {
+        "first": {
+          "elapsed": 199.6706378959998,
+          "path": "launch-1-199671.png"
+        },
+        "second": {
+          "elapsed": 203.78309821099992,
+          "path": "launch-1-203783.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 45056
+      },
+      {
+        "first": {
+          "elapsed": 203.78309821099992,
+          "path": "launch-1-203783.png"
+        },
+        "second": {
+          "elapsed": 207.89671711699975,
+          "path": "launch-1-207897.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 45056
+      },
+      {
+        "first": {
+          "elapsed": 207.89671711699975,
+          "path": "launch-1-207897.png"
+        },
+        "second": {
+          "elapsed": 212.022845512,
+          "path": "launch-1-212023.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 40960
+      },
+      {
+        "first": {
+          "elapsed": 212.022845512,
+          "path": "launch-1-212023.png"
+        },
+        "second": {
+          "elapsed": 216.132025549,
+          "path": "launch-1-216132.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 45056
+      },
+      {
+        "first": {
+          "elapsed": 216.132025549,
+          "path": "launch-1-216132.png"
+        },
+        "second": {
+          "elapsed": 220.26280913399978,
+          "path": "launch-1-220263.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 40960
+      },
+      {
+        "first": {
+          "elapsed": 220.26280913399978,
+          "path": "launch-1-220263.png"
+        },
+        "second": {
+          "elapsed": 224.376614411,
+          "path": "launch-1-224377.png"
+        },
+        "pixels_changed": true,
+        "pcm_growth_bytes": 45056
+      }
+    ],
+    "all_sample_pairs_changed": true,
+    "pcm_growth_every_sample": true,
+    "scope": "Native movie ROI and PCM sampling; 1FPS capture not every decoded frame; audible music not verified"
+  }
+]

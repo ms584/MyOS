@@ -1,0 +1,73 @@
+{
+  "phase_accepted": false,
+  "scope": "Actual earlier four-open resource/stability observation reused for unchanged kernel, Cobalt, renderer, FS allocation and teardown paths; new clock query fix has separate native/online/fresh controls. Prior seek failure remains failed; not a complete current-profile AV or long-term stability pass",
+  "source_bundle": "build/phase334-public-xnmkswbc",
+  "same_core": true,
+  "same_normal": true,
+  "four_open_rows": [
+    {
+      "launch": 1,
+      "normal_nodes": 48,
+      "linked_capacity": 114688,
+      "unlinked_capacity": 0,
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-1.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    },
+    {
+      "launch": 2,
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0,
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-2.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    },
+    {
+      "launch": 3,
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0,
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-3.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    },
+    {
+      "launch": 4,
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0,
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-4.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> "
+    }
+  ],
+  "normal_fs_nodes": 64,
+  "ordinary_file_max_bytes": 65536,
+  "normal_file_buffers_theoretical_upper_bound_bytes": 4194304,
+  "caveat": "Not SHM, heap, total browser RAM or proof that cache remains below this cap without errors. Existing full-table online/fault evidence retains ENOSPC notes; no capacity expansion. New normal cache has not reached a plateau in its two observed opens."
+}

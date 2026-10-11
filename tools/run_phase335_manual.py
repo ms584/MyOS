@@ -5,6 +5,8 @@ No automatic input, acceptance or host media player. Requires WSLg/PulseAudio/KV
 import argparse,json,hashlib,subprocess,os,tempfile,time
 from pathlib import Path
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('bundle',type=Path);p.add_argument('--check-boot',action='store_true',help='Passive headless boot check using the same drives/PulseAudio; no browser input or acceptance');a=p.parse_args();b=a.bundle.resolve();root=Path.cwd()
+if subprocess.run(['pgrep','-f','qemu-system-'],stdout=subprocess.DEVNULL).returncode==0:
+    p.error('QEMU is already running; close the current VM or wait for the test to finish first.')
 assert b.is_relative_to((root/'build').resolve())
 d=json.loads((b/'evidence.json').read_text());assert d['normal_identity']==d['normal_identity_after']
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()

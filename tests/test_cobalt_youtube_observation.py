@@ -13,7 +13,7 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def native_click(vm,x,y,button='left'):
-    assert button in ('left','right')
+    assert button in (None,'left','right')
     # Clamp the actual PS/2 cursor to the top-left, then
     # move in bounded deltas; never read DOM/guest heaps.
     for _ in range(8):
@@ -24,7 +24,7 @@ def native_click(vm,x,y,button='left'):
             step=min(value,100);value-=step
             vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':step}}]});time.sleep(.03)
     time.sleep(.2)
-    for down in (True,False):
+    for down in ((True,False) if button is not None else ()):
         vm.command('input-send-event',{'events':[{'type':'btn','data':{'down':down,'button':button}}]});time.sleep(.1)
 
 def main():
@@ -149,10 +149,10 @@ def main():
                         ident=str(action['id'])
                         if ident in action_sent or elapsed<float(action.get('at',0)):continue
                         kind=action['type']
-                        if kind=='click':
+                        if kind in ('click','hover'):
                             x,y=int(action['x']),int(action['y'])
                             assert 0<=x<800 and 0<=y<600
-                            native_click(vm,x,y,action.get('button','left'))
+                            native_click(vm,x,y,None if kind=='hover' else action.get('button','left'))
                         elif kind=='text':
                             text=action['text'];assert isinstance(text,str) and len(text)<=64 and all(ord(c)<128 for c in text)
                             type_text(vm,text)

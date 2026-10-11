@@ -1,11 +1,16 @@
 # คู่มือทดลอง MyOS — YouTube และ Rickroll
 
 **ฉบับร่างก่อนตรวจรับ — Phase33.5/33 ยังไม่เสร็จ**
-อัปเดต 11 ต.ค. 2026: ชุด `oql02ybt` ใช้ image ปกติและเอนจิน Cobalt ที่ build
-จาก source พร้อมแก้ tooltip และ provider ที่ผ่าน focused tests แล้ว เปิด YouTube
-ออนไลน์ครบสามรอบโดยไม่ abort และคืน physical/SHM/alias ครบ แต่ยังไม่ยืนยัน
-ความเสถียรระยะยาว/บูตใหม่/full regression และยังไม่มีผลฟังเพลงจากคุณ
-ตัวเปิดชุดนี้ตรวจบูตถึง shell ผ่านแล้ว ข้อผิดพลาด read-only ใช้ snapshot overlay แก้แล้ว
+อัปเดต 11 ต.ค. 2026: ชุด `tjks53iv` ใช้ image ปกติ เอนจิน source Cobalt27.lts.3
+และ provider ที่แก้เวลาซึ่ง GetInfo รายงานระหว่าง seek_pending แล้ว
+Focused native VP8/VP9 ผ่าน; ออนไลน์สองครั้งจบและคืน physical/SHM/alias ครบ
+Pause ภาพ/PCM คงที่และ resume เดินต่อ; paused seek แสดง2:51→2:41→resume2:42
+รอบบูตใหม่จบและภาพ/PCM controls ทำงานต่อจากตำแหน่ง seek ใหม่ได้
+Full regression ผ่านและจบ17:18:25; คืน image ปกติและตรวจ hash ครบ5ไฟล์แล้ว
+ผลนี้ยังไม่ใช่ผลตรวจรับจากคุณ
+ตัวเปิดชุดใหม่ตรวจบูตถึง shell ผ่านแล้ว (ยังไม่ใช่ตรวจรับเสียงเพลง)
+ยังต้องฟังเพลงจริงและตรวจว่าไม่มีเสียงเก่าค้าง คู่มือนี้ไม่บันทึกว่าคุณตรวจรับแล้ว
+ตัวเปิดป้องกัน QEMU ซ้อน; หากมีรอบทดสอบทำงานให้รอจนจบก่อน
 ดูผลจริงล่าสุดใน PHASE335_ACCEPTANCE.md และ PROJECT_STATE.md
 
 ## คำสั่งตั้งแต่เปิด PowerShell จนเข้า MyOS
@@ -20,7 +25,7 @@ wsl.exe -d Ubuntu
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv
 ```
 
 3. รอหน้าต่าง **QEMU / MyOS** เปิด แล้วคลิกในหน้าต่างนั้น คำสั่งต่อไปนี้พิมพ์ที่ `myos>` ภายใน MyOS ทีละบรรทัด:
@@ -50,7 +55,7 @@ desktop
 หากต้องการตรวจเฉพาะการบูตก่อนเปิดหน้าต่าง ใช้คำสั่งนี้ใน Ubuntu:
 
 ```sh
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt --check-boot
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv --check-boot
 ```
 
 ผล `PASS passive normal MyOS boot` ตรวจเพียงถึง shell ยังไม่ยืนยันภาพเพลง/เสียง/controls หรือ Phase ผ่าน ตัวเปิดแต่ละครั้งจะพิมพ์ตำแหน่ง serial log ของ session ใหม่ และไม่เขียนทับหลักฐานรอบก่อน
@@ -68,13 +73,13 @@ Cobalt27.lts.3/Evergreen7.3.2/Starboard18,Mesa25.0.7,libvpx1.15.2,Opus1.5.2
 รายละเอียด SHA256 อยู่ในรายงาน ไม่ให้ใช้ provider เก่าที่พบ sync failures
 
 ## เปิดหน้าต่าง MyOS สำหรับตรวจรับด้วยตนเอง
-ชุด oql02ybt เป็น snapshot normal boot และ native application assets ที่ใช้
+ชุด tjks53iv เป็น snapshot normal boot และ native application assets ที่ใช้
 ทดลองครั้งก่อน;ไม่มี movie fixture สำหรับแทน YouTube เครื่องมือจะตรวจ hash
 boot/assets/runtime/core ก่อนเปิด VM ทุกครั้ง การเปิดนี้ยังไม่บันทึกว่า Phase ผ่าน
 
 ```sh
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-oql02ybt
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase334-public-tjks53iv
 ```
 
 คำสั่งนี้เปิด QEMU GTK และเสียง PulseAudio เท่านั้น ไม่เปิด host browser/player
@@ -180,7 +185,7 @@ PNG/WAV/timeline ต้นฉบับและ native hardware clock เป็�
 ## ตรวจตำแหน่ง seek เพิ่มเมื่อเวลาแสดงผิดปกติ
 
 หลักฐานรอบออนไลน์ที่2 พบหลังย้อนหลังแสดง2:10 แล้วประมาณ3วินาทีต่อมา
-แสดง2:20ระหว่าง buffering ยังไม่ทราบสาเหตุและยังไม่นับ seek ว่าผ่านครบ
+แสดง2:20ระหว่าง buffering สาเหตุคือ GetInfo คืนเวลาเก่าขณะ seek_pending; ชุดใหม่แก้และทดสอบตำแหน่งภาพแล้ว แต่ยังต้องฟังเสียงหลัง seek จริง
 เมื่อลองรอบใหม่ จดเวลาก่อน/หลัง `L` และ `J` พร้อมเวลาจริงที่ผ่านไป
 ถ้าตำแหน่งกระโดดผิด ให้เก็บ serial log และถือว่ารอบนั้นยังไม่ผ่าน
 เพื่อแยกตำแหน่งจากเวลาที่เล่นต่อ สามารถ pause ก่อน seek แล้วตรวจว่า
@@ -205,5 +210,5 @@ PNG/WAV/timeline ต้นฉบับและ native hardware clock เป็�
 ไฟล์สำรองและ receipt อยู่ `build/phase335-cleanup-20261011/`; รายงานปลอดข้อมูลลับอยู่ `docs/wip/phase335/checkpoint16/`
 Image ปกติ/core/dependenciesปัจจุบันยัง hash ตรงเดิม ไม่ต้อง build ใหม่จากการ cleanup นี้
 หากต้องรัน incremental build ของชุดเก่าที่ archive ไว้ ให้ตรวจ SHA256 ใน receipt แล้ว `tar -xzf ARCHIVE.tar.gz -C ORIGINAL_PARENT` ก่อน
-การคืนพื้นที่ C: ยังต้องวัดหลัง compact VHDX อย่าตีความตัวเลข fstrim896.7GiB ว่าได้คืนพื้นที่ Windows เท่านั้น
+การคืนพื้นที่ C: ยังต้องวัดหลัง compact VHDX อย่าตีความตัวเลข fstrim896.7GiB ว่าเป็นพื้นที่ Windows ที่คืนได้
 แฟลชไดรฟ์32GBมีพื้นที่พอสำหรับ image BIOS1.4MiB/UEFI32MiBและ browser assetsประมาณ118MiB ของ profile ปัจจุบัน แต่การบูต/ไดรเวอร์เครื่องจริงยังไม่ตรวจรับ

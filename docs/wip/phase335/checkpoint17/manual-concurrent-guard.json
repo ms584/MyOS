@@ -1,0 +1,6 @@
+{
+  "actual_vm_running": true,
+  "exit": 2,
+  "refused_before_launch": true,
+  "message": "QEMU is already running; wait for current test"
+}

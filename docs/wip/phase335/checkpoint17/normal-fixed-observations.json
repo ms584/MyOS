@@ -1,0 +1,582 @@
+{
+  "bundle": "build/phase334-public-tjks53iv",
+  "phase_accepted": false,
+  "owner_confirmed": false,
+  "date": "2026-10-11T16:13:36.959641+07:00",
+  "commit": "7898ed29be86cfb709d075b66418b9ca937c8d58",
+  "core_sha256": "72a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505",
+  "provider_sha256": "9cb26b6c1da478c54028de5655fcc30b8f3ab32761910dbac9e85a9bf462fd26",
+  "normal_identity": {
+    "kernel.bin": "adafde541dcc5dac747ddabb0eb7fe36cc27947a758e9ce06f249e6b33a29102",
+    "kernel.elf": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "myos-current.img": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "normal_identity_after": {
+    "kernel.bin": "adafde541dcc5dac747ddabb0eb7fe36cc27947a758e9ce06f249e6b33a29102",
+    "kernel.elf": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "myos-current.img": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "1024",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-public.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-tjks53iv/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-public.sock,server=on,wait=off",
+      "-cpu",
+      "host",
+      "-nic",
+      "user,model=rtl8139,id=phase335net",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/phase334-public-tjks53iv/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-tjks53iv/assets.img,if=ide,index=1",
+      "-accel",
+      "kvm",
+      "-object",
+      "filter-dump,id=phase335capture,netdev=phase335net,file=/home/xytron404/myos/build/phase334-public-tjks53iv/network.pcap"
+    ]
+  ],
+  "pmm": {
+    "kernel_elf_sha256": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "sampled_peak_bytes": 544727040,
+    "paused_seconds": 2.433112413000572,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.",
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 555679744,
+    "kernel_heap_runtime_peak_bytes": 10254208,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "launches": [
+    {
+      "launch": 1,
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "inputs": [
+        {
+          "action": {
+            "id": "settings2",
+            "launch": 1,
+            "at": 165,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 165.02010977100008
+        },
+        {
+          "action": {
+            "id": "quality2",
+            "launch": 1,
+            "at": 173,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 173.07009692400015
+        },
+        {
+          "action": {
+            "id": "144p2",
+            "launch": 1,
+            "at": 181,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 181.07423871100013
+        },
+        {
+          "action": {
+            "id": "pause2",
+            "launch": 1,
+            "at": 225,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 225.07803350900008
+        },
+        {
+          "action": {
+            "id": "inspect-clock-228",
+            "launch": 1,
+            "at": 228,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 228.0409059010001
+        },
+        {
+          "action": {
+            "id": "inspect-clock-238",
+            "launch": 1,
+            "at": 238,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 238.02474731300003
+        },
+        {
+          "action": {
+            "id": "resume2",
+            "launch": 1,
+            "at": 240,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 240.0159846900001
+        },
+        {
+          "action": {
+            "id": "inspect-clock-245",
+            "launch": 1,
+            "at": 245,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 245.02320933200008
+        },
+        {
+          "action": {
+            "id": "forward2",
+            "launch": 1,
+            "at": 260,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 260.07872528000007
+        },
+        {
+          "action": {
+            "id": "inspect-clock-266",
+            "launch": 1,
+            "at": 266,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 266.03118366900003
+        },
+        {
+          "action": {
+            "id": "backward2",
+            "launch": 1,
+            "at": 285,
+            "type": "key",
+            "key": "j"
+          },
+          "elapsed": 285.082137203
+        },
+        {
+          "action": {
+            "id": "inspect-clock-290",
+            "launch": 1,
+            "at": 290,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 290.0194019610003
+        },
+        {
+          "action": {
+            "id": "seek-paused-pause",
+            "launch": 1,
+            "at": 300,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 300.0251397310003
+        },
+        {
+          "action": {
+            "id": "inspect-clock-304",
+            "launch": 1,
+            "at": 304,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 304.0231108400003
+        },
+        {
+          "action": {
+            "id": "seek-paused-forward",
+            "launch": 1,
+            "at": 310,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 310.02293171400015
+        },
+        {
+          "action": {
+            "id": "inspect-clock-315",
+            "launch": 1,
+            "at": 315,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 315.07593027400026
+        },
+        {
+          "action": {
+            "id": "seek-paused-backward",
+            "launch": 1,
+            "at": 325,
+            "type": "key",
+            "key": "j"
+          },
+          "elapsed": 325.0734153950002
+        },
+        {
+          "action": {
+            "id": "inspect-clock-334",
+            "launch": 1,
+            "at": 334,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 334.09440526900016
+        },
+        {
+          "action": {
+            "id": "inspect-clock-339",
+            "launch": 1,
+            "at": 339,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 339.03697766999994
+        },
+        {
+          "action": {
+            "id": "seek-paused-resume",
+            "launch": 1,
+            "at": 340,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 340.00070237
+        },
+        {
+          "action": {
+            "id": "inspect-clock-344",
+            "launch": 1,
+            "at": 344,
+            "type": "hover",
+            "x": 400,
+            "y": 420
+          },
+          "elapsed": 344.0982063870001
+        },
+        {
+          "action": {
+            "id": "player-close2",
+            "launch": 1,
+            "at": 350,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 350.089093048
+        },
+        {
+          "action": {
+            "id": "close2",
+            "launch": 1,
+            "at": 355,
+            "type": "close"
+          },
+          "elapsed": 355.0557628659999
+        }
+      ],
+      "pairs": [
+        {
+          "frames": [
+            {
+              "elapsed": 229.90749089700012,
+              "path": "launch-1-229907.png"
+            },
+            {
+              "elapsed": 238.85306730300022,
+              "path": "launch-1-238853.png"
+            }
+          ],
+          "movie_roi": [
+            120,
+            80,
+            680,
+            320
+          ],
+          "pixels_changed": false,
+          "pcm_samples": [
+            {
+              "elapsed": 230.02824519600017,
+              "wav_bytes": 1138688
+            },
+            {
+              "elapsed": 238.98982110200018,
+              "wav_bytes": 1138688
+            }
+          ],
+          "pcm_growth_bytes": 0,
+          "scope": "Pixel/PCM observation; not audible music or absence of stale audio proof"
+        },
+        {
+          "frames": [
+            {
+              "elapsed": 238.85306730300022,
+              "path": "launch-1-238853.png"
+            },
+            {
+              "elapsed": 249.16956151800014,
+              "path": "launch-1-249170.png"
+            }
+          ],
+          "movie_roi": [
+            120,
+            80,
+            680,
+            320
+          ],
+          "pixels_changed": true,
+          "pcm_samples": [
+            {
+              "elapsed": 238.98982110200018,
+              "wav_bytes": 1138688
+            },
+            {
+              "elapsed": 248.9687730180001,
+              "wav_bytes": 1236992
+            }
+          ],
+          "pcm_growth_bytes": 98304,
+          "scope": "Pixel/PCM observation; not audible music or absence of stale audio proof"
+        },
+        {
+          "frames": [
+            {
+              "elapsed": 190.396535674,
+              "path": "launch-1-190397.png"
+            },
+            {
+              "elapsed": 224.355210811,
+              "path": "launch-1-224355.png"
+            }
+          ],
+          "movie_roi": [
+            120,
+            80,
+            680,
+            320
+          ],
+          "pixels_changed": true,
+          "pcm_samples": [
+            {
+              "elapsed": 189.99483817100008,
+              "wav_bytes": 753664
+            },
+            {
+              "elapsed": 223.95287541200014,
+              "wav_bytes": 1126400
+            }
+          ],
+          "pcm_growth_bytes": 372736,
+          "scope": "Pixel/PCM observation; not audible music or absence of stale audio proof"
+        }
+      ],
+      "shell_returned": true,
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "desktop_after_close": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-1.png"
+      },
+      "inode_count_after": 53,
+      "linked_file_buffer_capacity_after": 217088,
+      "unlinked_file_buffer_capacity_after": 0
+    },
+    {
+      "launch": 2,
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "inputs": [
+        {
+          "action": {
+            "id": "reopen-settings3",
+            "launch": 2,
+            "at": 165,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 165.1087867299998
+        },
+        {
+          "action": {
+            "id": "reopen-quality3",
+            "launch": 2,
+            "at": 173,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 173.04009165700018
+        },
+        {
+          "action": {
+            "id": "reopen-144p3",
+            "launch": 2,
+            "at": 181,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 181.07221109300008
+        },
+        {
+          "action": {
+            "id": "reopen-player-close3",
+            "launch": 2,
+            "at": 245,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 245.1010154559999
+        },
+        {
+          "action": {
+            "id": "reopen-close3",
+            "launch": 2,
+            "at": 260,
+            "type": "close"
+          },
+          "elapsed": 260.084587585
+        }
+      ],
+      "pairs": [
+        {
+          "frames": [
+            {
+              "elapsed": 193.49695145499982,
+              "path": "launch-2-193497.png"
+            },
+            {
+              "elapsed": 233.64464533799992,
+              "path": "launch-2-233645.png"
+            }
+          ],
+          "movie_roi": [
+            120,
+            80,
+            680,
+            320
+          ],
+          "pixels_changed": true,
+          "pcm_samples": [
+            {
+              "elapsed": 192.99482355300006,
+              "wav_bytes": 2654208
+            },
+            {
+              "elapsed": 233.96691324099993,
+              "wav_bytes": 3104768
+            }
+          ],
+          "pcm_growth_bytes": 450560,
+          "scope": "Pixel/PCM observation; not audible music or absence of stale audio proof"
+        }
+      ],
+      "shell_returned": true,
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "desktop_after_close": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-2.png"
+      },
+      "inode_count_after": 57,
+      "linked_file_buffer_capacity_after": 290816,
+      "unlinked_file_buffer_capacity_after": 0
+    }
+  ],
+  "native_media_lines": [
+    "ELF pair live: started; Escape stops all threads",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=640x360 presentation=160x90",
+    "MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0",
+    "MEDIA native metrics presented=5 sync-samples=1 max-sync-us=53795 decoded=20 dropped=4 corrupted=0 source-starvations=0",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=640x360 presentation=160x90",
+    "MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0",
+    "MEDIA native metrics presented=1103 sync-samples=1098 max-sync-us=84815 decoded=1628 dropped=516 corrupted=0 source-starvations=0",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=256x144 presentation=160x90",
+    "MEDIA first-video ticket=5 pts=64080000 clock=63995187 consumed=0",
+    "MEDIA first-video ticket=7 pts=132600000 clock=132599979 consumed=0",
+    "MEDIA first-video ticket=9 pts=146960000 clock=146955270 consumed=0",
+    "MEDIA first-video ticket=11 pts=171280000 clock=171258666 consumed=0",
+    "MEDIA first-video ticket=13 pts=161280000 clock=161258666 consumed=0",
+    "MEDIA native metrics presented=2425 sync-samples=2403 max-sync-us=89893 decoded=3046 dropped=546 corrupted=0 source-starvations=0",
+    "ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0",
+    "ELF pair live: pages reclaimed; heap-before=785920 heap-after=994848",
+    "ELF pair live: started; Escape stops all threads",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=640x360 presentation=160x90",
+    "MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0",
+    "MEDIA native metrics presented=3 sync-samples=0 max-sync-us=0 decoded=20 dropped=5 corrupted=0 source-starvations=0",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=640x360 presentation=160x90",
+    "MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0",
+    "MEDIA native metrics presented=1054 sync-samples=1049 max-sync-us=89986 decoded=1452 dropped=395 corrupted=0 source-starvations=0",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=256x144 presentation=160x90",
+    "MEDIA first-video ticket=5 pts=57360000 clock=57283375 consumed=0",
+    "MEDIA native metrics presented=1465 sync-samples=1460 max-sync-us=89868 decoded=1632 dropped=154 corrupted=0 source-starvations=0",
+    "MEDIA stream video-mime=video/webm; codecs=\"vp09.00.51.08.01.01.01.01.00\" audio-mime=audio/webm; codecs=\"opus\" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1",
+    "MEDIA decoded codec=8 source=640x360 presentation=160x90",
+    "ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0",
+    "ELF pair live: pages reclaimed; heap-before=994848 heap-after=1068576"
+  ],
+  "max_native_sync_us": 89986,
+  "recorded_fatal_or_signal6": false,
+  "captured_pcm": {
+    "channels": 1,
+    "rate": 11025,
+    "sample_bytes": 1,
+    "frames": 3270513,
+    "seconds": 296.6451700680272
+  },
+  "non_file_heap_accounting": {
+    "baseline_bytes": 777728,
+    "after_open1_bytes": 777760,
+    "after_open2_bytes": 777760,
+    "method": "serial heap live bytes minus bounded linked inode file buffer capacity",
+    "scope": "32-byte first-launch retention then stable for second open; not allocation identity/long-term leak proof"
+  }
+}
