@@ -62,3 +62,12 @@
   baseline commit/branch, scope, evidence, blockers, relevant files, next step.
   Link detailed docs/logs rather than copying history. HANDOFF.md is background;
   PROJECT_STATE.md is the current entry point. Never mark pending tests passed.
+
+## Resource budget — owner request 2026-10-11
+
+- Run one QEMU/media/regression job at a time. Use the validated 1024 MiB guest profile; do not reduce guest RAM to conceal a failure.
+- For new host compilation, start with at most two workers and reuse incremental objects. Keep this cap unless the owner changes the resource budget.
+- Prefer low-priority diagnostic execution; record native screenshots at 1 FPS unless a specific failure requires more. Keep one authoritative PNG/WAV/timeline bundle; do not generate redundant AVI copies.
+- Reuse valid unchanged tests. Diagnose a concrete failure with one focused run before repeating long acceptance sessions; required affected and architectural regression still applies.
+- Before adding large outputs, inventory their size and free space. Reclaim only verified generated/rebuildable files; preserve source, pinned dependencies, normal/manual images and original acceptance/failure evidence. Record exact paths and bytes reclaimed.
+- Do not delete the WSL VHDX. Guest free space and Windows reclaimed space are different measurements; offline compaction must wait until all jobs finish and must be reported separately.

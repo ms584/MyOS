@@ -1,0 +1,588 @@
+{
+  "phase_accepted": false,
+  "owner_confirmed": false,
+  "date": "2026-10-11T14:53:57.176579+07:00",
+  "commit": "59e8fe2f5003d63109d4bfdbc989ff7d6d627927",
+  "core_sha256": "72a802f90fddd071971bca252a00ffbc824c3ef48ecc19197e6b6c0665848505",
+  "provider_sha256": "7df78b4cd48b885aadfbfd611bb72f068f87872eedd9c1ec3096155fe706512e",
+  "urls": [
+    "https://www.youtube.com/",
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  ],
+  "normal_identity": {
+    "kernel.bin": "adafde541dcc5dac747ddabb0eb7fe36cc27947a758e9ce06f249e6b33a29102",
+    "kernel.elf": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "myos-current.img": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+    "myos-uefi.img": "f1101606da9d76f85fc9580dd4cca0bb0d1b9563b671e3cf83360c3ed883a265",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "normal_identity_exact": true,
+  "qemu": [
+    [
+      "qemu-system-x86_64",
+      "-m",
+      "1024",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "file:/home/xytron404/myos/build/system-tests/phase334-public.log",
+      "-no-reboot",
+      "-no-shutdown",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-xnmkswbc/boot.img,if=floppy,index=0",
+      "-boot",
+      "order=a",
+      "-qmp",
+      "unix:/home/xytron404/myos/build/system-tests/phase334-public.sock,server=on,wait=off",
+      "-cpu",
+      "host",
+      "-nic",
+      "user,model=rtl8139,id=phase335net",
+      "-audiodev",
+      "wav,id=myos-audio,path=/home/xytron404/myos/build/phase334-public-xnmkswbc/audio.wav,out.frequency=11025,out.channels=1,out.format=u8",
+      "-device",
+      "sb16,audiodev=myos-audio",
+      "-drive",
+      "format=raw,file=/home/xytron404/myos/build/phase334-public-xnmkswbc/assets.img,if=ide,index=1",
+      "-accel",
+      "kvm",
+      "-object",
+      "filter-dump,id=phase335capture,netdev=phase335net,file=/home/xytron404/myos/build/phase334-public-xnmkswbc/network.pcap"
+    ]
+  ],
+  "memory_mib": 1024,
+  "max_sync_us": 88971,
+  "pmm": {
+    "kernel_elf_sha256": "53b6e7d1af3e69263335bc525016113620877417852fc2e747137d58be1fad86",
+    "sampled_peak_bytes": 630460416,
+    "paused_seconds": 5.986196329998222,
+    "caveat": "Sampled PMM allocated frames, includes kernel/other residents; not exact peak or per-process RSS; includes reserved kernel heap backing pages; heap live bytes are not a separate physical allocation.",
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 635293696,
+    "kernel_heap_runtime_peak_bytes": 9825680,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "launches": [
+    {
+      "launch": 1,
+      "inputs": [
+        {
+          "action": {
+            "id": "search-focus",
+            "at": 180,
+            "type": "click",
+            "x": 395,
+            "y": 28,
+            "launch": 1
+          },
+          "elapsed": 180.014219081
+        },
+        {
+          "action": {
+            "id": "search-query",
+            "at": 188,
+            "type": "text",
+            "text": "Rick Astley Never Gonna Give You Up",
+            "launch": 1
+          },
+          "elapsed": 188.06155701100002
+        },
+        {
+          "action": {
+            "id": "search-submit",
+            "at": 194,
+            "type": "key",
+            "key": "ret",
+            "launch": 1
+          },
+          "elapsed": 194.095005702
+        },
+        {
+          "action": {
+            "id": "search-select-result",
+            "launch": 1,
+            "at": 240,
+            "type": "click",
+            "x": 250,
+            "y": 205
+          },
+          "elapsed": 247.85203684899997
+        },
+        {
+          "action": {
+            "id": "settings",
+            "at": 320,
+            "type": "click",
+            "x": 663,
+            "y": 459,
+            "launch": 1
+          },
+          "elapsed": 320.067902804
+        },
+        {
+          "action": {
+            "id": "quality",
+            "at": 328,
+            "type": "click",
+            "x": 613,
+            "y": 397,
+            "launch": 1
+          },
+          "elapsed": 328.00021539399995
+        },
+        {
+          "action": {
+            "id": "144p",
+            "at": 336,
+            "type": "click",
+            "x": 601,
+            "y": 343,
+            "launch": 1
+          },
+          "elapsed": 336.08963787100004
+        },
+        {
+          "action": {
+            "id": "pause",
+            "at": 420,
+            "type": "key",
+            "key": "k",
+            "launch": 1
+          },
+          "elapsed": 420.05244570599996
+        },
+        {
+          "action": {
+            "id": "resume",
+            "at": 435,
+            "type": "key",
+            "key": "k",
+            "launch": 1
+          },
+          "elapsed": 435.07668483299994
+        },
+        {
+          "action": {
+            "id": "forward",
+            "at": 455,
+            "type": "key",
+            "key": "l",
+            "launch": 1
+          },
+          "elapsed": 455.04174989699993
+        },
+        {
+          "action": {
+            "id": "backward",
+            "at": 480,
+            "type": "key",
+            "key": "j",
+            "launch": 1
+          },
+          "elapsed": 480.06184711699996
+        },
+        {
+          "action": {
+            "id": "seek-paused-pause",
+            "launch": 1,
+            "at": 505,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 505.017830106
+        },
+        {
+          "action": {
+            "id": "seek-paused-forward",
+            "launch": 1,
+            "at": 515,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 515.0860009979999
+        },
+        {
+          "action": {
+            "id": "seek-paused-backward",
+            "launch": 1,
+            "at": 530,
+            "type": "key",
+            "key": "j"
+          },
+          "elapsed": 530.049252366
+        },
+        {
+          "action": {
+            "id": "seek-paused-resume",
+            "launch": 1,
+            "at": 545,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 545.0664228019999
+        },
+        {
+          "action": {
+            "id": "context",
+            "at": 560,
+            "type": "click",
+            "x": 350,
+            "y": 250,
+            "button": "right",
+            "launch": 1
+          },
+          "elapsed": 560.056434697
+        },
+        {
+          "action": {
+            "id": "stats",
+            "at": 568,
+            "type": "click",
+            "x": 439,
+            "y": 559,
+            "launch": 1
+          },
+          "elapsed": 568.0183151379999
+        },
+        {
+          "action": {
+            "id": "dismiss-youtube-music-promotion",
+            "launch": 1,
+            "at": 548,
+            "type": "click",
+            "x": 130,
+            "y": 548
+          },
+          "elapsed": 573.8616132369999
+        },
+        {
+          "action": {
+            "id": "player-close",
+            "at": 580,
+            "type": "click",
+            "x": 100,
+            "y": 28,
+            "launch": 1
+          },
+          "elapsed": 580.084479636
+        },
+        {
+          "action": {
+            "id": "close",
+            "at": 595,
+            "type": "close",
+            "launch": 1
+          },
+          "elapsed": 595.0722363169999
+        }
+      ],
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-1.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> ",
+      "normal_nodes": 48,
+      "linked_capacity": 114688,
+      "unlinked_capacity": 0
+    },
+    {
+      "launch": 2,
+      "inputs": [
+        {
+          "action": {
+            "id": "settings2",
+            "launch": 2,
+            "at": 165,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 165.02952839299996
+        },
+        {
+          "action": {
+            "id": "quality2",
+            "launch": 2,
+            "at": 173,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 173.02056612600006
+        },
+        {
+          "action": {
+            "id": "144p2",
+            "launch": 2,
+            "at": 181,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 181.07357315700006
+        },
+        {
+          "action": {
+            "id": "pause2",
+            "launch": 2,
+            "at": 225,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 225.05602740799998
+        },
+        {
+          "action": {
+            "id": "resume2",
+            "launch": 2,
+            "at": 240,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 240.00560640000003
+        },
+        {
+          "action": {
+            "id": "forward2",
+            "launch": 2,
+            "at": 260,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 260.09211392400005
+        },
+        {
+          "action": {
+            "id": "backward2",
+            "launch": 2,
+            "at": 285,
+            "type": "key",
+            "key": "j"
+          },
+          "elapsed": 285.09923790999994
+        },
+        {
+          "action": {
+            "id": "seek-paused-pause",
+            "launch": 2,
+            "at": 300,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 300.0983057070001
+        },
+        {
+          "action": {
+            "id": "seek-paused-forward",
+            "launch": 2,
+            "at": 310,
+            "type": "key",
+            "key": "l"
+          },
+          "elapsed": 310.0853575760001
+        },
+        {
+          "action": {
+            "id": "seek-paused-backward",
+            "launch": 2,
+            "at": 325,
+            "type": "key",
+            "key": "j"
+          },
+          "elapsed": 325.031676363
+        },
+        {
+          "action": {
+            "id": "seek-paused-resume",
+            "launch": 2,
+            "at": 340,
+            "type": "key",
+            "key": "k"
+          },
+          "elapsed": 340.0596500800001
+        },
+        {
+          "action": {
+            "id": "player-close2",
+            "launch": 2,
+            "at": 345,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 345.03276831899996
+        },
+        {
+          "action": {
+            "id": "close2",
+            "launch": 2,
+            "at": 360,
+            "type": "close"
+          },
+          "elapsed": 360.00148219100004
+        }
+      ],
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-2.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> ",
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0
+    },
+    {
+      "launch": 3,
+      "inputs": [
+        {
+          "action": {
+            "id": "settings3",
+            "launch": 3,
+            "at": 165,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 165.01772747999985
+        },
+        {
+          "action": {
+            "id": "quality3",
+            "launch": 3,
+            "at": 173,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 173.02506752199997
+        },
+        {
+          "action": {
+            "id": "144p3",
+            "launch": 3,
+            "at": 181,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 181.06510633699986
+        },
+        {
+          "action": {
+            "id": "player-close3",
+            "launch": 3,
+            "at": 245,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 245.08968386799984
+        },
+        {
+          "action": {
+            "id": "close3",
+            "launch": 3,
+            "at": 260,
+            "type": "close"
+          },
+          "elapsed": 260.00034463199995
+        }
+      ],
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-3.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> ",
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0
+    },
+    {
+      "launch": 4,
+      "inputs": [
+        {
+          "action": {
+            "id": "settings4",
+            "launch": 4,
+            "at": 165,
+            "type": "click",
+            "x": 663,
+            "y": 459
+          },
+          "elapsed": 165.00265204300013
+        },
+        {
+          "action": {
+            "id": "quality4",
+            "launch": 4,
+            "at": 173,
+            "type": "click",
+            "x": 613,
+            "y": 397
+          },
+          "elapsed": 173.00152236999998
+        },
+        {
+          "action": {
+            "id": "144p4",
+            "launch": 4,
+            "at": 181,
+            "type": "click",
+            "x": 601,
+            "y": 343
+          },
+          "elapsed": 181.04452599399997
+        },
+        {
+          "action": {
+            "id": "player-close4",
+            "launch": 4,
+            "at": 245,
+            "type": "click",
+            "x": 100,
+            "y": 28
+          },
+          "elapsed": 245.04353321999997
+        },
+        {
+          "action": {
+            "id": "close4",
+            "launch": 4,
+            "at": 260,
+            "type": "close"
+          },
+          "elapsed": 260.075892912
+        }
+      ],
+      "shell_returned": true,
+      "desktop": {
+        "window_opened": true,
+        "shell_returned": true,
+        "path": "desktop-after-launch-4.png"
+      },
+      "before": "Free physical pages: 257743\nmyos> ",
+      "after": "Free physical pages: 257743\nmyos> ",
+      "after_desktop": "Free physical pages: 257743\nmyos> ",
+      "normal_nodes": 64,
+      "linked_capacity": 135168,
+      "unlinked_capacity": 0
+    }
+  ],
+  "backward_resume_failure": true
+}

@@ -1,3 +1,14 @@
+Checkpoint16 2026-10-11: fresh normal xnmkswbc completed4opens15:18:43;
+native homepage search/result reached actual RickID. First controls invalid from ads/promotion.
+Second paused backward/resume FAIL:2:12→2:22 at342.317; no fix/cause yet.
+Normal identities exact, all4 physical/SHM/alias cleanup and desktop responsive.
+Linked cache114688→135168→135168→135168B; overall stability not accepted.
+Ownedpeak635293696B/history complete; maxsync88971us, drops disclosed.
+Owner has not tried/listened; captured PCM is not owner signoff. Full regression pending.
+WSL spontaneously terminated; interrupted trace evidence retained, no PASS.
+Resource budget:one1024MiB VM/1FPS/compile≤2workers; verified old-source archives cleanup.
+Phase32 independently OPEN; Phase33.5/33 NOT ACCEPTED. See wip/phase335/checkpoint16.
+
 Checkpoint12 2026-10-11 04:14+07: continuous new-core observations retained as NOT PASSED: VP9 zero-drop analyzer rejected1drop; original-profile VP8 zero-drop decoded600, but one obscured barcode screenshot rejected pixel reader. Fixed-layout private fixture retest active; no runtime/threshold relaxation. Normal online source-core selector prepared, three focused identity tests pass. See wip/phase335/checkpoint12/continuous-retests/README.md.
 
 Checkpoint11 2026-10-11 04:03:59+07: private source-core standard-media paired controls completed. Five frozen viewport crops and zero PCM-file growth over observed8.116s; resume both advance, forward seek15s. Owner listening/backward seek/normal online unverified. Continuous/RAM retest active. See wip/phase335/checkpoint11/paired-controls/README.md.

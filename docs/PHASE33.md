@@ -1,3 +1,14 @@
+Checkpoint16 2026-10-11: fresh normal xnmkswbc completed4opens15:18:43;
+native homepage search/result reached actual RickID. First controls invalid from ads/promotion.
+Second paused backward/resume FAIL:2:12→2:22 at342.317; no fix/cause yet.
+Normal identities exact, all4 physical/SHM/alias cleanup and desktop responsive.
+Linked cache114688→135168→135168→135168B; overall stability not accepted.
+Ownedpeak635293696B/history complete; maxsync88971us, drops disclosed.
+Owner has not tried/listened; captured PCM is not owner signoff. Full regression pending.
+WSL spontaneously terminated; interrupted trace evidence retained, no PASS.
+Resource budget:one1024MiB VM/1FPS/compile≤2workers; verified old-source archives cleanup.
+Phase32 independently OPEN; Phase33.5/33 NOT ACCEPTED. See wip/phase335/checkpoint16.
+
 Checkpoint15 2026-10-11: normal online oql02ybt completed3opens12:34:02, no abort,
 exact physical/SHM/alias cleanup; max native sync82911us. Second/third paired
 pause movie pixels/PCM freeze and resume observed; first controls invalid from

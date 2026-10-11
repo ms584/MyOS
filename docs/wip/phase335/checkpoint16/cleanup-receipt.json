@@ -1,0 +1,380 @@
+{
+  "date": "2026-10-11T15:47:05.389192+07:00",
+  "operation": "archive verified old generated Mesa source copies; no code/binary/evidence deletion",
+  "before_available_bytes": 900243558400,
+  "completed": [
+    {
+      "path": "build/renderer-evaluation/target-config-1gg2np09/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-1gg2np09_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "32eed557c091e4dafa139413b3ba02ef5b0c7857b0aab8435e44e9a9ca82091a",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-3c959yqk/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-3c959yqk_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "cf4975be94a81b928e2ae7c280d7fb277fa4b0ff3a9ddcb4180941afbaca4d6b",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-46wn0cz7/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-46wn0cz7_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "9f76bb1fd94d650f268b9d37fab80cf184f6b5af0774eb8e260577be9ff581fd",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-49iuta7m/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-49iuta7m_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "e265a61f44e49563a38f94dc1687b221052927d7cbea945fa236d4b8a0589a54",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-8267cc2_/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-8267cc2__mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "6fab657ebf97fe4ffc5f93ce76c09118c0a205423744d19d4873e89578501a25",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-8gnsdabk/mesa-25.0.7",
+      "files": 10968,
+      "source_allocated_bytes": 311148544,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-8gnsdabk_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "edbbd31c20f1da4d8df3e16c432b23628c46aca77b69e2e5534ea8bf8a71b912",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-_fuupu2c/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-_fuupu2c_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "dabd6aa97665c5eac52c9d1bd0b94cb119526c092380d92afcc41b3da1615956",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-_kloym4_/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-_kloym4__mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "7ab013d69ec80c6ab6d558187f430ec97838d6486526f4f67d7fbed6bb30a17d",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-ad2v00f_/mesa-25.0.7",
+      "files": 10968,
+      "source_allocated_bytes": 311148544,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-ad2v00f__mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "0ada30322c58a467487c65685e5e3838f652e86d43a01c51ecb99ba62f101e0e",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-bepnfc8v/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-bepnfc8v_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "149cc67d7630b29c247ae7d608ad1345a3b51d8f050a51e905e295b09aa573b8",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-du_wdizy/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-du_wdizy_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "1e9cdfbc80821efbe6d4f8d168910e4fa5bf96274cce6bf349f14b455bc19033",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-e87xjgfy/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-e87xjgfy_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "c1643ea61708326b9bcca93d81d7d9b79e1c4de044425584f8500b33009b15bf",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-epnbvant/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-epnbvant_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "cdd509e0e26dfaea0975daa3b26cff5956e877c00d2c9388b3059c952fab5070",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-eyuj7my5/mesa-25.0.7",
+      "files": 10967,
+      "source_allocated_bytes": 311087104,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-eyuj7my5_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "8157a46da8d17c2a01a41c0a92caa53f461285935574073d3150d9e057f87ccb",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-h0vmsizj/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-h0vmsizj_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "3627c76a13c3c1bfaf2586c79dec4c031accdd3a6a637ee108be482ca0ae3736",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-ifoem875/mesa-25.0.7",
+      "files": 10968,
+      "source_allocated_bytes": 311148544,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-ifoem875_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "42f61a6bca3608a18c346ab2197854b43f8f34a4101c9a68a40b58448eb111b1",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-ilqu9vvw/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-ilqu9vvw_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "755cf3e00fdfc05883314dd3f14fedb4542d7969f065fee66d82aeb48d2ba536",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-j9niz748/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-j9niz748_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "aefc439dd08ad9b965aacc2df7e0c3b14a4617f09724876bfe36f84215f9ca84",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-kx6iuc3g/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-kx6iuc3g_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "80ce062e32f4c86f09ce4281800fb6c56fc2159dbcedf02a6d5fb954bc43ebaf",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-l_czk1v9/mesa-25.0.7",
+      "files": 10968,
+      "source_allocated_bytes": 311148544,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-l_czk1v9_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "a35cdec57d6cf8ca79441fb15cfe3936d9d363677b1d27796d747303342bdbcb",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-le70fafh/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-le70fafh_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "4eb73265374ae9c6a1c858943ac03bd73898b3759e1aba1c4bca8c44ae0d4e0a",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-matyj2n9/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-matyj2n9_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "96bf74de8c42af043e8b7e2fd61a291096ae4b6d8919a6dde41bc6907346f5b9",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-qjsmm8xd/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-qjsmm8xd_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "4b2b831c092cbed24be5bb88f2fa54ff2b4332abf50f6f7226ead04a579e8a7e",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-qpv095ob/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-qpv095ob_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "211357388eb430f4e18bfac5b2ee0a58b3ec6ca732151068626269693f151df6",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-riek2d10/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-riek2d10_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "67b046b2a530406ffd030c8f57b2b5db951fa7687a5d690607254fb37f2c5ae7",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-t37b3wx8/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-t37b3wx8_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "81a0a537165fc200548c7cde4c099d4917754b790703c4f62bd7c526e4a53e7d",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-u8ev3uvw/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-u8ev3uvw_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "d1af1ae1970a8a2225bdbed32ebe74e719e95a53307574fd8289cf33bb09d460",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-uay8w01f/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-uay8w01f_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "ccf984284fbc1e20c4f5b88d28cdbad579aa439713208ff0a3a733009bc2cb6a",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-usw_gujn/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-usw_gujn_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "a3fe9a62172fdbbb75d4bd74ce818c59ca53143742024a3b16e1b75a163bf7d3",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-x7moko71/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-x7moko71_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "b6f2a1d0cd2f5469542867dadca02e2ac2bb6a1ed6cc2d0adafb8e5f41cbef37",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-xmrn0q_0/mesa-25.0.7",
+      "files": 10969,
+      "source_allocated_bytes": 311152640,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-xmrn0q_0_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78622720,
+      "archive_sha256": "d62feffebc74917bf551e0b6d6c6a012b4009d1ad72e4f46064b0cec617b3147",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-ybt5nn3q/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-ybt5nn3q_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "5dc0c7d59ebe905d79c3f6566f1724f1b7fab7c741cea9a089979dd6c27f83b5",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/renderer-evaluation/target-config-yi0713xx/mesa-25.0.7",
+      "files": 10983,
+      "source_allocated_bytes": 311721984,
+      "archive_path": "build/phase335-cleanup-20261011/archives/renderer-evaluation_target-config-yi0713xx_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78848000,
+      "archive_sha256": "08f360d815a67ef1b114fc6a354ab4b6e566cbd1101909f61c85d19224be06f7",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/math-evaluation/target-79ec0_qx/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/math-evaluation_target-79ec0_qx_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78594048,
+      "archive_sha256": "0ddacecc4a9be77af6a49b66d0eeb04d13613cff67d9ba438fbda2dd548482d8",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/math-evaluation/target-m0zdrla_/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/math-evaluation_target-m0zdrla__mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78594048,
+      "archive_sha256": "ba0d356a3ed65a6d2594c25396d1f924c605630d4698dcf7e909fb5400fe9470",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/math-evaluation/target-up4g7cc8/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/math-evaluation_target-up4g7cc8_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78594048,
+      "archive_sha256": "52a09e01a68fb437b13ecf99b11a3ba59e09758a4d370557037092ac5397bd42",
+      "archive_verified": true,
+      "removed": true
+    },
+    {
+      "path": "build/math-evaluation/target-w20p4hqz/mesa-25.0.7",
+      "files": 10966,
+      "source_allocated_bytes": 311083008,
+      "archive_path": "build/phase335-cleanup-20261011/archives/math-evaluation_target-w20p4hqz_mesa-25.0.7.tar.gz",
+      "archive_allocated_bytes": 78598144,
+      "archive_sha256": "fa01e1fae785a0774f77b1a808509d8c7bbdf64e25d8104422b66255aff904df",
+      "archive_verified": true,
+      "removed": true
+    }
+  ],
+  "after_available_bytes": 908960522240,
+  "net_file_bytes_reclaimed": 8605818880,
+  "complete": true
+}
