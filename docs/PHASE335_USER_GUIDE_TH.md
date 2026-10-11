@@ -103,7 +103,9 @@ elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
 อย่านับเวลาของโฆษณาหรือวิดีโออื่นเป็น Rickroll
 ตรวจชื่อ Rick Astley – Never Gonna Give You Up และ VideoID `dQw4w9WgXcQ`
 ใน Stats for nerds เลือก Settings→Quality→144p และดูค่าที่เลือกจริง
-ชุดที่ตรวจพบ source256×144@25,VP9(278)/Opus(251),WebM/SABR,
+หลักฐาน Stats รุ่นก่อนพบ source256×144@25,VP9(278)/Opus(251),WebM/SABR
+รอบแก้ seek ล่าสุดยืนยัน WebM VP9/Opus และพบทั้ง256×144/640×360
+อย่าสรุปว่า144pคงที่ตลอดรอบ หรือใช้ itag รุ่นก่อนแทนการดู Stats รอบใหม่
 ภาพ native presentation160×90 ขยายในหน้า800×600 มี dropped frames ที่รายงานไว้
 ตำแหน่งเมนูเปลี่ยนได้ อย่าอาศัย click coordinates ที่บันทึกไว้โดยไม่ดูหน้า
 
