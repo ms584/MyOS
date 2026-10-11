@@ -245,3 +245,5 @@ Phase33.3 standard-media checkpoint accepted2026-10-09 on the declared native
 MyOS/QEMU profile; see [requirement audit](PHASE333_ACCEPTANCE.md).
 Phase33.4/33.5, YouTube/Rickroll and parent Phase32/33 remain open; no next-stage
 work was started in this checkpoint.
+
+Checkpoint14 2026-10-11: source-built core standard-media continuous confirmation passed on a private512MiB fixture profile (600 frames/0drop,max19704us,40.096s PCM,RAM27066336B). This does not close Phase33.5/33 or independent Phase32. Prior startup-gap/drop failures retained; three-launch lifecycle, new-core normal Rickroll/freshboot, regression and owner listening remain pending. See wip/phase335/checkpoint14/continuous-confirmation/README.md.

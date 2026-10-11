@@ -1,0 +1,13 @@
+
+[2026-10-11T11:59:58.444491+07:00] cwd=/home/xytron404/myos/build/phase335-abort-worktree
+$ python3 -u /home/xytron404/myos/build/phase335-core-workspace/run-source-media-vp8-first-frame-lifecycle.py
+$ git rev-parse HEAD
+$ git diff --name-only
+PRIVATE source-built core prerequisite observation; no phase acceptance
+$ openssl x509 -in /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/public-test-ca.pem -subject_hash -noout
+$ nm /home/xytron404/myos/build/phase335-abort-worktree/build/kernel.elf
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '512', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/boot.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.sock,server=on,wait=off', '-cpu', 'host', '-nic', 'user,model=rtl8139', '-audiodev', 'wav,id=myos-audio,path=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/audio.wav,out.frequency=11025,out.channels=1,out.format=u8', '-device', 'sb16,audiodev=myos-audio', '-drive', 'format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/assets.img,if=ide,index=1', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/phase335-abort-worktree/build/system-tests/cobalt-media-native.sock,server=on,wait=off -cpu host -nic user,model=rtl8139 -audiodev wav,id=myos-audio,path=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/audio.wav,out.frequency=11025,out.channels=1,out.format=u8 -device sb16,audiodev=myos-audio -drive format=raw,file=/home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8/assets.img,if=ide,index=1 -accel kvm
+qemu-system-x86_64: terminating on signal 15 from pid 15340 (python3)
+EVIDENCE_BUNDLE /home/xytron404/myos/build/phase335-abort-worktree/build/native-verified-tls-fkk5vxc8 NOT automatic phase acceptance
+[2026-10-11T12:08:34.795090+07:00] exit=0

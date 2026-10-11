@@ -1,0 +1,44 @@
+{
+  "output_mode": "underlay",
+  "video_codec": "VP8",
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": false,
+  "provider_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696",
+  "fixture_sha256": "c04a3650cfbfd72ef82020e2828ef96e2432b8a81ed1ab26b376648b7047dbe2",
+  "core_sha256": "d248783e13961d4af7a4efdb73df3b56fc48cba10f102066574e094f3aec77cf",
+  "boot_sha256": "ff132410ad42eace695d8f45251754dad694dc53a607962f4cc6569cd43d7a89",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-000.ppm",
+      "host_monotonic": 1741.46696139,
+      "sha256": "1e839733996e5166f9cd68933f4adf91a609f0764a6efd5d747d671236304ee2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-001.ppm",
+      "host_monotonic": 1743.480243889,
+      "sha256": "1e839733996e5166f9cd68933f4adf91a609f0764a6efd5d747d671236304ee2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-002.ppm",
+      "host_monotonic": 1745.494596987,
+      "sha256": "1e839733996e5166f9cd68933f4adf91a609f0764a6efd5d747d671236304ee2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-003.ppm",
+      "host_monotonic": 1747.508207485,
+      "sha256": "1e839733996e5166f9cd68933f4adf91a609f0764a6efd5d747d671236304ee2"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-004.ppm",
+      "host_monotonic": 1749.521058185,
+      "sha256": "1a0b4b77086d178c2f5c1d09d23d3f7c947c72dae3609a218c687f344cb57c49"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/frame-005.ppm",
+      "host_monotonic": 1751.534455484,
+      "sha256": "c3b3d73f6bbb08ab3fa3dfa65d01f89916ba25d37a4f5fbd8cd2202edaa58077"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000B000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF provider: SbPlayerSetBounds\nELF platform: SbWindowCreate\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nnative capability/invalid handles/player capacity PASS\nnative player state=0\nnative standard player RUN begin\nnative media position-us=0\nnative player state=1\nnative player state=2\nnative media position-us=1033884\nnative LATE_BOUNDS held-clock=1663090\nnative LATE_BOUNDS audio advanced before first video\nnative fixture demux failed\nnative fixture demux failed\nnative player state=4\nMEDIA native metrics presented=1 sync-samples=1 max-sync-us=16317 decoded=30 dropped=25 corrupted=0 source-starvations=0\nnative underlay control polls=63\nnative sample allocated=183\nnative sample released=183\nnative player state=0\nnative player state=1\nnative restarted clock failed\nnative player state=4\nMEDIA native metrics presented=0 sync-samples=0 max-sync-us=0 decoded=0 dropped=0 corrupted=0 source-starvations=0\nnative RAM process baseline-bytes=56614912\nnative RAM process sampled-peak-bytes=65196032\nnative RAM player increment-bytes=8581120\nnative RAM PMM increment-bytes=8581120\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=750336 heap-after=750336\nELF exited with status 7\nmyos> "
+}

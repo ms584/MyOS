@@ -73,3 +73,7 @@ reopens. No current warm plateau or exact total RAM maximum is claimed.
 
 Final fresh boot g_wbd0r3 two opens completed15:35:04+07; use its frozen
 normal assets for manual trial. Commands remain logged; no push.
+
+Checkpoint14 2026-10-11T11:59:30+07: non-trace first-frame candidate/source-core continuous ms6zca8g passed unchanged analyzer:600/0drop/max19704us,37.333s motion/40.096s known-tone PCM,RAM27066336B with complete history/exact residents. Startup sub1s gaps disclosed; prior failures retained. Three-launch lifecycle PTY4017 active. Private fixture only, no promotion/new normal-online/owner listening claim. Phase33.5/33 remain open; see wip/phase335/checkpoint14/continuous-confirmation.
+
+Checkpoint14 production2026-10-11T12:16:30+07: tested first-frame hold now in user/media-player.c (SHA7a923b...). Old VP8 late-bounds1663090us failed; candidateactualhold/controls/EOS/restart/exact cleanup PASS12:12:41, native corrupt/rapid-seek/OOM/teardown PASS12:13:52. Normal buildPASS12:15:31/all5 exact. Production VP8a0usu27d SHA3dc54a... and VP98homrhps SHA7df78b... have all20 allocated sections identical to the respective tested VP8candidate/previousVP9 binaries, including NOBITS size/type/address. Old .bss file-byte comparison was invalid because NOBITS has no file content; corrected comparison is preserved. New-core normal3online opens/freshboot and full relevant regression still pending; no acceptance/owner listening claimed.

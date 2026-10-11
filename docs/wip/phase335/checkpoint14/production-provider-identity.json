@@ -1,0 +1,302 @@
+[
+  {
+    "scope": "VP8 candidate to production",
+    "left": "provider-b6mzu_qt",
+    "right": "provider-a0usu27d",
+    "allocated_sections_identical": true,
+    "count": 20,
+    "sections": {
+      ".hash": {
+        "type": "HASH",
+        "address": 512,
+        "bytes": 17168,
+        "flags": "A",
+        "sha256": "8d67aa8d1b6909884c5d82095b00aae26e55dfdc3c738eb589a847493b067a10"
+      },
+      ".gnu.hash": {
+        "type": "GNU_HASH",
+        "address": 17680,
+        "bytes": 18960,
+        "flags": "A",
+        "sha256": "604370bf7ccc5f68714bd17907b5b95b17d62073fc638b24fd7c1a0789cc2a1a"
+      },
+      ".dynsym": {
+        "type": "DYNSYM",
+        "address": 36640,
+        "bytes": 53688,
+        "flags": "A",
+        "sha256": "058edc5903c5e26a5a7b8c45cc34391f48da77050655b309446f59b6ca7ea8fa"
+      },
+      ".dynstr": {
+        "type": "STRTAB",
+        "address": 90328,
+        "bytes": 39654,
+        "flags": "A",
+        "sha256": "ee0f5e403d8ec3f3e00251b412311bd7b3eb836251afaf193ef85c0b7e306b97"
+      },
+      ".rela.dyn": {
+        "type": "RELA",
+        "address": 129984,
+        "bytes": 440112,
+        "flags": "A",
+        "sha256": "7e3607c36725916844ea4aa96950b32ae6bcf3a950e9e2ac3792133255af2e7a"
+      },
+      ".rela.plt": {
+        "type": "RELA",
+        "address": 570096,
+        "bytes": 1512,
+        "flags": "AI",
+        "sha256": "2d042d46a193a65b824ff6e80422ff61f89f50c61874781edb18051c817f9a2f"
+      },
+      ".plt": {
+        "type": "PROGBITS",
+        "address": 573440,
+        "bytes": 1024,
+        "flags": "AX",
+        "sha256": "3c3e708b326c2ef30fb1ea97dc4cb252042e9dc524290bfb876534a251b7d2b4"
+      },
+      ".plt.got": {
+        "type": "PROGBITS",
+        "address": 574464,
+        "bytes": 16,
+        "flags": "AX",
+        "sha256": "01a582e8661d68fbdc113fad3ab202415b906303adcfb7dcfb83580c5c916227"
+      },
+      ".text": {
+        "type": "PROGBITS",
+        "address": 574528,
+        "bytes": 8974111,
+        "flags": "AX",
+        "sha256": "376c643ba11fc7a2f5375d775a856dfe34a2f0a08dfe40bdf87366f85580f168"
+      },
+      ".rodata": {
+        "type": "PROGBITS",
+        "address": 9551872,
+        "bytes": 5697392,
+        "flags": "A",
+        "sha256": "5279fe90a8963787513067509a5ee0cf64788e34b45930d69084c93c47632a02"
+      },
+      ".eh_frame": {
+        "type": "PROGBITS",
+        "address": 15249264,
+        "bytes": 796,
+        "flags": "A",
+        "sha256": "0247da8f01f0ca78dda10ada5426f722088a13fbe3f91b8263cfc41a1ce02bfd"
+      },
+      ".tdata": {
+        "type": "PROGBITS",
+        "address": 15255128,
+        "bytes": 8,
+        "flags": "WAT",
+        "sha256": "5c28b287cdc8f2a8db7559e5a750ee34ccb7036d035558ae800705e858c408d4"
+      },
+      ".tbss": {
+        "type": "NOBITS",
+        "address": 15255136,
+        "bytes": 72,
+        "flags": "WAT",
+        "sha256": null
+      },
+      ".init_array": {
+        "type": "INIT_ARRAY",
+        "address": 15255136,
+        "bytes": 24,
+        "flags": "WA",
+        "sha256": "cfff679c70c477e848b5cc7609aecd1e857f6cf61d623a2701da1e8b38e3c09f"
+      },
+      ".fini_array": {
+        "type": "FINI_ARRAY",
+        "address": 15255160,
+        "bytes": 8,
+        "flags": "WA",
+        "sha256": "88abbf1eb6b20d8b4557a88ea9e6bf9646d4d04d9c8db52c5868fad3d1363d9f"
+      },
+      ".data.rel.ro": {
+        "type": "PROGBITS",
+        "address": 15255168,
+        "bytes": 368192,
+        "flags": "WA",
+        "sha256": "de01730683b77ee1c6eaf5f19ac08caeff16fd1dd854c4de7f100ac4c9fd0ad6"
+      },
+      ".dynamic": {
+        "type": "DYNAMIC",
+        "address": 15623360,
+        "bytes": 416,
+        "flags": "WA",
+        "sha256": "4a80bff6c852588c47561ddb3afdd062c61574700bc55d9b4fca2ca5ba2cba96"
+      },
+      ".got": {
+        "type": "PROGBITS",
+        "address": 15623776,
+        "bytes": 10640,
+        "flags": "WA",
+        "sha256": "4f7a4d3c657c532eaf8adca51a00bc47f058082a09d58da8c9d63e954bc13ae6"
+      },
+      ".data": {
+        "type": "PROGBITS",
+        "address": 15634432,
+        "bytes": 10574,
+        "flags": "WA",
+        "sha256": "17e908708bdec0e5911dd3efa9a416e4554ab07638fd71c154395a00b9328058"
+      },
+      ".bss": {
+        "type": "NOBITS",
+        "address": 15645024,
+        "bytes": 268880,
+        "flags": "WA",
+        "sha256": null
+      }
+    },
+    "note": "NOBITS compared by type/size/virtual address/flags; not bytes at its non-file offset. File hashes differ outside allocated sections."
+  },
+  {
+    "scope": "VP9 prior tested to production",
+    "left": "provider-3k2mykzc",
+    "right": "provider-8homrhps",
+    "allocated_sections_identical": true,
+    "count": 20,
+    "sections": {
+      ".hash": {
+        "type": "HASH",
+        "address": 512,
+        "bytes": 18100,
+        "flags": "A",
+        "sha256": "c07b5b4c3a40ce0b3f0faff4c6f1c0a2af397b525934255ec07096675172f4f3"
+      },
+      ".gnu.hash": {
+        "type": "GNU_HASH",
+        "address": 18616,
+        "bytes": 19892,
+        "flags": "A",
+        "sha256": "17d9778c3e9d2f20f9f9a64a295c53c44ab1a2e441673605faf512821b7e9149"
+      },
+      ".dynsym": {
+        "type": "DYNSYM",
+        "address": 38512,
+        "bytes": 59280,
+        "flags": "A",
+        "sha256": "59b6457eb8c494596a1e79f7b76e71a7f56a54f00bcd7a5f33710960ee059594"
+      },
+      ".dynstr": {
+        "type": "STRTAB",
+        "address": 97792,
+        "bytes": 44605,
+        "flags": "A",
+        "sha256": "0084489fe4356b21479c51a90080f0d3e0129a18b29ef626006708ced222ce8a"
+      },
+      ".rela.dyn": {
+        "type": "RELA",
+        "address": 142400,
+        "bytes": 444072,
+        "flags": "A",
+        "sha256": "00474d759f9ea05ef3d88b3ac23759aa763cc3cb57e5b23433bd59be3bca3dd2"
+      },
+      ".rela.plt": {
+        "type": "RELA",
+        "address": 586472,
+        "bytes": 1512,
+        "flags": "AI",
+        "sha256": "a62359ebc13c83f4b75515f2bacdf4511defd9401286d287330367e5c437b0a8"
+      },
+      ".plt": {
+        "type": "PROGBITS",
+        "address": 589824,
+        "bytes": 1024,
+        "flags": "AX",
+        "sha256": "f02f792fd43dcf2c3c710bbc2a275c9aaaeb01b26c0ff7632e898a21c9274d14"
+      },
+      ".plt.got": {
+        "type": "PROGBITS",
+        "address": 590848,
+        "bytes": 16,
+        "flags": "AX",
+        "sha256": "28c585b7532586708a6e7c82de9db80a96c330e25caaa386fbb2bc78e7a0afef"
+      },
+      ".text": {
+        "type": "PROGBITS",
+        "address": 590912,
+        "bytes": 9192095,
+        "flags": "AX",
+        "sha256": "e77751ea418b7e302c65fd25f0e98a33a5e51b4a070663d42ebb1e25ea43cf71"
+      },
+      ".rodata": {
+        "type": "PROGBITS",
+        "address": 9785344,
+        "bytes": 5729968,
+        "flags": "A",
+        "sha256": "6c67761a3162e52c0caa57558dbf4fedde8b465508309bf88f3da77b738b9481"
+      },
+      ".eh_frame": {
+        "type": "PROGBITS",
+        "address": 15515312,
+        "bytes": 796,
+        "flags": "A",
+        "sha256": "ed8fe1f654467766bffa164a32c746cd40ca37685326c370af671710934922b4"
+      },
+      ".tdata": {
+        "type": "PROGBITS",
+        "address": 15519864,
+        "bytes": 8,
+        "flags": "WAT",
+        "sha256": "0f61431c24dc2c499d83767bba6e193667aa1f101caedf661dc3b8eaef7141df"
+      },
+      ".tbss": {
+        "type": "NOBITS",
+        "address": 15519872,
+        "bytes": 72,
+        "flags": "WAT",
+        "sha256": null
+      },
+      ".init_array": {
+        "type": "INIT_ARRAY",
+        "address": 15519872,
+        "bytes": 24,
+        "flags": "WA",
+        "sha256": "64ee751130a5face8649413764cd64103e355ac38bdb94cbba8839347a7ebc25"
+      },
+      ".fini_array": {
+        "type": "FINI_ARRAY",
+        "address": 15519896,
+        "bytes": 8,
+        "flags": "WA",
+        "sha256": "fc6848dd5a3f93ca3d366ded0627d3f828c56927b9080ae0fd045296cbad351e"
+      },
+      ".data.rel.ro": {
+        "type": "PROGBITS",
+        "address": 15519904,
+        "bytes": 369280,
+        "flags": "WA",
+        "sha256": "4d2452e90c38f86e75d2e61d2d3575463519b55173e59bd2959fe269c205b373"
+      },
+      ".dynamic": {
+        "type": "DYNAMIC",
+        "address": 15889184,
+        "bytes": 416,
+        "flags": "WA",
+        "sha256": "0674ddfaaeefcb6723833bc9a46b61e224f20290be260490e9699bae8ec1b0e1"
+      },
+      ".got": {
+        "type": "PROGBITS",
+        "address": 15889600,
+        "bytes": 11048,
+        "flags": "WA",
+        "sha256": "93ffebb73e8de89d3247d253499ac8d41e2bc56e43830d617ed31e42dfda923f"
+      },
+      ".data": {
+        "type": "PROGBITS",
+        "address": 15900672,
+        "bytes": 10702,
+        "flags": "WA",
+        "sha256": "5d85a8c856fd9b51f16dda53914558530d64a895528edd67192006c1a3604396"
+      },
+      ".bss": {
+        "type": "NOBITS",
+        "address": 15911392,
+        "bytes": 269376,
+        "flags": "WA",
+        "sha256": null
+      }
+    },
+    "note": "NOBITS compared by type/size/virtual address/flags; not bytes at its non-file offset. File hashes differ outside allocated sections."
+  }
+]

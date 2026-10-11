@@ -11,7 +11,7 @@ vp9='--vp9' in sys.argv
 underlay='--underlay' in sys.argv
 video_gap='--video-gap' in sys.argv
 late_bounds='--late-bounds' in sys.argv
-assert not late_bounds or (vp9 and underlay), 'late-bounds requires native VP9 underlay'
+assert not late_bounds or underlay, 'late-bounds requires native underlay'
 assert not video_gap or (vp9 and underlay), 'video-gap requires native VP9 underlay'
 provider=Path(sys.argv[sys.argv.index('--provider')+1]).resolve()
 report=json.loads((provider/'report.json').read_text())

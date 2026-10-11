@@ -180,3 +180,5 @@ baseline was reproduced; ENETDOWN/waiter/reconnect fix passes native BIOS and UE
 Full regression is PENDING for VM-area 1024 + carrier fix. Earlier PMM full PASS does not cover it.
 See `docs/PHASE334.md`, `docs/HANDOFF.md` and `docs/wip/phase334/checkpoint6/` for commands,
 source identities, evidence and remaining online recovery/sync gates. No Phase 33.5/33/Rickroll acceptance.
+
+Checkpoint14 2026-10-11: source-built core standard-media continuous confirmation passed on a private512MiB fixture profile (600 frames/0drop,max19704us,40.096s PCM,RAM27066336B). This does not close Phase33.5/33 or independent Phase32. Prior startup-gap/drop failures retained; three-launch lifecycle, new-core normal Rickroll/freshboot, regression and owner listening remain pending. See wip/phase335/checkpoint14/continuous-confirmation/README.md.

@@ -1,0 +1,25 @@
+{
+  "native_late_bounds": true,
+  "actual_clock_held_until_first_video": true,
+  "first_video_rows": [
+    [
+      "1",
+      "0",
+      "6583",
+      "0"
+    ],
+    [
+      "2",
+      "15000000",
+      "15000083",
+      "0"
+    ],
+    [
+      "3",
+      "0",
+      "6583",
+      "0"
+    ]
+  ],
+  "phase_passed": false
+}

@@ -1,0 +1,300 @@
+
+[2026-10-11T12:09:59.559017+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_media_native_player.py --provider build/media-evaluation/provider-h6a6u4u9 --underlay --late-bounds --kvm
+$ /home/xytron404/myos/build/media-evaluation/target-cc -std=c11 -O2 -Wall -Wextra -Werror -Wno-misleading-indentation -I/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/include -I/home/xytron404/myos/build/media-evaluation/provider-h6a6u4u9/include -Iuser -Iinclude -Iuser/starboard-media/include -Iuser/starboard-system/include -DMYOS_TEST_UNDERLAY=1 -DMYOS_TEST_LATE_BOUNDS=1 -c user/media-webm.c -o /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/media-webm.o
+$ /home/xytron404/myos/build/media-evaluation/target-cc -std=c11 -O2 -Wall -Wextra -Werror -Wno-misleading-indentation -I/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/include -I/home/xytron404/myos/build/media-evaluation/provider-h6a6u4u9/include -Iuser -Iinclude -Iuser/starboard-media/include -Iuser/starboard-system/include -DMYOS_TEST_UNDERLAY=1 -DMYOS_TEST_LATE_BOUNDS=1 -c user/elf-media-player.c -o /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/elf-media-player.o
+$ ld -shared --hash-style=both -z now -z relro -z noexecstack -e _start -o /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/player.so /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/media-webm.o /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/elf-media-player.o --start-group /home/xytron404/myos/build/math-evaluation/target-9zfl2mt4/libmyos-math.a /home/xytron404/myos/build/format-evaluation/sdk-zvno7i_y/libmyos-format.a --end-group
+$ readelf -dW /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/player.so
+$ nm -u /home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/player.so
+EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '512', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/system-tests/media-native-player.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/boot.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/system-tests/media-native-player.sock,server=on,wait=off', '-audiodev', 'wav,id=myos-audio,path=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/audio.wav', '-device', 'sb16,audiodev=myos-audio', '-drive', 'format=raw,file=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/assets.img,if=ide,index=1', '-cpu', 'host', '-accel', 'kvm']
+$ qemu-system-x86_64 -m 512 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/media-native-player.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/media-native-player.sock,server=on,wait=off -audiodev wav,id=myos-audio,path=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/audio.wav -device sb16,audiodev=myos-audio -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/native-player-9x30rhxy/assets.img,if=ide,index=1 -cpu host -accel kvm
+elf pair-live player provider
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x000000800000B000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: clock_gettime
+ELF platform: SbWindowSetDefaultOptions
+ELF provider: SbPlayerGetInfo
+ELF platform: fstatat
+ELF platform: pthread_attr_destroy
+ELF provider: SbPlayerWriteEndOfStream
+ELF platform: pthread_create
+ELF provider: SbPlayerDestroy
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: pthread_attr_init
+ELF provider: SbPlayerSetBounds
+ELF platform: SbWindowCreate
+ELF platform: malloc
+ELF provider: SbPlayerGetCurrentFrame
+ELF platform: lseek
+ELF provider: SbGetEglInterface
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: unlinkat
+ELF provider: SbGetGlesInterface
+ELF provider: SbPlayerSetPlaybackRate
+ELF platform: read
+ELF platform: pthread_attr_setstacksize
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerCreate
+ELF platform: pthread_mutex_unlock
+ELF provider: SbPlayerWriteSamples
+ELF platform: SbLogRaw
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: pthread_mutex_lock
+ELF platform: __errno_location
+ELF platform: openat
+ELF platform: pthread_join
+ELF platform: clock_nanosleep
+ELF platform: close
+ELF platform: SbWindowDestroy
+ELF platform: free
+ELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+native capability/invalid handles/player capacity PASS
+native player state=0
+native standard player RUN begin
+native media position-us=0
+native player state=1
+native player state=2
+native media position-us=1033884
+native LATE_BOUNDS held-clock=1663090
+native LATE_BOUNDS audio advanced before first video
+native fixture demux failed
+native fixture demux failed
+native player state=4
+MEDIA native metrics presented=1 sync-samples=1 max-sync-us=16317 decoded=30 dropped=25 corrupted=0 source-starvations=0
+native underlay control polls=63
+native sample allocated=183
+native sample released=183
+native player state=0
+native player state=1
+native restarted clock failed
+native player state=4
+MEDIA native metrics presented=0 sync-samples=0 max-sync-us=0 decoded=0 dropped=0 corrupted=0 source-starvations=0
+native RAM process baseline-bytes=56614912
+native RAM process sampled-peak-bytes=65196032
+native RAM player increment-bytes=8581120
+native RAM PMM increment-bytes=8581120
+ELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=750336 heap-after=750336
+ELF exited with status 7
+myos> 
+qemu-system-x86_64: terminating on signal 15 from pid 17871 (python3)
+Traceback (most recent call last):
+  File "/home/xytron404/myos/tests/test_media_native_player.py", line 82, in <module>
+    assert 'native standard player asset/control/EOS checkpoint PASS' in output,output
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: elf pair-live player provider
+ELF pair mapping module: 0
+ELF pair mapping module: 1
+ELF pair provider bias: 0x000000800000B000
+ELF platform: sysconf
+ELF platform: fstatat
+ELF platform: calloc
+ELF platform: clock_nanosleep
+ELF platform: __errno_location
+ELF platform: clock_gettime
+ELF platform: realloc
+ELF platform: pthread_mutex_init
+ELF platform: pthread_mutexattr_settype
+ELF platform: pthread_attr_init
+ELF platform: mkdir
+ELF platform: malloc
+ELF platform: __tls_get_addr
+ELF platform: pthread_attr_setstacksize
+ELF platform: pthread_rwlock_rdlock
+ELF platform: pthread_mutex_lock
+ELF platform: pthread_sigmask
+ELF platform: pthread_once
+ELF platform: pthread_condattr_destroy
+ELF platform: fcntl
+ELF platform: lseek
+ELF platform: read
+ELF platform: SbLogRaw
+ELF platform: access
+ELF platform: SbAudioSinkDestroy
+ELF platform: MyOSFinalizeImages
+ELF platform: getpid
+ELF platform: pthread_mutex_destroy
+ELF platform: unlinkat
+ELF platform: pthread_mutexattr_destroy
+ELF platform: pthread_rwlock_wrlock
+ELF platform: pthread_attr_destroy
+ELF platform: pthread_create
+ELF platform: write
+ELF platform: isatty
+ELF platform: SbAudioSinkCreate
+ELF platform: pthread_cond_signal
+ELF platform: close
+ELF platform: pthread_mutexattr_init
+ELF platform: pthread_self
+ELF platform: MyOSUiQuery
+ELF platform: pthread_cond_timedwait
+ELF platform: pthread_cond_init
+ELF platform: SbMediaGetAudioConfiguration
+ELF platform: pthread_rwlock_destroy
+ELF platform: pthread_condattr_init
+ELF platform: getuid
+ELF platform: abort
+ELF platform: pthread_equal
+ELF weak zero: _ZTH23_mesa_glapi_tls_Context
+ELF platform: openat
+ELF platform: pthread_rwlock_init
+ELF platform: pthread_setname_np
+ELF platform: pthread_rwlock_unlock
+ELF platform: pthread_cond_broadcast
+ELF platform: pthread_mutex_unlock
+ELF platform: pthread_cond_destroy
+ELF platform: fstat
+ELF platform: free
+ELF platform: pthread_cond_wait
+ELF platform: pthread_condattr_setclock
+ELF platform: posix_memalign
+ELF platform: MyOSUiPresent
+ELF platform: geteuid
+ELF platform: pthread_join
+ELF relocations: relative=18331 absolute=0 global=2 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=1
+ELF RELRO: protected
+ELF platform: clock_gettime
+ELF platform: SbWindowSetDefaultOptions
+ELF provider: SbPlayerGetInfo
+ELF platform: fstatat
+ELF platform: pthread_attr_destroy
+ELF provider: SbPlayerWriteEndOfStream
+ELF platform: pthread_create
+ELF provider: SbPlayerDestroy
+ELF platform: SbSystemGetUsedCPUMemory
+ELF platform: pthread_attr_init
+ELF provider: SbPlayerSetBounds
+ELF platform: SbWindowCreate
+ELF platform: malloc
+ELF provider: SbPlayerGetCurrentFrame
+ELF platform: lseek
+ELF provider: SbGetEglInterface
+ELF platform: SbWindowGetPlatformHandle
+ELF platform: unlinkat
+ELF provider: SbGetGlesInterface
+ELF provider: SbPlayerSetPlaybackRate
+ELF platform: read
+ELF platform: pthread_attr_setstacksize
+ELF provider: SbPlayerSeek
+ELF provider: SbPlayerCreate
+ELF platform: pthread_mutex_unlock
+ELF provider: SbPlayerWriteSamples
+ELF platform: SbLogRaw
+ELF provider: SbMediaCanPlayMimeAndKeySystem
+ELF provider: SbDecodeTargetGetInfo
+ELF platform: pthread_mutex_lock
+ELF platform: __errno_location
+ELF platform: openat
+ELF platform: pthread_join
+ELF platform: clock_nanosleep
+ELF platform: close
+ELF platform: SbWindowDestroy
+ELF platform: free
+ELF relocations: relative=0 absolute=0 global=0 jump=63 skipped=0
+ELF bindings: missing=0 weak-zero=0
+ELF RELRO: protected
+ELF pair live: started; Escape stops all threads
+native capability/invalid handles/player capacity PASS
+native player state=0
+native standard player RUN begin
+native media position-us=0
+native player state=1
+native player state=2
+native media position-us=1033884
+native LATE_BOUNDS held-clock=1663090
+native LATE_BOUNDS audio advanced before first video
+native fixture demux failed
+native fixture demux failed
+native player state=4
+MEDIA native metrics presented=1 sync-samples=1 max-sync-us=16317 decoded=30 dropped=25 corrupted=0 source-starvations=0
+native underlay control polls=63
+native sample allocated=183
+native sample released=183
+native player state=0
+native player state=1
+native restarted clock failed
+native player state=4
+MEDIA native metrics presented=0 sync-samples=0 max-sync-us=0 decoded=0 dropped=0 corrupted=0 source-starvations=0
+native RAM process baseline-bytes=56614912
+native RAM process sampled-peak-bytes=65196032
+native RAM player increment-bytes=8581120
+native RAM PMM increment-bytes=8581120
+ELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=750336 heap-after=750336
+ELF exited with status 7
+myos> 
+[2026-10-11T12:10:21.665847+07:00] exit=1
