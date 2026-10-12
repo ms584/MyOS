@@ -1,0 +1,5 @@
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA create blocked existing=80a3cdd020 rate=0 volume=0 presenting=1 closing=0 bounds=95,212,334,188 consumed=27462

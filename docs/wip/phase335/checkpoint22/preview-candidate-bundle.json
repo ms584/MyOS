@@ -1,0 +1,13 @@
+{
+  "bundle": "/home/xytron404/myos/build/phase335-preview-candidate-manual",
+  "frozen_inputs": {
+    "boot.img": "e0ff4d8daf79ae83f1188d0100f6964423ebeb30b7cf27b7540351008bba687c",
+    "assets.img": "208ac587d392ad27079e3c07719274f4293d9d88952818306658b9e1a72f4abf",
+    "platform-runtime.mrt": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+  },
+  "provider_sha256": "b8ec3f91fb342acefcf280317113acc78321690db9b797eca969c94304cbf534",
+  "player_source_sha256": "724cc2d01208ab2797bb75842b60a1054b61e34071798e01941a4d61941c8c82",
+  "new_asset_bytes": 123584000,
+  "boot_runtime_hardlinked": true,
+  "phase_passed": false
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "case": "vp9-faults",
+    "command": [
+      "python3",
+      "tests/test_media_player_faults.py",
+      "build/media-evaluation/provider-uf3n3z4l",
+      "--vp9"
+    ],
+    "exit_code": 0,
+    "seconds": 28.756231612000192,
+    "finished": "2026-10-12T11:38:59.001492+07:00",
+    "log": "/home/xytron404/myos/build/phase335-normal-vp9-faults.log"
+  },
+  {
+    "case": "vp9-late-bounds",
+    "command": [
+      "python3",
+      "tests/test_media_native_player.py",
+      "--provider",
+      "build/media-evaluation/provider-uf3n3z4l",
+      "--vp9",
+      "--underlay",
+      "--late-bounds",
+      "--kvm"
+    ],
+    "exit_code": 0,
+    "seconds": 64.42009004200008,
+    "finished": "2026-10-12T11:40:03.421782+07:00",
+    "log": "/home/xytron404/myos/build/phase335-normal-vp9-late-bounds.log"
+  },
+  {
+    "case": "vp9-video-gap",
+    "command": [
+      "python3",
+      "tests/test_media_native_player.py",
+      "--provider",
+      "build/media-evaluation/provider-uf3n3z4l",
+      "--vp9",
+      "--underlay",
+      "--video-gap",
+      "--kvm"
+    ],
+    "exit_code": 0,
+    "seconds": 63.13966014499965,
+    "finished": "2026-10-12T11:41:06.561658+07:00",
+    "log": "/home/xytron404/myos/build/phase335-normal-vp9-video-gap.log"
+  },
+  {
+    "case": "vp8-texture-standard",
+    "command": [
+      "python3",
+      "tests/test_media_native_player.py",
+      "--provider",
+      "build/media-evaluation/provider-r_e3naf3",
+      "--kvm"
+    ],
+    "exit_code": 1,
+    "seconds": 61.69539788700013,
+    "finished": "2026-10-12T11:42:08.257287+07:00",
+    "log": "/home/xytron404/myos/build/phase335-normal-vp8-texture-standard.log"
+  }
+]

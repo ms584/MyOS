@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-12T13:47:18.895325+07:00",
+  "session": "build/phase335-handoff-manual/manual-session-u5irq2z0",
+  "provider_sha256": "a98f65782c4e394874f5a887ab6a4d06c5b4ad6d7cdb97ddc560cf807a28a220",
+  "layout_sha256": "7cc0c1c77c711bc7f26a9bc90260ce95db1dd2e868ee30d1d54af68d3a10caa9",
+  "load_bias": "0x8006331000",
+  "cr3": "0x2da3c000",
+  "active_player": "0x80a55fd020",
+  "fields": {
+    "native_presented": 12050,
+    "native_sync_samples": 12012,
+    "native_max_sync": 82004,
+    "native_presentation_max_us": 130000,
+    "total_video": 17027,
+    "dropped_video": 4881,
+    "corrupted_video": 0,
+    "source_starvations": 0,
+    "rate": 1.0,
+    "volume": 0.8933054804801941,
+    "consumed": 696461,
+    "video_codec": 8,
+    "native_hardware_clock_failures": 0,
+    "bounds_width": 766,
+    "bounds_height": 431,
+    "closing": 0,
+    "generation": 16662,
+    "output_order": 2,
+    "sink": 552508877408,
+    "current_time": 63240000
+  },
+  "phase_passed": false,
+  "capture_scope": "Read-only scalar native counters after recording; no guest heap/PCM dump, source/core/provider unmodified",
+  "attempts": [
+    {
+      "attempt": 1,
+      "success": true
+    }
+  ],
+  "total_guest_pause_seconds": 0.14933449299996937
+}

@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-12T14:04:50+07:00",
+  "exit": 0,
+  "profile": "VP8 texture KVM512MiB",
+  "provider": "provider-r_e3naf3",
+  "production_changed_for_run": false,
+  "fixture_changed": "adds texture-render-us log; thresholds unchanged",
+  "max_sync_us": 87943,
+  "sync_samples": 559,
+  "rendered": 611,
+  "sample_allocated": 2380,
+  "sample_released": 2380,
+  "physical_before": 126679,
+  "physical_after": 126679,
+  "heap_before": 750336,
+  "heap_after": 750336,
+  "root_cause_of_prior_outliers": "unproven; single later pass does not erase failures",
+  "normal_online_acceptance": false
+}

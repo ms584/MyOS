@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-12T14:24:38+07:00",
+  "session": "build/phase335-handoff-manual/manual-session-3vys4b7b",
+  "error": "QMP Input handler not found for event type abs",
+  "query_mice": [
+    {
+      "name": "QEMU PS/2 Mouse",
+      "current": true,
+      "absolute": false
+    }
+  ],
+  "root_cause": "unproven; driver disables on invalid protocol status/data, requires focused reproduction",
+  "relative_pointer_reaches_search": true,
+  "phase_passed": false
+}

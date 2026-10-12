@@ -1,0 +1,20 @@
+{
+  "samples": [
+    {
+      "at": 1791768927.6183758,
+      "bytes": 44941,
+      "mouse_events": 3598,
+      "left_down": 26,
+      "graphics_closed": false
+    },
+    {
+      "at": 1791768932.6187878,
+      "bytes": 44941,
+      "mouse_events": 3598,
+      "left_down": 26,
+      "graphics_closed": false
+    }
+  ],
+  "input_sent": false,
+  "interpretation": "Counters show received events only; do not establish correct pointer location or released-button behavior."
+}

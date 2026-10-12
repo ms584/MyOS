@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-12T15:57:51.956752+07:00",
+  "owner_instruction": "ฉันถือว่าผ่านนะ ทำไมคุณมาตรฐานสูง ถ้ามันไม่เกิน500msก็โอเค",
+  "acceptance_max_sync_us": 500000,
+  "previous_target_us": 100000,
+  "previous_observations_retained": true,
+  "latest_measured_us": 204618,
+  "latest_sync_meets_owner_criterion": true,
+  "scope": "Owner accepts revised sync tolerance; remaining controls/reopen/freshboot/resource requirements retained",
+  "phase_passed": false,
+  "owner_close_request": "ตกลง รีบปิด phase",
+  "owner_acceptance_received": true,
+  "acceptance_scope": "Owner explicitly accepts Phase33 under <=500ms tolerance; unperformed final technical checks are still identified separately."
+}

@@ -1,0 +1,180 @@
+{
+  "player_source_sha256": "3be11a9ebab7b79fd8e95715cc3b22d26f644602b3e5da8a802e9ae8469d3e65",
+  "provider_sha256": "9cb26b6c1da478c54028de5655fcc30b8f3ab32761910dbac9e85a9bf462fd26",
+  "configuration": "VP9 + native underlay; trace disabled; identical target headers/compiler flags",
+  "fields": {
+    "closing": {
+      "offset": 92,
+      "size": 4
+    },
+    "stop": {
+      "offset": 96,
+      "size": 4
+    },
+    "seeked": {
+      "offset": 148,
+      "size": 4
+    },
+    "native_video": {
+      "offset": 152,
+      "size": 4
+    },
+    "bounds_x": {
+      "offset": 156,
+      "size": 4
+    },
+    "bounds_y": {
+      "offset": 160,
+      "size": 4
+    },
+    "bounds_width": {
+      "offset": 164,
+      "size": 4
+    },
+    "bounds_height": {
+      "offset": 168,
+      "size": 4
+    },
+    "video_shown": {
+      "offset": 172,
+      "size": 4
+    },
+    "native_presented": {
+      "offset": 196,
+      "size": 4
+    },
+    "native_first_video_pending": {
+      "offset": 248,
+      "size": 4
+    },
+    "has_audio": {
+      "offset": 252,
+      "size": 4
+    },
+    "has_video": {
+      "offset": 256,
+      "size": 4
+    },
+    "channels": {
+      "offset": 260,
+      "size": 4
+    },
+    "ticket": {
+      "offset": 264,
+      "size": 4
+    },
+    "seek_pending": {
+      "offset": 268,
+      "size": 4
+    },
+    "presenting": {
+      "offset": 272,
+      "size": 4
+    },
+    "ended": {
+      "offset": 276,
+      "size": 4
+    },
+    "failed": {
+      "offset": 280,
+      "size": 4
+    },
+    "error_pending": {
+      "offset": 284,
+      "size": 4
+    },
+    "sink": {
+      "offset": 360,
+      "size": 8
+    },
+    "video_read": {
+      "offset": 983720,
+      "size": 4
+    },
+    "video_count": {
+      "offset": 983724,
+      "size": 4
+    },
+    "have_current": {
+      "offset": 983728,
+      "size": 4
+    },
+    "generation": {
+      "offset": 983732,
+      "size": 4
+    },
+    "rendered_generation": {
+      "offset": 983736,
+      "size": 4
+    },
+    "pcm_read": {
+      "offset": 1049276,
+      "size": 4
+    },
+    "pcm_count": {
+      "offset": 1049280,
+      "size": 4
+    },
+    "consumed": {
+      "offset": 1049288,
+      "size": 8
+    },
+    "seek_time": {
+      "offset": 1049296,
+      "size": 8
+    },
+    "audio_anchor": {
+      "offset": 1049304,
+      "size": 8
+    },
+    "last_audio_pts": {
+      "offset": 1049312,
+      "size": 8
+    },
+    "last_video_pts": {
+      "offset": 1049320,
+      "size": 8
+    },
+    "audio_anchor_set": {
+      "offset": 1049328,
+      "size": 4
+    },
+    "rate": {
+      "offset": 1049336,
+      "size": 8
+    },
+    "volume": {
+      "offset": 1049344,
+      "size": 8
+    },
+    "duration": {
+      "offset": 1049368,
+      "size": 8
+    },
+    "total_video": {
+      "offset": 1049376,
+      "size": 4
+    },
+    "dropped_video": {
+      "offset": 1049380,
+      "size": 4
+    },
+    "corrupted_video": {
+      "offset": 1049384,
+      "size": 4
+    },
+    "source_starvations": {
+      "offset": 1049388,
+      "size": 4
+    },
+    "source_starved": {
+      "offset": 1049392,
+      "size": 4
+    },
+    "native_rebuffering": {
+      "offset": 232,
+      "size": 4
+    }
+  },
+  "purpose": "Host compile of layout constants only; no linking or changing native runtime/image"
+}

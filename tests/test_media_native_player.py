@@ -11,6 +11,9 @@ vp9='--vp9' in sys.argv
 underlay='--underlay' in sys.argv
 video_gap='--video-gap' in sys.argv
 late_bounds='--late-bounds' in sys.argv
+played_preview_retire='--played-preview-retire' in sys.argv
+paused_preview='--paused-preview' in sys.argv or played_preview_retire
+assert not paused_preview or (vp9 and underlay), 'paused-preview requires native VP9 underlay'
 assert not late_bounds or underlay, 'late-bounds requires native underlay'
 assert not video_gap or (vp9 and underlay), 'video-gap requires native VP9 underlay'
 provider=Path(sys.argv[sys.argv.index('--provider')+1]).resolve()
@@ -27,7 +30,7 @@ for name in ('media-webm','elf-media-player'):
  subprocess.run([str(cc),'-std=c11','-O2','-Wall','-Wextra','-Werror',
  '-Wno-misleading-indentation','-I'+str(out/'include'),'-I'+str(provider/'include'),
  '-Iuser','-Iinclude','-Iuser/starboard-media/include','-Iuser/starboard-system/include',
- *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),*(['-DMYOS_TEST_VIDEO_GAP=1'] if video_gap else []),*(['-DMYOS_TEST_LATE_BOUNDS=1'] if late_bounds else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
+ *(['-DMYOS_TEST_VP9=1'] if vp9 else []),*(['-DMYOS_TEST_UNDERLAY=1'] if underlay else []),*(['-DMYOS_TEST_VIDEO_GAP=1'] if video_gap else []),*(['-DMYOS_TEST_LATE_BOUNDS=1'] if late_bounds else []),*(['-DMYOS_TEST_PAUSED_PREVIEW=1'] if paused_preview else []),*(['-DMYOS_TEST_PLAYED_PREVIEW_RETIRE=1'] if played_preview_retire else []),'-c','user/'+name+'.c','-o',str(obj)],check=True)
 archives=[]
 support=json.loads((ROOT/'build/renderer-provider-evaluation/provider-84sokh6g/report.json').read_text())
 for item in support['inputs']:
@@ -59,7 +62,7 @@ if '--kvm' in sys.argv:
  from qemu_kvm_optin_20261008 import install
  install()
 vm=VM('media-native-player',ram=512,boot_image=frozen,asset_disk=disk,audio=out/'audio.wav')
-output='';captures=[]
+output='';captures=[];retire_captures={}
 try:
  vm.wait('myos> ')
  # Shell injection without blocking read allows same-session display capture.
@@ -68,6 +71,11 @@ try:
  while time.monotonic()<deadline:
   output=vm.log.read_text()[offset:]
   if 'ELF exited with status' in output or 'ELF pair live failed' in output or 'USER FAULT' in output or output.endswith('myos> '):break
+  if played_preview_retire:
+   for stage in ('before','after'):
+    if stage not in retire_captures and ('native PREVIEW_RETIRE '+stage+':') in output:
+     image=out/('retire-'+stage+'.ppm');vm.command('screendump',{'filename':str(image)})
+     retire_captures[stage]=image
   if time.monotonic()>=next_capture:
    image=out/('frame-%03d.ppm'%len(captures));vm.command('screendump',{'filename':str(image)})
    captures.append({'path':str(image),'host_monotonic':time.monotonic(),'sha256':digest(image)})
@@ -84,7 +92,19 @@ assert 'ELF exited with status 97' in output,output
 if underlay:
  metrics=[dict((k,int(v)) for k,v in re.findall(r'([\w-]+)=(\d+)',line))
           for line in output.splitlines() if line.startswith('MEDIA native metrics ')]
- assert len(metrics)==2 and metrics[0]['sync-samples']>=400 and metrics[0]['max-sync-us']<=100000,metrics
+ main_metric=metrics[1] if played_preview_retire else metrics[0]
+ assert len(metrics)==(3 if paused_preview else 2) and main_metric['sync-samples']>=400 and main_metric['max-sync-us']<=100000,metrics
+ if paused_preview:
+  assert 'native PAUSED_PREVIEW main A-V/controls/restart/retained state/teardown PASS' in output,output
+  if played_preview_retire:
+   assert 'native PLAYED_PREVIEW paused position=' in output and metrics[0]['decoded']>=10,metrics
+   assert set(retire_captures)=={'before','after'},retire_captures
+   from PIL import Image
+   before_roi=Image.open(retire_captures['before']).crop((80,340,400,520)).tobytes()
+   after_roi=Image.open(retire_captures['after']).crop((80,340,400,520)).tobytes()
+   assert before_roi==after_roi,'Retiring old player cleared or changed the paused main video plane'
+  else:
+   assert metrics[-1]['presented']==0 and metrics[-1]['decoded']==0,metrics
 
 match=re.search(r'ELF pair live: pages reclaimed; heap-before=(\d+) heap-after=(\d+)',output)
 assert match and match[1]==match[2],output

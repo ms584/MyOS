@@ -41,6 +41,23 @@ static unsigned allocated,released,packets[2];
 static int video_gap_done;
 #endif
 static int64_t seek_to;
+#ifdef MYOS_TEST_PAUSED_PREVIEW
+static int64_t preview_stamp;static SbPlayer preview;static volatile unsigned preview_initialized,preview_destroyed,preview_callbacks;
+static void preview_dealloc(SbPlayer p,void *ctx,const void *data){(void)p;(void)ctx;free((void *)data);
+#ifdef MYOS_TEST_PLAYED_PREVIEW_RETIRE
+ pthread_mutex_lock(&mu);++released;pthread_mutex_unlock(&mu);
+#endif
+}
+static void preview_decoder(SbPlayer p,void *ctx,SbMediaType type,SbPlayerDecoderState state,int t){(void)p;(void)ctx;(void)type;(void)state;(void)t;__atomic_add_fetch(&preview_callbacks,1,__ATOMIC_RELAXED);
+#ifdef MYOS_TEST_PLAYED_PREVIEW_RETIRE
+ if(p==player&&state==kSbPlayerDecoderStateNeedsData){pthread_mutex_lock(&mu);if(ticket==t)requested[type]=1;pthread_mutex_unlock(&mu);}
+#endif
+}
+static void preview_status(SbPlayer p,void *ctx,SbPlayerState state,int ticket){(void)p;(void)ctx;(void)ticket;__atomic_add_fetch(&preview_callbacks,1,__ATOMIC_RELAXED);if(state==kSbPlayerStateInitialized)__atomic_store_n(&preview_initialized,1,__ATOMIC_RELEASE);if(state==kSbPlayerStateDestroyed)__atomic_store_n(&preview_destroyed,1,__ATOMIC_RELEASE);}
+static volatile unsigned preview_errors;
+static void preview_error(SbPlayer p,void *ctx,SbPlayerError error,const char *message){(void)p;(void)ctx;(void)error;(void)message;__atomic_add_fetch(&preview_errors,1,__ATOMIC_RELAXED);}
+#endif
+
 static pthread_t readers[2];
 static const SbGlesInterface *gl;
 static const SbEglInterface *egl;
@@ -187,8 +204,39 @@ static void *run(void *unused){
 #endif
  ram_baseline=SbSystemGetUsedCPUMemory();ram_peak=ram_baseline;
  ram_free_baseline=ram_free_min=free_pages();
+
+#ifdef MYOS_TEST_PAUSED_PREVIEW
+ preview=SbPlayerCreate(window,&param,preview_dealloc,preview_decoder,preview_status,preview_error,0,0);
+ if(!preview)return (void *)23;
+ for(int i=0;i<200&&!__atomic_load_n(&preview_initialized,__ATOMIC_ACQUIRE);++i)sleep_ms(10);
+ if(!preview_initialized||!SbPlayerSetPlaybackRate(preview,0))return (void *)24;
+ SbPlayerSetVolume(preview,0);
+#ifdef MYOS_TEST_PLAYED_PREVIEW_RETIRE
+ player=preview;SbPlayerSetBounds(preview,0,80,340,320,180);SbPlayerSetVolume(preview,1);SbPlayerSetPlaybackRate(preview,1);
+ SbPlayerSeek(preview,0,ticket);
+ if(start_readers())return (void *)25;
+ int preview_progressed=0;int64_t preview_deadline=now()+8000000;
+ while(now()<preview_deadline&&!preview_errors){
+  sample_ram();SbPlayerInfo pi={0};SbPlayerGetInfo(preview,&pi);
+  if(pi.current_media_timestamp>=1000000&&pi.total_video_frames>=10){preview_progressed=1;break;}
+  sleep_ms(10);
+ }
+ stop_feeders();SbPlayerSetPlaybackRate(preview,0);SbPlayerSetVolume(preview,0);sleep_ms(200);
+ SbPlayerInfo pi={0};SbPlayerGetInfo(preview,&pi);preview_stamp=pi.current_media_timestamp;
+ if(!preview_progressed||preview_errors)return (void *)26;
+ lognum("native PLAYED_PREVIEW paused position=",preview_stamp);
+ pthread_mutex_lock(&mu);player=0;++ticket;initialized=preroll=ended=stop_readers=0;
+ requested[0]=requested[1]=0;seek_to=0;pthread_mutex_unlock(&mu);
+#endif
+ SbLogRaw("native PAUSED_PREVIEW retained; main admission required\n");
+#endif
  player=SbPlayerCreate(window,&param,dealloc,decoder,status,error,0,0);
- if(!player)return (void *)5;
+ if(!player){
+#ifdef MYOS_TEST_PAUSED_PREVIEW
+ SbLogRaw("native PAUSED_PREVIEW main creation rejected\n");
+#endif
+ return (void *)5;}
+
 #ifdef MYOS_TEST_UNDERLAY
 #ifndef MYOS_TEST_LATE_BOUNDS
  SbPlayerSetBounds(player,0,80,340,320,180);
@@ -218,6 +266,11 @@ static void *run(void *unused){
  while(now()-start<90000000&&!failed&&!done){
   sample_ram();
   SbPlayerInfo info={0};SbPlayerGetInfo(player,&info);
+#ifdef MYOS_TEST_PAUSED_PREVIEW
+  SbPlayerInfo retained={.playback_rate=-1,.volume=-1};SbPlayerGetInfo(preview,&retained);
+  if(preview&&(!retained.is_paused||retained.playback_rate!=0||retained.volume!=0||retained.current_media_timestamp!=preview_stamp||preview_errors))bad("native PAUSED_PREVIEW retained handle/state corrupted");
+#endif
+
   int64_t elapsed=now()-start;
 #ifdef MYOS_TEST_LATE_BOUNDS
   if(!bounds_released&&elapsed>=2000000){
@@ -230,6 +283,13 @@ static void *run(void *unused){
   if(!paused&&info.current_media_timestamp>=5000000){
    SbPlayerSetPlaybackRate(player,0);pause_stamp=info.current_media_timestamp;paused=1;
    lognum("native PAUSE position=",pause_stamp);start=now()-6000000;
+#ifdef MYOS_TEST_PLAYED_PREVIEW_RETIRE
+   SbLogRaw("native PREVIEW_RETIRE before: main paused visible\n");sleep_ms(350);
+   SbPlayerDestroy(preview);preview=0;
+   unsigned retired_callbacks=__atomic_load_n(&preview_callbacks,__ATOMIC_ACQUIRE);sleep_ms(30);
+   if(!preview_destroyed||preview_errors||retired_callbacks!=preview_callbacks)bad("native PREVIEW_RETIRE late callback/error");
+   SbLogRaw("native PREVIEW_RETIRE after: main frame must remain\n");sleep_ms(350);
+#endif
   }else if(paused&&!resumed&&elapsed>=8000000){
    if(info.current_media_timestamp-pause_stamp>100000)bad("native PAUSE clock moved");
    SbPlayerSetPlaybackRate(player,1);resumed=1;SbLogRaw("native RESUME\n");
@@ -250,9 +310,7 @@ static void *run(void *unused){
    SbLogRaw("native SEEK to=15000000\n");
   }
   #ifndef MYOS_TEST_UNDERLAY
-#ifdef MYOS_TEST_VP9
   int64_t frame_began=now();
-#endif
   SbDecodeTarget target=SbPlayerGetCurrentFrame(player);
   if(target){SbDecodeTargetInfo ti={0};if(!SbDecodeTargetGetInfo(target,&ti)||ti.width!=160||ti.height!=90)bad("native texture dimensions");
    gl->glClearColor(.05f,.05f,.08f,1);gl->glClear(0x4000);
@@ -272,11 +330,9 @@ static void *run(void *unused){
     int64_t video_stamp=(int64_t)source_frame*1000000/15;
     int64_t delta=consumed.current_media_timestamp-video_stamp;if(delta<0)delta=-delta;
     if(delta>max_sync){
-#ifdef MYOS_TEST_VP9
      if(delta>80000){char message[192];
-      snprintf(message,sizeof(message),"native VP9 sync outlier frame=%u clock=%lld delta=%lld texture-render-us=%lld\n",
+      snprintf(message,sizeof(message),"native texture sync outlier frame=%u clock=%lld delta=%lld texture-render-us=%lld\n",
                source_frame,(long long)consumed.current_media_timestamp,(long long)delta,(long long)(now()-frame_began));SbLogRaw(message);}
-#endif
      max_sync=delta;}++sync_samples;
    }
    SbDecodeTargetRelease(target);++draws;
@@ -341,6 +397,14 @@ static void *run(void *unused){
  lognum("native RAM player increment-bytes=",ram_peak-ram_baseline);
  lognum("native RAM PMM increment-bytes=",(int64_t)((ram_free_baseline-ram_free_min)*4096));
  if(ok)SbLogRaw("native same-process restart/stop while playing PASS\n");
+
+#ifdef MYOS_TEST_PAUSED_PREVIEW
+ if(preview)SbPlayerDestroy(preview);
+ unsigned callbacks=__atomic_load_n(&preview_callbacks,__ATOMIC_ACQUIRE);sleep_ms(30);
+ if(!preview_destroyed||preview_errors||callbacks!=preview_callbacks||SbPlayerSetPlaybackRate(preview,1)){bad("native PAUSED_PREVIEW teardown/late callback failed");ok=0;}
+ else if(ok&&!failed)SbLogRaw("native PAUSED_PREVIEW main A-V/controls/restart/retained state/teardown PASS\n");
+ preview=0;
+#endif
  gl->glDeleteProgram(program);gl->glDeleteShader(vs);gl->glDeleteShader(fs);
  egl->eglMakeCurrent(display,0,0,0);egl->eglDestroySurface(display,surf);egl->eglDestroyContext(display,ctx);
  egl->eglTerminate(display);egl->eglReleaseThread();SbWindowDestroy(window);

@@ -1,226 +1,110 @@
 # คู่มือทดลอง MyOS — YouTube และ Rickroll
 
-**Phase33.5/33 ยังตรวจรับไม่ครบ**
-อัปเดต 11 ต.ค. 2026: Windows Terminal เปิด QEMU ให้เห็นจริงได้แล้ว
-GTK ยังพบภาพ/เสียงกระตุก; SDL ใช้ build/provider/core เดิม และคุณยืนยันว่า
-ภาพกับเสียงลื่นขึ้น ฟัง Rickroll เกิน30วินาที และ pause/resume/seek เสียงครบ
-รอบเปิดใหม่บันทึกภาพ/เสียงแล้ว; คุณยืนยันเพลงเกิน30วินาทีและ controls ครบในรอบบูตใหม่ด้วย
-ผลนี้เป็นชุด SDL เดิม ยังไม่ใช่การตรวจรับ Phase ทั้งหมด
-ข้อจำกัดล่าสุด: เปิด Browser/โหลดวิดีโอนาน; ชุด cursor พิมพ์ Search ได้ แต่เมาส์กระโดด/ค้าง
-K/Esc ใช้ได้ และยืนยันการจับเมาส์แล้ว แต่คลิกเลือกข้อความแทนช่อง Search
-ชุดใหม่มีตัวชี้ภายใน MyOS; focused BIOS/UEFI และ full regression ผ่านแล้ว
-ชุดแก้ใหม่เพิ่มคำสั่ง MyOS `mouse absolute` สำหรับอุปกรณ์ virtual ของ QEMU
-ผ่าน focused test ครั้งแรกและ fallback แต่ยังรอ full regression/UEFI/การลองจริง
-ห้ามนำผล full regression ของชุด cursor เดิมมานับเป็นผลชุด absolute ใหม่
-โหมด SDL X11/warp ลองแล้วขยับนิดเดียวไปไกล จึงยังไม่แนะนำว่าแก้สำเร็จ
-พักงานตามคำขอของคุณ 11 ต.ค.; จะจัดชุดทดลองใหม่หลังตรวจครบเมื่อทำต่อ
-ห้ามนับ QMP click แทนการคลิกของคุณ
-ดูผลล่าสุดใน PHASE335_ACCEPTANCE.md, PROJECT_STATE.md และ wip/phase335/checkpoint20
+อัปเดต 12 ตุลาคม 2026: Phase32,33.5 และ33 ตรวจรับแล้วบน MyOS/QEMU ตามรายงาน
+PHASE335_ACCEPTANCE.md คุณยืนยันเส้นทางค้นหา เลือก เล่นพร้อมเสียง และยอมรับ
+A/V sync ไม่เกิน500 ms; ค่าสูงสุดสามรอบ204.618/140.037/87.339 ms
+ช่วงโหลด Browser อาจใช้หลายนาที ยังมี rebuffer/เฟรมตกและ UI ตอบสนองช้า
+เกณฑ์500 ms เป็นการสัมพันธ์ภาพ/เสียง ไม่ใช่เวลารอโหลดหรือ latency ของเมาส์
 
-## คำสั่งตั้งแต่เปิด PowerShell จนเข้า MyOS
+## 1. เปิดจาก Windows
 
-1. เปิด **PowerShell** หรือ **Windows Terminal** ใน Windows แล้วพิมพ์:
+เปิด Windows Terminal เลือก PowerShell แล้วรัน:
 
 ```powershell
 wsl.exe -d Ubuntu
 ```
 
-2. เมื่อเห็น prompt ของ Ubuntu เช่น `xytron404@...:~$` ให้พิมพ์ทีละบรรทัด:
+เมื่อเห็น prompt Ubuntu ให้รันทีละบรรทัด:
 
-```sh
+```bash
 cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual --sdl-diagnostic --network-evidence
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-pointer-boundary-manual --qmp --sdl-diagnostic --sdl-show-host-cursor --network-evidence
 ```
 
-3. รอหน้าต่าง **QEMU / MyOS** เปิด แล้วคลิกในหน้าต่างนั้น คำสั่งต่อไปนี้พิมพ์ที่ `myos>` ภายใน MyOS ทีละบรรทัด:
+จะเปิด QEMU พร้อมเสียง และสร้าง manual-session-* ใน build/phase335-pointer-boundary-manual
+Terminal แสดงตำแหน่ง serial log ให้ปล่อย Terminal เปิดไว้
+guest ใช้ RAM 1024 MiB และบูตด้วย snapshot ไม่มีการตรวจรับโดยอัตโนมัติ
+ถ้าขึ้นว่ามี QEMU ทำงานอยู่ ให้ปิด VM เดิมก่อน ห้ามเปิดซ้อนกัน
+หากขึ้น PulseAudio timeout หรือ WSL เปิดไม่ได้ ให้หยุดและส่งข้อความผิดพลาด
+อย่าลบ ext4.vhdx หรือ shutdown ขณะงานทดสอบทำงาน
+
+## 2. เตรียม MyOS และเปิด Browser
+
+คลิก QEMU เมื่อเห็น myos> แล้วพิมพ์ทีละคำสั่ง:
 
 ```text
 net up
 mkdir /dev/shm
+mouse absolute
 mem
 elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
-หลังพิมพ์คำสั่ง Browser ให้รอโหลดเอนจินและหน้าเว็บโดยไม่พิมพ์คำสั่งซ้ำระหว่างรอ รอบที่วัดจริงโหลดประมาณ2นาที ยังไม่ได้แก้ความล่าช้านี้
+ทุกขั้น network/TLS/JavaScript/demux/decode/render/audio ทำใน MyOS
+Windows/WSL ใช้เพียง build, virtual hardware และบันทึกหลักฐาน
+ตั้ง Quality เป็น 144p หากยังเป็น Auto รอภาพเคลื่อนไหวและเสียงจริง
+หน้าเว็บหรือวงกลมหมุนยังไม่ถือว่าเล่นได้
+เมาส์ควรตามตรงก่อนและหลังคลิก ไม่ต้องสลับ Ctrl+Alt+G ซ้ำ
+Ctrl+Alt+G ใช้ปล่อยการจับเมาส์เมื่อกลับ Windows
 
-หาก K/Esc ใช้ได้แต่คลิกเมาส์ไม่ได้ ให้คลิกหน้าต่าง QEMU แล้วกด Ctrl+Alt+G เพื่อสลับการจับเมาส์/คีย์บอร์ด กดซ้ำเพื่อปล่อยกลับ Windows นี่เป็นขั้นวินิจฉัย ยังไม่ได้ยืนยันว่าแก้เมาส์ของคุณได้ ดู [คู่มือ QEMU](https://www.qemu.org/docs/master/system/qemu-manpage.html)
-
-4. รอ YouTube โหลด เลือกวิดีโอ Rick Astley ที่ถูกต้อง แล้วเลือก Settings → Quality → 144p ภายใน MyOS ดูและฟังเพลงอย่างน้อย30วินาที จากนั้นทดสอบ `K` pause/resume, `L` seek หน้า10วินาที และ `J` seek หลัง10วินาทีตามรายการด้านล่าง
-
-5. เมื่อต้องการกลับ shell กด `Esc` ภายใน MyOS แล้วพิมพ์:
-
-```text
-mem
-desktop
-```
-
-เปิดหน้าต่างบน desktop ด้วยเมาส์ กด `Q` กลับ shell แล้วเปิด Rickroll ใหม่ด้วยคำสั่ง `elf cobalt ...` ด้านบน เมื่อต้องการบูตใหม่ให้ปิดหน้าต่าง QEMU แล้วรันคำสั่งขั้นที่2 ใน Ubuntu อีกครั้ง
-
-**แก้ error `Block node is read-only`:** ตัวเปิดใช้ temporary snapshot overlay ให้ QEMU IDE ทำงานได้โดยไม่แก้ไฟล์ boot/assets ต้นฉบับ ต้องใช้ตัวเปิดฉบับแก้แล้ว ไม่ใช้คำสั่งเก่าที่มี `readonly=on` บน IDE hard disk
-
-หากต้องการตรวจเฉพาะการบูตก่อนเปิดหน้าต่าง ใช้คำสั่งนี้ใน Ubuntu:
-
-```sh
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual --check-boot
-```
-
-ผล `PASS passive normal MyOS boot` ตรวจเพียงถึง shell ยังไม่ยืนยันภาพเพลง/เสียง/controls หรือ Phase ผ่าน ตัวเปิดแต่ละครั้งจะพิมพ์ตำแหน่ง serial log ของ session ใหม่ และไม่เขียนทับหลักฐานรอบก่อน
-
-## เตรียมระบบ
-ใช้ WSL Ubuntu กับ repository `/home/xytron404/myos` และ WSLg ที่รองรับ
-หน้าต่าง GTK/PulseAudio ให้ Windows เปิดเสียงและเลือก output device ที่ใช้งานจริง
-ใช้ผู้ใช้ปกติที่เข้าถึง `/dev/kvm` ได้ ไม่ใช้ root
-ต้องไม่มี QEMU ชุดทดสอบอื่นกำลังทำงาน และไม่ rebuild image ระหว่างทดลอง
-ทุกคำสั่ง development ใช้ `python3 tools/run_logged.py --` ตาม AGENTS.md
-
-Normal boot ที่ตรวจล่าสุดเป็น QEMU10.2.1/KVM/CPUhost/RAM1024MiB,
-RTL8139 user network,SB16,800×600; provider VP9/Opus แบบ native underlay
-Cobalt27.lts.3/Evergreen7.3.2/Starboard18,Mesa25.0.7,libvpx1.15.2,Opus1.5.2
-รายละเอียด SHA256 อยู่ในรายงาน ไม่ให้ใช้ provider เก่าที่พบ sync failures
-
-## เปิดหน้าต่าง MyOS สำหรับตรวจรับด้วยตนเอง
-ชุด phase335-cursor-manual เป็น snapshot normal boot และ native application assets ที่ใช้
-ทดลองครั้งก่อน;ไม่มี movie fixture สำหรับแทน YouTube เครื่องมือจะตรวจ hash
-boot/assets/runtime/core ก่อนเปิด VM ทุกครั้ง การเปิดนี้ยังไม่บันทึกว่า Phase ผ่าน
-
-```sh
-cd /home/xytron404/myos
-python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-cursor-manual
-```
-
-คำสั่งนี้เปิด QEMU GTK และเสียง PulseAudio เท่านั้น ไม่เปิด host browser/player
-ขั้นตอน fetch,TLS,JavaScript,demux,decode,render และ audio อยู่ใน MyOS
-เอนจินนี้เป็น source build ไม่ใช่ official Google binary; provenance และ SHA ตรวจโดยตัวเปิด
-ชุดนี้ยังเป็นชุดทดลองก่อนตรวจรับ ห้ามนับ passive boot เป็นผ่าน playback
-
-## เปิด Browser ภายใน MyOS และไปยัง Rickroll
-ที่ `myos>` พิมพ์ทีละบรรทัด:
-
-```text
-net up
-mkdir /dev/shm
-mem
-elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
-```
-
-นี่เป็น Browser Cobalt แบบ Ring3 ของ MyOS ส่วนไอคอน Browser รุ่นข้อความ
-บน desktop เป็นอีก application และยังเล่น YouTube แบบนี้ไม่ได้
-รอหน้าโหลด หากเป็นโฆษณาให้รอหรือกด Skip ad ใน YouTube ด้วยเมาส์ MyOS
-อย่านับเวลาของโฆษณาหรือวิดีโออื่นเป็น Rickroll
-ตรวจชื่อ Rick Astley – Never Gonna Give You Up และ VideoID `dQw4w9WgXcQ`
-ใน Stats for nerds เลือก Settings→Quality→144p และดูค่าที่เลือกจริง
-หลักฐาน Stats รุ่นก่อนพบ source256×144@25,VP9(278)/Opus(251),WebM/SABR
-รอบแก้ seek ล่าสุดยืนยัน WebM VP9/Opus และพบทั้ง256×144/640×360
-อย่าสรุปว่า144pคงที่ตลอดรอบ หรือใช้ itag รุ่นก่อนแทนการดู Stats รอบใหม่
-ภาพ native presentation160×90 ขยายในหน้า800×600 มี dropped frames ที่รายงานไว้
-ตำแหน่งเมนูเปลี่ยนได้ อย่าอาศัย click coordinates ที่บันทึกไว้โดยไม่ดูหน้า
-
-## ตรวจ Phase32: ค้นหา เลือก และเล่นแยกต่างหาก
-
-หลังกลับ shell ให้เปิดหน้าหลัก YouTube ภายใน MyOS:
+สำหรับ search/selection ใช้คำสั่งนี้แทน direct URL:
 
 ```text
 elf cobalt cobalt provider https://www.youtube.com/
 ```
 
-คลิกช่อง Search ในหน้า MyOS พิมพ์ `Rick Astley Never Gonna Give You Up`
-กด Enter แล้วเลือกผลลัพธ์จริง ตรวจชื่อวิดีโอและ VideoID `dQw4w9WgXcQ`
-จากนั้นตรวจภาพพร้อมเพลงและ controls ตามขั้นตอนด้านล่าง บันทึกว่าค้นหาและ
-เลือกสำเร็จจริงหรือไม่ การเปิด watch URL โดยตรงไม่ยืนยันเกณฑ์ค้นหา–เลือก
-Phase32 ยังไม่ผ่านจนตรวจเกณฑ์ของตัวเองครบ
+คลิก Search พิมพ์ Rick Astley Never Gonna Give You Up กด Enter และเลือก Rickroll
+ตรวจ URL/video ID ว่าเป็น dQw4w9WgXcQ; คลิปอื่น โฆษณาและ thumbnail ไม่ผ่าน
+Phase32 ได้ตรวจ search → เลือก → เล่นแยกต่างหากและคุณยืนยันแล้ว
 
-## ตรวจภาพ เสียง และ controls จาก session เดียวกัน
-1. ดูและฟัง Rickroll อย่างน้อย30วินาที บันทึกเวลาเริ่ม/สิ้นสุด
-   ต้องเห็นภาพเคลื่อนไหวและได้ยินเพลง ไม่ใช้ screenshot/title/RMS แทนการฟัง
-2. กด `K` เพื่อ pause รอ10วินาที ตรวจทั้งภาพและเสียงหยุด
-3. กด `K` อีกครั้ง ตรวจภาพและเสียงเล่นต่อสัมพันธ์กัน
-4. กด `L` เพื่อ seek ไปข้างหน้า10วินาที ตรวจ timeline เปลี่ยนและ scene/เสียงใหม่
-5. กด `J` เพื่อย้อนหลัง10วินาที ตรวจตำแหน่งเปลี่ยนจริง ไม่มีภาพหรือเสียงเก่าค้าง
-   ถ้ามี buffering ให้บันทึกช่วงเวลาและตรวจว่ากลับมาเล่นจากตำแหน่งใหม่ได้
-6. คลิกโลโก้ YouTube เพื่อออกจาก player แล้วตรวจเสียงหยุด กด `Esc` กลับ shell
-7. พิมพ์ `mem`,จากนั้น `desktop` เปิดหน้าต่างด้วยเมาส์ และกด `Q` กลับ shell
-   เปิดวิดีโออีกครั้งด้วยคำสั่ง Browser ด้านบน
-8. ทำเปิด–ปิดซ้ำหลายครั้ง ตรวจว่าทุกรอบเล่นได้ ไม่มี abort/freeze
-   จด pages/heap/file-cache retention จาก log ไม่ถือว่า heap เพิ่มเป็นผ่านโดยอัตโนมัติ
-9. ปิดหน้าต่าง QEMU แล้วรันคำสั่ง manual อีกครั้งเพื่อบูตใหม่
-   ทำซ้ำการเล่น≥30วินาที,pause/resume,seek หน้า–หลัง,ปิด/เปิดและ desktop
-   อย่าใช้ save-state หรือใส่คลิปที่บันทึกไว้เป็น input
+## 3. ตรวจภาพ เสียง และ controls
 
-## หลัง offline หรือเกิดปัญหา
-ถ้า YouTube แสดง offline ให้กด Retry ใน MyOS เมื่อเครือข่ายกลับมา
-ตรวจชื่อและ VideoID ใหม่ก่อนนับ Rickroll:รอบ recovery ก่อนหน้าเล่นโฆษณา
-Spandau Ballet จึงไม่ใช่หลักฐาน Rickroll หลัง recovery
-หากเกิด FATAL/USER SIGNAL,ค้าง,เสียงไม่หยุด,seekผิด หรือภาพ/เสียงไม่ตรง
-บันทึกเวลา/อาการ/serial log และถือว่ารอบนั้นไม่ผ่าน ไม่ล้าง cache เพื่อซ่อนปัญหา
-ไม่แก้ระบบเวลา,ไม่ใช้ host decoder/transcoder และไม่ใช้ MYV1 แทนวิดีโอจริง
+1. ดูและฟัง Rickroll จริงอย่างน้อย 30 วินาทีใน session เดียวกัน
+2. กด K: ทั้งภาพและเสียงต้องหยุด กด K อีกครั้ง: กลับมาเล่นสัมพันธ์กัน
+3. กด L: ไปข้างหน้า 10 วินาที ตรวจเวลาและท่อนเพลงจริง
+4. กด J: ย้อนหลัง 10 วินาที ตรวจภาพ/ท่อนใหม่ ไม่มีภาพหรือเสียงเก่าค้าง
+5. กด Esc กลับ shell แล้วรัน mem ต้องตอบสนอง
+6. รัน desktop เปิด Demo A ด้วยปุ่ม 1 แล้วกด Esc กลับ shell
+7. เปิดวิดีโอใหม่ด้วยคำสั่ง Browser เดิม ต้องเล่นได้ ไม่มี crash
+8. เปิด/ปิดซ้ำอีกอย่างน้อย 2 ครั้ง ตรวจความลื่นและการคืน RAM
+9. ปิด QEMU แล้วรันข้อ 1 ใหม่เพื่อบูตสด ทำ playback/controls ซ้ำ
 
-## ส่งผลตรวจรับและตรวจหลักฐาน
-ส่งวันที่,commit/build/provider,videoID,เวลาของ pause/resume/seek,
-ผลเพลงและความสัมพันธ์ภาพเสียง,ผลเปิดซ้ำ/บูตใหม่ และปัญหาที่พบ
-การรับคำสั่งทำงานของคุณไม่เท่ากับการรับรองว่าการทดลองผ่าน
-Phase33.5/33 ปิดได้เมื่อทุกข้อใน PHASE33.md ผ่านจริง รวม technical stability
+หากค้าง กระตุก ภาพดำ เสียงค้าง หรือเปิดไม่สำเร็จ ให้รายงานพร้อมเวลาที่เกิด
+อย่าประกาศผ่านเพียงเพราะ serial log มี PASS
 
-หลักฐานต้นฉบับอยู่ `build/phase334-public-*`;สำเนาปลอดข้อมูลลับและ SHA256
-อยู่ `docs/wip/phase335/` Raw PCAP/log/assets เก็บ private ใน ignored build
-อย่าเผย signed URLs,cookies,headers หรือ keys
-วิดีโอ screen+PCM AVI เป็นการจัดเวลาจาก WAV-byte polling แบบประมาณ
-PNG/WAV/timeline ต้นฉบับและ native hardware clock เป็นหลักฐานอ้างอิง
-เสียงที่บันทึกเป็น native mono11025Hz U8;เสียงสดจาก WSLg/Pulse ยังรอคุณยืนยัน
+## 4. หลักฐานและผลที่ต้องรายงาน
 
-ไม่มีการ push อัตโนมัติ คุณเป็นผู้ push ทุกครั้ง
+เก็บ session ต้นฉบับ พร้อม serial log, QEMU command และ build hashes
+network.pcap มีข้อมูลเครือข่ายและ HTTPS เข้ารหัส ให้เก็บส่วนตัว
+ไม่เผยแพร่ raw log หรือ signed media URL
+รายงานวันที่ URL/build, ระยะเวลาที่ฟังจริง, pause/resume/seek, เปิดซ้ำและบูตใหม่
+รวมอาการสะดุดและเวลารอ Browser/วิดีโอ
 
-## แบบฟอร์มจดผลเมื่อพร้อมทดลอง
+ตัวบันทึกเครื่องมือเก็บ native PNG/WAV/timeline จาก session เดียวกัน
+WAV อาจไม่รวมเวลาที่อุปกรณ์หยุดส่งเสียง ต้องใช้ timeline ต้นฉบับจับคู่เวลา
+PCM ไม่ยืนยันว่าเป็นเพลงถูกต้องหรือเสียงสะอาด ต้องตรวจการฟังด้วย
+เครื่องมือจะไม่อ้างว่าคุณตรวจรับหากยังไม่มีผลที่คุณยืนยัน
 
-ใช้แบบฟอร์มนี้หลังระบุ build ที่ทดสอบแล้ว ไม่ใส่คำว่า “ผ่าน” ไว้ล่วงหน้า
+## 5. ดูหลักฐานรอบตรวจรับ
 
-| รายการ | ผลที่คุณเห็น/ได้ยิน และเวลา |
-|---|---|
-| วันที่และ commit/build/provider | |
-| Video ID และชื่อวิดีโอ | |
-| ภาพเคลื่อนไหวพร้อมเพลง ≥30 วินาที | |
-| Pause: ภาพและเสียงหยุด | |
-| Resume: ภาพและเสียงเล่นต่อสัมพันธ์กัน | |
-| Seek ไปข้างหน้า: ตำแหน่งใหม่ ไม่มีภาพ/เสียงเก่าค้าง | |
-| Seek ย้อนหลัง: ตำแหน่งใหม่ ไม่มีภาพ/เสียงเก่าค้าง | |
-| ปิด player แล้ว desktop/shell ใช้งานได้ | |
-| เปิดใหม่ทุกครั้งเล่นได้ | |
-| บูตใหม่แล้วทำซ้ำครบ | |
-| เสียงสดจากหน้าต่าง MyOS | |
-| ปัญหาหรือ buffering ที่พบ | |
+ใน Ubuntu:
 
-ผลที่ยังตรวจไม่ได้ให้เขียนว่า “ยังไม่ได้ตรวจ” แทนการอนุมานจาก log
+```bash
+cd /home/xytron404/myos
+cat docs/wip/phase335/checkpoint22/pointer-boundary/final-acceptance.json
+```
 
-## ตรวจตำแหน่ง seek เพิ่มเมื่อเวลาแสดงผิดปกติ
+ใน File Explorer ใช้ตำแหน่งนี้เพื่อดู recording ต้นฉบับ:
 
-หลักฐานรอบออนไลน์ที่2 พบหลังย้อนหลังแสดง2:10 แล้วประมาณ3วินาทีต่อมา
-แสดง2:20ระหว่าง buffering สาเหตุคือ GetInfo คืนเวลาเก่าขณะ seek_pending; ชุดใหม่แก้และทดสอบตำแหน่งภาพแล้ว แต่ยังต้องฟังเสียงหลัง seek จริง
-เมื่อลองรอบใหม่ จดเวลาก่อน/หลัง `L` และ `J` พร้อมเวลาจริงที่ผ่านไป
-ถ้าตำแหน่งกระโดดผิด ให้เก็บ serial log และถือว่ารอบนั้นยังไม่ผ่าน
-เพื่อแยกตำแหน่งจากเวลาที่เล่นต่อ สามารถ pause ก่อน seek แล้วตรวจว่า
-ตำแหน่งเปลี่ยน10วินาทีขณะเสียงหยุด จากนั้น resume และดู/ฟังต่อ
-ขั้นวินิจฉัยนี้เพิ่มจากการ seek ขณะเล่น ไม่แทนเกณฑ์เดิม
+```text
+\\wsl.localhost\Ubuntu\home\xytron404\myos\build\phase335-pointer-boundary-manual\manual-session-uwzd1yy5\native-recording-mkl4wcyt
+```
 
-## ใช้ทรัพยากรและคืนพื้นที่
+มีภาพPNG,เสียงaudio.wav,timelineในevidence.json และวิดีโอรีวิว
+launch-1-screen-audio.avi รอบ70วินาที:pause40s,resume45s,seekหน้า55s/หลัง62s
+AVI จับเวลาโดยประมาณ;ค่าคลาดเคลื่อนจริงอ่านจาก native clock ไม่ใช่ AVI
+ต้นฉบับ recording/PCAP อยู่ในเครื่อง ไม่ส่งไฟล์ก้อนใหญ่หรือ signedURL ขึ้นGitHub
 
-เครื่องที่แจ้ง: i7-10750H, RAM ประมาณ32GB, SSD NVMe; ภาพ Task Manager ใช้ CPU87% และ RAM85% เป็นค่าขณะนั้น ไม่ระบุว่า MyOS เป็นสาเหตุ
-รัน QEMU ทีละเครื่องด้วย RAM1GB ตาม profile ที่ทดสอบ ปิดหน้าต่าง QEMU เมื่อจบรอบ ก่อนเริ่มใหม่
-งานทดสอบใช้ภาพหลักฐาน1FPS และเก็บ PNG/WAV/timeline ต้นฉบับชุดเดียว ใช้ build เดิมเมื่อยังไม่เปลี่ยน code/configuration
-การทดสอบที่เกี่ยวข้องและ full regression ที่จำเป็นยังต้องผ่าน ไม่ลดเกณฑ์เพื่อประหยัดทรัพยากร
-
-`wsl --shutdown` หยุด Ubuntu รวมถึงงาน build/QEMU/บันทึกหลักฐานทั้งหมด ใช้เมื่อทุกงานจบแล้วเท่านั้น
-หาก Ubuntu เปิดได้ ไม่จำเป็นต้องสั่ง restart บริการซ้ำ การเปิด Terminal ค้างไว้ไม่ป้องกันคำสั่ง shutdown
-อย่าลบ `ext4.vhdx` เพราะเป็นดิสก์ Ubuntu ทั้งชุด การคืนพื้นที่ภายใน Ubuntu ยังไม่เท่ากับพื้นที่ C: ที่เพิ่มขึ้น
-จะบันทึกรายการ cleanup และพื้นที่ก่อน/หลังจริง แยกจากการ compact ดิสก์ WSL ซึ่งทำได้หลังปิดงานทั้งหมด
-
-### ผลคืนพื้นที่รอบล่าสุด2026-10-11
-
-เก็บสำเนา source Mesa ของชุดทดลองเก่า37ชุดเป็น tar.gz และตรวจเทียบครบก่อนลบสำเนาที่ขยายแล้ว คืนพื้นที่ภายใน Ubuntu8.015GiB
-ไฟล์สำรองและ receipt อยู่ `build/phase335-cleanup-20261011/`; รายงานปลอดข้อมูลลับอยู่ `docs/wip/phase335/checkpoint16/`
-Image ปกติ/core/dependenciesปัจจุบันยัง hash ตรงเดิม ไม่ต้อง build ใหม่จากการ cleanup นี้
-หากต้องรัน incremental build ของชุดเก่าที่ archive ไว้ ให้ตรวจ SHA256 ใน receipt แล้ว `tar -xzf ARCHIVE.tar.gz -C ORIGINAL_PARENT` ก่อน
-การคืนพื้นที่ C: ยังต้องวัดหลัง compact VHDX อย่าตีความตัวเลข fstrim896.7GiB ว่าเป็นพื้นที่ Windows ที่คืนได้
-แฟลชไดรฟ์32GBมีพื้นที่พอสำหรับ image BIOS1.4MiB/UEFI32MiBและ browser assetsประมาณ118MiB ของ profile ปัจจุบัน แต่การบูต/ไดรเวอร์เครื่องจริงยังไม่ตรวจรับ
-
-## Cobalt และขอบเขต Browser ปัจจุบัน
-
-Cobalt เป็นเอนจินเว็บแอปที่นำมาพอร์ตให้ MyOS รัน HTML/JavaScript และสื่อออนไลน์ใน guest จริง ชุดนี้เน้น YouTube และยังไม่มีแถบ URL/แท็บ/ประวัติครบแบบ Chrome การตรวจรับ Rickroll ไม่ใช่การรับรองทุกเว็บไซต์ หรือการใช้งาน Browser ทั่วไป ดู [เอกสาร Cobalt](https://developers.google.com/youtube/cobalt/docs/overview) งานขยาย Browser ต้องกำหนดและทดสอบแยกภายหลัง
+หากชุด build ไม่อยู่ในเครื่องอื่น ต้องเตรียม pinned Cobalt/assets/provider ตาม
+เอกสาร native runtime ก่อน;คำสั่งนี้อ้างชุดที่ตรวจรับในเครื่องนี้ ไม่ใช่การ
+ดาวน์โหลด dependencies โดยอัตโนมัติ การตรวจรับ QEMU ยังไม่ยืนยันบูต USB จริง

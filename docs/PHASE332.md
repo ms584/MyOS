@@ -1,3 +1,5 @@
+> Final parent status2026-10-12: Phase32/33.5/33 accepted on the declared QEMU profile. See [PHASE335_ACCEPTANCE.md](PHASE335_ACCEPTANCE.md). The dated prerequisite audit below retains its original scope.
+
 # Phase 33.2 — staged dynamic ELF loader
 
 ## Current status — 2026-10-08

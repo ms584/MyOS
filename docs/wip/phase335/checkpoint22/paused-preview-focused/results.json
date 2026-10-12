@@ -1,0 +1,23 @@
+{
+  "phase_passed": false,
+  "cases": [
+    {
+      "case": "negative",
+      "bundle": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u",
+      "native_fixture_passed": false,
+      "expected_negative": true,
+      "serial_sha256": "9b70c3edd0488daddca024e47f43899526a4f0c22088835726208d83bedf367d",
+      "provider_sha256": "9cb26b6c1da478c54028de5655fcc30b8f3ab32761910dbac9e85a9bf462fd26",
+      "scope": "Native standard WebM/Opus asset fixture only; not online Rickroll or phase acceptance."
+    },
+    {
+      "case": "positive",
+      "bundle": "/home/xytron404/myos/build/media-evaluation/native-player-bw5bu1ih",
+      "native_fixture_passed": true,
+      "expected_negative": false,
+      "serial_sha256": "7a9af866e966cdfa96b68ce73c633a8d31ff897a8252be1d9e47db573a3c5b99",
+      "provider_sha256": "b8ec3f91fb342acefcf280317113acc78321690db9b797eca969c94304cbf534",
+      "scope": "Native standard WebM/Opus asset fixture only; not online Rickroll or phase acceptance."
+    }
+  ]
+}

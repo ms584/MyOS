@@ -1,306 +1,99 @@
-# MyOS — x86-64 desktop and network baseline
+# MyOS — native desktop and online YouTube in QEMU
 
-MyOS now boots from BIOS into a **64-bit x86-64 kernel** with a framebuffer
-console, PS/2 keyboard and mouse input, physical/virtual memory allocation, a kernel heap,
-a timer-driven preemptive scheduler, isolated Ring 3 demo processes, a bounded system-call API, and a hierarchical RAM filesystem.
+MyOS is an x86-64 operating system with BIOS/UEFI boot,framebuffer desktop,
+PS/2 and optional virtual absolute input,preemptive scheduling,Ring3 ELF apps,
+a bounded syscall/runtime interface,RAMFS,RTL8139 networking,verified HTTPS
+and SB16 audio. It is developed and tested in QEMU before physical deployment.
 
-## Product direction
+**2026-10-12: Phase32,Phase33.5 and Phase33 accepted on the declared QEMU profile.**
+Native Cobalt searches YouTube,selects an actual result and plays online Rickroll
+with picture and sound inside MyOS. Pause,resume,forward/backward seek,
+close/reopen,desktop response and fresh boot have recorded evidence.
+The owner explicitly accepts A/V sync<=500 ms; final measured maxima are
+204.618/140.037/87.339 ms. Historical100 ms failures remain recorded.
 
-The revised goal is a MyOS graphical desktop with Settings, Calculator and
-Snake, followed by online browsing and actual YouTube playback. Current code
-includes Desktop 1.0 with working Settings, Calculator and Snake, plus a bounded HTTPS text browser with live web search.
+The complete native path is MyOS network/TLS→Cobalt JavaScript/media→WebM
+VP9/Opus demux/decode→native video plane/SB16 audio. Host browsers,players,
+YouTube decoders/transcoders and prepared MYV1 clips do not substitute for it.
+The older bounded HTTPS text Browser remains a separate limited application.
 
-- Phases 14–20: graphics, mouse, windows, Settings, Calculator, Snake and Desktop 1.0.
-- Phases 21–25: BIOS/UEFI distribution, release tooling, USB and selected hardware. BIOS/UEFI images and release tooling are complete in QEMU; Phase 24 has a validated virtual USB image. Hardware preparation remains pending and Phase 25 is deferred.
-- Phases 26–33: app runtime, networking, HTTPS, browser/search, audio, video, YouTube and Rickroll playback acceptance.
+## Start from Windows
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for every phase's acceptance criteria and
-the mapping from the old roadmap. Phases 22–23 are complete; Phase 24 is partial and Phase 25 is deferred (the owner has no USB). Browser feasibility is a
-separate long-term milestone, with no promised completion date.
+Open Windows Terminal/PowerShell:
 
-The owner-approved sequence, extended with Phase 33 on 2026-09-28, is
-**26 → 27 → 28 → 29 → 30 → 31 → 32 → 33 → remaining Phase 24 → Phase 25**. Phases 26–31 have
-QEMU baselines, including HTTPS text search and local MYV1 video playback.
-Develop and validate in QEMU first, then select the physical target and complete its
-drivers and acceptance tests. Existing phase numbers and the working USB
-image are retained; physical support remains unverified.
-
-## Build, test, run
-
-On Linux/WSL Ubuntu, install GCC, GNU binutils, NASM, Python 3 and QEMU.
-The kernel is freestanding: no Linux runtime or C library is linked.
-
-```bash
-cd ~/myos
-bash build.sh
-python3 tests/test_system.py
-qemu-system-x86_64 -m 64M \
-  -drive format=raw,file=build/myos-current.img,if=floppy -boot order=a
+```powershell
+wsl.exe -d Ubuntu
 ```
 
-QEMU shows the boot checks and a `myos>` input prompt. Click the window and type.
-Shift, Caps Lock, Enter and Backspace work with a US keyboard layout. This is
-an **interactive command shell**; type `help` to list commands. Two CPU-bound kernel
-tasks run in the background without voluntarily yielding; the timer preempts
-them. A third task returns and is removed from the runnable set. Two Ring 3 processes
-also run with separate page tables, user stacks and private memory.
-A third user demo prints through `sys_write`, gets its PID, yields and exits
-with status 42; the kernel reclaims it. See [docs/PHASE10.md](docs/PHASE10.md)
-for the syscall ABI and [docs/PHASE9.md](docs/PHASE9.md) for process foundations.
-
-The default console is VBE 800x600x32 with the BIOS 8x16 font. If unavailable,
-the loader falls back to VGA text. To force the fallback:
+In Ubuntu on the tested development machine:
 
 ```bash
-TEXT_ONLY=1 bash build.sh
+cd /home/xytron404/myos
+python3 tools/run_logged.py -- python3 tools/run_phase335_manual.py build/phase335-pointer-boundary-manual --qmp --sdl-diagnostic --sdl-show-host-cursor --network-evidence
 ```
 
-Run `bash build.sh` again to restore the framebuffer build. Builds use
-`build/myos-current.img`; older phase images are not overwritten.
+Inside MyOS at `myos>`:
 
-## Validation
+```text
+net up
+mkdir /dev/shm
+mouse absolute
+elf cobalt cobalt provider https://www.youtube.com/watch?v=dQw4w9WgXcQ
+```
 
-`python3 tests/test_system.py` builds and boots isolated variants, then restores
-the normal image even if a test fails. It tests:
+K pauses/resumes,L seeks forward10 s,J backward10 s,Esc closes the browser.
+The launcher uses QEMU/KVM1024 MiB,SDL800x600,RTL8139 andSB16/PulseAudio.
+Keep one VM running. The native asset bundle is a verified local build,not
+included as a large Git binary; a fresh machine must prepare pinned native
+engine/assets/provider dependencies first.
 
-- BIOS loading across CHS track/head boundaries; entry into a 64-bit C kernel.
-- Boot, PMM/heap exhaustion and recovery, and preemption with 16, 64 and 256 MiB RAM.
-- E820-derived page allocation; map/translate/unmap and page-table reclamation;
-  heap alignment, splitting/coalescing, and out-of-memory behavior.
-- Actual QEMU PS/2 key events, modifiers, releases, extended-key filtering,
-  backspace, wrapping/scrolling and output in both framebuffer and VGA modes.
-- Repeated timer preemption of two CPU-bound tasks; general-register and
-  direction-flag preservation; safe task completion; task capacity limits.
-- Invalid opcode and general protection exceptions with the exact fault RIP;
-  page faults for missing pages, read-only writes and NX execution, including
-  the CPU error code and CR2 address.
+The [Thai user guide](docs/PHASE335_USER_GUIDE_TH.md) covers every step from
+opening Windows Terminal,search/selection,controls,reopen and fresh boot.
+[Acceptance report](docs/PHASE335_ACCEPTANCE.md) records exact commands,versions,
+codecs,build hashes,network/serial logs,paired screen/audio and limitations.
 
-Serial transcripts and PPM screenshots are saved in `build/system-tests/`.
-Focused runs use `--suite boot|memory|keyboard|exceptions|timer|processes|syscalls|filesystem|shell|storage|graphics|mouse|desktop|settings|calculator|snake|release`.
-Test builds additionally verify thirteen user-fault cases, process isolation,
-kill/reap, resource reuse, allocation-failure rollback, and 29 user syscall checks. Normal builds do not
-run the intentionally faulting user programs.
-The old `test-boot.py`, `test-vga.py`, `test-timer.py`, `test-exceptions.py` and
-`build-phase22.sh` commands are compatibility entry points for the current
-implementation. Earlier 16/32-bit implementations remain in Git history.
+## Build and verify
 
-For Phase 31 local video playback, see [docs/PHASE31.md](docs/PHASE31.md).
-Phase 32 YouTube playback is not yet implemented; see [docs/PHASE32.md](docs/PHASE32.md)
-for the measured HTTPS/browser gate. Phase 33 requires actual online Rickroll
-video and audio inside MyOS. Work has begun on bounded online MYV1
-playback, but actual YouTube/Rickroll playback is still not implemented and
-Phase 33 has not passed. See [docs/PHASE33.md](docs/PHASE33.md).
-
-## Design and present limits
-
-- BIOS floppy layout: boot at LBA 0, 8 KiB Stage 2 at LBA 1–16, kernel from LBA 17.
-  The build derives the kernel sector count and rejects kernels above 256 KiB.
-- BIOS information at 0x7000; E820 at 0x7400; font at 0xA000; VBE data at 0xB200.
-  UEFI supplies allocated page tables, font, GOP framebuffer and a translated
-  firmware memory map through a shared boot handoff. Kernel at 0x10000; the
-  first 1 MiB is reserved by the physical allocator.
-- Four-level paging initially identity-maps 4 GiB. The PMM manages only usable
-  E820 pages below 256 MiB. The heap maps 4 MiB at virtual address 4 GiB with NX.
-  Dynamically allocated page tables are reclaimed when mappings are removed.
-- `kmalloc`/`kfree` are 16-byte-aligned first-fit allocation with coalescing.
-  The heap is fixed-size; allocation failure returns NULL. Invalid/double frees
-  panic. Bootstrap identity mappings remain writable/executable; this is not
-  user-process isolation or full kernel W^X enforcement.
-- PIC IRQ0, IRQ1 and IRQ12 (plus IRQ2 cascade) are unmasked; PIT rate is approximately 100 Hz. IRQ handlers
-  do not write the console. Exceptions print diagnostics and halt.
-- Scheduler: one CPU, round robin, four kernel-task slots plus four user-process
-  slots. Kernel tasks share an address space; processes own CR3 roots and guarded
-  one-page user stacks plus 16 KiB kernel stacks. Process resources/slots are
-  reclaimed on reap; completed kernel-task stacks remain reserved. x87/MMX/SSE state is
-  eagerly saved per task (including all 16 XMM registers and MXCSR).
-  AVX/XSAVE and user TLS remain unsupported. Kernel stacks have no guard yet.
-- BIOS VBE/VGA and native UEFI GOP, with PS/2 keyboard and mouse. Firmware can
-  boot the hybrid image from virtual USB; the kernel has no native USB
-  controller, HID or mass-storage driver. The Phase 13 driver supports only a dedicated legacy
-  ATA data disk; testing is on QEMU, not hardware.
-
-See [docs/ROADMAP.md](docs/ROADMAP.md) for the revised Desktop/app roadmap and original phase mapping.
-Phase 9 adds supervisor-only kernel mappings to each process; this is not a
-security-audited sandbox. User-program loading is currently an embedded demo,
-with INT 0x80 calls for console/process operations and RAM files.
-
-The owner pushes to GitHub manually; development never automatically pushes.
-
-## Phase 11 and visible commands
-
-RAMFS supports directories, binary file I/O, metadata and directory iteration.
-Each process owns eight file handles; exit/fault/kill closes them. Files live in RAM and disappear on reboot unless saved to a dedicated MyOS
-ATA data disk. A Ring 3 demo reads `/etc/motd` at boot.
-See [docs/PHASE11.md](docs/PHASE11.md) for limits, ABI and acceptance tests.
-The `myos>` prompt now accepts interactive file commands; see [Phase 12](docs/PHASE12.md).
-
-To watch development commands/results in your VS Code WSL terminal:
+Linux/WSL host tools: GCC,binutils,NASM,Python3,QEMU. The kernel is freestanding.
+Native Cobalt/media dependencies are pinned separately in the Phase33 documents.
+Development commands are logged for review in `build/activity.log`.
 
 ```bash
-cd ~/myos
-tail -f build/activity.log
+cd /home/xytron404/myos
+python3 tools/run_logged.py -- bash build.sh
+python3 tools/run_logged.py -- python3 tests/test_system.py
 ```
 
-To record your own build or tests, use `python3 tools/run_logged.py -- bash build.sh`
-or `python3 tools/run_logged.py -- python3 tests/test_system.py`.
-Only commands run through this wrapper are recorded; edits are reviewed with
-`git diff`. The log begins with Phase 11 and stays local under ignored `build/`.
+Full regression passed2026-10-12 at15:36:04 and restored the five normal
+kernel/BIOS/UEFI/runtime artifacts byte-for-byte. Affected native media,memory,
+BIOS/UEFI absolute pointer,edge/button recovery and underlay tests passed.
+Normal kernel-only shell tests can use small validated profiles; native online
+playback was tested at1024 MiB. Do not interpret this as minimum RAM.
 
-## Phase 12 shell
+## Status and limits
 
-Type `help` in QEMU. Try `ls`, `cat /etc/motd`, `mkdir /home/demo`,
-`cd /home/demo`, `write note Hello MyOS`, `cat note`, `pwd`, `mem`, and `uptime`.
-The shell runs in kernel mode; there is no external executable launcher yet.
-See [docs/PHASE12.md](docs/PHASE12.md) for syntax, limits and test coverage.
+| Scope | Status |
+|---|---|
+| Phases0–23 | Existing QEMU boot,desktop,apps and release baselines retained |
+| Phases26–31 | App runtime,network,verified HTTPS,text search,SB16 audio/local video baselines |
+| Phase32 | Native YouTube search→selection→online video/sound,owner-confirmed |
+| Phase33.1–33.5 | Native engine/runtime,standard media,YouTube and Rickroll QEMU acceptance complete |
+| Remaining Phase24/Phase25 | Target-machine preparation and physical USB/hardware acceptance pending |
 
-## Phase 13 persistent data disk
+Loading may take minutes; UI/input can lag,frames drop and rebuffering remains.
+Final Auto source640x360 was decoded to160x90 and scaled into a766x431 plane.
+This does not promise Chrome parity,sustained30fps,all sites,accounts/DRM/Shorts,
+or physical GPU/USB/network/audio driver support. Linked RAMFS cache is retained;
+exact physical/SHM/alias recovery and stable non-file post-close heap are observed,
+without claiming unlimited endurance or a measured exact warm-cache plateau.
 
-Create a dedicated MyOS data image once with `python3 tools/create_data_disk.py`,
-then boot QEMU with both `build/myos-current.img` as floppy and
-`build/myos-data.img` as IDE primary master. The Shell saves after file changes;
-`disk` shows storage state and `sync` forces a save. Reuse the same data image
-on the next boot. See [docs/PHASE13.md](docs/PHASE13.md) for the exact command,
-disk layout, validation and limits. The format is specific to MyOS, not FAT32.
+One original1FPS PNG/WAV/timeline bundle and a5.18 MB approximate AVI review
+copy remain local in ignored build. Raw network captures/signed URLs are not
+published. Native clocks,not the AVI mux,measure A/V synchronization.
+Ubuntu cleanup reclaimed8605818880 B; task-created Windows dependency cleanup
+reclaimed71487576 logical B. Windows VHDX compaction/refund is separate maintenance.
+Never delete ext4.vhdx. Development dependency size is not the boot image size.
 
-## Phase 14 graphics
-
-At the QEMU Shell, type `gfx` for the graphics test scene. Press R to redraw
-with another color, or another key to return to the Shell. The code now has
-clipped pixel/rectangle/text drawing and full-screen off-screen surfaces.
-Framebuffer metadata is validated and the VGA text fallback remains usable.
-See [docs/PHASE14.md](docs/PHASE14.md) for APIs, limits and acceptance tests.
-Later phases add the mouse, desktop and built-in apps described below.
-
-
-## Phase 15 mouse input
-
-The PS/2 mouse now works through IRQ12. In `gfx`, movement updates a bounded
-cursor, left click changes its color, and mouse and keyboard events work while
-the timer preempts background tasks. At the Shell, `mouse` reports position,
-buttons and queue drops. See [docs/PHASE15.md](docs/PHASE15.md) for controls,
-driver limits and QEMU acceptance tests.
-
-## Phase 16 desktop
-
-At the QEMU Shell, type `desktop` to open the kernel-resident desktop. Click
-Demo A/B/C launcher tiles, drag window title bars, click X to close, or press
-1–3 to open and Q/Esc to exit. Demo A/B/C remain placeholder windows;
-Settings, Calculator and Snake are separate working windows. See [docs/PHASE16.md](docs/PHASE16.md)
-for controls, architecture, limits and QEMU acceptance tests.
-
-## Phase 17 Settings
-
-In `desktop`, open the Settings tile or press 4. Select dark/light theme,
-blue/green background, and a six-digit RGB accent, then press Save. With the
-recognized Phase 13 data disk attached, these values return after reboot;
-without it, the status says RAM-only. The Shell command `settings` reports
-committed values. See [docs/PHASE17.md](docs/PHASE17.md) for the exact QEMU
-workflow, input rules, data validation and tests.
-
-## Phase 18 Calculator
-
-In `desktop`, open the Calculator tile or press 5. Type or click digits,
-`.` and `+ - * /`, then press `=` or Enter. C clears; Backspace edits.
-Arithmetic has three decimal places and reports invalid input, overflow and
-division by zero. See [docs/PHASE18.md](docs/PHASE18.md) for examples,
-limits and QEMU tests. The app runs inside the kernel, not a user process.
-
-## Phase 19 Snake
-
-In `desktop`, open Snake from the launcher or press 6. Steer with arrow
-keys or W/A/S/D, pause with P or Space, and restart with R or the on-screen
-button. Food grows the snake and raises the score. Best score survives
-reboot when a recognized Phase 13 data disk is attached; otherwise it is
-RAM-only. See [docs/PHASE19.md](docs/PHASE19.md) for controls, data limits
-and QEMU validation. Snake runs in the kernel, not a user process.
-
-
-## Phase 20 Desktop 1.0
-
-The desktop top bar opens Settings, Calculator and Snake directly. The three
-apps can run together; errors in one do not prevent using the others or the
-Shell. A dedicated QEMU demo preserves Settings and the Snake best score on
-its data image across reboot. Run `python3 tools/desktop_demo.py` from the
-repository, then enter `desktop` at the `myos>` prompt. See
-[docs/PHASE20.md](docs/PHASE20.md) for controls, limits and verification.
-These built-in apps run inside the kernel.
-
-## Phase 21 BIOS HDD image
-
-`python3 tools/package_bios.py` builds `build/myos-bios.img`, a standalone
-16 MiB raw BIOS hard-disk image containing Desktop 1.0. It boots as a QEMU
-IDE primary master; a separate MyOS data disk on the primary slave keeps
-Settings, Snake scores and Shell files across reboot. See
-[docs/PHASE21.md](docs/PHASE21.md) for commands, tests and limits. The older
-floppy image remains the development test target.
-
-
-## Phases 22–24: UEFI and distribution
-
-The same kernel now boots through native x86-64 UEFI with an 800x600 GOP
-framebuffer and a firmware memory-map handoff. The release workflow runs the
-complete system suite, BIOS/UEFI desktop and persistence checks, and boots the
-same hybrid USB image under both firmware types in QEMU. It checks independent
-FAT parsing, unchanged user saves and byte-identical rebuilds before packaging.
-
-```bash
-python3 tools/run_logged.py -- python3 tools/release.py
-python3 tools/run_image.py --firmware uefi --media usb
-```
-
-At the Shell enter `desktop`. Add `--data build/myos-data.img` for a separate
-save disk. See [release instructions](docs/RELEASE.md), [UEFI](docs/PHASE22.md),
-[release tooling](docs/PHASE23.md) and [USB scope](docs/PHASE24.md).
-The validated archive is `build/release/myos-desktop.zip`; BIOS/UEFI/USB images
-occupy 16/32/64 MiB uncompressed. UEFI acceptance uses 128 MiB RAM in QEMU.
-Secure Boot, USB HID and real-hardware acceptance are not implemented.
-Phase 24 hardware-specific work remains pending; Phase 25 is deferred because
-the owner has no spare USB device. No physical device is written by these tools.
-
-## Phase 26 app runtime — first baseline
-
-`run /bin/hello` loads a small freestanding C program from RAMFS into a
-private Ring 3 process, prints a message and reports exit status 42. Use
-`cp /bin/hello /home/hello` to copy the executable as binary data. A separate
-host-built app can be installed on a **new** MyOS data image using
-`python3 tools/make_app_disk.py build/my-port-data.img build/port.app port`;
-then run `run /bin/port` with that disk attached. See
-[docs/PHASE26.md](docs/PHASE26.md) for controls, format, tests and limits.
-Phase 26 has a QEMU feasibility baseline; the full browser remains open.
-
-## Phase 27 network baseline
-
-QEMU's RTL8139 virtual NIC now supports DHCP, ARP, IPv4, DNS, UDP and a
-serialized TCP/HTTP client. Build and boot with `-nic user,model=rtl8139`,
-then type `net up`, `net status`, `net dns localhost` or
-`net get 10.0.2.2 8000 /`. See [docs/PHASE27.md](docs/PHASE27.md) for a
-host-server example, limitations and failure/reconnect tests. Packaged UEFI and BIOS
-images can be started with `python3 tools/run_image.py --nic rtl8139` after a
-release build. This is a QEMU
-network baseline, not a browser or HTTPS implementation.
-
-## Phase 28 HTTPS platform (QEMU baseline)
-
-With `-cpu max -nic user,model=rtl8139`, run `security`, `net up` and
-`net https HOST 443 /PATH` in the Shell. MyOS verifies the server certificate
-and hostname against its small trust store. See [docs/PHASE28.md](docs/PHASE28.md)
-for supported TLS algorithms, limits and QEMU acceptance tests.
-
-## Phase 29 HTTPS text browser and search (QEMU baseline)
-
-Open `desktop` and press `7` for Browser. With QEMU
-`-cpu max -nic user,model=rtl8139`, type a search query or HTTPS URL.
-MyOS fetches DuckDuckGo Lite results over verified HTTPS, displays text
-and links, opens results, and caches Back navigation. This kernel-mode,
-bounded text renderer does not support CSS, JavaScript, video or YouTube.
-See [docs/PHASE29.md](docs/PHASE29.md) for usage, tests and limits.
-
-## Phase 30 audio (QEMU baseline)
-
-Start QEMU with an SB16 device and sound backend, then use `audio status`,
-`audio tone 440 500`, `audio volume 25`, `audio mute on|off`,
-`audio play /home/sample.wav`, and `audio stop` in the Shell. The driver
-plays 11025 Hz unsigned 8-bit mono PCM using ISA DMA and IRQ 5. Details,
-input-file constraints, capture commands and tests are in
-[docs/PHASE30.md](docs/PHASE30.md). This is a QEMU audio baseline, not
-physical-hardware acceptance or browser/video playback.
+[Roadmap](docs/ROADMAP.md),[current project state](docs/PROJECT_STATE.md) and
+[handoff](docs/HANDOFF.md) describe the accepted profile and next scoped work.
+No subsequent phase starts automatically from this acceptance.

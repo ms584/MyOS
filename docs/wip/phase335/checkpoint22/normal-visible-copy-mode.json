@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-12T13:03:51.837991+07:00",
+  "session": "build/phase335-handoff-manual/manual-session-7_sua6z0",
+  "native_shell_booted": true,
+  "visible_display": false,
+  "actual_host_snapshot": "Transparent COPY MODE QEMU exposes underlying terminal",
+  "vm_closed": true,
+  "playback_started": false,
+  "phase_passed": false,
+  "bounded_service_restart": [
+    "    780 /usr/bin/weston --backend=rdp-backend.so --modules=wslgd-notify.so --xwayland --socket=wayland-0 --shell=rdprail-shell.so --log=/mnt/wslg/weston.log --logger-scopes=log,rdp-backend,rdprail-shell",
+    "    795 /usr/bin/pulseaudio --log-time=true --disallow-exit=true --exit-idle-time=-1 --load=module-rdp-sink sink_name=RDPSink --load=module-rdp-source source_name=RDPSource --load=module-native-protocol-unix socket=/mnt/wslg/PulseServer auth-anonymous=true --log-target=newfile:/mnt/wslg/pulseaudio.log"
+  ],
+  "display_recovery_verified": true,
+  "visible_recovered_session": "build/phase335-handoff-manual/manual-session-u5irq2z0"
+}

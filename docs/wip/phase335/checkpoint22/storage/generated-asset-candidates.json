@@ -1,0 +1,2338 @@
+{
+  "date": "2026-10-12T07:53:20.203041+07:00",
+  "rows": [
+    {
+      "path": "build/message-vyrasq04/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1653967,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-yz5h0p3f/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1654003,
+      "links": 1
+    },
+    {
+      "path": "build/named-shm-lifetime-a6_hqoub/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1629111,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-oy7zonr5/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1654128,
+      "links": 1
+    },
+    {
+      "path": "build/interface-2i0l2znq/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 31403,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-8u7urota/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 2898711,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ngfxyshd/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1646274,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-jlp3q4es/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1646700,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-g_wbd0r3/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1663330,
+      "links": 1
+    },
+    {
+      "path": "build/cross-t4d4jzxh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1594521,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-ms0oh0uy/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1646689,
+      "links": 1
+    },
+    {
+      "path": "build/interface-gatsppb1/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1651413,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-fyr1n0yj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 31425,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-fnezoj_2/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1645734,
+      "links": 1
+    },
+    {
+      "path": "build/statvfs-kw8ilbo_/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69177,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-qngvynwg/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1653213,
+      "links": 1
+    },
+    {
+      "path": "build/interface-cejo81vc/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1649545,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-rh_l4qu7/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123297792,
+      "inode": 1641305,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-no3d4z5h/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1653482,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-ivo0ph5p/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 1651687,
+      "links": 1
+    },
+    {
+      "path": "build/uname-abi-5yg7f1h5/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594505,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-syp5tyyb/assets.img",
+      "logical_bytes": 123295232,
+      "allocated_bytes": 123297792,
+      "inode": 1652523,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-2dwwf1rx/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649140,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-oql02ybt/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 2897625,
+      "links": 1
+    },
+    {
+      "path": "build/raw-clock-3wsibe1j/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615817,
+      "links": 1
+    },
+    {
+      "path": "build/cross-r4b0vb75/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 108585,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-0b99a0yv/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656634,
+      "links": 1
+    },
+    {
+      "path": "build/cross-p89ujklk/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 65536,
+      "inode": 1593841,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ang_oxou/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1658279,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-ds4hcgci/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1646676,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-nv9crh6c/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650798,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-_39cuotb/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 804880,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-k92s_bhc/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1646694,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-u4t416ez/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647839,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-tcvvndqn/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 64974,
+      "links": 1
+    },
+    {
+      "path": "build/message-kp3899zh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1649535,
+      "links": 1
+    },
+    {
+      "path": "build/interface-v1mjmeba/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1645707,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-70xq_hg5/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1662803,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-din2ot4r/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649835,
+      "links": 1
+    },
+    {
+      "path": "build/statvfs-2k52lv0t/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69281,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-01guwqqc/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1647731,
+      "links": 1
+    },
+    {
+      "path": "build/thread-capacity-fjg9ig_0/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 57344,
+      "inode": 1653468,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-n43z2bu0/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123297792,
+      "inode": 1641825,
+      "links": 1
+    },
+    {
+      "path": "build/cross-rxwt8lt2/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1649355,
+      "links": 1
+    },
+    {
+      "path": "build/interface-021u8m1f/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 65009,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-4oyxb4b9/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 110592,
+      "inode": 1594436,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-ta1uqdmh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1651442,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-az91_bqo/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 84971,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-pix00h5g/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1641565,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-6h_nwf63/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 108712,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ew64eo10/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1607324,
+      "links": 1
+    },
+    {
+      "path": "build/message-abxc89jt/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1651394,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-pbb9vcj7/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1651311,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-ryky58y7/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1654337,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-6mmepdfk/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1646310,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-xdh5u6_n/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649969,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-zeaq8xx_/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650704,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-35o8vqj2/assets.img",
+      "logical_bytes": 123295232,
+      "allocated_bytes": 123301888,
+      "inode": 65941,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-5a2ubv7t/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 61815,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-82vyg8lj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1648227,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-dk5cxx7_/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1646904,
+      "links": 1
+    },
+    {
+      "path": "build/message-zjeyls7m/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 109839,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-5wtjyysf/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 31456,
+      "links": 1
+    },
+    {
+      "path": "build/thread-capacity-efiqusc2/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 57344,
+      "inode": 1653473,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-2z96cpvo/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 109339,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-5gbb2ou4/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1651470,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-y6xc30kf/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 67159,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-ulkpezt9/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1665043,
+      "links": 1
+    },
+    {
+      "path": "build/named-shm-exit-v_blkmb3/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1627747,
+      "links": 1
+    },
+    {
+      "path": "build/shared-memory-_68qx3hc/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69264,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-4ox62l7v/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 118784,
+      "inode": 1594599,
+      "links": 1
+    },
+    {
+      "path": "build/cross-lu7lb7fg/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1645387,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-t6ewgd6b/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647515,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-73r5d1v_/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647118,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-x9u7dks0/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 34851,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-etykcbxb/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1595086,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-tjks53iv/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 107570,
+      "links": 2
+    },
+    {
+      "path": "build/native-verified-tls-l8dr2viu/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1656701,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-qlyiqp51/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1662213,
+      "links": 1
+    },
+    {
+      "path": "build/interface-_zndrfun/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 108691,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-ou6n92jj/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1660952,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-lb4gvcni/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1595363,
+      "links": 1
+    },
+    {
+      "path": "build/named-shm-exit-ezoc0eyn/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1627730,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-z7qrz5yf/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1595031,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-sc6nttwt/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648232,
+      "links": 1
+    },
+    {
+      "path": "build/interface-_bezmd96/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 109849,
+      "links": 1
+    },
+    {
+      "path": "build/cross-exdqav3k/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1648100,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-wgxtybux/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1654009,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-klfri4o_/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 65039,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-8az6ozdx/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1642318,
+      "links": 1
+    },
+    {
+      "path": "build/cpu-clock-9qoev8aj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615755,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-yzub9bzc/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650103,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-3m2wb57o/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647639,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-yl8ew078/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1649585,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-kz1h17su/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650978,
+      "links": 1
+    },
+    {
+      "path": "build/interface-0yzcn8ne/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 94208,
+      "inode": 1594239,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ffy3cx96/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649060,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-bih9m6co/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 65017,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-p865r8b9/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 109151,
+      "links": 1
+    },
+    {
+      "path": "build/player-unavailable-cobh5ljh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615779,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-f_1_863p/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 118784,
+      "inode": 1594203,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-blnhxliq/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649238,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-effidigm/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656515,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-1eiroj36/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648000,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-vqia6z0r/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123297792,
+      "inode": 1642631,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-3qhn909v/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 31462,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-vctxpm9q/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650320,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-zn2_jb13/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656556,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-3qiyhcmm/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 2898683,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-zo3snqqr/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1594391,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-tr7_ipw9/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1661286,
+      "links": 1
+    },
+    {
+      "path": "build/fs-identity-ssusqkdk/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1615795,
+      "links": 1
+    },
+    {
+      "path": "build/message-owt6n8xx/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1595050,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-idtb3k8v/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 2898597,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-3fvd7jf3/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1594900,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-audcacp2/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648863,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-gy6jbzod/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1648940,
+      "links": 1
+    },
+    {
+      "path": "build/fs-runtime-phv7vf6g/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615785,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-1erp4fus/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656206,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-gyhe8_c3/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1642497,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-__2jbq1n/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 65044,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-t1uu1ysg/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1649650,
+      "links": 1
+    },
+    {
+      "path": "build/cross-c70p68e_/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 109743,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-c6i_rjf2/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1660212,
+      "links": 1
+    },
+    {
+      "path": "build/interface-igakx08h/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1646668,
+      "links": 1
+    },
+    {
+      "path": "build/named-shm-lifetime-1wa07us2/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1629130,
+      "links": 1
+    },
+    {
+      "path": "build/cross-2jfmuo0y/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1594953,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-2290ybrf/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1653344,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-iwg6y_0w/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648839,
+      "links": 1
+    },
+    {
+      "path": "build/cpu-clock-menf5eax/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615824,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-rlffydr5/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648645,
+      "links": 1
+    },
+    {
+      "path": "build/cross-pxtncxgj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1653871,
+      "links": 1
+    },
+    {
+      "path": "build/image-protect-yc02_gex/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1615740,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-1vrufhf0/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1622697,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-8x1p6gyn/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1594635,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-tnabubo1/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1651465,
+      "links": 1
+    },
+    {
+      "path": "build/interface-0r7oppqi/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 94208,
+      "inode": 1595060,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-2il8_yph/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1659166,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-pkfit5gi/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 110592,
+      "inode": 1594646,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-n4j40p_r/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1645841,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-kiat4k7q/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1645958,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-xvjcpuko/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1656295,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-tf6jsf3j/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648739,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-eil_r00w/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 30380,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-lfuqt4j9/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648980,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-r8ya67su/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 65050,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-j_gnwpo4/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1646640,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-y1wzhdco/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1595178,
+      "links": 1
+    },
+    {
+      "path": "build/interface-xbfja8y9/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 94208,
+      "inode": 1594627,
+      "links": 1
+    },
+    {
+      "path": "build/fs-identity-66t27dhp/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1615877,
+      "links": 1
+    },
+    {
+      "path": "build/cross-wodx8idc/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 26223,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-fpm7gnuq/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1644105,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-4i4dsiw5/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 46032,
+      "links": 1
+    },
+    {
+      "path": "build/message-s6o5omrd/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 64999,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-qvza7gyx/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1648367,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-e_lv1ywb/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1649589,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-w_jws3ki/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1653985,
+      "links": 1
+    },
+    {
+      "path": "build/cross-r4go2458/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1646562,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-xnmkswbc/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 1638230,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-vj6e3efn/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656473,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-qgwp1e9v/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1651476,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-pvg6hvxo/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 110592,
+      "inode": 1594407,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-747h3c8p/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1649580,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-rkcpcgq4/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1653645,
+      "links": 1
+    },
+    {
+      "path": "build/phase335-cursor-manual/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 107570,
+      "links": 2
+    },
+    {
+      "path": "build/pcm-jmh1kj8i/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1653998,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-g2no7xuj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1645740,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-67_nyyer/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1646861,
+      "links": 1
+    },
+    {
+      "path": "build/message-ku4toxwt/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1645697,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-t5icnouj/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1642519,
+      "links": 1
+    },
+    {
+      "path": "build/message-cknry0he/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 31393,
+      "links": 1
+    },
+    {
+      "path": "build/cross-smotrjne/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 1651147,
+      "links": 1
+    },
+    {
+      "path": "build/cross-nmz_llt0/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1594125,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-di3oxi_6/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1664384,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-vbt9l8e3/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 109250,
+      "links": 1
+    },
+    {
+      "path": "build/shared-memory-wt6pgacj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69212,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-zzhyewnh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 108663,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-tcu_ly9c/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1642442,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-l6_1jau4/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1648178,
+      "links": 1
+    },
+    {
+      "path": "build/cross-os594auz/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 102400,
+      "inode": 64630,
+      "links": 1
+    },
+    {
+      "path": "build/image-protect-fqp4dlvh/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1615809,
+      "links": 1
+    },
+    {
+      "path": "build/message-7f67imdd/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1646658,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-e2iyihdf/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1643980,
+      "links": 1
+    },
+    {
+      "path": "build/message-rvbgc38n/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648196,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-c8lylnev/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1641290,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-yldyihsv/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1648248,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-5293op6x/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 108699,
+      "links": 1
+    },
+    {
+      "path": "build/message-4yqcmbqj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 108681,
+      "links": 1
+    },
+    {
+      "path": "build/uname-abi-7r6rf40v/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69249,
+      "links": 1
+    },
+    {
+      "path": "build/fs-runtime-a5eurfal/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615865,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-9m7dv3lj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 108717,
+      "links": 1
+    },
+    {
+      "path": "build/cross-kputkico/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 65536,
+      "inode": 96568,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-v_n138id/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1595081,
+      "links": 1
+    },
+    {
+      "path": "build/fs-unavailable-vs_ys5s8/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615773,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-d0toqte5/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1650893,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-kkdwdc34/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1642400,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-7u6n5g6n/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 108897,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-ot_8twhy/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1645715,
+      "links": 1
+    },
+    {
+      "path": "build/message-hpxfqbgv/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 49152,
+      "inode": 1594228,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-uwmwvuz5/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647272,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-5ngw60p5/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1648214,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-00wh8dap/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 31411,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-bmg08sws/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 109871,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-j366lvss/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 667649,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-lz6fldt5/assets.img",
+      "logical_bytes": 123586048,
+      "allocated_bytes": 123588608,
+      "inode": 1656812,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-xuog_w09/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1595068,
+      "links": 1
+    },
+    {
+      "path": "build/player-unavailable-ark45iob/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615853,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-1m8z4efv/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123301888,
+      "inode": 1646790,
+      "links": 1
+    },
+    {
+      "path": "build/audio-output-gbe76by_/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 69194,
+      "links": 1
+    },
+    {
+      "path": "build/raw-clock-el5eij_q/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615749,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-vjmiodm7/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 108723,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-ik2f6vzo/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 109858,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-2mwttpdf/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1659158,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-51o9fjs7/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 109821,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-sqbb85o2/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1649494,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-xj_2boh0/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1641460,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-znr1giy9/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1649553,
+      "links": 1
+    },
+    {
+      "path": "build/interface-3nz81fqu/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1653977,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-6v1qztll/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656249,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-t010vqy0/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1656595,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-iwdvm5_h/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1665779,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-yscrzc1x/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647913,
+      "links": 1
+    },
+    {
+      "path": "build/fs-unavailable-7f6al3lw/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1615846,
+      "links": 1
+    },
+    {
+      "path": "build/thread-capacity-og6oj7me/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 69237,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-0vhddqet/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1594418,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-szvxy52v/assets.img",
+      "logical_bytes": 123579904,
+      "allocated_bytes": 123580416,
+      "inode": 1653130,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-3iqdulbg/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 109876,
+      "links": 1
+    },
+    {
+      "path": "build/cross-dchpr7tw/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 65536,
+      "inode": 96538,
+      "links": 1
+    },
+    {
+      "path": "build/message-s2p0rpiq/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594859,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-53waebuq/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 108173,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-dvnd6_9j/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1645525,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-0_nvbiov/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 109882,
+      "links": 1
+    },
+    {
+      "path": "build/message-1bygatjr/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594837,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ywvd5_z9/assets.img",
+      "logical_bytes": 123293184,
+      "allocated_bytes": 123293696,
+      "inode": 1642119,
+      "links": 1
+    },
+    {
+      "path": "build/interface-tiht4mvt/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 98304,
+      "inode": 1648206,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-3mrwnur_/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1646999,
+      "links": 1
+    },
+    {
+      "path": "build/thread-capacity-lvz_9r5o/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1582768,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-n9h9fonj/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1642075,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-8n5aesqr/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 1660889,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-ivdlnv7f/assets.img",
+      "logical_bytes": 16826368,
+      "allocated_bytes": 16826368,
+      "inode": 1642254,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-wqjuod3j/assets.img",
+      "logical_bytes": 17504768,
+      "allocated_bytes": 17506304,
+      "inode": 1653284,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-4l1retdx/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 2897393,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-qjz8d23k/assets.img",
+      "logical_bytes": 17504768,
+      "allocated_bytes": 17506304,
+      "inode": 1653575,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-gbgao8yw/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 109996,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-s905km4g/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 1645973,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-494m6xgv/assets.img",
+      "logical_bytes": 16826368,
+      "allocated_bytes": 16826368,
+      "inode": 1647145,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-m1vfaww0/assets.img",
+      "logical_bytes": 16830464,
+      "allocated_bytes": 16830464,
+      "inode": 1649595,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-bft299gh/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 1654753,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-my5prvh5/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648579,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-vvncqg3p/assets.img",
+      "logical_bytes": 17119232,
+      "allocated_bytes": 17121280,
+      "inode": 1662793,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-61a5jwr_/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641380,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-tage6tc2/assets.img",
+      "logical_bytes": 17119232,
+      "allocated_bytes": 17121280,
+      "inode": 1615983,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-79lzwzgs/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1651563,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-9x30rhxy/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 2897372,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-irzitlba/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641522,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-zjvg5bez/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 107434,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-3kqza8x2/assets.img",
+      "logical_bytes": 2255360,
+      "allocated_bytes": 2256896,
+      "inode": 1640856,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-7999c32m/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1654088,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/provider-abi-9s5vkbi1/assets.img",
+      "logical_bytes": 134262784,
+      "allocated_bytes": 134262784,
+      "inode": 1642570,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-ag1yr0w6/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 66840,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-5aavqu9z/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648352,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-95k2xx2n/assets.img",
+      "logical_bytes": 2255360,
+      "allocated_bytes": 2256896,
+      "inode": 1640882,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-6yjqckmt/assets.img",
+      "logical_bytes": 17327616,
+      "allocated_bytes": 17330176,
+      "inode": 1650152,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-sbr7u2e6/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641232,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-0qgncuxk/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 1662732,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-8t6naym7/assets.img",
+      "logical_bytes": 17504768,
+      "allocated_bytes": 17506304,
+      "inode": 1654360,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-xo6wi3fe/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641172,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-h8fn0swl/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1649795,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-xb0d7qng/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 109973,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-pnojkbrp/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 108802,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-_y1rbj53/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 110277,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-dmckcax1/assets.img",
+      "logical_bytes": 17504768,
+      "allocated_bytes": 17506304,
+      "inode": 1652821,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-f2ei0mck/assets.img",
+      "logical_bytes": 17323520,
+      "allocated_bytes": 17326080,
+      "inode": 1644266,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-_q9xnylb/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 63275,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-0zsmfn28/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648240,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/pmm-pressure-ou2vc37p/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1651580,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-oeicqx89/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 59922,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-8l1k_w89/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 66684,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-13x2niu6/assets.img",
+      "logical_bytes": 1081344,
+      "allocated_bytes": 1081344,
+      "inode": 1640831,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-rhv7mneb/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 1649955,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-r4wy9bcv/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 107380,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-38jsuk5k/assets.img",
+      "logical_bytes": 17119232,
+      "allocated_bytes": 17121280,
+      "inode": 1661260,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-xqt1zm2e/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1651591,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-t3bbms1m/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641646,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-tg2jx8e1/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 110254,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-6ls33oyl/assets.img",
+      "logical_bytes": 17496576,
+      "allocated_bytes": 17498112,
+      "inode": 1652935,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-54qycx_i/assets.img",
+      "logical_bytes": 16830464,
+      "allocated_bytes": 16830464,
+      "inode": 2897485,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-2fr8wo3h/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1649856,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-2n99729a/assets.img",
+      "logical_bytes": 1081344,
+      "allocated_bytes": 1081344,
+      "inode": 1640801,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-f3fswi4v/assets.img",
+      "logical_bytes": 16830464,
+      "allocated_bytes": 16830464,
+      "inode": 1650160,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-zoyvdxn4/assets.img",
+      "logical_bytes": 17508864,
+      "allocated_bytes": 17510400,
+      "inode": 1654572,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-qhup45g4/assets.img",
+      "logical_bytes": 1081344,
+      "allocated_bytes": 1081344,
+      "inode": 1640811,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-kpk8nzkw/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 2896582,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-23ctlxeu/assets.img",
+      "logical_bytes": 1081344,
+      "allocated_bytes": 1081344,
+      "inode": 1640821,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-f8rmbdtj/assets.img",
+      "logical_bytes": 17314816,
+      "allocated_bytes": 17317888,
+      "inode": 1641215,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-tznabr8o/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 109961,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-3v63bb2_/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 107504,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-txmkfcxo/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 45908,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/pmm-pressure-q8fhxhdf/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1650084,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-zasaop6p/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 2896554,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-ylpkgprm/assets.img",
+      "logical_bytes": 17504768,
+      "allocated_bytes": 17506304,
+      "inode": 1652875,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/provider-abi-dcqm2mow/assets.img",
+      "logical_bytes": 134258688,
+      "allocated_bytes": 134262784,
+      "inode": 1641346,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-gzz9e92n/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 34792,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-4n6pysek/assets.img",
+      "logical_bytes": 16830464,
+      "allocated_bytes": 16830464,
+      "inode": 1649942,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-decode-js_gf15w/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 499712,
+      "inode": 1640787,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-_jqm78f8/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 1645928,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-3fnszmws/assets.img",
+      "logical_bytes": 17318912,
+      "allocated_bytes": 17321984,
+      "inode": 1641874,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/provider-abi-h9rqddo8/assets.img",
+      "logical_bytes": 134262784,
+      "allocated_bytes": 134266880,
+      "inode": 1642660,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-1d1q4ryu/assets.img",
+      "logical_bytes": 17512960,
+      "allocated_bytes": 17514496,
+      "inode": 1619998,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-vpxup2_y/assets.img",
+      "logical_bytes": 17318912,
+      "allocated_bytes": 17321984,
+      "inode": 1642134,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/player-faults-75k_sbd0/assets.img",
+      "logical_bytes": 17119232,
+      "allocated_bytes": 17121280,
+      "inode": 1647714,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-zuw1c_9f/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 1651602,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-5si501x3/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 45901,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-r9xvgl97/assets.img",
+      "logical_bytes": 17319424,
+      "allocated_bytes": 17321984,
+      "inode": 1644190,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-8s3hg6fg/assets.img",
+      "logical_bytes": 17327616,
+      "allocated_bytes": 17330176,
+      "inode": 1650246,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-player-mz1iy1ih/assets.img",
+      "logical_bytes": 17512960,
+      "allocated_bytes": 17514496,
+      "inode": 529140,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/thread-vm-ranges-v4f0ytv0/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1648336,
+      "links": 1
+    },
+    {
+      "path": "build/media-evaluation/native-underlay-mkykrgud/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 86016,
+      "inode": 1646835,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-4rr6sgzg/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594844,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-ds6r80md/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123297792,
+      "inode": 1647927,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-6o886ngs/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1595194,
+      "links": 1
+    },
+    {
+      "path": "build/asset-v2-wirk0p0t/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 122880,
+      "inode": 1653949,
+      "links": 1
+    },
+    {
+      "path": "build/media-policy-pv1kwerq/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594866,
+      "links": 1
+    },
+    {
+      "path": "build/message-3t1rqlg4/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 53248,
+      "inode": 1594617,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-i5btk98n/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 97452,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-w5iapm4p/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 81920,
+      "inode": 1642086,
+      "links": 1
+    },
+    {
+      "path": "build/native-verified-tls-lj8tqe39/assets.img",
+      "logical_bytes": 123297280,
+      "allocated_bytes": 123301888,
+      "inode": 1651171,
+      "links": 1
+    },
+    {
+      "path": "build/tcp-server-lgp9_ks_/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 1595092,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-zc6rkiv9/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123588608,
+      "inode": 107005,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-6i56fxvp/assets.img",
+      "logical_bytes": 123584000,
+      "allocated_bytes": 123584512,
+      "inode": 1608800,
+      "links": 1
+    },
+    {
+      "path": "build/pcm-000quyx5/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 114688,
+      "inode": 1645729,
+      "links": 1
+    },
+    {
+      "path": "build/audio-output-dpa24wl7/assets.img",
+      "logical_bytes": 1048576,
+      "allocated_bytes": 69632,
+      "inode": 69299,
+      "links": 1
+    },
+    {
+      "path": "build/phase334-public-efcc1jvm/assets.img",
+      "logical_bytes": 123295232,
+      "allocated_bytes": 123297792,
+      "inode": 1652262,
+      "links": 1
+    }
+  ],
+  "status": "INVENTORY_ONLY_NO_FILES_CHANGED",
+  "rule": "Size alone never authorizes deduplication/deletion; verify content SHA, immutability, identity and evidence dependencies after live jobs stop. Normal/manual images remain pinned."
+}

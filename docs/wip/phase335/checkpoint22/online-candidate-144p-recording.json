@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-12T11:14:24.916529+07:00",
+  "session": "build/phase335-preview-candidate-manual/manual-session-af17mpfv",
+  "recording": "build/phase335-preview-candidate-manual/manual-session-af17mpfv/native-recording-xog4cqmj",
+  "candidate_only": true,
+  "production_promoted": false,
+  "phase_passed": false,
+  "capture_completed": true,
+  "pcm": {
+    "rate": 11025,
+    "frames": 699370,
+    "seconds": 63.43492063492064
+  },
+  "screen_frames": 68,
+  "native_keys": [
+    {
+      "key": "k",
+      "elapsed": 40.032157678999965,
+      "qmp_posted": true,
+      "player_result": "requires actual pixel/audio/control audit"
+    },
+    {
+      "key": "k",
+      "elapsed": 45.02227865300006,
+      "qmp_posted": true,
+      "player_result": "requires actual pixel/audio/control audit"
+    },
+    {
+      "key": "l",
+      "elapsed": 55.040622214999985,
+      "qmp_posted": true,
+      "player_result": "requires actual pixel/audio/control audit"
+    },
+    {
+      "key": "j",
+      "elapsed": 62.00497192500006,
+      "qmp_posted": true,
+      "player_result": "requires actual pixel/audio/control audit"
+    }
+  ],
+  "observed_source_resolution": "256x144 from native decoder log",
+  "observed_container_codecs": "WebM VP9 / Opus",
+  "limitations": [
+    "Current Video ID still requires Stats confirmation.",
+    "Original PNG/WAV/timeline remain authoritative; WAV omits inactive-device wall time, so do not directly align WAV time with wall time.",
+    "PCM activity alone does not verify audible song identity or owner acceptance.",
+    "Some native rebuffer events remain; smoothness not accepted.",
+    "Production rebuild, affected regression, reopen/fresh-boot and resource acceptance remain pending."
+  ],
+  "pause_video_observed": "Movie ROI (180,110)-(640,350) identical at40.39,41.43,42.47,43.48,44.52; changes after45.54 resume. Caption/control regions excluded.",
+  "pause_audio_observed": "WAV count stops442368 bytes from41.05 through45.02 then grows at46.04. This is stopped native capture delivery, not zero-valued wall-time samples.",
+  "close_shell": {
+    "physical_before": 257743,
+    "physical_after": 257743,
+    "shm_before": 0,
+    "shm_after": 0,
+    "aliases_before": 0,
+    "aliases_after": 0,
+    "heap_before": 785920,
+    "heap_after": 892416,
+    "shell_mem_command_responded": true,
+    "vm_stopped": true
+  }
+}

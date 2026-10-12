@@ -1,0 +1,13 @@
+{
+  "phase_passed": false,
+  "production_fix_promoted": false,
+  "provider": "build/media-evaluation/provider-p_dm4n0b",
+  "focused_negative": "native-player-7p4_163u",
+  "focused_positive": "native-player-bw5bu1ih",
+  "focused_positive_exit": 0,
+  "focused_positive_completed": "2026-10-12T09:58:17+07:00",
+  "online_candidate_session": "build/phase335-preview-candidate-manual/manual-session-af17mpfv",
+  "native_homepage_started": "2026-10-12T10:56:26+07:00",
+  "online_result": "pending",
+  "normal_images_unchanged": true
+}

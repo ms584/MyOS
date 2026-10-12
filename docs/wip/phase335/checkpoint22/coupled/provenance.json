@@ -1,0 +1,30 @@
+[
+  {
+    "original": "build/phase335-absolute-kvm-bios.log",
+    "sha256": "f495364ec48f3579106011860ccaee10b235f53bbd33ca618818e7b020a3693f",
+    "bytes": 856,
+    "archive": "docs/wip/phase335/checkpoint22/coupled/phase335-absolute-kvm-bios.log.gz",
+    "exit": 0
+  },
+  {
+    "original": "build/phase335-absolute-kvm-uefi.log",
+    "sha256": "41375a9e25b86d98e30506b85e7e1bab7bfebf6730cc8b54e7d5358c80d96d22",
+    "bytes": 1049,
+    "archive": "docs/wip/phase335/checkpoint22/coupled/phase335-absolute-kvm-uefi.log.gz",
+    "exit": 0
+  },
+  {
+    "original": "build/phase335-absolute-underlay-bios.log",
+    "sha256": "904f66ddf2708fbf644c014056011b2b22f394d55d88adb3218b5983835c2b12",
+    "bytes": 2555,
+    "archive": "docs/wip/phase335/checkpoint22/coupled/phase335-absolute-underlay-bios.log.gz",
+    "exit": 0
+  },
+  {
+    "original": "build/phase335-absolute-underlay-uefi.log",
+    "sha256": "8f6d0cd48e5f4d5d0a5d9aa48881f5fac9befe5022b38f1acc6d82361fef0718",
+    "bytes": 2752,
+    "archive": "docs/wip/phase335/checkpoint22/coupled/phase335-absolute-underlay-uefi.log.gz",
+    "exit": 0
+  }
+]

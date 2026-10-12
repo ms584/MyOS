@@ -1,0 +1,9 @@
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA decoded codec=8 source=640x360 presentation=160x90
+MEDIA first-video ticket=3 pts=80000 clock=83 consumed=0
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+MEDIA stream video-mime=video/webm; codecs="vp09.00.51.08.01.01.01.01.00" audio-mime=audio/webm; codecs="opus" video-codec=8 audio-codec=4 audio-channels=2 audio-rate=48000 mode=1
+ELF resident: free-before=257743 free-after=257743 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0
+ELF pair live: pages reclaimed; heap-before=785920 heap-after=925184
+ELF cancelled; all threads stopped

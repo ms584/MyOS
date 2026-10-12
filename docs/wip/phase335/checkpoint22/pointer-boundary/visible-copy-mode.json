@@ -1,0 +1,13 @@
+{
+  "session": "build/phase335-pointer-boundary-manual/manual-session-q_ucp5he",
+  "date": "2026-10-12T15:39+07:00",
+  "host_window_title": "WARN:COPY MODE QEMU",
+  "host_image": "transparent; underlying desktop visible, no native frame visible",
+  "phase_passed": false,
+  "normal_inputs_unchanged": true,
+  "reason_for_stop": "visible demonstration unavailable; recover WSLg before continuing",
+  "recovered_visible_shell": true,
+  "recovered_qemu_window_title": "QEMU (Ubuntu)",
+  "recovery_session": "/home/xytron404/myos/build/phase335-pointer-boundary-manual/manual-session-821qbsn4",
+  "acceptance_still_pending": true
+}

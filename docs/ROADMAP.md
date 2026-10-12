@@ -1,83 +1,8 @@
-Checkpoint21 2026-10-11 PAUSED AFTER OWNER-REQUESTED COMMIT/PUSH: optional
-native virtual absolute mouse prepared; initial actual QEMU coordinate/button/
-PS2-return test and absent-vmport fallback PASS. Default PS2 remains available.
-Owner X11/warp test failed: small physical movement sends cursor far away.
-New-source full regression, matching normal UEFI rebuild, current native video
-underlay retest and actual owner absolute frontend/YouTube acceptance PENDING.
-Earlier cursor full suite does not prove the new virtual driver. Phase32/33.5/33 OPEN.
-No active QEMU/build/test job at pause. C: compaction/refund remains pending.
-Resume from docs/wip/phase335/checkpoint21, preserve all prior failure evidence.
-
-Checkpoint20 2026-10-11 CURRENT: guest cursor overlay and retained-video restoration
-PASS in real BIOS/UEFI QEMU fixtures, with original alpha/pixel/cleanup criteria intact.
-Full default tests/test_system.py exited0 at20:09:08; initial normal hashes restored exact.
-Matching new normal UEFI + real input/underlay tests exited0 by20:11:23.
-New frozen phase335-cursor-manual passive launcher/network-capture boot exited0.
-Owner new-kernel trial: Search typing works; mouse direction/inconsistent input and freeze reported.
-Actual freeze capture is unsupported Shorts, not accepted Rickroll playback.
-Guest timer advances; direct QMP +10/+10 correct; Esc returns shell with exact physical/SHM/alias cleanup.
-Frontend cause unconfirmed; X11/warp diagnostic prepared, not yet verified.
-Owner confirmed song >30s/controls in old SDL first/fresh boots; keep old-build scope.
-Phase32/33.5/33 OPEN. Owner authorized Phase33 push. See wip/phase335/checkpoint20.
-
-Checkpoint18 2026-10-11: owner actual manual trial reports BOTH picture/audio
-stutter. Serial maxsync900037us and2171/5326 dropped on640x360 input.
-Owner has now tried; no acceptance. Root cause/fix unproven; bounded diagnostic
-active with unchanged source. Phase33.5/33 NOT ACCEPTED; see wip/phase335/checkpoint18.
-
-Checkpoint17 2026-10-11: pending-seek GetInfo stale timeline cause reproduced;
-minimal production fix + native VP8/VP9 negative/positive regression verified.
-Normal tjks53iv2opens completed16:24:00; paused forward/back/resume2:51→2:41→2:42.
-Pause movie/PCM freeze, resume advance; maxsync89986us; normal5 exact/resources reclaimed.
-Fresh53waebuq completed16:34:36; movie31.908s/PCM and pause/resume/seek verified.
-Full tests/test_system.py terminal0 at17:18:25; restored normal5 hashes exact.
-Current two-open cache plateau unobserved; unchanged four-open resource case reused
-with explicit scope. Owner music/stale-audio/interactive signoff remains pending.
-Phase32 independent OPEN; Phase33.5/33 NOT ACCEPTED. See wip/phase335/checkpoint17.
-
-Checkpoint16 2026-10-11: fresh normal xnmkswbc completed4opens15:18:43;
-native homepage search/result reached actual RickID. First controls invalid from ads/promotion.
-Second paused backward/resume FAIL:2:12→2:22 at342.317; no fix/cause yet.
-Normal identities exact, all4 physical/SHM/alias cleanup and desktop responsive.
-Linked cache114688→135168→135168→135168B; overall stability not accepted.
-Ownedpeak635293696B/history complete; maxsync88971us, drops disclosed.
-Owner has not tried/listened; captured PCM is not owner signoff. Full regression pending.
-WSL spontaneously terminated; interrupted trace evidence retained, no PASS.
-Resource budget:one1024MiB VM/1FPS/compile≤2workers; verified old-source archives cleanup.
-Phase32 independently OPEN; Phase33.5/33 NOT ACCEPTED. See wip/phase335/checkpoint16.
-
-Checkpoint15 2026-10-11: normal online oql02ybt completed3opens12:34:02, no abort,
-exact physical/SHM/alias cleanup; max native sync82911us. Second/third paired
-pause movie pixels/PCM freeze and resume observed; first controls invalid from
-late quality input overlap. Stats actual RickID/VP9(278)/Opus(251); dropped frames
-disclosed. Heap/cache still grows, not stability acceptance. Fresh search/boot
-and full regression interrupted by WSL; no PASS. Normal restore terminal0.
-Manual source-core bundle passive bootPASS12:48:05; Thai guide uses oql02ybt.
-Owner has not tried; music/stale-audio/freshboot signoff remains absent.
-Phase32 search/select/play independently OPEN; Phase33.5/33 OPEN.
-See wip/phase335/checkpoint15/normal-online/README.md.
-
-Checkpoint8 2026-10-11 03:46:33+07: source-built Cobalt tooltip fix linked successfully; two private native verified HTTPS launches with two hover/hide cycles each passed without abort. Actual PNG inspection confirms title tooltip draws, hides and recreates in existing root. Physical/SHM/alias cleanup exact; heap786176→827136 then stable for second launch only. Normal images unchanged. New-core YouTube, affected prerequisites, repeated-open stability, regression and owner listening remain pending; Phase33.5/33 remain open. See wip/phase335/checkpoint8/tooltip-source-core/README.md.
-
-Checkpoint7 2026-10-10 22:35+07: measured host CPU/RAM headroom; controlled incremental compile8→12workers, current PTY32637. Prior log archived before redirection; source/objects retained. Core/runtime repair unverified; normal images unchanged and owner music/controls pending. Phase33.5/33 remain open. Details in wip/phase335/checkpoint7/tooltip-core-build/README.md.
-
-Checkpoint7 2026-10-10 22:08+07: source27.lts.3 tooltip Aura-root patch applied; dependencies/GN complete. Compile failed22:05 on missing host gperf, now workspace-only gperf3.3 installed and incremental compile ACTIVE8workers (build/phase335-core-compile.log,PTY90120). Hash-checked native prerequisite/online selectors prepared, syntax only. No linked-core/runtime repair proof yet. Normal artifacts unchanged, owner listening/controls unconfirmed, Phase33.5/33 remain open. See wip/phase335/checkpoint7/tooltip-core-build/README.md.
-
-Checkpoint6 confirmation2026-10-10 18:39:39+07: native HTTPS HTML-title fixture requested176×24 with primary window1, received ENOTSUP(-95), then FATAL/SIGABRT6. All16 core returnPCs match the captured online j_4b33rx failure exactly. Actual native JS ready/pointer callbacks recorded; pre-hover screenshot still splash, not proof of rendered HTML button. Exact physical/SHM/alias cleanup; heap786176→827136 disclosed. No production repair yet/no QEMU;33.5/33 remain open. See wip/phase335/checkpoint6/window-abort/actual-tooltip-result.json.
-
-Checkpoint6 2026-10-10 18:20+07: private j_4b33rx controls run completed; third open FATAL/SIGABRT. Matching official symbols (returnPC−1) prove TooltipAura creation → PlatformWindowStarboard::Show. Current native UI rejects small windows and a second physical window; private Ring3 reproduction twice confirms ENOTSUP/EBUSY and exact cleanup. Actual tooltip dimensions are being measured separately. No production repair or acceptance yet; pinned Starboard permits fullscreen-only platforms, so engine/compositor adaptation must be correct rather than returning fake handles. See wip/phase335/checkpoint6/window-abort/README.md. Owner listening/signoff still absent;33.5/33 remain open.
-
-Checkpoint5:four private diagnostic opens completed,noabort;65 actual cache ENOSPC,no recorded memory/thread failures. Not a repair of original normal abort or Phase acceptance. See PHASE335_ACCEPTANCE.md.
-
-Checkpoint4 fault follow-up completed 2026-10-10: tcbk0_ij two native opens with16 empty normal files reserved. Actual ENOSPC455 notes map to disk_cache::SimpleSynchronousEntry creation and LevelDB file operations using matching official symbols. No FATAL/SIGABRT; exact physical/SHM/alias cleanup and desktop/shell response; max sync90000us. PMM owned peak539852800B with complete ring coverage, heap9945680B reported separately. This is a private fault diagnostic, not normal acceptance or proof of original abort cause. The original normal di3oxi_6 abort remains unresolved; do not enlarge capacity or mark33.5/33 passed based on nonreproduction. Source patch/fixture/identities/safe logs/network metadata are archived in docs/wip/phase335/checkpoint4. Root normal five artifacts remain exact; owner listening/signoff still absent.
-
-Checkpoint4 2026-10-10 17:20+07 — still NOT ACCEPTED.
-Six diagnostic opens i04m0umd completed17:14:35: no abort, exact physical/SHM/alias cleanup and desktop/shell responsive. Max native sync89843us; PMM owned peak550572032B with complete ring coverage; heap10323728B reported separately. Normal inode peaks53/57/64/62/64/64, post-close52/56/59/60/61/63. Round6 was64/64 throughout eight samples104.708–176.430s. Cache retention212992→286720→413696→446464→479232→479232B; non-file heap777728/777760B. Five of six fixed movie windows fail motion; this is resource diagnosis, not six >=30s accepted plays. No reproduced abort is not a repair of original di3oxi_6 failure.
-Official Cobalt debug archive buildID739726c6552d87a319de5106f918c6a8e9ab9341 verified against all21 allocated sections of actual core. Huge symbols remain ignored build files. GNU addr2line was explicitly stopped after >11min with no line result, not a guest failure.
-Live inode observer now validates native SHM size up to8MiB with zero ordinary capacity; five focused tests pass. Initial or_dw712 stopped by observer assertion and is preserved as tool failure.
-Root normal five artifacts remain exact. Private fault follow-up reserves16 empty native files, logs ENOSPC/EMFILE/ENOMEM and actual bounded callchains; four native abort fixtures pass. Online fault run completed phase335-capacity-fault-online.log; no normal acceptance or production fix claimed. Owner has not tried; music listening/control signoff unavailable. Next: inspect actual resource error callsite before deciding fix, rerun normal acceptance after any fix.
-
 # MyOS roadmap — Desktop, applications and online media
+
+Updated2026-10-12: Phase32/33.1–33.5 complete on the declared QEMU profile.
+Owner accepts A/V sync<=500ms; physical Phase24/25 work remains pending.
+
 
 Latest checkpoint3 (2026-10-10 16:45+07): Phase33.5/33 remain NOT ACCEPTED.
 A private abort-diagnostic kernel/MRT passed four native diagnostic fixtures
@@ -113,7 +38,7 @@ MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **34 phases,
 numbered 0–33**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
 Phase 24 has a validated virtual USB image but hardware preparation is pending;
-Phase 25 is deferred at the owner's request (no USB device).
+Phase 25 is deferred at the owner's request (physical hardware not yet accepted device).
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -209,7 +134,7 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
 | 24 | USB image and hardware preparation | **Partial:** 64 MiB hybrid BIOS/UEFI image validated through QEMU USB mass storage. Target-machine selection and required input/storage drivers (including USB HID if needed) are scheduled after Phase 33. Any physical-device write needs explicit target selection. See PHASE24.md. |
-| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 33 and remaining Phase 24; no USB device yet.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
+| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 33 and remaining Phase 24; physical target not yet accepted.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later
@@ -225,8 +150,8 @@ QEMU development can continue without claiming this milestone is complete.
 | 29 | Browser and web search | **Complete QEMU text-browser baseline:** the selected in-tree bounded HTML-to-text/link renderer loads HTTP and verified HTTPS pages, fetches live DuckDuckGo Lite search results, opens a real HTTPS result and restores cached Back history. Local TLS and live QEMU tests validate behavior. This is a kernel-mode non-JavaScript profile; CSS/DOM/media and broader browser compatibility remain outside this baseline. See PHASE29.md. |
 | 30 | Audio | **Complete QEMU baseline:** SB16 ISA DMA/IRQ5 output at 11025 Hz mono 8-bit, buffered PCM queue, WAV file and tone playback, volume/mute/stop, IRQ-paced refill and silence/recovery on underrun. QEMU WAV capture tests verify actual output, controls and imported files. No physical-device driver or media decoding yet. See PHASE30.md. |
 | 31 | Video and media | **Complete QEMU baseline:** native MYV1 palette/RLE video decode at 80x60, 10 fps, framebuffer scaling and PIT-synchronized 11025 Hz PCM via SB16. Pause/resume and stop are tested; malformed clips are rejected. The format is custom and unencumbered; MP4/WebM/YouTube remain unsupported. See PHASE31.md. |
-| 32 | YouTube acceptance | **In progress; not accepted.** In the MyOS browser, open YouTube, search, select and play an actual online video with sound, pause/resume and seek at a documented resolution. Verified HTTPS reaches the live YouTube response, but the Browser remains limited to 64 KiB and scripting/media support is absent. See PHASE32.md. |
-| 33 | Rickroll end-to-end acceptance | **In progress; not passed.** Verified HTTPS delivery and playback of a bounded synthetic MYV1 clip now work inside MyOS/QEMU, but this is not YouTube playback. Hard fail until the actual Rickroll demonstration. In MyOS running in QEMU, open the actual YouTube Rickroll video `dQw4w9WgXcQ` by search or direct URL; show moving frames and audible music from the online source, then pause, resume and seek. A fetched page, link, thumbnail, local clip, host browser or Tor connection alone never passes. Record QEMU screen/audio and control evidence. See PHASE33.md. |
+| 32 | YouTube acceptance | **Complete on declared MyOS/QEMU profile,2026-10-12:** native homepage search,official result selection,online movie/sound and controls; owner separately confirms search→selection→sound. See PHASE32.md. |
+| 33 | Rickroll end-to-end acceptance | **Complete on declared MyOS/QEMU profile,2026-10-12:** actual native online Rickroll>=30s,pause/resume,seek both ways,close/reopen,fresh boot,resources and regression. Owner sync criterion<=500ms; measured204.618/140.037/87.339ms. Loading/UI delay,drops/rebuffer remain. See PHASE335_ACCEPTANCE.md. |
 
 Phase 29's initial browser is not evidence that YouTube works. Phases 32–33 depend
 on the browser runtime, JavaScript/DOM, required media interfaces and codecs,
@@ -234,11 +159,9 @@ networking, TLS, audio and video all working together. A local video player,
 link handed off to the host browser, or a picture of YouTube does not satisfy
 this goal. Site compatibility must be rechecked at implementation time.
 
-The exact engine/port and feasibility of modern sites remain open technical
-decisions. If a feasibility gate fails, document the missing OS capabilities
-and revise the implementation plan with the owner; do not silently replace
-MyOS with a Linux-based desktop or mark the phase complete. No completion
-date for the web/media milestone is promised by this roadmap.
+The accepted native engine is pinned Cobalt27.lts.3/Starboard18. Broader site
+compatibility and physical drivers remain separate work; do not replace MyOS
+with a host/Linux desktop or infer broader support from this accepted profile.
 
 ## Mapping from the original roadmap
 
@@ -251,7 +174,9 @@ date for the web/media milestone is promised by this roadmap.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–33 add the online platform. There are **4 phases not yet fully complete (24, 25, 32 and 33)**: Phase 24 is partial, Phase 25 is deferred, Phases 32 and 33 are in progress but not accepted.
+and apps, and phases 26–33 add the online platform. There are **2 phases not yet fully complete (24 and25)**: Phase24 hardware
+preparation is partial and Phase25 physical acceptance remains deferred/pending.
+Phases32/33 are accepted on their documented QEMU profile.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
 ## Working and validation rules
@@ -266,43 +191,11 @@ Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
   rendered result; verify resource cleanup and persistence where relevant.
 - Keep claimed capabilities tied to tests: QEMU, chosen hardware, built-in
   kernel apps and isolated user processes are different acceptance scopes.
-- Record development commands through `tools/run_logged.py`. The owner always
-  pushes to GitHub manually.
+- Record development commands through `tools/run_logged.py`. The owner normally
+  pushes manually; this Phase33 closure push is explicitly authorized.
 
-## Engine assessment, 2026-09-28
+## Historical engine/loader planning
 
-Static comparison and the official Cobalt x64 ELF audit are recorded in
-[PHASE33_ENGINE_EVALUATION.md](PHASE33_ENGINE_EVALUATION.md). Cobalt 27 LTS /
-Starboard 18 is the conditional native-port target. The first Phase 33.1 slice
-now has an exact import-contract register, read-only large assets, restricted
-Ring 3 ELF execution and native Cobalt import inspection. See [PHASE331.md](PHASE331.md)
-for tests and limits. Phase 33.1 remains incomplete: external platform bindings, the native
-Starboard runtime and HTML/JavaScript smoke are still open. Native engine
-startup and actual YouTube playback remain unproven.
-Phase 32/33 remain **NOT PASSED**.
-
-## Phase 33.2 — dynamic loader continuation
-
-The next loader milestone is documented in [PHASE332.md](PHASE332.md): staged
-ET_DYN mapping, four relocation types, in-image/weak resolution, RELRO and
-Ring 3 constructor startup for self-contained fixtures. Actual Cobalt maps
-and processes relocations; 62 strong imports resolve and 180 remain unresolved, so
-it is released without execution. Full native-engine/HTML/JavaScript support
-and the original Phase 33.1 gate remain open; this does not close Phase 32/33.
-
-Phase 33.2 loader baseline: focused tests and the full system regression passed
-on 2026-09-28; normal framebuffer image restored. See PHASE332.md for the
-restricted loader scope and the still-open native-engine gate.
-
-## Detailed Phase 33.1-33.5 plan
-
-See [PHASE33_EXECUTION_PLAN.md](PHASE33_EXECUTION_PLAN.md) for the next-session
-sequence, runtime/engine gates, standard-media stage (33.3), YouTube integration
-(33.4), and final Rickroll acceptance (33.5). This is planning, not completion.
-
-Phase33.3 standard-media checkpoint accepted2026-10-09 on the declared native
-MyOS/QEMU profile; see [requirement audit](PHASE333_ACCEPTANCE.md).
-Phase33.4/33.5, YouTube/Rickroll and parent Phase32/33 remain open; no next-stage
-work was started in this checkpoint.
-
-Checkpoint14 2026-10-11: source-built core standard-media continuous confirmation passed on a private512MiB fixture profile (600 frames/0drop,max19704us,40.096s PCM,RAM27066336B). This does not close Phase33.5/33 or independent Phase32. Prior startup-gap/drop failures retained; three-launch lifecycle, new-core normal Rickroll/freshboot, regression and owner listening remain pending. See wip/phase335/checkpoint14/continuous-confirmation/README.md.
+Earlier incomplete-engine notes are archived in
+`wip/phase335/checkpoint22/pointer-boundary/pre-closure-documents.json.gz`.
+Current engine/media/Rickroll acceptance is in PHASE33.md and PHASE335_ACCEPTANCE.md.

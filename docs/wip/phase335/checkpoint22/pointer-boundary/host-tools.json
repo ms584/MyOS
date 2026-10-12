@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-12T15:01:20.617681+07:00",
+  "tools": {
+    "qemu": "QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)",
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "binutils": "GNU ld (GNU Binutils for Ubuntu) 2.46",
+    "nasm": "NASM version 3.01",
+    "python": "Python 3.14.4"
+  },
+  "scope": "Host build/test/record tools only; all online media pipeline executes in MyOS"
+}

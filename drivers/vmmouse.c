@@ -42,9 +42,15 @@ int vmmouse_read(struct vmmouse_event *event)
     }
     if(!count)return 0;
     struct reply data=request(39,4);
-    if((data.a&0x10000u)||data.b>65535||data.c>65535){
+    if(data.a&0x10000u){
         vmmouse_disable();return -1;
     }
+    /* SDL can report positions just outside its client viewport. QEMU
+     * scales them beyond the virtual16-bit range. Saturate at the edge
+     * and retain button releases; this is not a protocol failure. */
+    int32_t x=(int32_t)data.b,y=(int32_t)data.c;
+    data.b=x<0?0:x>65535?65535:(uint32_t)x;
+    data.c=y<0?0:y>65535?65535:(uint32_t)y;
     uint8_t buttons=((data.a&0x20)?1:0)|((data.a&0x10)?2:0)|((data.a&8)?4:0);
     *event=(struct vmmouse_event){(uint16_t)data.b,(uint16_t)data.c,buttons};
     return 1;

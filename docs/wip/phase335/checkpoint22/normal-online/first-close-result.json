@@ -1,0 +1,14 @@
+{
+  "physical_before": 257743,
+  "physical_after": 257743,
+  "shm_before": 0,
+  "shm_after": 0,
+  "aliases_before": 0,
+  "aliases_after": 0,
+  "heap_before": 785920,
+  "heap_after": 990720,
+  "shell_mem_responded": true,
+  "desktop_demo_opened": true,
+  "desktop_esc_returned": true,
+  "phase_passed": false
+}

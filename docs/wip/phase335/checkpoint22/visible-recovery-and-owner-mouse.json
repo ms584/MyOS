@@ -1,0 +1,11 @@
+{
+  "session": "build/phase335-absolute-manual/manual-session-rut6qmnv",
+  "date": "2026-10-12",
+  "host_display_verified": true,
+  "host_display_observation": "Actual Windows QEMU image showed normal MyOS shell then Graphics Foundation after bounded Weston/PulseAudio service recovery. Earlier two transparent COPY MODE failures retained.",
+  "absolute_current_verified": true,
+  "owner_report": "Pointer motion matches perfectly; after one click pointer appeared stationary. Release/motion response pending clarification.",
+  "mouse_accepted": false,
+  "online_acceptance": false,
+  "phase_passed": false
+}

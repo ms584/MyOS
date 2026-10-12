@@ -6,7 +6,7 @@ from test_system import VM,ROOT
 from test_shell import type_text
 from test_elf_dynamic import assert_live_resources
 from make_asset_disk import create
-p=argparse.ArgumentParser();p.add_argument('--boot-image',type=Path,required=True);p.add_argument('--runtime',type=Path,required=True);p.add_argument('--uefi',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--boot-image',type=Path,required=True);p.add_argument('--runtime',type=Path,required=True);p.add_argument('--uefi',action='store_true');p.add_argument('--absolute-pointer',action='store_true');a=p.parse_args()
 out=Path(tempfile.mkdtemp(prefix='native-underlay-',dir=ROOT/'build/media-evaluation'))
 specs=[]
 for mode in (0,1,2):
@@ -40,6 +40,9 @@ moved={(682,520):(64,0,0),(684,520):(255,0,0),(688,520):(0,0,0)}
 moved={(682,520):(64,0,0),(684,520):(255,0,0),(686,524):(0,0,255)}
 try:
  vm.wait('myos> ')
+ if a.absolute_pointer:
+  offset=len(vm.log.read_text());type_text(vm,'mouse absolute\n');wait(offset,'Mouse: absolute virtual coordinates enabled')
+  assert any(d['current'] and d['absolute'] for d in vm.command('query-mice'))
  for cycle,mode in enumerate((0,1,2,0)):
   offset=len(vm.log.read_text());type_text(vm,f'elf live underlay{mode}\n')
   wait(offset,'Underlay blend ready');shot(f'{cycle}-blend',blend)
@@ -47,12 +50,18 @@ try:
    # Real PS/2 movement: the guest pointer must overlay retained video, and
    # moving it away must restore all original alpha/video pixel assertions.
    # Keep each delta within the existing validated PS/2 fixture range.
-   for axis,value in (('x',120),('x',120),('x',42),('y',100),('y',100),('y',20)):
-    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
+   if a.absolute_pointer:
+    vm.command('input-send-event',{'events':[{'type':'abs','data':{'axis':axis,'value':round(value*32767/limit)}} for axis,value,limit in [('x',682,799),('y',520,599)]]})
+   else:
+    for axis,value in (('x',120),('x',120),('x',42),('y',100),('y',100),('y',20)):
+     vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
    time.sleep(.05)
    shot('cursor-over-video',{(682,520):(16,16,16),(683,522):(255,255,255)})
-   for axis,value in (('x',-120),('x',-120),('x',-42),('y',-100),('y',-100),('y',-20)):
-    vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
+   if a.absolute_pointer:
+    vm.command('input-send-event',{'events':[{'type':'abs','data':{'axis':axis,'value':round(value*32767/limit)}} for axis,value,limit in [('x',400,799),('y',300,599)]]})
+   else:
+    for axis,value in (('x',-120),('x',-120),('x',-42),('y',-100),('y',-100),('y',-20)):
+     vm.command('input-send-event',{'events':[{'type':'rel','data':{'axis':axis,'value':value}}]})
    time.sleep(.05);shot('cursor-moved-video-restored',blend)
   vm.key('n')
   if mode==1:
@@ -70,4 +79,4 @@ try:
  print('PASS: real Ring3 underlay pixels, guest cursor overlay/restoration, premultiplied alpha/occlusion, bad requests atomic, seek clear, move, conceal/show, stop/fault/relaunch and exact resources',out,flush=True)
 finally:
  (out/'serial.log').write_text(vm.log.read_text());vm.close()
- (out/'evidence.json').write_text(json.dumps(dict(boot_sha256=hashlib.sha256(a.boot_image.read_bytes()).hexdigest(),runtime_sha256=hashlib.sha256(a.runtime.read_bytes()).hexdigest(),shots=shots),indent=2)+'\n')
+ (out/'evidence.json').write_text(json.dumps(dict(absolute_pointer=a.absolute_pointer,boot_sha256=hashlib.sha256(a.boot_image.read_bytes()).hexdigest(),runtime_sha256=hashlib.sha256(a.runtime.read_bytes()).hexdigest(),shots=shots),indent=2)+'\n')

@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-12T13:15:46.715140+07:00",
+  "source_session": "build/phase335-handoff-manual/manual-session-u5irq2z0",
+  "recording": "build/phase335-handoff-manual/manual-session-u5irq2z0/native-recording-u4ee3pv8",
+  "normal_production_provider": "provider-uf3n3z4l",
+  "capture_complete": true,
+  "native_pcm_frames": 681514,
+  "native_pcm_seconds": 61.81532879818594,
+  "native_screen_frames": 68,
+  "ram": {
+    "history_coverage_complete": true,
+    "history_owned_peak_bytes": 537649152,
+    "paused_seconds": 0.5940248039999005,
+    "history_scope": "PMM allocation low-water in existing512x10ms ring after initial partial baseline tick, excluding boot OOM. Poll gaps>512ticks invalidate complete peak coverage. PMM includes heap backing pages; cumulative heap high-water is reported separately, never added to physical RAM. Includes kernel/other residents, not per-process RSS or whole boot peak."
+  },
+  "pause_observed": "Movie ROI identical40.47..44.61 and PCM delivery count430080 constant41.02..45.01",
+  "resume_observed": "Movie changes45.63+ and PCM grows46.03+",
+  "seek_observed": "Forward ticket9 nativePTS63240000; backward ticket11PTS59360000; movie returns after transient cleared plane",
+  "actual_source": "native decoder256x144; WebM VP9/Opus48kHz stereo\u2192SB16U8mono11025",
+  "sync_failed": true,
+  "sync_outlier_us": 123385,
+  "sampler_effect_proven": false,
+  "song_identity_audibly_verified": false,
+  "user_acceptance_received": false,
+  "phase_passed": false,
+  "limitations": [
+    "RAM covers recorded runtime only, not startup or entire boot.",
+    "WAV timeline approximate mapping due output buffering; originals authoritative.",
+    "Current100ms sync gate not passed; do not discard outlier.",
+    "Reopen/freshboot/repeated resource stability still pending."
+  ]
+}

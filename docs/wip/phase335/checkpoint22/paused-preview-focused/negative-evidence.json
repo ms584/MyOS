@@ -1,0 +1,49 @@
+{
+  "output_mode": "underlay",
+  "video_codec": "VP9",
+  "native_asset_checkpoint": true,
+  "cobalt_media": false,
+  "passed": false,
+  "provider_sha256": "9cb26b6c1da478c54028de5655fcc30b8f3ab32761910dbac9e85a9bf462fd26",
+  "fixture_sha256": "cecaadd5001511bdefa71699753c6960fb38675a56edd4364ee841e91edfbf7f",
+  "core_sha256": "0007b9bba7557cb2afbd855b9b2e9dd00aeb972a58daeac9f6837136aeb2146c",
+  "boot_sha256": "e0ff4d8daf79ae83f1188d0100f6964423ebeb30b7cf27b7540351008bba687c",
+  "captures": [
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-000.ppm",
+      "host_monotonic": 19.6815929,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-001.ppm",
+      "host_monotonic": 21.6971453,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-002.ppm",
+      "host_monotonic": 23.7140492,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-003.ppm",
+      "host_monotonic": 25.733079768,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-004.ppm",
+      "host_monotonic": 27.749281089,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-005.ppm",
+      "host_monotonic": 29.764745145,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    },
+    {
+      "path": "/home/xytron404/myos/build/media-evaluation/native-player-7p4_163u/frame-006.ppm",
+      "host_monotonic": 31.7829023,
+      "sha256": "0caf9d42abfded6734887b2c10bd9755fe31454897ac045274d6dbef6543487f"
+    }
+  ],
+  "output": "elf pair-live player provider\nELF pair mapping module: 0\nELF pair mapping module: 1\nELF pair provider bias: 0x000000800000C000\nELF platform: sysconf\nELF platform: fstatat\nELF platform: calloc\nELF platform: clock_nanosleep\nELF platform: __errno_location\nELF platform: clock_gettime\nELF platform: realloc\nELF platform: pthread_mutex_init\nELF platform: pthread_mutexattr_settype\nELF platform: pthread_attr_init\nELF platform: mkdir\nELF platform: malloc\nELF platform: __tls_get_addr\nELF platform: pthread_attr_setstacksize\nELF platform: pthread_rwlock_rdlock\nELF platform: pthread_mutex_lock\nELF platform: pthread_sigmask\nELF platform: pthread_once\nELF platform: pthread_condattr_destroy\nELF platform: fcntl\nELF platform: lseek\nELF platform: read\nELF platform: SbLogRaw\nELF platform: access\nELF platform: SbAudioSinkDestroy\nELF platform: MyOSFinalizeImages\nELF platform: getpid\nELF platform: pthread_mutex_destroy\nELF platform: unlinkat\nELF platform: pthread_mutexattr_destroy\nELF platform: pthread_rwlock_wrlock\nELF platform: pthread_attr_destroy\nELF platform: pthread_create\nELF platform: write\nELF platform: isatty\nELF platform: SbAudioSinkCreate\nELF platform: pthread_cond_signal\nELF platform: close\nELF platform: pthread_mutexattr_init\nELF platform: pthread_self\nELF platform: MyOSUiQuery\nELF platform: pthread_cond_timedwait\nELF platform: pthread_cond_init\nELF platform: SbMediaGetAudioConfiguration\nELF platform: pthread_rwlock_destroy\nELF platform: pthread_condattr_init\nELF platform: getuid\nELF platform: abort\nELF platform: pthread_equal\nELF weak zero: _ZTH23_mesa_glapi_tls_Context\nELF platform: openat\nELF platform: pthread_rwlock_init\nELF platform: pthread_setname_np\nELF platform: pthread_rwlock_unlock\nELF platform: pthread_cond_broadcast\nELF platform: pthread_mutex_unlock\nELF platform: pthread_cond_destroy\nELF platform: fstat\nELF platform: free\nELF platform: pthread_cond_wait\nELF platform: pthread_condattr_setclock\nELF platform: posix_memalign\nELF platform: MyOSUiPresent\nELF platform: geteuid\nELF platform: pthread_join\nELF relocations: relative=18496 absolute=0 global=2 jump=63 skipped=0\nELF bindings: missing=0 weak-zero=1\nELF RELRO: protected\nELF platform: clock_gettime\nELF platform: SbWindowSetDefaultOptions\nELF provider: SbPlayerGetInfo\nELF platform: fstatat\nELF platform: pthread_attr_destroy\nELF provider: SbPlayerWriteEndOfStream\nELF platform: pthread_create\nELF provider: SbPlayerDestroy\nELF platform: SbSystemGetUsedCPUMemory\nELF platform: pthread_attr_init\nELF provider: SbPlayerSetBounds\nELF platform: SbWindowCreate\nELF platform: malloc\nELF provider: SbPlayerGetCurrentFrame\nELF platform: lseek\nELF provider: SbGetEglInterface\nELF platform: SbWindowGetPlatformHandle\nELF platform: unlinkat\nELF provider: SbGetGlesInterface\nELF provider: SbPlayerSetPlaybackRate\nELF platform: read\nELF platform: pthread_attr_setstacksize\nELF provider: SbPlayerSeek\nELF provider: SbPlayerCreate\nELF platform: pthread_mutex_unlock\nELF provider: SbPlayerWriteSamples\nELF platform: SbLogRaw\nELF provider: SbMediaCanPlayMimeAndKeySystem\nELF provider: SbDecodeTargetGetInfo\nELF provider: SbPlayerSetVolume\nELF platform: pthread_mutex_lock\nELF platform: __errno_location\nELF platform: openat\nELF platform: pthread_join\nELF platform: clock_nanosleep\nELF platform: close\nELF platform: SbWindowDestroy\nELF platform: free\nELF relocations: relative=0 absolute=0 global=0 jump=64 skipped=0\nELF bindings: missing=0 weak-zero=0\nELF RELRO: protected\nELF pair live: started; Escape stops all threads\nMEDIA stream video-mime=video/webm; codecs=vp9 audio-mime=audio/webm; codecs=opus video-codec=8 audio-codec=4 audio-channels=1 audio-rate=48000 mode=1\nnative PAUSED_PREVIEW retained; main admission required\nMEDIA stream video-mime=video/webm; codecs=vp9 audio-mime=audio/webm; codecs=opus video-codec=8 audio-codec=4 audio-channels=1 audio-rate=48000 mode=1\nnative PAUSED_PREVIEW main creation rejected\nELF resident: free-before=126679 free-after=126679 shm-before=0 shm-after=0 aliases-before=0 aliases-after=0\nELF pair live: pages reclaimed; heap-before=750336 heap-after=750336\nELF exited with status 5\nmyos> "
+}

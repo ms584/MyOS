@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-12T14:47:44+07:00",
+  "exit": 0,
+  "profile": "BIOS KVM1024 normal",
+  "driver_sha256": "0d9e31decf8e9ff1a887a05d91401e748672306f462f3a8c5da7c3227e868219",
+  "kernel_sha256": "5f74ea0703551c2f14a994730cc34147f45ad301a37926bb621318caf644873c",
+  "coverage": [
+    "outside viewport all4 edges",
+    "exact native position",
+    "real released pointer pixel",
+    "valid movement recovery",
+    "absolute centre corners small moves",
+    "keyboard exit",
+    "explicit PS2 fallback"
+  ],
+  "phase_passed": false,
+  "remaining": [
+    "matchingUEFI",
+    "nativeunderlay",
+    "fullregression",
+    "normalonline"
+  ]
+}
