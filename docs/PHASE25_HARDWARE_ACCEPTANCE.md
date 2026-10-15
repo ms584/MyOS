@@ -2,20 +2,20 @@
 
 Status: **NOT RUN / BLOCKED by remaining Phase 24 preparation** (2026-10-15).
 Target: Lenovo ThinkBook 15 G3 ACL Type 21A4 selected by owner.
-This is an unfilled handoff template, not evidence of completed tests.
+Inventory fields are filled; physical test fields remain unfilled. This is not evidence of completed tests.
 Prerequisites and detailed procedure: [PHASE24_HANDOFF_TH.md](PHASE24_HANDOFF_TH.md).
 The roadmap gate is unchanged.
 
 | Required fact | Current value / owner to fill |
 |---|---|
 | Machine / CPU / RAM | ThinkBook 21A4 / Ryzen 5 5500U / 8 GB (owner report) |
-| Board / MTM / firmware / mode | UNKNOWN |
-| SSD / Wi-Fi / graphics | 256 GB, exact controller UNKNOWN / QCA61x4A / Radeon shared graphics |
-| Keyboard / mouse controller IDs | Built-in keyboard + separate mouse; transport/IDs UNKNOWN |
-| USB make/model/capacity/sector size | UNKNOWN; physical write NOT authorized in this task |
+| Board / firmware / mode | LNVNB161216 / GQCN45WW(V1.31) / UEFI; Secure Boot OFF in owner Windows report; exact MTM still optional |
+| SSD / Wi-Fi / graphics | Samsung system NVMe144d:a809 / QCA61x4A168c:003e / Radeon1002:164c; all remain unaccepted under MyOS |
+| Keyboard / mouse controller IDs | Built-in PS/2 FUJ7401 / external USB30fa:0301 behind AMD xHCI1022:1639; actual HID boot protocol and post-handoff events untested |
+| USB make/model/capacity/sector size | Samsung DUO MUF-32CB/APC; USB090c:1000;32078036992 bytes; logical/physical512B; SCSI/BOT class08/subclass06/protocol50 per owner samsung-usb-info.json; MyOS physical test NOT RUN; physical write NOT authorized |
 | Boot image / source commit | See Phase 24 evidence; recheck actual tested checksum/commit |
-| Image readback / firmware settings | NOT RUN / UNKNOWN |
-| Allowed scratch persistence medium | NONE SELECTED; do not use the system SSD |
+| Image readback / firmware settings | MyOS readback NOT RUN; Windows report says UEFI / Secure Boot OFF; no settings changed |
+| Allowed scratch persistence medium | Samsung DUO selected for prepared typeDA data partition; physical write/boot authorization still required; never the system SSD |
 | Evidence directory / tester / date | NOT RUN |
 
 | Acceptance item | Result | Evidence / observation |
@@ -23,10 +23,10 @@ The roadmap gate is unchanged.
 | Owner-selected USB identity, checksum and readback | NOT RUN | No physical write |
 | Selected USB firmware entry and loader handoff | NOT RUN | No real boot |
 | GOP display on built-in screen | NOT RUN | Mode/format/range unconfirmed |
-| Keyboard and pointer after kernel handoff | BLOCKED | Confirm transports; prepare required drivers |
-| Settings / Calculator / Snake / Shell | NOT RUN | QEMU results are separate |
-| Supported persistence save/reboot/restore | BLOCKED | No target storage driver/authorized medium |
-| Network / audio limitations recorded | NOT RUN | Native target drivers absent |
+| Keyboard and pointer after kernel handoff | BLOCKED | PS/2 and xHCI/HID preparation identified; actual target boot/HID protocol/handoff still untested |
+| Settings / Calculator / Snake / Shell (kernel-resident) | NOT RUN | QEMU results are separate |
+| Supported persistence save/reboot/restore | BLOCKED | Generic xHCI/BOT512 preparation verified in QEMU; actual Samsung/AMD/flush behavior and physical-write authorization pending |
+| Network / audio limitations recorded | NOT RUN | Native target drivers absent; inventory IDs and limitations recorded in Phase24 guide |
 | Failures, recovery and limits documented | NOT RUN | Fill from physical observations |
 
 Use PASS, FAIL, BLOCKED or NOT RUN and attach evidence for every tested item.

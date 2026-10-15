@@ -66,7 +66,9 @@ development image afterward. Logs and screenshots are in `build/system-tests/`.
 This is an unpartitioned, raw **BIOS HDD image**, not an MBR/GPT filesystem,
 USB installer or UEFI image. It has been accepted in QEMU with SeaBIOS only;
 real hardware is Phase 25. The kernel is still loaded below 1 MiB and limited
-to 256 KiB; the 16 MiB image size does not increase kernel or RAMFS capacity.
+to 288 KiB since Phase24 USB driver preparation (the existing576-sector
+stage2 envelope); kernel+BSS must still end below0x80000. The 16 MiB image
+size does not increase kernel or RAMFS capacity.
 The apps remain kernel-resident and are not isolated processes. The separate
-data disk uses MyOS's custom snapshots, not a general filesystem. The web,
-networking, audio and video milestones remain future work.
+data disk uses MyOS's custom snapshots, not a general filesystem. At the original Phase21 milestone, web/network/audio/video were future work;
+see PROJECT_STATE.md for the current accepted milestones.

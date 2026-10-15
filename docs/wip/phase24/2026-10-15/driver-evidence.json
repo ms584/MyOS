@@ -1,0 +1,171 @@
+{
+  "artifacts": {
+    "kernel.bin": {
+      "bytes": 264536,
+      "sha256": "83ce69d15fbba49ac82a6bf8427ecb7e834f7378aee04bc309a3641e6af9df2c"
+    },
+    "kernel.elf": {
+      "bytes": 329048,
+      "sha256": "f0612f932b9099766ba4353f0997ded6cff0b3ede0b4ceda46cba00b9d33ba43"
+    },
+    "myos-bios.img": {
+      "bytes": 16777216,
+      "sha256": "0cccc0c55a2d2af7aa4408299df26679c43e949817b8961b8dd33e2e622c308a"
+    },
+    "myos-current.img": {
+      "bytes": 1474560,
+      "sha256": "93d44a470879e168c00a2e22256a4ad8067bff409752d03c7b0dcbf6427231d7"
+    },
+    "myos-uefi.img": {
+      "bytes": 33554432,
+      "sha256": "e9a04bc75d6466898110c56f8d8858846c48fedaa9ca9c8d443c7f096b411b6f"
+    },
+    "myos-usb-data.img": {
+      "bytes": 67108864,
+      "sha256": "60c8a229c14991bce4bb5e2c239dcc942000d618a823dbda010e2a2a12beb2d9"
+    },
+    "myos-usb.img": {
+      "bytes": 67108864,
+      "sha256": "54f0ddd82713e839e9dd18afcb56d0c442c2172e321bdc0a5ce31a4958fffd81"
+    },
+    "platform-runtime.mrt": {
+      "bytes": 34194,
+      "sha256": "c4071d362592c39b7b4e8e334487b248006bff23854aaf5581caee6918971e87"
+    }
+  },
+  "changes": [
+    "root-attached xHCI polling, owned DMA, high-BAR supervisor UC/NX mapping shared under Ring3",
+    "HID boot mouse; bounded event/transfer processing and held-button release",
+    "SCSI/BOT512 LUN0; READ/WRITE10 and mandatory SYNCHRONIZE CACHE10",
+    "strict prepared MBR/typeDA data-only block backend; legacy ATA snapshot format preserved",
+    "optional exclusive-create writable USB image; existing save/output refusal",
+    "packaging cap uses existing288KiB/576-sector envelope; unchanged linker reservation"
+  ],
+  "data_layout": {
+    "data_sectors": 32768,
+    "data_start": 69632,
+    "data_type": 218,
+    "esp_sectors": 65536,
+    "esp_start": 2048,
+    "esp_type": 239,
+    "image_bytes": 67108864,
+    "sector_bytes": 512,
+    "signature": "MYOS-DATA-v2",
+    "write_excludes": [
+      "MBR",
+      "BIOS loader/kernel",
+      "FAT16 ESP",
+      "data marker",
+      "outside prepared data bounds"
+    ]
+  },
+  "date": "2026-10-15",
+  "image_source_commit": "031d4c8421662e81ed501d4fd8515c2abc8825d0",
+  "inventory_evidence": "inventory-evidence.json",
+  "local_image_directory": "build/phase24-usb-input/images",
+  "old_frozen_image_preserved": "3d23215359e35d8a65a5de61bf4fd52bdfcf84c5b81e31fcccc5717d49cfbe41",
+  "original_phase32_33": "historical accepted profile preserved; complete online audit not repeated",
+  "phase24_complete": false,
+  "phase25_physical_acceptance": "NOT RUN",
+  "physical_actions": {
+    "firmware_changes": false,
+    "format_or_repartition": false,
+    "raw_usb_or_disk_write": false
+  },
+  "remaining": [
+    "actual30fa:0301 HID boot protocol",
+    "AMD1022:1639 controller handoff",
+    "Samsung READ/WRITE/flush behavior",
+    "ThinkBook GOP/memory allocations and PIC/PIT/i8042 routing",
+    "physical boot/display/input/apps/save-reboot acceptance in Phase25"
+  ],
+  "reproducible": {
+    "BIOS_UEFI_USB": true,
+    "normal_kernel_elf_floppy_runtime": true,
+    "optional_data_variant": true
+  },
+  "review_fixes": [
+    "OVMF BAR0xc000000000 needs high MMIO mapping",
+    "WPR always reads0; poll PR bit4 for warm-reset progress; asynchronous MMIO regression rejects old defect",
+    "xHCI speed1 Full vs speed2 Low; bulk excludes Low speed",
+    "failed host releases held mouse buttons and retains DMA ownership"
+  ],
+  "scope_limits": [
+    "QEMU/native mocks do not establish physical-device compatibility",
+    "synchronous snapshot writes can stall UI; no target latency or power-loss guarantee",
+    "RAM owner8GB vs Windows6256402432B; module/reservation/VRAM not measured",
+    "offline desktop image excludes Cobalt/provider/media asset disk; no physical online/audio claim"
+  ],
+  "selected_image": "myos-usb-data.img",
+  "selected_target": "Lenovo ThinkBook15 G3 ACL Type21A4 / LNVNB161216",
+  "selected_usb": "Samsung DUO MUF-32CB/APC /090c:1000 /32078036992B /512B /SCSI BOT",
+  "status": "DRIVER_PREPARATION_CHECKPOINT_VALIDATED_IN_QEMU",
+  "superseded_evidence": {
+    "partial-system-reset-review.log": "INTERRUPTED for verified reset review fix; NOT PASS",
+    "partial-system.log": "INTERRUPTED for new USB transport facts; NOT PASS",
+    "pre_review_focused": "retained separately; final focused-reviewed.log applies to current code"
+  },
+  "test_logs": {
+    "bot-protocol.log": {
+      "bytes": 297,
+      "exit": 0,
+      "pass_lines": 1,
+      "sha256": "58e27c7af609daf55c143bae353b64cf637b852bfa934dcf034105d703f280f1"
+    },
+    "collector-v2.log": {
+      "bytes": 108,
+      "scope": "Dell host-only inventory helper smoke; not MyOS target compatibility",
+      "sha256": "cf302146899d4572f999eba724cd066dcdf58d2d7099261f10484ba681de1d5f"
+    },
+    "distribution-final.log": {
+      "bytes": 286580,
+      "exit": 0,
+      "pass_lines": 9,
+      "sha256": "943d20c7c441442cbe642612d40f9df0988b68ada8c29043024c65afb423db9b"
+    },
+    "focused-reviewed.log": {
+      "bytes": 13254,
+      "exit": 0,
+      "pass_lines": 10,
+      "sha256": "0203ea178578a7f4f5474d02bda040d445d6627649cead291083c3869f399512"
+    },
+    "ports-test.log": {
+      "bytes": 378,
+      "exit": 0,
+      "pass_lines": 2,
+      "sha256": "50cb94fc2604f688c35d8e46ce10fb4f7d46e2976063ba74d8b0674c23623e50"
+    },
+    "system-final.log": {
+      "bytes": 1350116,
+      "exit": 0,
+      "pass_lines": 140,
+      "sha256": "21c645b2c5b9ff3c79f8896e220863c896d846280fb9736b910c74a2accde99d"
+    }
+  },
+  "tested_source_tree": "e25a63cafe268df4975c58de3547d1196a6d9889",
+  "toolchain": {
+    "OVMF_CODE_4M.fd": "874f15a7c9110e78a89db159f0f68fc97e9076b74777520de1c235426f758aa7",
+    "OVMF_VARS_4M.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+    "fsck.fat": "Usage: fsck.fat [OPTIONS] DEVICE",
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "gnu-efi": "4.0.0-1",
+    "ld": "GNU ld (GNU Binutils for Ubuntu) 2.46",
+    "mcopy": "mcopy (GNU mtools) 4.0.49",
+    "nasm": "NASM version 3.01",
+    "objcopy": "GNU objcopy (GNU Binutils for Ubuntu) 2.46",
+    "python3": "Python 3.14.4",
+    "qemu-system-x86_64": "QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)"
+  },
+  "unsupported": [
+    "hubs",
+    "hotplug reenumeration",
+    "generic HID/wheel/USB keyboard",
+    "I2C touchpad",
+    "UAS/GPT/arbitrary disks",
+    "system NVMe",
+    "RTL8168",
+    "QCA61x4A Wi-Fi",
+    "HD Audio",
+    "Secure Boot signed chain"
+  ]
+}

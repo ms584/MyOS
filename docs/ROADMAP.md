@@ -53,7 +53,7 @@ The owner approved Phases 26–32 before the deferred hardware work on
 
 **26 → 27 → 28 → 29 → 30 → 31 → 32 → 33 → remaining Phase 24 → Phase 25**
 
-Phases 26–31 are complete at their documented QEMU baselines. Develop and validate the application, network and media
+Phases 26–33 are complete at their documented QEMU baselines; the owner confirmed Phase32/33 acceptance before this hardware preparation. Develop and validate the application, network and media
 platform in QEMU before returning to physical hardware. Keep existing phase
 numbers and commit history; the milestone sections below group scope, not
 execution order. The completed Phase 24 USB image remains available.
@@ -66,17 +66,16 @@ execution order. The completed Phase 24 USB image remains available.
 | Done | 29 | **Complete QEMU text-browser baseline:** verified HTTPS search, results, links and Back |
 | Done | 30 | QEMU SB16 buffered PCM audio, file/tone playback, volume/mute, IRQ timing and underrun recovery |
 | Done | 31 | MYV1 RLE video with synchronized PCM in QEMU |
-| In progress | 32 | Actual online YouTube playback acceptance in QEMU; HTTPS page-size/runtime gate remains |
-| Not started | 33 | Rickroll playback in MyOS with visible moving video, audible sound and controls; no playback means no pass |
+| Done | 32 | Accepted native MyOS/QEMU online playback profile; see PHASE335_ACCEPTANCE.md and the accepted 2026-10-12 evidence |
+| Done | 33 | Owner-accepted Rickroll video, audible sound, controls and A/V limit on the documented QEMU profile; no physical-hardware claim |
 | 9 | 24 (remaining) | Select the physical target and implement required drivers |
 | 10 | 25 | Physical-machine boot, display, input, apps and persistence acceptance |
 
 Keep network, audio, input and storage drivers separate from higher-level
 services so later hardware adaptation can replace device-specific code.
-QEMU success does not establish physical-machine support. Phases 32 and 33
-still require actual browser/media playback acceptance; this order does not
-promise feasibility or a completion date. If a feasibility gate fails,
-document it and revise the plan with the owner.
+QEMU success does not establish physical-machine support. Phase32/33 accepted
+records are preserved; their complete online audit is not repeated in Phase24.
+Any newly found target limitation remains explicit in Phase24/25 evidence.
 
 ## Completed foundations
 
@@ -133,7 +132,7 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial (2026-10-15):** owner selected ThinkBook 15 G3 ACL Type 21A4. Current 64 MiB BIOS/UEFI USB image rebuilt/tested in QEMU with byte-identical rebuild; target firmware/controller IDs, USB identity and required input/storage drivers remain pending. No physical write or hardware pass. See PHASE24.md and PHASE24_HANDOFF_TH.md. |
+| 24 | USB image and hardware preparation | **Partial (2026-10-15):** owner selected ThinkBook 15 G3 ACL Type 21A4. Firmware/controller/USB inventory collected. Bounded root-port xHCI/HID and SCSI/BOT512 prepared data partition implemented; focused QEMU input/persistence checks pass, full default architectural/firmware/layout/reproducibility checks pass. Actual AMD/mouse/Samsung/GOP handoff remains unconfirmed. No physical write or hardware pass. See PHASE24.md and PHASE24_HANDOFF_TH.md. |
 | 25 | Real-hardware acceptance | **Deferred by owner until after Phase 33 and remaining Phase 24; physical target not yet accepted.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access

@@ -2,11 +2,16 @@
 
 Phase 24 hardware preparation is INCOMPLETE; selected target is Lenovo
 ThinkBook 15 G3 ACL Type 21A4 (Ryzen 5 5500U, 8 GB, 256 GB SSD, QCA61x4A).
-Built-in keyboard and separate mouse selected; exact transports/controllers,
-USB medium, Secure Boot and GOP details still required.
+Owner Windows reports identify PS2 FUJ7401, USB mouse30fa:0301, AMD xHCI1022:1639,
+Samsung DUO090c:1000/BOT512, UEFI/SecureBootOFF. GOP and actual handoff unknown.
+Prepared code commit 031d4c8421662e81ed501d4fd8515c2abc8825d0 adds bounded root-port xHCI/HID and
+prepared USB data partition SCSI/BOT512 backend. Full architectural, focused,
+firmware/layout and reproducibility checks pass; source/checksums in
+docs/wip/phase24/2026-10-15/driver-evidence.json.
+No target boot claimed.
 See PROJECT_STATE.md, PHASE24.md and PHASE24_HANDOFF_TH.md for compatibility,
 frozen USB image/checksum, repeatable build, blockers and next driver work.
-PHASE25_HARDWARE_ACCEPTANCE.md is an unfilled physical-acceptance template.
+PHASE25_HARDWARE_ACCEPTANCE.md contains inventory and unfilled physical test results.
 No physical USB/disk write or firmware change was performed or authorized here.
 The owner authorized this checkpoint's GitHub push in this chat.
 

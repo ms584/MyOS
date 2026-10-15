@@ -1,84 +1,91 @@
-# Phase 24 — USB image and hardware preparation
+# Phase 24 — ThinkBook USB image and hardware preparation
 
 ## Current checkpoint — 2026-10-15
 
-**Incomplete.** The owner selected **Lenovo ThinkBook 15 G3 ACL, Type 21A4**:
-Ryzen 5 5500U, 8 GB RAM, 256 GB SSD, QCA61x4A Wi-Fi, AMD Radeon Graphics
-(owner reports 2 GB VRAM), built-in keyboard and a separate mouse.
-Exact controller IDs, keyboard/mouse transports, firmware/GOP information and
-USB medium identity/capacity remain unknown. The agent's Dell G5 5500 build
-host is a different computer; its inventory is not target evidence.
+**Phase24 INCOMPLETE; Phase25 physical acceptance NOT RUN.**
+Target: Lenovo ThinkBook15 G3 ACL Type21A4 / board LNVNB161216,
+Ryzen5 5500U, owner8GB RAM, Samsung256GB system NVMe.
+Owner Windows inventory identifies UEFI/SecureBootOFF, PS/2 FUJ7401 keyboard,
+USB30fa:0301 mouse, AMD1022:1639 xHCI, Radeon1002:164c,
+QCA61x4A168c:003e and Samsung DUO MUF-32CB/APC USB090c:1000.
+The USB report gives32078036992 bytes,512B logical/physical sectors and
+class08/subclass06/protocol50 (SCSI transparent/Bulk-Only Transport).
+The Dell build host is separate; its inventory does not establish target support.
 
-The image/QEMU preparation is complete at this checkpoint. Required
-target input/storage drivers remain unresolved; this does **not** complete
-the full Phase 24 gate in [ROADMAP.md](ROADMAP.md). Phase 25 has not started.
-Phase 32/33 remain accepted; their complete audit was not repeated.
+See [compatibility matrix, USB guide and Phase25 plan](PHASE24_HANDOFF_TH.md),
+[owner report provenance](wip/phase24/2026-10-15/inventory-evidence.json)
+and [physical result template](PHASE25_HARDWARE_ACCEPTANCE.md).
+The roadmap gate is unchanged; no QEMU result establishes actual AMD/Samsung,
+mouse boot-protocol, i8042, GOP or firmware allocation compatibility.
 
-See [target compatibility, USB guide and Phase 25 plan](PHASE24_HANDOFF_TH.md)
-and [machine-readable evidence](wip/phase24/2026-10-15/evidence.json).
+## Implemented preparation
 
-## Prepared image
+- Bounded polling xHCI1.x root ports: HID boot mouse with basic3buttons/X/Y;
+  PS/2 keyboard retained. No generic HID parser, hubs, wheel or hotplug enumeration.
+- Dedicated supervisor UC/NX MMIO window supports firmware BARs above4GiB,
+  shared under Ring3 roots; DMA pages stay owned for controller lifetime.
+- Separate SCSI/BOT512 module, LUN0, READ/WRITE(10), READ CAPACITY(10),
+  mandatory SYNCHRONIZE CACHE(10), strict CBW/CSW validation and finite waits
+  even while filesystem operations hold IRQs disabled.
+- Optional prepared USB data partition only; write bounds exclude MBR,
+  BIOS loader/kernel, FAT16 ESP and data marker. Unknown/malformed layouts stay
+  RAM-only. Legacy marked ATA snapshots retain priority and format/recovery.
+- No NVMe/system-SSD, I2C touchpad, RTL8168, QCA61x4A or HDA driver added.
+  Network/audio are outside this offline desktop preparation.
 
-- Frozen local file: `build/phase24-prep/myos-usb.img`.
-- Raw whole-disk image, **67,108,864 bytes (64 MiB)**; MBR with BIOS EDD
-  bootstrap before LBA 2048 and an active type EF partition at LBA 2048
-  (65,536 sectors / 32 MiB FAT16 ESP). Logical sector size: 512 bytes.
-- UEFI removable-media path: `EFI/BOOT/BOOTX64.EFI`; unsigned x86-64 loader.
-- SHA-256: `3d23215359e35d8a65a5de61bf4fd52bdfcf84c5b81e31fcccc5717d49cfbe41`.
-- Image source: `cd71e6e7ddb3728ebba3456c1c91936ab15cab44`.
-  The commit containing this checkpoint changes documentation/inventory only.
-- Local manifest/checksums: `build/phase24-prep/manifest.json`, `SHA256SUMS`.
-  [Tracked checksums](wip/phase24/2026-10-15/SHA256SUMS) and evidence permit
-  verification if ignored build outputs are unavailable after cloning.
+The three desktop apps (Settings, Calculator, Snake) remain kernel-resident.
+Ring3 input/regression coverage uses separate isolated test applications.
 
-This is the packaged desktop boot profile (Settings, Calculator, Snake,
-Shell). It does not bundle the separate Cobalt/provider/media asset disk used
-by the accepted QEMU online-playback profile. No physical online/audio claim
-is made.
+## Images and repeatable build
 
-## Build and evidence
+Driver preparation image/build/test checkpoint validated in QEMU.
+Image source commit: `031d4c8421662e81ed501d4fd8515c2abc8825d0`.
+Selected image SHA256: `60c8a229c14991bce4bb5e2c239dcc942000d618a823dbda010e2a2a12beb2d9`.
+Selected writable preparation output:
+build/phase24-usb-input/images/myos-usb-data.img.
+It is a **67,108,864-byte (64MiB) raw whole-disk image**, not an ISO/installer:
+MBR BIOS bootstrap before LBA2048; typeEF ESP2048/65536 sectors (32MiB FAT16),
+EFI/BOOT/BOOTX64.EFI; optional typeDA data69632/32768 sectors (16MiB),
+MYOS-DATA-v2 dual-bank custom snapshots. Remaining capacity is not repartitioned.
 
-```bash
-cd /home/xytron404/myos
-python3 tools/run_logged.py -- nice -n 10 python3 tools/release.py build
-python3 tools/run_logged.py -- nice -n 10 python3 tests/test_release_tools.py
-```
+Default build/myos-usb.img retains its immutable boot/RAM-only layout.
+The new --with-data flag creates a fresh file exclusively and refuses to replace
+an existing save image. [Build instructions](PHASE24_HANDOFF_TH.md#build-ที่ทำซ้ำได้)
+cover both variants, second-build comparison and reviewed USB-write placeholders.
+Source commit, toolchain, sizes, hashes and final test results are in
+[driver-evidence.json](wip/phase24/2026-10-15/driver-evidence.json) and
+[driver-SHA256SUMS](wip/phase24/2026-10-15/driver-SHA256SUMS).
+Old build/phase24-prep and evidence.json/SHA256SUMS remain the historical
+cd71e6e/da85dd1 checkpoint and do not contain these drivers.
 
-The [handoff guide](PHASE24_HANDOFF_TH.md#build-ที่ทำซ้ำได้) gives the exact
-isolated-output firmware test and second-build checksum procedure.
-Full local logs are in `build/phase24-prep/`; concise original test logs are
-tracked in `docs/wip/phase24/2026-10-15/`.
+The normal kernel exceeds the old256KiB packaging guard. Packaging now uses
+the existing288KiB/576-sector stage2 envelope; linker kernel+BSS<0x80000
+and low-memory reservations are unchanged. Build/tests must satisfy both guards.
 
-2026-10-15 checks passed:
+## Evidence and remaining gates
 
-- Normal build; independent FAT check, EFI file readback and MBR layout.
-- Existing `tests/test_firmware.py`: UEFI handoff, three apps, separate
-  emulated IDE save/reboot, exact BIOS and UEFI USB boots, PS/2 desktop input,
-  RAM-only USB session and unchanged boot image.
-- Second normal build: BIOS/UEFI/USB images byte-identical.
-- All five normal artifact hashes match the accepted 2026-10-12 regression
-  identity; that unchanged full regression is reused. No architecture change.
-- Inventory helper: PowerShell syntax/schema/runtime smoke on the **Dell
-  host only**. An exact local copy avoids UNC RemoteSigned execution failure
-  without changing execution policy.
+Focused input including active Ring3,270 real USB reports/ring wrap,stable
+owned pages,detach release and unsupported fallback passes in QEMU.
+Focused USB3/USB2 BOT save/reboot restores files,Settings and Snake; corrupt-bank
+recovery and boot-region preservation pass. Foreign/overlapping/unmarked/
+extra-partition/4096B fixtures remain unchanged; detach fails boundedly.
+Native production BOT tests under ASan/UBSan reject write bounds and malformed
+CSW/tag/residue/phase/transport results without further writes.
+Native asynchronous-port regression confirms WPR reads0 while PR tracks progress,
+bounded timeout and failed-controller button release; old-WPR negative control fails
+as expected. USB Full/Low speed class gating corrected during pre-freeze review.
+Full default architectural regression PASS with normal image restored;
+packaged BIOS and UEFI firmware tests, layout/output-preservation checks and
+byte-identical normal/BIOS/UEFI/USB/data rebuilds PASS. Logs: build/phase24-usb-input/.
+Earlier interrupted partial-system.log is not a completed regression.
+Original Phase32/33 acceptance/manual recordings are preserved, not re-audited.
 
-The firmware fixture retains its existing 128 MiB profile and runs one VM
-at a time. It is not a new minimum-RAM claim or the 1024 MiB online profile.
-Old `build/release-validation.json` is not refreshed or presented as valid;
-no complete new release ZIP/package acceptance is claimed.
+Still unconfirmed: actual30fa:0301 HID boot capability; AMD controller handoff;
+Samsung READ/WRITE/flush behavior; GOP800x600 BGR/framebuffer below4GiB;
+kernel allocation0x10000–0x7ffff, owned stack/loader below4GiB,
+low ISA DMA and bounded firmware map. Real target display/input/apps/persistence
+must have physical evidence in Phase25. Do not downgrade those gates.
 
-## Open gate
-
-UEFI currently needs 800x600 BGR GOP below 4 GiB, allocatable kernel pages at
-0x10000–0x7ffff, an owned stack below 4 GiB, low ISA DMA allocation and a
-bounded memory map. Kernel startup requires an answering i8042/PS/2 keyboard;
-a missing controller/ACK can panic. Native USB host/HID/storage, I2C-HID,
-AHCI/NVMe, QCA61x4A Wi-Fi, RTL8111-family Ethernet and HD Audio drivers are
-absent. Firmware USB boot support ends at ExitBootServices and cannot supply
-kernel USB input/storage. Secure Boot is unsupported.
-
-Next: collect the ThinkBook inventory and USB/mouse identity, select and
-implement only its necessary input/storage drivers, then rerun affected tests
-and close Phase 24 against the unchanged roadmap. Real boot/display/input/app/
-supported-persistence evidence belongs to Phase 25. No physical device was
-written, formatted or repartitioned; no firmware settings were changed.
+No physical USB/disk was written, formatted or repartitioned, and no firmware
+setting changed. Physical write/boot requires separate owner authorization.
+The owner authorized scoped local commits and GitHub push for this preparation.

@@ -1,0 +1,36 @@
+focused-reviewed.log: EXIT0; 10 PASS lines; SHA256 0203ea178578a7f4f5474d02bda040d445d6627649cead291083c3869f399512
+PASS: USB timer polling survives an uncooperative Ring3 address space and timeout/reaping
+PASS: USB producer/event cycle wrap, 270 actual reports, stable owned pages, timer and held-button detach recovery
+PASS: xHCI empty device retains responsive PS/2 keyboard/Shell without claiming HID support
+PASS: xHCI unsupported device retains responsive PS/2 keyboard/Shell without claiming HID support
+PASS: xHCI/BOT512 UEFI writes, BIOS/UEFI reboot restore files/Settings/Snake; corrupted-bank fallback; bulk wrap and mouse coexistence; boot regions unchanged
+PASS: foreign/overlapping/unmarked/extra-partition/4096B USB media remain unchanged; detach fails boundedly and Shell responds
+PASS: USB2 high-speed BOT512 write/reboot restore through xHCI with SuperSpeed ports disabled; boot regions unchanged
+PASS: FAT filesystem checker, independent EFI readback, MBR layout and deterministic timestamps
+
+ports-test.log: EXIT0; 2 PASS lines; SHA256 50cb94fc2604f688c35d8e46ce10fb4f7d46e2976063ba74d8b0674c23623e50
+PASS: same asynchronous-port regression rejects the old WPR polling defect
+PASS: production xHCI warm reset waits on PR while WPR reads0; USB2 reset; already-enabled USB3; bounded timeout; failed-controller button release and DMA ownership
+
+bot-protocol.log: EXIT0; 1 PASS lines; SHA256 58e27c7af609daf55c143bae353b64cf637b852bfa934dcf034105d703f280f1
+PASS: production BOT wrappers; zero probe writes; LBA0/overflow/end bounds; mandatory cache flush; bad tag/signature/residue/phase/transport fail closed
+
+system-final.log: EXIT0; 140 PASS lines; SHA256 21c645b2c5b9ff3c79f8896e220863c896d846280fb9736b910c74a2accde99d
+PASS: native window honestly unavailable in VGA text mode
+PASS: PS/2 mouse remains available in VGA text fallback
+PASS: desktop preserves VGA text Shell fallback
+PASS: Settings inspection and VGA text fallback
+PASS: Calculator VGA text fallback leaves Shell usable
+PASS: Snake VGA text fallback leaves Shell usable
+PASS: Desktop 1.0 VGA diagnostic Shell fallback
+PASS: selected suite; normal framebuffer image restored
+
+distribution-final.log: EXIT0; 9 PASS lines; SHA256 943d20c7c441442cbe642612d40f9df0988b68ada8c29043024c65afb423db9b
+PASS: primary-slave data disk receives Settings and Snake saves
+PASS: exact BIOS image restores both app settings after reboot
+PASS: native UEFI memory/CPU handoff, three apps, PS/2 input and disk saves
+PASS: native UEFI reboot restores Settings and Snake score
+PASS: exact USB image boots BIOS via emulated USB storage; PS/2 desktop input
+PASS: exact USB image boots UEFI via emulated USB storage; PS/2 desktop input
+PASS: normal restored kernel/ELF/floppy/runtime and BIOS/UEFI/USB/data variants byte-identical across independent builds; frozen checksums verified
+PASS: source commit 031d4c8421662e81ed501d4fd8515c2abc8825d0; no physical device accessed
