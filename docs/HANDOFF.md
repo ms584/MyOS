@@ -1,4 +1,16 @@
-# MyOS handoff —2026-10-12
+# MyOS handoff — 2026-10-15
+
+Phase 24 hardware preparation is INCOMPLETE; selected target is Lenovo
+ThinkBook 15 G3 ACL Type 21A4 (Ryzen 5 5500U, 8 GB, 256 GB SSD, QCA61x4A).
+Built-in keyboard and separate mouse selected; exact transports/controllers,
+USB medium, Secure Boot and GOP details still required.
+See PROJECT_STATE.md, PHASE24.md and PHASE24_HANDOFF_TH.md for compatibility,
+frozen USB image/checksum, repeatable build, blockers and next driver work.
+PHASE25_HARDWARE_ACCEPTANCE.md is an unfilled physical-acceptance template.
+No physical USB/disk write or firmware change was performed or authorized here.
+The owner authorized this checkpoint's GitHub push in this chat.
+
+## Previous accepted Phase 32/33 checkpoint — 2026-10-12
 
 Phase32,Phase33.5 and Phase33 accepted on the declared native MyOS/QEMU profile.
 Owner confirms search→selection→sound and accepts A/V sync<=500 ms.
@@ -25,5 +37,5 @@ Space reclaimed inside Ubuntu8605818880 B; Windows task dependency cleanup
 maintenance; never delete ext4.vhdx. Preserve source,pinned dependencies and
 original failure/acceptance recordings; oneVM/job,compile<=2workers,1FPS.
 
-Do not start another phase automatically. Remaining Phase24 hardware preparation
-and Phase25 physical acceptance require a selected target and separate scope.
+Current work is scoped to remaining Phase24 preparation on the selected ThinkBook;
+Phase25 still requires prepared drivers and separate physical-write/boot authorization.

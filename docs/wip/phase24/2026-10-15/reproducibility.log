@@ -1,0 +1,3 @@
+build/myos-bios.img: OK
+build/myos-uefi.img: OK
+build/myos-usb.img: OK

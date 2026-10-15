@@ -1,0 +1,20 @@
+
+[2026-10-15T12:43:15.755924+07:00] cwd=/home/xytron404/myos
+$ nice -n 10 python3 -
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/phase24-prep/firmware/uefi-desktop.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/phase24-prep/firmware/uefi-desktop.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/phase24-prep/firmware/uefi-desktop-vars.fd -drive format=raw,file=/home/xytron404/myos/build/phase24-prep/firmware/phase22-data.img,if=ide,index=1
+$ nm build/kernel.elf
+$ nm build/kernel.elf
+PASS: native UEFI memory/CPU handoff, three apps, PS/2 input and disk saves
+qemu-system-x86_64: terminating on signal 15 from pid 459 (python3)
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/phase24-prep/firmware/uefi-reboot.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-uefi.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/myos/build/phase24-prep/firmware/uefi-reboot.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/phase24-prep/firmware/uefi-reboot-vars.fd -drive format=raw,file=/home/xytron404/myos/build/phase24-prep/firmware/phase22-data.img,if=ide,index=1
+PASS: native UEFI reboot restores Settings and Snake score
+qemu-system-x86_64: terminating on signal 15 from pid 459 (python3)
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/phase24-prep/firmware/usb-bios.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-usb.img,if=none,id=bootusb -boot order=c -qmp unix:/home/xytron404/myos/build/phase24-prep/firmware/usb-bios.sock,server=on,wait=off -usb -device usb-storage,drive=bootusb,bootindex=1
+$ nm build/kernel.elf
+PASS: exact USB image boots BIOS via emulated USB storage; PS/2 desktop input
+qemu-system-x86_64: terminating on signal 15 from pid 459 (python3)
+$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/phase24-prep/firmware/usb-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-usb.img,if=none,id=bootusb -boot order=c -qmp unix:/home/xytron404/myos/build/phase24-prep/firmware/usb-uefi.sock,server=on,wait=off -usb -device usb-storage,drive=bootusb,bootindex=1 -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/myos/build/phase24-prep/firmware/usb-uefi-vars.fd
+$ nm build/kernel.elf
+PASS: exact USB image boots UEFI via emulated USB storage; PS/2 desktop input
+qemu-system-x86_64: terminating on signal 15 from pid 459 (python3)
+[2026-10-15T12:43:45.904904+07:00] exit=0
