@@ -18,8 +18,8 @@ def main():
     print('$ bash build.sh',flush=True)
     subprocess.run(['bash','build.sh'],cwd=ROOT,env=env,check=True)
     kernel=(ROOT/'build/kernel.bin').read_bytes()
-    if not kernel or len(kernel)>256*1024:
-        raise SystemExit('Kernel must be nonempty and at most 256 KiB')
+    if not kernel or len(kernel)>288*1024:
+        raise SystemExit('Kernel must be nonempty and at most 288 KiB')
     sectors=(len(kernel)+511)//512
     boot=ROOT/'build/boot-hdd.bin'
     stage2=ROOT/'build/stage2-hdd.bin'

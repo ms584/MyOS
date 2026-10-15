@@ -71,7 +71,41 @@ unsigned page_references(uintptr_t p){
         bit(available,n)&&bit(owned,n)?(references?references[n]:1):0;
     irq_restore(flags);return count;
 }
-static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<(1ull<<39)&&!(v%PAGE_SIZE);}
+/* Device BARs can be above4GiB (OVMF places xHCI at0xc000000000).
+ * Reserve the last4GiB of the shared supervisor PML4[0] region for MMIO.
+ * Ring3 roots share that entry, so timer-driven USB polling stays mapped.
+ * Dedicated large pages use UC and NX; RAM and normal vm_map stay separate. */
+#define MMIO_BASE 0x7f00000000ull
+#define MMIO_PAGES 16u
+static unsigned mmio_pages;
+uintptr_t vm_map_mmio(uint64_t physical,size_t size){
+    if(physical<MAX_PAGES*PAGE_SIZE||!size||size>0x10000||
+       physical>0x000fffffffffffffull-size)return 0;
+    uint64_t aligned=physical&~0x1fffffull;
+    unsigned count=(unsigned)(((physical-aligned)+size+0x1fffff)/0x200000);
+    uint64_t flags=irq_save();uintptr_t result=0;
+    if(mmio_pages+count>MMIO_PAGES)goto done;
+    uint64_t *root=(void *)(uintptr_t)boot_state.root;
+    if(!(root[0]&1))goto done;
+    uint64_t *pdpt=(void *)(uintptr_t)(root[0]&ADDR);
+    unsigned index=MMIO_BASE>>30;
+    if(!pdpt[index]){
+        uintptr_t table=page_alloc();if(!table)goto done;
+        memset((void *)table,0,PAGE_SIZE);pdpt[index]=table|3;
+    }
+    if((pdpt[index]&0x85)!=1)goto done;
+    uint64_t *pd=(void *)(uintptr_t)(pdpt[index]&ADDR);
+    for(unsigned i=0;i<count;++i)if(pd[mmio_pages+i])goto done;
+    result=MMIO_BASE+(uint64_t)mmio_pages*0x200000;
+    for(unsigned i=0;i<count;++i){
+        pd[mmio_pages+i]=(aligned+(uint64_t)i*0x200000)|0x9bull|NX;
+        uintptr_t address=result+(uintptr_t)i*0x200000;
+        __asm__ volatile("invlpg (%0)"::"r"(address):"memory");
+    }
+    mmio_pages+=count;result+=physical-aligned;
+done:irq_restore(flags);return result;
+}
+static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<MMIO_BASE&&!(v%PAGE_SIZE);}
 bool vm_map(uintptr_t va,uintptr_t pa,uint64_t flags){
     if(!virtual_ok(va)||pa%PAGE_SIZE||pa>=(uintptr_t)managed_pages*PAGE_SIZE)return false;
     uint64_t f=irq_save(),*table=(uint64_t *)boot_state.root,*made[3];unsigned count=0;

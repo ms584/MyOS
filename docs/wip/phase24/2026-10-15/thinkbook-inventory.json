@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "captured_at": "2026-10-15T20:23:04.2331286+07:00",
+  "scope": "Inventory only; this does not prove MyOS compatibility or GOP modes",
+  "computer": {
+    "Manufacturer": "LENOVO",
+    "Model": "21A4",
+    "TotalPhysicalMemory": 6256402432
+  },
+  "board": {
+    "Manufacturer": "LENOVO",
+    "Product": "LNVNB161216",
+    "Version": "NO DPK        "
+  },
+  "cpu": [
+    {
+      "Name": "AMD Ryzen 5 5500U with Radeon Graphics         ",
+      "AddressWidth": 64
+    }
+  ],
+  "nx": {
+    "DataExecutionPrevention_Available": true
+  },
+  "bios": {
+    "SMBIOSBIOSVersion": "GQCN45WW(V1.31)",
+    "ReleaseDate": "/Date(1729555200000)/"
+  },
+  "firmware": {
+    "BiosFirmwareType": 2
+  },
+  "secure_boot": {
+    "UEFISecureBootEnabled": 0
+  },
+  "disks": [
+    {
+      "FriendlyName": "SAMSUNG MZALQ256HBJD-00BL2",
+      "BusType": "NVMe",
+      "Size": 256060514304,
+      "PartitionStyle": "GPT"
+    }
+  ],
+  "devices": [
+    {
+      "Name": "Standard PS/2 Keyboard",
+      "PNPClass": "Keyboard",
+      "HardwareID": [
+        "ACPI\\VEN_FUJ&DEV_7401",
+        "ACPI\\FUJ7401",
+        "*FUJ7401"
+      ]
+    },
+    {
+      "Name": "Microsoft Streaming Service Proxy",
+      "PNPClass": "MEDIA",
+      "HardwareID": [
+        "SW\\{96E080C7-143C-11D1-B40F-00A0C9223196}"
+      ]
+    },
+    {
+      "Name": "AMD High Definition Audio Device",
+      "PNPClass": "MEDIA",
+      "HardwareID": [
+        "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1007",
+        "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100"
+      ]
+    },
+    {
+      "Name": "USB Input Device",
+      "PNPClass": "HIDClass",
+      "HardwareID": [
+        "USB\\VID_30FA&PID_0301&REV_0100",
+        "USB\\VID_30FA&PID_0301"
+      ]
+    },
+    {
+      "Name": "Standard NVM Express Controller",
+      "PNPClass": "SCSIAdapter",
+      "HardwareID": [
+        "PCI\\VEN_144D&DEV_A809&SUBSYS_A801144D&REV_00",
+        "PCI\\VEN_144D&DEV_A809&SUBSYS_A801144D",
+        "PCI\\VEN_144D&DEV_A809&CC_010802",
+        "PCI\\VEN_144D&DEV_A809&CC_0108"
+      ]
+    },
+    {
+      "Name": "HID-compliant mouse",
+      "PNPClass": "Mouse",
+      "HardwareID": [
+        "HID\\VID_30FA&PID_0301&REV_0100",
+        "HID\\VID_30FA&PID_0301",
+        "HID\\VID_30FA&UP:0001_U:0002",
+        "HID_DEVICE_SYSTEM_MOUSE",
+        "HID_DEVICE_UP:0001_U:0002",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "Name": "AMD GPIO Controller",
+      "PNPClass": "System",
+      "HardwareID": [
+        "ACPI\\VEN_AMDI&DEV_0030",
+        "ACPI\\AMDI0030",
+        "*AMDI0030"
+      ]
+    },
+    {
+      "Name": "HID-compliant touch pad",
+      "PNPClass": "HIDClass",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col02",
+        "HID\\SYNA2BA6&Col02",
+        "HID\\*SYNA2BA6&Col02",
+        "HID\\VID_06CB&UP:000D_U:0005",
+        "HID_DEVICE_UP:000D_U:0005",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "Name": "BayHubTech Integrated MMC/SD controller",
+      "PNPClass": "SCSIAdapter",
+      "HardwareID": [
+        "PCI\\VEN_1217&DEV_8621&SUBSYS_384017AA&REV_01",
+        "PCI\\VEN_1217&DEV_8621&SUBSYS_384017AA",
+        "PCI\\VEN_1217&DEV_8621&CC_080501",
+        "PCI\\VEN_1217&DEV_8621&CC_0805"
+      ]
+    },
+    {
+      "Name": "Microsoft Storage Spaces Controller",
+      "PNPClass": "SCSIAdapter",
+      "HardwareID": [
+        "Root\\Spaceport"
+      ]
+    },
+    {
+      "Name": "Microsoft Input Configuration Device",
+      "PNPClass": "HIDClass",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col03",
+        "HID\\SYNA2BA6&Col03",
+        "HID\\*SYNA2BA6&Col03",
+        "HID\\VID_06CB&UP:000D_U:000E",
+        "HID_DEVICE_UP:000D_U:000E",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "Name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+      "PNPClass": "USB",
+      "HardwareID": [
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00",
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA",
+        "PCI\\VEN_1022&DEV_1639&CC_0C0330",
+        "PCI\\VEN_1022&DEV_1639&CC_0C03"
+      ]
+    },
+    {
+      "Name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+      "PNPClass": "USB",
+      "HardwareID": [
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00",
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA",
+        "PCI\\VEN_1022&DEV_1639&CC_0C0330",
+        "PCI\\VEN_1022&DEV_1639&CC_0C03"
+      ]
+    },
+    {
+      "Name": "USB Root Hub (USB 3.0)",
+      "PNPClass": "USB",
+      "HardwareID": [
+        "USB\\ROOT_HUB30&VID1022&PID1639&REV0000",
+        "USB\\ROOT_HUB30&VID1022&PID1639",
+        "USB\\ROOT_HUB30"
+      ]
+    },
+    {
+      "Name": "Realtek(R) Audio",
+      "PNPClass": "MEDIA",
+      "HardwareID": [
+        "HDAUDIO\\FUNC_01&VEN_10EC&DEV_0257&SUBSYS_17AA38C9&REV_1000",
+        "HDAUDIO\\FUNC_01&VEN_10EC&DEV_0257&SUBSYS_17AA38C9"
+      ]
+    },
+    {
+      "Name": "HID-compliant vendor-defined device",
+      "PNPClass": "HIDClass",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col04",
+        "HID\\SYNA2BA6&Col04",
+        "HID\\*SYNA2BA6&Col04",
+        "HID\\VID_06CB&UP:FF00_U:0001",
+        "HID_DEVICE_UP:FF00_U:0001",
+        "HID_DEVICE_UPR:FF00-FFFF",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "Name": "USB Composite Device",
+      "PNPClass": "USB",
+      "HardwareID": [
+        "USB\\VID_5986&PID_212B&REV_5615",
+        "USB\\VID_5986&PID_212B"
+      ]
+    },
+    {
+      "Name": "I2C HID Device",
+      "PNPClass": "HIDClass",
+      "HardwareID": [
+        "ACPI\\VEN_SYNA&DEV_2BA6",
+        "ACPI\\SYNA2BA6",
+        "*SYNA2BA6"
+      ]
+    },
+    {
+      "Name": "AMD Radeon(TM) Graphics",
+      "PNPClass": "Display",
+      "HardwareID": [
+        "PCI\\VEN_1002&DEV_164C&SUBSYS_381A17AA&REV_C2",
+        "PCI\\VEN_1002&DEV_164C&SUBSYS_381A17AA",
+        "PCI\\VEN_1002&DEV_164C&CC_030000",
+        "PCI\\VEN_1002&DEV_164C&CC_0300"
+      ]
+    },
+    {
+      "Name": "AMD I2C Controller",
+      "PNPClass": "System",
+      "HardwareID": [
+        "ACPI\\VEN_AMDI&DEV_0010",
+        "ACPI\\AMDI0010",
+        "*AMDI0010"
+      ]
+    },
+    {
+      "Name": "AMD I2C Controller",
+      "PNPClass": "System",
+      "HardwareID": [
+        "ACPI\\VEN_AMDI&DEV_0010",
+        "ACPI\\AMDI0010",
+        "*AMDI0010"
+      ]
+    },
+    {
+      "Name": "Realtek PCIe GbE Family Controller",
+      "PNPClass": "Net",
+      "HardwareID": [
+        "PCI\\VEN_10EC&DEV_8168&SUBSYS_390417AA&REV_15",
+        "PCI\\VEN_10EC&DEV_8168&SUBSYS_390417AA",
+        "PCI\\VEN_10EC&DEV_8168&CC_020000",
+        "PCI\\VEN_10EC&DEV_8168&CC_0200"
+      ]
+    },
+    {
+      "Name": "USB Root Hub (USB 3.0)",
+      "PNPClass": "USB",
+      "HardwareID": [
+        "USB\\ROOT_HUB30&VID1022&PID1639&REV0000",
+        "USB\\ROOT_HUB30&VID1022&PID1639",
+        "USB\\ROOT_HUB30"
+      ]
+    },
+    {
+      "Name": "Qualcomm Atheros QCA61x4A Wireless Network Adapter",
+      "PNPClass": "Net",
+      "HardwareID": [
+        "PCI\\VEN_168C&DEV_003E&SUBSYS_082717AA&REV_32",
+        "PCI\\VEN_168C&DEV_003E&SUBSYS_082717AA",
+        "PCI\\VEN_168C&DEV_003E&CC_028000",
+        "PCI\\VEN_168C&DEV_003E&CC_0280"
+      ]
+    },
+    {
+      "Name": "HID-compliant mouse",
+      "PNPClass": "Mouse",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col01",
+        "HID\\SYNA2BA6&Col01",
+        "HID\\*SYNA2BA6&Col01",
+        "HID\\VID_06CB&UP:0001_U:0002",
+        "HID_DEVICE_SYSTEM_MOUSE",
+        "HID_DEVICE_UP:0001_U:0002",
+        "HID_DEVICE"
+      ]
+    }
+  ]
+}

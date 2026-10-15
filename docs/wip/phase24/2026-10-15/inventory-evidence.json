@@ -1,0 +1,97 @@
+{
+  "source_reports": [
+    {
+      "filename": "thinkbook-phase24.json",
+      "role": "without-external-mouse",
+      "sha256": "493c9da012ded074ffc1d1452fee7315a54375098d8cc512fc1ba2af26af3ec3",
+      "captured_at": "2026-10-15T20:18:33.9671330+07:00"
+    },
+    {
+      "filename": "thinkbook-phase24 (1).json",
+      "role": "usb-mouse-attached",
+      "sha256": "25c5cac1f87bdee94468dbdaa2980f327a0d4008fac8b2e3e4968e18a2240bed",
+      "captured_at": "2026-10-15T20:23:04.2331286+07:00"
+    },
+    {
+      "filename": "samsung-usb-info.json",
+      "role": "usb-medium-transport-and-sector-report",
+      "sha256": "89899d0289abcd4fd9ee6f0ecf879a6089a927f69d117ae6bab97f324b8b15c3"
+    }
+  ],
+  "normalized_inventory": "thinkbook-inventory.json",
+  "normalized_sha256": "fd5e45d7e7831731f6443bdee74da0c27799760194b341e3b25ac8cbe710266d",
+  "scope": "Owner-supplied Windows inventory plus packaging photos; no MyOS real-hardware boot or input/persistence test",
+  "board": "LNVNB161216",
+  "bios": "GQCN45WW(V1.31)",
+  "firmware": "UEFI (BiosFirmwareType=2)",
+  "secure_boot_enabled": false,
+  "cpu_address_width": 64,
+  "nx_reported_available": true,
+  "ram_owner_reported_gb": 8,
+  "windows_total_physical_memory_bytes": 6256402432,
+  "windows_total_physical_memory_gib": 5.826729,
+  "ram_note": "Installed module capacity and firmware reservations not measured; do not infer exact reserved VRAM from this field",
+  "keyboard": [
+    "ACPI\\VEN_FUJ&DEV_7401"
+  ],
+  "mouse_usb": [
+    "USB\\VID_30FA&PID_0301&REV_0100"
+  ],
+  "touchpad": "Synaptics SYNA2BA6 / I2C HID; AMD AMDI0010 controller, AMDI0030 GPIO",
+  "xhci": [
+    "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00",
+    "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00"
+  ],
+  "nvme": {
+    "model": "SAMSUNG MZALQ256HBJD-00BL2",
+    "bus": "NVMe",
+    "bytes": 256060514304,
+    "ids": [
+      "PCI\\VEN_144D&DEV_A809&SUBSYS_A801144D&REV_00"
+    ],
+    "use": "system disk; not selected or authorized as scratch persistence media",
+    "logical_sector_bytes": 512,
+    "physical_sector_bytes": 16384
+  },
+  "gpu": [
+    "PCI\\VEN_1002&DEV_164C&SUBSYS_381A17AA&REV_C2"
+  ],
+  "ethernet": [
+    "PCI\\VEN_10EC&DEV_8168&SUBSYS_390417AA&REV_15"
+  ],
+  "wifi": [
+    "PCI\\VEN_168C&DEV_003E&SUBSYS_082717AA&REV_32"
+  ],
+  "audio_codecs": [
+    "HDAUDIO\\FUNC_01&VEN_10EC&DEV_0257&SUBSYS_17AA38C9&REV_1000",
+    "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1007"
+  ],
+  "selected_usb_medium": {
+    "source": "owner packaging photos/answer and samsung-usb-info.json",
+    "model": "Samsung USB 3.0 Flash Drive DUO MUF-32CB/APC",
+    "capacity_label_gb": 32,
+    "boot_connection": "USB-A",
+    "unknown": [
+      "actual MyOS enumeration/read/write/flush on target"
+    ],
+    "vid_pid": "090c:1000",
+    "revision": "1100",
+    "bytes": 32078036992,
+    "logical_sector_bytes": 512,
+    "physical_sector_bytes": 512,
+    "interface": "class08/subclass06/protocol50: SCSI transparent Bulk-Only Transport"
+  },
+  "selected_driver_path": "PS/2 keyboard retained; generic xHCI plus USB HID boot mouse and bounded SCSI/BOT512 prepared data partition implemented; QEMU verified, AMD/real-device handoff unconfirmed; no system-NVMe/I2C/network/HDA path",
+  "still_pending": [
+    "target GOP mode/pixel format/framebuffer and firmware allocations",
+    "actual HID boot-protocol capability of mouse30fa:0301",
+    "target USB read/write/mandatory SYNCHRONIZE CACHE behavior and physical persistence acceptance",
+    "MyOS target boot/input acceptance (Phase25)"
+  ],
+  "phase24_complete": false,
+  "sources": {
+    "firmware_enum": "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-firmware_type",
+    "memory_field": "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem#totalphysicalmemory",
+    "usb_model": "https://images.samsung.com/is/content/samsung/p5/sec/business/insights/catalog-download/2018/04/GB-20180425-2.pdf"
+  }
+}

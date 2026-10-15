@@ -82,6 +82,10 @@ static void report_position(int nx,int ny,uint8_t current)
         native_ui_emit(&native);
     }
 }
+void mouse_usb_attach(void){ready=true;}
+void mouse_usb_report(uint8_t buttons,int dx,int dy){
+    if(ready)report_position(x_position+dx,y_position+dy,buttons&7);
+}
 void mouse_irq(void)
 {
     uint8_t status=inb(0x64);

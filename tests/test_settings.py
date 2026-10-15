@@ -49,7 +49,7 @@ def configure(vm,addresses,invalid=False):
     field(vm,addresses,'GGGGGG' if invalid else '11AA33')
     click(vm,addresses,620,458,
           'SETTINGS INVALID COLOR' if invalid else
-          ('SETTINGS SAVED DISK' if 'ATA PIO disk' in vm.log.read_text() else 'SETTINGS SAVED RAM'))
+          ('SETTINGS SAVED DISK' if any(marker in vm.log.read_text() for marker in ('ATA PIO disk','USB BOT: prepared MyOS data partition')) else 'SETTINGS SAVED RAM'))
 
 def leave(vm):
     closed=vm.log.read_text().count('DESKTOP CLOSED')

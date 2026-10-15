@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None,asset_disk=None):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None,asset_disk=None,xhci_devices=None,usb_disk=None,usb_sector_size=512,xhci_usb3=True):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -43,10 +43,17 @@ class VM:
             '-drive',f'format=raw,file={image},if={boot_bus},index=0',
             '-boot','order='+('c' if boot_bus=='ide' else 'a'),
             '-qmp',f'unix:{self.sock},server=on,wait=off']
+        if xhci_devices is not None:
+            command.extend(['-device','qemu-xhci,id=xhci'+('' if xhci_usb3 else ',p3=0')])
+            for device in xhci_devices:command.extend(['-device',device])
         if usb:
             index=command.index('-drive')
             command[index+1]=f'format=raw,file={image},if=none,id=bootusb'
-            command.extend(['-usb','-device','usb-storage,drive=bootusb,bootindex=1'])
+            command.extend(['-usb','-device','usb-storage,drive=bootusb,bootindex=1'+(',bus=xhci.0' if xhci_devices is not None else '')])
+        if usb_disk is not None:
+            if xhci_devices is None or usb_sector_size not in (512,4096):raise ValueError('invalid USB test fixture')
+            command.extend(['-drive',f'format=raw,file={usb_disk},if=none,id=testusb',
+                            '-device',f'usb-storage,drive=testusb,bus=xhci.0,id=teststorage,logical_block_size={usb_sector_size},physical_block_size={usb_sector_size}'])
         if firmware:
             import shutil
             code,template=firmware

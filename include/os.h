@@ -38,6 +38,7 @@ bool page_retain(uintptr_t);
 unsigned page_references(uintptr_t);
 size_t pages_free(void);
 size_t pages_total(void);
+uintptr_t vm_map_mmio(uint64_t,size_t);
 bool vm_map(uintptr_t,uintptr_t,uint64_t);
 uintptr_t vm_unmap(uintptr_t);
 uintptr_t vm_translate(uintptr_t);

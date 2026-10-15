@@ -3,6 +3,7 @@
 #include "storage.h"
 #include "graphics.h"
 #include "mouse.h"
+#include "usb.h"
 #include "settings.h"
 #include "snake.h"
 #include "nic.h"
@@ -64,6 +65,7 @@ void kernel_main(void){
 #elif TEST_CASE == 6
     __asm__ volatile("mov $0x48, %%ax\n.global fault_site\nfault_site: mov %%ax, %%ds":::"rax");
 #endif
+    usb_init();
     storage_init();
     int mount=storage_load();
     if(!mount){print("Storage: restored RAMFS generation ");decimal(storage_generation());print("\n");}

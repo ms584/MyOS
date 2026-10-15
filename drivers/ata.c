@@ -159,8 +159,8 @@ void ata_init(void)
         print("ATA PIO disk: ");decimal(capacity);print(" sectors\n");
     }else{detected=false;capacity=0;print("ATA: no data disk; RAM-only files\n");}
 }
-bool storage_present(void){return detected;}
-uint32_t storage_sectors(void){return capacity;}
+bool ata_present(void){return detected;}
+uint32_t ata_sectors(void){return capacity;}
 
 uint32_t ata_asset_sectors(void){return asset_capacity;}
 bool ata_asset_read(uint32_t sector,void *buffer)

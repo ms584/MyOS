@@ -256,7 +256,7 @@ static void execute(char *line){
         else if(equal(cmd,"pwd")){print(cwd);print("\n");}
         else if(equal(cmd,"mem")){print("Free physical pages: ");decimal(pages_free());print("\n");}
         else if(equal(cmd,"uptime")){print("Uptime (approx seconds): ");decimal(ticks/100);print("\n");}
-        else if(equal(cmd,"disk")){if(!storage_ready())print("Disk: unavailable (RAM only)\n");else{print("Disk: ATA PIO, ");decimal(storage_sectors());print(" sectors, saved generation ");decimal(storage_generation());print("\n");}}
+        else if(equal(cmd,"disk")){if(!storage_ready())print("Disk: unavailable (RAM only)\n");else{print("Disk: ");print(storage_backend());print(", ");decimal(storage_sectors());print(" sectors, saved generation ");decimal(storage_generation());print("\n");}}
         else {int result=storage_save();if(result<0){print("error: sync failed (code ");decimal((uint64_t)(-result));print(")\n");}else{print("Saved generation ");decimal(storage_generation());print("\n");}}return;
     }
     bool cd=equal(cmd,"cd"),ls=equal(cmd,"ls");

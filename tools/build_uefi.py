@@ -12,7 +12,7 @@ def main():
     OUT.mkdir(parents=True,exist_ok=True)
     subprocess.run(['bash','build.sh'],cwd=ROOT,env=dict(os.environ,TEST_CASE='0',PROCESS_TESTS='0',TEXT_ONLY='0'),check=True)
     kernel=(ROOT/'build/kernel.bin').read_bytes();font=(ROOT/'assets/myos-font.bin').read_bytes()
-    assert 0<len(kernel)<=256*1024 and len(font)==4096
+    assert 0<len(kernel)<=288*1024 and len(font)==4096
     (OUT/'uefi_assets.h').write_text('\n'.join('static const unsigned char '+name+'[]={'+','.join(map(str,data))+'};' for name,data in [('kernel_blob',kernel),('font_blob',font)]))
     run('gcc','-I/usr/include/efi','-I/usr/include/efi/x86_64','-Iinclude','-I'+str(OUT),'-DGNU_EFI_USE_MS_ABI',
         '-fpic','-fshort-wchar','-mno-red-zone','-mgeneral-regs-only','-fno-stack-protector','-fno-builtin',

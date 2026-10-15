@@ -1,10 +1,7 @@
 #include "fs-snapshot.h"
+#include "block.h"
 #define STORAGE_BANK_A 16u
 #define STORAGE_MAGIC 0x315346534f594dull /* MYOSFS1, unchanged across versions. */
-extern void ata_init(void);
-extern bool ata_read(uint32_t,void *);
-extern bool ata_write(uint32_t,const void *);
-extern bool ata_flush(void);
 struct header {
     uint64_t magic;
     uint32_t version,sectors;
@@ -28,23 +25,23 @@ static bool read_slots(unsigned bank,void *slots)
 {
     uint8_t *bytes=slots;uint32_t start=bank_start(bank)+1;
     for(unsigned i=0;i<payload_bytes/STORAGE_SECTOR_SIZE;++i)
-        if(!ata_read(start+i,bytes+(size_t)i*STORAGE_SECTOR_SIZE))return false;
+        if(!block_read(start+i,bytes+(size_t)i*STORAGE_SECTOR_SIZE))return false;
     return true;
 }
 static bool write_slots(unsigned bank,const void *slots)
 {
     const uint8_t *bytes=slots;uint32_t start=bank_start(bank)+1;
     for(unsigned i=0;i<payload_bytes/STORAGE_SECTOR_SIZE;++i)
-        if(!ata_write(start+i,bytes+(size_t)i*STORAGE_SECTOR_SIZE))return false;
+        if(!block_write(start+i,bytes+(size_t)i*STORAGE_SECTOR_SIZE))return false;
     return true;
 }
 static bool valid_header(const struct header *h)
 {return h->magic==STORAGE_MAGIC&&h->version==version&&h->sectors==bank_sectors&&h->generation>0;}
 void storage_init(void)
 {
-    ata_init();if(!storage_present())return;
+    block_init();if(!storage_present())return;
     uint8_t sector[STORAGE_SECTOR_SIZE];
-    if(!ata_read(0,sector)){print("Storage: could not read data disk signature; RAM-only\n");return;}
+    if(!block_read(0,sector)){print("Storage: could not read data disk signature; RAM-only\n");return;}
     static const char v1[]="MYOS-DATA-v1",v2[]="MYOS-DATA-v2";
     const char *signature=0;
     bool one=true,two=true;
@@ -67,7 +64,7 @@ int storage_load(void)
     int found=-1;uint64_t newest=0;bool invalid=false;
     for(unsigned bank=0;bank<2;++bank){
         struct header h;
-        if(!ata_read(bank_start(bank),&h)){invalid=true;continue;}
+        if(!block_read(bank_start(bank),&h)){invalid=true;continue;}
         if(!valid_header(&h)){if(h.magic==STORAGE_MAGIC)invalid=true;continue;}
         if(!read_slots(bank,slots)){invalid=true;continue;}
         if(checksum(slots,payload_bytes)!=h.checksum||
@@ -77,7 +74,7 @@ int storage_load(void)
     if(found<0){kfree(slots);return invalid?-5:-2;}
     if(!read_slots((unsigned)found,slots)){kfree(slots);return -5;}
     struct header h;
-    if(!ata_read(bank_start((unsigned)found),&h)||checksum(slots,payload_bytes)!=h.checksum||
+    if(!block_read(bank_start((unsigned)found),&h)||checksum(slots,payload_bytes)!=h.checksum||
        !fs_snapshot_import(slots,slot_bytes,slot_bytes-STORAGE_SECTOR_SIZE)){kfree(slots);return -5;}
     kfree(slots);active_bank=found;generation=newest;return 0;
 }
@@ -89,7 +86,7 @@ int storage_save(void)
     unsigned bank=active_bank==0?1:0;
     struct header h={0};h.magic=STORAGE_MAGIC;h.version=version;
     h.sectors=bank_sectors;h.generation=generation+1;h.checksum=checksum(slots,payload_bytes);
-    bool ok=write_slots(bank,slots)&&ata_flush()&&ata_write(bank_start(bank),&h)&&ata_flush();
+    bool ok=write_slots(bank,slots)&&block_flush()&&block_write(bank_start(bank),&h)&&block_flush();
     kfree(slots);if(!ok)return -5;
     generation=h.generation;active_bank=(int)bank;return 0;
 }

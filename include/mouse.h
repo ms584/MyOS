@@ -10,6 +10,8 @@ struct mouse_event {
 
 bool mouse_init(uint16_t width,uint16_t height);
 bool mouse_ready(void);
+void mouse_usb_attach(void);
+void mouse_usb_report(uint8_t,int,int);
 bool mouse_absolute_enable(void);
 void mouse_relative_enable(void);
 void mouse_irq(void);

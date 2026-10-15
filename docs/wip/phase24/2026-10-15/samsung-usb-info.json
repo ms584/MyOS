@@ -1,0 +1,158 @@
+{
+  "devices": [
+    {
+      "Name": "USB Mass Storage Device",
+      "HardwareID": [
+        "USB\\VID_090C&PID_1000&REV_1100",
+        "USB\\VID_090C&PID_1000"
+      ],
+      "CompatibleID": [
+        "USB\\COMPAT_VID_090C&Class_08&SubClass_06&Prot_50",
+        "USB\\COMPAT_VID_090C&Class_08&SubClass_06",
+        "USB\\COMPAT_VID_090C&Class_08",
+        "USB\\Class_08&SubClass_06&Prot_50",
+        "USB\\Class_08&SubClass_06",
+        "USB\\Class_08"
+      ]
+    },
+    {
+      "Name": "HID-compliant touch pad",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col02",
+        "HID\\SYNA2BA6&Col02",
+        "HID\\*SYNA2BA6&Col02",
+        "HID\\VID_06CB&UP:000D_U:0005",
+        "HID_DEVICE_UP:000D_U:0005",
+        "HID_DEVICE"
+      ],
+      "CompatibleID": null
+    },
+    {
+      "Name": "Microsoft Input Configuration Device",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col03",
+        "HID\\SYNA2BA6&Col03",
+        "HID\\*SYNA2BA6&Col03",
+        "HID\\VID_06CB&UP:000D_U:000E",
+        "HID_DEVICE_UP:000D_U:000E",
+        "HID_DEVICE"
+      ],
+      "CompatibleID": null
+    },
+    {
+      "Name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+      "HardwareID": [
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00",
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA",
+        "PCI\\VEN_1022&DEV_1639&CC_0C0330",
+        "PCI\\VEN_1022&DEV_1639&CC_0C03"
+      ],
+      "CompatibleID": [
+        "PCI\\VEN_1022&DEV_1639&REV_00",
+        "PCI\\VEN_1022&DEV_1639",
+        "PCI\\VEN_1022&CC_0C0330",
+        "PCI\\VEN_1022&CC_0C03",
+        "PCI\\VEN_1022",
+        "PCI\\CC_0C0330&DT_0",
+        "PCI\\CC_0C0330",
+        "PCI\\CC_0C03&DT_0",
+        "PCI\\CC_0C03"
+      ]
+    },
+    {
+      "Name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+      "HardwareID": [
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA&REV_00",
+        "PCI\\VEN_1022&DEV_1639&SUBSYS_382F17AA",
+        "PCI\\VEN_1022&DEV_1639&CC_0C0330",
+        "PCI\\VEN_1022&DEV_1639&CC_0C03"
+      ],
+      "CompatibleID": [
+        "PCI\\VEN_1022&DEV_1639&REV_00",
+        "PCI\\VEN_1022&DEV_1639",
+        "PCI\\VEN_1022&CC_0C0330",
+        "PCI\\VEN_1022&CC_0C03",
+        "PCI\\VEN_1022",
+        "PCI\\CC_0C0330&DT_0",
+        "PCI\\CC_0C0330",
+        "PCI\\CC_0C03&DT_0",
+        "PCI\\CC_0C03"
+      ]
+    },
+    {
+      "Name": "USB Root Hub (USB 3.0)",
+      "HardwareID": [
+        "USB\\ROOT_HUB30&VID1022&PID1639&REV0000",
+        "USB\\ROOT_HUB30&VID1022&PID1639",
+        "USB\\ROOT_HUB30"
+      ],
+      "CompatibleID": null
+    },
+    {
+      "Name": "HID-compliant vendor-defined device",
+      "HardwareID": [
+        "HID\\VEN_SYNA&DEV_2BA6&Col04",
+        "HID\\SYNA2BA6&Col04",
+        "HID\\*SYNA2BA6&Col04",
+        "HID\\VID_06CB&UP:FF00_U:0001",
+        "HID_DEVICE_UP:FF00_U:0001",
+        "HID_DEVICE_UPR:FF00-FFFF",
+        "HID_DEVICE"
+      ],
+      "CompatibleID": null
+    },
+    {
+      "Name": "USB Composite Device",
+      "HardwareID": [
+        "USB\\VID_5986&PID_212B&REV_5615",
+        "USB\\VID_5986&PID_212B"
+      ],
+      "CompatibleID": [
+        "USB\\COMPAT_VID_5986&DevClass_00&SubClass_00&Prot00",
+        "USB\\COMPAT_VID_5986&DevClass_00&SubClass_00",
+        "USB\\COMPAT_VID_5986&DevClass_00",
+        "USB\\DevClass_00&SubClass_00&Prot_00",
+        "USB\\DevClass_00&SubClass_00",
+        "USB\\DevClass_00",
+        "USB\\COMPOSITE"
+      ]
+    },
+    {
+      "Name": "I2C HID Device",
+      "HardwareID": [
+        "ACPI\\VEN_SYNA&DEV_2BA6",
+        "ACPI\\SYNA2BA6",
+        "*SYNA2BA6"
+      ],
+      "CompatibleID": [
+        "ACPI\\PNP0C50",
+        "PNP0C50"
+      ]
+    },
+    {
+      "Name": "USB Root Hub (USB 3.0)",
+      "HardwareID": [
+        "USB\\ROOT_HUB30&VID1022&PID1639&REV0000",
+        "USB\\ROOT_HUB30&VID1022&PID1639",
+        "USB\\ROOT_HUB30"
+      ],
+      "CompatibleID": null
+    }
+  ],
+  "disks": [
+    {
+      "FriendlyName": "SAMSUNG MZALQ256HBJD-00BL2",
+      "BusType": "NVMe",
+      "Size": 256060514304,
+      "LogicalSectorSize": 512,
+      "PhysicalSectorSize": 16384
+    },
+    {
+      "FriendlyName": "Samsung Flash Drive DUO",
+      "BusType": "USB",
+      "Size": 32078036992,
+      "LogicalSectorSize": 512,
+      "PhysicalSectorSize": 512
+    }
+  ]
+}
