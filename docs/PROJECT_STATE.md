@@ -1,4 +1,4 @@
-2026-10-15 — Phase24 driver/image checkpoint validated in QEMU; full Phase24 INCOMPLETE.
+2026-10-16 — Phase24 mouse inventory updated; driver/image QEMU checkpoint unchanged; full Phase24 INCOMPLETE.
 Repository /home/xytron404/myos; main; image/code source 031d4c8421662e81ed501d4fd8515c2abc8825d0.
 Documentation/evidence checkpoint follows that code commit. Owner authorizes push;
 verify origin/main against local HEAD for delivery state.
@@ -6,7 +6,8 @@ verify origin/main against local HEAD for delivery state.
 ThinkBook21A4/LNVNB161216; Ryzen5500U64-bit/NX; BIOS GQCN45WW(V1.31);
 UEFI/SecureBootOFF reported by owner Windows inventory.
 Owner8GB RAM; Windows6256402432B; installed modules/reservations not measured.
-PS2 keyboardFUJ7401; USB mouse30fa:0301; two AMD xHCI1022:1639.
+PS2 keyboardFUJ7401; USB mouse30fa:0301 advertises HID boot mouse03/01/02; two AMD xHCI1022:1639.
+Owner CompatibleID evidence: docs/wip/phase24/2026-10-16/mouse-evidence.json; MyOS input NOT RUN.
 Samsung DUO MUF-32CB/APC USB090c:1000,32078036992B,512B sectors,SCSI/BOT.
 System NVMe144d:a809 MZALQ256HBJD-00BL2 is NOT scratch storage.
 Radeon1002:164c; Ethernet10ec:8168; WiFi168c:003e; HDA10ec:0257/1002:aa01.
@@ -40,7 +41,7 @@ and driver-tests.log in docs/wip/phase24/2026-10-15/.
 Old phase24-prep image remains unchanged; it predates the drivers.
 Phase32/33 accepted evidence preserved; complete online audit not repeated.
 
-Remaining: actual mouse boot protocol,AMD/Samsung handoff/flush,GOP/allocations,
+Remaining: actual mouse SET_PROTOCOL/input,AMD/Samsung handoff/flush,GOP/allocations,
 PIC/PIT/i8042 routing. Phase25 physical tests NOT RUN; full Phase24 not closed.
 Next: confirm these target facts,then separately authorize USB write/boot when ready;
 follow PHASE25_HARDWARE_ACCEPTANCE.md. No additional owner command needed now.

@@ -1,6 +1,6 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
-วันที่ 2026-10-15 — **Phase 24 ยังไม่ครบ; Phase 25 ยังไม่ได้บูต MyOS บนเครื่องจริง**
+วันที่ 2026-10-16 — **Phase 24 ยังไม่ครบ; Phase 25 ยังไม่ได้บูต MyOS บนเครื่องจริง**
 มีรายงาน Windows จาก ThinkBook จริงก่อน/หลังเสียบเมาส์และขณะเสียบ USB
 เก็บ [รายงานหลังเสียบเมาส์](wip/phase24/2026-10-15/thinkbook-inventory.json)
 และ [ที่มา/ข้อมูลที่ตรวจแล้ว](wip/phase24/2026-10-15/inventory-evidence.json)
@@ -33,7 +33,7 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 | Graphics / จอ | ยังไม่ยืนยัน | Radeon PCI1002:164c; GOP mode/pixel format/range ยังไม่รายงาน; loader ต้อง800x600 BGR/pitch3200–16384/framebufferต่ำกว่า4GiB; ไม่ต้องใช้ AMD acceleration สำหรับสามแอป |
 | คีย์บอร์ดในตัว | ยังไม่ยืนยัน MyOS จริง | Windows Standard PS/2 Keyboard ACPI FUJ7401 ตรงชนิด driver i8042/IRQ1 เดิม; ยังต้องพิสูจน์ ACK/scan code หลัง handoff |
 | USB controller | ยังไม่ยืนยันบน AMD จริง | AMD1022:1639 พบสองรายการ; drivers/xhci.c เพิ่ม generic bounded xHCI, UC/NX MMIO และ polled events; QEMU controller1b36:000d ผ่าน BIOS/UEFI input แต่ไม่แทน AMD acceptance |
-| เมาส์ USB ที่เลือก | ยังไม่ยืนยัน descriptor/ผลจริง | รายงานเมื่อเสียบมี USB/HID30fa:0301; เพิ่ม USB HID boot-mouse path และทดสอบ QEMU; Windows IDs ไม่บอกว่ารุ่นจริงยอมรับ SET_PROTOCOL boot หรือไม่ |
+| เมาส์ USB ที่เลือก | ยืนยันว่าประกาศ Boot Mouse; MyOS จริงยังไม่ยืนยัน | รายงาน CompatibleID วันที่2026-10-16 ของ30fa:0301 มี USB\Class_03&SubClass_01&Prot_02 ตรง HID Boot Mouse; ยังไม่ใช่ raw descriptor/ผล SET_PROTOCOL หรือการรับ input หลัง handoff |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
 | USB boot storage ก่อน kernel | ยังไม่ยืนยันบน ThinkBook | สื่อที่เลือก Samsung DUO MUF-32CB/APC32GB ใช้USB-A; firmware boots ใน QEMU; รายงาน USB090c:1000/BOT/512B ได้รับแล้ว; การอ่าน ESP จริงยังไม่ทดสอบ |
@@ -56,7 +56,9 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 ได้รับ samsung-usb-info.json แล้ว: USB090c:1000, class08/subclass06/protocol50
 (SCSI transparent/Bulk-Only Transport),32078036992 bytes, logical/physical512B
 หลักฐานอยู่ใน docs/wip/phase24/2026-10-15/ พร้อม SHA256 ของไฟล์ต้นฉบับ
-ตอนนี้ไม่ต้องให้เจ้าของรันคำสั่งเพิ่มสำหรับการพัฒนาไดรเวอร์
+ได้รับ [รายงานโปรโตคอลเมาส์](wip/phase24/2026-10-16/thinkbook-mouse-protocol.json) เพิ่มแล้ว
+CompatibleID ยืนยันว่าประกาศ HID Boot Mouse (03/01/02); [SHA256/ขอบเขตหลักฐาน](wip/phase24/2026-10-16/mouse-evidence.json)
+ยังต้องพิสูจน์ SET_PROTOCOL และ input ภายใต้ MyOS จริง ไม่ต้องรันรายงานนี้ซ้ำตอนนี้
 collector รุ่น schema2 เพิ่มฟิลด์เหล่านี้และ RAM module capacities โดยไม่เก็บ
 serial number, MAC, UUID, instance ID หรือหมายเลขดิสก์
 ไฟล์รายงาน schema1 ที่เจ้าของส่งมาก่อนหน้ายังเก็บเป็นหลักฐานเดิม
@@ -285,7 +287,7 @@ Secure Boot, ลบ keys, เปลี่ยน SATA mode หรือ flash fir
 ยังไม่มีผลจริงใน checkpoint นี้; ห้ามเลื่อนสถานะเป็นผ่านจากผล QEMU
 
 การทดสอบจริงยัง NOT RUN; driver/image preparation ไม่เท่ากับการผ่าน Phase25
-ข้อเปิดก่อนปิด full Phase24: HID boot capabilityของ30fa:0301,
+ข้อเปิดก่อนปิด full Phase24: SET_PROTOCOL/input จริงของ30fa:0301 (ประกาศ Boot Mouse ยืนยันแล้ว),
 AMD controller handoff, Samsung command/flush behavior และ GOP/loader allocations
 ไม่มีข้อมูลเหล่านี้จาก Windows/QEMU ให้ถือว่ายังไม่ยืนยัน ห้ามลดเกณฑ์
 

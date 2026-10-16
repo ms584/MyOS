@@ -16,6 +16,13 @@
       "filename": "samsung-usb-info.json",
       "role": "usb-medium-transport-and-sector-report",
       "sha256": "89899d0289abcd4fd9ee6f0ecf879a6089a927f69d117ae6bab97f324b8b15c3"
+    },
+    {
+      "filename": "../2026-10-16/thinkbook-mouse-protocol.json",
+      "role": "usb-mouse-advertised-boot-protocol",
+      "sha256": "5c8096f146a0ee24a9d507d4187a4d5deb3ad7b2cbbc2a62184cfea4e64d8fb6",
+      "received_on": "2026-10-16",
+      "normalized_sha256": "420f2940fc15cf43fbd1489e31824d6ac9850351a95df0cfa2444457dc68f419"
     }
   ],
   "normalized_inventory": "thinkbook-inventory.json",
@@ -84,7 +91,7 @@
   "selected_driver_path": "PS/2 keyboard retained; generic xHCI plus USB HID boot mouse and bounded SCSI/BOT512 prepared data partition implemented; QEMU verified, AMD/real-device handoff unconfirmed; no system-NVMe/I2C/network/HDA path",
   "still_pending": [
     "target GOP mode/pixel format/framebuffer and firmware allocations",
-    "actual HID boot-protocol capability of mouse30fa:0301",
+    "actual MyOS SET_PROTOCOL(boot) and reports from mouse30fa:0301",
     "target USB read/write/mandatory SYNCHRONIZE CACHE behavior and physical persistence acceptance",
     "MyOS target boot/input acceptance (Phase25)"
   ],
@@ -93,5 +100,11 @@
     "firmware_enum": "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-firmware_type",
     "memory_field": "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem#totalphysicalmemory",
     "usb_model": "https://images.samsung.com/is/content/samsung/p5/sec/business/insights/catalog-download/2018/04/GB-20180425-2.pdf"
+  },
+  "mouse_boot_interface": {
+    "compatible_id": "USB\\Class_03&SubClass_01&Prot_02",
+    "advertised": true,
+    "myos_set_protocol_and_input": "NOT RUN",
+    "evidence": "../2026-10-16/mouse-evidence.json"
   }
 }

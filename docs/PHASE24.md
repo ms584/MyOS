@@ -1,6 +1,6 @@
 # Phase 24 — ThinkBook USB image and hardware preparation
 
-## Current checkpoint — 2026-10-15
+## Current checkpoint — 2026-10-16
 
 **Phase24 INCOMPLETE; Phase25 physical acceptance NOT RUN.**
 Target: Lenovo ThinkBook15 G3 ACL Type21A4 / board LNVNB161216,
@@ -80,7 +80,10 @@ byte-identical normal/BIOS/UEFI/USB/data rebuilds PASS. Logs: build/phase24-usb-
 Earlier interrupted partial-system.log is not a completed regression.
 Original Phase32/33 acceptance/manual recordings are preserved, not re-audited.
 
-Still unconfirmed: actual30fa:0301 HID boot capability; AMD controller handoff;
+Owner Windows CompatibleIDs now confirm mouse30fa:0301 advertises HID boot mouse
+(class03/subclass01/protocol02): [report and limits](wip/phase24/2026-10-16/mouse-evidence.json).
+This is not a raw descriptor or MyOS runtime result.
+Still unconfirmed: actual mouse SET_PROTOCOL(boot)/input; AMD controller handoff;
 Samsung READ/WRITE/flush behavior; GOP800x600 BGR/framebuffer below4GiB;
 kernel allocation0x10000–0x7ffff, owned stack/loader below4GiB,
 low ISA DMA and bounded firmware map. Real target display/input/apps/persistence
