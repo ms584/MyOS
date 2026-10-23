@@ -38,7 +38,7 @@ MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **34 phases,
 numbered 0–33**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
 Phase24 has a validated virtual USB image and high-GOP preparation; target retest pending.
-Phase25 first ThinkBook USB boot reached the UEFI loader but failed before kernel.
+Phase25 ThinkBook retry reaches visible kernel/Shell; input/apps and USB persistence pending.
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -132,8 +132,8 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial (2026-10-23):** ThinkBook21A4 first physical USB boot executes UEFI loader but fails framebuffer range before kernel. High-GOP mapping/diagnostics prepared; native host checks and synthetic-high/full default system/BIOS/UEFI/USB/DMA/layout/repro QEMU checks PASS. Actual new-image target boot/input/storage unconfirmed. See PHASE24.md and PHASE24_GOP_RETEST_TH.md. |
-| 25 | Real-hardware acceptance | **First target boot FAIL before kernel (2026-10-23); acceptance incomplete.** Verify selected-machine boot, display, input, three apps and persistence after remaining Phase24 fixes; record hardware, limitations and evidence. QEMU success cannot complete this phase. |
+| 24 | USB image and hardware preparation | **Partial (2026-10-23):** high-GOP preparation validated; owner retry reaches visible ThinkBook kernel/Shell. USB controllers found but no USB device attach success and RAM-only storage. Actual input/apps and USB enumeration/persistence remain pending. See PHASE24.md and kernel-shell evidence. |
+| 25 | Real-hardware acceptance | **Retry kernel/Shell and visible console confirmed (2026-10-23); acceptance incomplete.** Typed input, pointer, three apps and persistence still need physical evidence. Earlier loader failure retained as history; QEMU cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later

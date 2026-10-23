@@ -1,7 +1,9 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
-วันที่2026-10-23 — **Phase24 ยังไม่ครบ; ลองบูตจริงแล้ว FAIL ก่อนเข้า kernel**
-เจ้าของส่งภาพ `unsupported framebuffer range` จาก MyOS loader และ firmware แจ้ง boot failed
+**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+
+วันที่2026-10-23 — **Phase24 ยังไม่ครบ; ลองใหม่เข้า kernel/Shell แล้ว แต่ยัง RAM-only**
+ภาพก่อนหน้าแสดง `unsupported framebuffer range` จาก MyOS loader และ firmware แจ้ง boot failed; เป็นประวัติก่อนลองใหม่
 ดู [หลักฐานจริง](wip/phase24/2026-10-23/physical-boot-evidence.json) และ
 [คู่มือลองอิมเมจแก้ GOP](PHASE24_GOP_RETEST_TH.md). ค่า base/pitch/size จริงยังไม่ทราบ
 เพิ่ม high-framebuffer mapping/diagnostics แล้ว; full system/firmware/USB/DMA/layout/repro PASS

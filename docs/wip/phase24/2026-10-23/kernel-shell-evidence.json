@@ -1,0 +1,48 @@
+{
+  "received_on": "2026-10-23",
+  "target": "Owner-selected ThinkBook15 G3 ACL21A4",
+  "owner_caption": "Initial testing",
+  "photo": {
+    "source_attachment": "165c64e9-305a-4691-b6d0-86ea232f029e.jpg",
+    "stored": "thinkbook-kernel-shell.jpg",
+    "bytes": 189819,
+    "sha256": "837dda75d330ca87affc4cc995e70b05334d6d29d745f45217ce7a5c94165612"
+  },
+  "selected_retry_image": {
+    "source_commit": "32f7b6873e719f20275b7b5284ab99edd82d537c",
+    "source_sha256": "e0da9a5f2ff03e8031ab9cc1ed4655281c7b580cfde4c3a09cb58b3d62b66917",
+    "physical_readback_provided": false
+  },
+  "observed": [
+    "Console: framebuffer800x600x32",
+    "MyOS Kernel:64-bit Long Mode",
+    "IDT/PIC initialized",
+    "PMM/paging/heap and graphics boot checks PASS",
+    "PS/2 keyboard initialized; PS/2 mouse initialized",
+    "PIT and task preemption/context checks PASS",
+    "Ring3/private CR3/user write and motd boot checks PASS",
+    "Two AMD xHCI controllers with PCI ID1022:1639 (printed0x16391022)",
+    "ATA: no data disk; RAM-only files",
+    "MyOS Shell ready; myos> prompt"
+  ],
+  "physical_results": {
+    "kernel_shell_boot": "PASS",
+    "visible_framebuffer_console": "PASS",
+    "boot_memory_and_preemption_checks": "PASS",
+    "ps2_initialization_messages": "OBSERVED; actual typing/pointer tests pending",
+    "usb_controller_discovery": "PASS; not proof of device enumeration",
+    "usb_hid_mouse": "NOT CONFIRMED",
+    "usb_bot_persistence": "NOT AVAILABLE in observed boot; RAM-only",
+    "desktop_three_apps": "NOT RUN / owner test pending"
+  },
+  "unknown": [
+    "Actual framebuffer base/size/pitch",
+    "Typed text and pointer movement/button behavior",
+    "Reason USB discovery did not produce device/init messages",
+    "USB attachment topology/port state after controller reset",
+    "Actual Samsung READ/WRITE/flush and reboot persistence"
+  ],
+  "scope": "Physical kernel/Shell and visible console evidence, not completed desktop/input/storage acceptance. PS/2 init is not USB HID success. No USB root cause inferred from absence of device messages.",
+  "phase24_complete": false,
+  "phase25_complete": false
+}

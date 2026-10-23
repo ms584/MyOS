@@ -1,4 +1,4 @@
-2026-10-23 — Phase24 GOP retry preparation PASS in QEMU; target first boot FAIL; Phase24 INCOMPLETE.
+2026-10-23 — ThinkBook retry reaches visible kernel/Shell; USB/storage/input/apps pending; Phase24 INCOMPLETE.
 Repository /home/xytron404/myos; main; code/image source32f7b6873e719f20275b7b5284ab99edd82d537c.
 Owner authorizes scoped commits/push; final docs/evidence commit follows code.
 
@@ -9,11 +9,11 @@ actual MyOS SET_PROTOCOL/input NOT RUN. AMD xHCI1022:1639 (two reported).
 Samsung DUO MUF-32CB/APC090c:1000,32078036992B,512B sectors,SCSI/BOT.
 System NVMe144d:a809 is NOT scratch; I2C touchpad/network/HDA not selected/supported.
 
-Owner photos: firmware names Samsung and executes MyOS UEFI loader;
-unsupported framebuffer range (Unsupported) before kernel; generic boot failed follows.
-Exact target base/pitch/size and flashed-image readback NOT PROVIDED.
-Old combined check does not identify which range condition failed; no inferred GPU address.
-Photos/provenance: docs/wip/phase24/2026-10-23/physical-boot-evidence.json.
+Owner first attempt failed old loader framebuffer range; preserved physical-boot-evidence.json.
+Retry photo now shows800x600 console,kernel/Shell,PMM/graphics/PIC/PIT/Ring3 boot PASS.
+Two AMD xHCI controllers found, but no USB device/init success; RAM-only files.
+Typing/pointer/apps not yet verified; framebuffer address/readback not provided.
+Current physical evidence: docs/wip/phase24/2026-10-23/kernel-shell-evidence.json.
 
 Implemented high GOP supervisor UC/NX alias at0x7e00000000 before ExitBootServices;
 shared PML4[0] under Ring3 CR3, normal VM cannot overwrite it. Physical ABI unchanged.
@@ -38,9 +38,9 @@ under docs/wip/phase24/2026-10-23/. Old phase24-usb-input image60c8a229 remains 
 Retest guide: docs/PHASE24_GOP_RETEST_TH.md; compatibility: PHASE24_HANDOFF_TH.md.
 Phase32/33 owner acceptance/manual evidence preserved; complete online audit not repeated.
 
-Remaining: owner retest new image; actual GOP/allocations/handoff,PIC/PIT/PS2,
-USB mouse and AMD/Samsung read/write/mandatory flush; kernel/apps/persistence NOT RUN.
-Phase25 first boot FAIL before kernel; full physical acceptance remains incomplete.
-Next: owner-controlled reflash/readback/UEFI boot; capture base/size/pitch and errors,
-then input/apps/persistence following docs/PHASE25_HARDWARE_ACCEPTANCE.md.
+Remaining: actual typing/pointer/desktop/apps; USB device enumeration and Samsung
+read/write/mandatory flush/reboot restore. Kernel/Shell boot confirmed; full acceptance incomplete.
+Next: owner basic uptime/mouse/disk/desktop and three-app tests; no reflash needed now.
+Diagnose xHCI connected-port/reset/enumeration before changing driver behavior.
+Persistence blocked until USB backend available; see PHASE25_HARDWARE_ACCEPTANCE.md.
 No physical USB/disk write,format,repartition or firmware change by agent.

@@ -1,7 +1,9 @@
 # Phase 24 — ลองบูต ThinkBook อีกครั้งหลังแก้ framebuffer
 
-วันที่2026-10-23; Phase24 ยังไม่ครบ; อิมเมจใหม่ยังไม่ผ่าน ThinkBook จริง
-สถานะซอฟต์แวร์: full system + high-GOP/BIOS/UEFI/USB/DMA/layout/repro PASS; เครื่องจริงรอลองใหม่
+**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+
+วันที่2026-10-23; Phase24 ยังไม่ครบ; อิมเมจใหม่เข้า kernel/Shell บน ThinkBook แล้ว; input/apps/USB persistence ยังไม่ครบ
+สถานะซอฟต์แวร์: full system + high-GOP/BIOS/UEFI/USB/DMA/layout/repro PASS; เครื่องจริงเข้า Shell แล้ว; ทดสอบส่วนที่เหลือต่อ
 ผล/คำสั่ง/log hashes: [gop-evidence.json](wip/phase24/2026-10-23/gop-evidence.json) และ [สรุปผล](wip/phase24/2026-10-23/gop-tests.log)
 
 ## เหตุการณ์บนเครื่องจริง

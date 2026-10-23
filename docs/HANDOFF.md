@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Latest retry photo: ThinkBook800x600 visible kernel/Shell and PMM/PIC/PIT/Ring3 boot checks pass. USB controllers discovered but RAM-only; actual input/apps and USB enumeration/persistence pending. See docs/wip/phase24/2026-10-23/kernel-shell-evidence.json. Prior failed attempt below is historical.
+
 Phase24 INCOMPLETE. Owner first ThinkBook21A4 USB boot reached MyOS UEFI loader,
 then unsupported framebuffer range before kernel; firmware reported boot failed.
 Exact target framebuffer address/pitch/size and physical USB readback unknown.

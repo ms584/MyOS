@@ -1,8 +1,11 @@
 # Phase 24 — ThinkBook USB image and hardware preparation
 
+**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+
 ## Current checkpoint — 2026-10-23
 
-**Phase24 INCOMPLETE. First physical USB/UEFI attempt FAIL before kernel.**
+**Phase24 INCOMPLETE. Retry reaches visible kernel/Shell; input/apps/USB persistence pending.**
+Earlier physical USB/UEFI attempt failed before kernel; its analysis follows.
 Owner photos show MyOS loader `unsupported framebuffer range`; firmware then
 reports Samsung USB boot failed. The old combined check does not reveal actual
 base/pitch/size; do not assert the target address is above4GiB without new values.
@@ -15,7 +18,7 @@ Source/image/results: [gop-evidence.json](wip/phase24/2026-10-23/gop-evidence.js
 Native/synthetic-high focused checks and full default system regression PASS;
 packaged BIOS/UEFI/USB input/storage, UEFI DMA ownership, FAT/layout and byte-identical
 BIOS/UEFI/USB/data rebuilds PASS. Previous frozen image and original system-test
-evidence preserved. Target retest NOT RUN; no physical pass.
+evidence preserved. These software checks preceded the latest physical retry; current kernel/Shell evidence is linked above.
 No physical USB/disk write or firmware change by agent; owner attempted the boot.
 
 ## Previous validated QEMU checkpoint — 2026-10-16
