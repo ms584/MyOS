@@ -52,7 +52,7 @@ def test():
     tests=['tests/test_system.py','tests/test_bios_package.py']
     for script in tests:run(sys.executable,script)
     run(sys.executable,'tools/build_uefi.py');run(sys.executable,'tools/package_usb.py')
-    for script in ['tests/test_firmware.py','tests/test_usb_mouse.py','tests/test_usb_storage.py','tests/test_usb_bot_protocol.py','tests/test_xhci_ports.py','tests/test_release_tools.py','tests/test_demo_package.py']:
+    for script in ['tests/test_framebuffer_range.py','tests/test_framebuffer_uefi.py','tests/test_firmware.py','tests/test_usb_mouse.py','tests/test_usb_storage.py','tests/test_usb_bot_protocol.py','tests/test_xhci_ports.py','tests/test_release_tools.py','tests/test_demo_package.py']:
         run(sys.executable,script);tests.append(script)
     before=hashes()
     build()

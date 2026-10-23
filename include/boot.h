@@ -2,6 +2,8 @@
 #define MYOS_BOOT_H
 #include <stdint.h>
 #define MYOS_BOOT_MAGIC 0x32494645534f594dull
+/* One reserved supervisor PDPT slot, shared by kernel and process CR3 roots. */
+#define MYOS_FRAMEBUFFER_WINDOW 0x7e00000000ull
 /* BIOS low-memory ownership; UEFI allocates owned stack/DMA pages separately.
  * The BIOS initial stack grows down, DMA grows upward outside kernel/BSS. */
 #define MYOS_KERNEL_LIMIT 0x80000u

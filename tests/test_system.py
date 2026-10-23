@@ -29,7 +29,7 @@ def build(case=0,text=False):
     subprocess.run(['bash','build.sh'],env=env,check=True)
 
 class VM:
-    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None,asset_disk=None,xhci_devices=None,usb_disk=None,usb_sector_size=512,xhci_usb3=True):
+    def __init__(self,name,ram=64,disk=None,boot_image=None,boot_bus='floppy',disk_index=0,firmware=None,usb=False,nic=False,audio=None,cpu=None,rtc=None,asset_disk=None,xhci_devices=None,usb_disk=None,usb_sector_size=512,xhci_usb3=True,high_framebuffer_memory=False):
         self.name=name
         self.log=OUT/(name+'.log')
         self.sock=OUT/(name+'.sock')
@@ -43,6 +43,10 @@ class VM:
             '-drive',f'format=raw,file={image},if={boot_bus},index=0',
             '-boot','order='+('c' if boot_bus=='ide' else 'a'),
             '-qmp',f'unix:{self.sock},server=on,wait=off']
+        if high_framebuffer_memory:
+            command[command.index('-m')+1]=str(ram)+'M,slots=1,maxmem=8G'
+            command.extend(['-object','memory-backend-ram,id=fb-test,size=16M',
+                            '-device','pc-dimm,memdev=fb-test,addr=0x100000000'])
         if xhci_devices is not None:
             command.extend(['-device','qemu-xhci,id=xhci'+('' if xhci_usb3 else ',p3=0')])
             for device in xhci_devices:command.extend(['-device',device])

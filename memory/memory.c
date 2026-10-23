@@ -105,7 +105,7 @@ uintptr_t vm_map_mmio(uint64_t physical,size_t size){
     mmio_pages+=count;result+=physical-aligned;
 done:irq_restore(flags);return result;
 }
-static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<MMIO_BASE&&!(v%PAGE_SIZE);}
+static bool virtual_ok(uintptr_t v){return v>=0x100000000ull&&v<MYOS_FRAMEBUFFER_WINDOW&&!(v%PAGE_SIZE);}
 bool vm_map(uintptr_t va,uintptr_t pa,uint64_t flags){
     if(!virtual_ok(va)||pa%PAGE_SIZE||pa>=(uintptr_t)managed_pages*PAGE_SIZE)return false;
     uint64_t f=irq_save(),*table=(uint64_t *)boot_state.root,*made[3];unsigned count=0;
@@ -207,6 +207,7 @@ void memory_test(void){
     page_free(a);check(page_references(a)==1&&pages_free()==before-2,"PMM retained frame lifetime");
     check(!page_retain(a+1)&&!page_references(a+1)&&!page_retain(0),"PMM invalid retain");
     uintptr_t va=0x200000000ull;check(vm_map(va,a,2|NX),"VM map");check(!vm_map(va,b,2|NX),"duplicate map");
+    check(!vm_map(MYOS_FRAMEBUFFER_WINDOW,a,2|NX),"framebuffer window reserved");
     *(volatile uint64_t *)va=0x1122334455667788ull;check(*(volatile uint64_t *)a==0x1122334455667788ull,"VM alias");
     check(vm_translate(va+17)==a+17,"VM translation");check(vm_unmap(va)==a&&!vm_translate(va),"VM unmap");page_free(a);page_free(b);check(pages_free()==before,"page table reclaim");
     void *x=kmalloc(13),*y=kmalloc(5000);check(x&&y&&x!=y&&!((uintptr_t)x&15),"heap allocation");

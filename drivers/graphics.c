@@ -1,4 +1,5 @@
 #include "boot.h"
+#include "framebuffer.h"
 #include "graphics.h"
 #include "mouse.h"
 
@@ -15,10 +16,12 @@ bool gfx_probe(struct gfx_mode *mode)
        width/8>160 || height/16>50 || pitch_bytes%4 ||
        pitch_bytes<width*4 || pitch_bytes>16384 || physical<0x100000)
         return false;
-    uint64_t last=(uint64_t)physical+(uint64_t)(height-1)*pitch_bytes+
-                  (uint64_t)width*4;
-    if(last>(1ull<<32))return false; /* Bootstrap identity map covers 4 GiB. */
-    *mode=(struct gfx_mode){width,height,pitch_bytes/4,(volatile uint32_t *)(uintptr_t)physical};
+    uint64_t span=(uint64_t)height*pitch_bytes;
+    if(!framebuffer_range(physical,span,52))return false;
+    if(framebuffer_high(physical,span) && boot_state.magic!=MYOS_BOOT_MAGIC)return false;
+    /* UEFI installed the high alias before ExitBootServices; BIOS stays low. */
+    uint64_t address=framebuffer_virtual(physical,span);
+    *mode=(struct gfx_mode){width,height,pitch_bytes/4,(volatile uint32_t *)(uintptr_t)address};
     return true;
 }
 void gfx_init(void)
