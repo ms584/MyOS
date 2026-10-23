@@ -1,0 +1,36 @@
+native-startup: PASS build/phase24-usb-startup-2026-10-23/native-startup.log SHA256 771bdda1f7069a37c41f6304b6d2ff1a34ca679307142cfaa157aa416e9e4511
+PASS: production startup discovery ASan/UBSan; delayed mouse+SS device, bounce/detach, late/empty ports, shared2s deadline, stable100ms CCS, stalled PIT finite,32ports, tick wrap; old one-shot scan rejected
+native-diagnostics: PASS build/phase24-usb-startup-2026-10-23/native-diagnostics.log SHA256 53bc8f7b01a3c097fb6e4ebf01b7da3cb93864fd231b9eccc0b8936afc1baea5
+PASS: USB production diagnostics ASan/UBSan; exact snapshots/stages; absent/failed/invalid host bounds; repeated reads preserve registers, driver state and counters; zero MMIO writes
+native-ports: PASS build/phase24-usb-startup-2026-10-23/native-ports.log SHA256 7625bf0bdfaf45c0bdb143fbc42098c385a62b249b21f282114a22e75d939f8d
+PASS: same asynchronous-port regression rejects the old WPR polling defect
+PASS: production xHCI warm reset waits on PR while WPR reads0; USB2 reset; already-enabled USB3; bounded timeout; failed-controller button release and DMA ownership
+bios-build: PASS build/phase24-usb-startup-2026-10-23/bios-build.log SHA256 bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7
+uefi-build: PASS build/phase24-usb-startup-2026-10-23/uefi-build.log SHA256 e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212
+usb-build: PASS build/phase24-usb-startup-2026-10-23/usb-build.log SHA256 31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a
+startup-delayed-mouse: PASS build/phase24-usb-startup-2026-10-23/startup-delayed-mouse.log SHA256 09dc0e90d4ec7a9d319abea8c8363661d4b2264c6f845ac33584a51fd31080e1
+PASS: BIOS real QEMU mouse attached150ms after R/S startup; enumerated, motion/buttons and keyboard/Shell work (IDE boot isolates startup fixture)
+PASS: UEFI real QEMU mouse attached150ms after R/S startup; enumerated, motion/buttons and keyboard/Shell work (IDE boot isolates startup fixture)
+usb-mouse: PASS build/phase24-usb-startup-2026-10-23/usb-mouse.log SHA256 d26e835ab319fb734478c44430b25c862f006d1806b50831dfba04a6ec313d4f
+PASS: BIOS exact USB boot on xHCI; native USB movement/buttons and three apps with PS/2 keyboard
+PASS: UEFI exact USB boot on xHCI; native USB movement/buttons and three apps with PS/2 keyboard
+PASS: USB timer polling survives an uncooperative Ring3 address space and timeout/reaping
+PASS: USB producer/event cycle wrap, 270 actual reports, stable owned pages, timer and held-button detach recovery
+PASS: xHCI empty device retains responsive PS/2 keyboard/Shell without claiming HID support
+PASS: xHCI unsupported device retains responsive PS/2 keyboard/Shell without claiming HID support
+usb-storage: PASS build/phase24-usb-startup-2026-10-23/usb-storage.log SHA256 3bd38d8f1eb490e58870361ce2b710543c889b9a0b420f13ef836ba1f774e4f7
+PASS: xHCI/BOT512 UEFI writes, BIOS/UEFI reboot restore files/Settings/Snake; corrupted-bank fallback; bulk wrap and mouse coexistence; boot regions unchanged
+PASS: foreign/overlapping/unmarked/extra-partition/4096B USB media remain unchanged; detach fails boundedly and Shell responds
+PASS: USB2 high-speed BOT512 write/reboot restore through xHCI with SuperSpeed ports disabled; boot regions unchanged
+data-image: PASS build/phase24-usb-startup-2026-10-23/data-image.log SHA256 b53a304d8fc4f6221598ff7e78b3b39246a06423ba2e3c41e5efa65f74a15f43
+layout: PASS build/phase24-usb-startup-2026-10-23/layout.log SHA256 f4578c5a29cb9f391b9cf211869d602a4044b57c907148aa11e240e8171d513f
+PASS: FAT filesystem checker, independent EFI readback, MBR layout and deterministic timestamps
+rebuild-bios: PASS build/phase24-usb-startup-2026-10-23/rebuild-bios.log SHA256 bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7
+rebuild-uefi: PASS build/phase24-usb-startup-2026-10-23/rebuild-uefi.log SHA256 e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212
+rebuild-usb: PASS build/phase24-usb-startup-2026-10-23/rebuild-usb.log SHA256 31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a
+rebuild-data: PASS build/phase24-usb-startup-2026-10-23/rebuild-data.log SHA256 aea9ec304ab524be6d58c095bad07d3fd5780d2b8af11073c70ffcb211f832c4
+PASS: byte-identical BIOS/UEFI/USB/data/kernel/runtime rebuild
+PASS: normal images and original build/system-tests restored; GOP and diagnostic frozen images unchanged
+REUSED: full system/high GOP checks from32f7b68; only USB startup discovery changed, no architecture/mapping/DMA/ABI/persistence format change
+PHYSICAL: previous image misses reconnects, port-status photo establishes cause; corrected image retest NOT RUN
+NO physical disk/USB/firmware actions by agent

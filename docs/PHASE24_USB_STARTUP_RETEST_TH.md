@@ -24,7 +24,37 @@ runtime hotplug. ThinkBook2controllers เพิ่มช่วง discovery ร
 
 ## อิมเมจใหม่และการสร้างซ้ำ
 
-รายละเอียด source commit,ขนาด,checksum และคำสั่ง build จะอยู่ใน
+ไฟล์: `build/phase24-usb-startup-2026-10-23/images/myos-usb-data.img`
+Windows:
+
+```text
+\\wsl.localhost\Ubuntu\home\xytron404\myos\build\phase24-usb-startup-2026-10-23\images\myos-usb-data.img
+```
+
+ขนาด **67,108,864bytes (64MiB)**; source commit `ec0e499e34ac964106981ea4202c0a2132c14c43`.
+SHA256: `0837d4e1572fccf62832313909e543119f601c652c8b1ff1660546f754e7ba1f`.
+manifest.json/SHA256SUMS อยู่ข้างอิมเมจ; build/ เป็น local generated artifacts ไม่อยู่ในgit.
+Source/คู่มือ/หลักฐานส่งขึ้นGitHub; อิมเมจอยู่ในrepoจริงของเครื่อง build.
+Native ASan/UBSan+old-scan negative control, delayed QEMU BIOS/UEFI movement/buttons,
+USB HID/ring/Ring3, USB2/USB3 BOT coexistence/save/flush/reboot/recovery/bounds,
+independent FAT/EFI/layout และ byte-identical rebuild PASS.
+Full system/high-GOP เดิมใช้ซ้ำ: ไม่เปลี่ยน architecture/MMIO mapping/DMA/ABI/filesystem format.
+
+สร้างซ้ำจาก source commit ข้างต้น ใน repoจริงที่ไม่มี executable changes:
+
+```sh
+cd /home/xytron404/myos
+python3 tools/run_logged.py -- python3 tools/package_bios.py
+python3 tools/run_logged.py -- python3 tools/build_uefi.py
+python3 tools/run_logged.py -- python3 tools/package_usb.py
+python3 tools/run_logged.py -- python3 tools/package_usb.py --with-data --output build/myos-usb-startup-rebuild.img
+sha256sum build/myos-usb-startup-rebuild.img
+```
+
+outputต้องยังไม่มี: เครื่องมือไม่ทับ save imageเดิม. เทียบchecksumกับข้างต้น.
+คำสั่งนี้สร้างไฟล์ในbuild/ ไม่เปิด physical disk และไม่มีหมายเลขดิสก์ให้เดา.
+
+รายละเอียด source commit,ขนาด,checksum และผล build อยู่ใน
 [wip/phase24/2026-10-23/usb-startup-evidence.json](wip/phase24/2026-10-23/usb-startup-evidence.json)
 และ manifest ข้างอิมเมจ. อิมเมจ diagnostic เดิม07809cd8... ยังไม่มีการแก้นี้.
 

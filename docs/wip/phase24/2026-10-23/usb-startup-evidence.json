@@ -1,0 +1,193 @@
+{
+  "source_commit": "ec0e499e34ac964106981ea4202c0a2132c14c43",
+  "date": "2026-10-23",
+  "scope": "Correct evidenced one-shot startup scan skipping post-HCRST reconnects; do not claim target mouse/storage PASS before retest",
+  "physical_root_cause_evidence": "usb-startup-physical-evidence.json",
+  "correction": {
+    "window_ticks": 200,
+    "stable_ccs_ticks": 10,
+    "tick_hz": 100,
+    "deadline": "shared across all root ports, per controller",
+    "iteration_bound": 2000000,
+    "no_architecture_mapping_dma_abi_storage_format_change": true,
+    "no_runtime_hotplug_or_hub_support": true
+  },
+  "image": {
+    "path": "build/phase24-usb-startup-2026-10-23/images/myos-usb-data.img",
+    "kind": "64MiB raw MBR BIOS/UEFI;32MiB FAT16 ESP;16MiB typeDA prepared MyOS snapshots",
+    "bytes": 67108864,
+    "sha256": "0837d4e1572fccf62832313909e543119f601c652c8b1ff1660546f754e7ba1f"
+  },
+  "manifest": {
+    "path": "build/phase24-usb-startup-2026-10-23/images/manifest.json",
+    "sha256": "2c2878a92662e7a60a704fca828c5841cbbf71715d7ef6605e500fc5fd09833d"
+  },
+  "tests": [
+    {
+      "name": "native-startup",
+      "command": [
+        "python3",
+        "tests/test_usb_startup.py",
+        "--native-only"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/native-startup.log",
+      "sha256": "771bdda1f7069a37c41f6304b6d2ff1a34ca679307142cfaa157aa416e9e4511"
+    },
+    {
+      "name": "native-diagnostics",
+      "command": [
+        "python3",
+        "tests/test_usb_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/native-diagnostics.log",
+      "sha256": "53bc8f7b01a3c097fb6e4ebf01b7da3cb93864fd231b9eccc0b8936afc1baea5"
+    },
+    {
+      "name": "native-ports",
+      "command": [
+        "python3",
+        "tests/test_xhci_ports.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/native-ports.log",
+      "sha256": "7625bf0bdfaf45c0bdb143fbc42098c385a62b249b21f282114a22e75d939f8d"
+    },
+    {
+      "name": "bios-build",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/bios-build.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "uefi-build",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/uefi-build.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "usb-build",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/usb-build.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "startup-delayed-mouse",
+      "command": [
+        "python3",
+        "tests/test_usb_startup.py",
+        "--qemu-only"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/startup-delayed-mouse.log",
+      "sha256": "09dc0e90d4ec7a9d319abea8c8363661d4b2264c6f845ac33584a51fd31080e1"
+    },
+    {
+      "name": "usb-mouse",
+      "command": [
+        "python3",
+        "tests/test_usb_mouse.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/usb-mouse.log",
+      "sha256": "d26e835ab319fb734478c44430b25c862f006d1806b50831dfba04a6ec313d4f"
+    },
+    {
+      "name": "usb-storage",
+      "command": [
+        "python3",
+        "tests/test_usb_storage.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/usb-storage.log",
+      "sha256": "3bd38d8f1eb490e58870361ce2b710543c889b9a0b420f13ef836ba1f774e4f7"
+    },
+    {
+      "name": "data-image",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-startup-2026-10-23/images/myos-usb-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/data-image.log",
+      "sha256": "b53a304d8fc4f6221598ff7e78b3b39246a06423ba2e3c41e5efa65f74a15f43"
+    },
+    {
+      "name": "layout",
+      "command": [
+        "python3",
+        "tests/test_release_tools.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/layout.log",
+      "sha256": "f4578c5a29cb9f391b9cf211869d602a4044b57c907148aa11e240e8171d513f"
+    },
+    {
+      "name": "rebuild-bios",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/rebuild-bios.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "rebuild-uefi",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/rebuild-uefi.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "rebuild-usb",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/rebuild-usb.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "rebuild-data",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-startup-2026-10-23/repro-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-startup-2026-10-23/rebuild-data.log",
+      "sha256": "aea9ec304ab524be6d58c095bad07d3fd5780d2b8af11073c70ffcb211f832c4"
+    }
+  ],
+  "reproducible": true,
+  "original_system_tests_restored": true,
+  "old_gop_and_diagnostic_images_unchanged": true,
+  "prior_full_system_reused": "32f7b68; startup driver behavior only, no architecture changes; focused USB startup/input/storage regressions run on correction",
+  "physical_corrected_image": "NOT RUN",
+  "phase24_complete": false,
+  "phase25_complete": false,
+  "no_physical_write_or_firmware_action": true
+}

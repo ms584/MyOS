@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Current corrected image: build/phase24-usb-startup-2026-10-23/images/myos-usb-data.img; source ec0e499e34ac964106981ea4202c0a2132c14c43; SHA256 0837d4e1572fccf62832313909e543119f601c652c8b1ff1660546f754e7ba1f. Native delayed-attach negative control, actual delayed QEMU mouse BIOS/UEFI, USB input/storage/layout/repro PASS. Physical corrected-image retest NOT RUN. See PHASE24_USB_STARTUP_RETEST_TH.md.
+
 USB startup race established by owner port-status photo: scan CCS0 then now CCS1, all stages0/command CC0. Corrected shared2s discovery/100ms stable CCS; see PHASE24_USB_STARTUP_RETEST_TH.md. Corrected-image physical retest pending. Prior diagnostic checkpoint below is historical.
 
 Current diagnostic image: build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img; source 3482f0e6ed564e5ee27ae6af0cf82794f37f304f; manifest/checksum and build instructions in PHASE24_USB_DIAGNOSTICS_TH.md. Native/USB QEMU/layout/repro checks PASS; physical diagnostic retest pending.
