@@ -1,19 +1,17 @@
-# MyOS handoff — 2026-10-15
+# MyOS handoff — 2026-10-23
 
-Phase 24 hardware preparation is INCOMPLETE; selected target is Lenovo
-ThinkBook 15 G3 ACL Type 21A4 (Ryzen 5 5500U, 8 GB, 256 GB SSD, QCA61x4A).
-Owner Windows reports identify PS2 FUJ7401, USB mouse30fa:0301, AMD xHCI1022:1639,
-Samsung DUO090c:1000/BOT512, UEFI/SecureBootOFF. GOP and actual handoff unknown.
-Prepared code commit 031d4c8421662e81ed501d4fd8515c2abc8825d0 adds bounded root-port xHCI/HID and
-prepared USB data partition SCSI/BOT512 backend. Full architectural, focused,
-firmware/layout and reproducibility checks pass; source/checksums in
-docs/wip/phase24/2026-10-15/driver-evidence.json.
-No target boot claimed.
-See PROJECT_STATE.md, PHASE24.md and PHASE24_HANDOFF_TH.md for compatibility,
-frozen USB image/checksum, repeatable build, blockers and next driver work.
-PHASE25_HARDWARE_ACCEPTANCE.md contains inventory and unfilled physical test results.
-No physical USB/disk write or firmware change was performed or authorized here.
-The owner authorized this checkpoint's GitHub push in this chat.
+Phase24 INCOMPLETE. Owner first ThinkBook21A4 USB boot reached MyOS UEFI loader,
+then unsupported framebuffer range before kernel; firmware reported boot failed.
+Exact target framebuffer address/pitch/size and physical USB readback unknown.
+High GOP mapping/diagnostics source32f7b6873e719f20275b7b5284ab99edd82d537c.
+Full default system,synthetic high-GOP,packaged BIOS/UEFI/USB input/storage,DMA/layout
+and byte-identical rebuilds PASS in QEMU. Target new-image retest NOT RUN.
+Current image/checksum/procedure: PHASE24_GOP_RETEST_TH.md.
+Owner photos and gop-evidence.json: docs/wip/phase24/2026-10-23/.
+Old source031d4c8/image and original system/manual evidence preserved.
+PROJECT_STATE.md is current entry point; PHASE24_HANDOFF_TH.md holds compatibility;
+PHASE25_HARDWARE_ACCEPTANCE.md records the first failure and pending target tests.
+No physical USB/disk write or firmware change by agent. Owner authorizes scoped push.
 
 ## Previous accepted Phase 32/33 checkpoint — 2026-10-12
 

@@ -1,6 +1,11 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
-วันที่ 2026-10-16 — **Phase 24 ยังไม่ครบ; Phase 25 ยังไม่ได้บูต MyOS บนเครื่องจริง**
+วันที่2026-10-23 — **Phase24 ยังไม่ครบ; ลองบูตจริงแล้ว FAIL ก่อนเข้า kernel**
+เจ้าของส่งภาพ `unsupported framebuffer range` จาก MyOS loader และ firmware แจ้ง boot failed
+ดู [หลักฐานจริง](wip/phase24/2026-10-23/physical-boot-evidence.json) และ
+[คู่มือลองอิมเมจแก้ GOP](PHASE24_GOP_RETEST_TH.md). ค่า base/pitch/size จริงยังไม่ทราบ
+เพิ่ม high-framebuffer mapping/diagnostics แล้ว; full system/firmware/USB/DMA/layout/repro PASS
+ผลอิมเมจปัจจุบันดู gop-evidence.json; driver checkpoint2026-10-15 เก็บเป็นประวัติ ไม่แทนผลจริง
 มีรายงาน Windows จาก ThinkBook จริงก่อน/หลังเสียบเมาส์และขณะเสียบ USB
 เก็บ [รายงานหลังเสียบเมาส์](wip/phase24/2026-10-15/thinkbook-inventory.json)
 และ [ที่มา/ข้อมูลที่ตรวจแล้ว](wip/phase24/2026-10-15/inventory-evidence.json)
@@ -25,18 +30,18 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 
 | ส่วน | สถานะ | หลักฐานและสิ่งที่ยังขาด |
 |---|---|---|
-| อิมเมจ USB BIOS/UEFI | รองรับ เฉพาะ QEMU | exact USB boot/FAT/EFI/สามแอปผ่านตาม build evidence; physical firmware/USB readback ยังไม่ทดสอบ |
-| CPU Ryzen 5 5500U | ยังไม่ยืนยัน MyOS จริง | Windows AddressWidth=64 และ DEP_Available=true; เงื่อนไข ISA/NX มีหลักฐานแล้ว แต่ PIC/PIT/boot จริงยังไม่ทดสอบ |
+| อิมเมจ USB BIOS/UEFI | รองรับ เฉพาะ QEMU | exact USB boot/FAT/EFI/สามแอปผ่านตาม build evidence; firmware เรียก MyOS loader จริงแล้วแต่ range FAIL; USB readback ยังไม่มีหลักฐาน |
+| CPU Ryzen 5 5500U | ยังไม่ยืนยัน MyOS จริง | Windows AddressWidth=64 และ DEP_Available=true; เงื่อนไข ISA/NX มีหลักฐานแล้ว แต่ PIC/PIT/kernel handoff ยังไม่ผ่านบนเครื่องจริง |
 | RAM | ยังไม่ยืนยัน memory map ของ MyOS จริง | เจ้าของ8GB; Windows รายงาน5.827GiB; MyOS จัดการ physical pages สูงสุด1GiB ไม่ใช้ RAM ทั้ง8GB; ต้องดู low-memory allocations/GOP ของ firmware |
-| UEFI / BIOS | ยังไม่ยืนยันบูต MyOS จริง | รายงาน BIOS GQCN45WW(V1.31), UEFI=2; เลือกเส้นทาง UEFI; ไม่สมมติว่า CSM/EDD/VBE มีหรือ USB MBR/FAT16 ถูก firmware ยอมรับ |
+| UEFI / BIOS | UEFI loader เริ่มได้; kernel ยังไม่ผ่าน | รายงาน BIOS GQCN45WW(V1.31), UEFI=2; เลือกเส้นทาง UEFI; ภาพยืนยันว่า firmware เรียก loader จากสื่อได้; CSM/EDD/VBE และ kernel handoff ยังไม่ยืนยัน |
 | Secure Boot | รองรับเงื่อนไขการตั้งค่าที่รายงาน | UEFISecureBootEnabled=0 จึงไม่ต้องเปลี่ยน setting เพื่อเตรียม unsigned loader; signed trust chain ยังไม่รองรับ; ไม่ใช่ผลบูตจริง |
-| Graphics / จอ | ยังไม่ยืนยัน | Radeon PCI1002:164c; GOP mode/pixel format/range ยังไม่รายงาน; loader ต้อง800x600 BGR/pitch3200–16384/framebufferต่ำกว่า4GiB; ไม่ต้องใช้ AMD acceleration สำหรับสามแอป |
+| Graphics / จอ | loader เดิม FAIL; รอลองใหม่ | Radeon1002:164c; ภาพ unsupported framebuffer range ไม่บอกค่าจริง. เพิ่ม bounded high framebuffer mapping แล้ว; ยังต้อง800x600 BGR/pitch3200–16384/ช่วง physical ถูกต้อง; kernel display จริงยังไม่ผ่าน |
 | คีย์บอร์ดในตัว | ยังไม่ยืนยัน MyOS จริง | Windows Standard PS/2 Keyboard ACPI FUJ7401 ตรงชนิด driver i8042/IRQ1 เดิม; ยังต้องพิสูจน์ ACK/scan code หลัง handoff |
 | USB controller | ยังไม่ยืนยันบน AMD จริง | AMD1022:1639 พบสองรายการ; drivers/xhci.c เพิ่ม generic bounded xHCI, UC/NX MMIO และ polled events; QEMU controller1b36:000d ผ่าน BIOS/UEFI input แต่ไม่แทน AMD acceptance |
 | เมาส์ USB ที่เลือก | ยืนยันว่าประกาศ Boot Mouse; MyOS จริงยังไม่ยืนยัน | รายงาน CompatibleID วันที่2026-10-16 ของ30fa:0301 มี USB\Class_03&SubClass_01&Prot_02 ตรง HID Boot Mouse; ยังไม่ใช่ raw descriptor/ผล SET_PROTOCOL หรือการรับ input หลัง handoff |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
-| USB boot storage ก่อน kernel | ยังไม่ยืนยันบน ThinkBook | สื่อที่เลือก Samsung DUO MUF-32CB/APC32GB ใช้USB-A; firmware boots ใน QEMU; รายงาน USB090c:1000/BOT/512B ได้รับแล้ว; การอ่าน ESP จริงยังไม่ทดสอบ |
+| USB boot storage ก่อน kernel | ยังไม่ยืนยันบน ThinkBook | สื่อที่เลือก Samsung DUO MUF-32CB/APC32GB ใช้USB-A; firmware boots ใน QEMU; รายงาน USB090c:1000/BOT/512B ได้รับแล้ว; เรียก loader จากสื่อจริงแล้ว แต่ยังไม่ผ่าน kernel handoff/readback |
 | USB storage/save หลัง kernel | รองรับเฉพาะ QEMU; ยังไม่ยืนยัน Samsung จริง | เพิ่ม SCSI/BOT512, USB2/USB3, strict prepared data partition; save/reboot/Settings/Snake/recovery/bounds ผ่าน; ต้องยืนยัน READ/WRITE/SYNCHRONIZE CACHE บนสื่อจริง; UAS ไม่รองรับ |
 | SSD ระบบ | ต้องพัฒนา NVMe หากจะใช้ แต่ไม่เลือกเป็น scratch | Samsung MZALQ256HBJD-00BL2, NVMe144d:a809,256060514304B/GPT; ATA PIO เดิมใช้ไม่ได้; ไม่พัฒนา write path ให้ SSD ระบบในรอบนี้ |
 | Ethernet | ต้องพัฒนา | PCI10ec:8168/SUBSYS390417aa; RTL8139 driver เดิมจับ10ec:8139 จึงใช้แทนไม่ได้; นอก offline desktop acceptance |
@@ -126,9 +131,9 @@ Network/audio ยังไม่รองรับ ไม่ใช้ผล Phas
 
 ## Build ที่ทำซ้ำได้
 
-source commit/checksum ของอิมเมจใหม่ดู
-[driver-evidence.json](wip/phase24/2026-10-15/driver-evidence.json) และ
-[driver-SHA256SUMS](wip/phase24/2026-10-15/driver-SHA256SUMS)
+source commit/checksum/สถานะผลทดสอบอิมเมจใหม่ดู
+[gop-evidence.json](wip/phase24/2026-10-23/gop-evidence.json) และ
+[คู่มือลอง GOP ใหม่](PHASE24_GOP_RETEST_TH.md); driver-evidence.json วันที่2026-10-15 เป็น checkpoint เดิม
 ใช้ checkout ที่ code ตรง commit นั้นและ dependency เดิม; ไม่ build Cobalt ใหม่
 อย่า checkout/reset ทับงานที่ยังไม่ commit; ใช้โฟลเดอร์ output ใหม่สำหรับแต่ละรอบ
 คำสั่งต่อไปนี้เขียนเฉพาะไฟล์ใน build ไม่เปิด physical block device:
@@ -162,16 +167,16 @@ cmp build/phase24-rebuild/myos-usb-data.img build/phase24-rebuild/myos-usb-data-
 ```
 
 อิมเมจใหม่ที่เลือกเตรียมสำหรับ Samsung DUO:
-build/phase24-usb-input/images/myos-usb-data.img,
+build/phase24-gop-2026-10-23/images/myos-usb-data.img,
 raw whole-disk MBR BIOS/UEFI **67,108,864 bytes (64MiB)**,
 ESP FAT16 32MiBและ custom data16MiB; EFI/BOOT/BOOTX64.EFI
-Source commit: `031d4c8421662e81ed501d4fd8515c2abc8825d0`
-SHA-256: `60c8a229c14991bce4bb5e2c239dcc942000d618a823dbda010e2a2a12beb2d9`
+Source commit: `32f7b6873e719f20275b7b5284ab99edd82d537c`
+SHA-256: `e0da9a5f2ff03e8031ab9cc1ed4655281c7b580cfde4c3a09cb58b3d62b66917`
 checksum/source commit/toolchain/ผลที่ผ่านต้องดู manifest ใหม่ข้างต้น
 ตรวจไฟล์ที่ freeze แล้ว:
 
 ```bash
-(cd /home/xytron404/myos/build/phase24-usb-input/images && sha256sum -c SHA256SUMS)
+(cd /home/xytron404/myos/build/phase24-gop-2026-10-23/images && sha256sum -c SHA256SUMS)
 ```
 
 build/phase24-prep/myos-usb.img และ evidence.json/SHA256SUMS เดิมเป็น
@@ -185,7 +190,7 @@ tests/test_usb_bot_protocol.py ทดสอบ production code กับ hostile
 พร้อม ASan/UBSan; tests/test_xhci_ports.py ตรวจ asynchronous reset/timeout/
 failed-host release โดยเปลี่ยนเฉพาะ MMIO adapter และจับ old-WPR defect ได้
 full tests/test_system.py เป็น architectural gate แยก
-เก็บผลไว้ใน driver-evidence.json และ build/phase24-usb-input/
+ผลใหม่เก็บใน gop-evidence.json และ build/phase24-gop-2026-10-23/; ผลเก่าอยู่ driver-evidence.json
 ไม่ตีความ VM128MiB เป็น minimum RAM ของเครื่องจริงหรือ online profile1024MiB
 
 ทำซ้ำ focused checks โดยแยก output ใหม่ก่อน import fixtures
@@ -205,6 +210,8 @@ test_usb_storage.exercise()
 test_usb_storage.exercise_usb2()
 test_firmware.main()
 PY
+python3 tools/run_logged.py -- python3 tests/test_framebuffer_range.py
+python3 tools/run_logged.py -- python3 tests/test_framebuffer_uefi.py
 python3 tools/run_logged.py -- python3 tests/test_usb_bot_protocol.py
 python3 tools/run_logged.py -- python3 tests/test_xhci_ports.py
 ```
@@ -216,7 +223,8 @@ architectural gate คือ python3 tests/test_system.py แบบ defaultเ�
 
 ## เตรียม USB และเลือก boot device — สำหรับเจ้าของตรวจทานภายหลัง
 
-**ยังไม่อนุญาตให้เขียน USB ในงานนี้** เลือก Samsung DUO MUF-32CB/APC
+**เอเจนต์ยังไม่เขียน USB จริง** เจ้าของเขียนและลองบูตเองแล้ว พบ loader range FAIL
+การเขียนอิมเมจใหม่เป็นขั้นตอนเจ้าของทำเมื่อพร้อมทับข้อมูล. เลือก Samsung DUO MUF-32CB/APC
 USB090c:1000,32078036992 bytes,512B sectors ตามรายงานแล้ว
 ต้องตรวจว่าเป็นสื่อที่เจ้าของเลือกและยอมลบข้อมูล ขนาดอย่างน้อย 67,108,864
 bytes, logical sector 512 bytes, และตรวจ source/checksum ก่อน
@@ -242,8 +250,8 @@ placeholder ยังไม่ใช่อุปกรณ์ที่อนุ�
 
 ```bash
 # USB_WHOLE_DEVICE='/dev/disk/by-id/<OWNER_VERIFIED_WHOLE_USB_DEVICE>'
-# sudo dd if=/home/xytron404/myos/build/phase24-usb-input/images/myos-usb-data.img of="$USB_WHOLE_DEVICE" bs=4M conv=fsync status=progress
-# sudo cmp -n 67108864 /home/xytron404/myos/build/phase24-usb-input/images/myos-usb-data.img "$USB_WHOLE_DEVICE"
+# sudo dd if=/home/xytron404/myos/build/phase24-gop-2026-10-23/images/myos-usb-data.img of="$USB_WHOLE_DEVICE" bs=4M conv=fsync status=progress
+# sudo cmp -n 67108864 /home/xytron404/myos/build/phase24-gop-2026-10-23/images/myos-usb-data.img "$USB_WHOLE_DEVICE"
 ```
 
 หลังใช้ MyOS บันทึกข้อมูล พื้นที่ data จะเปลี่ยนตามปกติ จึงตรวจ whole-image
@@ -284,9 +292,9 @@ Secure Boot, ลบ keys, เปลี่ยน SATA mode หรือ flash fir
    แล้วกลับระบบเดิมโดยถอด USB หลังปิดเครื่อง; ไม่พยายามแก้ด้วยการเขียน SSD
 
 เก็บผลทุกข้อเป็น PASS/FAIL/BLOCKED/NOT RUN พร้อมหลักฐานและข้อจำกัด
-ยังไม่มีผลจริงใน checkpoint นี้; ห้ามเลื่อนสถานะเป็นผ่านจากผล QEMU
+มีผลบูตจริง FAIL ก่อน kernel แล้ว; kernel/input/apps/persistence ยังไม่ทดสอบจริง ห้ามเลื่อนเป็นผ่านจาก QEMU
 
-การทดสอบจริงยัง NOT RUN; driver/image preparation ไม่เท่ากับการผ่าน Phase25
+ลองบูตจริงแล้ว FAIL ก่อน kernel; input/apps/persistence ยัง NOT RUN; ไม่ถือว่า Phase25 ผ่าน
 ข้อเปิดก่อนปิด full Phase24: SET_PROTOCOL/input จริงของ30fa:0301 (ประกาศ Boot Mouse ยืนยันแล้ว),
 AMD controller handoff, Samsung command/flush behavior และ GOP/loader allocations
 ไม่มีข้อมูลเหล่านี้จาก Windows/QEMU ให้ถือว่ายังไม่ยืนยัน ห้ามลดเกณฑ์

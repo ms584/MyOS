@@ -1,0 +1,36 @@
+{
+  "received_on": "2026-10-23",
+  "target": "Owner-selected ThinkBook 15 G3 ACL Type 21A4",
+  "photos": [
+    {
+      "owner_attachment": "codex-clipboard-03f8a248-e245-483a-a2b0-d5b949678f49.png",
+      "stored": "firmware-boot-failed.png",
+      "bytes": 628395,
+      "sha256": "08cb6ed73c9c4c6286c700a7b8f46faddc10caf7f4aa61fa411649f5b26c119c"
+    },
+    {
+      "owner_attachment": "codex-clipboard-c6221c6d-6636-4170-a2c5-33b528151d7d.png",
+      "stored": "loader-framebuffer-range.png",
+      "bytes": 338835,
+      "sha256": "c051e36f39a0abc35287c48e8ed11adefa655096da9427b5504fc2b645d1b5a1"
+    }
+  ],
+  "observed": [
+    "Firmware names EFI USB Device (Samsung Flash Drive DUO) and reports boot failed",
+    "MyOS UEFI: unsupported framebuffer range (Unsupported)"
+  ],
+  "result": "FAIL before kernel handoff; MyOS UEFI loader was executed from selected USB",
+  "inference": "With the selected source loader this error follows successful selection/SetMode of800x600 BGR; its combined range check does not reveal which predicate failed",
+  "unknown": [
+    "Exact flashed image checksum and independent USB readback",
+    "FrameBufferBase/FrameBufferSize/pitch values",
+    "Whether the failure is the4GiB bound, pitch, base or reported size",
+    "Target kernel allocations/ExitBootServices/input/apps/persistence"
+  ],
+  "source_image_selected_by_owner": "build/phase24-usb-input/images/myos-usb-data.img",
+  "selected_source_image_sha256": "60c8a229c14991bce4bb5e2c239dcc942000d618a823dbda010e2a2a12beb2d9",
+  "physical_usb_writes_by_agent": false,
+  "firmware_settings_changed_by_agent": false,
+  "phase24_complete": false,
+  "phase25_complete": false
+}

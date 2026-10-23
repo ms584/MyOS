@@ -1,48 +1,46 @@
-2026-10-16 — Phase24 mouse inventory updated; driver/image QEMU checkpoint unchanged; full Phase24 INCOMPLETE.
-Repository /home/xytron404/myos; main; image/code source 031d4c8421662e81ed501d4fd8515c2abc8825d0.
-Documentation/evidence checkpoint follows that code commit. Owner authorizes push;
-verify origin/main against local HEAD for delivery state.
+2026-10-23 — Phase24 GOP retry preparation PASS in QEMU; target first boot FAIL; Phase24 INCOMPLETE.
+Repository /home/xytron404/myos; main; code/image source32f7b6873e719f20275b7b5284ab99edd82d537c.
+Owner authorizes scoped commits/push; final docs/evidence commit follows code.
 
-ThinkBook21A4/LNVNB161216; Ryzen5500U64-bit/NX; BIOS GQCN45WW(V1.31);
-UEFI/SecureBootOFF reported by owner Windows inventory.
-Owner8GB RAM; Windows6256402432B; installed modules/reservations not measured.
-PS2 keyboardFUJ7401; USB mouse30fa:0301 advertises HID boot mouse03/01/02; two AMD xHCI1022:1639.
-Owner CompatibleID evidence: docs/wip/phase24/2026-10-16/mouse-evidence.json; MyOS input NOT RUN.
-Samsung DUO MUF-32CB/APC USB090c:1000,32078036992B,512B sectors,SCSI/BOT.
-System NVMe144d:a809 MZALQ256HBJD-00BL2 is NOT scratch storage.
-Radeon1002:164c; Ethernet10ec:8168; WiFi168c:003e; HDA10ec:0257/1002:aa01.
-I2C touchpad SYNA2BA6 outside selected external-mouse path.
-Compatibility matrix/limits/build/USB review commands: docs/PHASE24_HANDOFF_TH.md.
+Target ThinkBook15 G3 ACL21A4/LNVNB161216; Ryzen5500U; owner8GB RAM.
+Windows6256402432B usable; BIOS GQCN45WW(V1.31); UEFI/SecureBootOFF reported.
+PS2 keyboardFUJ7401; mouse30fa:0301 advertises HID Boot Mouse03/01/02;
+actual MyOS SET_PROTOCOL/input NOT RUN. AMD xHCI1022:1639 (two reported).
+Samsung DUO MUF-32CB/APC090c:1000,32078036992B,512B sectors,SCSI/BOT.
+System NVMe144d:a809 is NOT scratch; I2C touchpad/network/HDA not selected/supported.
 
-Implemented bounded root-port xHCI/HID, shared supervisor UC/NX high-BAR MMIO,
-and separate BOT512 data-only backend with unchanged dual-bank snapshot format.
-USB data layout:64MiB image; ESP2048/65536; typeDA data69632/32768; marker v2.
-No MBR/ESP/marker/out-of-partition writes; no system-NVMe/I2C/network/HDA drivers.
-Packaging guard uses existing288KiB/576-sector envelope; linker+BSS limit unchanged.
-Reviewed warm reset polls PR bit4 (WPR always reads0); timeout/failure releases mouse.
+Owner photos: firmware names Samsung and executes MyOS UEFI loader;
+unsupported framebuffer range (Unsupported) before kernel; generic boot failed follows.
+Exact target base/pitch/size and flashed-image readback NOT PROVIDED.
+Old combined check does not identify which range condition failed; no inferred GPU address.
+Photos/provenance: docs/wip/phase24/2026-10-23/physical-boot-evidence.json.
 
-PASS: full default tests/test_system.py; normal image restored, original test
-evidence restored; packaged BIOS+UEFI+exact USB desktop/ATA persistence regression.
-PASS: USB mouse under active Ring3,270 reports/ring wraps,stable owned pages,
-detach/unsupported fallback; explicit USB3 5000Mb/s + USB2 480Mb/s BOT saves,
-BIOS/UEFI reboot files/Settings/Snake,corrupt-bank fallback,boot regions unchanged.
-PASS: foreign/overlap/bad-marker/extra-partition/4096B unchanged and bounded detach;
-native ASan/UBSan BOT validation/write bounds and asynchronous-port regression
-with old-defect negative control; independent FAT/EFI/layout/output refusal.
-PASS: kernel/ELF/floppy/runtime,BIOS/UEFI/default USB/optional data byte-identical
-rebuilds. All Phase24 test jobs completed; original manual evidence preserved.
-Logs: build/phase24-usb-input/; final system-regression/ and distribution-final/.
-Two interrupted partial suites and pre-review focused logs are historical NOT PASS.
+Implemented high GOP supervisor UC/NX alias at0x7e00000000 before ExitBootServices;
+shared PML4[0] under Ring3 CR3, normal VM cannot overwrite it. Physical ABI unchanged.
+CPU physical-width/overflow/span/pitch checks and visible GOP diagnostics added.
+BIOS low framebuffer,800x600 BGR requirement,low kernel/stack/DMA ownership unchanged.
+Existing xHCI/BOT512 prepared-data path,288KiB cap,write bounds and limits unchanged.
 
-Selected pristine image: build/phase24-usb-input/images/myos-usb-data.img
-67108864B; SHA256 60c8a229c14991bce4bb5e2c239dcc942000d618a823dbda010e2a2a12beb2d9.
-Manifest/SHA256SUMS beside image; tracked driver-evidence.json,driver-SHA256SUMS
-and driver-tests.log in docs/wip/phase24/2026-10-15/.
-Old phase24-prep image remains unchanged; it predates the drivers.
-Phase32/33 accepted evidence preserved; complete online audit not repeated.
+PASS: native ASan/UBSan framebuffer bounds/mapping/probe; old-probe negative control.
+PASS: synthetic high QEMU RAM framebuffer,old-loader rejection,new console/gfx pixel
+readback,three apps,supervisor/NX/UC flags and shared process CR3; not physical GPU evidence.
+PASS: full default tests/test_system.py; normal image restored.
+PASS: packaged BIOS/UEFI/exact USB,USB mouse/Ring3,BOT USB3/USB2 save/reboot/recovery,
+UEFI DMA/graphics/PCM ownership,independent FAT/EFI/layout/output preservation.
+PASS: BIOS/UEFI/USB/data byte-identical rebuilds; old frozen image unchanged;
+original build/system-tests restored; new results in build/phase24-gop-2026-10-23/.
+Historical incomplete harness logs retained as NOT PASS; final logs authoritative.
 
-Remaining: actual mouse SET_PROTOCOL/input,AMD/Samsung handoff/flush,GOP/allocations,
-PIC/PIT/i8042 routing. Phase25 physical tests NOT RUN; full Phase24 not closed.
-Next: confirm these target facts,then separately authorize USB write/boot when ready;
-follow PHASE25_HARDWARE_ACCEPTANCE.md. No additional owner command needed now.
-No physical raw USB/disk write,format,repartition or firmware change performed.
+Selected NEW image: build/phase24-gop-2026-10-23/images/myos-usb-data.img
+67108864B; SHA256 e0da9a5f2ff03e8031ab9cc1ed4655281c7b580cfde4c3a09cb58b3d62b66917.
+Manifest/SHA256SUMS beside image; tracked gop-evidence.json,gop-tests.log,gop-SHA256SUMS
+under docs/wip/phase24/2026-10-23/. Old phase24-usb-input image60c8a229 remains historical.
+Retest guide: docs/PHASE24_GOP_RETEST_TH.md; compatibility: PHASE24_HANDOFF_TH.md.
+Phase32/33 owner acceptance/manual evidence preserved; complete online audit not repeated.
+
+Remaining: owner retest new image; actual GOP/allocations/handoff,PIC/PIT/PS2,
+USB mouse and AMD/Samsung read/write/mandatory flush; kernel/apps/persistence NOT RUN.
+Phase25 first boot FAIL before kernel; full physical acceptance remains incomplete.
+Next: owner-controlled reflash/readback/UEFI boot; capture base/size/pitch and errors,
+then input/apps/persistence following docs/PHASE25_HARDWARE_ACCEPTANCE.md.
+No physical USB/disk write,format,repartition or firmware change by agent.

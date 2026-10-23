@@ -1,6 +1,24 @@
 # Phase 24 — ThinkBook USB image and hardware preparation
 
-## Current checkpoint — 2026-10-16
+## Current checkpoint — 2026-10-23
+
+**Phase24 INCOMPLETE. First physical USB/UEFI attempt FAIL before kernel.**
+Owner photos show MyOS loader `unsupported framebuffer range`; firmware then
+reports Samsung USB boot failed. The old combined check does not reveal actual
+base/pitch/size; do not assert the target address is above4GiB without new values.
+High-address handling was a concrete loader/kernel gap: bounded supervisor UC/NX
+mapping now covers valid high physical GOP framebuffer and survives process CR3.
+New diagnostics show base,size,pitch and CPU physical width before range failures.
+Source/image/results: [gop-evidence.json](wip/phase24/2026-10-23/gop-evidence.json).
+[Owner photos](wip/phase24/2026-10-23/physical-boot-evidence.json),
+[Thai reflash/retest guide](PHASE24_GOP_RETEST_TH.md).
+Native/synthetic-high focused checks and full default system regression PASS;
+packaged BIOS/UEFI/USB input/storage, UEFI DMA ownership, FAT/layout and byte-identical
+BIOS/UEFI/USB/data rebuilds PASS. Previous frozen image and original system-test
+evidence preserved. Target retest NOT RUN; no physical pass.
+No physical USB/disk write or firmware change by agent; owner attempted the boot.
+
+## Previous validated QEMU checkpoint — 2026-10-16
 
 **Phase24 INCOMPLETE; Phase25 physical acceptance NOT RUN.**
 Target: Lenovo ThinkBook15 G3 ACL Type21A4 / board LNVNB161216,

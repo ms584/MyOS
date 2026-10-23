@@ -1,0 +1,194 @@
+$ python3 tests/test_system.py
+PASS: bounded log rotation, no recursive feedback, long lines and exit status
+PASS: TCP tuple/generation isolation, partial ACK/retransmit, sequence wrap, duplicate/out-of-order, bounded/zero window, FIN/RST, timeout and pool teardown (host state-machine test)
+PASS: framebuffer-64M: boot/memory/preemption/timer/keyboard/console-scroll
+PASS: shell PS/2 commands, paths, file lifecycle, editing, limits and clear
+PASS: graphics screenshot, clipping, text, redraw and surface cleanup
+PASS: PS/2 movement, click, bounded cursor, keyboard/redraw, timer, bounded queue and Shell
+PASS: launcher, focus/stacking, drag, close, redraw, repeated release, timer and Shell
+PASS: desktop and window at 16 MiB RAM
+PASS: widget input validation, theme/background preview and RAM-only reset
+PASS: Settings disk save/reboot restore, strict file validation and defaults
+PASS: Settings window at 16 MiB RAM
+PASS: Calculator keyboard/mouse decimals, chaining, errors, clear/backspace, pixels and Shell
+PASS: Calculator at 16 MiB RAM
+PASS: Snake arrows, pause/restart, timer, growth, collision, pixels and concurrent Calculator
+PASS: RAM-only high score resets on reboot
+PASS: high score saved through Phase 13 ATA snapshot
+PASS: saved high score survives reboot; invalid record safely rejected
+PASS: Snake runs at 16 MiB RAM
+PASS: SB16 DMA output, WAV capture (2ch 16bit 44100Hz, 677300 frames), underrun/recovery, volume and mute controls
+PASS: imported 11025 Hz mono 8-bit WAV plays from MyOS v2 filesystem; invalid file rejected
+PASS: 30 decoded video frames paced by PIT within 10 ticks; moving framebuffer pixels
+PASS: paused Left/Right seek redraws the target MYV1 frame
+PASS: Space freezes/resumes video and audio; Esc stops and returns to Shell
+PASS: real QEMU SB16 output follows MYV1 PCM timeline (435/655 Hz)
+PASS: 16 MiB RAM rejects unmounted large media disk without crashing
+PASS: 32 MiB RAM video playback and Shell recovery
+PASS: malformed RLE clip rejected and Shell survives
+PASS: browser GUI, HTML entities/links/Back, oversized response recovery, HTTPS redirect limit and close
+PASS: browser local HTTP page at 16 MiB RAM
+PASS: all three apps in one desktop, error recovery, saved data and usable Shell
+PASS: both Settings and Snake high score restored after one reboot
+PASS: three Desktop 1.0 apps coexist at 16 MiB RAM
+PASS: C app loaded by path, Ring 3 syscalls/exit, binary copy and invalid-file rejection
+PASS: independent host-built C app imported on new data disk, tick/console ABI
+PASS: CPU-bound app times out, is reaped, and another app still runs
+PASS: 8 KiB+ C app crosses code page and copies to v2 disk
+PASS: multi-page executable persists across v2 reboot
+PASS: v2 corrupt-bank recovery keeps previous executable
+PASS: real NetSurf dependency ported to isolated Ring 3 with app heap/BSS
+PASS: copied executable persists and runs after reboot
+PASS: native ELF >64 KiB, BSS/data, RX/NX faults, malformed inputs, OOM/timeout cleanup, legacy apps
+PASS: read-only assets coexist with persistent data disk; both survive reboot
+PASS: >60s native lifecycle, Escape cancel with blocked workers, repeated launch, page/heap/file reclamation
+PASS: four dynamic relocation types; SysV/GNU hash; sectionless startup; Ring 3 constructors; RELRO fault; invalid/missing-symbol rollback
+PASS: Ring 3 DT_FINI/reverse FINI_ARRAY, exactly-once order/status, validation, fault/kill/timeout/relaunch cleanup
+PASS: upstream compiler-rt emutls growth, weak TLS zero binding, isolation and worker reclamation
+PASS: native file fsync/fdatasync binary data survives reboot on disposable v2 disk
+PASS: Starboard storage immediate read, generation commit, reboot persistence, delete tombstone and reboot absence
+PASS: native concurrent TCP, partial I/O, epoll/poll, peek/FIONREAD, shutdown/EOF, refusal, dup/close/reuse and process cancellation
+PASS: native socket timeval ABI, endpoint/dup options, finite/zero/immediate/overflow deadlines, nonblocking override, partial I/O, actual TCP connect/send stalls and recovery, repeated wakes and close/reuse cancellation
+PASS: pinned SbWindow ABI, native RGBA pixels, atomic bad-row rejection, real key down/up/modifiers/arrows and mouse buttons, finite/blocking waits, close/reuse, fault/cancel/relaunch and exact page/heap/frame restoration
+PASS: pinned SbEvent/SbInputData ABI, bounded/overflow-safe deadlines and IDs, main-thread callbacks, cross-thread schedule/cancel/wake, focused real PS/2 input, actual conceal/hidden presentation/reveal, preload, ordered graceful stop, fault/cancel/relaunch and exact page/heap/frame reclamation
+PASS: native zero-entry Starboard launcher; pinned SABI before constructors; strong RX export validation/sectionless image; owned argv/link; sized NX main stack/guard; real input; graceful reverse finalizers; getter/guard/NX faults, cancel/relaunch and page/heap reclamation. This fixture is NOT Cobalt web acceptance.
+PASS: native owned DNS/ABI/relaunch/resources {'offline': False, 'uefi': False, 'no_entropy': False} NOT Cobalt/Internet. /home/xytron404/myos/build/resolver-evaluation/dns-1qbnuqvf
+PASS: native owned DNS/ABI/relaunch/resources {'offline': True, 'uefi': False, 'no_entropy': False} NOT Cobalt/Internet. /home/xytron404/myos/build/resolver-evaluation/dns-nos8wpzf
+PASS: native owned DNS/ABI/relaunch/resources {'offline': False, 'uefi': False, 'no_entropy': True} NOT Cobalt/Internet. /home/xytron404/myos/build/resolver-evaluation/dns-p_gtxqa2
+PASS: native targeted signals/waits/lifetime/default termination,16 launches/exact resources; NOT Cobalt/full POSIX. /home/xytron404/myos/build/cross-dpmh6s57
+PASS: target decoder exact raw bytes, CRC corruption, all single-byte mutations/canaries, every truncation, invalid bounds/backreferences; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: boundary payload exact bytes and sampled mutations/truncations; ASan/UBSan.
+PASS: runtime exact mapped bytes/RX faults/relaunch/resources {'uefi': False, 'host_only': False} /home/xytron404/myos/build/runtime-pack-evaluation/pack-e8y_k68s
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: asset v2 host parser/namespace/bounds/identity extent/cache/OOM; NOT native.
+PASS: PRIVATE asset v2 kernel parser/package ASan+UBSan; v1 retained, malformed bounds/overlap/names/OOM; exclusive writer. /home/xytron404/myos/build/asset-format-2ijd2rsv
+PASS: PRIVATE native v2 hidden runtime/resources/large I/O/readonly/relaunch/exact resources. /home/xytron404/myos/build/asset-v2-ds4768zf
+PASS: PRIVATE native v1 readonly parser/ATA/shell compatibility; not external-runtime execution. /home/xytron404/myos/build/asset-v2-ds4768zf
+PASS: PRIVATE external runtime good BIOS
+PASS: PRIVATE external runtime missing BIOS
+PASS: PRIVATE external runtime wrong-length BIOS
+PASS: PRIVATE external runtime wrong-build-valid-crc BIOS
+PASS: PRIVATE external runtime bad-crc BIOS
+PASS: PRIVATE exact mapped bytes/RX/build identity/missing/length/CRC/readonly/relaunch. /home/xytron404/myos/build/runtime-asset-fmgb2o0g
+PASS: PRIVATE native stream sendmsg/recvmsg subset, four relaunches/exact resources. /home/xytron404/myos/build/message-an6afqkb
+PASS: PRIVATE interfaces no NIC/DHCP/carrier/errors/relaunch/exact resources. /home/xytron404/myos/build/interface-ukf3mfz_
+PASS: PRIVATE PCM real SB16/IRQ/pointer/flush/explicit and automatic process exit/relaunch/no-device/exact resources. /home/xytron404/myos/build/pcm-6mha6957
+PASS: PRIVATE typed sink real Float32/Int16 PCM/440Hz/internal callbacks/EOS/circular/pause/Destroy waits/no late callback/absent/malformed/worker-exhaustion/fault/cancel/relaunch/exact resources. /home/xytron404/myos/build/pcm-q_4gyrcw
+PASS: PRIVATE native pinned media policy, actual memory budget at64/256MiB, concurrent workers/relaunch/resources; NO codecs/player/Cobalt. /home/xytron404/myos/build/media-policy-0e26xt2v
+PASS: pinned system services {'uefi': False, 'network': False, 'no_entropy': False, 'launcher': False} relaunch/exact resources. NOT Cobalt. /home/xytron404/myos/build/starboard-system-evaluation/system-2l2_r83b
+PASS: pinned system services {'uefi': False, 'network': True, 'no_entropy': False, 'launcher': False} relaunch/exact resources. NOT Cobalt. /home/xytron404/myos/build/starboard-system-evaluation/system-h1ejemp8
+PASS: pinned system services {'uefi': False, 'network': False, 'no_entropy': True, 'launcher': False} relaunch/exact resources. NOT Cobalt. /home/xytron404/myos/build/starboard-system-evaluation/system-gtafayad
+PASS: pinned system services {'uefi': False, 'network': False, 'no_entropy': False, 'launcher': True} relaunch/exact resources. NOT Cobalt. /home/xytron404/myos/build/starboard-system-evaluation/system-7nbnz_pw
+PASS: native x64 ELF TLS GD/IE/TLSDESC, relocated templates/TBSS, constructor/finalizer, FS/errno isolation, pthread destructors, join/detach slot reuse, malformed bounds, NX/guard/worker faults, cancellation/relaunch and exact page/heap reclamation. NOT a renderer or Cobalt acceptance pass.
+PASS: native main/worker pthread_exit, main join/detach, repeated TSS destructors/finalizers, realtime timed mutex/overflow/errors, exclusive join/detach races, cancellation/relaunch/resources. NOT complete POSIX or Cobalt acceptance.
+PASS: ATA PIO I/O, persistence, reboot, checksum and invalid-tree fallback
+PASS: ram-16M: boot/memory/preemption/timer
+PASS: ram-256M: boot/memory/preemption/timer
+PASS: Invalid Opcode, error=0x0
+PASS: General Protection Fault, error=0x48
+PASS: Page Fault, error=0x2
+PASS: Page Fault, error=0x3
+PASS: Page Fault, error=0x11
+PASS: vga-fallback: boot/memory/preemption/timer/keyboard/console-scroll
+PASS: shell PS/2 commands, paths, file lifecycle, editing, limits and clear (VGA)
+PASS: graphics command preserves VGA text fallback
+PASS: native window honestly unavailable in VGA text mode
+PASS: PS/2 mouse remains available in VGA text fallback
+PASS: desktop preserves VGA text Shell fallback
+PASS: Settings inspection and VGA text fallback
+PASS: Calculator VGA text fallback leaves Shell usable
+PASS: Snake VGA text fallback leaves Shell usable
+PASS: Desktop 1.0 VGA diagnostic Shell fallback
+PASS: selected suite; normal framebuffer image restored
+EXIT=0
+
+$ python3 tests/test_framebuffer_range.py
+PASS: framebuffer physical bounds/overflow/pitch, low and high probes, UC/NX supervisor mapping, crossing/unaligned pages; old probe rejects valid high mode
+EXIT=0
+
+$ /usr/bin/python3 tools/release.py build
+EXIT=0
+
+$ /usr/bin/python3 tools/package_usb.py --with-data --output build/phase24-gop-2026-10-23/repro/myos-usb-data.img
+EXIT=0
+
+$ /usr/bin/python3 tests/test_framebuffer_uefi.py
+PASS: old production loader rejects the injected valid >4GiB framebuffer before handoff
+PASS: high physical framebuffer, non-large-page-aligned base, bounded UC/NX supervisor alias before memory_init; console/gfx pixel readback, three desktop apps and shared Ring3 CR3/console
+EXIT=0
+
+$ /usr/bin/python3 tests/test_bios_package.py
+PASS: distributed BIOS HDD image boots Desktop 1.0 without a data disk
+PASS: primary-slave data disk receives Settings and Snake saves
+PASS: exact BIOS image restores both app settings after reboot
+EXIT=0
+
+$ /usr/bin/python3 tests/test_firmware.py
+PASS: native UEFI memory/CPU handoff, three apps, PS/2 input and disk saves
+PASS: native UEFI reboot restores Settings and Snake score
+PASS: exact USB image boots BIOS via emulated USB storage; PS/2 desktop input
+PASS: exact USB image boots UEFI via emulated USB storage; PS/2 desktop input
+EXIT=0
+
+$ /usr/bin/python3 tests/test_usb_mouse.py
+PASS: BIOS exact USB boot on xHCI; native USB movement/buttons and three apps with PS/2 keyboard
+PASS: UEFI exact USB boot on xHCI; native USB movement/buttons and three apps with PS/2 keyboard
+PASS: USB timer polling survives an uncooperative Ring3 address space and timeout/reaping
+PASS: USB producer/event cycle wrap, 270 actual reports, stable owned pages, timer and held-button detach recovery
+PASS: xHCI empty device retains responsive PS/2 keyboard/Shell without claiming HID support
+PASS: xHCI unsupported device retains responsive PS/2 keyboard/Shell without claiming HID support
+EXIT=0
+
+$ /usr/bin/python3 tests/test_usb_storage.py
+PASS: xHCI/BOT512 UEFI writes, BIOS/UEFI reboot restore files/Settings/Snake; corrupted-bank fallback; bulk wrap and mouse coexistence; boot regions unchanged
+PASS: foreign/overlapping/unmarked/extra-partition/4096B USB media remain unchanged; detach fails boundedly and Shell responds
+PASS: USB2 high-speed BOT512 write/reboot restore through xHCI with SuperSpeed ports disabled; boot regions unchanged
+EXIT=0
+
+$ /usr/bin/python3 tests/test_dma_layout_uefi.py
+PASS: UEFI reserved kernel/BSS, separate initial stack and SB16 DMA; real video framebuffer, paced frames, graphics-state integrity and captured PCM timeline (435/655 Hz)
+EXIT=0
+
+$ /usr/bin/python3 tests/test_release_tools.py
+PASS: FAT filesystem checker, independent EFI readback, MBR layout and deterministic timestamps
+EXIT=0
+
+$ QMP physical pixel/table/CR3 readback
+PASS: synthetic high framebuffer QMP result captured
+EXIT=0
+
+PASS: BIOS/UEFI/USB/data byte-identical rebuild; old image preserved; original build/system-tests restored.
+Physical ThinkBook retest NOT RUN.

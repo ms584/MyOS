@@ -37,8 +37,8 @@ Revised 2026-09-28 at the owner's request. The product goal is a graphical
 MyOS desktop with Settings, Calculator, Snake and eventually a browser that
 can search the web and play YouTube. The revised roadmap has **34 phases,
 numbered 0–33**. Phases 22–23 are complete at the native UEFI/release-tooling QEMU baseline.
-Phase 24 has a validated virtual USB image but hardware preparation is pending;
-Phase 25 is deferred at the owner's request (physical hardware not yet accepted device).
+Phase24 has a validated virtual USB image and high-GOP preparation; target retest pending.
+Phase25 first ThinkBook USB boot reached the UEFI loader but failed before kernel.
 
 Phases 0–13 retain their existing numbering and history. Earlier commits named
 2.1–2.3 cover parts of phases 3–5. Future phase completion must be supported by
@@ -132,8 +132,8 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial (2026-10-15):** owner selected ThinkBook 15 G3 ACL Type 21A4. Firmware/controller/USB inventory collected. Bounded root-port xHCI/HID and SCSI/BOT512 prepared data partition implemented; focused QEMU input/persistence checks pass, full default architectural/firmware/layout/reproducibility checks pass. Actual AMD/mouse/Samsung/GOP handoff remains unconfirmed. No physical write or hardware pass. See PHASE24.md and PHASE24_HANDOFF_TH.md. |
-| 25 | Real-hardware acceptance | **Deferred by owner until after Phase 33 and remaining Phase 24; physical target not yet accepted.** On an explicitly selected machine, verify boot, display, input, the three apps and supported persistence; record hardware, limitations and evidence. QEMU success alone cannot complete this phase. |
+| 24 | USB image and hardware preparation | **Partial (2026-10-23):** ThinkBook21A4 first physical USB boot executes UEFI loader but fails framebuffer range before kernel. High-GOP mapping/diagnostics prepared; native host checks and synthetic-high/full default system/BIOS/UEFI/USB/DMA/layout/repro QEMU checks PASS. Actual new-image target boot/input/storage unconfirmed. See PHASE24.md and PHASE24_GOP_RETEST_TH.md. |
+| 25 | Real-hardware acceptance | **First target boot FAIL before kernel (2026-10-23); acceptance incomplete.** Verify selected-machine boot, display, input, three apps and persistence after remaining Phase24 fixes; record hardware, limitations and evidence. QEMU success cannot complete this phase. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later

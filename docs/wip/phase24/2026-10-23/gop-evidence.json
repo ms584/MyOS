@@ -1,0 +1,184 @@
+{
+  "source_commit": "32f7b6873e719f20275b7b5284ab99edd82d537c",
+  "received_on": "2026-10-23",
+  "physical_boot": "FAIL before kernel on previous selected image; retest pending",
+  "root_cause_scope": "Observed old combined framebuffer-range rejection; high-address limitation reproduced; exact target base/pitch/size unknown",
+  "image": {
+    "path": "build/phase24-gop-2026-10-23/images/myos-usb-data.img",
+    "kind": "64MiB raw whole MBR BIOS/UEFI with prepared16MiB snapshot data",
+    "bytes": 67108864,
+    "sha256": "e0da9a5f2ff03e8031ab9cc1ed4655281c7b580cfde4c3a09cb58b3d62b66917",
+    "physical_retest": "NOT RUN"
+  },
+  "tests": {
+    "native_bounds_asan_ubsan": "PASS",
+    "synthetic_high_uefi_and_old_control": "PASS",
+    "default_system_regression": "PASS",
+    "packaged_firmware_usb_input_storage": "PASS",
+    "uefi_dma_ownership": "PASS",
+    "independent_fat_efi_layout": "PASS",
+    "reproducible_images": "PASS"
+  },
+  "logs": "build/phase24-gop-2026-10-23/",
+  "synthetic_scope": "Only test-only loader GOP base injected into high QEMU DIMM RAM; no actual high GPU hardware claim",
+  "phase24_complete": false,
+  "phase25_complete": false,
+  "commands_and_logs": [
+    {
+      "name": "system-regression",
+      "command": [
+        "python3",
+        "tests/test_system.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/system-regression.log",
+      "sha256": "33ec655c501c0b19e274f0f988661a9b63202e61fa51a2958d8bd4dcae2d6fcd"
+    },
+    {
+      "name": "native-range",
+      "command": [
+        "python3",
+        "tests/test_framebuffer_range.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/native-range.log",
+      "sha256": "6bb0d73ed0663062199aa7827fec7ffaaa02651a1daed580f6293aec1ebbea8b"
+    },
+    {
+      "name": "release-build",
+      "command": [
+        "/usr/bin/python3",
+        "tools/release.py",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/release-build.log",
+      "sha256": "c9ad5d300867641c668466d3fe2cde0101375218e5a785a5af914b70b8bde2fc"
+    },
+    {
+      "name": "data-rebuild",
+      "command": [
+        "/usr/bin/python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-gop-2026-10-23/repro/myos-usb-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/data-rebuild.log",
+      "sha256": "87e27ec426422f2f42acccafc79b44b60280e6aa40347b30998867a7672261d7"
+    },
+    {
+      "name": "high-uefi-final",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_framebuffer_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/high-uefi-final.log",
+      "sha256": "3d2cb59295b45bf9bb91842bc2913f4adaa2d8356f3b03d2fae552eda8d1e3a2"
+    },
+    {
+      "name": "bios-package",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_bios_package.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/bios-package.log",
+      "sha256": "bcc8a973504c8b6903d6c83456e5212b9809cdb83bfed68af1218e3783f79634"
+    },
+    {
+      "name": "firmware",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_firmware.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/firmware.log",
+      "sha256": "0a341a78e00e62f88fca4739b1a817860efac0848de2c6beba2018202c74ac9c"
+    },
+    {
+      "name": "usb-input",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_usb_mouse.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/usb-input.log",
+      "sha256": "d2ec84f1d63a8191c6599dd5e170c56fd04f3119843becfbec33329aaad0b68f"
+    },
+    {
+      "name": "usb-storage",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_usb_storage.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/usb-storage.log",
+      "sha256": "ecb3e79a6e6158b22bffcf29a61524a4e5acd638d35d8b41c4aaea2112a56898"
+    },
+    {
+      "name": "uefi-dma",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_dma_layout_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/uefi-dma.log",
+      "sha256": "c24266877f35c7b71db0ee7c457121d9eccccdde1832cc7c822e889c543f2802"
+    },
+    {
+      "name": "release-layout",
+      "command": [
+        "/usr/bin/python3",
+        "tests/test_release_tools.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/release-layout.log",
+      "sha256": "24a999748033690af8accaf32cb763fc9fb2c21df9ad0239e5956ece4f2beca8"
+    },
+    {
+      "name": "high-uefi-result",
+      "command": [
+        "QMP physical pixel/table/CR3 readback"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-gop-2026-10-23/system-tests/gop-high-result.json",
+      "sha256": "707614221400e0ba4aa2cd0a3bb842c684b7d43b6bc544d9fbac4139d204bad0"
+    }
+  ],
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "ld": "GNU ld (GNU Binutils for Ubuntu) 2.46",
+    "objcopy": "GNU objcopy (GNU Binutils for Ubuntu) 2.46",
+    "nasm": "NASM version 3.01",
+    "qemu-system-x86_64": "QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)",
+    "python3": "Python 3.14.4",
+    "fsck.fat": "Usage: fsck.fat [OPTIONS] DEVICE",
+    "mcopy": "mcopy (GNU mtools) 4.0.49",
+    "gnu-efi": "4.0.0-1",
+    "OVMF_CODE_4M.fd": "874f15a7c9110e78a89db159f0f68fc97e9076b74777520de1c235426f758aa7",
+    "OVMF_VARS_4M.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+  },
+  "reproducible": true,
+  "previous_frozen_image_unchanged": true,
+  "previous_system_test_directory_restored": true,
+  "synthetic_result": {
+    "fixture": "synthetic high RAM, not physical GPU",
+    "physical": "0x1001ff000",
+    "virtual": "0x7e001ff000",
+    "kernel_cr3": "0x5f99000",
+    "process_cr3": "0x20b0000",
+    "leaf": "0x80000001000000fb",
+    "graphics_pixel_readback": true,
+    "desktop_apps": true,
+    "ring3_console": true
+  },
+  "historical_non_pass_logs": [
+    "high-integration.log",
+    "high-integration-final.log",
+    "high-integration-pass.log"
+  ],
+  "historical_note": "Initial harness runs stopped on A/D-bit assertion, interactive prompt wait, and Calculator consuming launcher key; no production-code change was required. Final high-uefi-final.log is authoritative."
+}
