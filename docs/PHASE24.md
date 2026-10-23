@@ -1,10 +1,11 @@
 # Phase 24 — ThinkBook USB image and hardware preparation
 
-**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+**ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.
+
 
 ## Current checkpoint — 2026-10-23
 
-**Phase24 INCOMPLETE. Retry reaches visible kernel/Shell; input/apps/USB persistence pending.**
+**Phase24 INCOMPLETE. Physical Desktop/Snake rendering observed; USB mouse movement FAIL and RAM-only. Full input/apps/persistence acceptance pending.**
 Earlier physical USB/UEFI attempt failed before kernel; its analysis follows.
 Owner photos show MyOS loader `unsupported framebuffer range`; firmware then
 reports Samsung USB boot failed. The old combined check does not reveal actual

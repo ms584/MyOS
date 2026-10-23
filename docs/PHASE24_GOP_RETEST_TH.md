@@ -1,6 +1,7 @@
 # Phase 24 — ลองบูต ThinkBook อีกครั้งหลังแก้ framebuffer
 
-**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+**ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.
+
 
 วันที่2026-10-23; Phase24 ยังไม่ครบ; อิมเมจใหม่เข้า kernel/Shell บน ThinkBook แล้ว; input/apps/USB persistence ยังไม่ครบ
 สถานะซอฟต์แวร์: full system + high-GOP/BIOS/UEFI/USB/DMA/layout/repro PASS; เครื่องจริงเข้า Shell แล้ว; ทดสอบส่วนที่เหลือต่อ

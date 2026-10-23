@@ -4,6 +4,8 @@
 /* Bounded polling, root-attached boot mouse and SCSI/BOT storage. */
 void usb_init(void);
 void usb_tick(void);
+/* selected=-1: summary; 0/1: read-only controller and root-port details. */
+void usb_status(int selected);
 bool usb_bulk_transfer(void *handle,bool input,void *buffer,unsigned length);
 void usb_storage_attach(void *handle);
 bool usb_storage_present(void);

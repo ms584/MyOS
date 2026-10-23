@@ -28,6 +28,8 @@ struct host {
     volatile unsigned command_code,command_slot,transfer_code,transfer_residual;
     struct device devices[SLOTS];
     bool running;
+    unsigned init_stage;
+    struct {uint32_t before,scan;unsigned stage;} ports_diag[32];
 };
 static struct host hosts[HOSTS];
 static unsigned host_count;
@@ -198,14 +200,18 @@ static uint32_t *input_context(struct host *h,struct device *d,unsigned n){
     return (void *)(d->input+(uintptr_t)n*h->context);
 }
 static void enumerate(struct host *h,unsigned port,unsigned speed){
+    unsigned *stage=&h->ports_diag[port-1].stage;
+    *stage=3;
     if(speed<1||speed>4){print("USB: unsupported port speed\n");return;}
     unsigned index;
     for(index=0;index<SLOTS;++index)if(!h->devices[index].slot)break;
     if(index==SLOTS)return;
     struct device *d=&h->devices[index];
     unsigned slot=0;
+    *stage=4;
     if(!command(h,0,TYPE(9),&slot)||!slot||slot>SLOTS)return;
     d->slot=slot;d->port=port;d->host=h;
+    *stage=5;
     d->output=page();d->input=page();d->buffer=page();
     if(!d->output||!d->input||!d->buffer||!new_ring(&d->control))return;
     ((uint64_t *)h->dcbaa)[slot]=d->output;
@@ -214,7 +220,9 @@ static void enumerate(struct host *h,unsigned port,unsigned speed){
     unsigned packet=speed==4?512:speed==3?64:8;
     ec[1]=(3u<<1)|(4u<<3)|(packet<<16);
     ec[2]=(uint32_t)(uintptr_t)d->control.data|1;ec[4]=8;
+    *stage=6;
     if(!command(h,d->input,TYPE(11)|(slot<<24),NULL))return;
+    *stage=7;
     if(!control(h,d,0x80,6,0x100,0,8))return;
     uint8_t *b=(void *)d->buffer;
     if(b[0]!=18||b[1]!=1||!b[7])return;
@@ -226,14 +234,19 @@ static void enumerate(struct host *h,unsigned port,unsigned speed){
         memset((void *)d->input,0,PAGE_SIZE);
         icc[1]=2;memcpy(ec,(void *)(d->output+h->context),h->context);
         ec[1]=(ec[1]&0xffffu)|(packet<<16);
+        *stage=8;
         if(!command(h,d->input,TYPE(13)|(slot<<24),NULL))return;
     }
+    *stage=9;
     if(!control(h,d,0x80,6,0x100,0,18))return;
     unsigned vendor=b[8]|(b[9]<<8),product=b[10]|(b[11]<<8);
     print("USB device ");hex(vendor);print(":");hex(product);print("\n");
+    *stage=10;
     if(!control(h,d,0x80,6,0x200,0,9)||b[0]!=9||b[1]!=2)return;
     unsigned total=b[2]|(b[3]<<8),configuration=b[5];
+    *stage=11;
     if(total<9||total>1024||!configuration||!control(h,d,0x80,6,0x200,0,total))return;
+    *stage=12;
     unsigned interface=0,endpoint=0,interval=0,mps=0,kind=0;
     unsigned in_ep=0,out_ep=0,in_mps=0,out_mps=0,in_burst=0,out_burst=0,last_ep=0;
     for(unsigned at=0;at<total;){
@@ -271,8 +284,10 @@ static void enumerate(struct host *h,unsigned port,unsigned speed){
         at+=n;
     }
     if(!endpoint&&!(in_ep&&out_ep)){print("USB: no supported boot mouse/BOT interface\n");return;}
+    *stage=13;
     if(!control(h,d,0,9,configuration,0,0))return;
     if(in_ep&&out_ep){
+        *stage=14;
         d->bulk_buffer=page();d->in_ep=in_ep;d->out_ep=out_ep;
         if(!d->bulk_buffer||!new_ring(&d->bulk_in)||!new_ring(&d->bulk_out))return;
         memset((void *)d->input,0,PAGE_SIZE);
@@ -287,9 +302,11 @@ static void enumerate(struct host *h,unsigned port,unsigned speed){
             ec[2]=(uint32_t)(uintptr_t)ring->data|1;ec[4]=512;
         }
         if(!command(h,d->input,TYPE(12)|(slot<<24),NULL))return;
-        usb_storage_attach(d);return;
+        *stage=15;usb_storage_attach(d);return;
     }
+    *stage=16;
     if(!control(h,d,0x21,11,0,interface,0))return;
+    *stage=17;
     d->mouse_buffer=page();
     if(!d->mouse_buffer||!new_ring(&d->interrupt))return;
     memset((void *)d->input,0,PAGE_SIZE);icc[1]=1u|(1u<<endpoint);
@@ -301,7 +318,9 @@ static void enumerate(struct host *h,unsigned port,unsigned speed){
     ec=input_context(h,d,endpoint+1);
     ec[0]=exponent<<16;ec[1]=(3u<<1)|(7u<<3)|(mps<<16);
     ec[2]=(uint32_t)(uintptr_t)d->interrupt.data|1;ec[4]=mps|(mps<<16);
+    *stage=18;
     if(!command(h,d->input,TYPE(12)|(slot<<24),NULL))return;
+    *stage=19;
     uint64_t f=irq_save();
     d->ep=endpoint;d->packet=mps;d->mouse=true;
     mouse_usb_attach();submit_mouse(h,d);irq_restore(f);
@@ -317,6 +336,7 @@ static bool reset_port(uintptr_t reg,unsigned speed){
     return wait_bits(reg,1u<<4,0,100)&&(read32(reg)&2);
 }
 static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
+    h->init_stage=1;
     uint32_t bar=pci(bus,dev,fn,0x10);
     if((bar&1)||((bar&6)!=0&&(bar&6)!=4))return false;
     uint64_t physical=bar&~15u;
@@ -324,6 +344,7 @@ static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
     pci_command(bus,dev,fn,(uint16_t)pci(bus,dev,fn,4)|6u);
     h->base=vm_map_mmio(physical,0x10000);
     if(!h->base)return false;
+    h->init_stage=2;
     unsigned cap=read32(h->base)&255;
     if(cap<0x20||cap>0x80)return false;
     uint32_t params=read32(h->base+4),hcc=read32(h->base+0x10);
@@ -331,6 +352,8 @@ static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
     unsigned door=read32(h->base+0x14)&~3u,runtime=read32(h->base+0x18)&~31u;
     if(!h->ports||h->ports>32||(params&255)<SLOTS||door>0xf000||runtime>0xf000)return false;
     h->op=h->base+cap;h->doorbell=h->base+door;h->interrupter=h->base+runtime+0x20;
+    for(unsigned p=0;p<h->ports;++p)h->ports_diag[p].before=read32(h->op+0x400+16*p);
+    h->init_stage=3;
     /* Bounded legacy ownership capability walk before controller takeover. */
     unsigned offset=(hcc>>16)*4;
     for(unsigned n=0;offset&&n<64;++n){
@@ -344,10 +367,13 @@ static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
         if(!next){offset=0;break;}offset+=next;
     }
     if(offset)return false;
+    h->init_stage=4;
     write32(h->op,0);
     if(!wait_bits(h->op+4,1,1,100))return false;
+    h->init_stage=5;
     write32(h->op,2);
     if(!wait_bits(h->op,2,0,100)||!wait_bits(h->op+4,1u<<11,0,100)||!(read32(h->op+8)&1))return false;
+    h->init_stage=6;
     uint32_t p2=read32(h->base+8);
     unsigned scratch=((p2>>27)&31)|(((p2>>21)&31)<<5);
     if(scratch>16)return false;
@@ -364,18 +390,23 @@ static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
     write32(h->op+0x38,SLOTS);
     write32(h->interrupter,0);write32(h->interrupter+8,1);
     write64(h->interrupter+0x10,h->erst);write64(h->interrupter+0x18,h->events);
+    h->init_stage=7;
     write32(h->op,1);
     if(!wait_bits(h->op+4,1,0,100))return false;
+    h->init_stage=8;
     h->running=true;
     for(unsigned p=1;p<=h->ports&&h->running;++p){
         uintptr_t reg=h->op+0x400+16*(p-1);uint32_t value=read32(reg);
+        h->ports_diag[p-1].scan=value;
         if(!(value&1))continue;
+        h->ports_diag[p-1].stage=1;
         unsigned speed=(value>>10)&15;
-        if(!reset_port(reg,speed))continue;
+        if(!reset_port(reg,speed)){h->ports_diag[p-1].stage=2;continue;}
         uint64_t until=ticks+2;while(ticks<until)__asm__ volatile("pause");
         write32(reg,port_value(reg)|(0x7fu<<17));
         enumerate(h,p,(read32(reg)>>10)&15);
     }
+    h->init_stage=9;
     return h->running;
 }
 void usb_init(void){
@@ -387,6 +418,28 @@ void usb_init(void){
             struct host *h=&hosts[host_count++];
             print("USB: xHCI controller ");hex(pci(b,d,f,0));print("\n");
             if(!initialize(h,b,d,f)){stop_host(h);print("USB: xHCI unavailable; bounded init stopped\n");}
+        }
+    }
+}
+
+/* Observation only: no register acknowledgements, reset, allocation or retries.
+ * Snapshots describe the boot attempt; now/last CC can change while polling. */
+void usb_status(int selected){
+    print("USB hosts=");decimal(host_count);print(" reports=");decimal(usb_mouse_reports);
+    print(" wraps=");decimal(usb_ring_wraps);print(" disconnects=");decimal(usb_disconnects);print("\n");
+    if(selected>=0&&(unsigned)selected>=host_count){print("USB host absent\n");return;}
+    for(unsigned i=0;i<host_count;++i){
+        if(selected>=0&&i!=(unsigned)selected)continue;
+        struct host *h=&hosts[i];
+        print("H");decimal(i);print(" init=");decimal(h->init_stage);print(" running=");decimal(h->running);
+        print(" ports=");decimal(h->ports);print(" last command/transfer CC=");decimal(h->command_code);
+        print("/");decimal(h->transfer_code);print("\n");
+        if(selected<0||!h->op||h->ports>32)continue;
+        print("CMD=");hex(read32(h->op));print(" STS=");hex(read32(h->op+4));print("\n");
+        for(unsigned p=0;p<h->ports;++p){
+            print("P");decimal(p+1);print(" pre=");hex(h->ports_diag[p].before);
+            print(" scan=");hex(h->ports_diag[p].scan);print(" now=");hex(read32(h->op+0x400+16*p));
+            print(" s=");decimal(h->ports_diag[p].stage);print("\n");
         }
     }
 }

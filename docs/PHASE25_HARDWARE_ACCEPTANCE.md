@@ -21,15 +21,15 @@ The roadmap gate is unchanged.
 | Boot image / source commit | See Phase 24 evidence; recheck actual tested checksum/commit |
 | Image readback / firmware settings | USB readback evidence NOT PROVIDED; owner Windows report UEFI/Secure Boot OFF; no settings changed by agent |
 | Allowed scratch persistence medium | Samsung DUO selected for prepared typeDA data partition; owner performed initial boot; no agent physical-write action; never the system SSD |
-| Evidence directory / tester / date | Owner-supplied photos received2026-10-23; docs/wip/phase24/2026-10-23/; new-image physical retest NOT RUN |
+| Evidence directory / tester / date | Owner-supplied photos received2026-10-23; docs/wip/phase24/2026-10-23/; kernel/Shell/Desktop/Snake photos received; mouse movement FAIL |
 
 | Acceptance item | Result | Evidence / observation |
 |---|---|---|
 | Owner-selected USB identity, checksum and readback | BLOCKED | Samsung name in firmware photo; exact flashed checksum/readback not provided |
 | Selected USB firmware entry and loader handoff | PASS for kernel/Shell reach | Retry photo shows live kernel and Shell; owner-selected retry image context, exact physical readback not provided. Earlier loader range FAIL retained as history |
-| GOP display on built-in screen | PASS for visible console | Retry photo shows800x600x32 kernel text and graphics boot checks; exact base/pitch/size still not captured; desktop rendering pending |
-| Keyboard and pointer after kernel handoff | BLOCKED | PS/2 and xHCI/HID preparation identified; advertised boot-mouse protocol confirmed; kernel boot confirmed; actual typed input/pointer/USB SET_PROTOCOL still untested |
-| Settings / Calculator / Snake / Shell (kernel-resident) | NOT RUN | QEMU results are separate |
+| GOP display on built-in screen | PASS for visible console | Retry photo shows800x600x32 kernel text and graphics boot checks; exact base/pitch/size still not captured; Desktop and Snake rendering observed in desktop-mouse-evidence.json |
+| Keyboard and pointer after kernel handoff | FAIL for mouse; keyboard checklist pending | PS/2 and xHCI/HID preparation identified; advertised boot-mouse protocol confirmed; kernel boot confirmed; owner reports no mouse movement; actual typed text/USB SET_PROTOCOL still unconfirmed |
+| Settings / Calculator / Snake / Shell (kernel-resident) | PARTIAL, acceptance NOT COMPLETE | Physical Shell/Desktop/Snake rendering and Score5 seen; Settings/Calculator/full controls not established; desktop-mouse-evidence.json; QEMU results separate |
 | Supported persistence save/reboot/restore | BLOCKED | Generic xHCI/BOT512 preparation verified in QEMU; retry kernel reports RAM-only; two AMD xHCI controllers discovered but no successful USB device/BOT attach shown; Samsung/AMD/flush untested |
 | Network / audio limitations recorded | NOT RUN | Native target drivers absent; inventory IDs and limitations recorded in Phase24 guide |
 | Failures, recovery and limits documented | BLOCKED | First loader failure and new-image retest procedure recorded; kernel-level recovery acceptance remains untested |

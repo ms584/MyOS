@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Latest owner result: Desktop and Snake render, but USB mouse motion FAIL and storage RAM-only. Root cause unknown; read-only USB diagnostics prepared. See PHASE24_USB_DIAGNOSTICS_TH.md and desktop-mouse-evidence.json.
+
 Latest retry photo: ThinkBook800x600 visible kernel/Shell and PMM/PIC/PIT/Ring3 boot checks pass. USB controllers discovered but RAM-only; actual input/apps and USB enumeration/persistence pending. See docs/wip/phase24/2026-10-23/kernel-shell-evidence.json. Prior failed attempt below is historical.
 
 Phase24 INCOMPLETE. Owner first ThinkBook21A4 USB boot reached MyOS UEFI loader,
@@ -7,7 +9,7 @@ then unsupported framebuffer range before kernel; firmware reported boot failed.
 Exact target framebuffer address/pitch/size and physical USB readback unknown.
 High GOP mapping/diagnostics source32f7b6873e719f20275b7b5284ab99edd82d537c.
 Full default system,synthetic high-GOP,packaged BIOS/UEFI/USB input/storage,DMA/layout
-and byte-identical rebuilds PASS in QEMU. Target new-image retest NOT RUN.
+and byte-identical rebuilds PASS in QEMU. Target kernel/Shell/Desktop/Snake rendering observed; USB mouse movement FAIL and storage blocked.
 Current image/checksum/procedure: PHASE24_GOP_RETEST_TH.md.
 Owner photos and gop-evidence.json: docs/wip/phase24/2026-10-23/.
 Old source031d4c8/image and original system/manual evidence preserved.

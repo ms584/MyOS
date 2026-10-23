@@ -36,6 +36,12 @@ def exercise():
         try:
             text=vm.wait('myos> ')
             assert 'USB: xHCI HID boot mouse initialized' in text,text
+            command(vm,'usb','H0 init=9 running=1')
+            detail=command(vm,'usb 0','s=19')
+            assert 'pre=0x' in detail and 'scan=0x' in detail and 'now=0x' in detail,detail
+            command(vm,'usb 1','USB host absent')
+            for invalid in ['usb 2','usb 0 extra','usb nope']:
+                command(vm,invalid,'usage: usb [0|1]')
             addresses=symbols()
             assert position(vm,addresses)==(400,300)
             start=number(vm,addresses,'usb_mouse_reports')

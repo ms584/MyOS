@@ -1,0 +1,46 @@
+{
+  "received_on": "2026-10-23",
+  "target": "Owner-selected ThinkBook15 G3 ACL21A4",
+  "owner_report": "ขยับเมาส์ไม่ได้ (mouse does not move)",
+  "photos": [
+    {
+      "source_attachment": "codex-clipboard-91a9f7c7-bdb3-4e5d-b8a9-fecd005e7888.png",
+      "stored": "thinkbook-usb-failure-boot.png",
+      "bytes": 1036404,
+      "sha256": "21d84117d1ccf0f546679fd44813790c2f69085e26c8996792323c7dd62553d5"
+    },
+    {
+      "source_attachment": "codex-clipboard-daa0fb0f-19f2-45a7-8496-90d9f9854cd8.png",
+      "stored": "thinkbook-desktop.png",
+      "bytes": 869481,
+      "sha256": "c5a8161cbcc6e8447970e63a02f61f5d46ee0bdb4a6f72bbd89f923e140ef7d9"
+    },
+    {
+      "source_attachment": "codex-clipboard-840f0104-b604-4e0d-bcbb-f4403b9b6b96.png",
+      "stored": "thinkbook-snake.png",
+      "bytes": 973055,
+      "sha256": "71d6c9b38824cd4b425bd5eb6e91a188716d0af2a07b838213f33c62a18f426e"
+    }
+  ],
+  "observed": [
+    "Visible kernel/Shell boot at800x600x32; two AMD xHCI controllers; RAM-only",
+    "Desktop1.0 rendered with central pointer",
+    "Snake rendered; Score5 Best5 RAM only; Game over"
+  ],
+  "results": {
+    "desktop_render": "PASS limited to visible rendering",
+    "snake_render": "PASS limited to visible rendering/score; input method and full controls not established",
+    "usb_mouse_movement": "FAIL owner report",
+    "usb_bot_persistence": "BLOCKED; RAM only",
+    "settings_calculator": "NOT RUN / no target evidence"
+  },
+  "unknown": [
+    "Root-port states and enumeration failure stage",
+    "Exact physical flashed checksum/readback",
+    "Actual keyboard text/button/drag tests",
+    "Actual Samsung READ/WRITE/flush/reboot restore"
+  ],
+  "root_cause": "Not established. Controller discovery and PS/2 init do not prove USB input. Read-only diagnostics prepared before behavioral changes.",
+  "phase24_complete": false,
+  "phase25_complete": false
+}

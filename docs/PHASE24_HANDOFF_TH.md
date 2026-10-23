@@ -1,6 +1,7 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
-**อัปเดตผลจริง:** ภาพลองใหม่ยืนยัน800x600 console/kernel/Shell และ boot checks ผ่านแล้ว; ยัง RAM-only ไม่มีหลักฐาน USB HID/BOT สำเร็จ. [หลักฐานล่าสุด](wip/phase24/2026-10-23/kernel-shell-evidence.json). ทดสอบ typing/mouse/desktop/สามแอปต่อได้ ไม่ต้อง reflash ซ้ำตอนนี้. ข้อความรอลองใหม่/FAIL ก่อน kernel ด้านล่างเป็น checkpoint ก่อนภาพใหม่นี้.
+**ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.
+
 
 วันที่2026-10-23 — **Phase24 ยังไม่ครบ; ลองใหม่เข้า kernel/Shell แล้ว แต่ยัง RAM-only**
 ภาพก่อนหน้าแสดง `unsupported framebuffer range` จาก MyOS loader และ firmware แจ้ง boot failed; เป็นประวัติก่อนลองใหม่
@@ -27,24 +28,24 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 
 ## ตารางความเข้ากันได้
 
-“รองรับ” ต้องอ่านร่วมกับขอบเขตหลักฐาน ยังไม่มี MyOS physical acceptance
+“รองรับ” ต้องอ่านร่วมกับขอบเขตหลักฐาน; physical acceptance ยังไม่ครบ
 รายงาน Windows พิสูจน์ชนิดอุปกรณ์/การตั้งค่าที่รายงาน ไม่พิสูจน์ driver handoff
 
 | ส่วน | สถานะ | หลักฐานและสิ่งที่ยังขาด |
 |---|---|---|
-| อิมเมจ USB BIOS/UEFI | รองรับ เฉพาะ QEMU | exact USB boot/FAT/EFI/สามแอปผ่านตาม build evidence; firmware เรียก MyOS loader จริงแล้วแต่ range FAIL; USB readback ยังไม่มีหลักฐาน |
-| CPU Ryzen 5 5500U | ยังไม่ยืนยัน MyOS จริง | Windows AddressWidth=64 และ DEP_Available=true; เงื่อนไข ISA/NX มีหลักฐานแล้ว แต่ PIC/PIT/kernel handoff ยังไม่ผ่านบนเครื่องจริง |
-| RAM | ยังไม่ยืนยัน memory map ของ MyOS จริง | เจ้าของ8GB; Windows รายงาน5.827GiB; MyOS จัดการ physical pages สูงสุด1GiB ไม่ใช้ RAM ทั้ง8GB; ต้องดู low-memory allocations/GOP ของ firmware |
-| UEFI / BIOS | UEFI loader เริ่มได้; kernel ยังไม่ผ่าน | รายงาน BIOS GQCN45WW(V1.31), UEFI=2; เลือกเส้นทาง UEFI; ภาพยืนยันว่า firmware เรียก loader จากสื่อได้; CSM/EDD/VBE และ kernel handoff ยังไม่ยืนยัน |
+| อิมเมจ USB BIOS/UEFI | รองรับ UEFI kernel/Shell จริง; BIOS เฉพาะ QEMU | ภาพเจ้าของแสดง kernel/Shell/Desktop; exact checksum/readback ยังไม่มีหลักฐาน |
+| CPU Ryzen 5 5500U | รองรับในขอบเขต boot checks ที่เห็น | kernel64-bit, PIC/PIT, preemption และ Ring3 checks ผ่านในภาพจริง; ไม่ใช่การรับรอง CPU ทุก feature |
+| RAM | รองรับในขอบเขต boot checks ที่เห็น | PMM/paging/heap และ above256/512MiB checks ผ่าน; physical allocator จำกัด1GiB ไม่ใช้ RAM ทั้ง8GB; ไม่ใช่ full-memory stress |
+| UEFI / BIOS | รองรับ UEFI handoff จริง; BIOS ยังไม่ยืนยัน | GQCN45WW(V1.31), UEFI inventory; ภาพแสดง kernel/Shell หลัง loader; CSM/EDD/VBE บนเครื่องจริงยังไม่ทดสอบ |
 | Secure Boot | รองรับเงื่อนไขการตั้งค่าที่รายงาน | UEFISecureBootEnabled=0 จึงไม่ต้องเปลี่ยน setting เพื่อเตรียม unsigned loader; signed trust chain ยังไม่รองรับ; ไม่ใช่ผลบูตจริง |
-| Graphics / จอ | loader เดิม FAIL; รอลองใหม่ | Radeon1002:164c; ภาพ unsupported framebuffer range ไม่บอกค่าจริง. เพิ่ม bounded high framebuffer mapping แล้ว; ยังต้อง800x600 BGR/pitch3200–16384/ช่วง physical ถูกต้อง; kernel display จริงยังไม่ผ่าน |
-| คีย์บอร์ดในตัว | ยังไม่ยืนยัน MyOS จริง | Windows Standard PS/2 Keyboard ACPI FUJ7401 ตรงชนิด driver i8042/IRQ1 เดิม; ยังต้องพิสูจน์ ACK/scan code หลัง handoff |
-| USB controller | ยังไม่ยืนยันบน AMD จริง | AMD1022:1639 พบสองรายการ; drivers/xhci.c เพิ่ม generic bounded xHCI, UC/NX MMIO และ polled events; QEMU controller1b36:000d ผ่าน BIOS/UEFI input แต่ไม่แทน AMD acceptance |
-| เมาส์ USB ที่เลือก | ยืนยันว่าประกาศ Boot Mouse; MyOS จริงยังไม่ยืนยัน | รายงาน CompatibleID วันที่2026-10-16 ของ30fa:0301 มี USB\Class_03&SubClass_01&Prot_02 ตรง HID Boot Mouse; ยังไม่ใช่ raw descriptor/ผล SET_PROTOCOL หรือการรับ input หลัง handoff |
+| Graphics / จอ | รองรับ console/Desktop/Snake ที่เห็น | ภาพจริง800x600x32 และ desktop/Snake; base/pitch/size ไม่ได้เก็บ; loader FAIL เดิมเป็นประวัติ |
+| คีย์บอร์ดในตัว | ยังไม่ยืนยันครบ | PS/2 FUJ7401/init ตรง driver; เห็น Desktop/Snake แต่ยังขาดผลพิมพ์ข้อความ/ปุ่มตาม checklist โดยตรง |
+| USB controller | พบ AMD จริง; device enumeration ยังไม่ยืนยัน | พิมพ์1022:1639 สองตัว; ไม่มี device attach success; ต้องอ่านพอร์ต/stage จาก usb diagnostics; QEMU ผ่านไม่แทน AMD acceptance |
+| เมาส์ USB ที่เลือก | FAIL บนเครื่องจริง; ต้องวินิจฉัยก่อนพัฒนาเพิ่ม | เจ้าของรายงานขยับไม่ได้30fa:0301; Windows ประกาศ Boot Mouse03/01/02 แต่ยังไม่มี MyOS SET_PROTOCOL/report สำเร็จ; ไม่ใช่หลักฐานเมาส์เสีย |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
-| USB boot storage ก่อน kernel | ยังไม่ยืนยันบน ThinkBook | สื่อที่เลือก Samsung DUO MUF-32CB/APC32GB ใช้USB-A; firmware boots ใน QEMU; รายงาน USB090c:1000/BOT/512B ได้รับแล้ว; เรียก loader จากสื่อจริงแล้ว แต่ยังไม่ผ่าน kernel handoff/readback |
-| USB storage/save หลัง kernel | รองรับเฉพาะ QEMU; ยังไม่ยืนยัน Samsung จริง | เพิ่ม SCSI/BOT512, USB2/USB3, strict prepared data partition; save/reboot/Settings/Snake/recovery/bounds ผ่าน; ต้องยืนยัน READ/WRITE/SYNCHRONIZE CACHE บนสื่อจริง; UAS ไม่รองรับ |
+| USB boot storage ก่อน kernel | รองรับเส้นทาง firmware ที่เห็น | Samsung DUO MUF-32CB/APC090c:1000,512B/BOT; loader/kernel/Shell จริงถึงแล้ว; physical readback ยังไม่ให้ |
+| USB storage/save หลัง kernel | BLOCKED บนเครื่องจริง | RAM-only; ไม่มี BOT attach success; ต้องยืนยัน READ/WRITE/SYNCHRONIZE CACHE และ reboot restore; QEMU USB2/USB3 ผ่าน; UAS ไม่รองรับ |
 | SSD ระบบ | ต้องพัฒนา NVMe หากจะใช้ แต่ไม่เลือกเป็น scratch | Samsung MZALQ256HBJD-00BL2, NVMe144d:a809,256060514304B/GPT; ATA PIO เดิมใช้ไม่ได้; ไม่พัฒนา write path ให้ SSD ระบบในรอบนี้ |
 | Ethernet | ต้องพัฒนา | PCI10ec:8168/SUBSYS390417aa; RTL8139 driver เดิมจับ10ec:8139 จึงใช้แทนไม่ได้; นอก offline desktop acceptance |
 | Wi-Fi | ต้องพัฒนา | QCA61x4A168c:003e/SUBSYS082717aa; ไม่มี native driver/firmware transport/Wi-Fi stack |

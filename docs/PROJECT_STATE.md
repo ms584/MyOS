@@ -1,4 +1,4 @@
-2026-10-23 — ThinkBook retry reaches visible kernel/Shell; USB/storage/input/apps pending; Phase24 INCOMPLETE.
+2026-10-23 — ThinkBook Desktop/Snake visible; USB mouse motion FAIL, RAM-only; USB diagnostics checkpoint; Phase24 INCOMPLETE.
 Repository /home/xytron404/myos; main; code/image source32f7b6873e719f20275b7b5284ab99edd82d537c.
 Owner authorizes scoped commits/push; final docs/evidence commit follows code.
 
@@ -12,8 +12,8 @@ System NVMe144d:a809 is NOT scratch; I2C touchpad/network/HDA not selected/suppo
 Owner first attempt failed old loader framebuffer range; preserved physical-boot-evidence.json.
 Retry photo now shows800x600 console,kernel/Shell,PMM/graphics/PIC/PIT/Ring3 boot PASS.
 Two AMD xHCI controllers found, but no USB device/init success; RAM-only files.
-Typing/pointer/apps not yet verified; framebuffer address/readback not provided.
-Current physical evidence: docs/wip/phase24/2026-10-23/kernel-shell-evidence.json.
+Desktop/Snake rendering and Score5 visible; owner mouse motion FAIL. Typed-text/full app controls pending.
+Current physical evidence: docs/wip/phase24/2026-10-23/desktop-mouse-evidence.json.
 
 Implemented high GOP supervisor UC/NX alias at0x7e00000000 before ExitBootServices;
 shared PML4[0] under Ring3 CR3, normal VM cannot overwrite it. Physical ABI unchanged.
@@ -38,9 +38,13 @@ under docs/wip/phase24/2026-10-23/. Old phase24-usb-input image60c8a229 remains 
 Retest guide: docs/PHASE24_GOP_RETEST_TH.md; compatibility: PHASE24_HANDOFF_TH.md.
 Phase32/33 owner acceptance/manual evidence preserved; complete online audit not repeated.
 
-Remaining: actual typing/pointer/desktop/apps; USB device enumeration and Samsung
+Added read-only usb [0|1] snapshots/init+enumeration stages; USB behavior unchanged.
+PASS focused native diagnostics/ports, BIOS+UEFI build, USB mouse+BOT regression.
+Prior full system/high-GOP tests reused: no architecture/mapping/storage behavior change.
+Remaining: actual typing/pointer/full three-app checks; USB device enumeration and Samsung
 read/write/mandatory flush/reboot restore. Kernel/Shell boot confirmed; full acceptance incomplete.
-Next: owner basic uptime/mouse/disk/desktop and three-app tests; no reflash needed now.
-Diagnose xHCI connected-port/reset/enumeration before changing driver behavior.
+Next: prepare diagnostic image; owner usb / usb 0 / usb 1 / disk on new image.
+Guide PHASE24_USB_DIAGNOSTICS_TH.md: diagnose ports/stages before driver behavior changes.
+USB has prepared16MiB custom data; RAMFS64nodes/4096B perfile, not all32GB.
 Persistence blocked until USB backend available; see PHASE25_HARDWARE_ACCEPTANCE.md.
 No physical USB/disk write,format,repartition or firmware change by agent.
