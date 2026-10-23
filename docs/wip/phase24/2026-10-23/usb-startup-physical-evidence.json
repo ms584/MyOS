@@ -1,0 +1,59 @@
+{
+  "received_on": "2026-10-23",
+  "target": "Owner ThinkBook15 G3 ACL21A4",
+  "photo": {
+    "source_attachment": "codex-clipboard-28d6a8e3-fc8a-41c1-bcc3-2b5c49bc6165.png",
+    "stored": "thinkbook-usb-port-status.png",
+    "bytes": 1268846,
+    "sha256": "2a1a1da8e47528a0d7ea72d1ecfcf42dd26f123f0887cc3405e30e533e44773d"
+  },
+  "image_context": {
+    "selected_diagnostic_source": "3482f0e6ed564e5ee27ae6af0cf82794f37f304f",
+    "physical_readback_provided": false
+  },
+  "observed": {
+    "hosts": 2,
+    "reports": 0,
+    "wraps": 0,
+    "disconnects": 0,
+    "both_hosts": {
+      "init": 9,
+      "running": 1,
+      "ports": 6,
+      "last_command_cc": 0,
+      "last_transfer_cc": 0,
+      "usbcmd": "0x1",
+      "usbsts": "0x10"
+    },
+    "all_visible_ports": "s=0; scan CCS=0; several later now CCS=1",
+    "selected_legible_rows": [
+      {
+        "host": 0,
+        "port": 3,
+        "pre": "0x6e1",
+        "scan": "0x2a0",
+        "now": "0x206e1",
+        "stage": 0
+      },
+      {
+        "host": 1,
+        "port": 6,
+        "pre": "0x1203",
+        "scan": "0x2b0",
+        "now": "0x2a1203",
+        "stage": 0
+      }
+    ],
+    "shell_keyboard": "usb, usb0/usb1 commands accepted; init/running typed separately return unknown command"
+  },
+  "analysis": {
+    "established": "One-shot scan ran while root ports were disconnected after HCRST. Later same ports reported connected; every stage0 and both command CC0 show enumeration was never attempted. Startup reconnects were skipped.",
+    "not_established": "No port-to-VID/PID mapping, no proof all devices enumerate after correction, no mouse input/BOT acceptance yet.",
+    "reference": "Intel xHCI1.22 sections4.19.3/4.19.4: reset starts ports Disconnected, attach signaling/CCS is asynchronous.",
+    "reference_url": "https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/extensible-host-controler-interface-usb-xhci.pdf"
+  },
+  "correction": "Bounded2s shared root-port discovery window per controller; require100ms stable CCS before existing reset/enumeration; no power/firmware/hub/runtime hotplug additions",
+  "physical_corrected_image_retest": "NOT RUN",
+  "phase24_complete": false,
+  "phase25_complete": false
+}

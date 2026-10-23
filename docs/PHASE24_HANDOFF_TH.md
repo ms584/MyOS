@@ -1,5 +1,7 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
+**อัปเดต USB:** ภาพพอร์ตจริงยืนยันว่า one-shot scan พลาด reconnect หลัง reset; เพิ่ม bounded2s discovery/100ms stable CCS แล้ว แต่เมาส์/Samsung จริงยังต้องลองใหม่. ใช้ [คู่มืออิมเมจแก้ startup](PHASE24_USB_STARTUP_RETEST_TH.md); อิมเมจ diagnostic เดิมเป็นประวัติ.
+
 **ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.
 
 
@@ -39,8 +41,8 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 | UEFI / BIOS | รองรับ UEFI handoff จริง; BIOS ยังไม่ยืนยัน | GQCN45WW(V1.31), UEFI inventory; ภาพแสดง kernel/Shell หลัง loader; CSM/EDD/VBE บนเครื่องจริงยังไม่ทดสอบ |
 | Secure Boot | รองรับเงื่อนไขการตั้งค่าที่รายงาน | UEFISecureBootEnabled=0 จึงไม่ต้องเปลี่ยน setting เพื่อเตรียม unsigned loader; signed trust chain ยังไม่รองรับ; ไม่ใช่ผลบูตจริง |
 | Graphics / จอ | รองรับ console/Desktop/Snake ที่เห็น | ภาพจริง800x600x32 และ desktop/Snake; base/pitch/size ไม่ได้เก็บ; loader FAIL เดิมเป็นประวัติ |
-| คีย์บอร์ดในตัว | ยังไม่ยืนยันครบ | PS/2 FUJ7401/init ตรง driver; เห็น Desktop/Snake แต่ยังขาดผลพิมพ์ข้อความ/ปุ่มตาม checklist โดยตรง |
-| USB controller | พบ AMD จริง; device enumeration ยังไม่ยืนยัน | พิมพ์1022:1639 สองตัว; ไม่มี device attach success; ต้องอ่านพอร์ต/stage จาก usb diagnostics; QEMU ผ่านไม่แทน AMD acceptance |
+| คีย์บอร์ดในตัว | ยังไม่ยืนยันครบ | PS/2 FUJ7401/init ตรง driver; เห็น Desktop/Snake และพิมพ์ usb/usb0/usb1 ได้จริง; full controls/checklist ยังไม่ครบ |
+| USB controller | พบ AMD จริง; device enumeration ยังไม่ยืนยัน | พิมพ์1022:1639 สองตัว; ไม่มี device attach success; ภาพscanCCS0→nowCCS1/stage0 ยืนยันพลาด reconnect; แก้ startup discovery แล้ว รอลองใหม่; QEMU ไม่แทน AMD acceptance |
 | เมาส์ USB ที่เลือก | FAIL บนเครื่องจริง; ต้องวินิจฉัยก่อนพัฒนาเพิ่ม | เจ้าของรายงานขยับไม่ได้30fa:0301; Windows ประกาศ Boot Mouse03/01/02 แต่ยังไม่มี MyOS SET_PROTOCOL/report สำเร็จ; ไม่ใช่หลักฐานเมาส์เสีย |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |

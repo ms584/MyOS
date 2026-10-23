@@ -1,5 +1,7 @@
 # Phase24 — ตรวจ USB บน ThinkBook และขอบเขตการใช้พื้นที่
 
+**อัปเดต USB:** ภาพพอร์ตจริงยืนยันว่า one-shot scan พลาด reconnect หลัง reset; เพิ่ม bounded2s discovery/100ms stable CCS แล้ว แต่เมาส์/Samsung จริงยังต้องลองใหม่. ใช้ [คู่มืออิมเมจแก้ startup](PHASE24_USB_STARTUP_RETEST_TH.md); อิมเมจ diagnostic เดิมเป็นประวัติ.
+
 วันที่2026-10-23; Phase24/25 ยังไม่ครบ. ภาพจริงยืนยัน console/Desktop/Snake;
 เจ้าของรายงานเมาส์ขยับไม่ได้ และหน้าจอแสดง RAM-only. ดู
 [หลักฐานภาพ/คำรายงาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json).

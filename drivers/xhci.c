@@ -335,6 +335,27 @@ static bool reset_port(uintptr_t reg,unsigned speed){
     }else write32(reg,port_value(reg)|(1u<<4));
     return wait_bits(reg,1u<<4,0,100)&&(read32(reg)&2);
 }
+/* HCRST initially disconnects root ports (xHCI1.22 section4.19.4).
+ * Discover asynchronous reconnects for2s, requiring100ms stable CCS. One shared
+ * deadline covers all ports, including empty ones; no runtime hotplug/retries.
+ * Observe only: never echo PORTSC change bits or force power/reset here. */
+static uint32_t discover_ports(struct host *h){
+    uint64_t since[32]={0},start=ticks;
+    uint32_t seen=0,ready=0;
+    for(unsigned attempts=0;attempts<2000000&&h->running;++attempts){
+        uint64_t now=ticks;
+        for(unsigned p=0;p<h->ports;++p){
+            uint32_t bit=1u<<p,value=read32(h->op+0x400+16*p);
+            h->ports_diag[p].scan=value;
+            if(!(value&1)){seen&=~bit;ready&=~bit;continue;}
+            if(!(seen&bit)){seen|=bit;since[p]=now;}
+            if(now-since[p]>=10)ready|=bit;
+        }
+        if(now-start>=200)break;
+        __asm__ volatile("pause");
+    }
+    return ready;
+}
 static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
     h->init_stage=1;
     uint32_t bar=pci(bus,dev,fn,0x10);
@@ -395,10 +416,13 @@ static bool initialize(struct host *h,unsigned bus,unsigned dev,unsigned fn){
     if(!wait_bits(h->op+4,1,0,100))return false;
     h->init_stage=8;
     h->running=true;
+    print("USB: waiting for root-port reconnect\n");
+    uint32_t connected=discover_ports(h);
     for(unsigned p=1;p<=h->ports&&h->running;++p){
         uintptr_t reg=h->op+0x400+16*(p-1);uint32_t value=read32(reg);
         h->ports_diag[p-1].scan=value;
         if(!(value&1))continue;
+        if(!(connected&(1u<<(p-1)))){h->ports_diag[p-1].stage=20;continue;}
         h->ports_diag[p-1].stage=1;
         unsigned speed=(value>>10)&15;
         if(!reset_port(reg,speed)){h->ports_diag[p-1].stage=2;continue;}

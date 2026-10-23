@@ -1,6 +1,6 @@
 2026-10-23 — Phase24 INCOMPLETE; ThinkBook Desktop/Snake visible, USB mouse FAIL, RAM-only.
 Real repo /home/xytron404/myos; main; owner authorizes scoped commits/push.
-Diagnostic executable/image source 3482f0e6ed564e5ee27ae6af0cf82794f37f304f; docs follow-up commit follows.
+Previous diagnostic source3482f0e; startup-fix code checkpoint follows; new image pending packaging.
 
 Target ThinkBook15 G3 ACL21A4/LNVNB161216; Ryzen5500U; owner8GB RAM.
 Windows6256402432B usable; BIOS GQCN45WW(V1.31); UEFI/SecureBootOFF reported.
@@ -15,15 +15,24 @@ No exact flashed checksum/readback or successful USB HID/BOT attach evidence.
 Evidence docs/wip/phase24/2026-10-23/desktop-mouse-evidence.json.
 Keyboard text/full Settings/Calculator/Snake control checks still incomplete.
 
-Added read-only usb / usb 0 / usb 1: pre-reset/scan/current root-port registers,
-init/enumeration stages and counters. No speculative reset/power/driver behavior changes.
-Root cause UNKNOWN pending target diagnostics. PS2 init is not USB mouse success.
+Read-only usb / usb 0 / usb 1 retained; new stage20 means not stable in startup window.
+Physical usb/usb0/usb1 photo now establishes missed reconnects after HCRST:
+Both hosts init9/running1, all ports stage0/scanCCS0; later same ports nowCCS1;
+command/transfer CC0, reports0. No enumeration attempted. Port-to-device IDs unknown.
+Evidence usb-startup-physical-evidence.json; built-in keyboard Shell commands accepted.
+Corrected startup: shared2s discovery + stable100ms CCS, then existing reset/enumeration.
+No MMIO mapping/DMA/ABI/hub/power/runtime hotplug architecture change.
+Native delayed/bounce/late/empty/stalled-PIT/32port/wrap fixtures PASS;
+same delayed-attach assertion rejects old one-shot detection.
+PASS BIOS/UEFI QEMU mouse attached150ms after startup, real movement/buttons.
+PASS affected USB mouse/ring/Ring3 and BOT USB2/USB3 coexistence/persistence regression.
+Physical corrected-image retest pending.
 PASS native ASan/UBSan diagnostics incl two hosts, bounds and zero MMIO writes;
 port reset/stop regression; BIOS/UEFI builds; actual QEMU HID events/ring wrap/Ring3;
 USB2/USB3 BOT save/flush/reboot/recovery/write bounds/mouse coexistence;
 independent FAT/EFI/layout/output preservation; byte-identical images/kernel/runtime.
-Full default system/high-GOP checks reused from32f7b68: architecture/mapping unchanged.
-New logs build/phase24-usb-diag-2026-10-23/; original build/system-tests restored.
+Full system/high-GOP checks reused: only USB startup discovery changed; mapping/ABI/VM unchanged.
+New logs build/phase24-usb-startup-2026-10-23/; original build/system-tests restored.
 Tracked usb-diagnostics-evidence.json, usb-diagnostics-tests.log, usb-diagnostics-SHA256SUMS.
 
 Selected NEW diagnostic: build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img

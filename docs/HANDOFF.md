@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+USB startup race established by owner port-status photo: scan CCS0 then now CCS1, all stages0/command CC0. Corrected shared2s discovery/100ms stable CCS; see PHASE24_USB_STARTUP_RETEST_TH.md. Corrected-image physical retest pending. Prior diagnostic checkpoint below is historical.
+
 Current diagnostic image: build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img; source 3482f0e6ed564e5ee27ae6af0cf82794f37f304f; manifest/checksum and build instructions in PHASE24_USB_DIAGNOSTICS_TH.md. Native/USB QEMU/layout/repro checks PASS; physical diagnostic retest pending.
 
 Latest owner result: Desktop and Snake render, but USB mouse motion FAIL and storage RAM-only. Root cause unknown; read-only USB diagnostics prepared. See PHASE24_USB_DIAGNOSTICS_TH.md and desktop-mouse-evidence.json.
