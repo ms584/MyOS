@@ -22,8 +22,16 @@ RAMFS ยังคง64nodes รวมroot, สูงสุด4096bytes ต่�
 
 ## อิมเมจและการบูต
 
-อิมเมจ diagnostic และ checksum/commit จะบันทึกใน
+อิมเมจ diagnostic และ checksum/commit บันทึกใน
 [wip/phase24/2026-10-23/usb-diagnostics-evidence.json](wip/phase24/2026-10-23/usb-diagnostics-evidence.json).
+อิมเมจ: `build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img`
+Windows: `\\wsl.localhost\Ubuntu\home\xytron404\myos\build\phase24-usb-diag-2026-10-23\images\myos-usb-data.img`
+ขนาด67,108,864bytes; source commit `3482f0e6ed564e5ee27ae6af0cf82794f37f304f`.
+SHA256: `07809cd86d99e0022e7e9eecd4d155ab2d8db3218b055452dd92ad62ab5a1b0f`.
+ผล native diagnostics/port regression, BIOS/UEFI USB mouse และ USB2/USB3 BOT
+save/flush/reboot/recovery/bounds PASS; independent FAT/EFI/layout และ byte-identical
+rebuild PASS. ไม่ใช่ผล ThinkBook retest. Manifest/SHA256SUMS อยู่ข้างอิมเมจ.
+
 ใช้ **myos-usb-data.img** จากโฟลเดอร์ diagnostic ที่หลักฐานระบุ;
 ไม่ใช้ myos-usb.img ซึ่งไม่มี data partition และไม่ใช้ไฟล์ GOP เก่าแทน.
 ขั้นตอน raw flash/เลือก Samsungด้วยตัวเอง/ห้ามเลือกSSD/F12 อยู่ใน

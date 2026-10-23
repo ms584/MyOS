@@ -1,0 +1,169 @@
+{
+  "source_commit": "3482f0e6ed564e5ee27ae6af0cf82794f37f304f",
+  "received_on": "2026-10-23",
+  "scope": "Read-only diagnostics only; physical mouse/storage root cause not established; not a confirmed fix",
+  "image": {
+    "path": "build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img",
+    "kind": "64MiB raw MBR BIOS/UEFI;32MiB FAT16 ESP;16MiB typeDA prepared MyOS snapshots",
+    "bytes": 67108864,
+    "sha256": "07809cd86d99e0022e7e9eecd4d155ab2d8db3218b055452dd92ad62ab5a1b0f"
+  },
+  "manifest": {
+    "path": "build/phase24-usb-diag-2026-10-23/images/manifest.json",
+    "sha256": "42c43f7dc357a107de00ffb9fd98add2f3d9bae2a57320f3a2a389e0277f1b16"
+  },
+  "software_results": [
+    {
+      "name": "native-diagnostics",
+      "command": [
+        "python3",
+        "tests/test_usb_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/native-diagnostics.log",
+      "sha256": "53bc8f7b01a3c097fb6e4ebf01b7da3cb93864fd231b9eccc0b8936afc1baea5"
+    },
+    {
+      "name": "native-ports",
+      "command": [
+        "python3",
+        "tests/test_xhci_ports.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/native-ports.log",
+      "sha256": "7625bf0bdfaf45c0bdb143fbc42098c385a62b249b21f282114a22e75d939f8d"
+    },
+    {
+      "name": "bios-build",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/bios-build.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "uefi-build",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/uefi-build.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "usb-build",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/usb-build.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "usb-mouse",
+      "command": [
+        "python3",
+        "tests/test_usb_mouse.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/usb-mouse.log",
+      "sha256": "256e9626cf7e7b7935c91f68c1a3d60345d58822c29f5bbea19b7b634abd6c1e"
+    },
+    {
+      "name": "usb-storage",
+      "command": [
+        "python3",
+        "tests/test_usb_storage.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/usb-storage.log",
+      "sha256": "a8299147777716b69fe1d58d71e169b1a3bf950aec4984c384a594a796d4d4a7"
+    },
+    {
+      "name": "data-image",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/data-image.log",
+      "sha256": "79c73488253f3033dbb12feb7fde61dece0a4c59cae085689f2bebe9f0047cf1"
+    },
+    {
+      "name": "layout",
+      "command": [
+        "python3",
+        "tests/test_release_tools.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/layout.log",
+      "sha256": "efb1e8e5cde12faf6c3d68d45d991bf2511637a477ded5908b4f3dda97277413"
+    },
+    {
+      "name": "rebuild-bios",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/rebuild-bios.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "rebuild-uefi",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/rebuild-uefi.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "rebuild-usb",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/rebuild-usb.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "rebuild-data",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-diag-2026-10-23/repro-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-diag-2026-10-23/rebuild-data.log",
+      "sha256": "69183cdc66850ec3052a6e8a0c3950632ded7d052e74bc0375288494916c6d5c"
+    }
+  ],
+  "final_native_two_host_test": {
+    "exit_code": 0,
+    "log": "build/phase24-usb-diag-2026-10-23/native-diagnostics-final.log",
+    "sha256": "53bc8f7b01a3c097fb6e4ebf01b7da3cb93864fd231b9eccc0b8936afc1baea5"
+  },
+  "reproducible": true,
+  "normal_image_and_original_test_bundle_restored": true,
+  "old_frozen_image_preserved": true,
+  "previous_full_system_reused": "source32f7b6873e719f20275b7b5284ab99edd82d537c; no architecture/mapping/storage behavior changes",
+  "physical_evidence": "desktop-mouse-evidence.json",
+  "physical_mouse": "FAIL owner report; diagnostic image not yet tested",
+  "physical_storage": "BLOCKED RAM-only; Samsung read/write/flush/reboot not tested",
+  "limits": "64MiB image;16MiB custom snapshot partition; RAMFS64nodes,4096B per file; not full32GB",
+  "no_physical_disk_write": true,
+  "phase24_complete": false,
+  "phase25_complete": false
+}

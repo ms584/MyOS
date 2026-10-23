@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Current diagnostic image: build/phase24-usb-diag-2026-10-23/images/myos-usb-data.img; source 3482f0e6ed564e5ee27ae6af0cf82794f37f304f; manifest/checksum and build instructions in PHASE24_USB_DIAGNOSTICS_TH.md. Native/USB QEMU/layout/repro checks PASS; physical diagnostic retest pending.
+
 Latest owner result: Desktop and Snake render, but USB mouse motion FAIL and storage RAM-only. Root cause unknown; read-only USB diagnostics prepared. See PHASE24_USB_DIAGNOSTICS_TH.md and desktop-mouse-evidence.json.
 
 Latest retry photo: ThinkBook800x600 visible kernel/Shell and PMM/PIC/PIT/Ring3 boot checks pass. USB controllers discovered but RAM-only; actual input/apps and USB enumeration/persistence pending. See docs/wip/phase24/2026-10-23/kernel-shell-evidence.json. Prior failed attempt below is historical.
