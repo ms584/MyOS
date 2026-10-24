@@ -164,6 +164,26 @@ static bool control(struct host *h,struct device *d,uint8_t request_type,uint8_t
     }while(ticks<end);
     print("USB: control timeout\n");stop_host(h);return false;
 }
+/* MFINDEX advances every125us with R/S=1, independently of CPU IF
+ * (xHCI1.22 section5.5.1). A CPU iteration budget is not a device deadline.
+ * Keep a separate finite guard only for a non-progressing hardware clock. */
+static bool wait_bulk(struct host *h,uintptr_t expected,unsigned *reason,unsigned *elapsed){
+    unsigned last=read32(h->interrupter-0x20)&0x3fff,stalled=0;
+    *reason=0;*elapsed=0;
+    for(;;){
+        poll(h);
+        if(h->done_transfer==expected){
+            if(h->transfer_code==1&&!h->transfer_residual)return true;
+            *reason=1;return false;
+        }
+        unsigned now=read32(h->interrupter-0x20)&0x3fff;
+        unsigned delta=(now-last)&0x3fff;last=now;*elapsed+=delta;
+        if(*elapsed>=8000){*reason=2;return false;} /* Actual1s. */
+        if(delta)stalled=0;
+        else if(++stalled>=2000000){*reason=3;return false;}
+        __asm__ volatile("pause");
+    }
+}
 bool usb_bulk_transfer(void *handle,bool input,void *buffer,unsigned length){
     struct device *d=handle;
     if(!d||!buffer||!length||length>512||!d->bulk_buffer)return false;
@@ -172,25 +192,21 @@ bool usb_bulk_transfer(void *handle,bool input,void *buffer,unsigned length){
     uint64_t flags=irq_save();
     if(input)memset((void *)d->bulk_buffer,0,length);
     else memcpy((void *)d->bulk_buffer,buffer,length);
-    h->done_transfer=0;
+    h->done_transfer=0;h->transfer_code=0;h->transfer_residual=0;
     uintptr_t expected=push(input?&d->bulk_in:&d->bulk_out,d->bulk_buffer,length,TYPE(1)|(1u<<5)|(1u<<2));
     __asm__ volatile("mfence":::"memory");
     write32(h->doorbell+4*d->slot,input?d->in_ep:d->out_ep);
-    uint64_t end=ticks+100;
-    /* FS snapshot operations can hold IF=0. Iteration bound still expires
-       when PIT ticks cannot advance; never enable IRQs inside FS atomicity. */
-    bool ok=false;
-    for(unsigned attempts=0;attempts<2000000&&ticks<end;++attempts){
-        poll(h);
-        if(h->done_transfer==expected){
-            ok=h->transfer_code==1&&!h->transfer_residual;break;
-        }
-        __asm__ volatile("pause");
-    }
+    unsigned reason,elapsed;
+    bool ok=wait_bulk(h,expected,&reason,&elapsed);
     if(ok&&input)memcpy(buffer,(void *)d->bulk_buffer,length);
     if(!ok){
         /* No ring/buffer reuse after an uncertain DMA or BOT phase. Reboot
            is required; do not pretend command failures completed writes. */
+        print("USB bulk failed: ");print(input?"IN":"OUT");print(" len=");decimal(length);
+        print(" reason=");print(reason==1?"completion":reason==2?"timeout":"clock-stalled");
+        print(" CC=");decimal(h->done_transfer==expected?h->transfer_code:0);
+        print(" residual=");decimal(h->done_transfer==expected?h->transfer_residual:0);
+        print(" microframes=");decimal(elapsed);print("\n");
         stop_host(h);
         print("USB: bulk transport stopped; reboot required\n");
     }

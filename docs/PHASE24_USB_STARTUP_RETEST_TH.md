@@ -1,5 +1,7 @@
 # Phase24 — ลองอิมเมจแก้ USB reconnect บน ThinkBook
 
+**อัปเดต2026-10-24:** เจ้าของยืนยันเมาส์เคลื่อนไหวได้; HID30fa:0301/report1849มีภาพจริง. Samsungถูกพบแต่BOT transportล้มเหลว/RAM-only. แก้CPU-iteration timeoutให้ใช้xHCI hardware clock พร้อมfailure phase; ยังต้องลองSamsungใหม่ตาม [คู่มือ BOT](PHASE24_USB_BOT_RETEST_TH.md).
+
 วันที่2026-10-23; Phase24/25 ยังไม่ครบ. แก้การตรวจพบ USB หลัง reset ตามภาพจริง;
 ยังไม่ใช่ผลยืนยันว่าเมาส์/Samsung บนเครื่องจริงผ่านแล้ว.
 
@@ -59,7 +61,7 @@ outputต้องยังไม่มี: เครื่องมือไม
 และ manifest ข้างอิมเมจ. อิมเมจ diagnostic เดิม07809cd8... ยังไม่มีการแก้นี้.
 
 อิมเมจเป็น raw MBR64MiB พร้อม BIOS/UEFI,ESP32MiB และ custom data16MiB.
-RAMFS ยัง64nodes/4096bytes ต่อไฟล์ ไม่ใช่การใช้ความจุ32GB เต็ม.
+RAMFS ยัง64nodes/65536bytes ต่อไฟล์ (v2; v1เดิม4096bytes) ไม่ใช่การใช้ความจุ32GB เต็ม.
 พื้นที่ข้อมูลจะใช้งานถาวรได้ก็ต่อเมื่อ `disk` ยืนยัน backend และทดสอบ save/flush/reboot.
 ไม่ format/repartition เพิ่ม ไม่ใช้ SSD ระบบเป็น scratch.
 

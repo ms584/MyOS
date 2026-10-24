@@ -1,5 +1,7 @@
 # Phase 24 — ThinkBook USB image and hardware preparation
 
+**อัปเดต2026-10-24:** เจ้าของยืนยันเมาส์เคลื่อนไหวได้; HID30fa:0301/report1849มีภาพจริง. Samsungถูกพบแต่BOT transportล้มเหลว/RAM-only. แก้CPU-iteration timeoutให้ใช้xHCI hardware clock พร้อมfailure phase; ยังต้องลองSamsungใหม่ตาม [คู่มือ BOT](PHASE24_USB_BOT_RETEST_TH.md).
+
 **อัปเดต USB:** ภาพพอร์ตจริงยืนยันว่า one-shot scan พลาด reconnect หลัง reset; เพิ่ม bounded2s discovery/100ms stable CCS แล้ว แต่เมาส์/Samsung จริงยังต้องลองใหม่. ใช้ [คู่มืออิมเมจแก้ startup](PHASE24_USB_STARTUP_RETEST_TH.md); อิมเมจ diagnostic เดิมเป็นประวัติ.
 
 **ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.

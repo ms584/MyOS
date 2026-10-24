@@ -1,5 +1,7 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
+**อัปเดต2026-10-24:** เจ้าของยืนยันเมาส์เคลื่อนไหวได้; HID30fa:0301/report1849มีภาพจริง. Samsungถูกพบแต่BOT transportล้มเหลว/RAM-only. แก้CPU-iteration timeoutให้ใช้xHCI hardware clock พร้อมfailure phase; ยังต้องลองSamsungใหม่ตาม [คู่มือ BOT](PHASE24_USB_BOT_RETEST_TH.md).
+
 **อัปเดต USB:** ภาพพอร์ตจริงยืนยันว่า one-shot scan พลาด reconnect หลัง reset; เพิ่ม bounded2s discovery/100ms stable CCS แล้ว แต่เมาส์/Samsung จริงยังต้องลองใหม่. ใช้ [คู่มืออิมเมจแก้ startup](PHASE24_USB_STARTUP_RETEST_TH.md); อิมเมจ diagnostic เดิมเป็นประวัติ.
 
 **ผลจริงล่าสุด:** Desktop และ Snake แสดงบน ThinkBook แล้ว แต่เจ้าของรายงานเมาส์ขยับไม่ได้; ยัง RAM-only. [หลักฐาน](wip/phase24/2026-10-23/desktop-mouse-evidence.json). Phase24/25 ยังไม่ครบ; ใช้ [คู่มือตรวจ USB](PHASE24_USB_DIAGNOSTICS_TH.md) เพื่อเก็บพอร์ต/ขั้นตอนที่ติดก่อนแก้ driver. ข้อความ checkpoint ก่อนหน้านี้ด้านล่างเป็นประวัติ.
@@ -43,11 +45,11 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 | Graphics / จอ | รองรับ console/Desktop/Snake ที่เห็น | ภาพจริง800x600x32 และ desktop/Snake; base/pitch/size ไม่ได้เก็บ; loader FAIL เดิมเป็นประวัติ |
 | คีย์บอร์ดในตัว | ยังไม่ยืนยันครบ | PS/2 FUJ7401/init ตรง driver; เห็น Desktop/Snake และพิมพ์ usb/usb0/usb1 ได้จริง; full controls/checklist ยังไม่ครบ |
 | USB controller | พบ AMD จริง; device enumeration ยังไม่ยืนยัน | พิมพ์1022:1639 สองตัว; ไม่มี device attach success; ภาพscanCCS0→nowCCS1/stage0 ยืนยันพลาด reconnect; แก้ startup discovery แล้ว รอลองใหม่; QEMU ไม่แทน AMD acceptance |
-| เมาส์ USB ที่เลือก | FAIL บนเครื่องจริง; ต้องวินิจฉัยก่อนพัฒนาเพิ่ม | เจ้าของรายงานขยับไม่ได้30fa:0301; Windows ประกาศ Boot Mouse03/01/02 แต่ยังไม่มี MyOS SET_PROTOCOL/report สำเร็จ; ไม่ใช่หลักฐานเมาส์เสีย |
+| เมาส์ USB ที่เลือก | รองรับ movement จริง; full buttons/drag ยังไม่ครบ | เจ้าของยืนยันขยับได้หลังstartup fix; ภาพHID30fa:0301 initialized และ1849reports; click/drag checklistยังต้องเก็บ |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
 | USB boot storage ก่อน kernel | รองรับเส้นทาง firmware ที่เห็น | Samsung DUO MUF-32CB/APC090c:1000,512B/BOT; loader/kernel/Shell จริงถึงแล้ว; physical readback ยังไม่ให้ |
-| USB storage/save หลัง kernel | BLOCKED บนเครื่องจริง | RAM-only; ไม่มี BOT attach success; ต้องยืนยัน READ/WRITE/SYNCHRONIZE CACHE และ reboot restore; QEMU USB2/USB3 ผ่าน; UAS ไม่รองรับ |
+| USB storage/save หลัง kernel | BLOCKED บนเครื่องจริง | Samsung090c:1000 enumerateแล้ว แต่BOT transportหยุด/H1s15/RAM-only; CPU-budget timeout defectแก้แล้ว รอลองใหม่; READ/WRITE/flush/rebootยังไม่ผ่านจริง; UASไม่รองรับ |
 | SSD ระบบ | ต้องพัฒนา NVMe หากจะใช้ แต่ไม่เลือกเป็น scratch | Samsung MZALQ256HBJD-00BL2, NVMe144d:a809,256060514304B/GPT; ATA PIO เดิมใช้ไม่ได้; ไม่พัฒนา write path ให้ SSD ระบบในรอบนี้ |
 | Ethernet | ต้องพัฒนา | PCI10ec:8168/SUBSYS390417aa; RTL8139 driver เดิมจับ10ec:8139 จึงใช้แทนไม่ได้; นอก offline desktop acceptance |
 | Wi-Fi | ต้องพัฒนา | QCA61x4A168c:003e/SUBSYS082717aa; ไม่มี native driver/firmware transport/Wi-Fi stack |

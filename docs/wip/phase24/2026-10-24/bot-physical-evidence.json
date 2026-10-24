@@ -1,0 +1,61 @@
+{
+  "received_on": "2026-10-24",
+  "target": "Owner ThinkBook15 G3 ACL21A4",
+  "image_context": {
+    "source_commit": "ec0e499e34ac964106981ea4202c0a2132c14c43",
+    "selected_source_sha256": "0837d4e1572fccf62832313909e543119f601c652c8b1ff1660546f754e7ba1f",
+    "physical_readback_provided": false
+  },
+  "photos": [
+    {
+      "source_attachment": "codex-clipboard-3c9468c4-7c03-4fb9-b1e7-d99ca242d45d.png",
+      "stored": "thinkbook-hid-ready-bot-failed.png",
+      "bytes": 1424981,
+      "sha256": "433f6bf28e19f383f36245bf7dadcfa1d3500344d3543058626de354f1637009"
+    },
+    {
+      "source_attachment": "codex-clipboard-94985a59-4339-4e10-8bcd-801f3b706031.png",
+      "stored": "thinkbook-bot-host-status.png",
+      "bytes": 659230,
+      "sha256": "2f3d9ddd04ea04bcf8096a4d6d1e5e5e4702218624d370789c32d500ebbafa1e"
+    }
+  ],
+  "owner_mouse_report": {
+    "date": "2026-10-23",
+    "text": "ขยับเมาส์ได้แล้ว",
+    "scope": "Movement confirmed by owner; full button/drag acceptance still pending"
+  },
+  "observed": {
+    "hid": "30fa:0301 enumerated; xHCI HID boot mouse initialized",
+    "samsung": "090c:1000 enumerated; bulk transport stopped; BOT invalid/failed transport; RAM only",
+    "host1": {
+      "init": 9,
+      "running": 0,
+      "ports": 6,
+      "last_command_cc": 1,
+      "last_transfer_cc": 1,
+      "usbcmd": "0x0",
+      "usbsts": "0x11",
+      "port6_stage": 15,
+      "port6_now": "0x1203"
+    },
+    "mouse_counters": {
+      "reports": 1849,
+      "wraps": 7,
+      "disconnects": 0
+    }
+  },
+  "results": {
+    "mouse_movement": "PASS owner report plus HID init and1849 reports",
+    "usb_persistence": "BLOCKED transport failure; disk unavailable RAM only"
+  },
+  "analysis": {
+    "established": "Startup correction now enumerates actual mouse/Samsung. H1 stopped during BOT attach. Old bulk loop masks IF, so PIT ticks cannot advance, and can expire after2M CPU polls before intended1s.",
+    "inference": "Last completion CC1/1 supports a wait/timeout hypothesis, but is stale across transfers and does NOT prove failing TD/phase or exclude every hardware fault. Old CPU budget defect reproduced with delayed DMA; exact target failing phase unavailable in old log.",
+    "correction": "Use xHCI MFINDEX hardware125us counter for actual1s while IF0, with wrap handling and separate stalled-clock guard. Log matching completion or timeout reason/length/elapsed plus BOT opcode/phase. Preserve no-write probe and strict marker/partition/flush gates.",
+    "reference": "https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/extensible-host-controler-interface-usb-xhci.pdf#page=423"
+  },
+  "physical_corrected_image": "NOT RUN",
+  "phase24_complete": false,
+  "phase25_complete": false
+}

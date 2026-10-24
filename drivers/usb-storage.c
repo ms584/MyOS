@@ -22,12 +22,17 @@ static int scsi(const uint8_t *cdb,unsigned cdb_length,bool input,void *data,uns
     struct cbw cb={0};struct csw cs={0};
     cb.magic=0x43425355;cb.tag=++next_tag;cb.length=length;
     cb.flags=input?0x80:0;cb.cdb_length=cdb_length;memcpy(cb.cdb,cdb,cdb_length);
-    bool ok=usb_bulk_transfer(medium,false,&cb,sizeof(cb))&&
-        (!length||usb_bulk_transfer(medium,input,data,length))&&
-        usb_bulk_transfer(medium,true,&cs,sizeof(cs));
+    unsigned phase=1; /* CBW=1, optional data=2, CSW=3. */
+    bool ok=usb_bulk_transfer(medium,false,&cb,sizeof(cb));
+    if(ok&&length){phase=2;ok=usb_bulk_transfer(medium,input,data,length);}
+    if(ok){phase=3;ok=usb_bulk_transfer(medium,true,&cs,sizeof(cs));}
     int result=-1;
     if(ok&&cs.magic==0x53425355&&cs.tag==cb.tag&&!cs.residue&&cs.status<=1)result=cs.status;
-    else{live=false;ready=false;print("USB BOT: invalid/failed transport; storage disabled\n");}
+    else{
+        print("USB BOT failure: opcode=");hex(cdb[0]);print(" phase=");decimal(phase);
+        print(" transport=");decimal(ok);print("\n");
+        live=false;ready=false;print("USB BOT: invalid/failed transport; storage disabled\n");
+    }
     irq_restore(flags);return result;
 }
 static bool read_raw(uint32_t lba,void *buffer){

@@ -13,7 +13,7 @@
 อิมเมจ `myos-usb-data.img` เป็น raw whole-disk MBR64MiB พร้อม BIOS/UEFI,
 ESP FAT16 32MiB และ custom MyOS snapshot partition16MiB typeDA.
 ไม่ใช่ FAT filesystem สำหรับไฟล์ผู้ใช้ และไม่ได้ใช้ Samsung32GB เต็มความจุ.
-RAMFS ยังคง64nodes รวมroot, สูงสุด4096bytes ต่อไฟล์; ดู PHASE11/13.
+RAMFS ยังคง64nodes รวมroot, สูงสุด65536bytes ต่อไฟล์ (v2; v1เดิม4096bytes); ดู PHASE11/13.
 การเพิ่มขนาดพาร์ทิชันอย่างเดียวไม่เพิ่มขีดจำกัด RAMFS.
 
 สามารถใช้ส่วน data ที่เตรียมไว้เมื่อ MyOS มองเห็น backend USB BOT แล้ว.
