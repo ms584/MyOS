@@ -1,5 +1,7 @@
 # Phase24 completion — selected ThinkBook offline hardware preparation
 
+Latest: Phase25 selected offline acceptance nowCOMPLETE; see PHASE25_COMPLETION.md. Earlier pending/readbackFAIL notes below are historical; exact difference audit resolves the mismatch.
+
 Update: Phase25 Shell known-file cross-boot proof nowPASS (generation14,2026-10-24); physicalmedia readback nowFAIL in boot-prefix (marker/tail match), unresolved cause; other PASS evidence retained. See PHASE25_USB_READBACK_TH.md. The earlier remaining-check audit below records the closure checkpoint.
 
 2026-10-24: **COMPLETE for the selected profile. Phase25 is still incomplete.**

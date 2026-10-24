@@ -1,7 +1,7 @@
-2026-10-24 — Phase24 COMPLETE selectedThinkBook offline preparation; Phase25 still incomplete.
+2026-10-24 — Phase24 COMPLETE selectedThinkBook offline preparation; Phase25 COMPLETE for selected offline profile.
 Real repo /home/xytron404/myos; main; scoped commits/push owner-authorized.
 Executable/image source6fc22f5ed84be859a8381de057b498c55b6b812c; current checkpoint: evidence + Windows read-only readback tool; MyOS executable unchanged.
-Closure audit docs/PHASE24_COMPLETION.md; Phase25 physical-media readback FAIL in boot-prefix; Shell-file cross-boot remains PASS.
+Closure audit docs/PHASE24_COMPLETION.md; Phase25 readback discrepancy resolved: boot content byte-identical; Windows metadata additions only.
 
 Target ThinkBook15G3ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM.
 UEFI/SecureBootOFF,BIOSGQCN45WW(V1.31); PS2FUJ7401; AMDxHCI1022:1639 x2.
@@ -36,11 +36,11 @@ Phase32/33 QEMU acceptance retained; unrelated audit not repeated.
 
 Shell test PASS: phase25.txt=ThinkBook-Phase25-PASS before/afterboot; gen14matches.
 Evidence docs/wip/phase25/2026-10-24/shell-file-evidence.json; ownerWindows Disk1Samsung.
-Owner physical readback FAIL: boot-prefix mismatch; marker/tail PASS; correctSamsungDisk1.
-Evidence wip/phase25/2026-10-24/physical-usb-readback.json; toolfixture testsPASS.
-Next: owner run diagnose_phase25_usb_prefix.ps1 -DiskNumber 1; send prefix diagnostic JSON.
-544chunk hashes/bounded1MiB capture ready; Windows fixture testsPASS, physical NOT RUN.
-Cause unknown; preserve gen14; no reflash. Tests wip/phase25/2026-10-24/prefix-diagnostic-tests.json.
-Guide docs/PHASE25_USB_READBACK_TH.md; no MyOS executable change.
-After legitimate saves full-image checksum differs; verify immutable boot regions instead.
-No invented disk number/format/repartition. No agentphysical write/firmware change.
+Owner readback resolved: all291 changedbytes are disk signature + addedSystemVolumeInformation.
+All4changedchunks captured; reconstructedprefix hash equals independentfirstreadback.
+Bootcode/partitiontable/BPB/existingEFI files/FATchains byte-identical; marker/tail PASS.
+Audit+4negativecontrols PASS; wip/phase25/2026-10-24/prefix-content-audit.json.
+Closure docs/PHASE25_COMPLETION.md; guide PHASE25_USB_READBACK_TH.md.
+Original raw-prefix FAIL retained; host metadata differs, no boot-content corruption.
+No further owner commands required for selectedPhase25; no runtime/image change.
+No agentphysical write/firmware action; no format/reflash; gen14 preserved.

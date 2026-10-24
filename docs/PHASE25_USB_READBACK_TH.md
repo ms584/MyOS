@@ -1,4 +1,9 @@
-# Phase25 — ขั้นสุดท้าย: ตรวจอ่าน Samsung โดยไม่เขียน USB
+# Phase25 — ตรวจอ่าน Samsung โดยไม่เขียน USB
+
+**ปิดPhase25แล้วสำหรับThinkBook offline profile (2026-10-24).** ไม่ต้องรันเพิ่ม.
+ความต่าง291ไบต์เป็นรหัสดิสก์และSystem Volume Informationที่เพิ่ม;
+ไฟล์บูตเดิม/ตารางพาร์ทิชัน/โค้ดบูตตรงต้นฉบับ. ผลraw-prefix FAILเดิมยังเก็บไว้.
+[หลักฐานปิดงาน](PHASE25_COMPLETION.md). ขั้นตอนและผลก่อนปิดด้านล่างเป็นประวัติการตรวจ.
 
 2026-10-24: Shell file testผ่านแล้ว: `/home/phase25.txt` เป็น
 `ThinkBook-Phase25-PASS` ก่อน/หลังบูต, sync/restored/disk generation14ตรงกัน.

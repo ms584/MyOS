@@ -1,4 +1,6 @@
-# MyOS handoff — 2026-10-23
+# MyOS handoff — 2026-10-24
+
+CURRENT: Phase25 COMPLETE selectedThinkBook offline profile. Readback all291 changedbytes explained by disk signature+addedSVI; existingboot contents byte-identical and exactpriorphysicalprefix hash reproduced. PHASE25_COMPLETION.md + wip/phase25/2026-10-24/prefix-content-audit.json. No ownercommands remain. No runtime/image change; previous pending/FAIL notes below historical.
 
 LatestPhase25: Shell file phase25.txt exacttext persists after reboot,gen14 matches. Physicalmedia readback now FAIL in boot-prefix; marker/tail match. Owner report physical-usb-readback.json captured20:15+07. Cause unknown; read-only diagnose_phase25_usb_prefix.ps1 now ready, fixture testsPASS. Owner run Disk1 and send phase25-prefix-diagnostic.json; guide PHASE25_USB_READBACK_TH.md. No reflash/format. Other physical PASS evidence retained. OwnerWindowsphoto identifiesSamsungDisk1,systemNVMeDisk0. Read-onlyverifier fixture/identity testsPASS; no physicaldiskopened byagent. Guide PHASE25_USB_READBACK_TH.md andevidence wip/phase25/2026-10-24/. MyOS image unchanged.
 
