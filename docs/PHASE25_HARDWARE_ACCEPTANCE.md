@@ -1,13 +1,13 @@
 # Phase 25 — selected real-hardware acceptance record
 
-Status: **Retry reaches visible kernel/Shell; input/apps pending; USB persistence BLOCKED** (2026-10-23).
-Current owner photo/provenance: [kernel-shell-evidence.json](wip/phase24/2026-10-23/kernel-shell-evidence.json).
+Status: **Physical boot/mouse movement/USB backend and sync PASS; cross-boot restore and full controls pending** (2026-10-24).
+Current evidence: [samsung-sync-evidence.json](wip/phase24/2026-10-24/samsung-sync-evidence.json).
 The earlier pre-kernel failure below is historical; the current retry passes that point.
 Owner photos/provenance: [physical-boot-evidence.json](wip/phase24/2026-10-23/physical-boot-evidence.json).
-Next candidate and diagnostic/photo procedure: [GOP retest](PHASE24_GOP_RETEST_TH.md).
+Current save/restore procedure: [Samsung BOT retest](PHASE24_USB_BOT_RETEST_TH.md); continue same USB without reflashing.
 The owner attempted the USB boot; no physical USB/disk write or firmware setting change by agent.
 Target: Lenovo ThinkBook 15 G3 ACL Type 21A4 selected by owner.
-Inventory fields are filled; physical first-failure and kernel/Shell retry evidence are recorded; input/apps/persistence remain unfilled. This is not completed acceptance.
+Inventory fields are filled; physical first-failure and kernel/Shell retry evidence are recorded; mouse movement/backend/sync are filled; full controls and cross-boot retention remain pending. This is not completed acceptance.
 Prerequisites and detailed procedure: [PHASE24_HANDOFF_TH.md](PHASE24_HANDOFF_TH.md).
 The roadmap gate is unchanged.
 
@@ -16,12 +16,12 @@ The roadmap gate is unchanged.
 | Machine / CPU / RAM | ThinkBook 21A4 / Ryzen 5 5500U / 8 GB (owner report) |
 | Board / firmware / mode | LNVNB161216 / GQCN45WW(V1.31) / UEFI; Secure Boot OFF in owner Windows report; exact MTM still optional |
 | SSD / Wi-Fi / graphics | Samsung system NVMe144d:a809 / QCA61x4A168c:003e / Radeon1002:164c; all remain unaccepted under MyOS |
-| Keyboard / mouse controller IDs | Built-in PS/2 FUJ7401 / external USB30fa:0301 behind AMD xHCI1022:1639; Windows CompatibleID confirms advertised HID boot mouse03/01/02 (wip/phase24/2026-10-16/mouse-evidence.json); MyOS SET_PROTOCOL and post-handoff events untested |
-| USB make/model/capacity/sector size | Samsung DUO MUF-32CB/APC; USB090c:1000;32078036992 bytes; logical/physical512B; SCSI/BOT class08/subclass06/protocol50 per owner samsung-usb-info.json; owner retry reaches kernel/Shell but reports RAM-only; USB storage acceptance BLOCKED; no agent physical write |
+| Keyboard / mouse controller IDs | Built-in PS/2 FUJ7401 / external USB30fa:0301 behind AMD xHCI1022:1639; Windows CompatibleID confirms advertised HID boot mouse03/01/02 (wip/phase24/2026-10-16/mouse-evidence.json); MyOS HID initialized and1849reports; owner mouse movement confirmed; full buttons/drag pending |
+| USB make/model/capacity/sector size | Samsung DUO MUF-32CB/APC; USB090c:1000;32078036992 bytes; logical/physical512B; SCSI/BOT class08/subclass06/protocol50 per owner samsung-usb-info.json; owner now seesUSB BOT32768sectors andsync generation11; reboot/content retention unconfirmed; no agent physical write |
 | Boot image / source commit | See Phase 24 evidence; recheck actual tested checksum/commit |
 | Image readback / firmware settings | USB readback evidence NOT PROVIDED; owner Windows report UEFI/Secure Boot OFF; no settings changed by agent |
 | Allowed scratch persistence medium | Samsung DUO selected for prepared typeDA data partition; owner performed initial boot; no agent physical-write action; never the system SSD |
-| Evidence directory / tester / date | Owner-supplied photos received2026-10-23; docs/wip/phase24/2026-10-23/; kernel/Shell/Desktop/Snake photos received; mouse movement FAIL |
+| Evidence directory / tester / date | Owner photos2026-10-23/24; latestdocs/wip/phase24/2026-10-24/; actual mouse movement,USB backend andsync confirmed |
 
 | Acceptance item | Result | Evidence / observation |
 |---|---|---|
@@ -30,7 +30,7 @@ The roadmap gate is unchanged.
 | GOP display on built-in screen | PASS for visible console | Retry photo shows800x600x32 kernel text and graphics boot checks; exact base/pitch/size still not captured; Desktop and Snake rendering observed in desktop-mouse-evidence.json |
 | Keyboard and pointer after kernel handoff | PASS mouse movement/partial keyboard; buttons/drag pending | PS/2 and xHCI/HID preparation identified; advertised boot-mouse protocol confirmed; kernel boot confirmed; owner confirms movement2026-10-23; new photo HID30fa:0301 initialized and1849reports; typed Shell commands accepted; click/drag/full controls pending |
 | Settings / Calculator / Snake / Shell (kernel-resident) | PARTIAL, acceptance NOT COMPLETE | Physical Shell/Desktop/Snake rendering and Score5 seen; Settings/Calculator/full controls not established; desktop-mouse-evidence.json; QEMU results separate |
-| Supported persistence save/reboot/restore | BLOCKED | Generic xHCI/BOT512 preparation verified in QEMU; Samsung090c:1000 now enumerates but BOT transport fails atH1s15, disk RAM-only. lastCC1/1 is stale; CPU-budget timeout corrected, hardware retest pending; Samsung read/write/flush/reboot still unaccepted |
+| Supported persistence save/reboot/restore | PARTIAL; backend/sync PASS, reboot restore evidence pending | Samsung090c:1000 prepared32768x512B data; diskUSB BOT/gen0; syncSaved generation11. Strict storage_save writes+flushes succeed. No known-file readback or cross-boot evidence yet; samsung-sync-evidence.json |
 | Network / audio limitations recorded | NOT RUN | Native target drivers absent; inventory IDs and limitations recorded in Phase24 guide |
 | Failures, recovery and limits documented | BLOCKED | First loader failure and new-image retest procedure recorded; kernel-level recovery acceptance remains untested |
 

@@ -1,0 +1,48 @@
+{
+  "received_on": "2026-10-24",
+  "target": "Owner ThinkBook15 G3 ACL21A4",
+  "image_context": {
+    "selected_source_commit": "6fc22f5ed84be859a8381de057b498c55b6b812c",
+    "selected_image_sha256": "d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa",
+    "physical_readback_provided": false
+  },
+  "photos": [
+    {
+      "source_attachment": "codex-clipboard-59a3654f-8a8e-45ee-9e48-3e7b25dc052f.png",
+      "stored": "thinkbook-usb-data-ready.png",
+      "bytes": 1369526,
+      "sha256": "d0bda8dca1f984b8560ee2d04b2d9a47bf8586ab2ce3c55c559137e5f95d06c0"
+    },
+    {
+      "source_attachment": "codex-clipboard-ff0a54e1-873f-4451-b3de-466edc371135.png",
+      "stored": "thinkbook-sync-generation11.png",
+      "bytes": 503953,
+      "sha256": "f943e46c29114fe09bc794c2ec1069cf7ca35b17d9b102c654df3d612c30849c"
+    }
+  ],
+  "observed": [
+    "Mouse30fa:0301 initialized",
+    "Samsung090c:1000 enumerated",
+    "USB BOT: prepared MyOS data partition,32768 sectors(512B)",
+    "Storage: empty data disk; first change will save",
+    "disk: USB BOT,32768 sectors,saved generation0",
+    "Desktop closed; sync; Saved generation11; prompt returns"
+  ],
+  "results": {
+    "usb_prepared_partition_probe": "PASS physical visible result; bounded16MiB data",
+    "explicit_sync": "PASS reported generation11; storage_save success requires writes and both mandatory cache flushes",
+    "cross_boot_restore": "NOT PROVIDED",
+    "file_content_readback": "NOT PROVIDED",
+    "settings_snake_restore": "NOT PROVIDED"
+  },
+  "interpretation": "Physical backend and successful sync observed after bulk-clock correction. Old ATA RAM-only line is legacy backend probe; explicit disk reports USB BOT. Generation0 and11 photos are not proof of reboot or durable power-cycle retention. Do not infer full persistence/app acceptance.",
+  "code_basis": {
+    "sync": "shell/shell.c: storage_save result0 prints Saved generation",
+    "save": "drivers/storage.c: inactive bank write + block_flush + header write + block_flush before generation update",
+    "bot": "drivers/usb-storage.c: mandatory SCSI SYNCHRONIZE CACHE; no success emulation"
+  },
+  "next": "Create known file, sync and wait for prompt, boot same USB without reflashing, cat file and record disk generation; then Settings/Snake restore/full controls.",
+  "phase24_complete": false,
+  "phase25_complete": false,
+  "no_agent_physical_write": true
+}

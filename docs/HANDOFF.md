@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Latest physical2026-10-24: Samsung prepared USB BOT32768sectors andsyncSaved generation11; mouse movement confirmed. Backend/write+mandatory flush path PASS; cross-boot file/Settings/Snake restore NOT PROVIDED. Continue SAME USB without reflashing; see samsung-sync-evidence.json and PROJECT_STATE.md. Earlier failure/candidate notes below are historical.
+
 Current2026-10-24 bulk-clock image: build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img; source 6fc22f5ed84be859a8381de057b498c55b6b812c; SHA256 d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa. Native/USB input/storage/layout/repro PASS, Samsung retest pending. Guide PHASE24_USB_BOT_RETEST_TH.md; tracked evidence bot-clock-evidence.json.
 
 2026-10-24: actual mouse movement confirmed by owner; HID/report1849 photo. Samsung090c:1000 enumerates but BOT attach transport stops/RAM-only. CPU-iteration bulk deadline defect reproduced and corrected using MFINDEX with IF0; physical failing phase not known from old logs, new diagnostics added. See PHASE24_USB_BOT_RETEST_TH.md; physical persistence pending. Previous checkpoints below are historical.

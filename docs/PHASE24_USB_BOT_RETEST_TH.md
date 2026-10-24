@@ -1,5 +1,7 @@
 # Phase24 — Samsung BOT / bulk timeout ขณะปิด interrupt
 
+**ผลจริงล่าสุด2026-10-24:** Samsungเปิดพื้นที่ข้อมูล USB BOT32768sectorsได้ และ `sync` รายงานSaved generation11; เมาส์เคลื่อนไหวผ่านแล้ว. ยังขาดknown-file/Settings/Snakeข้ามการบูตและfull controls. [หลักฐาน](wip/phase24/2026-10-24/samsung-sync-evidence.json). ใช้USBเดิมต่อ ไม่flashซ้ำระหว่างsave/restore; ข้อความfailure/retestก่อนหน้านี้เป็นประวัติ.
+
 วันที่2026-10-24; Phase24/25 ยังไม่ครบ. เจ้าของยืนยันเมาส์เคลื่อนไหวได้แล้ว;
 ภาพล่าสุดเห็น30fa:0301 HID initialized และ1849reports. Samsung090c:1000 พบแล้ว
 แต่ H1หยุดที่BOT attach(s15),disk RAM-only. ดู

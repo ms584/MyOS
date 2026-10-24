@@ -1,4 +1,4 @@
-2026-10-24 — Phase24 INCOMPLETE; actual mouse movement PASS, Samsung BOT transport FAIL.
+2026-10-24 — Phase24 INCOMPLETE; actual mouse movement/USB backend/sync PASS; reboot restore pending.
 Real repo /home/xytron404/myos; main; scoped commits/push authorized by owner.
 New bulk-clock executable/image source 6fc22f5ed84be859a8381de057b498c55b6b812c; docs evidence commit follows.
 
@@ -8,18 +8,20 @@ Mouse30fa:0301 HID boot initialized; owner movement confirmed2026-10-23.
 Samsung DUO090c:1000,32078036992B,512B,SCSI/BOT; systemNVMe NOT scratch.
 I2C touchpad/network/HDA unsupported/outside selected offline path.
 
-Physical: kernel/Shell/Desktop/Snake visible. New photo shows1849mouse reports;
-Samsung enumerates, but bulk transport stops duringBOT attach; diskRAM-only.
-H1init9/running0,CC1/1,s15; lastCC is stale, does not identify failingTD/phase.
-Evidence docs/wip/phase24/2026-10-24/bot-physical-evidence.json +two photos/hashes.
-Prior startup scan race corrected; actual mouse now works. Buttons/drag/full apps pending.
+Physical: kernel/Shell/Desktop/Snake visible; owner mouse movement confirmed;1849reports.
+Latest photos: Samsung090c:1000 prepared data partition32768x512B; diskUSB BOT/gen0;
+explicit sync printsSaved generation11 and returns prompt. Backend/write+flush path PASS.
+Generation0/11 photos do not prove reboot or content retention; full restore still pending.
+Current evidence docs/wip/phase24/2026-10-24/samsung-sync-evidence.json +two photo hashes.
+Previous BOT transport failure retained in bot-physical-evidence.json as history.
+Buttons/drag/full three-app checks still incomplete.
 
 Found bulk deadline defect: IF0 freezesPIT;2M CPU budget may expire before intended1s.
 Native delayedDMA fixture beyond2M polls but <1s rejects old loop, passes correction.
 Correction uses xHCI MFINDEX125us clock,14bit wrap,actual1s and stalled-clock guard.
 No IF enable/new mapping/DMA/ABI/storage-format/partition/flush policy change.
 First-failure logs direction/length/reason/matchingCC/residual/elapsed andBOT opcode/phase.
-Hardware timing hypothesis supported but exact Samsung failingTD not established by old log.
+Target backend+sync now succeed after bulk-clock correction; old failingTD/phase still unknown.
 
 PASS native ASan/UBSan bulk clock+old-budget control, frozenPIT/delayedDMA/wrap/
 clock-stall/completion-error/short/residue; BOT CBW/data/CSW diagnostics and write bounds.
@@ -38,8 +40,9 @@ Guide docs/PHASE24_USB_BOT_RETEST_TH.md.
 Previous frozen GOP/diagnostic/startup images and acceptance/failure evidence preserved.
 RAMFSv2 FS_FILE_MAX65536B,64persistent nodes; v1was4096B; not all32GB.
 Phase32/33 acceptance retained; unrelated audit not repeated.
+Evidence-only checkpoint: executable unchanged; prior software tests reused.
 
-Next: owner backup/flash new image; disk; ifUSB backend,save/sync/reboot/restore tests.
-If stillblocked collect new USB bulk failed +USB BOT failure lines; no speculative format.
-Remaining: actual Samsung read/write/mandatory flush/reboot; full app and mouse controls.
+Next: create known file,sync,boot SAME USB without reflashing,cat file+disk generation.
+Remaining: actual cross-boot file/Settings/Snake restore; full app/buttons/drag controls.
+Existing running image is suitable; do not reflash between save and restore tests.
 Phase24/25 NOT COMPLETE. No agent physical write/format/repartition/firmware change.
