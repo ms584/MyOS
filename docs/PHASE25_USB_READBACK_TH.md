@@ -3,9 +3,21 @@
 2026-10-24: Shell file testผ่านแล้ว: `/home/phase25.txt` เป็น
 `ThinkBook-Phase25-PASS` ก่อน/หลังบูต, sync/restored/disk generation14ตรงกัน.
 [หลักฐาน](wip/phase25/2026-10-24/shell-file-evidence.json).
-ยังไม่ปิดPhase25จนกว่าจะมีผลphysical readback.
+ยังไม่ปิดPhase25จนกว่าจะตรวจและแก้ข้อแตกต่างในphysical readbackได้ตามเกณฑ์.
 
-## สิ่งที่เจ้าของทำบน Windows ของ ThinkBook
+## ผลล่าสุด: ยังไม่ผ่าน
+
+รายงานเจ้าของเวลา2026-10-24T20:15:13+07:00 ยืนยัน physical:true และตัวระบุSamsungDisk1ตรง.
+boot-prefix ไม่ตรง: expected `65047f87ed20d372753176127e08977cd9d5dd0a57d618f46eb7c36e221457a7`,
+actual `086eb42035aec728f98c1b00af5ccb0b9673fcdf0f4c3bc24e7cf0954885b90f`.
+data-marker และimmutable-tailตรงทั้งคู่. ยังไม่ทราบตำแหน่งbyteที่ต่างหรือสาเหตุ;
+ไม่สรุปว่าUSBเสีย และไม่ใช้ผลsave/restoreมาแทนการตรวจนี้.
+[รายงานต้นฉบับ](wip/phase25/2026-10-24/physical-usb-readback.json) และ
+[provenance](wip/phase25/2026-10-24/physical-usb-readback-provenance.json).
+ขั้นถัดไป: อ่านเปรียบเทียบMBR/ไฟล์ESP/FAT metadata/paddingให้แคบลงกับอิมเมจเดิม.
+ยังไม่ต้องรันverifierซ้ำหรือflash/formatใหม่; รักษาข้อมูลgeneration14ไว้.
+
+## ขั้นตอนอ่านครั้งแรกที่เจ้าของทำแล้ว (อ้างอิง)
 
 ภาพ Get-Disk ล่าสุดยืนยัน **Disk1 Samsung Flash Drive DUO USB32078036992B,
 512B,IsBootFalse/IsSystemFalse**. Disk0เป็นNVMeระบบ ไม่ใช่สื่อทดสอบ.

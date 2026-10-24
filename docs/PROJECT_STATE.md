@@ -1,7 +1,7 @@
 2026-10-24 — Phase24 COMPLETE selectedThinkBook offline preparation; Phase25 still incomplete.
 Real repo /home/xytron404/myos; main; scoped commits/push owner-authorized.
 Executable/image source6fc22f5ed84be859a8381de057b498c55b6b812c; current checkpoint: evidence + Windows read-only readback tool; MyOS executable unchanged.
-Closure audit docs/PHASE24_COMPLETION.md; Phase25 pending physical-media readback only; Shell-file cross-boot now PASS.
+Closure audit docs/PHASE24_COMPLETION.md; Phase25 physical-media readback FAIL in boot-prefix; Shell-file cross-boot remains PASS.
 
 Target ThinkBook15G3ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM.
 UEFI/SecureBootOFF,BIOSGQCN45WW(V1.31); PS2FUJ7401; AMDxHCI1022:1639 x2.
@@ -36,7 +36,9 @@ Phase32/33 QEMU acceptance retained; unrelated audit not repeated.
 
 Shell test PASS: phase25.txt=ThinkBook-Phase25-PASS before/afterboot; gen14matches.
 Evidence docs/wip/phase25/2026-10-24/shell-file-evidence.json; ownerWindows Disk1Samsung.
-Next: owner read-onlyverify Disk1 usingtools/verify_phase25_usb_readback.ps1.
-Guide docs/PHASE25_USB_READBACK_TH.md; toolfixture/guard testsPASS,physical NOT RUN.
+Owner physical readback FAIL: boot-prefix mismatch; marker/tail PASS; correctSamsungDisk1.
+Evidence wip/phase25/2026-10-24/physical-usb-readback.json; toolfixture testsPASS.
+Next: read-only localize prefix differences against frozen image; cause unknown; do not reflash.
+Guide docs/PHASE25_USB_READBACK_TH.md; no MyOS executable change.
 After legitimate saves full-image checksum differs; verify immutable boot regions instead.
 No invented disk number/format/repartition. No agentphysical write/firmware change.
