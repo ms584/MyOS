@@ -1,0 +1,5 @@
+
+[2026-10-24T20:24:06.336040+07:00] cwd=/home/xytron404/myos
+$ python3 tests/test_phase25_prefix_diagnostic.py
+PASS: actual Windows PowerShell diagnostic; pristine/mutable-save/MBR+ESP+last-prefix changes/17chunk export bound; independent payload hashes; all inputs unchanged. File fixtures ONLY.
+[2026-10-24T20:24:13.783627+07:00] exit=0

@@ -38,7 +38,9 @@ Shell test PASS: phase25.txt=ThinkBook-Phase25-PASS before/afterboot; gen14match
 Evidence docs/wip/phase25/2026-10-24/shell-file-evidence.json; ownerWindows Disk1Samsung.
 Owner physical readback FAIL: boot-prefix mismatch; marker/tail PASS; correctSamsungDisk1.
 Evidence wip/phase25/2026-10-24/physical-usb-readback.json; toolfixture testsPASS.
-Next: read-only localize prefix differences against frozen image; cause unknown; do not reflash.
+Next: owner run diagnose_phase25_usb_prefix.ps1 -DiskNumber 1; send prefix diagnostic JSON.
+544chunk hashes/bounded1MiB capture ready; Windows fixture testsPASS, physical NOT RUN.
+Cause unknown; preserve gen14; no reflash. Tests wip/phase25/2026-10-24/prefix-diagnostic-tests.json.
 Guide docs/PHASE25_USB_READBACK_TH.md; no MyOS executable change.
 After legitimate saves full-image checksum differs; verify immutable boot regions instead.
 No invented disk number/format/repartition. No agentphysical write/firmware change.

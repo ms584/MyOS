@@ -15,7 +15,7 @@ data-marker และimmutable-tailตรงทั้งคู่. ยังไ�
 [รายงานต้นฉบับ](wip/phase25/2026-10-24/physical-usb-readback.json) และ
 [provenance](wip/phase25/2026-10-24/physical-usb-readback-provenance.json).
 ขั้นถัดไป: อ่านเปรียบเทียบMBR/ไฟล์ESP/FAT metadata/paddingให้แคบลงกับอิมเมจเดิม.
-ยังไม่ต้องรันverifierซ้ำหรือflash/formatใหม่; รักษาข้อมูลgeneration14ไว้.
+ไม่ต้องรันverifierเดิมซ้ำหรือflash/formatใหม่; รักษาข้อมูลgeneration14ไว้. เครื่องมือแยกตำแหน่งด้านล่างพร้อมทดสอบแล้ว.
 
 ## ขั้นตอนอ่านครั้งแรกที่เจ้าของทำแล้ว (อ้างอิง)
 
@@ -69,3 +69,30 @@ Get-Diskguardทดสอบด้วยmetadataจำลอง: number/brand/bu
 เปิดstreamผ่านread-onlyCreateFileWแบบเดียวกันในfixtureและphysicalmodeเพื่อรองรับPS5.1.
 หลักฐาน [readback-tool-tests.json](wip/phase25/2026-10-24/readback-tool-tests.json).
 **Fixture PASSไม่แทนphysical PASS**; agentยังไม่ได้เปิดrawdiskจริง.
+
+## ตรวจตำแหน่งที่ต่าง: ขั้นที่เจ้าของทำต่อ
+
+ดาวน์โหลด [diagnose_phase25_usb_prefix.ps1](https://github.com/ms584/MyOS/blob/main/tools/diagnose_phase25_usb_prefix.ps1)
+ด้วย Download raw file ลง Downloads บน ThinkBook. ใช้ Samsung เดิมและ Windows PowerShell Administrator.
+Disk1มาจากภาพเจ้าของ; หากถอดเสียบหรือเพิ่มดิสก์ให้ตรวจ Get-Disk ใหม่ก่อน.
+สคริปต์ตรวจชื่อ/USB/ความจุ/sector/MBR/non-system ทั้งก่อนและหลังอ่านเหมือน verifier เดิม.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\diagnose_phase25_usb_prefix.ps1" -DiskNumber 1 | Tee-Object -FilePath "$env:USERPROFILE\Downloads\phase25-prefix-diagnostic.json"
+```
+
+ส่ง Downloads\phase25-prefix-diagnostic.json กลับมา. MISMATCH เป็นผลวินิจฉัยที่คาดได้จากรายงานก่อนหน้า;
+ไม่ใช่คำสั่งซ่อมหรือการยืนยันว่าUSBเสีย. ไม่แฟลช/format/แก้ข้อมูลUSBเพื่อให้checksumผ่าน.
+อ่านเพียง34MiBแรก แบ่ง544ช่วงขนาด64KiB เทียบhashกับอิมเมจต้นฉบับเดิม.
+รายงานเก็บoffset/hashทุกช่วงที่ต่าง และเนื้อหาbase64เฉพาะ16ช่วงแรก สูงสุด1MiB
+(รายงานJSONประมาณ1.5MiBเมื่อUTF-8 หรือ3MiBเมื่อPowerShellบันทึกUTF-16); ใช้เทียบbyteกับต้นฉบับเพื่อแยกMBR/ESPไฟล์บูต/FATmetadata/padding.
+ไม่ได้อ่านส่วนsnapshot MyOS. หากcapture_truncated=true ต้องวินิจฉัยส่วนที่เหลือเพิ่มเติม;
+ไม่ถือว่าเนื้อหาส่วนที่ไม่ได้เก็บผ่าน. MATCH ก็ไม่ปิดPhase25โดยอัตโนมัติ ต้องประเมินร่วมกับผลก่อนหน้า.
+ไม่มีการเปิดดิสก์เขียน; Tee-ObjectเขียนเฉพาะรายงานลงDownloadsบนWindows.
+
+สร้างสคริปต์ซ้ำในrepoจริงด้วย `python3 tools/run_logged.py -- python3 tools/generate_phase25_prefix_diagnostic.py`.
+GeneratorตรวจSHA256อิมเมจเดิมก่อนฝัง544digests และใช้guard/native read-onlyopenเดียวกับverifier.
+WindowsPowerShell5.1ทดสอบไฟล์fixtureจริง: pristine/save-area/เปลี่ยนMBR+ESP+ท้ายprefix/
+เปลี่ยน17ช่วงตรวจพบครบและเก็บเนื้อหาไม่เกิน16ช่วง; hash/payloadตรวจอิสระ,ไฟล์ไม่เปลี่ยน.
+หลักฐาน [prefix-diagnostic-tests.json](wip/phase25/2026-10-24/prefix-diagnostic-tests.json).
+Physical diagnosisยังNOT RUN. MyOS executable/imageไม่เปลี่ยน; reuseผลQEMU/buildเดิมตามขอบเขต.
