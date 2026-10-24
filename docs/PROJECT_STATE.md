@@ -1,7 +1,7 @@
 2026-10-24 — Phase24 COMPLETE selectedThinkBook offline preparation; Phase25 still incomplete.
 Real repo /home/xytron404/myos; main; scoped commits/push owner-authorized.
-Executable/image source6fc22f5ed84be859a8381de057b498c55b6b812c; current checkpoint docs-only.
-Closure audit docs/PHASE24_COMPLETION.md; Phase25 pending media/Shell-file readback evidence.
+Executable/image source6fc22f5ed84be859a8381de057b498c55b6b812c; current checkpoint: evidence + Windows read-only readback tool; MyOS executable unchanged.
+Closure audit docs/PHASE24_COMPLETION.md; Phase25 pending physical-media readback only; Shell-file cross-boot now PASS.
 
 Target ThinkBook15G3ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM.
 UEFI/SecureBootOFF,BIOSGQCN45WW(V1.31); PS2FUJ7401; AMDxHCI1022:1639 x2.
@@ -34,7 +34,9 @@ OldGOP/diagnostic/startup images/evidence unchanged. RAMFSv2:64nodes,65536B/file
 Not full32GB/8GB; kernel-residentthreeapps; BIOS hardware/network/audio unaccepted.
 Phase32/33 QEMU acceptance retained; unrelated audit not repeated.
 
-Next Phase25: explicitShell known-file content readback across boot; physicalmedia
-readback/initialwrite validation evidence still missing. Keep sameUSB; do not reflash.
+Shell test PASS: phase25.txt=ThinkBook-Phase25-PASS before/afterboot; gen14matches.
+Evidence docs/wip/phase25/2026-10-24/shell-file-evidence.json; ownerWindows Disk1Samsung.
+Next: owner read-onlyverify Disk1 usingtools/verify_phase25_usb_readback.ps1.
+Guide docs/PHASE25_USB_READBACK_TH.md; toolfixture/guard testsPASS,physical NOT RUN.
 After legitimate saves full-image checksum differs; verify immutable boot regions instead.
 No invented disk number/format/repartition. No agentphysical write/firmware change.

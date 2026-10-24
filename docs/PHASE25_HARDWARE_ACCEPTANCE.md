@@ -1,13 +1,13 @@
 # Phase 25 — selected real-hardware acceptance record
 
-Status: **Physical boot/mouse/USB save+sync+power-cycle RAMFS/Settings/Snake restore PASS; Calculator/pointer controls PASS byowner report; Shell-file/media readback pending** (2026-10-24).
+Status: **Physical boot/mouse/USB save+sync+power-cycle RAMFS/Settings/Snake restore PASS; Calculator/pointer controls PASS byowner report; Shell-file PASS; physical-media readback pending** (2026-10-24).
 Current evidence: [desktop-controls-evidence.json](wip/phase24/2026-10-24/desktop-controls-evidence.json) and [samsung-reboot-evidence.json](wip/phase24/2026-10-24/samsung-reboot-evidence.json).
 The earlier pre-kernel failure below is historical; the current retry passes that point.
 Owner photos/provenance: [physical-boot-evidence.json](wip/phase24/2026-10-23/physical-boot-evidence.json).
 Current save/restore procedure: [Samsung BOT retest](PHASE24_USB_BOT_RETEST_TH.md); continue same USB without reflashing.
 The owner attempted the USB boot; no physical USB/disk write or firmware setting change by agent.
 Target: Lenovo ThinkBook 15 G3 ACL Type 21A4 selected by owner.
-Inventory fields are filled; physical first-failure and kernel/Shell retry evidence are recorded; mouse movement/backend/sync/power-cycle snapshot andSettings/Snake retention filled; Calculator/pointer controls reportedPASS; explicitShell-file/media readback remain pending. This is not completed acceptance.
+Inventory fields are filled; physical first-failure and kernel/Shell retry evidence are recorded; mouse movement/backend/sync/power-cycle snapshot andSettings/Snake retention filled; Calculator/pointer controls reportedPASS; explicitShell file before/afterboot gen14 nowPASS; physicalmedia readback remains pending. This is not completed acceptance.
 Prerequisites and detailed procedure: [PHASE24_HANDOFF_TH.md](PHASE24_HANDOFF_TH.md).
 The roadmap gate is unchanged.
 
@@ -25,12 +25,12 @@ The roadmap gate is unchanged.
 
 | Acceptance item | Result | Evidence / observation |
 |---|---|---|
-| Owner-selected USB identity, checksum and readback | BLOCKED | Samsung name in firmware photo; exact flashed checksum/readback not provided |
+| Owner-selected USB identity, checksum and readback | BLOCKED | Samsung name in firmware photo; physical readback not yet run; ownerWindowsphoto confirmsDisk1Samsung USB32078036992B/512B/non-system; read-onlytool+guidePHASE25_USB_READBACK_TH.md ready |
 | Selected USB firmware entry and loader handoff | PASS for kernel/Shell reach | Retry photo shows live kernel and Shell; owner-selected retry image context, exact physical readback not provided. Earlier loader range FAIL retained as history |
 | GOP display on built-in screen | PASS for visible console | Retry photo shows800x600x32 kernel text and graphics boot checks; exact base/pitch/size still not captured; Desktop and Snake rendering observed in desktop-mouse-evidence.json |
 | Keyboard and pointer after kernel handoff | PASS selectedkeyboard/mouse; click/drag/release byowner report | PS/2 and xHCI/HID preparation identified; advertised boot-mouse protocol confirmed; kernel boot confirmed; owner confirms movement2026-10-23; new photo HID30fa:0301 initialized and1849reports; typed Shell commands accepted; owner confirms requestedclick/drag/release normal |
 | Settings / Calculator / Snake / Shell (kernel-resident) | PASS selected app checks; Calculator byowner report | Shell/Desktop/Settings/Snake visible; SettingsSaved to disk andSnakeBest10Disk after owner-confirmed power cycle with same prior values. Owner confirms requestedCalculator12+34=46 andclick/drag/release normal; not visible inphoto; desktop-controls-evidence.json |
-| Supported persistence save/reboot/restore | PASS selected snapshot andSettings/Snake app records; explicitShell file readback pending | syncgen11 followed byowner power-cycle/reinsertion,bootrestored RAMFSgen11,diskgen11; owner confirms sameSettings andBest10. Snapshot checks/import andapp record validation apply; samsung-reboot-evidence.json. Not power-loss-during-write recovery acceptance |
+| Supported persistence save/reboot/restore | PASS selected snapshot andSettings/Snake app records; explicitShell file readback PASS | syncgen11 followed byowner power-cycle/reinsertion,bootrestored RAMFSgen11,diskgen11; owner confirms sameSettings andBest10. Snapshot checks/import andapp record validation apply; samsung-reboot-evidence.json. Also phase25.txt exacttext afterboot restoredgen14 confirmed inwip/phase25/2026-10-24/shell-file-evidence.json. Not power-loss-during-write recovery acceptance |
 | Network / audio limitations recorded | PASS documentation only; drivers unsupported | Native target drivers absent; inventory IDs and limitations recorded in Phase24 guide |
 | Failures, recovery and limits documented | PASS recorded scope; hardware interrupted-write test NOT RUN | Loader/startup/BOT failures,corrections andowner power-cycle/reinsertion recovery documented; interrupted-write fault recovery onhardware not tested |
 

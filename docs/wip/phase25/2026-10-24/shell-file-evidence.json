@@ -1,0 +1,48 @@
+{
+  "received_on": "2026-10-24",
+  "owner_report": "1 2 ผ่าน",
+  "target": "ThinkBook15 G3 ACL21A4/Samsung DUO",
+  "photos": [
+    {
+      "source_attachment": "codex-clipboard-08e99c64-edc6-4f7c-a259-5eb5c9a0f46f.png",
+      "stored": "shell-file-before-reboot.png",
+      "bytes": 1334796,
+      "sha256": "94a806a4cf2f53078331e63e06069d4383f022467f061abd564df5c9c2db57fa"
+    },
+    {
+      "source_attachment": "codex-clipboard-5c697930-dc91-45a1-aad2-6410aeb1e4f9.png",
+      "stored": "shell-file-after-reboot.png",
+      "bytes": 1356253,
+      "sha256": "10ebadeb50875db979caee86f85d98c41204d7798a44d8ae7456078650536982"
+    },
+    {
+      "source_attachment": "codex-clipboard-93a83199-186b-4a36-83c1-0c56f281fb44.png",
+      "stored": "thinkbook-windows-disk-selection.png",
+      "bytes": 657739,
+      "sha256": "53d3d312203b9dc82d817062dd5aa8d3cf53e26e3fab6038532c8e5dc3282a4b"
+    }
+  ],
+  "observed": {
+    "file": "/home/phase25.txt",
+    "text": "ThinkBook-Phase25-PASS",
+    "before": "write,cat,syncSaved generation14,diskUSB BOTgeneration14",
+    "after": "bootrestored RAMFSgeneration14,cat exact same text,diskUSB BOTgeneration14",
+    "windows_disk_selection": {
+      "samsung_number": 1,
+      "friendly_name": "Samsung Flash Drive DUO",
+      "bus_type": "USB",
+      "bytes": 32078036992,
+      "logical_sector_size": 512,
+      "is_boot": false,
+      "is_system": false,
+      "system_disk": "Number0 SAMSUNG MZALQ256HBJD-00BL2 NVMe256060514304B IsBoot/IsSystemTrue"
+    }
+  },
+  "results": {
+    "shell_known_file_cross_boot": "PASS owner report and before/after photographs",
+    "media_readback": "PENDING; Disk1 observed, verifier prepared but physical invocation not run"
+  },
+  "phase24_complete": true,
+  "phase25_complete": false,
+  "no_agent_physical_device_opened": true
+}

@@ -1,0 +1,1 @@
+PASS: Windows PowerShell production verifier; pristine and modified-save fixtures; boot/marker/tail corruption rejected; independent hashes, inputs unchanged; bad identity/number/bus/size/sector/MBR/boot/system rejected; missing/negative selection, device fixture, short/EOF rejected. File fixtures only, no physical disk opened.

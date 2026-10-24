@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+LatestPhase25: Shell file phase25.txt exacttext persists after reboot,gen14 matches. Onlyphysicalmedia readback pending. OwnerWindowsphoto identifiesSamsungDisk1,systemNVMeDisk0. Read-onlyverifier fixture/identity testsPASS; no physicaldiskopened byagent. Guide PHASE25_USB_READBACK_TH.md andevidence wip/phase25/2026-10-24/. MyOS image unchanged.
+
 Current2026-10-24: Phase24 COMPLETE selectedThinkBook offline preparation; audit PHASE24_COMPLETION.md. Owner reports Calculator12+34=46 andclick/drag/release normal; photo itself showsSettings/Snake only. Phase25 pendingexplicitShell-file/media readback; no newimage/code. Earlier incomplete/failed notes below historical.
 
 Latest physical: owner confirms power-cycle/USB reinsertion,bootrestored RAMFSgen11 matching previoussyncgen11; Settings andSnakeBest10 match pre-shutdown values. Selected-media snapshot/app restore PASS. RemainingCalculator/full controls/explicitShell file readback/physical image readback. Evidence samsung-reboot-evidence.json; currentimage unchanged. Earlier pending-restore notes below are historical.

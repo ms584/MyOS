@@ -1,0 +1,59 @@
+# Phase25 — ขั้นสุดท้าย: ตรวจอ่าน Samsung โดยไม่เขียน USB
+
+2026-10-24: Shell file testผ่านแล้ว: `/home/phase25.txt` เป็น
+`ThinkBook-Phase25-PASS` ก่อน/หลังบูต, sync/restored/disk generation14ตรงกัน.
+[หลักฐาน](wip/phase25/2026-10-24/shell-file-evidence.json).
+ยังไม่ปิดPhase25จนกว่าจะมีผลphysical readback.
+
+## สิ่งที่เจ้าของทำบน Windows ของ ThinkBook
+
+ภาพ Get-Disk ล่าสุดยืนยัน **Disk1 Samsung Flash Drive DUO USB32078036992B,
+512B,IsBootFalse/IsSystemFalse**. Disk0เป็นNVMeระบบ ไม่ใช่สื่อทดสอบ.
+ไม่ต้องflash/formatใหม่; ใช้Samsungที่เก็บgeneration14อยู่แล้ว.
+
+1. ดาวน์โหลด [verify_phase25_usb_readback.ps1](https://github.com/ms584/MyOS/blob/main/tools/verify_phase25_usb_readback.ps1)
+   ด้วยปุ่ม Download raw file แล้วบันทึกไว้ใน **Downloads** โดยใช้ชื่อไฟล์เดิม
+   `verify_phase25_usb_readback.ps1` (ไม่ใช่.txt หรือหน้าHTML).
+2. ใช้หน้าต่าง **Windows PowerShell Administrator** ที่แสดงในภาพล่าสุด.
+   ถ้าได้ถอดเสียบ/เพิ่มดิสก์หลังภาพนั้น ให้ตรวจ Get-Diskใหม่ก่อน; สคริปต์ก็ตรวจidentityซ้ำ.
+3. รันคำสั่งบรรทัดเดียวนี้ (Disk1มาจากภาพเจ้าของ ไม่ได้เดา):
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\verify_phase25_usb_readback.ps1" -DiskNumber 1 | Tee-Object -FilePath "$env:USERPROFILE\Downloads\phase25-usb-readback.json"
+```
+
+4. ส่งไฟล์ `Downloads\phase25-usb-readback.json` กลับมา หรือภาพผลครบ.
+   ต้องมี `physical: true`, `result: PASS`, ทั้งสามregions `match: true`.
+   ถ้าFAILหรือerror ให้ส่งผล ไม่format/repartition/flashซ้ำ.
+
+ExecutionPolicyBypassใช้กับprocessนี้เท่านั้น ไม่ตั้งpolicyถาวร.
+สคริปต์เปิดUSBด้วยGENERIC_READ/OPEN_EXISTINGและFileAccess.Readเท่านั้น;
+Tee-ObjectบันทึกรายงานในDownloadsของWindows ไม่เขียนrawUSB.
+ไม่มีSet-Disk/format/partition/lock/dismount/firmware actionหรือการเลือกดิสก์อัตโนมัติ.
+ต้องตรวจชื่อ/USB/ความจุ/sector/MBRและIsBoot/IsSystemทั้งก่อนและหลังอ่าน.
+หากไม่ตรงจะหยุด ไม่ข้ามการตรวจหรือเลือกSSDแทน.
+
+## ขอบเขตการเทียบ
+
+อ้างอิงอิมเมจsource `6fc22f5ed84be859a8381de057b498c55b6b812c`,67108864B,
+SHA256 `d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa`.
+Digestฝังในสคริปต์ จึงไม่ต้องดาวน์โหลดอิมเมจ64MiBมาเทียบอีกครั้ง.
+
+- boot-prefix: offset0,length35651584B (34MiB),รวมMBR/BIOS/ESP/gap.
+- data-marker: offset35651584,length512B; markerนี้MyOSไม่เขียนทับ.
+- immutable-tail: offset52428800,length14680064B (14MiB).
+- เว้นข้อมูลsnapshotที่เปลี่ยนได้: offset35652096,length16776704B.
+  พื้นที่หลังอิมเมจ64MiBจนถึงปลายUSB32GBไม่ได้ตรวจ.
+
+Full-image checksumหลังsaveย่อมต่างจากอิมเมจเปล่า; การตรวจนี้คงไฟล์และgeneration14ไว้.
+ไม่ใช่การพิสูจน์ทุกsectorหรือความทนทานเมื่อไฟดับระหว่างเขียน.
+
+## ผลทดสอบเครื่องมือ
+
+Windows PowerShell5.1รันโค้ดจริงกับไฟล์fixture: pristine/modified-saveผ่าน;
+เปลี่ยนboot/marker/tailตรวจพบ; ตรวจhashอิสระและไฟล์ต้นฉบับไม่เปลี่ยน.
+Get-Diskguardทดสอบด้วยmetadataจำลอง: number/brand/bus/size/sector/MBR/boot/systemผิดถูกปฏิเสธ.
+ไม่มีnumber/numberติดลบ/devicepathในfixture/ไฟล์สั้น/EOFถูกปฏิเสธ.
+เปิดstreamผ่านread-onlyCreateFileWแบบเดียวกันในfixtureและphysicalmodeเพื่อรองรับPS5.1.
+หลักฐาน [readback-tool-tests.json](wip/phase25/2026-10-24/readback-tool-tests.json).
+**Fixture PASSไม่แทนphysical PASS**; agentยังไม่ได้เปิดrawdiskจริง.

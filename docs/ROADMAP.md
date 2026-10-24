@@ -133,7 +133,7 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
 | 24 | USB image and hardware preparation | **Complete selectedThinkBook offline preparation (2026-10-24):** identified target/controllers,required GOP/xHCI HID/BOT corrections,physicalboot/input/USBsave+flush+power-cycle restore,validated reproducibleimage/compatibility/USBguide/handoff. See PHASE24_COMPLETION.md; unsupporteddevices remain explicit. |
-| 25 | Real-hardware acceptance | **Partial (2026-10-24):** actualboot/display/keyboard/mouse,Settings/Snake persistence andCalculator/pointer controls owner-confirmed; Calculator result not pictured. ExplicitShell known-file readback andphysicalmedia readback evidence pending. See PHASE25_HARDWARE_ACCEPTANCE.md. |
+| 25 | Real-hardware acceptance | **Partial (2026-10-24):** actualboot/display/keyboard/mouse,Settings/Snake persistence andCalculator/pointer controls owner-confirmed; Calculator result not pictured. ExplicitShell known-file restoredtext/gen14PASS; physicalmedia readback evidence pending. See PHASE25_HARDWARE_ACCEPTANCE.md. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later

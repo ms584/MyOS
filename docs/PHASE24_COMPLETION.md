@@ -1,5 +1,7 @@
 # Phase24 completion — selected ThinkBook offline hardware preparation
 
+Update: Phase25 Shell known-file cross-boot proof nowPASS (generation14,2026-10-24); onlyphysicalmedia readback remains. See PHASE25_USB_READBACK_TH.md. The earlier remaining-check audit below records the closure checkpoint.
+
 2026-10-24: **COMPLETE for the selected profile. Phase25 is still incomplete.**
 Source/image: `6fc22f5ed84be859a8381de057b498c55b6b812c`.
 Image `build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img`:
