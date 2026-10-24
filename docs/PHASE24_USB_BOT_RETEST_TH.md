@@ -1,5 +1,7 @@
 # Phase24 — Samsung BOT / bulk timeout ขณะปิด interrupt
 
+**ผลหลังปิดเปิดเครื่อง2026-10-24:** syncgen11 → เจ้าของปิดเปิด/เสียบUSBใหม่ → bootrestored RAMFSgen11 และdiskgen11. Settings/Best10Snakeตรงกับก่อนปิดตามเจ้าของยืนยัน. [หลักฐาน](wip/phase24/2026-10-24/samsung-reboot-evidence.json). ยังต้องCalculator/full controls/explicitShell file readback; ใช้อิมเมจเดิมต่อ. Checkpointก่อนหน้านี้ด้านล่างเป็นประวัติ.
+
 **ผลจริงล่าสุด2026-10-24:** Samsungเปิดพื้นที่ข้อมูล USB BOT32768sectorsได้ และ `sync` รายงานSaved generation11; เมาส์เคลื่อนไหวผ่านแล้ว. ยังขาดknown-file/Settings/Snakeข้ามการบูตและfull controls. [หลักฐาน](wip/phase24/2026-10-24/samsung-sync-evidence.json). ใช้USBเดิมต่อ ไม่flashซ้ำระหว่างsave/restore; ข้อความfailure/retestก่อนหน้านี้เป็นประวัติ.
 
 วันที่2026-10-24; Phase24/25 ยังไม่ครบ. เจ้าของยืนยันเมาส์เคลื่อนไหวได้แล้ว;

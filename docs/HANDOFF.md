@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Latest physical: owner confirms power-cycle/USB reinsertion,bootrestored RAMFSgen11 matching previoussyncgen11; Settings andSnakeBest10 match pre-shutdown values. Selected-media snapshot/app restore PASS. RemainingCalculator/full controls/explicitShell file readback/physical image readback. Evidence samsung-reboot-evidence.json; currentimage unchanged. Earlier pending-restore notes below are historical.
+
 Latest physical2026-10-24: Samsung prepared USB BOT32768sectors andsyncSaved generation11; mouse movement confirmed. Backend/write+mandatory flush path PASS; cross-boot file/Settings/Snake restore NOT PROVIDED. Continue SAME USB without reflashing; see samsung-sync-evidence.json and PROJECT_STATE.md. Earlier failure/candidate notes below are historical.
 
 Current2026-10-24 bulk-clock image: build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img; source 6fc22f5ed84be859a8381de057b498c55b6b812c; SHA256 d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa. Native/USB input/storage/layout/repro PASS, Samsung retest pending. Guide PHASE24_USB_BOT_RETEST_TH.md; tracked evidence bot-clock-evidence.json.

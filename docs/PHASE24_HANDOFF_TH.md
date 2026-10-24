@@ -1,5 +1,7 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
+**ผลหลังปิดเปิดเครื่อง2026-10-24:** syncgen11 → เจ้าของปิดเปิด/เสียบUSBใหม่ → bootrestored RAMFSgen11 และdiskgen11. Settings/Best10Snakeตรงกับก่อนปิดตามเจ้าของยืนยัน. [หลักฐาน](wip/phase24/2026-10-24/samsung-reboot-evidence.json). ยังต้องCalculator/full controls/explicitShell file readback; ใช้อิมเมจเดิมต่อ. Checkpointก่อนหน้านี้ด้านล่างเป็นประวัติ.
+
 **ผลจริงล่าสุด2026-10-24:** Samsungเปิดพื้นที่ข้อมูล USB BOT32768sectorsได้ และ `sync` รายงานSaved generation11; เมาส์เคลื่อนไหวผ่านแล้ว. ยังขาดknown-file/Settings/Snakeข้ามการบูตและfull controls. [หลักฐาน](wip/phase24/2026-10-24/samsung-sync-evidence.json). ใช้USBเดิมต่อ ไม่flashซ้ำระหว่างsave/restore; ข้อความfailure/retestก่อนหน้านี้เป็นประวัติ.
 
 **อัปเดต2026-10-24:** เจ้าของยืนยันเมาส์เคลื่อนไหวได้; HID30fa:0301/report1849มีภาพจริง. Samsungถูกพบแต่BOT transportล้มเหลว/RAM-only. แก้CPU-iteration timeoutให้ใช้xHCI hardware clock พร้อมfailure phase; ยังต้องลองSamsungใหม่ตาม [คู่มือ BOT](PHASE24_USB_BOT_RETEST_TH.md).
@@ -51,7 +53,7 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
 | USB boot storage ก่อน kernel | รองรับเส้นทาง firmware ที่เห็น | Samsung DUO MUF-32CB/APC090c:1000,512B/BOT; loader/kernel/Shell จริงถึงแล้ว; physical readback ยังไม่ให้ |
-| USB storage/save หลัง kernel | รองรับ backend/sync จริง; reboot restoreยังไม่ยืนยัน | Samsung090c:1000 prepared32768sectors, diskUSB BOT, syncSaved generation11; writes+mandatoryflush pathผ่านตามโค้ด แต่known-fileและpower-cycle restoreยังไม่มีหลักฐาน; UASไม่รองรับ |
+| USB storage/save หลัง kernel | รองรับselected snapshot/save/sync/power-cycle restoreจริง | Samsung090c:1000 prepared32768sectors,syncgen11 → bootrestoredgen11หลังเจ้าของปิดเปิด/เสียบใหม่; Settings/Best10ตรงกันตามเจ้าของ; explicitShell file readbackยังไม่ให้; UASไม่รองรับ |
 | SSD ระบบ | ต้องพัฒนา NVMe หากจะใช้ แต่ไม่เลือกเป็น scratch | Samsung MZALQ256HBJD-00BL2, NVMe144d:a809,256060514304B/GPT; ATA PIO เดิมใช้ไม่ได้; ไม่พัฒนา write path ให้ SSD ระบบในรอบนี้ |
 | Ethernet | ต้องพัฒนา | PCI10ec:8168/SUBSYS390417aa; RTL8139 driver เดิมจับ10ec:8139 จึงใช้แทนไม่ได้; นอก offline desktop acceptance |
 | Wi-Fi | ต้องพัฒนา | QCA61x4A168c:003e/SUBSYS082717aa; ไม่มี native driver/firmware transport/Wi-Fi stack |

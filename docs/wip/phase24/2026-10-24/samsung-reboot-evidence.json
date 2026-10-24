@@ -1,0 +1,54 @@
+{
+  "received_on": "2026-10-24",
+  "target": "Owner ThinkBook15 G3 ACL21A4/Samsung DUO090c:1000",
+  "photos": [
+    {
+      "source_attachment": "codex-clipboard-9acf627d-c4bb-4c8d-abdf-0f3e04c9992c.png",
+      "stored": "thinkbook-restored-generation11.png",
+      "bytes": 1392073,
+      "sha256": "fc9fc22304938b514a21cef3bf44656c0e4c1cd8ded16861b1fff881abbcc8e7"
+    },
+    {
+      "source_attachment": "codex-clipboard-f532c603-04b0-4f38-949e-9be1cd8b572d.png",
+      "stored": "thinkbook-settings-snake-after-reboot.png",
+      "bytes": 722433,
+      "sha256": "a6f548f252b6139a8689b078a1a69a40378f280ffec914383cf2a90a13c1bc4f"
+    }
+  ],
+  "prior_sync_evidence": "samsung-sync-evidence.json",
+  "owner_caption": "หลังจากปิดเปิดเสียบแฟลชไดรฟ์ใหม่",
+  "owner_confirmation": {
+    "question": "ภาพ Settings/Snake นี้ถ่ายหลังปิดเปิดและเสียบ USB ใหม่ใช่ไหมครับ และ Best 10 กับค่า Settings ตรงกับที่ตั้งไว้ก่อนปิดเครื่องหรือไม่?",
+    "answer": "ใช่ หลังเปิดใหม่ และค่าตรงกับก่อนปิด"
+  },
+  "image_context": {
+    "selected_source_commit": "6fc22f5ed84be859a8381de057b498c55b6b812c",
+    "selected_image_sha256": "d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa",
+    "physical_readback_provided": false
+  },
+  "observed": [
+    "USB HID boot mouse initialized",
+    "Samsung prepared MyOS data32768sectors(512B)",
+    "Storage: restored RAMFS generation11",
+    "disk: USB BOT32768sectors,saved generation11",
+    "Settings window: Dark/Blue,accent276B8A,Saved to disk",
+    "Snake window: Score1 Best10 Disk,Paused"
+  ],
+  "results": {
+    "power_cycle_snapshot_restore": "PASS photo generation11 matches prior sync generation11 plus owner power-cycle/reinsertion report",
+    "settings_restore": "PASS owner confirms same Settings values after power cycle; visible Saved to disk label alone is not proof of restore",
+    "snake_high_score_restore": "PASS visible Best10 Disk and owner confirms retained pre-power-cycle10",
+    "calculator": "NOT PROVIDED",
+    "full_mouse_buttons_drag": "NOT PROVIDED",
+    "explicit_shell_known_file_cat": "NOT PROVIDED"
+  },
+  "code_basis": {
+    "snapshot": "storage_load validates headers/payload checksum/structure and imports RAMFS before restored generation message",
+    "settings_record": "/etc/settings.cfg; validated binary record in gui/settings.c",
+    "snake_record": "/home/snake.score; validated score record in gui/snake.c"
+  },
+  "limits": "Physical selected-media save/sync/power-cycle/snapshot and app-value restore confirmed within tested scope. No arbitrary-file content screenshot, Calculator result, full pointer controls or exact physical image readback. No inference of system NVMe/network/audio support.",
+  "phase24_complete": false,
+  "phase25_complete": false,
+  "no_agent_physical_write": true
+}

@@ -1,4 +1,4 @@
-2026-10-24 — Phase24 INCOMPLETE; actual mouse movement/USB backend/sync PASS; reboot restore pending.
+2026-10-24 — Phase24 INCOMPLETE; actual mouse/USB sync+power-cycle RAMFS+Settings/Snake restore PASS; full controls pending.
 Real repo /home/xytron404/myos; main; scoped commits/push authorized by owner.
 New bulk-clock executable/image source 6fc22f5ed84be859a8381de057b498c55b6b812c; docs evidence commit follows.
 
@@ -9,19 +9,19 @@ Samsung DUO090c:1000,32078036992B,512B,SCSI/BOT; systemNVMe NOT scratch.
 I2C touchpad/network/HDA unsupported/outside selected offline path.
 
 Physical: kernel/Shell/Desktop/Snake visible; owner mouse movement confirmed;1849reports.
-Latest photos: Samsung090c:1000 prepared data partition32768x512B; diskUSB BOT/gen0;
-explicit sync printsSaved generation11 and returns prompt. Backend/write+flush path PASS.
-Generation0/11 photos do not prove reboot or content retention; full restore still pending.
-Current evidence docs/wip/phase24/2026-10-24/samsung-sync-evidence.json +two photo hashes.
-Previous BOT transport failure retained in bot-physical-evidence.json as history.
-Buttons/drag/full three-app checks still incomplete.
+Latest photos: USB BOT32768sectors;syncgen11 then owner power-cycle/reinsertion;
+bootrestored RAMFSgen11 anddiskgen11. SettingsSaved to disk,SnakeBest10Disk.
+Owner explicitly confirms photo after reboot andsameSettings/Best10 asbefore shutdown.
+PASS selectedUSB snapshot+Settings/Snake cross-boot restore; not general hardware acceptance.
+Current evidence docs/wip/phase24/2026-10-24/samsung-reboot-evidence.json +two photo hashes.
+Prior sync/BOT failure evidence retained. Calculator/buttons/drag/Shellfile readback pending.
 
 Found bulk deadline defect: IF0 freezesPIT;2M CPU budget may expire before intended1s.
 Native delayedDMA fixture beyond2M polls but <1s rejects old loop, passes correction.
 Correction uses xHCI MFINDEX125us clock,14bit wrap,actual1s and stalled-clock guard.
 No IF enable/new mapping/DMA/ABI/storage-format/partition/flush policy change.
 First-failure logs direction/length/reason/matchingCC/residual/elapsed andBOT opcode/phase.
-Target backend+sync now succeed after bulk-clock correction; old failingTD/phase still unknown.
+Target backend/sync/reboot restore now succeed; old failingTD/phase still unknown.
 
 PASS native ASan/UBSan bulk clock+old-budget control, frozenPIT/delayedDMA/wrap/
 clock-stall/completion-error/short/residue; BOT CBW/data/CSW diagnostics and write bounds.
@@ -42,7 +42,7 @@ RAMFSv2 FS_FILE_MAX65536B,64persistent nodes; v1was4096B; not all32GB.
 Phase32/33 acceptance retained; unrelated audit not repeated.
 Evidence-only checkpoint: executable unchanged; prior software tests reused.
 
-Next: create known file,sync,boot SAME USB without reflashing,cat file+disk generation.
-Remaining: actual cross-boot file/Settings/Snake restore; full app/buttons/drag controls.
-Existing running image is suitable; do not reflash between save and restore tests.
+Next: Calculator arithmetic,mouseclick/drag/release,explicitShell known-file readback.
+Keep currentUSB/image; do not reflash between save/restore tests.
+Remaining: full selected-machine input/app checklist and exact physical image readback.
 Phase24/25 NOT COMPLETE. No agent physical write/format/repartition/firmware change.
