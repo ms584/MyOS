@@ -1,6 +1,6 @@
 2026-10-24 — Phase24 INCOMPLETE; actual mouse movement PASS, Samsung BOT transport FAIL.
 Real repo /home/xytron404/myos; main; scoped commits/push authorized by owner.
-Previous tested hardware image sourceec0e499; bulk-clock correction code checkpoint follows.
+New bulk-clock executable/image source 6fc22f5ed84be859a8381de057b498c55b6b812c; docs evidence commit follows.
 
 ThinkBook15 G3 ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM; UEFI/SecureBootOFF.
 BIOS GQCN45WW(V1.31); PS2 FUJ7401 keyboard; two AMD xHCI1022:1639.
@@ -27,9 +27,14 @@ PASS native startup/read-only diagnostics/port reset; BIOS/UEFI delayed mouse/in
 PASS USB2/USB3 BOT coexistence/save/flush/reboot/recovery/foreign-media/bounds regression.
 Normal build/images and original build/system-tests restored after tests.
 Full default system/high-GOP reused: only USB bulk wait/observability changed, no architecture change.
-New logs build/phase24-usb-bot-clock-2026-10-24/; image/layout/repro packaging pending.
+PASS independent FAT/EFI/layout/output-preservation and byte-identical image/kernel/runtime rebuild.
+Logs build/phase24-usb-bot-clock-2026-10-24/; original build/system-tests restored.
+Tracked bot-clock-evidence.json,bot-clock-tests.log,bot-clock-SHA256SUMS in evidence dir.
 
-Guide docs/PHASE24_USB_BOT_RETEST_TH.md; selected new image/checksum follows packaging.
+Selected NEW: build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img
+67108864B raw MBR BIOS/UEFI,ESP32MiB/custom data16MiB; manifest beside image.
+SHA256 d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa.
+Guide docs/PHASE24_USB_BOT_RETEST_TH.md.
 Previous frozen GOP/diagnostic/startup images and acceptance/failure evidence preserved.
 RAMFSv2 FS_FILE_MAX65536B,64persistent nodes; v1was4096B; not all32GB.
 Phase32/33 acceptance retained; unrelated audit not repeated.

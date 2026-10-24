@@ -1,0 +1,220 @@
+{
+  "source_commit": "6fc22f5ed84be859a8381de057b498c55b6b812c",
+  "date": "2026-10-24",
+  "physical_evidence": "bot-physical-evidence.json",
+  "scope": "CPU-budget bulk wait defect demonstrated and corrected. Prior target CC1/1 is stale; exact target failing TD/phase unavailable, so no claim all Samsung causes fixed.",
+  "correction": {
+    "clock": "xHCI MFINDEX125us,14bit",
+    "deadline_microframes": 8000,
+    "irq_policy": "preserve IF0; no IRQ enable",
+    "stalled_clock_poll_bound": 2000000,
+    "diagnostics": "direction/length/reason/matching CC/residual/elapsed; SCSI opcode/CBW-data-CSW phase",
+    "strict_write_bounds_csw_exact_length_and_mandatory_flush": "unchanged"
+  },
+  "image": {
+    "path": "build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img",
+    "kind": "64MiB raw MBR BIOS/UEFI;32MiB FAT16 ESP;16MiB typeDA prepared MyOS snapshots",
+    "bytes": 67108864,
+    "sha256": "d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa"
+  },
+  "manifest": {
+    "path": "build/phase24-usb-bot-clock-2026-10-24/images/manifest.json",
+    "sha256": "c9997592c63a71196b1e6d66c0c2183dc595c05d32bd65e2694391492c6a4e4f"
+  },
+  "tests": [
+    {
+      "name": "native-bulk-clock",
+      "command": [
+        "python3",
+        "tests/test_usb_bulk_clock.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/native-bulk-clock.log",
+      "sha256": "a586e3db4aea2e89f7a0b8eb14058568b555a70f432e961da4e4a90b7b4d143e"
+    },
+    {
+      "name": "native-bot-protocol",
+      "command": [
+        "python3",
+        "tests/test_usb_bot_protocol.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/native-bot-protocol.log",
+      "sha256": "02010373fb259f411b1dfac6bee9cebbcd8c854e8e1063a1ccb87d8c68876530"
+    },
+    {
+      "name": "native-startup",
+      "command": [
+        "python3",
+        "tests/test_usb_startup.py",
+        "--native-only"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/native-startup.log",
+      "sha256": "771bdda1f7069a37c41f6304b6d2ff1a34ca679307142cfaa157aa416e9e4511"
+    },
+    {
+      "name": "native-diagnostics",
+      "command": [
+        "python3",
+        "tests/test_usb_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/native-diagnostics.log",
+      "sha256": "53bc8f7b01a3c097fb6e4ebf01b7da3cb93864fd231b9eccc0b8936afc1baea5"
+    },
+    {
+      "name": "native-ports",
+      "command": [
+        "python3",
+        "tests/test_xhci_ports.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/native-ports.log",
+      "sha256": "7625bf0bdfaf45c0bdb143fbc42098c385a62b249b21f282114a22e75d939f8d"
+    },
+    {
+      "name": "bios-build",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/bios-build.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "uefi-build",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/uefi-build.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "usb-build",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/usb-build.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "startup-delayed-mouse",
+      "command": [
+        "python3",
+        "tests/test_usb_startup.py",
+        "--qemu-only"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/startup-delayed-mouse.log",
+      "sha256": "3b223d834420a33abd2905f015d84143302bccebc38897e6e7d4baee28bbedf9"
+    },
+    {
+      "name": "usb-mouse",
+      "command": [
+        "python3",
+        "tests/test_usb_mouse.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/usb-mouse.log",
+      "sha256": "381ac9582f3c75f0841a2a0a390350552e42f9d1c0246c0702c08f73ceff7cb6"
+    },
+    {
+      "name": "usb-storage",
+      "command": [
+        "python3",
+        "tests/test_usb_storage.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/usb-storage.log",
+      "sha256": "f8c230b5e91172d4151f7da8cf473f811ac82a997ca3b6572147713409413869"
+    },
+    {
+      "name": "data-image",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/data-image.log",
+      "sha256": "9b27cb0ae8b3bbfc7aa182da160d67d3131dc5897e696e9e6b110e48eab6b17b"
+    },
+    {
+      "name": "layout",
+      "command": [
+        "python3",
+        "tests/test_release_tools.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/layout.log",
+      "sha256": "5d609a7c0bf4c84a4115116c78932cb6477cf6111dc2878775397d6df9b5d81d"
+    },
+    {
+      "name": "rebuild-bios",
+      "command": [
+        "python3",
+        "tools/package_bios.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/rebuild-bios.log",
+      "sha256": "bbc1ef011912069c72255d6dcbd27b28940494d0eac63dba25a4ad1e529269d7"
+    },
+    {
+      "name": "rebuild-uefi",
+      "command": [
+        "python3",
+        "tools/build_uefi.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/rebuild-uefi.log",
+      "sha256": "e3d2d686c7c35f1a0c0078aa22dff3749ec120f7e39c523f235593d514cb6212"
+    },
+    {
+      "name": "rebuild-usb",
+      "command": [
+        "python3",
+        "tools/package_usb.py"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/rebuild-usb.log",
+      "sha256": "31f3387295c8347068acbff85f1d9a56aea27336f968aadda1e0695f448a807a"
+    },
+    {
+      "name": "rebuild-data",
+      "command": [
+        "python3",
+        "tools/package_usb.py",
+        "--with-data",
+        "--output",
+        "build/phase24-usb-bot-clock-2026-10-24/repro-data.img"
+      ],
+      "exit_code": 0,
+      "log": "build/phase24-usb-bot-clock-2026-10-24/rebuild-data.log",
+      "sha256": "0627a0a09db91384d8692893b5060a763bca1677491941cd810bf4ed466df8a3"
+    }
+  ],
+  "reproducible": true,
+  "normal_images_and_original_system_tests_restored": true,
+  "old_frozen_images_preserved": true,
+  "prior_full_system_reused": "32f7b68; driver-local deadline and observability only; no architecture/mapping/DMA/ABI/storage-format change",
+  "filesystem_limits": {
+    "persistent_nodes": 64,
+    "v2_file_max_bytes": 65536,
+    "v1_file_max_bytes": 4096,
+    "source": "include/fs.h and include/fs-snapshot.h",
+    "full32gb_available": false
+  },
+  "physical_mouse": "PASS movement per owner; HID init/report1849 in photo; button/drag checklist incomplete",
+  "physical_samsung": "BLOCKED previous transport failure; new image NOT RUN",
+  "no_physical_disk_write": true,
+  "phase24_complete": false,
+  "phase25_complete": false
+}

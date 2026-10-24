@@ -1,5 +1,7 @@
 # MyOS handoff — 2026-10-23
 
+Current2026-10-24 bulk-clock image: build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img; source 6fc22f5ed84be859a8381de057b498c55b6b812c; SHA256 d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa. Native/USB input/storage/layout/repro PASS, Samsung retest pending. Guide PHASE24_USB_BOT_RETEST_TH.md; tracked evidence bot-clock-evidence.json.
+
 2026-10-24: actual mouse movement confirmed by owner; HID/report1849 photo. Samsung090c:1000 enumerates but BOT attach transport stops/RAM-only. CPU-iteration bulk deadline defect reproduced and corrected using MFINDEX with IF0; physical failing phase not known from old logs, new diagnostics added. See PHASE24_USB_BOT_RETEST_TH.md; physical persistence pending. Previous checkpoints below are historical.
 
 Current corrected image: build/phase24-usb-startup-2026-10-23/images/myos-usb-data.img; source ec0e499e34ac964106981ea4202c0a2132c14c43; SHA256 0837d4e1572fccf62832313909e543119f601c652c8b1ff1660546f754e7ba1f. Native delayed-attach negative control, actual delayed QEMU mouse BIOS/UEFI, USB input/storage/layout/repro PASS. Physical corrected-image retest NOT RUN. See PHASE24_USB_STARTUP_RETEST_TH.md.

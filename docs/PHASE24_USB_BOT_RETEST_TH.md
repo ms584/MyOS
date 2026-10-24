@@ -25,7 +25,33 @@ Native fixture จำลอง DMAตอบหลัง2.4ล้านpolls แ�
 
 ## อิมเมจและbuild
 
-ไฟล์/commit/checksum/results จะบันทึกใน
+ไฟล์: `build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img`
+Windows:
+
+```text
+\\wsl.localhost\Ubuntu\home\xytron404\myos\build\phase24-usb-bot-clock-2026-10-24\images\myos-usb-data.img
+```
+
+ขนาด **67,108,864bytes (64MiB)**; source commit `6fc22f5ed84be859a8381de057b498c55b6b812c`.
+SHA256: `d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa`.
+Manifest/SHA256SUMS อยู่ข้างอิมเมจ. Native hardware-clock/negative control+BOT phase,
+startup/input BIOS/UEFI,USB2/USB3 persistence/coexistence/bounds และFAT/layout/repro PASS.
+อิมเมจนี้ยังNOT RUNบนSamsungจริง; ภาพownerใช้startup imageก่อนหน้า.
+
+สร้างซ้ำจากsource commitข้างต้นและworking treeไม่มีexecutable changes:
+
+```sh
+cd /home/xytron404/myos
+python3 tools/run_logged.py -- python3 tools/package_bios.py
+python3 tools/run_logged.py -- python3 tools/build_uefi.py
+python3 tools/run_logged.py -- python3 tools/package_usb.py
+python3 tools/run_logged.py -- python3 tools/package_usb.py --with-data --output build/myos-usb-bot-clock-rebuild.img
+sha256sum build/myos-usb-bot-clock-rebuild.img
+```
+
+outputต้องยังไม่มี; เครื่องมือไม่ทับsave imageเดิม. คำสั่งสร้างเฉพาะไฟล์ในbuild/.
+
+ไฟล์/commit/checksum/results บันทึกใน
 [wip/phase24/2026-10-24/bot-clock-evidence.json](wip/phase24/2026-10-24/bot-clock-evidence.json).
 อิมเมจraw MBR64MiB,ESP32MiB,custom data16MiB. RAMFSv2สูงสุด65536bytesต่อไฟล์
 และ64persistent nodesตามinclude/fs.h;4KiBเป็นขีดจำกัดv1เดิม ไม่ใช่v2ปัจจุบัน.
