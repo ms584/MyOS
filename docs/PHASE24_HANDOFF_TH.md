@@ -1,5 +1,7 @@
 # Phase 24 — ThinkBook 21A4: ความเข้ากันได้ / USB / ส่งต่อ Phase 25
 
+**ปิด Phase24 — 2026-10-24:** การเตรียม ThinkBookชุดที่เลือกครบแล้ว: boot/display/input,required HID/BOT drivers,อิมเมจ/manifest/checksum/build/tests/คู่มือพร้อม. เจ้าของยืนยัน Calculatorและclick/drag/releaseปกติ; ผลCalculatorเป็นowner report ไม่ใช่ภาพผลคำนวณ. ดู [audit/ขอบเขต](PHASE24_COMPLETION.md). Phase25ยังขาดexplicitShell-file/media readback; checkpointINCOMPLETE/FAILด้านล่างเป็นประวัติ.
+
 **ผลหลังปิดเปิดเครื่อง2026-10-24:** syncgen11 → เจ้าของปิดเปิด/เสียบUSBใหม่ → bootrestored RAMFSgen11 และdiskgen11. Settings/Best10Snakeตรงกับก่อนปิดตามเจ้าของยืนยัน. [หลักฐาน](wip/phase24/2026-10-24/samsung-reboot-evidence.json). ยังต้องCalculator/full controls/explicitShell file readback; ใช้อิมเมจเดิมต่อ. Checkpointก่อนหน้านี้ด้านล่างเป็นประวัติ.
 
 **ผลจริงล่าสุด2026-10-24:** Samsungเปิดพื้นที่ข้อมูล USB BOT32768sectorsได้ และ `sync` รายงานSaved generation11; เมาส์เคลื่อนไหวผ่านแล้ว. ยังขาดknown-file/Settings/Snakeข้ามการบูตและfull controls. [หลักฐาน](wip/phase24/2026-10-24/samsung-sync-evidence.json). ใช้USBเดิมต่อ ไม่flashซ้ำระหว่างsave/restore; ข้อความfailure/retestก่อนหน้านี้เป็นประวัติ.
@@ -49,7 +51,7 @@ Settings, Calculator และ Snake ยังทำงานใน kernel mode;
 | Graphics / จอ | รองรับ console/Desktop/Snake ที่เห็น | ภาพจริง800x600x32 และ desktop/Snake; base/pitch/size ไม่ได้เก็บ; loader FAIL เดิมเป็นประวัติ |
 | คีย์บอร์ดในตัว | ยังไม่ยืนยันครบ | PS/2 FUJ7401/init ตรง driver; เห็น Desktop/Snake และพิมพ์ usb/usb0/usb1 ได้จริง; full controls/checklist ยังไม่ครบ |
 | USB controller | พบ AMD จริง; device enumeration ยังไม่ยืนยัน | พิมพ์1022:1639 สองตัว; ไม่มี device attach success; ภาพscanCCS0→nowCCS1/stage0 ยืนยันพลาด reconnect; แก้ startup discovery แล้ว รอลองใหม่; QEMU ไม่แทน AMD acceptance |
-| เมาส์ USB ที่เลือก | รองรับ movement จริง; full buttons/drag ยังไม่ครบ | เจ้าของยืนยันขยับได้หลังstartup fix; ภาพHID30fa:0301 initialized และ1849reports; click/drag checklistยังต้องเก็บ |
+| เมาส์ USB ที่เลือก | รองรับ movement จริง; click/drag/release ผ่านตามเจ้าของ | เจ้าของยืนยันขยับได้หลังstartup fix; ภาพHID30fa:0301 initialized และ1849reports; เจ้าของยืนยันclick/drag/releaseปกติ2026-10-24 |
 | ทัชแพดในตัว | ต้องพัฒนา หากจะใช้ | Synaptics SYNA2BA6 เป็น I2C HID, controller AMDI0010/GPIO AMDI0030; ไม่ใช้ PS/2 mouse driver และไม่ได้เลือกเป็น input path รอบนี้ |
 | USB keyboard / Bluetooth mouse | ต้องพัฒนา หากจะใช้ | รอบนี้เลือก PS/2 keyboard + USB mouse; ไม่เพิ่มเส้นทางเหล่านี้ |
 | USB boot storage ก่อน kernel | รองรับเส้นทาง firmware ที่เห็น | Samsung DUO MUF-32CB/APC090c:1000,512B/BOT; loader/kernel/Shell จริงถึงแล้ว; physical readback ยังไม่ให้ |
@@ -306,9 +308,10 @@ Secure Boot, ลบ keys, เปลี่ยน SATA mode หรือ flash fir
 มีผลบูตจริง FAIL ก่อน kernel แล้ว; kernel/input/apps/persistence ยังไม่ทดสอบจริง ห้ามเลื่อนเป็นผ่านจาก QEMU
 
 ลองบูตจริงแล้ว FAIL ก่อน kernel; input/apps/persistence ยัง NOT RUN; ไม่ถือว่า Phase25 ผ่าน
-ข้อเปิดก่อนปิด full Phase24: SET_PROTOCOL/input จริงของ30fa:0301 (ประกาศ Boot Mouse ยืนยันแล้ว),
-AMD controller handoff, Samsung command/flush behavior และ GOP/loader allocations
-ไม่มีข้อมูลเหล่านี้จาก Windows/QEMU ให้ถือว่ายังไม่ยืนยัน ห้ามลดเกณฑ์
+รายการเปิดก่อนปิดPhase24เดิมได้รับหลักฐานจริงแล้ว: HIDinitialized/reports/input,AMDhandoff,
+Samsungcommand/save/flush/power-cycle restore และGOP/kernel successfulhandoff.
+ดูPHASE24_COMPLETION.md; ไม่อนุมานraw framebuffer addressหรือfull8GB support.
+Phase25ยังไม่ปิดเพราะShell-file/media readbackไม่ได้ให้; เกณฑ์เดิมไม่ลดลง.
 
 อ้างอิง driver protocol:
 [Intel xHCI1.2b](https://cdrdv2-public.intel.com/625472/625472_xHCI_Rev1_2b.pdf),

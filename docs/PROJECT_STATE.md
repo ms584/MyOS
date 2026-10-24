@@ -1,48 +1,40 @@
-2026-10-24 — Phase24 INCOMPLETE; actual mouse/USB sync+power-cycle RAMFS+Settings/Snake restore PASS; full controls pending.
-Real repo /home/xytron404/myos; main; scoped commits/push authorized by owner.
-New bulk-clock executable/image source 6fc22f5ed84be859a8381de057b498c55b6b812c; docs evidence commit follows.
+2026-10-24 — Phase24 COMPLETE selectedThinkBook offline preparation; Phase25 still incomplete.
+Real repo /home/xytron404/myos; main; scoped commits/push owner-authorized.
+Executable/image source6fc22f5ed84be859a8381de057b498c55b6b812c; current checkpoint docs-only.
+Closure audit docs/PHASE24_COMPLETION.md; Phase25 pending media/Shell-file readback evidence.
 
-ThinkBook15 G3 ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM; UEFI/SecureBootOFF.
-BIOS GQCN45WW(V1.31); PS2 FUJ7401 keyboard; two AMD xHCI1022:1639.
-Mouse30fa:0301 HID boot initialized; owner movement confirmed2026-10-23.
-Samsung DUO090c:1000,32078036992B,512B,SCSI/BOT; systemNVMe NOT scratch.
-I2C touchpad/network/HDA unsupported/outside selected offline path.
+Target ThinkBook15G3ACL21A4/LNVNB161216; Ryzen5500U,owner8GB RAM.
+UEFI/SecureBootOFF,BIOSGQCN45WW(V1.31); PS2FUJ7401; AMDxHCI1022:1639 x2.
+Mouse30fa:0301 bootHID; SamsungDUO090c:1000,32078036992B,512B,BOT.
+SystemNVMe NOT scratch; I2Ctouchpad/network/HDA unsupported/outside selected offline path.
 
-Physical: kernel/Shell/Desktop/Snake visible; owner mouse movement confirmed;1849reports.
-Latest photos: USB BOT32768sectors;syncgen11 then owner power-cycle/reinsertion;
-bootrestored RAMFSgen11 anddiskgen11. SettingsSaved to disk,SnakeBest10Disk.
-Owner explicitly confirms photo after reboot andsameSettings/Best10 asbefore shutdown.
-PASS selectedUSB snapshot+Settings/Snake cross-boot restore; not general hardware acceptance.
-Current evidence docs/wip/phase24/2026-10-24/samsung-reboot-evidence.json +two photo hashes.
-Prior sync/BOT failure evidence retained. Calculator/buttons/drag/Shellfile readback pending.
+Physical boot/800x600 console/Desktop/PMM/paging/PIC/PIT/Ring3 boot checks PASS.
+Actualkeyboard Shell typing andmousemovement/1849reports PASS.
+Owner now confirms Calculator12+34=46 andclick/drag/release normal;
+photo showsSettings/Snake, not Calculator arithmetic; owner-report provenance recorded.
+USB BOT32768sectors,syncgen11 → owner power-cycle/reinsert → RAMFSrestoredgen11.
+Settings andSnakeBest10 match pre-shutdown values per explicitowner confirmation.
+Latest evidence docs/wip/phase24/2026-10-24/desktop-controls-evidence.json;
+samsung-reboot-evidence.json records cross-boot snapshot/app-value retention.
 
-Found bulk deadline defect: IF0 freezesPIT;2M CPU budget may expire before intended1s.
-Native delayedDMA fixture beyond2M polls but <1s rejects old loop, passes correction.
-Correction uses xHCI MFINDEX125us clock,14bit wrap,actual1s and stalled-clock guard.
-No IF enable/new mapping/DMA/ABI/storage-format/partition/flush policy change.
-First-failure logs direction/length/reason/matchingCC/residual/elapsed andBOT opcode/phase.
-Target backend/sync/reboot restore now succeed; old failingTD/phase still unknown.
-
-PASS native ASan/UBSan bulk clock+old-budget control, frozenPIT/delayedDMA/wrap/
-clock-stall/completion-error/short/residue; BOT CBW/data/CSW diagnostics and write bounds.
-PASS native startup/read-only diagnostics/port reset; BIOS/UEFI delayed mouse/input/ring/Ring3.
-PASS USB2/USB3 BOT coexistence/save/flush/reboot/recovery/foreign-media/bounds regression.
-Normal build/images and original build/system-tests restored after tests.
-Full default system/high-GOP reused: only USB bulk wait/observability changed, no architecture change.
-PASS independent FAT/EFI/layout/output-preservation and byte-identical image/kernel/runtime rebuild.
+Implemented fixes: boundedstartup reconnect discovery; bulkdeadline uses MFINDEX
+whileIF0,14bitwrap andstalledclock guard; exactlength/CSW/mandatoryflush/bounds retained.
+Native old-code negative controls reproduce both defects; prior hardware failures preserved.
+PASS nativeASan/UBSan startup/reset/bulkclock/BOT; BIOS/UEFI USBinput/rings/Ring3;
+USB2/USB3 BOTsave/flush/reboot/recovery/coexistence/bounds; FAT/EFI/layout/repro.
+Fullsystem/highGOP reused: no architecture/mapping/DMA/ABI/storage-format changes.
 Logs build/phase24-usb-bot-clock-2026-10-24/; original build/system-tests restored.
-Tracked bot-clock-evidence.json,bot-clock-tests.log,bot-clock-SHA256SUMS in evidence dir.
+Trackedbot-clock-evidence.json/testlog/SHA256SUMS; docs/photo-only checks reuse these tests.
 
-Selected NEW: build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img
-67108864B raw MBR BIOS/UEFI,ESP32MiB/custom data16MiB; manifest beside image.
+Current image build/phase24-usb-bot-clock-2026-10-24/images/myos-usb-data.img
+67108864B rawMBR BIOS/UEFI,ESP32MiB/customdata16MiB; manifest beside image.
 SHA256 d66310b71d0ecb737941bf5a6dfb22448cf728d0211456de923a06d0effa85aa.
-Guide docs/PHASE24_USB_BOT_RETEST_TH.md.
-Previous frozen GOP/diagnostic/startup images and acceptance/failure evidence preserved.
-RAMFSv2 FS_FILE_MAX65536B,64persistent nodes; v1was4096B; not all32GB.
-Phase32/33 acceptance retained; unrelated audit not repeated.
-Evidence-only checkpoint: executable unchanged; prior software tests reused.
+Guide PHASE24_USB_BOT_RETEST_TH.md; compatibility PHASE24_HANDOFF_TH.md.
+OldGOP/diagnostic/startup images/evidence unchanged. RAMFSv2:64nodes,65536B/file.
+Not full32GB/8GB; kernel-residentthreeapps; BIOS hardware/network/audio unaccepted.
+Phase32/33 QEMU acceptance retained; unrelated audit not repeated.
 
-Next: Calculator arithmetic,mouseclick/drag/release,explicitShell known-file readback.
-Keep currentUSB/image; do not reflash between save/restore tests.
-Remaining: full selected-machine input/app checklist and exact physical image readback.
-Phase24/25 NOT COMPLETE. No agent physical write/format/repartition/firmware change.
+Next Phase25: explicitShell known-file content readback across boot; physicalmedia
+readback/initialwrite validation evidence still missing. Keep sameUSB; do not reflash.
+After legitimate saves full-image checksum differs; verify immutable boot regions instead.
+No invented disk number/format/repartition. No agentphysical write/firmware change.

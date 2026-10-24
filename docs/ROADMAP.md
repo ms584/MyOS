@@ -132,8 +132,8 @@ fallback remains a diagnostic interface, not a graphical desktop.
 | 21 | BIOS distribution | **Complete QEMU baseline:** documented 16 MiB raw HDD image with embedded desktop/apps/assets, EDD LBA boot loader, separate persistent data disk and direct acceptance boot of the packaged image. See PHASE21.md. |
 | 22 | UEFI | **Complete QEMU baseline:** native x86-64 loader, GOP, allocated boot data/page tables and memory-map handoff; the same kernel runs all three desktop apps and restores saved state under OVMF. Secure Boot is unsupported. See PHASE22.md. |
 | 23 | Build and release tooling | **Complete:** one documented build/test/package workflow, dependency/version and source records, SHA-256 checksums, byte-identical rebuilds and preserved user save images. Packaging rejects stale validation evidence. See PHASE23.md. |
-| 24 | USB image and hardware preparation | **Partial (2026-10-23):** high-GOP preparation validated; owner retry reaches visible ThinkBook kernel/Shell. USB controllers found but no USB device attach success and RAM-only storage. Desktop/Snake rendering observed; owner confirms USB mouse movement after reconnect correction. Samsung USB BOT backend andsync generation11 now confirmed after hardware-clock correction; owner power-cycle/reinsertion restoresRAMFSgen11,Settings andSnakeBest10; Calculator/full app/input acceptance pending. See PHASE24.md and kernel-shell evidence. |
-| 25 | Real-hardware acceptance | **Retry kernel/Shell and visible console confirmed (2026-10-23); acceptance incomplete.** Desktop/Snake rendering observed; USB mouse motion FAIL; typed-text, full three-app and persistence acceptance incomplete. Earlier loader failure retained as history; QEMU cannot complete this phase. |
+| 24 | USB image and hardware preparation | **Complete selectedThinkBook offline preparation (2026-10-24):** identified target/controllers,required GOP/xHCI HID/BOT corrections,physicalboot/input/USBsave+flush+power-cycle restore,validated reproducibleimage/compatibility/USBguide/handoff. See PHASE24_COMPLETION.md; unsupporteddevices remain explicit. |
+| 25 | Real-hardware acceptance | **Partial (2026-10-24):** actualboot/display/keyboard/mouse,Settings/Snake persistence andCalculator/pointer controls owner-confirmed; Calculator result not pictured. ExplicitShell known-file readback andphysicalmedia readback evidence pending. See PHASE25_HARDWARE_ACCEPTANCE.md. |
 
 Hardware-driver work is scoped to the selected machine, not every PC. If access
 to hardware is unavailable, record Phase 25 as pending; independent later
@@ -173,8 +173,8 @@ with a host/Linux desktop or infer broader support from this accepted profile.
 | 18 — Real hardware | 25 |
 
 The original remaining work is retained. Phases 14–20 now introduce the GUI
-and apps, and phases 26–33 add the online platform. There are **2 phases not yet fully complete (24 and25)**: Phase24 hardware
-preparation is partial and Phase25 physical acceptance remains deferred/pending.
+and apps, and phases 26–33 add the online platform. There is **1 phase not yet fully complete (25)**: Phase24 selectedhardware
+preparation is complete; Phase25 still needs its remaining readback evidence.
 Phases32/33 are accepted on their documented QEMU profile.
 Desktop 1.0 was delivered in Phase 20 as a QEMU baseline.
 
