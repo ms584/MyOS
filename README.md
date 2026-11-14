@@ -78,7 +78,7 @@ playback was tested at1024 MiB. Do not interpret this as minimum RAM.
 | Phases26–31 | App runtime,network,verified HTTPS,text search,SB16 audio/local video baselines |
 | Phase32 | Native YouTube search→selection→online video/sound,owner-confirmed |
 | Phase33.1–33.5 | Native engine/runtime,standard media,YouTube and Rickroll QEMU acceptance complete |
-| Remaining Phase24/Phase25 | Target-machine preparation and physical USB/hardware acceptance pending |
+| Phase24/Phase25 | Complete for selected ThinkBook offline hardware profile |
 
 Loading may take minutes; UI/input can lag,frames drop and rebuffering remains.
 Final Auto source640x360 was decoded to160x90 and scaled into a766x431 plane.
@@ -97,3 +97,37 @@ Never delete ext4.vhdx. Development dependency size is not the boot image size.
 [Roadmap](docs/ROADMAP.md),[current project state](docs/PROJECT_STATE.md) and
 [handoff](docs/HANDOFF.md) describe the accepted profile and next scoped work.
 No subsequent phase starts automatically from this acceptance.
+
+## Physical hardware acceptance
+
+Phase 24 and 25 passed on Lenovo ThinkBook 15 G3 ACL (21A4), Ryzen 5500U,
+owner-reported 8 GB RAM, UEFI with Secure Boot disabled. Accepted scope:
+800x600 desktop, PS/2 keyboard, USB HID mouse, desktop apps and USB BOT
+persistence across power-cycle. Desktop apps run in kernel mode.
+Physical network/audio and I2C touchpad are outside this offline profile.
+YouTube acceptance is for QEMU; it does not imply online playback on this laptop.
+The validated USB image is 64 MiB, not a minimum RAM specification.
+
+See [Phase 24 completion](docs/PHASE24_COMPLETION.md),
+[Phase 25 completion](docs/PHASE25_COMPLETION.md), and the
+[hardware guide](docs/PHASE24_HANDOFF_TH.md).
+Writing a raw image erases the target: follow the guide and verify the device.
+
+## Source and publication
+
+Clone https://github.com/ms584/MyOS.git and run the build commands from the
+checkout root, replacing the original development machine path as needed.
+Native Cobalt/assets require separate preparation; a kernel build alone does
+not provide them. See the online user guide above. A clean-machine browser
+build was not revalidated for this documentation update.
+
+Generated images and local captures are excluded from Git. Existing tracked
+acceptance evidence and test certificates are preserved; ignore rules do not
+remove tracked files or erase history. Review captures for credentials and
+signed media URLs before publishing new evidence.
+
+Original MyOS material uses the [MyOS Non-Commercial Source-Available License](LICENSE).
+Personal/educational non-commercial use and free sharing with attribution are allowed.
+Sale/commercial exploitation requires permission; claiming original MyOS code as
+your own is prohibited. Third-party licenses remain unchanged. See
+[licensing scope](docs/PUBLICATION_LICENSE.md) and [publication audit](docs/PUBLICATION_AUDIT.md).

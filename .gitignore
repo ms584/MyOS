@@ -7,3 +7,29 @@ build/
 
 __pycache__/
 *.pyc
+
+# Local environment and private captures
+.venv/
+.pytest_cache/
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example
+*.key
+*.p12
+*.pfx
+*.pcap
+*.pcapng
+cookies*.txt
+/dist/
+/release/
+/*.log
+/*.status
+.DS_Store
+Thumbs.db
+!assets/myos-font.bin
+
+# Intentional public TLS regression fixtures
+!security/certs/test-server.key
+!security/certs/rsa-server.key

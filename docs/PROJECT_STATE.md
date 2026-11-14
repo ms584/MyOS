@@ -44,3 +44,8 @@ Closure docs/PHASE25_COMPLETION.md; guide PHASE25_USB_READBACK_TH.md.
 Original raw-prefix FAIL retained; host metadata differs, no boot-content corruption.
 No further owner commands required for selectedPhase25; no runtime/image change.
 No agentphysical write/firmware action; no format/reflash; gen14 preserved.
+
+2026-11-14: README publication/hardware scope and ignore rules updated.
+Documentation only; runtime unchanged. Custom non-commercial LICENSE selected; owner pushes.
+Audit: docs/PUBLICATION_AUDIT.md; no production secrets identified by patterns.
+Media content privacy review remains; no history rewrite, push or binary release.

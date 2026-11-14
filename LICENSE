@@ -1,0 +1,50 @@
+MyOS Non-Commercial Source-Available License 1.0
+Copyright (c) 2026 ms584. All rights reserved except as expressly granted below.
+
+1. Scope and ownership
+This license covers only original MyOS code and documentation for which ms584
+holds the necessary rights (the Software). Ownership remains with the relevant
+copyright holders. It does not transfer ownership to any recipient.
+
+2. Limited permission
+You may view, download, copy, build, run and modify the Software for personal,
+educational and research purposes that are non-commercial. You may share
+unmodified or modified copies without charge for those same purposes, provided
+you include this license, retain copyright and attribution notices, identify
+MyOS and https://github.com/ms584/MyOS as the original project, and clearly
+identify your changes. Recipients receive only the permissions stated here.
+
+3. Restrictions
+Without prior written permission from ms584, you may not sell, license for a
+fee, rent, monetize, or otherwise commercially exploit the Software or a work
+containing it, including as part of a paid product or service. You may not
+relicense covered original MyOS material under terms that remove these
+restrictions. You must not claim original MyOS material as your own work,
+remove its attribution, or imply that your modified version is endorsed by
+its original author. You may accurately claim authorship of your own changes.
+No trademark rights are granted.
+
+4. Third-party material and prior rights
+Third-party code, fonts, media, patches and other separately licensed material
+are excluded from this license and remain under their respective licenses,
+including notices within individual files. This license does not restrict
+rights granted by those licenses, by applicable law, or by prior valid grants.
+Do not apply these restrictions to third-party material. Redistributing combined
+binaries requires compliance with every applicable dependency license; this
+file alone is not permission to redistribute every possible combined build.
+Rights associated with viewing and forking on the hosting platform are not
+withdrawn by this license.
+
+5. Termination
+Permissions under this license terminate if you violate its conditions. This
+does not terminate rights independently granted for third-party material.
+Contact ms584 through the original repository to request separate permission.
+
+6. Disclaimer
+TO THE EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED AS IS,
+WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. THE AUTHORS AND COPYRIGHT
+HOLDERS SHALL NOT BE LIABLE FOR CLAIMS, DAMAGES OR OTHER LIABILITY ARISING FROM
+THE SOFTWARE OR ITS USE.
+
+This is a custom source-available license, not an OSI-approved open-source license.
