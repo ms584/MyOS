@@ -1,9 +1,0 @@
-
-[2026-10-09T15:00:03.089903+07:00] cwd=/home/xytron404/myos
-$ python3 tests/test_thread_vm_ranges.py --boot-image build/myos-current.img --runtime build/platform-runtime.mrt
-$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -mno-red-zone -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -c user/elf-thread-vm-ranges.c -o /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5/ranges.o
-$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5/ranges.so /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5/ranges.o
-$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/thread-vm-ranges.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5/boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/thread-vm-ranges.sock,server=on,wait=off -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5/assets.img,if=ide,index=1
-PASS real guest middle/high mmap pthread lifecycle and resources /home/xytron404/myos/build/media-evaluation/thread-vm-ranges-my5prvh5
-qemu-system-x86_64: terminating on signal 15 from pid 136848 (python3)
-[2026-10-09T15:00:09.392181+07:00] exit=0

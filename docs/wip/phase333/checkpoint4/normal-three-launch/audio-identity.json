@@ -1,9 +1,0 @@
-{
-  "channels": 2,
-  "sample_width": 2,
-  "sample_rate": 44100,
-  "frames": 5382456,
-  "duration": 122.05115646258503,
-  "sha256": "ee91b7088c620f76c82ec0af0daafbacc007182d2fc5dd3fa3aa9b2b699ab4a1",
-  "source": "QEMU SB16 native guest PCM capture, unmodified WAV, lossless zip"
-}

@@ -1,9 +1,0 @@
-$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/renderer-provider-stage-uefi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/renderer-provider-evaluation/native-stage-867lez4y/frozen-boot.img,if=ide,index=0 -boot order=c -qmp unix:/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/renderer-provider-stage-uefi.sock,server=on,wait=off -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/home/xytron404/cobalt-closed-imports-xnVZeH/build/system-tests/renderer-provider-stage-uefi-vars.fd -drive format=raw,file=/home/xytron404/myos/build/renderer-provider-evaluation/native-stage-867lez4y/assets.img,if=ide,index=1
-qemu-system-x86_64: terminating on signal 15 from pid 495886 (python3)
-Traceback (most recent call last):
-  File "/home/xytron404/cobalt-closed-imports-xnVZeH/tests/test_renderer_provider.py", line 50, in <module>
-    assert 'ELF bindings: missing=0' in output and 'ELF RELRO: protected' in output,output
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: elf link provider
-error: out of memory
-myos> 

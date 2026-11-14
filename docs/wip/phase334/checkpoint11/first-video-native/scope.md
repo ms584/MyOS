@@ -1,2 +1,0 @@
-Native VP9 underlay fixture delays first SetBounds2s; actual hardware PCM held until submitted first frame, each first-video consumed0. Video-only1.8s gap, pause/resume/seek/EOS/reopen and exact resources PASS. Source90dfe4b6. Actual max39979us. Public latest source pending.
-Phase33.4 incomplete; no33.5/parent33/Rickroll acceptance. No host production fetch/decoder/player. Signed URLs/private CA keys excluded.

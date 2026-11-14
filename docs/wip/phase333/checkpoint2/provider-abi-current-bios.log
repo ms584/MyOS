@@ -1,8 +1,0 @@
-
-[2026-10-09T09:47:22.211992+07:00] cwd=/home/xytron404/myos
-$ python3 tests/test_media_provider_abi.py build/media-evaluation/provider-qxwp5i1z --core build/media-evaluation/native-player-vpxup2_y/player.so --kvm
-EXPLICIT_KVM_COMMAND ['qemu-system-x86_64', '-m', '128', '-display', 'none', '-monitor', 'none', '-serial', 'file:/home/xytron404/myos/build/system-tests/media-provider-abi.log', '-no-reboot', '-no-shutdown', '-drive', 'format=raw,file=/home/xytron404/myos/build/media-evaluation/provider-abi-9s5vkbi1/boot.img,if=floppy,index=0', '-boot', 'order=a', '-qmp', 'unix:/home/xytron404/myos/build/system-tests/media-provider-abi.sock,server=on,wait=off', '-drive', 'format=raw,file=/home/xytron404/myos/build/media-evaluation/provider-abi-9s5vkbi1/assets.img,if=ide,index=1', '-cpu', 'host', '-accel', 'kvm']
-$ qemu-system-x86_64 -m 128 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/media-provider-abi.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/provider-abi-9s5vkbi1/boot.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/media-provider-abi.sock,server=on,wait=off -drive format=raw,file=/home/xytron404/myos/build/media-evaluation/provider-abi-9s5vkbi1/assets.img,if=ide,index=1 -cpu host -accel kvm
-qemu-system-x86_64: terminating on signal 15 from pid 39215 (python3)
-PASS optional media ABI valid/legacy/malformed exports/marker fail-closed and exact rollback /home/xytron404/myos/build/media-evaluation/provider-abi-9s5vkbi1
-[2026-10-09T09:49:06.089562+07:00] exit=0

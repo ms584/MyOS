@@ -1,9 +1,0 @@
-{
-  "frames": 64693,
-  "rate": 11025,
-  "channels": 1,
-  "width": 1,
-  "duration": 5.867845804988662,
-  "phase_passed": false,
-  "reason": "Only three seconds of native metrics before V8 allocation failure and int3 fault; no continuous 30-second visible playback acceptance."
-}

@@ -1,8 +1,0 @@
-[2026-10-11T11:49:51.774331+07:00] cwd=/home/xytron404/myos
-$ python3 tools/analyze_media_session.py build/phase335-abort-worktree/build/native-verified-tls-wr6bjpii --provider build/phase335-abort-worktree/build/media-evaluation/phase335-source-vp8-first-frame/provider.so --renderer build/renderer-provider-evaluation/provider-84sokh6g/provider.so
-Traceback (most recent call last):
-  File "/home/xytron404/myos/tools/analyze_media_session.py", line 21, in <module>
-    assert m['decoded']==600 and m['dropped']==0 and m['corrupted']==0,m
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: {'presented': 599, 'sync-samples': 596, 'max-sync-us': 19736, 'decoded': 600, 'dropped': 1, 'corrupted': 0, 'source-starvations': 0}
-[2026-10-11T11:49:51.999471+07:00] exit=1

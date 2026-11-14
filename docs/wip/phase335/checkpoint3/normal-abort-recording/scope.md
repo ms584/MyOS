@@ -1,1 +1,0 @@
-Original NORMAL di3oxi_6 launch3, not diagnostic playback. This is native QEMU PNG plus SB16 PCM recording only, approximate byte-poll timing; never host YouTube decode/fetch. Full129.179s includes startup, actual movie then FATAL/USER SIGNAL6. Original WAV/PNG/timeline/serial remain in private original bundle and checkpoint2 metadata; no fabricated new controls or playback pass.

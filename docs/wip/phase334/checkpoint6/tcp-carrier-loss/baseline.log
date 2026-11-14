@@ -1,9 +1,0 @@
-
-[2026-10-10T00:57:45.061879+07:00] cwd=/home/xytron404/myos
-$ python3 tests/test_tcp_link_loss.py --expect-missing
-$ gcc -m64 -std=c11 -Os -fPIC -ffreestanding -fno-builtin -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -Wall -Wextra -Werror -Wno-unused-function -DTCP_LINK_LOSS=1 -DPORT_C=41161 -c user/elf-platform-tcp.c -o /home/xytron404/myos/build/system-tests/tcp-link-loss-bios/fixture.o
-$ ld -shared --hash-style=both -z now -z relro -e _start -o /home/xytron404/myos/build/system-tests/tcp-link-loss-bios/fixture.so /home/xytron404/myos/build/system-tests/tcp-link-loss-bios/fixture.o
-$ qemu-system-x86_64 -m 64 -display none -monitor none -serial file:/home/xytron404/myos/build/system-tests/tcp-link-loss.log -no-reboot -no-shutdown -drive format=raw,file=/home/xytron404/myos/build/myos-current.img,if=floppy,index=0 -boot order=a -qmp unix:/home/xytron404/myos/build/system-tests/tcp-link-loss.sock,server=on,wait=off -nic user,model=rtl8139 -drive format=raw,file=/home/xytron404/myos/build/system-tests/tcp-link-loss-bios/assets.img,if=ide,index=1
-BASELINE idle connection failed to report carrier loss
-qemu-system-x86_64: terminating on signal 15 from pid 92288 (python3)
-[2026-10-10T00:57:56.892267+07:00] exit=0

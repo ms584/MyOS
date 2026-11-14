@@ -1,9 +1,0 @@
-{
-  "changed": [
-    ".gitattributes",
-    ".gitignore",
-    "fs/ramfs.c",
-    "include/fs.h",
-    "kernel/elf.c"
-  ]
-}

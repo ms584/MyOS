@@ -1,8 +1,0 @@
-{
-  "date": "2026-10-11T19:01:57+0700",
-  "method": "QMP system_reset with -no-reboot/-no-shutdown",
-  "result": "shell timeout; QMP status shutdown/running false",
-  "fresh_boot_passed": false,
-  "next": "fresh separate QEMU process with same frozen inputs",
-  "guest_code_changed": false
-}

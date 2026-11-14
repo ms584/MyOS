@@ -1,2 +1,0 @@
-PASS SDK word copy: alignments/tails/whole-buffer guards/overlap/PROT_NONE boundaries; host correctness only, not native performance
-EXPERIMENTAL_PROVIDER /home/xytron404/cobalt-closed-imports-xnVZeH/build/renderer-provider-evaluation/wordcopy-gam1qb5p sha256 559d00eefd767c3e8a16d7347c80ec1a488e8f6817d740079c63258f65d80e92 host correctness only; native results pending

@@ -1,7 +1,0 @@
-{
-  "session": "build/phase335-player-busy-diagnostic/manual-session-wb00z242",
-  "phase_passed": false,
-  "blocked_creation_count": 1,
-  "native_stream_attempts": 2,
-  "scope": "Private unchanged-behavior creation diagnostic; current source core/native runtime, not normal acceptance."
-}

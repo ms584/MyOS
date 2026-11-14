@@ -1,5 +1,0 @@
-
-[2026-10-24T20:31:07.961914+07:00] cwd=/home/xytron404/myos
-$ python3 /mnt/c/Users/Xytron/AppData/Local/Temp/close_prefix_audit.py
-PASS: all291 differing bytes localized; disk signature and added SVI only; unchanged existing boot content; independent prior prefix hash reproduced. Four negative controls rejected. No physical device opened.
-[2026-10-24T20:31:10.870882+07:00] exit=0

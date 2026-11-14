@@ -1,5 +1,0 @@
-{
-  "source": "build/phase334-public-szvxy52v",
-  "raw_serial_sha256": "b56c6dd7629728ab64445353c5a3ffd3c9685efd706b4b1c41a3354272c61fdf",
-  "redactions": "URL queries and data payloads; raw stays private under build"
-}

@@ -1,5 +1,0 @@
-
-[2026-10-10T16:10:27.368764+07:00] cwd=/home/xytron404/myos
-$ python3 tools/build_media_provider.py --player-source build/media-evaluation/phase335-create-diagnostic.c --native-underlay --vp9 --trace
-COMPILE/LINK only; native media acceptance pending /home/xytron404/myos/build/media-evaluation/provider-rn03ntw3
-[2026-10-10T16:10:28.770345+07:00] exit=0

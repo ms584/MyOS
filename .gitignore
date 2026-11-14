@@ -33,3 +33,6 @@ Thumbs.db
 # Intentional public TLS regression fixtures
 !security/certs/test-server.key
 !security/certs/rsa-server.key
+
+# Private development notes and evidence
+/docs/

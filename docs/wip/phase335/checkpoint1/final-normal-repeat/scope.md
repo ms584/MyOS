@@ -1,1 +1,0 @@
-Normal non-trace provider3k2mykzc, fresh normal boot, two native Rickroll opens. Native pictures/PCM/clock measured; AVI alignment approximate, song listening/owner acceptance absent. Raw PCAP/assets/logs stay private ignored build.

@@ -1,8 +1,0 @@
-{
-  "date": "2026-10-12T08:13:26.377454+07:00",
-  "status": "FULL_PASS_ONLINE_PENDING",
-  "baseline_commit": "76eaf768f82dfdee56f3cfdf32f0498dac92ad0d",
-  "focused": "all7 stages PASS; absent-device fallback from previous checkpoint reused unchanged",
-  "full_log": "build/phase335-absolute-full-regression.log",
-  "phase_passed": false
-}

@@ -1,9 +1,0 @@
-{
-  "isolated_source": "build/media-evaluation/phase335-presentation-cost-diagnostic.c",
-  "source_sha256": "7c280d7addbcc29112fd393899ce3cd6823b793bc93b49fcaa033b58ec34b287",
-  "production_source_unchanged": true,
-  "compiled": false,
-  "runtime_tested": false,
-  "change": "Existing outlier logs total submit, output mutex wait and native display duration;4 additional monotonic-clock reads only, no PCM-clock reads/buffering/presentation changes",
-  "phase_passed": false
-}

@@ -1,5 +1,0 @@
-
-[2026-10-10T15:36:46.267707+07:00] cwd=/home/xytron404/myos
-$ python3 tools/build_media_provider.py --native-underlay
-COMPILE/LINK only; native media acceptance pending /home/xytron404/myos/build/media-evaluation/provider-pppf76cc
-[2026-10-10T15:36:47.526262+07:00] exit=0

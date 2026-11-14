@@ -1,1 +1,0 @@
-Normal non-trace player,4opens. Third engine aborts after initial native VP9 decode (FATAL ImmediateCrash + USER SIGNAL6). Cleanup does not pass stability. Other three play media; movie identity must be visually checked. Existing observer PMM heap caveat is corrected in acceptance report; originals preserved. No song listening/user acceptance.

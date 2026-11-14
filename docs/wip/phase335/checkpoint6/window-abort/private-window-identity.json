@@ -1,6 +1,0 @@
-{
-  "kernel.bin": "dffbe7b09a37596271e3bfb13a491d87740fb106c3f07e9a4ad9893cf56c6f2a",
-  "kernel.elf": "08a5e84856b1acc93c086e43008587912126b614db76bcab78b178deaeee7e48",
-  "myos-current.img": "5f0a82d99b057c662fe50b9b100a6cda8131c3baacc0f8b9d8306b8340de0dfc",
-  "platform-runtime.mrt": "7653c37c15898df660d01b310c09e489de631d21123eb9e63848273d554e6314"
-}

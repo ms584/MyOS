@@ -1,7 +1,0 @@
-
-[2026-10-15T12:43:15.400151+07:00] cwd=/home/xytron404/myos
-$ nice -n 10 python3 tests/test_release_tools.py
-fsck.fat 4.2 (2021-01-31)
-/home/xytron404/myos/build/release-check-2ebe3oib/esp.img: 4 files, 157/16343 clusters
-PASS: FAT filesystem checker, independent EFI readback, MBR layout and deterministic timestamps
-[2026-10-15T12:43:15.729202+07:00] exit=0

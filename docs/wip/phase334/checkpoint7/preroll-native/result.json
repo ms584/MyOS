@@ -1,9 +1,0 @@
-{
-  "phase_passed": false,
-  "native_fixture": "PASS",
-  "public_preroll": "pending",
-  "full_regression": "pending",
-  "vp9_video_slots": 16,
-  "video_headroom_us": 200000,
-  "default_vp8_sha256": "41901a137421bf62e63585f8ea5339fd5b3addb50471b4129a5ea378b1514696"
-}

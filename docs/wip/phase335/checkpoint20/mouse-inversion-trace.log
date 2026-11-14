@@ -1,6 +1,0 @@
-input_event_rel con 0, axis x, value 218
-input_event_rel con 0, axis y, value -121
-input_event_rel con 0, axis x, value 0
-input_event_rel con 0, axis y, value -2
-input_event_rel con -1, axis x, value 10
-input_event_rel con -1, axis y, value 10
